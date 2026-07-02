@@ -1,0 +1,81 @@
+{
+  "name": "Irkara Needle example pairs",
+  "room": {
+    "width": 800,
+    "height": 608
+  },
+  "default_start_policy": "auto",
+  "pairs": [
+    {
+      "id": "irkara-49",
+      "game_image": "irkara-49-game.png",
+      "jtool_image": "irkara-49-jtool.png",
+      "jmap": "irkara-49.jmap",
+      "notes": "Dense purple outline tileset; two saves and one warp."
+    },
+    {
+      "id": "irkara-49-warp",
+      "game_image": "irkara-49-warp-game.png",
+      "jtool_image": "irkara-49-warp-jtool.png",
+      "jmap": "irkara-49-warp.jmap",
+      "notes": "Same room variant with an extra warp."
+    },
+    {
+      "id": "irkara-51",
+      "game_image": "irkara-51-game.png",
+      "jtool_image": "irkara-51-jtool.png",
+      "jmap": "irkara-51.jmap",
+      "notes": "Green/white tileset with mini spikes, water, walljumps, multiple saves."
+    },
+    {
+      "id": "irkara-52",
+      "game_image": "irkara-52-game.png",
+      "jtool_image": "irkara-52-jtool.png",
+      "jmap": "irkara-52.jmap",
+      "notes": "Green/white tileset with several water tiles and multiple saves."
+    },
+    {
+      "id": "irkara-53",
+      "game_image": "irkara-53-game.png",
+      "jtool_image": "irkara-53-jtool.png",
+      "jmap": "irkara-53.jmap",
+      "notes": "Cyan grid tileset with many standard spikes and three saves."
+    },
+    {
+      "id": "irkara-54",
+      "game_image": "irkara-54-game.png",
+      "jtool_image": "irkara-54-jtool.png",
+      "jmap": "irkara-54.jmap",
+      "notes": "Mostly water-filled room with many spikes and mirrored structure."
+    },
+    {
+      "id": "irkara-57",
+      "game_image": "irkara-57-game.png",
+      "jtool_image": "irkara-57-jtool.png",
+      "jmap": "irkara-57.jmap",
+      "notes": "Green solid tiles with standard blocks/spikes and two saves."
+    },
+    {
+      "id": "irkara-58",
+      "game_image": "irkara-58-game.png",
+      "jtool_image": "irkara-58-jtool.png",
+      "jmap": "irkara-58.jmap",
+      "notes": "Small enclosed room, useful for low-noise crop/grid tests."
+    },
+    {
+      "id": "irkara-59",
+      "game_image": "irkara-59-game.png",
+      "jtool_image": "irkara-59-jtool.png",
+      "jmap": "irkara-59.jmap",
+      "notes": "Mini-spike heavy room with sparse blocks and two saves."
+    },
+    {
+      "id": "irkara-71",
+      "game_image": "irkara-71-game.png",
+      "jtool_image": "irkara-71-jtool.png",
+      "jmap": "irkara-71.jmap",
+      "notes": "Dark block tileset with water columns, platforms, and two saves."
+    }
+  ]
+}
+
