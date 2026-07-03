@@ -43,6 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     inspect_parser.add_argument("input")
     inspect_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     inspect_parser.add_argument("--grid-step", type=int, default=16)
+    inspect_parser.add_argument("--include-color-objects", action="store_true")
     inspect_parser.add_argument("--include-geometry", action="store_true")
 
     scan_parser = subparsers.add_parser("scan-image", help="scan a PNG and write a partial .jmap")
@@ -51,6 +52,7 @@ def main(argv: list[str] | None = None) -> int:
     scan_parser.add_argument("--preview", default=None, help="optional SVG preview path")
     scan_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     scan_parser.add_argument("--grid-step", type=int, default=16)
+    scan_parser.add_argument("--include-color-objects", action="store_true")
     scan_parser.add_argument("--include-geometry", action="store_true")
     scan_parser.add_argument("--start-policy", default="auto")
 
@@ -59,6 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     scan_fixtures_parser.add_argument("--out-dir", default=None)
     scan_fixtures_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     scan_fixtures_parser.add_argument("--grid-step", type=int, default=16)
+    scan_fixtures_parser.add_argument("--include-color-objects", action="store_true")
     scan_fixtures_parser.add_argument("--include-geometry", action="store_true")
     scan_fixtures_parser.add_argument("--start-policy", default="auto")
     scan_fixtures_parser.add_argument("--tolerance", type=float, default=64)
@@ -78,6 +81,7 @@ def main(argv: list[str] | None = None) -> int:
             args.input,
             args.room_box,
             args.grid_step,
+            args.include_color_objects,
             args.include_geometry,
         )
     if args.command == "scan-image":
@@ -87,6 +91,7 @@ def main(argv: list[str] | None = None) -> int:
             args.preview,
             args.room_box,
             args.grid_step,
+            args.include_color_objects,
             args.include_geometry,
             args.start_policy,
         )
@@ -96,6 +101,7 @@ def main(argv: list[str] | None = None) -> int:
             args.out_dir,
             args.room_box,
             args.grid_step,
+            args.include_color_objects,
             args.include_geometry,
             args.start_policy,
             args.tolerance,
@@ -174,12 +180,14 @@ def _inspect_image(
     input_path: str,
     room_box_text: str | None,
     grid_step: int,
+    include_color_objects: bool,
     include_geometry: bool,
 ) -> int:
     result = scan_png(
         input_path,
         room_box=_parse_box(room_box_text),
         grid_step=grid_step,
+        include_color_objects=include_color_objects,
         include_geometry=include_geometry,
     )
     print(f"image: {result.image_width}x{result.image_height}")
@@ -207,6 +215,7 @@ def _scan_image(
     preview_path: str | None,
     room_box_text: str | None,
     grid_step: int,
+    include_color_objects: bool,
     include_geometry: bool,
     start_policy: str,
 ) -> int:
@@ -214,6 +223,7 @@ def _scan_image(
         input_path,
         room_box=_parse_box(room_box_text),
         grid_step=grid_step,
+        include_color_objects=include_color_objects,
         include_geometry=include_geometry,
     )
     jmap = result.to_jmap(start_policy=start_policy)
@@ -233,6 +243,7 @@ def _scan_fixtures(
     out_dir: str | None,
     room_box_text: str | None,
     grid_step: int,
+    include_color_objects: bool,
     include_geometry: bool,
     start_policy: str,
     tolerance: float,
@@ -253,6 +264,7 @@ def _scan_fixtures(
         room_box=box,
         grid_step=grid_step,
         tolerance=tolerance,
+        include_color_objects=include_color_objects,
         include_geometry=include_geometry,
     )
     by_id = {evaluation.pair_id: evaluation for evaluation in evaluations}
@@ -263,6 +275,7 @@ def _scan_fixtures(
             base / pair["game_image"],
             room_box=box,
             grid_step=grid_step,
+            include_color_objects=include_color_objects,
             include_geometry=include_geometry,
         )
         jmap = result.to_jmap(start_policy=start_policy)
@@ -278,6 +291,16 @@ def _scan_fixtures(
             f"warps {evaluation.matched_warps}/{evaluation.truth_warps} matched "
             f"({evaluation.detected_warps} detected)"
         )
+        if include_color_objects:
+            print(
+                f"  color: apples {evaluation.matched_apples}/"
+                f"{evaluation.truth_apples} matched ({evaluation.detected_apples} detected), "
+                f"water {evaluation.matched_water}/"
+                f"{evaluation.truth_water} matched ({evaluation.detected_water} detected), "
+                f"walljumps {evaluation.matched_walljumps}/"
+                f"{evaluation.truth_walljumps} matched "
+                f"({evaluation.detected_walljumps} detected)"
+            )
         if include_geometry:
             print(
                 f"  geometry: blocks {evaluation.matched_blocks}/"

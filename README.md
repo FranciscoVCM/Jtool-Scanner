@@ -19,20 +19,23 @@ python -m jtool_scanner.cli dataset-summary fixtures\irkara\manifest.json
 python -m jtool_scanner.cli inspect-image fixtures\irkara\irkara-58-game.png
 python -m jtool_scanner.cli scan-image fixtures\irkara\irkara-58-game.png out\irkara-58-scan.jmap --preview out\irkara-58-scan.svg
 python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --out-dir out\fixture-scans
+python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --include-color-objects --grid-step 8 --tolerance 24 --out-dir out\color-object-scans
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --include-geometry --grid-step 8 --tolerance 24 --out-dir out\block-spike-scans
 ```
 
-The screenshot scanner has two layers:
+The screenshot scanner has three layers:
 
 - high-confidence save and warp detection, enabled by default
+- conservative color-object detection for apples, water, and walljumps, enabled with `--include-color-objects`
 - experimental block/full-spike/mini-spike geometry detection, enabled with `--include-geometry`
 
 Current fixture scan status:
 
 - saves: all Irkara fixture saves are detected and matched
 - warps: all fixture warps are detected except the heavily cyan-tinted warp in screen 54
+- color objects: apples are reliable on current examples; water and walljumps are conservative, and blue tile art can still create water false positives
 - geometry: the opt-in detector produces useful block and full-spike candidates across the new stress fixtures, but it is still noisy and mini spikes need more work
-- not yet handled: water, walljumps, platforms, apples, and unknown gimmicks
+- not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant
 as diagnostics for now, not final playable conversions.

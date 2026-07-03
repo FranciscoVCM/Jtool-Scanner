@@ -3,7 +3,15 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from jtool_scanner.constants import OBJ_BLOCK, OBJ_SAVE, OBJ_SPIKE_UP, OBJ_WARP
+from jtool_scanner.constants import (
+    OBJ_APPLE,
+    OBJ_BLOCK,
+    OBJ_SAVE,
+    OBJ_SPIKE_UP,
+    OBJ_WALLJUMP_LEFT,
+    OBJ_WATER_2,
+    OBJ_WARP,
+)
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage, load_png
 from jtool_scanner.scanner import scan_image
@@ -43,6 +51,23 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertTrue(any((det.x, det.y) == (96, 64) for det in blocks))
         self.assertTrue(any((det.x, det.y) == (160, 64) for det in spikes))
 
+    def test_scan_image_can_include_color_objects(self) -> None:
+        image = _synthetic_color_object_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=16,
+            include_color_objects=True,
+        )
+        apples = [det for det in result.detections if det.type_id == OBJ_APPLE]
+        water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
+        walljumps = [det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT]
+
+        self.assertTrue(any((det.x, det.y) == (320, 96) for det in apples))
+        self.assertTrue(any((det.x, det.y) == (192, 128) for det in water))
+        self.assertTrue(any((det.x, det.y) == (64, 192) for det in walljumps))
+
 
 def _synthetic_room() -> RGBImage:
     width, height = 800, 608
@@ -61,6 +86,16 @@ def _synthetic_geometry_room() -> RGBImage:
     _line(data, width, 176, 64, 160, 95, (225, 225, 225), thickness=2)
     _line(data, width, 176, 64, 191, 95, (225, 225, 225), thickness=2)
     _line(data, width, 160, 95, 191, 95, (225, 225, 225), thickness=2)
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_color_object_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    _rect(data, width, 192, 128, 32, 32, (74, 170, 235))
+    _rect(data, width, 224, 128, 32, 32, (74, 170, 235))
+    _outline_rect(data, width, 80, 192, 8, 24, (34, 188, 45))
+    _disc(data, width, 336, 112, 11, (230, 24, 24))
     return RGBImage(width, height, bytes(data))
 
 
@@ -138,6 +173,23 @@ def _ring(
         for xx in range(cx - radius, cx + radius + 1):
             dist = (xx - cx) ** 2 + (yy - cy) ** 2
             if inner <= dist <= outer:
+                offset = (yy * width + xx) * 3
+                data[offset : offset + 3] = bytes(color)
+
+
+def _disc(
+    data: bytearray,
+    width: int,
+    cx: int,
+    cy: int,
+    radius: int,
+    color: tuple[int, int, int],
+) -> None:
+    outer = radius**2
+    for yy in range(cy - radius, cy + radius + 1):
+        for xx in range(cx - radius, cx + radius + 1):
+            dist = (xx - cx) ** 2 + (yy - cy) ** 2
+            if dist <= outer:
                 offset = (yy * width + xx) * 3
                 data[offset : offset + 3] = bytes(color)
 

@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .constants import (
     GRID_SIZE,
+    OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -22,6 +23,9 @@ from .constants import (
     OBJ_SPIKE_LEFT,
     OBJ_SPIKE_RIGHT,
     OBJ_SPIKE_UP,
+    OBJ_WALLJUMP_LEFT,
+    OBJ_WALLJUMP_RIGHT,
+    OBJ_WATER_2,
     OBJ_WARP,
     ROOM_HEIGHT,
     ROOM_WIDTH,
@@ -46,6 +50,14 @@ MINI_SPIKE_TYPES = frozenset(
         OBJ_MINI_SPIKE_RIGHT,
         OBJ_MINI_SPIKE_LEFT,
         OBJ_MINI_SPIKE_DOWN,
+    }
+)
+COLOR_OBJECT_TYPES = frozenset(
+    {
+        OBJ_APPLE,
+        OBJ_WALLJUMP_LEFT,
+        OBJ_WALLJUMP_RIGHT,
+        OBJ_WATER_2,
     }
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
@@ -79,6 +91,7 @@ def scan_png(
     path: str | Path,
     room_box: Box | None = None,
     grid_step: int = GRID_SIZE,
+    include_color_objects: bool = False,
     include_geometry: bool = False,
 ) -> ScanResult:
     image = load_png(path)
@@ -86,6 +99,7 @@ def scan_png(
         image,
         room_box=room_box,
         grid_step=grid_step,
+        include_color_objects=include_color_objects,
         include_geometry=include_geometry,
     )
 
@@ -94,12 +108,15 @@ def scan_image(
     image: RGBImage,
     room_box: Box | None = None,
     grid_step: int = GRID_SIZE,
+    include_color_objects: bool = False,
     include_geometry: bool = False,
 ) -> ScanResult:
     box = room_box or detect_room_box(image)
     detections: list[Detection] = []
     detections.extend(_detect_saves(image, box, grid_step))
     detections.extend(_detect_warps(image, box, grid_step))
+    if include_color_objects:
+        detections.extend(_detect_color_objects(image, box, grid_step, detections))
     if include_geometry:
         detections.extend(_detect_geometry(image, box, grid_step))
         detections = _dedupe_overlapping_geometry(detections)
@@ -198,6 +215,118 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
     return _dedupe_detections(detections)
 
 
+def _detect_color_objects(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    detections: list[Detection] = []
+    detections.extend(_detect_apples(image, room, grid_step, anchors))
+    detections.extend(_detect_walljumps(image, room, grid_step, anchors + detections))
+    detections.extend(_detect_water(image, room, grid_step, anchors + detections))
+    return detections
+
+
+def _detect_apples(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    components = _connected_components(image, room, lambda r, g, b: _is_apple_red(r, g, b))
+    detections: list[Detection] = []
+    for box, pixels in components:
+        if not (12 <= box.width <= 28 and 12 <= box.height <= 28):
+            continue
+        ratio = box.width / max(1, box.height)
+        if ratio < 0.65 or ratio > 1.45:
+            continue
+        density = len(pixels) / box.area
+        if density < 0.50:
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        if _near_anchor(map_x, map_y, anchors, max_distance=40):
+            continue
+        score = min(1.0, density * 1.35)
+        detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
+    return _dedupe_detections(detections, min_distance=40)
+
+
+def _detect_walljumps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: _is_walljump_green(r, g, b),
+    )
+    detections: list[Detection] = []
+    for box, pixels in components:
+        if not (5 <= box.width <= 10 and 18 <= box.height <= 45):
+            continue
+        density = len(pixels) / box.area
+        if not (0.20 <= density <= 0.62):
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        if _near_anchor(map_x, map_y, anchors, max_distance=32):
+            continue
+        type_id = OBJ_WALLJUMP_LEFT if map_x % GRID_SIZE < GRID_SIZE / 2 else OBJ_WALLJUMP_RIGHT
+        kind = "walljump_left" if type_id == OBJ_WALLJUMP_LEFT else "walljump_right"
+        score = min(1.0, density * 1.6)
+        detections.append(Detection(kind, type_id, map_x, map_y, score, box))
+    return _dedupe_detections(detections, min_distance=24)
+
+
+def _detect_water(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    step = max(GRID_SIZE, grid_step)
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
+            if stats.density < 0.55 or stats.count < 140:
+                continue
+            if stats.min_quadrant_density < 0.20:
+                continue
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            if features.edge_density > 0.12:
+                continue
+            if _near_anchor(x, y, anchors, max_distance=40):
+                continue
+            detections.append(
+                _grid_detection(
+                    "water_2",
+                    OBJ_WATER_2,
+                    x,
+                    y,
+                    stats.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _filter_adjacent_water(_dedupe_detections(detections, min_distance=16))
+
+
+def _filter_adjacent_water(detections: list[Detection]) -> list[Detection]:
+    return [
+        det
+        for det in detections
+        if any(
+            other is not det and distance((det.x, det.y), (other.x, other.y)) <= 40
+            for other in detections
+        )
+    ]
+
+
 def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
     step = max(8, grid_step)
     detections: list[Detection] = []
@@ -271,6 +400,72 @@ class _GeometryClass:
     kind: str
     type_id: int
     score: float
+
+
+@dataclass(frozen=True, slots=True)
+class _ColorStats:
+    count: int
+    density: float
+    min_quadrant_density: float
+    center_x_ratio: float
+    center_y_ratio: float
+    score: float
+
+
+def _patch_color_stats(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    map_size: int,
+    predicate,
+) -> _ColorStats:
+    sample = 16
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    left = room.x + map_x * scale_x
+    top = room.y + map_y * scale_y
+    width = map_size * scale_x
+    height = map_size * scale_y
+    count = 0
+    quadrant_counts = [0, 0, 0, 0]
+    quadrant_totals = [0, 0, 0, 0]
+    total_x = 0
+    total_y = 0
+
+    for sy in range(sample):
+        py = int(min(image.height - 1, max(0, top + (sy + 0.5) * height / sample)))
+        for sx in range(sample):
+            px = int(min(image.width - 1, max(0, left + (sx + 0.5) * width / sample)))
+            quadrant = (1 if sx >= sample / 2 else 0) + (2 if sy >= sample / 2 else 0)
+            quadrant_totals[quadrant] += 1
+            r, g, b = image.pixel(px, py)
+            if predicate(r, g, b):
+                count += 1
+                quadrant_counts[quadrant] += 1
+                total_x += sx
+                total_y += sy
+
+    density = count / (sample * sample)
+    min_quadrant_density = min(
+        filled / total
+        for filled, total in zip(quadrant_counts, quadrant_totals)
+        if total
+    )
+    if count:
+        center_x_ratio = total_x / count / (sample - 1)
+        center_y_ratio = total_y / count / (sample - 1)
+    else:
+        center_x_ratio = 0.5
+        center_y_ratio = 0.5
+    return _ColorStats(
+        count=count,
+        density=density,
+        min_quadrant_density=min_quadrant_density,
+        center_x_ratio=center_x_ratio,
+        center_y_ratio=center_y_ratio,
+        score=min(1.0, density * 1.7),
+    )
 
 
 def _patch_features(
@@ -423,6 +618,19 @@ def _geometry_detection(
     return Detection(kind, type_id, x, y, min(1.0, score), image_box)
 
 
+def _grid_detection(
+    kind: str,
+    type_id: int,
+    x: int,
+    y: int,
+    score: float,
+    image: RGBImage,
+    room: Box,
+    size: int,
+) -> Detection:
+    return _geometry_detection(kind, type_id, x, y, score, image, room, size)
+
+
 def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:
     result: list[Detection] = []
     for det in sorted(
@@ -448,7 +656,7 @@ def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
 
 def _dedupe_overlapping_geometry(detections: list[Detection]) -> list[Detection]:
     # Saves and warps are more reliable than the experimental geometry pass.
-    anchors = [det for det in detections if det.type_id in (OBJ_SAVE, OBJ_WARP)]
+    anchors = [det for det in detections if det.type_id not in GEOMETRY_TYPES]
     result: list[Detection] = []
     for det in detections:
         if det.type_id not in GEOMETRY_TYPES:
@@ -458,6 +666,15 @@ def _dedupe_overlapping_geometry(detections: list[Detection]) -> list[Detection]
             continue
         result.append(det)
     return result
+
+
+def _near_anchor(
+    x: int,
+    y: int,
+    anchors: list[Detection],
+    max_distance: float,
+) -> bool:
+    return any(distance((x, y), (anchor.x, anchor.y)) < max_distance for anchor in anchors)
 
 
 def _connected_components(
@@ -549,6 +766,18 @@ def _is_save_red(r: int, g: int, b: int) -> bool:
 
 def _is_tinted_save_yellow(r: int, g: int, b: int) -> bool:
     return r > 95 and g > 145 and 80 < b < 215 and g > r + 25 and g > b + 20
+
+
+def _is_apple_red(r: int, g: int, b: int) -> bool:
+    return r > 150 and g < 95 and b < 95 and r > g * 1.8 and r > b * 1.8
+
+
+def _is_walljump_green(r: int, g: int, b: int) -> bool:
+    return g > 105 and r < 115 and b < 135 and g > r * 1.35 and g > b * 1.20
+
+
+def _is_water_blue(r: int, g: int, b: int) -> bool:
+    return b > 135 and g > 105 and r < 150 and b > r + 35 and g > r + 20
 
 
 def _looks_cyan_tinted(image: RGBImage, room: Box) -> bool:
