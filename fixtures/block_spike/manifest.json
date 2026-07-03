@@ -1,0 +1,68 @@
+{
+  "name": "Block and spike recognition stress examples",
+  "room": {
+    "width": 800,
+    "height": 608
+  },
+  "default_start_policy": "auto",
+  "pairs": [
+    {
+      "id": "irkara-nr-arcfoxp1",
+      "game_image": "irkara-nr-arcfoxp1-game.png",
+      "jtool_image": "irkara-nr-arcfoxp1-jtool.png",
+      "jmap": "irkara-nr-arcfoxp1.jmap",
+      "notes": "Mostly 32px red outline gameplay with a few 16px mini spikes."
+    },
+    {
+      "id": "irkara-89",
+      "game_image": "irkara-89-game.png",
+      "jtool_image": "irkara-89-jtool.png",
+      "jmap": "irkara-89.jmap",
+      "notes": "Mostly 32px, white/black tileset, some spikes placed on 16px offsets."
+    },
+    {
+      "id": "irkara-nr-partysu3",
+      "game_image": "irkara-nr-partysu3-game.png",
+      "jtool_image": "irkara-nr-partysu3-jtool.png",
+      "jmap": "irkara-nr-partysu3.jmap",
+      "notes": "Mini-spike-heavy red tileset with lots of 16px placement."
+    },
+    {
+      "id": "irkara-nr-flames",
+      "game_image": "irkara-nr-flames-game.png",
+      "jtool_image": "irkara-nr-flames-jtool.png",
+      "jmap": "irkara-nr-flames.jmap",
+      "notes": "Water plus solid geometry, apples, standard spikes, and some 16px grid placement."
+    },
+    {
+      "id": "k3-ex-hades",
+      "game_image": "k3-ex-hades-game.png",
+      "jtool_image": "k3-ex-hades-jtool.png",
+      "jmap": "k3-ex-hades.jmap",
+      "notes": "Different game/tileset with high spike density and several saves but no warp."
+    }
+  ],
+  "references": [
+    {
+      "id": "save-red-cross",
+      "image": "ref-save-red-cross.png",
+      "notes": "Alternate save sprite."
+    },
+    {
+      "id": "warp-blue-cloud",
+      "image": "ref-warp-blue-cloud.png",
+      "notes": "Alternate warp sprite."
+    },
+    {
+      "id": "warp-purple-ring",
+      "image": "ref-warp-purple-ring.png",
+      "notes": "Alternate warp sprite."
+    },
+    {
+      "id": "warp-white-outline",
+      "image": "ref-warp-white-outline.png",
+      "notes": "Alternate warp sprite."
+    }
+  ]
+}
+

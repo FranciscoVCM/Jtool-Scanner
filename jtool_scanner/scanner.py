@@ -1,8 +1,8 @@
 """First-pass screenshot scanner.
 
-This module intentionally starts with high-confidence, color-stable objects:
-saves and warps. Blocks and spikes need a stronger tileset/model layer, but the
-coordinate pipeline here is the same one they will use.
+This module starts with high-confidence, color-stable objects and includes an
+experimental edge/shape pass for blocks and spikes. The geometry pass is useful
+for diagnostics, but it is not yet expected to produce final maps by itself.
 """
 
 from __future__ import annotations
@@ -10,11 +10,45 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .constants import GRID_SIZE, OBJ_SAVE, OBJ_WARP, ROOM_HEIGHT, ROOM_WIDTH
+from .constants import (
+    GRID_SIZE,
+    OBJ_BLOCK,
+    OBJ_MINI_SPIKE_DOWN,
+    OBJ_MINI_SPIKE_LEFT,
+    OBJ_MINI_SPIKE_RIGHT,
+    OBJ_MINI_SPIKE_UP,
+    OBJ_SAVE,
+    OBJ_SPIKE_DOWN,
+    OBJ_SPIKE_LEFT,
+    OBJ_SPIKE_RIGHT,
+    OBJ_SPIKE_UP,
+    OBJ_WARP,
+    ROOM_HEIGHT,
+    ROOM_WIDTH,
+)
 from .geometry import Box, distance, round_to_step
 from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
+
+
+FULL_SPIKE_TYPES = frozenset(
+    {
+        OBJ_SPIKE_UP,
+        OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_LEFT,
+        OBJ_SPIKE_DOWN,
+    }
+)
+MINI_SPIKE_TYPES = frozenset(
+    {
+        OBJ_MINI_SPIKE_UP,
+        OBJ_MINI_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_DOWN,
+    }
+)
+GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,20 +79,30 @@ def scan_png(
     path: str | Path,
     room_box: Box | None = None,
     grid_step: int = GRID_SIZE,
+    include_geometry: bool = False,
 ) -> ScanResult:
     image = load_png(path)
-    return scan_image(image, room_box=room_box, grid_step=grid_step)
+    return scan_image(
+        image,
+        room_box=room_box,
+        grid_step=grid_step,
+        include_geometry=include_geometry,
+    )
 
 
 def scan_image(
     image: RGBImage,
     room_box: Box | None = None,
     grid_step: int = GRID_SIZE,
+    include_geometry: bool = False,
 ) -> ScanResult:
     box = room_box or detect_room_box(image)
     detections: list[Detection] = []
     detections.extend(_detect_saves(image, box, grid_step))
     detections.extend(_detect_warps(image, box, grid_step))
+    if include_geometry:
+        detections.extend(_detect_geometry(image, box, grid_step))
+        detections = _dedupe_overlapping_geometry(detections)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     return ScanResult(image.width, image.height, box, detections)
 
@@ -152,6 +196,268 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
             continue
         detections.append(Detection("warp", OBJ_WARP, map_x, map_y, score, box))
     return _dedupe_detections(detections)
+
+
+def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
+    step = max(8, grid_step)
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if patch.edge_density < 0.035:
+                continue
+            spike = _classify_full_spike(patch)
+            block = _classify_block(patch)
+            if spike and spike.score > max(0.24, block.score + 0.03):
+                detections.append(
+                    _geometry_detection(
+                        spike.kind,
+                        spike.type_id,
+                        x,
+                        y,
+                        spike.score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+            elif block.score >= 0.30:
+                detections.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        block.score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, step):
+        for x in range(0, ROOM_WIDTH - 16 + 1, step):
+            patch = _patch_features(image, room, x, y, 16)
+            if patch.edge_density < 0.045:
+                continue
+            mini = _classify_mini_spike(patch)
+            if mini and mini.score >= 0.36:
+                detections.append(
+                    _geometry_detection(
+                        mini.kind,
+                        mini.type_id,
+                        x,
+                        y,
+                        mini.score,
+                        image,
+                        room,
+                        16,
+                    )
+                )
+
+    return _dedupe_geometry(detections)
+
+
+@dataclass(frozen=True, slots=True)
+class _PatchFeatures:
+    edge_mask: tuple[bool, ...]
+    edge_density: float
+    border_score: float
+    center_score: float
+
+
+@dataclass(frozen=True, slots=True)
+class _GeometryClass:
+    kind: str
+    type_id: int
+    score: float
+
+
+def _patch_features(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    map_size: int,
+) -> _PatchFeatures:
+    sample = 16
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    left = room.x + map_x * scale_x
+    top = room.y + map_y * scale_y
+    width = map_size * scale_x
+    height = map_size * scale_y
+    gray: list[int] = []
+
+    for sy in range(sample):
+        py = int(min(image.height - 1, max(0, top + (sy + 0.5) * height / sample)))
+        for sx in range(sample):
+            px = int(min(image.width - 1, max(0, left + (sx + 0.5) * width / sample)))
+            r, g, b = image.pixel(px, py)
+            gray.append((r * 30 + g * 59 + b * 11) // 100)
+
+    edges: list[bool] = []
+    total_strength = 0
+    for sy in range(sample):
+        for sx in range(sample):
+            current = gray[sy * sample + sx]
+            right = gray[sy * sample + min(sample - 1, sx + 1)]
+            down = gray[min(sample - 1, sy + 1) * sample + sx]
+            strength = abs(current - right) + abs(current - down)
+            total_strength += strength
+            edges.append(strength >= 34)
+
+    edge_density = sum(edges) / len(edges)
+    border_positions = [
+        sy * sample + sx
+        for sy in range(sample)
+        for sx in range(sample)
+        if sx <= 1 or sx >= sample - 2 or sy <= 1 or sy >= sample - 2
+    ]
+    center_positions = [
+        sy * sample + sx
+        for sy in range(4, 12)
+        for sx in range(4, 12)
+    ]
+    border_score = sum(1 for pos in border_positions if edges[pos]) / len(border_positions)
+    center_score = sum(1 for pos in center_positions if edges[pos]) / len(center_positions)
+    # Low-contrast screenshots can still be meaningful if the whole patch has
+    # steady texture; add a small normalized gradient contribution.
+    edge_density = max(edge_density, min(0.30, total_strength / (len(edges) * 260)))
+    return _PatchFeatures(tuple(edges), edge_density, border_score, center_score)
+
+
+def _classify_block(patch: _PatchFeatures) -> _GeometryClass:
+    score = patch.border_score * 0.65 + patch.center_score * 0.20 + patch.edge_density * 0.35
+    return _GeometryClass("block", OBJ_BLOCK, score)
+
+
+def _classify_full_spike(patch: _PatchFeatures) -> _GeometryClass | None:
+    return _best_triangle_class(
+        patch,
+        [
+            ("spike_up", OBJ_SPIKE_UP, "up"),
+            ("spike_right", OBJ_SPIKE_RIGHT, "right"),
+            ("spike_left", OBJ_SPIKE_LEFT, "left"),
+            ("spike_down", OBJ_SPIKE_DOWN, "down"),
+        ],
+    )
+
+
+def _classify_mini_spike(patch: _PatchFeatures) -> _GeometryClass | None:
+    return _best_triangle_class(
+        patch,
+        [
+            ("mini_spike_up", OBJ_MINI_SPIKE_UP, "up"),
+            ("mini_spike_right", OBJ_MINI_SPIKE_RIGHT, "right"),
+            ("mini_spike_left", OBJ_MINI_SPIKE_LEFT, "left"),
+            ("mini_spike_down", OBJ_MINI_SPIKE_DOWN, "down"),
+        ],
+    )
+
+
+def _best_triangle_class(
+    patch: _PatchFeatures,
+    classes: list[tuple[str, int, str]],
+) -> _GeometryClass | None:
+    best: _GeometryClass | None = None
+    for kind, type_id, direction in classes:
+        outline, outside = _triangle_masks(direction)
+        outline_hits = sum(1 for pos in outline if patch.edge_mask[pos]) / len(outline)
+        outside_hits = sum(1 for pos in outside if patch.edge_mask[pos]) / max(1, len(outside))
+        score = outline_hits * 0.78 + patch.edge_density * 0.38 - outside_hits * 0.18
+        if best is None or score > best.score:
+            best = _GeometryClass(kind, type_id, score)
+    return best
+
+
+def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
+    sample = 16
+    center = (sample - 1) / 2
+    outline: list[int] = []
+    outside: list[int] = []
+    for sy in range(sample):
+        for sx in range(sample):
+            if direction == "up":
+                side = abs(sx - center) * 2
+                edge_dist = min(abs(sy - side), abs(sy - (sample - 1)))
+                inside = sy >= side - 1
+            elif direction == "down":
+                side = (sample - 1) - abs(sx - center) * 2
+                edge_dist = min(abs(sy - side), sy)
+                inside = sy <= side + 1
+            elif direction == "right":
+                side = (sample - 1) - abs(sy - center) * 2
+                edge_dist = min(abs(sx - side), sx)
+                inside = sx <= side + 1
+            else:
+                side = abs(sy - center) * 2
+                edge_dist = min(abs(sx - side), abs(sx - (sample - 1)))
+                inside = sx >= side - 1
+            pos = sy * sample + sx
+            if edge_dist <= 1.15:
+                outline.append(pos)
+            elif not inside:
+                outside.append(pos)
+    return outline, outside
+
+
+def _geometry_detection(
+    kind: str,
+    type_id: int,
+    x: int,
+    y: int,
+    score: float,
+    image: RGBImage,
+    room: Box,
+    size: int,
+) -> Detection:
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    image_box = Box(
+        int(round(room.x + x * scale_x)),
+        int(round(room.y + y * scale_y)),
+        max(1, int(round(size * scale_x))),
+        max(1, int(round(size * scale_y))),
+    )
+    return Detection(kind, type_id, x, y, min(1.0, score), image_box)
+
+
+def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:
+    result: list[Detection] = []
+    for det in sorted(
+        detections,
+        key=lambda item: (item.type_id in MINI_SPIKE_TYPES, -item.score),
+    ):
+        if any(_geometry_conflicts(det, existing) for existing in result):
+            continue
+        result.append(det)
+    return sorted(result, key=lambda item: (item.y, item.x, -item.score))
+
+
+def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
+    if det.type_id in MINI_SPIKE_TYPES and existing.type_id in MINI_SPIKE_TYPES:
+        return distance((det.x, det.y), (existing.x, existing.y)) < 14
+    if det.type_id in MINI_SPIKE_TYPES or existing.type_id in MINI_SPIKE_TYPES:
+        return distance((det.x, det.y), (existing.x, existing.y)) < 20
+    return (
+        det.type_id == existing.type_id
+        and distance((det.x, det.y), (existing.x, existing.y)) < 28
+    )
+
+
+def _dedupe_overlapping_geometry(detections: list[Detection]) -> list[Detection]:
+    # Saves and warps are more reliable than the experimental geometry pass.
+    anchors = [det for det in detections if det.type_id in (OBJ_SAVE, OBJ_WARP)]
+    result: list[Detection] = []
+    for det in detections:
+        if det.type_id not in GEOMETRY_TYPES:
+            result.append(det)
+            continue
+        if any(distance((det.x, det.y), (anchor.x, anchor.y)) < 20 for anchor in anchors):
+            continue
+        result.append(det)
+    return result
 
 
 def _connected_components(

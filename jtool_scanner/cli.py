@@ -43,6 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     inspect_parser.add_argument("input")
     inspect_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     inspect_parser.add_argument("--grid-step", type=int, default=16)
+    inspect_parser.add_argument("--include-geometry", action="store_true")
 
     scan_parser = subparsers.add_parser("scan-image", help="scan a PNG and write a partial .jmap")
     scan_parser.add_argument("input")
@@ -50,6 +51,7 @@ def main(argv: list[str] | None = None) -> int:
     scan_parser.add_argument("--preview", default=None, help="optional SVG preview path")
     scan_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     scan_parser.add_argument("--grid-step", type=int, default=16)
+    scan_parser.add_argument("--include-geometry", action="store_true")
     scan_parser.add_argument("--start-policy", default="auto")
 
     scan_fixtures_parser = subparsers.add_parser("scan-fixtures", help="scan every game image in a fixture manifest")
@@ -57,6 +59,7 @@ def main(argv: list[str] | None = None) -> int:
     scan_fixtures_parser.add_argument("--out-dir", default=None)
     scan_fixtures_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
     scan_fixtures_parser.add_argument("--grid-step", type=int, default=16)
+    scan_fixtures_parser.add_argument("--include-geometry", action="store_true")
     scan_fixtures_parser.add_argument("--start-policy", default="auto")
     scan_fixtures_parser.add_argument("--tolerance", type=float, default=64)
 
@@ -71,7 +74,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "dataset-summary":
         return _dataset_summary(args.manifest, args.start_policy)
     if args.command == "inspect-image":
-        return _inspect_image(args.input, args.room_box, args.grid_step)
+        return _inspect_image(
+            args.input,
+            args.room_box,
+            args.grid_step,
+            args.include_geometry,
+        )
     if args.command == "scan-image":
         return _scan_image(
             args.input,
@@ -79,6 +87,7 @@ def main(argv: list[str] | None = None) -> int:
             args.preview,
             args.room_box,
             args.grid_step,
+            args.include_geometry,
             args.start_policy,
         )
     if args.command == "scan-fixtures":
@@ -87,6 +96,7 @@ def main(argv: list[str] | None = None) -> int:
             args.out_dir,
             args.room_box,
             args.grid_step,
+            args.include_geometry,
             args.start_policy,
             args.tolerance,
         )
@@ -160,8 +170,18 @@ def _dataset_summary(manifest_path: str, start_policy: str | None) -> int:
     return 0
 
 
-def _inspect_image(input_path: str, room_box_text: str | None, grid_step: int) -> int:
-    result = scan_png(input_path, room_box=_parse_box(room_box_text), grid_step=grid_step)
+def _inspect_image(
+    input_path: str,
+    room_box_text: str | None,
+    grid_step: int,
+    include_geometry: bool,
+) -> int:
+    result = scan_png(
+        input_path,
+        room_box=_parse_box(room_box_text),
+        grid_step=grid_step,
+        include_geometry=include_geometry,
+    )
     print(f"image: {result.image_width}x{result.image_height}")
     print(
         f"room: {result.room_box.x},{result.room_box.y},"
@@ -187,9 +207,15 @@ def _scan_image(
     preview_path: str | None,
     room_box_text: str | None,
     grid_step: int,
+    include_geometry: bool,
     start_policy: str,
 ) -> int:
-    result = scan_png(input_path, room_box=_parse_box(room_box_text), grid_step=grid_step)
+    result = scan_png(
+        input_path,
+        room_box=_parse_box(room_box_text),
+        grid_step=grid_step,
+        include_geometry=include_geometry,
+    )
     jmap = result.to_jmap(start_policy=start_policy)
     jmap.to_file(output_path)
     print(f"wrote {output_path}")
@@ -207,6 +233,7 @@ def _scan_fixtures(
     out_dir: str | None,
     room_box_text: str | None,
     grid_step: int,
+    include_geometry: bool,
     start_policy: str,
     tolerance: float,
 ) -> int:
@@ -221,12 +248,23 @@ def _scan_fixtures(
     else:
         out_base = None
 
-    evaluations = evaluate_manifest(manifest_path, room_box=box, tolerance=tolerance)
+    evaluations = evaluate_manifest(
+        manifest_path,
+        room_box=box,
+        grid_step=grid_step,
+        tolerance=tolerance,
+        include_geometry=include_geometry,
+    )
     by_id = {evaluation.pair_id: evaluation for evaluation in evaluations}
     print(f"scanning {len(manifest.get('pairs', []))} fixture pairs")
     print(f"tolerance: {tolerance:g} map px")
     for pair in manifest.get("pairs", []):
-        result = scan_png(base / pair["game_image"], room_box=box, grid_step=grid_step)
+        result = scan_png(
+            base / pair["game_image"],
+            room_box=box,
+            grid_step=grid_step,
+            include_geometry=include_geometry,
+        )
         jmap = result.to_jmap(start_policy=start_policy)
         if out_base:
             jmap_path = out_base / f"{pair['id']}-scan.jmap"
@@ -240,6 +278,17 @@ def _scan_fixtures(
             f"warps {evaluation.matched_warps}/{evaluation.truth_warps} matched "
             f"({evaluation.detected_warps} detected)"
         )
+        if include_geometry:
+            print(
+                f"  geometry: blocks {evaluation.matched_blocks}/"
+                f"{evaluation.truth_blocks} matched ({evaluation.detected_blocks} detected), "
+                f"full spikes {evaluation.matched_full_spikes}/"
+                f"{evaluation.truth_full_spikes} matched "
+                f"({evaluation.detected_full_spikes} detected), "
+                f"mini spikes {evaluation.matched_mini_spikes}/"
+                f"{evaluation.truth_mini_spikes} matched "
+                f"({evaluation.detected_mini_spikes} detected)"
+            )
     if out_base:
         print(f"wrote scans to {out_base}")
     return 0

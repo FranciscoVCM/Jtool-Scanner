@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from jtool_scanner.constants import OBJ_SAVE, OBJ_WARP
+from jtool_scanner.constants import OBJ_BLOCK, OBJ_SAVE, OBJ_SPIKE_UP, OBJ_WARP
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage, load_png
 from jtool_scanner.scanner import scan_image
@@ -28,6 +28,21 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertEqual(len(warps), 1)
         self.assertEqual((warps[0].x, warps[0].y), (320, 192))
 
+    def test_scan_image_can_include_experimental_geometry(self) -> None:
+        image = _synthetic_geometry_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=16,
+            include_geometry=True,
+        )
+        blocks = [det for det in result.detections if det.type_id == OBJ_BLOCK]
+        spikes = [det for det in result.detections if det.type_id == OBJ_SPIKE_UP]
+
+        self.assertTrue(any((det.x, det.y) == (96, 64) for det in blocks))
+        self.assertTrue(any((det.x, det.y) == (160, 64) for det in spikes))
+
 
 def _synthetic_room() -> RGBImage:
     width, height = 800, 608
@@ -35,6 +50,17 @@ def _synthetic_room() -> RGBImage:
     _rect(data, width, 68, 100, 24, 24, (235, 220, 40))
     _rect(data, width, 76, 108, 10, 10, (180, 20, 25))
     _ring(data, width, 336, 208, 14, (65, 20, 210))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_geometry_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    _rect(data, width, 96, 64, 32, 32, (168, 168, 168))
+    _outline_rect(data, width, 96, 64, 32, 32, (12, 12, 12))
+    _line(data, width, 176, 64, 160, 95, (225, 225, 225), thickness=2)
+    _line(data, width, 176, 64, 191, 95, (225, 225, 225), thickness=2)
+    _line(data, width, 160, 95, 191, 95, (225, 225, 225), thickness=2)
     return RGBImage(width, height, bytes(data))
 
 
@@ -51,6 +77,51 @@ def _rect(
         for xx in range(x, x + w):
             offset = (yy * width + xx) * 3
             data[offset : offset + 3] = bytes(color)
+
+
+def _outline_rect(
+    data: bytearray,
+    width: int,
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    color: tuple[int, int, int],
+) -> None:
+    _rect(data, width, x, y, w, 2, color)
+    _rect(data, width, x, y + h - 2, w, 2, color)
+    _rect(data, width, x, y, 2, h, color)
+    _rect(data, width, x + w - 2, y, 2, h, color)
+
+
+def _line(
+    data: bytearray,
+    width: int,
+    x0: int,
+    y0: int,
+    x1: int,
+    y1: int,
+    color: tuple[int, int, int],
+    thickness: int = 1,
+) -> None:
+    dx = abs(x1 - x0)
+    dy = -abs(y1 - y0)
+    sx = 1 if x0 < x1 else -1
+    sy = 1 if y0 < y1 else -1
+    error = dx + dy
+    x = x0
+    y = y0
+    while True:
+        _rect(data, width, x, y, thickness, thickness, color)
+        if x == x1 and y == y1:
+            break
+        doubled = 2 * error
+        if doubled >= dy:
+            error += dy
+            x += sx
+        if doubled <= dx:
+            error += dx
+            y += sy
 
 
 def _ring(
@@ -73,4 +144,3 @@ def _ring(
 
 if __name__ == "__main__":
     unittest.main()
-
