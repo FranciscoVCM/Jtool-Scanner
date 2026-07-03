@@ -24,6 +24,7 @@ python -m jtool_scanner.cli scan-image fixtures\irkara\irkara-58-game.png out\ir
 python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --out-dir out\fixture-scans --overlays
 python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --include-color-objects --grid-step 8 --tolerance 24 --out-dir out\color-object-scans
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --include-geometry --grid-step 8 --tolerance 24 --out-dir out\block-spike-scans
+python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --pair irkara-nr-partysu3 --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --summary
 ```
 
 The screenshot scanner has three layers:
@@ -53,6 +54,11 @@ For one-off `inspect-image` and `scan-image` runs, overlays are colored by
 object group. For `scan-fixtures --overlays`, the manifest `.jmap` is used as
 truth: matched detections are green, unmatched detections are red, and missed
 truth objects are yellow dashed boxes.
+
+For faster scanner tuning, use `scan-fixtures --pair FIXTURE_ID --summary` on one
+or two representative fixtures first, then run the full manifest with
+`--summary --overlays` before committing. Omitting `--out-dir` keeps the run
+metrics-only, which is quicker and avoids rewriting preview files.
 
 Start-save policies:
 

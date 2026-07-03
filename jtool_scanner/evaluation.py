@@ -59,6 +59,44 @@ class PairEvaluation:
     matched_mini_spikes: int
 
 
+EVALUATION_TOTAL_FIELDS = (
+    "detected_saves",
+    "truth_saves",
+    "matched_saves",
+    "detected_warps",
+    "truth_warps",
+    "matched_warps",
+    "detected_apples",
+    "truth_apples",
+    "matched_apples",
+    "detected_water",
+    "truth_water",
+    "matched_water",
+    "detected_walljumps",
+    "truth_walljumps",
+    "matched_walljumps",
+    "detected_blocks",
+    "truth_blocks",
+    "matched_blocks",
+    "detected_full_spikes",
+    "truth_full_spikes",
+    "matched_full_spikes",
+    "detected_mini_spikes",
+    "truth_mini_spikes",
+    "matched_mini_spikes",
+)
+
+
+def aggregate_evaluations(evaluations: list[PairEvaluation]) -> dict[str, int]:
+    totals = {"pairs": len(evaluations)}
+    for field_name in EVALUATION_TOTAL_FIELDS:
+        totals[field_name] = sum(
+            getattr(evaluation, field_name)
+            for evaluation in evaluations
+        )
+    return totals
+
+
 def load_manifest(path: str | Path) -> tuple[Path, dict]:
     manifest_path = Path(path)
     return manifest_path.parent, json.loads(manifest_path.read_text(encoding="utf-8"))

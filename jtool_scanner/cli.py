@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
-from .evaluation import evaluate_scan
+from .evaluation import PairEvaluation, aggregate_evaluations, evaluate_scan
 from .geometry import Box
 from .jmap import JMap
 from .render_overlay import render_detection_overlay
@@ -87,6 +87,18 @@ def main(argv: list[str] | None = None) -> int:
     scan_fixtures_parser.add_argument("--start-policy", default="auto")
     scan_fixtures_parser.add_argument("--tolerance", type=float, default=64)
     scan_fixtures_parser.add_argument(
+        "--pair",
+        action="append",
+        default=None,
+        dest="pair_ids",
+        help="scan only this fixture id; may be passed more than once",
+    )
+    scan_fixtures_parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="print aggregate match totals after per-fixture rows",
+    )
+    scan_fixtures_parser.add_argument(
         "--overlays",
         action="store_true",
         help="write source-image detection overlays when --out-dir is set",
@@ -142,6 +154,8 @@ def main(argv: list[str] | None = None) -> int:
             args.tolerance,
             args.overlays,
             args.overlay_labels,
+            args.pair_ids,
+            args.summary,
         )
     raise AssertionError(args.command)
 
@@ -294,11 +308,18 @@ def _scan_fixtures(
     tolerance: float,
     write_overlays: bool,
     overlay_labels: bool,
+    pair_ids: list[str] | None,
+    print_summary: bool,
 ) -> int:
     manifest_file = Path(manifest_path)
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
     base = manifest_file.parent
     box = _parse_box(room_box_text)
+    all_pairs = manifest.get("pairs", [])
+    pairs, missing_pairs = _select_pairs(all_pairs, pair_ids)
+    if missing_pairs:
+        print(f"unknown fixture pair(s): {', '.join(missing_pairs)}")
+        return 2
 
     if out_dir:
         out_base = Path(out_dir)
@@ -308,9 +329,12 @@ def _scan_fixtures(
         if write_overlays:
             print("overlays skipped: pass --out-dir to choose an output folder")
 
-    print(f"scanning {len(manifest.get('pairs', []))} fixture pairs")
+    print(f"scanning {len(pairs)} fixture pairs")
+    if pair_ids:
+        print(f"selected: {', '.join(pair['id'] for pair in pairs)}")
     print(f"tolerance: {tolerance:g} map px")
-    for pair in manifest.get("pairs", []):
+    evaluations = []
+    for pair in pairs:
         result = scan_png(
             base / pair["game_image"],
             room_box=box,
@@ -320,6 +344,7 @@ def _scan_fixtures(
         )
         truth = JMap.from_file(base / pair["jmap"])
         evaluation = evaluate_scan(pair["id"], result.detections, truth, tolerance)
+        evaluations.append(evaluation)
         jmap = result.to_jmap(start_policy=start_policy)
         if out_base:
             jmap_path = out_base / f"{pair['id']}-scan.jmap"
@@ -364,11 +389,96 @@ def _scan_fixtures(
             )
     if out_base:
         print(f"wrote scans to {out_base}")
+    if print_summary:
+        _print_evaluation_summary(evaluations, include_color_objects, include_geometry)
     return 0
 
 
 def _spike_count(counts: Counter[int]) -> int:
     return sum(counts.get(type_id, 0) for type_id in range(3, 11))
+
+
+def _select_pairs(pairs: list[dict], pair_ids: list[str] | None) -> tuple[list[dict], list[str]]:
+    if not pair_ids:
+        return pairs, []
+    known_ids = {pair["id"] for pair in pairs}
+    requested_ids = set(pair_ids)
+    selected = [pair for pair in pairs if pair["id"] in requested_ids]
+    missing = [pair_id for pair_id in pair_ids if pair_id not in known_ids]
+    return selected, missing
+
+
+def _print_evaluation_summary(
+    evaluations: list[PairEvaluation],
+    include_color_objects: bool,
+    include_geometry: bool,
+) -> None:
+    totals = aggregate_evaluations(evaluations)
+    print("summary:")
+    print(f"  pairs: {totals['pairs']}")
+    _print_metric_summary(
+        "saves",
+        totals["matched_saves"],
+        totals["truth_saves"],
+        totals["detected_saves"],
+    )
+    _print_metric_summary(
+        "warps",
+        totals["matched_warps"],
+        totals["truth_warps"],
+        totals["detected_warps"],
+    )
+    if include_color_objects:
+        _print_metric_summary(
+            "apples",
+            totals["matched_apples"],
+            totals["truth_apples"],
+            totals["detected_apples"],
+        )
+        _print_metric_summary(
+            "water",
+            totals["matched_water"],
+            totals["truth_water"],
+            totals["detected_water"],
+        )
+        _print_metric_summary(
+            "walljumps",
+            totals["matched_walljumps"],
+            totals["truth_walljumps"],
+            totals["detected_walljumps"],
+        )
+    if include_geometry:
+        _print_metric_summary(
+            "blocks",
+            totals["matched_blocks"],
+            totals["truth_blocks"],
+            totals["detected_blocks"],
+        )
+        _print_metric_summary(
+            "full spikes",
+            totals["matched_full_spikes"],
+            totals["truth_full_spikes"],
+            totals["detected_full_spikes"],
+        )
+        _print_metric_summary(
+            "mini spikes",
+            totals["matched_mini_spikes"],
+            totals["truth_mini_spikes"],
+            totals["detected_mini_spikes"],
+        )
+
+
+def _print_metric_summary(label: str, matched: int, truth: int, detected: int) -> None:
+    print(
+        f"  {label}: {matched}/{truth} matched ({detected} detected, "
+        f"recall {_format_rate(matched, truth)}, precision {_format_rate(matched, detected)})"
+    )
+
+
+def _format_rate(numerator: int, denominator: int) -> str:
+    if denominator == 0:
+        return "n/a"
+    return f"{numerator / denominator:.1%}"
 
 
 def _write_detection_overlay(

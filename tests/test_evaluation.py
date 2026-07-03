@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 
 from jtool_scanner.constants import OBJ_SAVE, OBJ_WATER, OBJ_WATER_2
-from jtool_scanner.evaluation import evaluate_scan
+from jtool_scanner.evaluation import aggregate_evaluations, evaluate_scan
 from jtool_scanner.geometry import Box
 from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.scanner import Detection
@@ -27,6 +27,27 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(evaluation.matched_saves, 1)
         self.assertEqual(evaluation.matched_water, 1)
         self.assertEqual(evaluation.detected_water, 1)
+
+    def test_aggregate_evaluations_sums_metric_fields(self) -> None:
+        truth = JMap(
+            objects=[
+                JMapObject(64, 96, OBJ_SAVE),
+                JMapObject(160, 128, OBJ_WATER),
+            ]
+        )
+        detections = [
+            Detection("save", OBJ_SAVE, 64, 96, 1.0, Box(0, 0, 24, 24)),
+            Detection("water_2", OBJ_WATER_2, 160, 128, 0.9, Box(0, 0, 32, 32)),
+        ]
+        first = evaluate_scan("first", detections, truth, tolerance=8)
+        second = evaluate_scan("second", detections, truth, tolerance=8)
+
+        totals = aggregate_evaluations([first, second])
+
+        self.assertEqual(totals["pairs"], 2)
+        self.assertEqual(totals["matched_saves"], 2)
+        self.assertEqual(totals["truth_water"], 2)
+        self.assertEqual(totals["detected_water"], 2)
 
 
 if __name__ == "__main__":
