@@ -62,6 +62,11 @@ COLOR_OBJECT_TYPES = frozenset(
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
 MINI_SPIKE_COEXIST_SCORE = 0.60
+MINI_SPIKE_MIN_SCORE = 0.44
+FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
+FULL_SPIKE_LOW_OUTLINE_SCORE_CEILING = 0.40
+FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
+FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 
 
 @dataclass(frozen=True, slots=True)
@@ -338,7 +343,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                 continue
             spike = _classify_full_spike(patch)
             block = _classify_block(patch)
-            if spike and spike.score > max(0.24, block.score + 0.03):
+            if spike and _accept_full_spike(spike, block):
                 detections.append(
                     _geometry_detection(
                         spike.kind,
@@ -371,7 +376,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
             if patch.edge_density < 0.045:
                 continue
             mini = _classify_mini_spike(patch)
-            if mini and mini.score >= 0.36:
+            if mini and mini.score >= MINI_SPIKE_MIN_SCORE:
                 detections.append(
                     _geometry_detection(
                         mini.kind,
@@ -401,6 +406,8 @@ class _GeometryClass:
     kind: str
     type_id: int
     score: float
+    direction_margin: float = 1.0
+    outline_delta: float = 1.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -556,15 +563,39 @@ def _best_triangle_class(
     patch: _PatchFeatures,
     classes: list[tuple[str, int, str]],
 ) -> _GeometryClass | None:
-    best: _GeometryClass | None = None
+    candidates: list[tuple[float, str, int, float]] = []
     for kind, type_id, direction in classes:
         outline, outside = _triangle_masks(direction)
         outline_hits = sum(1 for pos in outline if patch.edge_mask[pos]) / len(outline)
         outside_hits = sum(1 for pos in outside if patch.edge_mask[pos]) / max(1, len(outside))
         score = outline_hits * 0.78 + patch.edge_density * 0.38 - outside_hits * 0.18
-        if best is None or score > best.score:
-            best = _GeometryClass(kind, type_id, score)
-    return best
+        candidates.append((score, kind, type_id, outline_hits - outside_hits))
+    candidates.sort(reverse=True)
+    best_score, kind, type_id, outline_delta = candidates[0]
+    second_score = candidates[1][0] if len(candidates) > 1 else 0.0
+    return _GeometryClass(
+        kind,
+        type_id,
+        best_score,
+        best_score - second_score,
+        outline_delta,
+    )
+
+
+def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
+    if spike.score <= max(0.24, block.score + 0.03):
+        return False
+    if (
+        spike.outline_delta < FULL_SPIKE_MIN_OUTLINE_DELTA
+        and spike.score < FULL_SPIKE_LOW_OUTLINE_SCORE_CEILING
+    ):
+        return False
+    if (
+        spike.direction_margin < FULL_SPIKE_MIN_DIRECTION_MARGIN
+        and spike.score < FULL_SPIKE_LOW_MARGIN_SCORE_CEILING
+    ):
+        return False
+    return True
 
 
 def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
