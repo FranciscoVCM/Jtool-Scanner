@@ -14,6 +14,7 @@ from jtool_scanner.constants import (
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage, load_png
+from jtool_scanner.render_overlay import render_detection_overlay
 from jtool_scanner.scanner import scan_image
 
 
@@ -67,6 +68,19 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertTrue(any((det.x, det.y) == (320, 96) for det in apples))
         self.assertTrue(any((det.x, det.y) == (192, 128) for det in water))
         self.assertTrue(any((det.x, det.y) == (64, 192) for det in walljumps))
+
+    def test_render_detection_overlay_marks_source_detections(self) -> None:
+        image = _synthetic_room()
+        result = scan_image(image, room_box=Box(0, 0, 800, 608), grid_step=16)
+
+        svg = render_detection_overlay(result, Path("synthetic.png"), "Synthetic", show_labels=True)
+
+        self.assertIn("<image href=", svg)
+        self.assertIn('class="room"', svg)
+        self.assertIn('data-kind="save"', svg)
+        self.assertIn('data-type="save"', svg)
+        self.assertIn('data-type="warp"', svg)
+        self.assertIn("save:save", svg)
 
 
 def _synthetic_room() -> RGBImage:

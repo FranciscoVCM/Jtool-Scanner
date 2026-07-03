@@ -11,9 +11,10 @@ from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
 from .evaluation import evaluate_scan
 from .geometry import Box
 from .jmap import JMap
+from .render_overlay import render_detection_overlay
 from .render_svg import render_svg
 from .save_picker import choose_save, move_start_to_save
-from .scanner import scan_png
+from .scanner import ScanResult, scan_png
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -45,6 +46,16 @@ def main(argv: list[str] | None = None) -> int:
     inspect_parser.add_argument("--grid-step", type=int, default=16)
     inspect_parser.add_argument("--include-color-objects", action="store_true")
     inspect_parser.add_argument("--include-geometry", action="store_true")
+    inspect_parser.add_argument(
+        "--overlay",
+        default=None,
+        help="optional source-image detection overlay SVG path",
+    )
+    inspect_parser.add_argument(
+        "--overlay-labels",
+        action="store_true",
+        help="show labels in detection overlays",
+    )
 
     scan_parser = subparsers.add_parser("scan-image", help="scan a PNG and write a partial .jmap")
     scan_parser.add_argument("input")
@@ -55,6 +66,16 @@ def main(argv: list[str] | None = None) -> int:
     scan_parser.add_argument("--include-color-objects", action="store_true")
     scan_parser.add_argument("--include-geometry", action="store_true")
     scan_parser.add_argument("--start-policy", default="auto")
+    scan_parser.add_argument(
+        "--overlay",
+        default=None,
+        help="optional source-image detection overlay SVG path",
+    )
+    scan_parser.add_argument(
+        "--overlay-labels",
+        action="store_true",
+        help="show labels in detection overlays",
+    )
 
     scan_fixtures_parser = subparsers.add_parser("scan-fixtures", help="scan every game image in a fixture manifest")
     scan_fixtures_parser.add_argument("manifest")
@@ -65,6 +86,16 @@ def main(argv: list[str] | None = None) -> int:
     scan_fixtures_parser.add_argument("--include-geometry", action="store_true")
     scan_fixtures_parser.add_argument("--start-policy", default="auto")
     scan_fixtures_parser.add_argument("--tolerance", type=float, default=64)
+    scan_fixtures_parser.add_argument(
+        "--overlays",
+        action="store_true",
+        help="write source-image detection overlays when --out-dir is set",
+    )
+    scan_fixtures_parser.add_argument(
+        "--overlay-labels",
+        action="store_true",
+        help="show labels in detection overlays",
+    )
 
     args = parser.parse_args(argv)
 
@@ -83,6 +114,8 @@ def main(argv: list[str] | None = None) -> int:
             args.grid_step,
             args.include_color_objects,
             args.include_geometry,
+            args.overlay,
+            args.overlay_labels,
         )
     if args.command == "scan-image":
         return _scan_image(
@@ -94,6 +127,8 @@ def main(argv: list[str] | None = None) -> int:
             args.include_color_objects,
             args.include_geometry,
             args.start_policy,
+            args.overlay,
+            args.overlay_labels,
         )
     if args.command == "scan-fixtures":
         return _scan_fixtures(
@@ -105,6 +140,8 @@ def main(argv: list[str] | None = None) -> int:
             args.include_geometry,
             args.start_policy,
             args.tolerance,
+            args.overlays,
+            args.overlay_labels,
         )
     raise AssertionError(args.command)
 
@@ -182,6 +219,8 @@ def _inspect_image(
     grid_step: int,
     include_color_objects: bool,
     include_geometry: bool,
+    overlay_path: str | None,
+    overlay_labels: bool,
 ) -> int:
     result = scan_png(
         input_path,
@@ -195,6 +234,8 @@ def _inspect_image(
         f"room: {result.room_box.x},{result.room_box.y},"
         f"{result.room_box.width},{result.room_box.height}"
     )
+    if overlay_path:
+        _write_detection_overlay(result, input_path, overlay_path, overlay_labels)
     if not result.detections:
         print("detections: none")
         return 0
@@ -218,6 +259,8 @@ def _scan_image(
     include_color_objects: bool,
     include_geometry: bool,
     start_policy: str,
+    overlay_path: str | None,
+    overlay_labels: bool,
 ) -> int:
     result = scan_png(
         input_path,
@@ -235,6 +278,8 @@ def _scan_image(
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(render_svg(jmap, Path(input_path).name), encoding="utf-8")
         print(f"wrote {out}")
+    if overlay_path:
+        _write_detection_overlay(result, input_path, overlay_path, overlay_labels)
     return 0
 
 
@@ -247,6 +292,8 @@ def _scan_fixtures(
     include_geometry: bool,
     start_policy: str,
     tolerance: float,
+    write_overlays: bool,
+    overlay_labels: bool,
 ) -> int:
     manifest_file = Path(manifest_path)
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
@@ -258,6 +305,8 @@ def _scan_fixtures(
         out_base.mkdir(parents=True, exist_ok=True)
     else:
         out_base = None
+        if write_overlays:
+            print("overlays skipped: pass --out-dir to choose an output folder")
 
     print(f"scanning {len(manifest.get('pairs', []))} fixture pairs")
     print(f"tolerance: {tolerance:g} map px")
@@ -277,6 +326,13 @@ def _scan_fixtures(
             svg_path = out_base / f"{pair['id']}-scan.svg"
             jmap.to_file(jmap_path)
             svg_path.write_text(render_svg(jmap, pair["id"]), encoding="utf-8")
+            if write_overlays:
+                _write_detection_overlay(
+                    result,
+                    base / pair["game_image"],
+                    out_base / f"{pair['id']}-overlay.svg",
+                    overlay_labels,
+                )
         print(
             f"{pair['id']}: saves {evaluation.matched_saves}/"
             f"{evaluation.truth_saves} matched ({evaluation.detected_saves} detected), "
@@ -311,6 +367,26 @@ def _scan_fixtures(
 
 def _spike_count(counts: Counter[int]) -> int:
     return sum(counts.get(type_id, 0) for type_id in range(3, 11))
+
+
+def _write_detection_overlay(
+    result: ScanResult,
+    image_path: str | Path,
+    output_path: str | Path,
+    overlay_labels: bool,
+) -> None:
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(
+        render_detection_overlay(
+            result,
+            image_path,
+            Path(image_path).name,
+            overlay_labels,
+        ),
+        encoding="utf-8",
+    )
+    print(f"wrote {out}")
 
 
 def _parse_box(value: str | None) -> Box | None:
