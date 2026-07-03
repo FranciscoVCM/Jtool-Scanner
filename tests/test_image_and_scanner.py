@@ -6,6 +6,7 @@ import unittest
 from jtool_scanner.constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_PLAYER_START,
     OBJ_SAVE,
     OBJ_SPIKE_UP,
     OBJ_WALLJUMP_LEFT,
@@ -14,6 +15,7 @@ from jtool_scanner.constants import (
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage, load_png
+from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.render_overlay import render_detection_overlay
 from jtool_scanner.scanner import scan_image
 
@@ -81,6 +83,32 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertIn('data-type="save"', svg)
         self.assertIn('data-type="warp"', svg)
         self.assertIn("save:save", svg)
+
+    def test_render_detection_overlay_can_mark_truth_matches(self) -> None:
+        image = _synthetic_room()
+        result = scan_image(image, room_box=Box(0, 0, 800, 608), grid_step=16)
+        truth = JMap(
+            objects=[
+                JMapObject(64, 96, OBJ_SAVE),
+                JMapObject(160, 160, OBJ_BLOCK),
+                JMapObject(320, 320, OBJ_PLAYER_START),
+            ]
+        )
+
+        svg = render_detection_overlay(
+            result,
+            Path("synthetic.png"),
+            "Synthetic",
+            show_labels=True,
+            truth=truth,
+            tolerance=8,
+        )
+
+        self.assertIn('data-status="matched"', svg)
+        self.assertIn('data-status="unmatched"', svg)
+        self.assertIn('data-status="missed"', svg)
+        self.assertIn("missed:block", svg)
+        self.assertNotIn("player_start", svg)
 
 
 def _synthetic_room() -> RGBImage:

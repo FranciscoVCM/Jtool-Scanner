@@ -332,6 +332,8 @@ def _scan_fixtures(
                     base / pair["game_image"],
                     out_base / f"{pair['id']}-overlay.svg",
                     overlay_labels,
+                    truth,
+                    tolerance,
                 )
         print(
             f"{pair['id']}: saves {evaluation.matched_saves}/"
@@ -374,6 +376,8 @@ def _write_detection_overlay(
     image_path: str | Path,
     output_path: str | Path,
     overlay_labels: bool,
+    truth: JMap | None = None,
+    tolerance: float = 24,
 ) -> None:
     out = Path(output_path)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -383,6 +387,8 @@ def _write_detection_overlay(
             image_path,
             Path(image_path).name,
             overlay_labels,
+            truth,
+            tolerance,
         ),
         encoding="utf-8",
     )

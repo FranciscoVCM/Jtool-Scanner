@@ -49,6 +49,11 @@ cropping, object recognition, snapping, or evaluation tolerance. Use
 `--overlay-labels` on smaller examples; dense precision screens are usually
 clearer without labels.
 
+For one-off `inspect-image` and `scan-image` runs, overlays are colored by
+object group. For `scan-fixtures --overlays`, the manifest `.jmap` is used as
+truth: matched detections are green, unmatched detections are red, and missed
+truth objects are yellow dashed boxes.
+
 Start-save policies:
 
 - `auto`: bottom-left region, then left side, then bottom side, then nearest bottom-left
