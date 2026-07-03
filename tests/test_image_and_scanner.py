@@ -71,6 +71,19 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertTrue(any((det.x, det.y) == (192, 128) for det in water))
         self.assertTrue(any((det.x, det.y) == (64, 192) for det in walljumps))
 
+    def test_scan_image_can_recover_sparse_walljump_marks(self) -> None:
+        image = _synthetic_sparse_walljump_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        walljumps = [det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT]
+
+        self.assertTrue(any((det.x, det.y) == (96, 96) for det in walljumps))
+
     def test_render_detection_overlay_marks_source_detections(self) -> None:
         image = _synthetic_room()
         result = scan_image(image, room_box=Box(0, 0, 800, 608), grid_step=16)
@@ -136,8 +149,15 @@ def _synthetic_color_object_room() -> RGBImage:
     data = bytearray([24, 24, 28] * width * height)
     _rect(data, width, 192, 128, 32, 32, (74, 170, 235))
     _rect(data, width, 224, 128, 32, 32, (74, 170, 235))
-    _outline_rect(data, width, 80, 192, 8, 24, (34, 188, 45))
+    _thin_outline_rect(data, width, 80, 192, 8, 24, (34, 188, 65))
     _disc(data, width, 336, 112, 11, (230, 24, 24))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_sparse_walljump_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([232, 232, 232] * width * height)
+    _rect(data, width, 123, 100, 4, 24, (35, 135, 45))
     return RGBImage(width, height, bytes(data))
 
 
@@ -169,6 +189,21 @@ def _outline_rect(
     _rect(data, width, x, y + h - 2, w, 2, color)
     _rect(data, width, x, y, 2, h, color)
     _rect(data, width, x + w - 2, y, 2, h, color)
+
+
+def _thin_outline_rect(
+    data: bytearray,
+    width: int,
+    x: int,
+    y: int,
+    w: int,
+    h: int,
+    color: tuple[int, int, int],
+) -> None:
+    _rect(data, width, x, y, w, 1, color)
+    _rect(data, width, x, y + h - 1, w, 1, color)
+    _rect(data, width, x, y, 1, h, color)
+    _rect(data, width, x + w - 1, y, 1, h, color)
 
 
 def _line(

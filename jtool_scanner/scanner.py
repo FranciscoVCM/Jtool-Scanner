@@ -67,6 +67,19 @@ FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
 FULL_SPIKE_LOW_OUTLINE_SCORE_CEILING = 0.40
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
+WALLJUMP_COMPONENT_MAX_WIDTH = 13
+WALLJUMP_COMPONENT_MIN_HEIGHT = 18
+WALLJUMP_COMPONENT_MIN_DENSITY = 0.12
+WALLJUMP_COMPONENT_MAX_DENSITY = 0.50
+WALLJUMP_COMPONENT_MIN_AVG_BLUE = 60
+WALLJUMP_SPARSE_COMPONENT_LIMIT = 100
+WALLJUMP_PATCH_MIN_COUNT = 6
+WALLJUMP_PATCH_MAX_COUNT = 24
+WALLJUMP_PATCH_MIN_DENSITY = 0.035
+WALLJUMP_PATCH_MAX_DENSITY = 0.095
+WALLJUMP_PATCH_MIN_SIDE_BIAS = 0.28
+WALLJUMP_SPARSE_MIN_LIGHT_RATIO = 0.45
+WALLJUMP_SPARSE_BROAD_LIGHT_RATIO = 0.85
 
 
 @dataclass(frozen=True, slots=True)
@@ -192,6 +205,7 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
 
 
 def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
+    allow_tinted_warp = _looks_cyan_tinted(image, room)
     components = _connected_components(
         image,
         room,
@@ -211,7 +225,8 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         ratio = box.width / max(1, box.height)
         if ratio < 0.65 or ratio > 1.45:
             continue
-        if not _has_dark_portal_core(image, box):
+        has_dark_core = _has_dark_portal_core(image, box)
+        if not has_dark_core and not (allow_tinted_warp and density >= 0.45):
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         score = min(1.0, density * 2.0 + colored / 500)
@@ -272,10 +287,16 @@ def _detect_walljumps(
     )
     detections: list[Detection] = []
     for box, pixels in components:
-        if not (5 <= box.width <= 10 and 18 <= box.height <= 45):
+        if not (
+            3 <= box.width <= WALLJUMP_COMPONENT_MAX_WIDTH
+            and WALLJUMP_COMPONENT_MIN_HEIGHT <= box.height <= 45
+        ):
             continue
         density = len(pixels) / box.area
-        if not (0.20 <= density <= 0.62):
+        if not (WALLJUMP_COMPONENT_MIN_DENSITY <= density <= WALLJUMP_COMPONENT_MAX_DENSITY):
+            continue
+        _, _, avg_b = _average_pixel_color(image, pixels)
+        if avg_b < WALLJUMP_COMPONENT_MIN_AVG_BLUE:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         if _near_anchor(map_x, map_y, anchors, max_distance=32):
@@ -284,7 +305,54 @@ def _detect_walljumps(
         kind = "walljump_left" if type_id == OBJ_WALLJUMP_LEFT else "walljump_right"
         score = min(1.0, density * 1.6)
         detections.append(Detection(kind, type_id, map_x, map_y, score, box))
-    return _dedupe_detections(detections, min_distance=24)
+    light_ratio = _light_sample_ratio(image, room)
+    if (
+        len(components) < WALLJUMP_SPARSE_COMPONENT_LIMIT
+        and light_ratio >= WALLJUMP_SPARSE_MIN_LIGHT_RATIO
+    ):
+        predicate = (
+            _is_sparse_walljump_green
+            if light_ratio >= WALLJUMP_SPARSE_BROAD_LIGHT_RATIO
+            else _is_walljump_green
+        )
+        detections.extend(
+            _detect_sparse_walljump_patches(image, room, grid_step, anchors, predicate)
+        )
+    return _dedupe_walljumps(detections, min_distance=32)
+
+
+def _detect_sparse_walljump_patches(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+    predicate,
+) -> list[Detection]:
+    detections: list[Detection] = []
+    step = max(8, grid_step)
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, predicate)
+            side_bias = abs(stats.center_x_ratio - 0.5)
+            if stats.count < WALLJUMP_PATCH_MIN_COUNT:
+                continue
+            if stats.count > WALLJUMP_PATCH_MAX_COUNT:
+                continue
+            if stats.density < WALLJUMP_PATCH_MIN_DENSITY:
+                continue
+            if stats.density > WALLJUMP_PATCH_MAX_DENSITY:
+                continue
+            if side_bias < WALLJUMP_PATCH_MIN_SIDE_BIAS:
+                continue
+            if _near_anchor(x, y, anchors, max_distance=40):
+                continue
+            type_id = OBJ_WALLJUMP_LEFT if stats.center_x_ratio > 0.5 else OBJ_WALLJUMP_RIGHT
+            kind = "walljump_left" if type_id == OBJ_WALLJUMP_LEFT else "walljump_right"
+            score = min(1.0, stats.density * 3 + side_bias)
+            detections.append(
+                _grid_detection(kind, type_id, x, y, score, image, room, GRID_SIZE)
+            )
+    return detections
 
 
 def _detect_water(
@@ -331,6 +399,18 @@ def _filter_adjacent_water(detections: list[Detection]) -> list[Detection]:
             for other in detections
         )
     ]
+
+
+def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[Detection]:
+    result: list[Detection] = []
+    for det in sorted(detections, key=lambda item: item.score, reverse=True):
+        if any(
+            distance((det.x, det.y), (existing.x, existing.y)) < min_distance
+            for existing in result
+        ):
+            continue
+        result.append(det)
+    return sorted(result, key=lambda item: (item.y, item.x, -item.score))
 
 
 def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
@@ -792,6 +872,20 @@ def _dedupe_detections(detections: list[Detection], min_distance: float = 24) ->
     return sorted(result, key=lambda item: (item.y, item.x, -item.score))
 
 
+def _average_pixel_color(
+    image: RGBImage,
+    pixels: list[tuple[int, int]],
+) -> tuple[float, float, float]:
+    total_r = total_g = total_b = 0
+    for x, y in pixels:
+        r, g, b = image.pixel(x, y)
+        total_r += r
+        total_g += g
+        total_b += b
+    count = max(1, len(pixels))
+    return total_r / count, total_g / count, total_b / count
+
+
 def _is_save_yellow(r: int, g: int, b: int) -> bool:
     return r > 170 and g > 130 and b < 90 and r > b * 2
 
@@ -809,6 +903,10 @@ def _is_apple_red(r: int, g: int, b: int) -> bool:
 
 
 def _is_walljump_green(r: int, g: int, b: int) -> bool:
+    return g > 115 and r < 90 and b < 105 and g > r + 55 and g > b + 35
+
+
+def _is_sparse_walljump_green(r: int, g: int, b: int) -> bool:
     return g > 105 and r < 115 and b < 135 and g > r * 1.35 and g > b * 1.20
 
 
@@ -833,6 +931,22 @@ def _looks_cyan_tinted(image: RGBImage, room: Box) -> bool:
     avg_g = total_g / count
     avg_b = total_b / count
     return avg_b > avg_g + 15 and avg_g > avg_r + 55
+
+
+def _light_sample_ratio(image: RGBImage, room: Box) -> float:
+    light = count = 0
+    step = 8
+    for y in range(max(0, room.y), min(image.height, room.bottom), step):
+        row = image.row(y)
+        for x in range(max(0, room.x), min(image.width, room.right), step):
+            offset = x * 3
+            r = row[offset]
+            g = row[offset + 1]
+            b = row[offset + 2]
+            count += 1
+            if r > 145 and g > 145 and b > 145:
+                light += 1
+    return light / count if count else 0.0
 
 
 def _is_warp_blue(r: int, g: int, b: int) -> bool:
