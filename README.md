@@ -16,7 +16,23 @@ python -m jtool_scanner.cli summary "C:\Users\corvo\Downloads\jtool 1.3.1\irkara
 python -m jtool_scanner.cli normalize-start "C:\Users\corvo\Downloads\jtool 1.3.1\irkara needle 49.jmap" out\irkara-49-normalized.jmap --start-policy auto
 python -m jtool_scanner.cli render out\irkara-49-normalized.jmap out\irkara-49-normalized.svg
 python -m jtool_scanner.cli dataset-summary fixtures\irkara\manifest.json
+python -m jtool_scanner.cli inspect-image fixtures\irkara\irkara-58-game.png
+python -m jtool_scanner.cli scan-image fixtures\irkara\irkara-58-game.png out\irkara-58-scan.jmap --preview out\irkara-58-scan.svg
+python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --out-dir out\fixture-scans
 ```
+
+The screenshot scanner is currently a first-pass detector for high-confidence
+saves and warps. Blocks, spikes, water, and tileset-aware recognition are the
+next major layer.
+
+Current fixture scan status:
+
+- saves: all Irkara fixture saves are detected and matched
+- warps: all fixture warps are detected except the heavily cyan-tinted warp in screen 54
+- not yet handled: blocks, spikes, mini spikes, water, walljumps, platforms, apples, and unknown gimmicks
+
+The scanner writes partial `.jmap` files from image detections. Those are meant
+as diagnostics for now, not final playable conversions.
 
 Start-save policies:
 

@@ -8,9 +8,12 @@ import json
 from pathlib import Path
 
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
+from .evaluation import evaluate_manifest
+from .geometry import Box
 from .jmap import JMap
 from .render_svg import render_svg
 from .save_picker import choose_save, move_start_to_save
+from .scanner import scan_png
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -36,6 +39,27 @@ def main(argv: list[str] | None = None) -> int:
     dataset_parser.add_argument("manifest")
     dataset_parser.add_argument("--start-policy", default=None)
 
+    inspect_parser = subparsers.add_parser("inspect-image", help="detect room and high-confidence objects in a PNG")
+    inspect_parser.add_argument("input")
+    inspect_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
+    inspect_parser.add_argument("--grid-step", type=int, default=16)
+
+    scan_parser = subparsers.add_parser("scan-image", help="scan a PNG and write a partial .jmap")
+    scan_parser.add_argument("input")
+    scan_parser.add_argument("output")
+    scan_parser.add_argument("--preview", default=None, help="optional SVG preview path")
+    scan_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
+    scan_parser.add_argument("--grid-step", type=int, default=16)
+    scan_parser.add_argument("--start-policy", default="auto")
+
+    scan_fixtures_parser = subparsers.add_parser("scan-fixtures", help="scan every game image in a fixture manifest")
+    scan_fixtures_parser.add_argument("manifest")
+    scan_fixtures_parser.add_argument("--out-dir", default=None)
+    scan_fixtures_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
+    scan_fixtures_parser.add_argument("--grid-step", type=int, default=16)
+    scan_fixtures_parser.add_argument("--start-policy", default="auto")
+    scan_fixtures_parser.add_argument("--tolerance", type=float, default=64)
+
     args = parser.parse_args(argv)
 
     if args.command == "summary":
@@ -46,6 +70,26 @@ def main(argv: list[str] | None = None) -> int:
         return _render(args.input, args.output, args.title, args.start_policy)
     if args.command == "dataset-summary":
         return _dataset_summary(args.manifest, args.start_policy)
+    if args.command == "inspect-image":
+        return _inspect_image(args.input, args.room_box, args.grid_step)
+    if args.command == "scan-image":
+        return _scan_image(
+            args.input,
+            args.output,
+            args.preview,
+            args.room_box,
+            args.grid_step,
+            args.start_policy,
+        )
+    if args.command == "scan-fixtures":
+        return _scan_fixtures(
+            args.manifest,
+            args.out_dir,
+            args.room_box,
+            args.grid_step,
+            args.start_policy,
+            args.tolerance,
+        )
     raise AssertionError(args.command)
 
 
@@ -116,8 +160,97 @@ def _dataset_summary(manifest_path: str, start_policy: str | None) -> int:
     return 0
 
 
+def _inspect_image(input_path: str, room_box_text: str | None, grid_step: int) -> int:
+    result = scan_png(input_path, room_box=_parse_box(room_box_text), grid_step=grid_step)
+    print(f"image: {result.image_width}x{result.image_height}")
+    print(
+        f"room: {result.room_box.x},{result.room_box.y},"
+        f"{result.room_box.width},{result.room_box.height}"
+    )
+    if not result.detections:
+        print("detections: none")
+        return 0
+    print("detections:")
+    for detection in result.detections:
+        print(
+            f"  {detection.kind:>4} map=({detection.x}, {detection.y}) "
+            f"score={detection.score:.2f} image_box="
+            f"{detection.image_box.x},{detection.image_box.y},"
+            f"{detection.image_box.width},{detection.image_box.height}"
+        )
+    return 0
+
+
+def _scan_image(
+    input_path: str,
+    output_path: str,
+    preview_path: str | None,
+    room_box_text: str | None,
+    grid_step: int,
+    start_policy: str,
+) -> int:
+    result = scan_png(input_path, room_box=_parse_box(room_box_text), grid_step=grid_step)
+    jmap = result.to_jmap(start_policy=start_policy)
+    jmap.to_file(output_path)
+    print(f"wrote {output_path}")
+    print(f"detections: {len(result.detections)}")
+    if preview_path:
+        out = Path(preview_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(render_svg(jmap, Path(input_path).name), encoding="utf-8")
+        print(f"wrote {out}")
+    return 0
+
+
+def _scan_fixtures(
+    manifest_path: str,
+    out_dir: str | None,
+    room_box_text: str | None,
+    grid_step: int,
+    start_policy: str,
+    tolerance: float,
+) -> int:
+    manifest_file = Path(manifest_path)
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    base = manifest_file.parent
+    box = _parse_box(room_box_text)
+
+    if out_dir:
+        out_base = Path(out_dir)
+        out_base.mkdir(parents=True, exist_ok=True)
+    else:
+        out_base = None
+
+    evaluations = evaluate_manifest(manifest_path, room_box=box, tolerance=tolerance)
+    by_id = {evaluation.pair_id: evaluation for evaluation in evaluations}
+    print(f"scanning {len(manifest.get('pairs', []))} fixture pairs")
+    print(f"tolerance: {tolerance:g} map px")
+    for pair in manifest.get("pairs", []):
+        result = scan_png(base / pair["game_image"], room_box=box, grid_step=grid_step)
+        jmap = result.to_jmap(start_policy=start_policy)
+        if out_base:
+            jmap_path = out_base / f"{pair['id']}-scan.jmap"
+            svg_path = out_base / f"{pair['id']}-scan.svg"
+            jmap.to_file(jmap_path)
+            svg_path.write_text(render_svg(jmap, pair["id"]), encoding="utf-8")
+        evaluation = by_id[pair["id"]]
+        print(
+            f"{pair['id']}: saves {evaluation.matched_saves}/"
+            f"{evaluation.truth_saves} matched ({evaluation.detected_saves} detected), "
+            f"warps {evaluation.matched_warps}/{evaluation.truth_warps} matched "
+            f"({evaluation.detected_warps} detected)"
+        )
+    if out_base:
+        print(f"wrote scans to {out_base}")
+    return 0
+
+
 def _spike_count(counts: Counter[int]) -> int:
     return sum(counts.get(type_id, 0) for type_id in range(3, 11))
+
+
+def _parse_box(value: str | None) -> Box | None:
+    return Box.from_text(value) if value else None
 
 
 def _format_objects(objects: list) -> str:
