@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
-from .evaluation import evaluate_manifest
+from .evaluation import evaluate_scan
 from .geometry import Box
 from .jmap import JMap
 from .render_svg import render_svg
@@ -259,15 +259,6 @@ def _scan_fixtures(
     else:
         out_base = None
 
-    evaluations = evaluate_manifest(
-        manifest_path,
-        room_box=box,
-        grid_step=grid_step,
-        tolerance=tolerance,
-        include_color_objects=include_color_objects,
-        include_geometry=include_geometry,
-    )
-    by_id = {evaluation.pair_id: evaluation for evaluation in evaluations}
     print(f"scanning {len(manifest.get('pairs', []))} fixture pairs")
     print(f"tolerance: {tolerance:g} map px")
     for pair in manifest.get("pairs", []):
@@ -278,13 +269,14 @@ def _scan_fixtures(
             include_color_objects=include_color_objects,
             include_geometry=include_geometry,
         )
+        truth = JMap.from_file(base / pair["jmap"])
+        evaluation = evaluate_scan(pair["id"], result.detections, truth, tolerance)
         jmap = result.to_jmap(start_policy=start_policy)
         if out_base:
             jmap_path = out_base / f"{pair['id']}-scan.jmap"
             svg_path = out_base / f"{pair['id']}-scan.svg"
             jmap.to_file(jmap_path)
             svg_path.write_text(render_svg(jmap, pair["id"]), encoding="utf-8")
-        evaluation = by_id[pair["id"]]
         print(
             f"{pair['id']}: saves {evaluation.matched_saves}/"
             f"{evaluation.truth_saves} matched ({evaluation.detected_saves} detected), "

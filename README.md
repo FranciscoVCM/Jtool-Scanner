@@ -8,6 +8,7 @@ The first usable layer is the `.jmap` core:
 - export valid `.jmap` files
 - move the kid start object to a chosen save
 - render a quick SVG preview for visual checks
+- scan fixture manifests once per image while producing both metrics and previews
 
 Run from this folder:
 
@@ -34,7 +35,7 @@ Current fixture scan status:
 - saves: all Irkara fixture saves are detected and matched
 - warps: all fixture warps are detected except the heavily cyan-tinted warp in screen 54
 - color objects: apples are reliable on current examples; water and walljumps are conservative, and blue tile art can still create water false positives
-- geometry: the opt-in detector produces useful block and full-spike candidates across the new stress fixtures, but it is still noisy and mini spikes need more work
+- geometry: the opt-in detector produces useful block and full-spike candidates; mini-spike recall is improving on mini-heavy fixtures but still noisy
 - not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant

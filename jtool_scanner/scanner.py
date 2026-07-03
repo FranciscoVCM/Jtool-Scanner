@@ -61,6 +61,7 @@ COLOR_OBJECT_TYPES = frozenset(
     }
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
+MINI_SPIKE_COEXIST_SCORE = 0.60
 
 
 @dataclass(frozen=True, slots=True)
@@ -647,7 +648,11 @@ def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
     if det.type_id in MINI_SPIKE_TYPES and existing.type_id in MINI_SPIKE_TYPES:
         return distance((det.x, det.y), (existing.x, existing.y)) < 14
     if det.type_id in MINI_SPIKE_TYPES or existing.type_id in MINI_SPIKE_TYPES:
-        return distance((det.x, det.y), (existing.x, existing.y)) < 20
+        mini = det if det.type_id in MINI_SPIKE_TYPES else existing
+        return (
+            mini.score < MINI_SPIKE_COEXIST_SCORE
+            and distance((det.x, det.y), (existing.x, existing.y)) < 20
+        )
     return (
         det.type_id == existing.type_id
         and distance((det.x, det.y), (existing.x, existing.y)) < 28

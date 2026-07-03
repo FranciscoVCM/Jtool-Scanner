@@ -84,75 +84,84 @@ def evaluate_manifest(
             include_geometry=include_geometry,
         )
         evaluations.append(
-            PairEvaluation(
-                pair_id=pair["id"],
-                detected_saves=_count(result.detections, OBJ_SAVE),
-                truth_saves=len(truth.objects_of_type(OBJ_SAVE)),
-                matched_saves=_match_count(
-                    result.detections,
-                    [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_SAVE)],
-                    OBJ_SAVE,
-                    tolerance,
-                ),
-                detected_warps=_count(result.detections, OBJ_WARP),
-                truth_warps=len(truth.objects_of_type(OBJ_WARP)),
-                matched_warps=_match_count(
-                    result.detections,
-                    [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_WARP)],
-                    OBJ_WARP,
-                    tolerance,
-                ),
-                detected_apples=_count(result.detections, OBJ_APPLE),
-                truth_apples=len(truth.objects_of_type(OBJ_APPLE)),
-                matched_apples=_match_count(
-                    result.detections,
-                    [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_APPLE)],
-                    OBJ_APPLE,
-                    tolerance,
-                ),
-                detected_water=_count_any(result.detections, WATER_TYPES),
-                truth_water=_count_truth_any(truth, WATER_TYPES),
-                matched_water=_match_group(
-                    result.detections,
-                    truth,
-                    WATER_TYPES,
-                    tolerance,
-                ),
-                detected_walljumps=_count_any(result.detections, WALLJUMP_TYPES),
-                truth_walljumps=_count_truth_any(truth, WALLJUMP_TYPES),
-                matched_walljumps=_match_group(
-                    result.detections,
-                    truth,
-                    WALLJUMP_TYPES,
-                    tolerance,
-                ),
-                detected_blocks=_count(result.detections, OBJ_BLOCK),
-                truth_blocks=len(truth.objects_of_type(OBJ_BLOCK)),
-                matched_blocks=_match_count(
-                    result.detections,
-                    [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_BLOCK)],
-                    OBJ_BLOCK,
-                    tolerance,
-                ),
-                detected_full_spikes=_count_any(result.detections, FULL_SPIKE_TYPES),
-                truth_full_spikes=_count_truth_any(truth, FULL_SPIKE_TYPES),
-                matched_full_spikes=_match_type_set(
-                    result.detections,
-                    truth,
-                    FULL_SPIKE_TYPES,
-                    tolerance,
-                ),
-                detected_mini_spikes=_count_any(result.detections, MINI_SPIKE_TYPES),
-                truth_mini_spikes=_count_truth_any(truth, MINI_SPIKE_TYPES),
-                matched_mini_spikes=_match_type_set(
-                    result.detections,
-                    truth,
-                    MINI_SPIKE_TYPES,
-                    tolerance,
-                ),
-            )
+            evaluate_scan(pair["id"], result.detections, truth, tolerance)
         )
     return evaluations
+
+
+def evaluate_scan(
+    pair_id: str,
+    detections: list[Detection],
+    truth: JMap,
+    tolerance: float,
+) -> PairEvaluation:
+    return PairEvaluation(
+        pair_id=pair_id,
+        detected_saves=_count(detections, OBJ_SAVE),
+        truth_saves=len(truth.objects_of_type(OBJ_SAVE)),
+        matched_saves=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_SAVE)],
+            OBJ_SAVE,
+            tolerance,
+        ),
+        detected_warps=_count(detections, OBJ_WARP),
+        truth_warps=len(truth.objects_of_type(OBJ_WARP)),
+        matched_warps=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_WARP)],
+            OBJ_WARP,
+            tolerance,
+        ),
+        detected_apples=_count(detections, OBJ_APPLE),
+        truth_apples=len(truth.objects_of_type(OBJ_APPLE)),
+        matched_apples=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_APPLE)],
+            OBJ_APPLE,
+            tolerance,
+        ),
+        detected_water=_count_any(detections, WATER_TYPES),
+        truth_water=_count_truth_any(truth, WATER_TYPES),
+        matched_water=_match_group(
+            detections,
+            truth,
+            WATER_TYPES,
+            tolerance,
+        ),
+        detected_walljumps=_count_any(detections, WALLJUMP_TYPES),
+        truth_walljumps=_count_truth_any(truth, WALLJUMP_TYPES),
+        matched_walljumps=_match_group(
+            detections,
+            truth,
+            WALLJUMP_TYPES,
+            tolerance,
+        ),
+        detected_blocks=_count(detections, OBJ_BLOCK),
+        truth_blocks=len(truth.objects_of_type(OBJ_BLOCK)),
+        matched_blocks=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_BLOCK)],
+            OBJ_BLOCK,
+            tolerance,
+        ),
+        detected_full_spikes=_count_any(detections, FULL_SPIKE_TYPES),
+        truth_full_spikes=_count_truth_any(truth, FULL_SPIKE_TYPES),
+        matched_full_spikes=_match_type_set(
+            detections,
+            truth,
+            FULL_SPIKE_TYPES,
+            tolerance,
+        ),
+        detected_mini_spikes=_count_any(detections, MINI_SPIKE_TYPES),
+        truth_mini_spikes=_count_truth_any(truth, MINI_SPIKE_TYPES),
+        matched_mini_spikes=_match_type_set(
+            detections,
+            truth,
+            MINI_SPIKE_TYPES,
+            tolerance,
+        ),
+    )
 
 
 FULL_SPIKE_TYPES = frozenset(
