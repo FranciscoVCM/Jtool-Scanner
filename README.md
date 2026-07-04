@@ -40,7 +40,7 @@ Current fixture scan status:
 - saves: all Irkara fixture saves are detected and matched
 - warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
 - color objects: apples are reliable on current examples; pale/cyan water is matched on current fixtures; catharsis-style dark gray water is conservatively mapped to JTool water 2; walljump vines are recovered with some extra candidates on light green/white rooms
-- geometry: the opt-in detector produces useful block and full-spike candidates; outline-heavy rooms get a structural block-recovery pass, ambiguous and block-like full-spike candidates are filtered with outline gates, and mini-spike noise is trimmed with a small direction-margin gate but still high on mini-heavy fixtures
+- geometry: the opt-in detector produces useful block and full-spike candidates; outline-heavy rooms get a structural block-recovery pass, ambiguous and block-like full-spike candidates are filtered with outline gates, and block-like mini-spike noise is trimmed but still high on mini-heavy fixtures
 - not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant

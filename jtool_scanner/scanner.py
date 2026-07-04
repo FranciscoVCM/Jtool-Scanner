@@ -65,6 +65,8 @@ GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
 MINI_SPIKE_COEXIST_SCORE = 0.60
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
+MINI_SPIKE_BLOCKLIKE_SCORE = 0.80
+MINI_SPIKE_BLOCKLIKE_DIRECTION_MARGIN = 0.06
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
@@ -785,11 +787,8 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
             if patch.edge_density < 0.045:
                 continue
             mini = _classify_mini_spike(patch)
-            if (
-                mini
-                and mini.score >= MINI_SPIKE_MIN_SCORE
-                and mini.direction_margin >= MINI_SPIKE_MIN_DIRECTION_MARGIN
-            ):
+            block = _classify_block(patch)
+            if mini and _accept_mini_spike(mini, block):
                 detections.append(
                     _geometry_detection(
                         mini.kind,
@@ -1085,6 +1084,19 @@ def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
     if (
         spike.direction_margin < FULL_SPIKE_MIN_DIRECTION_MARGIN
         and spike.score < FULL_SPIKE_LOW_MARGIN_SCORE_CEILING
+    ):
+        return False
+    return True
+
+
+def _accept_mini_spike(mini: _GeometryClass, block: _GeometryClass) -> bool:
+    if mini.score < MINI_SPIKE_MIN_SCORE:
+        return False
+    if mini.direction_margin < MINI_SPIKE_MIN_DIRECTION_MARGIN:
+        return False
+    if (
+        block.score > MINI_SPIKE_BLOCKLIKE_SCORE
+        and mini.direction_margin < MINI_SPIKE_BLOCKLIKE_DIRECTION_MARGIN
     ):
         return False
     return True
