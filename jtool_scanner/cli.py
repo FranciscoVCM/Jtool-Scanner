@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from dataclasses import asdict
 import json
 from pathlib import Path
 
@@ -99,6 +100,11 @@ def main(argv: list[str] | None = None) -> int:
         help="print aggregate match totals after per-fixture rows",
     )
     scan_fixtures_parser.add_argument(
+        "--report-json",
+        default=None,
+        help="write per-fixture metrics, totals, settings, and artifact paths as JSON",
+    )
+    scan_fixtures_parser.add_argument(
         "--overlays",
         action="store_true",
         help="write source-image detection overlays when --out-dir is set",
@@ -156,6 +162,7 @@ def main(argv: list[str] | None = None) -> int:
             args.overlay_labels,
             args.pair_ids,
             args.summary,
+            args.report_json,
         )
     raise AssertionError(args.command)
 
@@ -310,6 +317,7 @@ def _scan_fixtures(
     overlay_labels: bool,
     pair_ids: list[str] | None,
     print_summary: bool,
+    report_json_path: str | None,
 ) -> int:
     manifest_file = Path(manifest_path)
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
@@ -334,6 +342,7 @@ def _scan_fixtures(
         print(f"selected: {', '.join(pair['id'] for pair in pairs)}")
     print(f"tolerance: {tolerance:g} map px")
     evaluations = []
+    report_pairs = []
     for pair in pairs:
         result = scan_png(
             base / pair["game_image"],
@@ -346,20 +355,34 @@ def _scan_fixtures(
         evaluation = evaluate_scan(pair["id"], result.detections, truth, tolerance)
         evaluations.append(evaluation)
         jmap = result.to_jmap(start_policy=start_policy)
+        artifact_paths: dict[str, str] = {}
         if out_base:
             jmap_path = out_base / f"{pair['id']}-scan.jmap"
             svg_path = out_base / f"{pair['id']}-scan.svg"
             jmap.to_file(jmap_path)
             svg_path.write_text(render_svg(jmap, pair["id"]), encoding="utf-8")
+            artifact_paths["scan_jmap"] = str(jmap_path)
+            artifact_paths["scan_svg"] = str(svg_path)
             if write_overlays:
+                overlay_path = out_base / f"{pair['id']}-overlay.svg"
                 _write_detection_overlay(
                     result,
                     base / pair["game_image"],
-                    out_base / f"{pair['id']}-overlay.svg",
+                    overlay_path,
                     overlay_labels,
                     truth,
                     tolerance,
                 )
+                artifact_paths["overlay_svg"] = str(overlay_path)
+        report_pairs.append(
+            {
+                "id": pair["id"],
+                "game_image": str(base / pair["game_image"]),
+                "truth_jmap": str(base / pair["jmap"]),
+                "artifacts": artifact_paths,
+                "metrics": asdict(evaluation),
+            }
+        )
         print(
             f"{pair['id']}: saves {evaluation.matched_saves}/"
             f"{evaluation.truth_saves} matched ({evaluation.detected_saves} detected), "
@@ -389,6 +412,28 @@ def _scan_fixtures(
             )
     if out_base:
         print(f"wrote scans to {out_base}")
+    if report_json_path:
+        report_path = Path(report_json_path)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report = {
+            "manifest": str(manifest_file),
+            "settings": {
+                "room_box": room_box_text,
+                "grid_step": grid_step,
+                "include_color_objects": include_color_objects,
+                "include_geometry": include_geometry,
+                "start_policy": start_policy,
+                "tolerance": tolerance,
+                "pair_ids": pair_ids or [],
+                "out_dir": str(out_base) if out_base else None,
+                "overlays": write_overlays and out_base is not None,
+                "overlay_labels": overlay_labels,
+            },
+            "totals": aggregate_evaluations(evaluations),
+            "pairs": report_pairs,
+        }
+        report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(f"wrote report to {report_path}")
     if print_summary:
         _print_evaluation_summary(evaluations, include_color_objects, include_geometry)
     return 0
