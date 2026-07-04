@@ -9,7 +9,12 @@ import json
 from pathlib import Path
 
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
-from .evaluation import PairEvaluation, aggregate_evaluations, evaluate_scan
+from .evaluation import (
+    PairEvaluation,
+    aggregate_evaluations,
+    build_match_details,
+    evaluate_scan,
+)
 from .geometry import Box
 from .jmap import JMap
 from .render_overlay import render_detection_overlay
@@ -374,15 +379,21 @@ def _scan_fixtures(
                     tolerance,
                 )
                 artifact_paths["overlay_svg"] = str(overlay_path)
-        report_pairs.append(
-            {
-                "id": pair["id"],
-                "game_image": str(base / pair["game_image"]),
-                "truth_jmap": str(base / pair["jmap"]),
-                "artifacts": artifact_paths,
-                "metrics": asdict(evaluation),
-            }
-        )
+        if report_json_path:
+            report_pairs.append(
+                {
+                    "id": pair["id"],
+                    "game_image": str(base / pair["game_image"]),
+                    "truth_jmap": str(base / pair["jmap"]),
+                    "artifacts": artifact_paths,
+                    "metrics": asdict(evaluation),
+                    "details": build_match_details(
+                        result.detections,
+                        truth,
+                        tolerance,
+                    ),
+                }
+            )
         print(
             f"{pair['id']}: saves {evaluation.matched_saves}/"
             f"{evaluation.truth_saves} matched ({evaluation.detected_saves} detected), "

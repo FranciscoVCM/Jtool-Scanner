@@ -62,6 +62,11 @@ or two representative fixtures first, then run the full manifest with
 Omitting `--out-dir` keeps the run metrics-only, which is quicker and avoids
 rewriting preview files.
 
+The JSON report includes the run settings, aggregate totals, per-fixture
+metrics, artifact paths, unmatched detections, and missed truth objects. Use the
+unmatched/missed coordinate lists to tune scanner thresholds against concrete
+false positives instead of comparing screenshots by hand.
+
 Start-save policies:
 
 - `auto`: bottom-left region, then left side, then bottom side, then nearest bottom-left

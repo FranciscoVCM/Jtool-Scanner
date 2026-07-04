@@ -40,6 +40,9 @@ class CliTests(unittest.TestCase):
             self.assertTrue(Path(artifacts["scan_jmap"]).exists())
             self.assertTrue(Path(artifacts["scan_svg"]).exists())
             self.assertIn("matched_saves", report["pairs"][0]["metrics"])
+            self.assertIn("details", report["pairs"][0])
+            self.assertIn("unmatched_detections", report["pairs"][0]["details"]["saves"])
+            self.assertIn("missed_truth", report["pairs"][0]["details"]["full_spikes"])
 
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ from .constants import (
     OBJ_WATER_2,
     OBJ_WATER_3,
     OBJ_WARP,
+    OBJECT_NAMES,
 )
 from .geometry import Box, distance
 from .jmap import JMap
@@ -202,6 +203,17 @@ def evaluate_scan(
     )
 
 
+def build_match_details(
+    detections: list[Detection],
+    truth: JMap,
+    tolerance: float,
+) -> dict[str, dict]:
+    return {
+        label: _match_detail_group(detections, truth, type_ids, tolerance, strict_type)
+        for label, type_ids, strict_type in MATCH_DETAIL_GROUPS
+    }
+
+
 FULL_SPIKE_TYPES = frozenset(
     {
         OBJ_SPIKE_UP,
@@ -215,6 +227,16 @@ MINI_SPIKE_TYPES = frozenset(
 )
 WATER_TYPES = frozenset({OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3})
 WALLJUMP_TYPES = frozenset({OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT})
+MATCH_DETAIL_GROUPS = (
+    ("saves", frozenset({OBJ_SAVE}), True),
+    ("warps", frozenset({OBJ_WARP}), True),
+    ("apples", frozenset({OBJ_APPLE}), True),
+    ("water", WATER_TYPES, False),
+    ("walljumps", WALLJUMP_TYPES, False),
+    ("blocks", frozenset({OBJ_BLOCK}), True),
+    ("full_spikes", FULL_SPIKE_TYPES, True),
+    ("mini_spikes", MINI_SPIKE_TYPES, True),
+)
 
 
 def _count(detections: list[Detection], type_id: int) -> int:
@@ -290,3 +312,145 @@ def _match_count(
             matched += 1
             remaining.pop(best_index)
     return matched
+
+
+def _match_detail_group(
+    detections: list[Detection],
+    truth: JMap,
+    type_ids: frozenset[int],
+    tolerance: float,
+    strict_type: bool,
+) -> dict:
+    tolerance_sq = tolerance * tolerance
+    group_truth = [
+        obj
+        for type_id in type_ids
+        for obj in truth.objects_of_type(type_id)
+    ]
+    group_detections = [det for det in detections if det.type_id in type_ids]
+    remaining = group_truth[:]
+    unmatched_detections: list[Detection] = []
+
+    for detection in group_detections:
+        candidate_indexes = [
+            index
+            for index, obj in enumerate(remaining)
+            if not strict_type or obj.type_id == detection.type_id
+        ]
+        if not candidate_indexes:
+            unmatched_detections.append(detection)
+            continue
+        best_index = min(
+            candidate_indexes,
+            key=lambda index: _distance_sq(
+                detection.x,
+                detection.y,
+                remaining[index].x,
+                remaining[index].y,
+            ),
+        )
+        if (
+            _distance_sq(
+                detection.x,
+                detection.y,
+                remaining[best_index].x,
+                remaining[best_index].y,
+            )
+            <= tolerance_sq
+        ):
+            remaining.pop(best_index)
+        else:
+            unmatched_detections.append(detection)
+
+    return {
+        "unmatched_detection_count": len(unmatched_detections),
+        "missed_truth_count": len(remaining),
+        "unmatched_detections": [
+            _detection_detail(detection, group_truth, strict_type)
+            for detection in unmatched_detections
+        ],
+        "missed_truth": [
+            _truth_detail(obj, group_detections, strict_type)
+            for obj in remaining
+        ],
+    }
+
+
+def _detection_detail(
+    detection: Detection,
+    truth: list,
+    strict_type: bool,
+) -> dict:
+    candidates = [
+        obj for obj in truth if not strict_type or obj.type_id == detection.type_id
+    ]
+    nearest = _nearest_truth(detection, candidates)
+    return {
+        "kind": detection.kind,
+        "type_id": detection.type_id,
+        "type_name": OBJECT_NAMES.get(detection.type_id, f"unknown_{detection.type_id}"),
+        "x": detection.x,
+        "y": detection.y,
+        "score": round(detection.score, 4),
+        "nearest_truth": nearest,
+    }
+
+
+def _truth_detail(
+    obj,
+    detections: list[Detection],
+    strict_type: bool,
+) -> dict:
+    candidates = [
+        detection
+        for detection in detections
+        if not strict_type or detection.type_id == obj.type_id
+    ]
+    nearest = _nearest_detection(obj, candidates)
+    return {
+        "type_id": obj.type_id,
+        "type_name": OBJECT_NAMES.get(obj.type_id, f"unknown_{obj.type_id}"),
+        "x": obj.x,
+        "y": obj.y,
+        "nearest_detection": nearest,
+    }
+
+
+def _nearest_truth(detection: Detection, truth: list) -> dict | None:
+    if not truth:
+        return None
+    nearest = min(
+        truth,
+        key=lambda obj: _distance_sq(detection.x, detection.y, obj.x, obj.y),
+    )
+    distance_sq = _distance_sq(detection.x, detection.y, nearest.x, nearest.y)
+    return {
+        "type_id": nearest.type_id,
+        "type_name": OBJECT_NAMES.get(nearest.type_id, f"unknown_{nearest.type_id}"),
+        "x": nearest.x,
+        "y": nearest.y,
+        "distance": round(distance_sq**0.5, 2),
+    }
+
+
+def _nearest_detection(obj, detections: list[Detection]) -> dict | None:
+    if not detections:
+        return None
+    nearest = min(
+        detections,
+        key=lambda detection: _distance_sq(detection.x, detection.y, obj.x, obj.y),
+    )
+    distance_sq = _distance_sq(nearest.x, nearest.y, obj.x, obj.y)
+    return {
+        "kind": nearest.kind,
+        "type_id": nearest.type_id,
+        "type_name": OBJECT_NAMES.get(nearest.type_id, f"unknown_{nearest.type_id}"),
+        "x": nearest.x,
+        "y": nearest.y,
+        "score": round(nearest.score, 4),
+        "distance": round(distance_sq**0.5, 2),
+    }
+
+
+def _distance_sq(first_x: int, first_y: int, second_x: int, second_y: int) -> int:
+    return (first_x - second_x) ** 2 + (first_y - second_y) ** 2
