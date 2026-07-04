@@ -37,7 +37,7 @@ Current fixture scan status:
 
 - saves: all Irkara fixture saves are detected and matched
 - warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
-- color objects: apples are reliable on current examples; water remains conservative, and walljump vines are recovered on the current fixtures with some extra candidates on light green/white rooms
+- color objects: apples are reliable on current examples; pale/cyan water is matched on current fixtures, while dark gray water like screen 71 still needs a separate pass; walljump vines are recovered with some extra candidates on light green/white rooms
 - geometry: the opt-in detector produces useful block and full-spike candidates; low-confidence ambiguous full-spike candidates are filtered, and mini-spike noise is reduced but still high on mini-heavy fixtures
 - not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 

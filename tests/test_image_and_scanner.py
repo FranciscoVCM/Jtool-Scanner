@@ -84,6 +84,32 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertTrue(any((det.x, det.y) == (96, 96) for det in walljumps))
 
+    def test_scan_image_can_include_pale_water(self) -> None:
+        image = _synthetic_pale_water_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
+
+        self.assertTrue(any((det.x, det.y) == (96, 96) for det in water))
+
+    def test_scan_image_rejects_saturated_blue_blocks_as_water(self) -> None:
+        image = _synthetic_blue_block_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
+
+        self.assertEqual(water, [])
+
     def test_render_detection_overlay_marks_source_detections(self) -> None:
         image = _synthetic_room()
         result = scan_image(image, room_box=Box(0, 0, 800, 608), grid_step=16)
@@ -147,8 +173,8 @@ def _synthetic_geometry_room() -> RGBImage:
 def _synthetic_color_object_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([24, 24, 28] * width * height)
-    _rect(data, width, 192, 128, 32, 32, (74, 170, 235))
-    _rect(data, width, 224, 128, 32, 32, (74, 170, 235))
+    _rect(data, width, 192, 128, 32, 32, (84, 150, 183))
+    _rect(data, width, 224, 128, 32, 32, (84, 150, 183))
     _thin_outline_rect(data, width, 80, 192, 8, 24, (34, 188, 65))
     _disc(data, width, 336, 112, 11, (230, 24, 24))
     return RGBImage(width, height, bytes(data))
@@ -158,6 +184,20 @@ def _synthetic_sparse_walljump_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([232, 232, 232] * width * height)
     _rect(data, width, 123, 100, 4, 24, (35, 135, 45))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_pale_water_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([240, 240, 240] * width * height)
+    _rect(data, width, 96, 96, 32, 32, (160, 220, 254))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_blue_block_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([198, 180, 222] * width * height)
+    _rect(data, width, 96, 96, 32, 32, (100, 177, 252))
     return RGBImage(width, height, bytes(data))
 
 

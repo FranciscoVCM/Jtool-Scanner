@@ -80,6 +80,14 @@ WALLJUMP_PATCH_MAX_DENSITY = 0.095
 WALLJUMP_PATCH_MIN_SIDE_BIAS = 0.28
 WALLJUMP_SPARSE_MIN_LIGHT_RATIO = 0.45
 WALLJUMP_SPARSE_BROAD_LIGHT_RATIO = 0.85
+WATER_MIN_BLUE_LIFT = 10.0
+WATER_MAX_BLUE_LIFT = 55.0
+WATER_PALE_MAX_BLUE_LIFT = 50.0
+WATER_DENSE_MIN_DENSITY = 0.40
+WATER_DENSE_MIN_QUADRANT = 0.08
+WATER_MAX_EDGE_DENSITY = 0.38
+WATER_PALE_MAX_EDGE_DENSITY = 0.42
+WATER_DEDUPE_DISTANCE = 24.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -361,44 +369,108 @@ def _detect_water(
     grid_step: int,
     anchors: list[Detection],
 ) -> list[Detection]:
-    step = max(GRID_SIZE, grid_step)
+    del anchors
+    room_profile = _room_color_profile(image, room)
+    step = max(8, grid_step)
     detections: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            if not _is_water_profile_candidate(profile, room_profile):
+                continue
             stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
-            if stats.density < 0.55 or stats.count < 140:
-                continue
-            if stats.min_quadrant_density < 0.20:
-                continue
             features = _patch_features(image, room, x, y, GRID_SIZE)
-            if features.edge_density > 0.12:
+            if not _is_water_patch(stats, features, profile, room_profile):
                 continue
-            if _near_anchor(x, y, anchors, max_distance=40):
-                continue
+            score = min(
+                1.0,
+                max(
+                    stats.density * 1.2,
+                    (profile.avg_b - profile.avg_r) / 120,
+                    (room_profile.avg_r - profile.avg_r) / 120,
+                ),
+            )
             detections.append(
                 _grid_detection(
                     "water_2",
                     OBJ_WATER_2,
                     x,
                     y,
-                    stats.score,
+                    score,
                     image,
                     room,
                     GRID_SIZE,
                 )
             )
-    return _filter_adjacent_water(_dedupe_detections(detections, min_distance=16))
+    return _dedupe_water(detections, min_distance=WATER_DEDUPE_DISTANCE)
 
 
-def _filter_adjacent_water(detections: list[Detection]) -> list[Detection]:
-    return [
-        det
-        for det in detections
+def _is_water_patch(
+    stats: _ColorStats,
+    features: _PatchFeatures,
+    profile: _ColorProfile,
+    room_profile: _ColorProfile,
+) -> bool:
+    if not _is_water_profile_candidate(profile, room_profile):
+        return False
+
+    red_drop = room_profile.avg_r - profile.avg_r
+    room_blue_lift = profile.avg_b - room_profile.avg_b
+    cyan_room = (
+        room_profile.avg_b > room_profile.avg_g + 15
+        and room_profile.avg_g > room_profile.avg_r + 55
+    )
+    dense_water = (
+        stats.density >= WATER_DENSE_MIN_DENSITY
+        and stats.min_quadrant_density >= WATER_DENSE_MIN_QUADRANT
+        and features.edge_density <= WATER_MAX_EDGE_DENSITY
+        and (room_blue_lift >= 12 or red_drop >= 28 or cyan_room)
+        and (cyan_room or profile.saturation <= 0.62)
+    )
+    pale_water = (
+        profile.avg_b >= 205
+        and profile.avg_g >= 170
+        and profile.avg_g > profile.avg_r + 8
+        and red_drop >= 25
+        and profile.avg_b - profile.avg_g <= WATER_PALE_MAX_BLUE_LIFT
+        and features.edge_density <= WATER_PALE_MAX_EDGE_DENSITY
+    )
+    return dense_water or pale_water
+
+
+def _is_water_profile_candidate(
+    profile: _ColorProfile,
+    room_profile: _ColorProfile,
+) -> bool:
+    blue_lift = profile.avg_b - profile.avg_g
+    if blue_lift <= WATER_MIN_BLUE_LIFT or blue_lift > WATER_MAX_BLUE_LIFT:
+        return False
+
+    pale_room = room_profile.avg_b > 200 and room_profile.avg_r > 150
+    if pale_room and profile.avg_g > room_profile.avg_g - 5:
+        return False
+    return True
+
+
+def _dedupe_water(detections: list[Detection], min_distance: float) -> list[Detection]:
+    result: list[Detection] = []
+    for det in sorted(
+        detections,
+        key=lambda item: (
+            -item.score,
+            item.y % GRID_SIZE != 0,
+            item.x % GRID_SIZE != 0,
+            item.y,
+            item.x,
+        ),
+    ):
         if any(
-            other is not det and distance((det.x, det.y), (other.x, other.y)) <= 40
-            for other in detections
-        )
-    ]
+            distance((det.x, det.y), (existing.x, existing.y)) < min_distance
+            for existing in result
+        ):
+            continue
+        result.append(det)
+    return sorted(result, key=lambda item: (item.y, item.x, -item.score))
 
 
 def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[Detection]:
@@ -500,6 +572,14 @@ class _ColorStats:
     score: float
 
 
+@dataclass(frozen=True, slots=True)
+class _ColorProfile:
+    avg_r: float
+    avg_g: float
+    avg_b: float
+    saturation: float
+
+
 def _patch_color_stats(
     image: RGBImage,
     room: Box,
@@ -553,6 +633,66 @@ def _patch_color_stats(
         center_x_ratio=center_x_ratio,
         center_y_ratio=center_y_ratio,
         score=min(1.0, density * 1.7),
+    )
+
+
+def _patch_color_profile(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    map_size: int,
+) -> _ColorProfile:
+    sample = 16
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    left = room.x + map_x * scale_x
+    top = room.y + map_y * scale_y
+    width = map_size * scale_x
+    height = map_size * scale_y
+    total_r = total_g = total_b = total_saturation = count = 0
+
+    for sy in range(sample):
+        py = int(min(image.height - 1, max(0, top + (sy + 0.5) * height / sample)))
+        for sx in range(sample):
+            px = int(min(image.width - 1, max(0, left + (sx + 0.5) * width / sample)))
+            r, g, b = image.pixel(px, py)
+            total_r += r
+            total_g += g
+            total_b += b
+            total_saturation += max(r, g, b) - min(r, g, b)
+            count += 1
+
+    return _ColorProfile(
+        avg_r=total_r / count,
+        avg_g=total_g / count,
+        avg_b=total_b / count,
+        saturation=total_saturation / (count * 255),
+    )
+
+
+def _room_color_profile(image: RGBImage, room: Box) -> _ColorProfile:
+    total_r = total_g = total_b = total_saturation = count = 0
+    step = 16
+    for y in range(max(0, room.y), min(image.height, room.bottom), step):
+        row = image.row(y)
+        for x in range(max(0, room.x), min(image.width, room.right), step):
+            offset = x * 3
+            r = row[offset]
+            g = row[offset + 1]
+            b = row[offset + 2]
+            total_r += r
+            total_g += g
+            total_b += b
+            total_saturation += max(r, g, b) - min(r, g, b)
+            count += 1
+    if count == 0:
+        return _ColorProfile(0.0, 0.0, 0.0, 0.0)
+    return _ColorProfile(
+        avg_r=total_r / count,
+        avg_g=total_g / count,
+        avg_b=total_b / count,
+        saturation=total_saturation / (count * 255),
     )
 
 
@@ -911,7 +1051,14 @@ def _is_sparse_walljump_green(r: int, g: int, b: int) -> bool:
 
 
 def _is_water_blue(r: int, g: int, b: int) -> bool:
-    return b > 135 and g > 105 and r < 150 and b > r + 35 and g > r + 20
+    return (
+        b > 118
+        and g > 92
+        and r < 190
+        and b > r + 18
+        and g > r + 3
+        and b <= g + 58
+    )
 
 
 def _looks_cyan_tinted(image: RGBImage, room: Box) -> bool:
