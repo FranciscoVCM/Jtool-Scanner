@@ -7,6 +7,7 @@ for diagnostics, but it is not yet expected to produce final maps by itself.
 
 from __future__ import annotations
 
+from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -88,6 +89,27 @@ WATER_DENSE_MIN_QUADRANT = 0.08
 WATER_MAX_EDGE_DENSITY = 0.38
 WATER_PALE_MAX_EDGE_DENSITY = 0.42
 WATER_DEDUPE_DISTANCE = 24.0
+CATHARSIS_ROOM_MAX_BRIGHTNESS = 100.0
+CATHARSIS_ROOM_MAX_SATURATION = 0.16
+CATHARSIS_ROOM_MIN_BLUE_OVER_RED = 8.0
+CATHARSIS_ROOM_MIN_GREEN_MINUS_RED = -4.0
+CATHARSIS_MAX_SATURATION = 0.13
+CATHARSIS_WEAK_MIN_BLUE_LIFT = 1.0
+CATHARSIS_WEAK_MIN_BRIGHTNESS = 2.0
+CATHARSIS_WEAK_MAX_BRIGHTNESS = 150.0
+CATHARSIS_WEAK_MAX_EDGE_DENSITY = 0.24
+CATHARSIS_WEAK_MIN_GREEN_MINUS_RED = -8.0
+CATHARSIS_SEED_MIN_BLUE_LIFT = 3.5
+CATHARSIS_SEED_MIN_BRIGHTNESS = 20.0
+CATHARSIS_SEED_MAX_BRIGHTNESS = 150.0
+CATHARSIS_SEED_MAX_EDGE_DENSITY = 0.14
+CATHARSIS_SEED_MIN_GREEN_MINUS_RED = -3.0
+CATHARSIS_ISOLATED_SEED_MIN_BRIGHTNESS = 45.0
+CATHARSIS_TAIL_MIN_BRIGHTNESS = 45.0
+CATHARSIS_TAIL_MIN_BLUE_LIFT = 2.5
+CATHARSIS_DARK_TAIL_MAX_BRIGHTNESS = 45.0
+CATHARSIS_DARK_TAIL_MIN_BLUE_LIFT = 8.0
+CATHARSIS_DARK_TAIL_MAX_EDGE_DENSITY = 0.04
 
 
 @dataclass(frozen=True, slots=True)
@@ -402,7 +424,203 @@ def _detect_water(
                     GRID_SIZE,
                 )
             )
+    detections.extend(_detect_catharsis_water(image, room, room_profile))
     return _dedupe_water(detections, min_distance=WATER_DEDUPE_DISTANCE)
+
+
+def _detect_catharsis_water(
+    image: RGBImage,
+    room: Box,
+    room_profile: _ColorProfile,
+) -> list[Detection]:
+    if not _is_catharsis_room(room_profile):
+        return []
+
+    weak_cells: set[tuple[int, int]] = set()
+    seed_cells: set[tuple[int, int]] = set()
+    cell_info: dict[
+        tuple[int, int],
+        tuple[_ColorProfile, _PatchFeatures, tuple[float, float, float]],
+    ] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            cell = (x, y)
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            metrics = _color_profile_metrics(profile)
+            cell_info[cell] = (profile, features, metrics)
+            if _is_catharsis_weak(profile, features, metrics):
+                weak_cells.add(cell)
+            if _is_catharsis_seed(profile, features, metrics):
+                seed_cells.add(cell)
+
+    output_cells: set[tuple[int, int]] = set()
+    seed_component_sizes: dict[tuple[int, int], int] = {}
+    column_seed_ranges: list[tuple[int, int, int]] = []
+
+    # Catharsis water is close to dark background art, so only vertical strips are
+    # recovered here. Broader horizontal expansion produced convincing false hits.
+    for component in _connected_seed_components(seed_cells):
+        for cell in component:
+            seed_component_sizes[cell] = len(component)
+        if len(component) < 2:
+            continue
+
+        columns: dict[int, list[int]] = defaultdict(list)
+        for x, y in component:
+            columns[x].append(y)
+
+        for x, ys in columns.items():
+            if len(ys) < 2:
+                continue
+            min_y = min(ys)
+            max_y = max(ys)
+            column_seed_ranges.append((x, min_y, max_y))
+            for y in range(min_y, max_y + 1, GRID_SIZE):
+                if (x, y) in weak_cells:
+                    output_cells.add((x, y))
+            for y in (min_y - GRID_SIZE, max_y + GRID_SIZE):
+                if (x, y) in weak_cells:
+                    output_cells.add((x, y))
+
+    for x, min_y, max_y in column_seed_ranges:
+        for direction, start_y in ((-1, min_y - GRID_SIZE), (1, max_y + GRID_SIZE)):
+            y = start_y + direction * GRID_SIZE
+            for _ in range(2):
+                cell = (x, y)
+                if cell not in weak_cells or not _is_catharsis_tail(
+                    cell_info[cell],
+                    allow_dark=False,
+                ):
+                    break
+                output_cells.add(cell)
+                y += direction * GRID_SIZE
+
+    for x, y in seed_cells:
+        if seed_component_sizes.get((x, y), 1) != 1:
+            continue
+        if cell_info[(x, y)][2][1] < CATHARSIS_ISOLATED_SEED_MIN_BRIGHTNESS:
+            continue
+        for direction in (-1, 1):
+            first = (x, y + direction * GRID_SIZE)
+            if first not in weak_cells or not _is_catharsis_tail(
+                cell_info[first],
+                allow_dark=False,
+            ):
+                continue
+            output_cells.add((x, y))
+            output_cells.add(first)
+            tail_y = y + direction * GRID_SIZE * 2
+            for _ in range(2):
+                cell = (x, tail_y)
+                if cell not in weak_cells or not _is_catharsis_tail(
+                    cell_info[cell],
+                    allow_dark=True,
+                ):
+                    break
+                output_cells.add(cell)
+                tail_y += direction * GRID_SIZE
+
+    return [
+        _grid_detection("water_2", OBJ_WATER_2, x, y, 0.55, image, room, GRID_SIZE)
+        for x, y in sorted(output_cells)
+    ]
+
+
+def _is_catharsis_room(profile: _ColorProfile) -> bool:
+    brightness = _profile_brightness(profile)
+    return (
+        brightness <= CATHARSIS_ROOM_MAX_BRIGHTNESS
+        and profile.saturation <= CATHARSIS_ROOM_MAX_SATURATION
+        and profile.avg_b >= profile.avg_r + CATHARSIS_ROOM_MIN_BLUE_OVER_RED
+        and profile.avg_g >= profile.avg_r + CATHARSIS_ROOM_MIN_GREEN_MINUS_RED
+    )
+
+
+def _color_profile_metrics(profile: _ColorProfile) -> tuple[float, float, float]:
+    blue_lift = profile.avg_b - max(profile.avg_r, profile.avg_g)
+    return blue_lift, _profile_brightness(profile), profile.avg_g - profile.avg_r
+
+
+def _profile_brightness(profile: _ColorProfile) -> float:
+    return (profile.avg_r + profile.avg_g + profile.avg_b) / 3
+
+
+def _is_catharsis_weak(
+    profile: _ColorProfile,
+    features: _PatchFeatures,
+    metrics: tuple[float, float, float],
+) -> bool:
+    blue_lift, brightness, green_minus_red = metrics
+    return (
+        profile.saturation <= CATHARSIS_MAX_SATURATION
+        and blue_lift >= CATHARSIS_WEAK_MIN_BLUE_LIFT
+        and CATHARSIS_WEAK_MIN_BRIGHTNESS <= brightness <= CATHARSIS_WEAK_MAX_BRIGHTNESS
+        and features.edge_density <= CATHARSIS_WEAK_MAX_EDGE_DENSITY
+        and green_minus_red >= CATHARSIS_WEAK_MIN_GREEN_MINUS_RED
+    )
+
+
+def _is_catharsis_seed(
+    profile: _ColorProfile,
+    features: _PatchFeatures,
+    metrics: tuple[float, float, float],
+) -> bool:
+    blue_lift, brightness, green_minus_red = metrics
+    return (
+        profile.saturation <= CATHARSIS_MAX_SATURATION
+        and blue_lift >= CATHARSIS_SEED_MIN_BLUE_LIFT
+        and CATHARSIS_SEED_MIN_BRIGHTNESS <= brightness <= CATHARSIS_SEED_MAX_BRIGHTNESS
+        and features.edge_density <= CATHARSIS_SEED_MAX_EDGE_DENSITY
+        and green_minus_red >= CATHARSIS_SEED_MIN_GREEN_MINUS_RED
+    )
+
+
+def _is_catharsis_tail(
+    cell_info: tuple[_ColorProfile, _PatchFeatures, tuple[float, float, float]],
+    allow_dark: bool,
+) -> bool:
+    _, features, metrics = cell_info
+    blue_lift, brightness, _ = metrics
+    if (
+        brightness >= CATHARSIS_TAIL_MIN_BRIGHTNESS
+        and blue_lift >= CATHARSIS_TAIL_MIN_BLUE_LIFT
+        and features.edge_density <= CATHARSIS_WEAK_MAX_EDGE_DENSITY
+    ):
+        return True
+    return (
+        allow_dark
+        and brightness <= CATHARSIS_DARK_TAIL_MAX_BRIGHTNESS
+        and blue_lift >= CATHARSIS_DARK_TAIL_MIN_BLUE_LIFT
+        and features.edge_density <= CATHARSIS_DARK_TAIL_MAX_EDGE_DENSITY
+    )
+
+
+def _connected_seed_components(
+    seed_cells: set[tuple[int, int]],
+) -> list[list[tuple[int, int]]]:
+    components: list[list[tuple[int, int]]] = []
+    seen: set[tuple[int, int]] = set()
+    for seed in sorted(seed_cells):
+        if seed in seen:
+            continue
+        queue: deque[tuple[int, int]] = deque([seed])
+        seen.add(seed)
+        component: list[tuple[int, int]] = []
+        while queue:
+            x, y = queue.popleft()
+            component.append((x, y))
+            for neighbor in (
+                (x + GRID_SIZE, y),
+                (x - GRID_SIZE, y),
+                (x, y + GRID_SIZE),
+                (x, y - GRID_SIZE),
+            ):
+                if neighbor in seed_cells and neighbor not in seen:
+                    seen.add(neighbor)
+                    queue.append(neighbor)
+        components.append(component)
+    return components
 
 
 def _is_water_patch(

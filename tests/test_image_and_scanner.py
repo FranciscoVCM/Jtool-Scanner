@@ -97,8 +97,35 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertTrue(any((det.x, det.y) == (96, 96) for det in water))
 
+    def test_scan_image_maps_catharsis_gray_water_to_water_2(self) -> None:
+        image = _synthetic_catharsis_water_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
+
+        self.assertTrue(any((det.x, det.y) == (128, 96) for det in water))
+        self.assertTrue(any((det.x, det.y) == (128, 192) for det in water))
+
     def test_scan_image_rejects_saturated_blue_blocks_as_water(self) -> None:
         image = _synthetic_blue_block_room()
+
+        result = scan_image(
+            image,
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
+
+        self.assertEqual(water, [])
+
+    def test_scan_image_rejects_dark_purple_background_as_catharsis_water(self) -> None:
+        image = _synthetic_purple_noise_room()
 
         result = scan_image(
             image,
@@ -194,10 +221,29 @@ def _synthetic_pale_water_room() -> RGBImage:
     return RGBImage(width, height, bytes(data))
 
 
+def _synthetic_catharsis_water_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 32] * width * height)
+    _rect(data, width, 128, 96, 32, 32, (52, 51, 57))
+    _rect(data, width, 128, 128, 32, 32, (108, 108, 113))
+    _rect(data, width, 128, 160, 32, 32, (4, 3, 23))
+    _rect(data, width, 128, 192, 32, 32, (5, 5, 29))
+    return RGBImage(width, height, bytes(data))
+
+
 def _synthetic_blue_block_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([198, 180, 222] * width * height)
     _rect(data, width, 96, 96, 32, 32, (100, 177, 252))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_purple_noise_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([31, 24, 36] * width * height)
+    _rect(data, width, 128, 96, 32, 32, (48, 41, 55))
+    _rect(data, width, 128, 128, 32, 32, (62, 54, 70))
+    _rect(data, width, 160, 128, 32, 32, (46, 39, 54))
     return RGBImage(width, height, bytes(data))
 
 
