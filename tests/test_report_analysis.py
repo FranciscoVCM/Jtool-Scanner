@@ -60,7 +60,14 @@ class ReportAnalysisTests(unittest.TestCase):
 
         self.assertIn("full_spikes: 1 unmatched detections, 1 missed truth", text)
         self.assertIn("unmatched by type: spike_up=1", text)
+        self.assertIn("unmatched score by distance: 49-96 n=1 median=0.750", text)
+        self.assertIn("unmatched near misses: none", text)
+        self.assertIn("unmatched offsets to nearest truth: (+0,+64)=1", text)
+        self.assertIn("unmatched grid residues mod 16: (0,0)=1", text)
         self.assertIn("missed by type: spike_down=1", text)
+        self.assertIn("missed near misses: 25-32px=1", text)
+        self.assertIn("missed nearest-detection offsets: (+0,-32)=1", text)
+        self.assertIn("missed grid residues mod 16: (0,0)=1", text)
         self.assertIn("example spike_up (64,96)", text)
 
 

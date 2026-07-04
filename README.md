@@ -40,7 +40,7 @@ Current fixture scan status:
 - saves: all Irkara fixture saves are detected and matched
 - warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
 - color objects: apples are reliable on current examples; pale/cyan water is matched on current fixtures; catharsis-style dark gray water is conservatively mapped to JTool water 2; walljump vines are recovered with some extra candidates on light green/white rooms
-- geometry: the opt-in detector produces useful block and full-spike candidates; ambiguous full-spike candidates are filtered with a stronger outline gate, and mini-spike noise is reduced but still high on mini-heavy fixtures
+- geometry: the opt-in detector produces useful block and full-spike candidates; ambiguous full-spike candidates are filtered with a stronger outline gate, and mini-spike noise is trimmed with a small direction-margin gate but still high on mini-heavy fixtures
 - not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant
@@ -68,7 +68,7 @@ metrics, artifact paths, unmatched detections, and missed truth objects. Use the
 unmatched/missed coordinate lists to tune scanner thresholds against concrete
 false positives instead of comparing screenshots by hand.
 `analyze-report` summarizes those lists by object group, fixture, type, score,
-nearest-distance bucket, and representative examples.
+nearest-distance bucket, snap offset, grid residue, and representative examples.
 
 Start-save policies:
 

@@ -64,6 +64,7 @@ COLOR_OBJECT_TYPES = frozenset(
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
 MINI_SPIKE_COEXIST_SCORE = 0.60
 MINI_SPIKE_MIN_SCORE = 0.44
+MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
@@ -745,7 +746,11 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
             if patch.edge_density < 0.045:
                 continue
             mini = _classify_mini_spike(patch)
-            if mini and mini.score >= MINI_SPIKE_MIN_SCORE:
+            if (
+                mini
+                and mini.score >= MINI_SPIKE_MIN_SCORE
+                and mini.direction_margin >= MINI_SPIKE_MIN_DIRECTION_MARGIN
+            ):
                 detections.append(
                     _geometry_detection(
                         mini.kind,
