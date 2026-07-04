@@ -64,8 +64,7 @@ COLOR_OBJECT_TYPES = frozenset(
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
 MINI_SPIKE_COEXIST_SCORE = 0.60
 MINI_SPIKE_MIN_SCORE = 0.44
-FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
-FULL_SPIKE_LOW_OUTLINE_SCORE_CEILING = 0.40
+FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 WALLJUMP_COMPONENT_MAX_WIDTH = 13
@@ -1023,10 +1022,7 @@ def _best_triangle_class(
 def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
     if spike.score <= max(0.24, block.score + 0.03):
         return False
-    if (
-        spike.outline_delta < FULL_SPIKE_MIN_OUTLINE_DELTA
-        and spike.score < FULL_SPIKE_LOW_OUTLINE_SCORE_CEILING
-    ):
+    if spike.outline_delta < FULL_SPIKE_MIN_OUTLINE_DELTA:
         return False
     if (
         spike.direction_margin < FULL_SPIKE_MIN_DIRECTION_MARGIN
