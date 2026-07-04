@@ -25,6 +25,7 @@ python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --out-di
 python -m jtool_scanner.cli scan-fixtures fixtures\irkara\manifest.json --include-color-objects --grid-step 8 --tolerance 24 --out-dir out\color-object-scans
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --include-geometry --grid-step 8 --tolerance 24 --out-dir out\block-spike-scans
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --out-dir out\block-spike-scans --overlays --report-json out\block-spike-scans\report.json
+python -m jtool_scanner.cli analyze-report out\block-spike-scans\report.json --group full_spikes --limit 8
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --pair irkara-nr-partysu3 --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --summary
 ```
 
@@ -66,6 +67,8 @@ The JSON report includes the run settings, aggregate totals, per-fixture
 metrics, artifact paths, unmatched detections, and missed truth objects. Use the
 unmatched/missed coordinate lists to tune scanner thresholds against concrete
 false positives instead of comparing screenshots by hand.
+`analyze-report` summarizes those lists by object group, fixture, type, score,
+nearest-distance bucket, and representative examples.
 
 Start-save policies:
 

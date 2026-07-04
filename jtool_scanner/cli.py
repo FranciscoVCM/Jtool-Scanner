@@ -17,6 +17,7 @@ from .evaluation import (
 )
 from .geometry import Box
 from .jmap import JMap
+from .report_analysis import analyze_report
 from .render_overlay import render_detection_overlay
 from .render_svg import render_svg
 from .save_picker import choose_save, move_start_to_save
@@ -45,6 +46,22 @@ def main(argv: list[str] | None = None) -> int:
     dataset_parser = subparsers.add_parser("dataset-summary", help="summarize a fixture manifest")
     dataset_parser.add_argument("manifest")
     dataset_parser.add_argument("--start-policy", default=None)
+
+    analyze_report_parser = subparsers.add_parser("analyze-report", help="summarize scan report diagnostics")
+    analyze_report_parser.add_argument("report")
+    analyze_report_parser.add_argument(
+        "--group",
+        action="append",
+        default=None,
+        dest="groups",
+        help="diagnostic group to show; may be passed more than once",
+    )
+    analyze_report_parser.add_argument(
+        "--limit",
+        type=int,
+        default=5,
+        help="maximum examples or pair/type rows to show per section",
+    )
 
     inspect_parser = subparsers.add_parser("inspect-image", help="detect room and high-confidence objects in a PNG")
     inspect_parser.add_argument("input")
@@ -130,6 +147,8 @@ def main(argv: list[str] | None = None) -> int:
         return _render(args.input, args.output, args.title, args.start_policy)
     if args.command == "dataset-summary":
         return _dataset_summary(args.manifest, args.start_policy)
+    if args.command == "analyze-report":
+        return _analyze_report(args.report, args.groups, args.limit)
     if args.command == "inspect-image":
         return _inspect_image(
             args.input,
@@ -236,6 +255,14 @@ def _dataset_summary(manifest_path: str, start_policy: str | None) -> int:
             f"blocks={counts.get(1, 0)} spikes={_spike_count(counts)} "
             f"saves={counts.get(OBJ_SAVE, 0)} start={chosen}"
         )
+    return 0
+
+
+def _analyze_report(report_path: str, groups: list[str] | None, limit: int) -> int:
+    report_file = Path(report_path)
+    report = json.loads(report_file.read_text(encoding="utf-8"))
+    for line in analyze_report(report, groups=groups, limit=max(1, limit)):
+        print(line)
     return 0
 
 

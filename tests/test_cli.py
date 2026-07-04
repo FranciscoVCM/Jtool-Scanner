@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -43,6 +45,52 @@ class CliTests(unittest.TestCase):
             self.assertIn("details", report["pairs"][0])
             self.assertIn("unmatched_detections", report["pairs"][0]["details"]["saves"])
             self.assertIn("missed_truth", report["pairs"][0]["details"]["full_spikes"])
+
+    def test_analyze_report_prints_diagnostics(self) -> None:
+        report = {
+            "manifest": "synthetic.json",
+            "settings": {"grid_step": 8, "tolerance": 24},
+            "pairs": [
+                {
+                    "id": "example",
+                    "details": {
+                        "blocks": {
+                            "unmatched_detections": [
+                                {
+                                    "kind": "block",
+                                    "type_id": 1,
+                                    "type_name": "block",
+                                    "x": 32,
+                                    "y": 64,
+                                    "score": 0.7,
+                                    "nearest_truth": None,
+                                }
+                            ],
+                            "missed_truth": [],
+                        }
+                    },
+                }
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "report.json"
+            report_path.write_text(json.dumps(report), encoding="utf-8")
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                exit_code = main(
+                    [
+                        "analyze-report",
+                        str(report_path),
+                        "--group",
+                        "blocks",
+                        "--limit",
+                        "1",
+                    ]
+                )
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("blocks: 1 unmatched detections, 0 missed truth", output.getvalue())
 
 
 if __name__ == "__main__":
