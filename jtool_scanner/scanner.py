@@ -70,6 +70,11 @@ FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
+OUTLINE_BLOCK_GRID_STEP = 16
+OUTLINE_BLOCK_CENTER_MAX = 0.02
+OUTLINE_BLOCK_BORDER_MIN = 0.10
+OUTLINE_BLOCK_EDGE_MIN = 0.055
+OUTLINE_BLOCK_ROOM_MIN_CANDIDATES = 120
 WALLJUMP_COMPONENT_MAX_WIDTH = 13
 WALLJUMP_COMPONENT_MIN_HEIGHT = 18
 WALLJUMP_COMPONENT_MIN_DENSITY = 0.12
@@ -708,6 +713,9 @@ def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[
 def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
     step = max(8, grid_step)
     detections: list[Detection] = []
+    patch_candidates: list[_GeometryPatchCandidate] = []
+    outline_block_candidates = 0
+
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
             patch = _patch_features(image, room, x, y, GRID_SIZE)
@@ -715,27 +723,56 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                 continue
             spike = _classify_full_spike(patch)
             block = _classify_block(patch)
-            if spike and _accept_full_spike(spike, block):
-                detections.append(
-                    _geometry_detection(
-                        spike.kind,
-                        spike.type_id,
-                        x,
-                        y,
-                        spike.score,
-                        image,
-                        room,
-                        GRID_SIZE,
-                    )
+            candidate = _GeometryPatchCandidate(x, y, patch, spike, block)
+            patch_candidates.append(candidate)
+            if (
+                not (spike and _accept_full_spike(spike, block))
+                and block.score < 0.30
+                and _outline_block_score(candidate) is not None
+            ):
+                outline_block_candidates += 1
+
+    allow_outline_blocks = (
+        outline_block_candidates >= OUTLINE_BLOCK_ROOM_MIN_CANDIDATES
+    )
+
+    for candidate in patch_candidates:
+        if candidate.spike and _accept_full_spike(candidate.spike, candidate.block):
+            detections.append(
+                _geometry_detection(
+                    candidate.spike.kind,
+                    candidate.spike.type_id,
+                    candidate.x,
+                    candidate.y,
+                    candidate.spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
                 )
-            elif block.score >= 0.30:
+            )
+        elif candidate.block.score >= 0.30:
+            detections.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    candidate.x,
+                    candidate.y,
+                    candidate.block.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+        elif allow_outline_blocks:
+            outline_score = _outline_block_score(candidate)
+            if outline_score is not None:
                 detections.append(
                     _geometry_detection(
                         "block",
                         OBJ_BLOCK,
-                        x,
-                        y,
-                        block.score,
+                        candidate.x,
+                        candidate.y,
+                        outline_score,
                         image,
                         room,
                         GRID_SIZE,
@@ -784,6 +821,15 @@ class _GeometryClass:
     score: float
     direction_margin: float = 1.0
     outline_delta: float = 1.0
+
+
+@dataclass(frozen=True, slots=True)
+class _GeometryPatchCandidate:
+    x: int
+    y: int
+    patch: _PatchFeatures
+    spike: _GeometryClass | None
+    block: _GeometryClass
 
 
 @dataclass(frozen=True, slots=True)
@@ -1042,6 +1088,21 @@ def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
     ):
         return False
     return True
+
+
+def _outline_block_score(candidate: _GeometryPatchCandidate) -> float | None:
+    if candidate.x % OUTLINE_BLOCK_GRID_STEP or candidate.y % OUTLINE_BLOCK_GRID_STEP:
+        return None
+    if candidate.patch.center_score > OUTLINE_BLOCK_CENTER_MAX:
+        return None
+    if candidate.patch.border_score < OUTLINE_BLOCK_BORDER_MIN:
+        return None
+    if candidate.patch.edge_density < OUTLINE_BLOCK_EDGE_MIN:
+        return None
+    return max(
+        0.301,
+        candidate.patch.border_score * 0.90 + candidate.patch.edge_density * 0.35,
+    )
 
 
 def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
