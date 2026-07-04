@@ -68,6 +68,8 @@ MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
+FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
+FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 WALLJUMP_COMPONENT_MAX_WIDTH = 13
 WALLJUMP_COMPONENT_MIN_HEIGHT = 18
 WALLJUMP_COMPONENT_MIN_DENSITY = 0.12
@@ -1028,6 +1030,11 @@ def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
     if spike.score <= max(0.24, block.score + 0.03):
         return False
     if spike.outline_delta < FULL_SPIKE_MIN_OUTLINE_DELTA:
+        return False
+    if (
+        spike.outline_delta < FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA
+        and spike.score < block.score + FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN
+    ):
         return False
     if (
         spike.direction_margin < FULL_SPIKE_MIN_DIRECTION_MARGIN
