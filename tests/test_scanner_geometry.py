@@ -2,13 +2,21 @@ from __future__ import annotations
 
 import unittest
 
-from jtool_scanner.constants import OBJ_BLOCK, OBJ_MINI_SPIKE_DOWN, OBJ_SPIKE_UP
+from jtool_scanner.constants import (
+    OBJ_BLOCK,
+    OBJ_MINI_SPIKE_DOWN,
+    OBJ_SPIKE_DOWN,
+    OBJ_SPIKE_LEFT,
+    OBJ_SPIKE_RIGHT,
+    OBJ_SPIKE_UP,
+)
 from jtool_scanner.scanner import (
     _GeometryClass,
     _GeometryPatchCandidate,
     _PatchFeatures,
     _accept_full_spike,
     _accept_mini_spike,
+    _normalize_full_spike_origin,
     _outline_block_score,
 )
 
@@ -37,6 +45,24 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(_accept_full_spike(spike, block))
+
+    def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
+        self.assertEqual(
+            _normalize_full_spike_origin(OBJ_SPIKE_UP, 164, 73),
+            (160, 73),
+        )
+        self.assertEqual(
+            _normalize_full_spike_origin(OBJ_SPIKE_DOWN, 167, 73),
+            (160, 73),
+        )
+        self.assertEqual(
+            _normalize_full_spike_origin(OBJ_SPIKE_LEFT, 164, 73),
+            (164, 80),
+        )
+        self.assertEqual(
+            _normalize_full_spike_origin(OBJ_SPIKE_RIGHT, 164, 73),
+            (164, 80),
+        )
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
         candidate = _GeometryPatchCandidate(

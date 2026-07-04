@@ -72,6 +72,7 @@ FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
+FULL_SPIKE_AXIS_SNAP_STEP = 16
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -802,7 +803,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                     )
                 )
 
-    return _dedupe_geometry(detections)
+    return _normalize_full_spike_detections(_dedupe_geometry(detections))
 
 
 @dataclass(frozen=True, slots=True)
@@ -1167,6 +1168,34 @@ def _geometry_detection(
         max(1, int(round(size * scale_y))),
     )
     return Detection(kind, type_id, x, y, min(1.0, score), image_box)
+
+
+def _normalize_full_spike_detections(detections: list[Detection]) -> list[Detection]:
+    normalized: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in FULL_SPIKE_TYPES:
+            normalized.append(detection)
+            continue
+        x, y = _normalize_full_spike_origin(detection.type_id, detection.x, detection.y)
+        normalized.append(
+            Detection(
+                detection.kind,
+                detection.type_id,
+                x,
+                y,
+                detection.score,
+                detection.image_box,
+            )
+        )
+    return normalized
+
+
+def _normalize_full_spike_origin(type_id: int, x: int, y: int) -> tuple[int, int]:
+    if type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+        return round_to_step(x, FULL_SPIKE_AXIS_SNAP_STEP), y
+    if type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT):
+        return x, round_to_step(y, FULL_SPIKE_AXIS_SNAP_STEP)
+    return x, y
 
 
 def _grid_detection(
