@@ -10,12 +10,16 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_RIGHT,
     OBJ_SPIKE_UP,
 )
+from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
+    Detection,
     _GeometryClass,
     _GeometryPatchCandidate,
     _PatchFeatures,
+    _accept_block,
     _accept_full_spike,
     _accept_mini_spike,
+    _dedupe_geometry,
     _normalize_full_spike_origin,
     _outline_block_score,
 )
@@ -109,6 +113,44 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(_accept_mini_spike(mini, block))
+
+    def test_block_accepts_weak_aligned_candidate(self) -> None:
+        candidate = _GeometryPatchCandidate(
+            64,
+            96,
+            _PatchFeatures((), edge_density=0.05, border_score=0.06, center_score=0.02),
+            spike=None,
+            block=_GeometryClass("block", OBJ_BLOCK, 0.28),
+        )
+
+        self.assertTrue(_accept_block(candidate))
+
+    def test_block_rejects_weak_off_grid_candidate(self) -> None:
+        candidate = _GeometryPatchCandidate(
+            72,
+            96,
+            _PatchFeatures((), edge_density=0.05, border_score=0.06, center_score=0.02),
+            spike=None,
+            block=_GeometryClass("block", OBJ_BLOCK, 0.28),
+        )
+
+        self.assertFalse(_accept_block(candidate))
+
+    def test_block_dedupe_prefers_aligned_candidate_over_shifted_neighbor(self) -> None:
+        shifted = Detection("block", OBJ_BLOCK, 56, 96, 1.00, Box(56, 96, 32, 32))
+        aligned = Detection("block", OBJ_BLOCK, 64, 96, 0.28, Box(64, 96, 32, 32))
+
+        result = _dedupe_geometry([shifted, aligned])
+
+        self.assertEqual([(det.x, det.y) for det in result], [(64, 96)])
+
+    def test_block_dedupe_prefers_32px_alignment_over_16px_alignment(self) -> None:
+        half_shifted = Detection("block", OBJ_BLOCK, 80, 96, 1.00, Box(80, 96, 32, 32))
+        aligned_32 = Detection("block", OBJ_BLOCK, 96, 96, 0.30, Box(96, 96, 32, 32))
+
+        result = _dedupe_geometry([half_shifted, aligned_32])
+
+        self.assertEqual([(det.x, det.y) for det in result], [(96, 96)])
 
 
 if __name__ == "__main__":

@@ -73,6 +73,10 @@ FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 FULL_SPIKE_AXIS_SNAP_STEP = 16
+BLOCK_MIN_SCORE = 0.30
+WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
+BLOCK_ALIGNMENT_STEP = 16
+PREFERRED_BLOCK_ALIGNMENT_STEP = 32
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -730,7 +734,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
             patch_candidates.append(candidate)
             if (
                 not (spike and _accept_full_spike(spike, block))
-                and block.score < 0.30
+                and not _accept_block(candidate)
                 and _outline_block_score(candidate) is not None
             ):
                 outline_block_candidates += 1
@@ -753,7 +757,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                     GRID_SIZE,
                 )
             )
-        elif candidate.block.score >= 0.30:
+        elif _accept_block(candidate):
             detections.append(
                 _geometry_detection(
                     "block",
@@ -1103,6 +1107,15 @@ def _accept_mini_spike(mini: _GeometryClass, block: _GeometryClass) -> bool:
     return True
 
 
+def _accept_block(candidate: _GeometryPatchCandidate) -> bool:
+    if candidate.block.score >= BLOCK_MIN_SCORE:
+        return True
+    return (
+        _is_block_aligned(candidate.x, candidate.y)
+        and candidate.block.score >= WEAK_BLOCK_ALIGNED_MIN_SCORE
+    )
+
+
 def _outline_block_score(candidate: _GeometryPatchCandidate) -> float | None:
     if candidate.x % OUTLINE_BLOCK_GRID_STEP or candidate.y % OUTLINE_BLOCK_GRID_STEP:
         return None
@@ -1215,12 +1228,38 @@ def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:
     result: list[Detection] = []
     for det in sorted(
         detections,
-        key=lambda item: (item.type_id in MINI_SPIKE_TYPES, -item.score),
+        key=_geometry_dedupe_key,
     ):
         if any(_geometry_conflicts(det, existing) for existing in result):
             continue
         result.append(det)
     return sorted(result, key=lambda item: (item.y, item.x, -item.score))
+
+
+def _geometry_dedupe_key(detection: Detection) -> tuple[bool, int, float]:
+    return (
+        detection.type_id in MINI_SPIKE_TYPES,
+        _block_alignment_rank(detection),
+        -detection.score,
+    )
+
+
+def _block_alignment_rank(detection: Detection) -> int:
+    if detection.type_id != OBJ_BLOCK:
+        return 1
+    if _is_block_aligned_to(detection.x, detection.y, PREFERRED_BLOCK_ALIGNMENT_STEP):
+        return 0
+    if _is_block_aligned(detection.x, detection.y):
+        return 1
+    return 2
+
+
+def _is_block_aligned(x: int, y: int) -> bool:
+    return _is_block_aligned_to(x, y, BLOCK_ALIGNMENT_STEP)
+
+
+def _is_block_aligned_to(x: int, y: int, step: int) -> bool:
+    return x % step == 0 and y % step == 0
 
 
 def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
