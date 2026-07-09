@@ -92,6 +92,7 @@ BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE = 0.035
 BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE = 0.02
 BLOCK_RUN_EXTENSION_MIN_BLOCK_SCORE = 0.14
 BLOCK_RUN_EXTENSION_MIN_EDGE_DENSITY = 0.12
+BLOCK_RUN_GAP_MAX_PASSES = 6
 BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
@@ -1233,34 +1234,42 @@ def _recover_block_run_gaps(
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
-    block_detections = [det for det in detections if det.type_id == OBJ_BLOCK]
-    block_positions = {(det.x, det.y) for det in block_detections}
     recovered = list(detections)
-    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
-        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
-            if (x, y) in block_positions:
-                continue
-            if any(distance((x, y), (det.x, det.y)) < 28 for det in block_detections):
-                continue
-            support = _block_run_gap_support(x, y, block_positions)
-            if support is None:
-                continue
-            patch = _patch_features(image, room, x, y, GRID_SIZE)
-            block = _classify_block(patch)
-            if not _accept_block_run_gap_patch(patch, block, support):
-                continue
-            recovered.append(
-                _geometry_detection(
-                    "block",
-                    OBJ_BLOCK,
-                    x,
-                    y,
-                    max(BLOCK_RUN_GAP_SCORE, block.score),
-                    image,
-                    room,
-                    GRID_SIZE,
+    for _ in range(BLOCK_RUN_GAP_MAX_PASSES):
+        block_detections = [det for det in recovered if det.type_id == OBJ_BLOCK]
+        block_positions = {(det.x, det.y) for det in block_detections}
+        added: list[Detection] = []
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
+            for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
+                if (x, y) in block_positions:
+                    continue
+                if any(
+                    distance((x, y), (det.x, det.y)) < 28
+                    for det in block_detections
+                ):
+                    continue
+                support = _block_run_gap_support(x, y, block_positions)
+                if support is None:
+                    continue
+                patch = _patch_features(image, room, x, y, GRID_SIZE)
+                block = _classify_block(patch)
+                if not _accept_block_run_gap_patch(patch, block, support):
+                    continue
+                added.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        max(BLOCK_RUN_GAP_SCORE, block.score),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
                 )
-            )
+        if not added:
+            break
+        recovered.extend(added)
     return recovered
 
 
