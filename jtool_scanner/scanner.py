@@ -82,6 +82,10 @@ BLOCKLIKE_SPIKE_MAX_SPIKE_SCORE = 0.28
 BLOCKLIKE_SPIKE_MIN_BORDER_SCORE = 0.12
 BLOCKLIKE_SPIKE_MAX_CENTER_SCORE = 0.02
 BLOCKLIKE_SPIKE_BLOCK_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.001
+BLOCK_RUN_GAP_STEP = 32
+BLOCK_RUN_GAP_MIN_BLOCK_SCORE = 0.12
+BLOCK_RUN_GAP_MIN_EDGE_DENSITY = 0.11
+BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -826,6 +830,8 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                     )
                 )
 
+    detections = _dedupe_geometry(detections)
+    detections = _recover_block_run_gaps(detections, image, room)
     return _normalize_full_spike_detections(_dedupe_geometry(detections))
 
 
@@ -1212,6 +1218,53 @@ def _geometry_detection(
         max(1, int(round(size * scale_y))),
     )
     return Detection(kind, type_id, x, y, min(1.0, score), image_box)
+
+
+def _recover_block_run_gaps(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    block_detections = [det for det in detections if det.type_id == OBJ_BLOCK]
+    block_positions = {(det.x, det.y) for det in block_detections}
+    recovered = list(detections)
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
+            if (x, y) in block_positions:
+                continue
+            if any(distance((x, y), (det.x, det.y)) < 28 for det in block_detections):
+                continue
+            if not _is_block_run_gap(x, y, block_positions):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            if block.score < BLOCK_RUN_GAP_MIN_BLOCK_SCORE:
+                continue
+            if patch.edge_density < BLOCK_RUN_GAP_MIN_EDGE_DENSITY:
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    max(BLOCK_RUN_GAP_SCORE, block.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
+
+
+def _is_block_run_gap(x: int, y: int, block_positions: set[tuple[int, int]]) -> bool:
+    return (
+        ((x - BLOCK_RUN_GAP_STEP, y) in block_positions)
+        and ((x + BLOCK_RUN_GAP_STEP, y) in block_positions)
+    ) or (
+        ((x, y - BLOCK_RUN_GAP_STEP) in block_positions)
+        and ((x, y + BLOCK_RUN_GAP_STEP) in block_positions)
+    )
 
 
 def _normalize_full_spike_detections(detections: list[Detection]) -> list[Detection]:

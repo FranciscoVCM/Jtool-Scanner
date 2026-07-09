@@ -20,6 +20,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _dedupe_geometry,
+    _is_block_run_gap,
     _is_blocklike_spike_candidate,
     _normalize_full_spike_origin,
     _outline_block_score,
@@ -190,6 +191,11 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertFalse(_is_blocklike_spike_candidate(high_center))
         self.assertFalse(_is_blocklike_spike_candidate(off_grid))
         self.assertFalse(_is_blocklike_spike_candidate(strong_spike))
+
+    def test_block_run_gap_requires_opposite_neighbors(self) -> None:
+        self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (96, 96)}))
+        self.assertTrue(_is_block_run_gap(64, 96, {(64, 64), (64, 128)}))
+        self.assertFalse(_is_block_run_gap(64, 96, {(32, 96), (64, 128)}))
 
 
 if __name__ == "__main__":
