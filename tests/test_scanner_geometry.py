@@ -193,10 +193,12 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertFalse(_is_blocklike_spike_candidate(off_grid))
         self.assertFalse(_is_blocklike_spike_candidate(strong_spike))
 
-    def test_block_run_gap_requires_opposite_neighbors(self) -> None:
+    def test_block_run_gap_accepts_structural_neighbor_pairs(self) -> None:
         self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (96, 96)}))
         self.assertTrue(_is_block_run_gap(64, 96, {(64, 64), (64, 128)}))
-        self.assertFalse(_is_block_run_gap(64, 96, {(32, 96), (64, 128)}))
+        self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (64, 128)}))
+        self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (0, 96)}))
+        self.assertFalse(_is_block_run_gap(64, 96, {(32, 96)}))
 
     def test_block_run_gap_patch_accepts_strong_or_hollow_outline(self) -> None:
         strong_patch = _PatchFeatures(
@@ -222,6 +224,35 @@ class ScannerGeometryTests(unittest.TestCase):
             _accept_block_run_gap_patch(
                 hollow_patch,
                 _GeometryClass("block", OBJ_BLOCK, 0.04),
+            )
+        )
+
+    def test_block_run_extension_requires_stronger_patch(self) -> None:
+        strong_patch = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.02,
+            center_score=0.10,
+        )
+        hollow_patch = _PatchFeatures(
+            (),
+            edge_density=0.06,
+            border_score=0.04,
+            center_score=0.0,
+        )
+
+        self.assertTrue(
+            _accept_block_run_gap_patch(
+                strong_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.14),
+                "axis_extension",
+            )
+        )
+        self.assertFalse(
+            _accept_block_run_gap_patch(
+                hollow_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.04),
+                "axis_extension",
             )
         )
 

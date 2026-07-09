@@ -89,6 +89,8 @@ BLOCK_RUN_GAP_HOLLOW_MIN_BLOCK_SCORE = 0.04
 BLOCK_RUN_GAP_HOLLOW_MIN_EDGE_DENSITY = 0.06
 BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE = 0.035
 BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE = 0.02
+BLOCK_RUN_EXTENSION_MIN_BLOCK_SCORE = 0.14
+BLOCK_RUN_EXTENSION_MIN_EDGE_DENSITY = 0.12
 BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
@@ -1238,11 +1240,12 @@ def _recover_block_run_gaps(
                 continue
             if any(distance((x, y), (det.x, det.y)) < 28 for det in block_detections):
                 continue
-            if not _is_block_run_gap(x, y, block_positions):
+            support = _block_run_gap_support(x, y, block_positions)
+            if support is None:
                 continue
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             block = _classify_block(patch)
-            if not _accept_block_run_gap_patch(patch, block):
+            if not _accept_block_run_gap_patch(patch, block, support):
                 continue
             recovered.append(
                 _geometry_detection(
@@ -1262,7 +1265,13 @@ def _recover_block_run_gaps(
 def _accept_block_run_gap_patch(
     patch: _PatchFeatures,
     block: _GeometryClass,
+    support: str = "cluster",
 ) -> bool:
+    if support == "axis_extension":
+        return (
+            block.score >= BLOCK_RUN_EXTENSION_MIN_BLOCK_SCORE
+            and patch.edge_density >= BLOCK_RUN_EXTENSION_MIN_EDGE_DENSITY
+        )
     if (
         block.score >= BLOCK_RUN_GAP_MIN_BLOCK_SCORE
         and patch.edge_density >= BLOCK_RUN_GAP_MIN_EDGE_DENSITY
@@ -1277,13 +1286,43 @@ def _accept_block_run_gap_patch(
 
 
 def _is_block_run_gap(x: int, y: int, block_positions: set[tuple[int, int]]) -> bool:
-    return (
-        ((x - BLOCK_RUN_GAP_STEP, y) in block_positions)
-        and ((x + BLOCK_RUN_GAP_STEP, y) in block_positions)
-    ) or (
-        ((x, y - BLOCK_RUN_GAP_STEP) in block_positions)
-        and ((x, y + BLOCK_RUN_GAP_STEP) in block_positions)
+    return _block_run_gap_support(x, y, block_positions) is not None
+
+
+def _block_run_gap_support(
+    x: int,
+    y: int,
+    block_positions: set[tuple[int, int]],
+) -> str | None:
+    neighboring_blocks = (
+        (x - BLOCK_RUN_GAP_STEP, y),
+        (x + BLOCK_RUN_GAP_STEP, y),
+        (x, y - BLOCK_RUN_GAP_STEP),
+        (x, y + BLOCK_RUN_GAP_STEP),
     )
+    if sum(position in block_positions for position in neighboring_blocks) >= 2:
+        return "cluster"
+    same_axis_run = (
+        (
+            (x - BLOCK_RUN_GAP_STEP, y) in block_positions
+            and (x - BLOCK_RUN_GAP_STEP * 2, y) in block_positions
+        )
+        or (
+            (x + BLOCK_RUN_GAP_STEP, y) in block_positions
+            and (x + BLOCK_RUN_GAP_STEP * 2, y) in block_positions
+        )
+        or (
+            (x, y - BLOCK_RUN_GAP_STEP) in block_positions
+            and (x, y - BLOCK_RUN_GAP_STEP * 2) in block_positions
+        )
+        or (
+            (x, y + BLOCK_RUN_GAP_STEP) in block_positions
+            and (x, y + BLOCK_RUN_GAP_STEP * 2) in block_positions
+        )
+    )
+    if same_axis_run:
+        return "axis_extension"
+    return None
 
 
 def _normalize_full_spike_detections(detections: list[Detection]) -> list[Detection]:
