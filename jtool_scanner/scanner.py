@@ -85,6 +85,10 @@ BLOCKLIKE_SPIKE_BLOCK_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.001
 BLOCK_RUN_GAP_STEP = 32
 BLOCK_RUN_GAP_MIN_BLOCK_SCORE = 0.12
 BLOCK_RUN_GAP_MIN_EDGE_DENSITY = 0.11
+BLOCK_RUN_GAP_HOLLOW_MIN_BLOCK_SCORE = 0.04
+BLOCK_RUN_GAP_HOLLOW_MIN_EDGE_DENSITY = 0.06
+BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE = 0.035
+BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE = 0.02
 BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
@@ -1238,9 +1242,7 @@ def _recover_block_run_gaps(
                 continue
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             block = _classify_block(patch)
-            if block.score < BLOCK_RUN_GAP_MIN_BLOCK_SCORE:
-                continue
-            if patch.edge_density < BLOCK_RUN_GAP_MIN_EDGE_DENSITY:
+            if not _accept_block_run_gap_patch(patch, block):
                 continue
             recovered.append(
                 _geometry_detection(
@@ -1255,6 +1257,23 @@ def _recover_block_run_gaps(
                 )
             )
     return recovered
+
+
+def _accept_block_run_gap_patch(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+) -> bool:
+    if (
+        block.score >= BLOCK_RUN_GAP_MIN_BLOCK_SCORE
+        and patch.edge_density >= BLOCK_RUN_GAP_MIN_EDGE_DENSITY
+    ):
+        return True
+    return (
+        block.score >= BLOCK_RUN_GAP_HOLLOW_MIN_BLOCK_SCORE
+        and patch.edge_density >= BLOCK_RUN_GAP_HOLLOW_MIN_EDGE_DENSITY
+        and patch.border_score >= BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE
+        and patch.center_score <= BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE
+    )
 
 
 def _is_block_run_gap(x: int, y: int, block_positions: set[tuple[int, int]]) -> bool:

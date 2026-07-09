@@ -17,6 +17,7 @@ from jtool_scanner.scanner import (
     _GeometryPatchCandidate,
     _PatchFeatures,
     _accept_block,
+    _accept_block_run_gap_patch,
     _accept_full_spike,
     _accept_mini_spike,
     _dedupe_geometry,
@@ -196,6 +197,48 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (96, 96)}))
         self.assertTrue(_is_block_run_gap(64, 96, {(64, 64), (64, 128)}))
         self.assertFalse(_is_block_run_gap(64, 96, {(32, 96), (64, 128)}))
+
+    def test_block_run_gap_patch_accepts_strong_or_hollow_outline(self) -> None:
+        strong_patch = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.02,
+            center_score=0.10,
+        )
+        hollow_patch = _PatchFeatures(
+            (),
+            edge_density=0.06,
+            border_score=0.04,
+            center_score=0.0,
+        )
+
+        self.assertTrue(
+            _accept_block_run_gap_patch(
+                strong_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.12),
+            )
+        )
+        self.assertTrue(
+            _accept_block_run_gap_patch(
+                hollow_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.04),
+            )
+        )
+
+    def test_block_run_gap_patch_rejects_weak_noise(self) -> None:
+        weak_patch = _PatchFeatures(
+            (),
+            edge_density=0.05,
+            border_score=0.04,
+            center_score=0.0,
+        )
+
+        self.assertFalse(
+            _accept_block_run_gap_patch(
+                weak_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.04),
+            )
+        )
 
 
 if __name__ == "__main__":
