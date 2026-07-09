@@ -77,6 +77,11 @@ BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
 PREFERRED_BLOCK_ALIGNMENT_STEP = 32
+BLOCKLIKE_SPIKE_MIN_BLOCK_SCORE = 0.14
+BLOCKLIKE_SPIKE_MAX_SPIKE_SCORE = 0.28
+BLOCKLIKE_SPIKE_MIN_BORDER_SCORE = 0.12
+BLOCKLIKE_SPIKE_MAX_CENTER_SCORE = 0.02
+BLOCKLIKE_SPIKE_BLOCK_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.001
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -745,18 +750,32 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
 
     for candidate in patch_candidates:
         if candidate.spike and _accept_full_spike(candidate.spike, candidate.block):
-            detections.append(
-                _geometry_detection(
-                    candidate.spike.kind,
-                    candidate.spike.type_id,
-                    candidate.x,
-                    candidate.y,
-                    candidate.spike.score,
-                    image,
-                    room,
-                    GRID_SIZE,
+            if _is_blocklike_spike_candidate(candidate):
+                detections.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        candidate.x,
+                        candidate.y,
+                        max(BLOCKLIKE_SPIKE_BLOCK_SCORE, candidate.block.score),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
                 )
-            )
+            else:
+                detections.append(
+                    _geometry_detection(
+                        candidate.spike.kind,
+                        candidate.spike.type_id,
+                        candidate.x,
+                        candidate.y,
+                        candidate.spike.score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
         elif _accept_block(candidate):
             detections.append(
                 _geometry_detection(
@@ -1113,6 +1132,18 @@ def _accept_block(candidate: _GeometryPatchCandidate) -> bool:
     return (
         _is_block_aligned(candidate.x, candidate.y)
         and candidate.block.score >= WEAK_BLOCK_ALIGNED_MIN_SCORE
+    )
+
+
+def _is_blocklike_spike_candidate(candidate: _GeometryPatchCandidate) -> bool:
+    if not candidate.spike:
+        return False
+    return (
+        _is_block_aligned_to(candidate.x, candidate.y, PREFERRED_BLOCK_ALIGNMENT_STEP)
+        and candidate.block.score >= BLOCKLIKE_SPIKE_MIN_BLOCK_SCORE
+        and candidate.spike.score <= BLOCKLIKE_SPIKE_MAX_SPIKE_SCORE
+        and candidate.patch.border_score >= BLOCKLIKE_SPIKE_MIN_BORDER_SCORE
+        and candidate.patch.center_score <= BLOCKLIKE_SPIKE_MAX_CENTER_SCORE
     )
 
 

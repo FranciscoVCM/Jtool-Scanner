@@ -20,6 +20,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _dedupe_geometry,
+    _is_blocklike_spike_candidate,
     _normalize_full_spike_origin,
     _outline_block_score,
 )
@@ -151,6 +152,44 @@ class ScannerGeometryTests(unittest.TestCase):
         result = _dedupe_geometry([half_shifted, aligned_32])
 
         self.assertEqual([(det.x, det.y) for det in result], [(96, 96)])
+
+    def test_blocklike_spike_candidate_accepts_hollow_aligned_outline(self) -> None:
+        candidate = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.12, border_score=0.16, center_score=0.0),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.26),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.15),
+        )
+
+        self.assertTrue(_is_blocklike_spike_candidate(candidate))
+
+    def test_blocklike_spike_candidate_rejects_unclear_block_shape(self) -> None:
+        high_center = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.12, border_score=0.16, center_score=0.04),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.26),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.15),
+        )
+        off_grid = _GeometryPatchCandidate(
+            112,
+            128,
+            _PatchFeatures((), edge_density=0.12, border_score=0.16, center_score=0.0),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.26),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.15),
+        )
+        strong_spike = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.12, border_score=0.16, center_score=0.0),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.40),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.15),
+        )
+
+        self.assertFalse(_is_blocklike_spike_candidate(high_center))
+        self.assertFalse(_is_blocklike_spike_candidate(off_grid))
+        self.assertFalse(_is_blocklike_spike_candidate(strong_spike))
 
 
 if __name__ == "__main__":
