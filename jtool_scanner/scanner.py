@@ -90,8 +90,6 @@ BLOCK_RUN_GAP_HOLLOW_MIN_BLOCK_SCORE = 0.04
 BLOCK_RUN_GAP_HOLLOW_MIN_EDGE_DENSITY = 0.06
 BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE = 0.035
 BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE = 0.02
-BLOCK_RUN_EXTENSION_MIN_BLOCK_SCORE = 0.14
-BLOCK_RUN_EXTENSION_MIN_EDGE_DENSITY = 0.12
 BLOCK_RUN_GAP_MAX_PASSES = 6
 BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
 OUTLINE_BLOCK_GRID_STEP = 16
@@ -1278,11 +1276,6 @@ def _accept_block_run_gap_patch(
     block: _GeometryClass,
     support: str = "cluster",
 ) -> bool:
-    if support == "axis_extension":
-        return (
-            block.score >= BLOCK_RUN_EXTENSION_MIN_BLOCK_SCORE
-            and patch.edge_density >= BLOCK_RUN_EXTENSION_MIN_EDGE_DENSITY
-        )
     if (
         block.score >= BLOCK_RUN_GAP_MIN_BLOCK_SCORE
         and patch.edge_density >= BLOCK_RUN_GAP_MIN_EDGE_DENSITY
@@ -1305,12 +1298,12 @@ def _block_run_gap_support(
     y: int,
     block_positions: set[tuple[int, int]],
 ) -> str | None:
-    neighboring_blocks = (
+    neighboring_blocks = [
         (x - BLOCK_RUN_GAP_STEP, y),
         (x + BLOCK_RUN_GAP_STEP, y),
         (x, y - BLOCK_RUN_GAP_STEP),
         (x, y + BLOCK_RUN_GAP_STEP),
-    )
+    ]
     if sum(position in block_positions for position in neighboring_blocks) >= 2:
         return "cluster"
     same_axis_run = (
@@ -1333,6 +1326,8 @@ def _block_run_gap_support(
     )
     if same_axis_run:
         return "axis_extension"
+    if any(position in block_positions for position in neighboring_blocks):
+        return "neighbor_extension"
     return None
 
 

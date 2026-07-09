@@ -221,7 +221,8 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_block_run_gap(64, 96, {(64, 64), (64, 128)}))
         self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (64, 128)}))
         self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (0, 96)}))
-        self.assertFalse(_is_block_run_gap(64, 96, {(32, 96)}))
+        self.assertTrue(_is_block_run_gap(64, 96, {(32, 96)}))
+        self.assertFalse(_is_block_run_gap(64, 96, set()))
 
     def test_block_run_gap_patch_accepts_strong_or_hollow_outline(self) -> None:
         strong_patch = _PatchFeatures(
@@ -250,13 +251,7 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         )
 
-    def test_block_run_extension_requires_stronger_patch(self) -> None:
-        strong_patch = _PatchFeatures(
-            (),
-            edge_density=0.12,
-            border_score=0.02,
-            center_score=0.10,
-        )
+    def test_block_run_extension_accepts_hollow_outline_patch(self) -> None:
         hollow_patch = _PatchFeatures(
             (),
             edge_density=0.06,
@@ -266,16 +261,9 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertTrue(
             _accept_block_run_gap_patch(
-                strong_patch,
-                _GeometryClass("block", OBJ_BLOCK, 0.14),
-                "axis_extension",
-            )
-        )
-        self.assertFalse(
-            _accept_block_run_gap_patch(
                 hollow_patch,
                 _GeometryClass("block", OBJ_BLOCK, 0.04),
-                "axis_extension",
+                "neighbor_extension",
             )
         )
 
