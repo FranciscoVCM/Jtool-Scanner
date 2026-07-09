@@ -73,6 +73,7 @@ FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 FULL_SPIKE_AXIS_SNAP_STEP = 16
+FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -838,7 +839,8 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
 
     detections = _dedupe_geometry(detections)
     detections = _recover_block_run_gaps(detections, image, room)
-    return _normalize_full_spike_detections(_dedupe_geometry(detections))
+    normalized = _normalize_full_spike_detections(_dedupe_geometry(detections))
+    return _dedupe_normalized_full_spikes(normalized)
 
 
 @dataclass(frozen=True, slots=True)
@@ -1343,6 +1345,26 @@ def _normalize_full_spike_detections(detections: list[Detection]) -> list[Detect
             )
         )
     return normalized
+
+
+def _dedupe_normalized_full_spikes(detections: list[Detection]) -> list[Detection]:
+    kept_full_spikes: list[Detection] = []
+    removed_full_spike_ids: set[int] = set()
+    full_spikes = sorted(
+        (det for det in detections if det.type_id in FULL_SPIKE_TYPES),
+        key=lambda det: (-det.score, det.y, det.x),
+    )
+    for detection in full_spikes:
+        if any(
+            detection.type_id == kept.type_id
+            and distance((detection.x, detection.y), (kept.x, kept.y))
+            < FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE
+            for kept in kept_full_spikes
+        ):
+            removed_full_spike_ids.add(id(detection))
+            continue
+        kept_full_spikes.append(detection)
+    return [det for det in detections if id(det) not in removed_full_spike_ids]
 
 
 def _normalize_full_spike_origin(type_id: int, x: int, y: int) -> tuple[int, int]:

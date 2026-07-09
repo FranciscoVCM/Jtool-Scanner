@@ -21,6 +21,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _dedupe_geometry,
+    _dedupe_normalized_full_spikes,
     _is_block_run_gap,
     _is_blocklike_spike_candidate,
     _normalize_full_spike_origin,
@@ -69,6 +70,28 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertEqual(
             _normalize_full_spike_origin(OBJ_SPIKE_RIGHT, 164, 73),
             (164, 80),
+        )
+
+    def test_normalized_full_spike_dedupe_removes_same_direction_duplicate(self) -> None:
+        strong = Detection("spike_up", OBJ_SPIKE_UP, 64, 96, 0.80, Box(64, 96, 32, 32))
+        weak = Detection("spike_up", OBJ_SPIKE_UP, 72, 104, 0.50, Box(72, 104, 32, 32))
+        other_direction = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            72,
+            104,
+            0.40,
+            Box(72, 104, 32, 32),
+        )
+
+        result = _dedupe_normalized_full_spikes([weak, other_direction, strong])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [
+                (OBJ_SPIKE_DOWN, 72, 104),
+                (OBJ_SPIKE_UP, 64, 96),
+            ],
         )
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
