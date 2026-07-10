@@ -96,6 +96,13 @@ BLOCK_COLOR_ANCHOR_COEXIST_MIN_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE
 BLOCK_COLOR_ANCHOR_TYPES = frozenset(
     {OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT, OBJ_WATER_2}
 )
+RED_OUTLINE_ROOM_MIN_DARK_RATIO = 0.65
+RED_OUTLINE_ROOM_MIN_RED_DARK_RATIO = 0.12
+RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP = 8
+RED_OUTLINE_BLOCK_RUN_MAX_GAP = 192
+RED_OUTLINE_BLOCK_FILL_MAX_EDGE = 0.07
+RED_OUTLINE_BLOCK_FILL_MAX_BORDER = 0.06
+RED_OUTLINE_BLOCK_FILL_MAX_CENTER = 0.02
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -842,8 +849,13 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
 
     detections = _dedupe_geometry(detections)
     detections = _recover_block_run_gaps(detections, image, room)
+    detections = _recover_red_outline_block_runs(detections, image, room)
     normalized = _normalize_full_spike_detections(_dedupe_geometry(detections))
-    return _dedupe_normalized_full_spikes(normalized)
+    return _recover_red_outline_block_runs(
+        _dedupe_normalized_full_spikes(normalized),
+        image,
+        room,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1245,16 +1257,21 @@ def _recover_block_run_gaps(
             for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, BLOCK_RUN_GAP_STEP):
                 if (x, y) in block_positions:
                     continue
-                if any(
-                    distance((x, y), (det.x, det.y)) < 28
-                    for det in block_detections
-                ):
-                    continue
                 support = _block_run_gap_support(x, y, block_positions)
                 if support is None:
                     continue
                 patch = _patch_features(image, room, x, y, GRID_SIZE)
                 block = _classify_block(patch)
+                close_to_block = any(
+                    distance((x, y), (det.x, det.y)) < 28
+                    for det in block_detections
+                )
+                if close_to_block and not _can_recover_nearby_hollow_block(
+                    patch,
+                    block,
+                    support,
+                ):
+                    continue
                 if not _accept_block_run_gap_patch(patch, block, support):
                     continue
                 added.append(
@@ -1273,6 +1290,116 @@ def _recover_block_run_gaps(
             break
         recovered.extend(added)
     return recovered
+
+
+def _can_recover_nearby_hollow_block(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    support: str,
+) -> bool:
+    return (
+        support == "cluster"
+        and block.score >= BLOCK_RUN_GAP_HOLLOW_MIN_BLOCK_SCORE
+        and patch.edge_density >= BLOCK_RUN_GAP_HOLLOW_MIN_EDGE_DENSITY
+        and patch.border_score >= BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE
+        and patch.center_score <= BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE
+    )
+
+
+def _recover_red_outline_block_runs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if not _is_dark_red_outline_room(image, room):
+        return detections
+
+    recovered = list(detections)
+    block_detections = [det for det in recovered if det.type_id == OBJ_BLOCK]
+    block_positions = {(det.x, det.y) for det in block_detections}
+    anchors: dict[int, set[int]] = defaultdict(set)
+    for det in block_detections:
+        anchor_x = round_to_step(det.x, PREFERRED_BLOCK_ALIGNMENT_STEP)
+        anchor_y = round_to_step(det.y, PREFERRED_BLOCK_ALIGNMENT_STEP)
+        if (
+            abs(det.x - anchor_x) <= RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
+            and abs(det.y - anchor_y) <= RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
+        ):
+            anchors[anchor_x].add(anchor_y)
+
+    added: list[Detection] = []
+    for x, y_values in anchors.items():
+        if x < 0 or x > ROOM_WIDTH - GRID_SIZE:
+            continue
+        in_room_y_values = sorted(
+            y for y in y_values if 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+        )
+        for start_y, end_y in zip(in_room_y_values, in_room_y_values[1:]):
+            gap = end_y - start_y
+            if (
+                gap <= BLOCK_RUN_GAP_STEP
+                or gap > RED_OUTLINE_BLOCK_RUN_MAX_GAP
+                or gap % BLOCK_RUN_GAP_STEP
+            ):
+                continue
+            for y in range(start_y + BLOCK_RUN_GAP_STEP, end_y, BLOCK_RUN_GAP_STEP):
+                if (x, y) in block_positions:
+                    continue
+                if any(
+                    distance((x, y), (det.x, det.y)) < 24
+                    for det in block_detections
+                ):
+                    continue
+                patch = _patch_features(image, room, x, y, GRID_SIZE)
+                if not _is_red_outline_block_run_fill_patch(patch):
+                    continue
+                added.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        BLOCK_RUN_GAP_SCORE,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+                block_positions.add((x, y))
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_dark_red_outline_room(image: RGBImage, room: Box) -> bool:
+    dark = red_dark = total = 0
+    step = 16
+    for y in range(max(0, room.y), min(image.height, room.bottom), step):
+        row = image.row(y)
+        for x in range(max(0, room.x), min(image.width, room.right), step):
+            offset = x * 3
+            r = row[offset]
+            g = row[offset + 1]
+            b = row[offset + 2]
+            total += 1
+            if r + g + b < 80:
+                dark += 1
+            if r > 60 and g < 50 and b < 50:
+                red_dark += 1
+    if total == 0:
+        return False
+    return (
+        dark / total >= RED_OUTLINE_ROOM_MIN_DARK_RATIO
+        and red_dark / total >= RED_OUTLINE_ROOM_MIN_RED_DARK_RATIO
+    )
+
+
+def _is_red_outline_block_run_fill_patch(patch: _PatchFeatures) -> bool:
+    return (
+        patch.edge_density <= RED_OUTLINE_BLOCK_FILL_MAX_EDGE
+        and patch.border_score <= RED_OUTLINE_BLOCK_FILL_MAX_BORDER
+        and patch.center_score <= RED_OUTLINE_BLOCK_FILL_MAX_CENTER
+    )
 
 
 def _accept_block_run_gap_patch(

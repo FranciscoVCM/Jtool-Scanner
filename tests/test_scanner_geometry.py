@@ -26,8 +26,10 @@ from jtool_scanner.scanner import (
     _dedupe_geometry,
     _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
+    _can_recover_nearby_hollow_block,
     _is_block_run_gap,
     _is_blocklike_spike_candidate,
+    _is_red_outline_block_run_fill_patch,
     _normalize_full_spike_origin,
     _outline_block_score,
 )
@@ -311,6 +313,66 @@ class ScannerGeometryTests(unittest.TestCase):
                 "neighbor_extension",
             )
         )
+
+    def test_nearby_hollow_block_recovery_requires_cluster_support(self) -> None:
+        hollow_patch = _PatchFeatures(
+            (),
+            edge_density=0.06,
+            border_score=0.04,
+            center_score=0.0,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.04)
+
+        self.assertTrue(
+            _can_recover_nearby_hollow_block(hollow_patch, block, "cluster")
+        )
+        self.assertFalse(
+            _can_recover_nearby_hollow_block(
+                hollow_patch,
+                block,
+                "neighbor_extension",
+            )
+        )
+
+    def test_nearby_hollow_block_recovery_rejects_center_heavy_patch(self) -> None:
+        center_heavy_patch = _PatchFeatures(
+            (),
+            edge_density=0.06,
+            border_score=0.04,
+            center_score=0.03,
+        )
+
+        self.assertFalse(
+            _can_recover_nearby_hollow_block(
+                center_heavy_patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.04),
+                "cluster",
+            )
+        )
+
+    def test_red_outline_run_fill_patch_accepts_only_low_signal_interiors(self) -> None:
+        low_signal = _PatchFeatures(
+            (),
+            edge_density=0.03,
+            border_score=0.02,
+            center_score=0.0,
+        )
+        textured = _PatchFeatures(
+            (),
+            edge_density=0.08,
+            border_score=0.02,
+            center_score=0.0,
+        )
+        border_heavy = _PatchFeatures(
+            (),
+            edge_density=0.03,
+            border_score=0.07,
+            center_score=0.0,
+        )
+
+        self.assertTrue(_is_red_outline_block_run_fill_patch(low_signal))
+        self.assertFalse(_is_red_outline_block_run_fill_patch(textured))
+        self.assertFalse(_is_red_outline_block_run_fill_patch(border_heavy))
 
     def test_block_run_gap_patch_rejects_weak_noise(self) -> None:
         weak_patch = _PatchFeatures(
