@@ -35,6 +35,7 @@ from jtool_scanner.scanner import (
     _is_dark_outline_half_step_full_spike_candidate,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
+    _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
@@ -114,7 +115,7 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
-        image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        image = _textured_test_image()
         first = Detection(
             "spike_up",
             OBJ_SPIKE_UP,
@@ -144,7 +145,7 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
     def test_full_spike_run_gap_recovery_keeps_existing_midpoint_unique(self) -> None:
-        image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        image = _textured_test_image()
         detections = [
             Detection(
                 "spike_up",
@@ -185,6 +186,28 @@ class ScannerGeometryTests(unittest.TestCase):
                 for det in result
                 if det.type_id == OBJ_SPIKE_UP and det.x == 224 and det.y == 208
             ),
+        )
+
+    def test_full_spike_run_gap_patch_requires_textured_midpoint(self) -> None:
+        self.assertTrue(
+            _is_full_spike_run_gap_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.35,
+                    border_score=0.20,
+                    center_score=0.25,
+                )
+            )
+        )
+        self.assertFalse(
+            _is_full_spike_run_gap_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.34,
+                    border_score=0.20,
+                    center_score=0.25,
+                )
+            )
         )
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
@@ -846,6 +869,15 @@ class ScannerGeometryTests(unittest.TestCase):
                 _GeometryClass("block", OBJ_BLOCK, 0.04),
             )
         )
+
+
+def _textured_test_image(width: int = 800, height: int = 608) -> RGBImage:
+    data = bytearray()
+    for y in range(height):
+        for x in range(width):
+            value = 255 if (x // 2 + y // 2) % 2 else 0
+            data.extend((value, value, value))
+    return RGBImage(width, height, bytes(data))
 
 
 if __name__ == "__main__":

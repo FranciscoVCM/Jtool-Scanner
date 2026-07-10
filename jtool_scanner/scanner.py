@@ -76,6 +76,9 @@ FULL_SPIKE_AXIS_SNAP_STEP = 16
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_RUN_GAP_DISTANCE = 64
 FULL_SPIKE_RUN_GAP_SCORE = 0.241
+FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY = 0.35
+FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE = 0.20
+FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE = 0.25
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -1675,6 +1678,9 @@ def _recover_full_spike_run_gaps(
                 and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
             ):
                 continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not _is_full_spike_run_gap_patch(patch):
+                continue
             added.append(
                 _geometry_detection(
                     first.kind,
@@ -1692,6 +1698,14 @@ def _recover_full_spike_run_gaps(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _is_full_spike_run_gap_patch(patch: _PatchFeatures) -> bool:
+    return (
+        patch.edge_density >= FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY
+        and patch.border_score >= FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE
+        and patch.center_score >= FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE
+    )
 
 
 def _recover_edge_blocks(
