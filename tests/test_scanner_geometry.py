@@ -35,6 +35,7 @@ from jtool_scanner.scanner import (
     _is_dark_outline_half_step_full_spike_candidate,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
+    _is_half_step_supported_full_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -599,6 +600,46 @@ class ScannerGeometryTests(unittest.TestCase):
                     0.18,
                     direction_margin=0.0,
                     outline_delta=0.08,
+                ),
+                block,
+                patch,
+            )
+        )
+
+    def test_half_step_supported_full_spike_requires_low_block_score(self) -> None:
+        spike = _GeometryClass(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            0.23,
+            direction_margin=0.05,
+            outline_delta=0.10,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.20)
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.20,
+            border_score=0.08,
+            center_score=0.28,
+        )
+
+        self.assertTrue(
+            _is_half_step_supported_full_spike_candidate(spike, block, patch)
+        )
+        self.assertFalse(
+            _is_half_step_supported_full_spike_candidate(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.23),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _is_half_step_supported_full_spike_candidate(
+                _GeometryClass(
+                    "spike_down",
+                    OBJ_SPIKE_DOWN,
+                    0.23,
+                    direction_margin=0.04,
+                    outline_delta=0.10,
                 ),
                 block,
                 patch,

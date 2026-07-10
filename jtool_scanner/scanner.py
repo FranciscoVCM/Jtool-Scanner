@@ -131,6 +131,12 @@ LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.04
 LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.01
 LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE = 0.22
 LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 96.0
+HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.23
+HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
+HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
+HALF_STEP_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE = 0.22
+HALF_STEP_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 96.0
+HALF_STEP_LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 64.0
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -1553,8 +1559,43 @@ def _recover_supported_full_spikes(
     recovered = list(detections)
     full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
     added: list[Detection] = []
-    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
-        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+    _recover_supported_full_spikes_on_grid(
+        image,
+        room,
+        full_spikes,
+        added,
+        PREFERRED_BLOCK_ALIGNMENT_STEP,
+        skip_aligned=False,
+    )
+    _recover_supported_full_spikes_on_grid(
+        image,
+        room,
+        full_spikes,
+        added,
+        FULL_SPIKE_AXIS_SNAP_STEP,
+        skip_aligned=True,
+    )
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _recover_supported_full_spikes_on_grid(
+    image: RGBImage,
+    room: Box,
+    full_spikes: list[Detection],
+    added: list[Detection],
+    step: int,
+    skip_aligned: bool,
+) -> None:
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            if (
+                skip_aligned
+                and x % PREFERRED_BLOCK_ALIGNMENT_STEP == 0
+                and y % PREFERRED_BLOCK_ALIGNMENT_STEP == 0
+            ):
+                continue
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             spike = _classify_full_spike(patch)
             if spike is None:
@@ -1566,11 +1607,13 @@ def _recover_supported_full_spikes(
             ):
                 continue
             block = _classify_block(patch)
-            if _is_supported_full_spike_candidate(spike, block, patch):
-                max_near_distance = SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
-            elif _is_low_signal_supported_full_spike_candidate(spike, block, patch):
-                max_near_distance = LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
-            else:
+            max_near_distance = _supported_full_spike_near_distance(
+                spike,
+                block,
+                patch,
+                half_step=skip_aligned,
+            )
+            if max_near_distance is None:
                 continue
             if not any(
                 det.type_id == spike.type_id
@@ -1592,9 +1635,6 @@ def _recover_supported_full_spikes(
                     GRID_SIZE,
                 )
             )
-    if added:
-        recovered.extend(added)
-    return recovered
 
 
 def _recover_edge_blocks(
@@ -1777,6 +1817,41 @@ def _is_low_signal_supported_full_spike_candidate(
         and spike.outline_delta >= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA
         and spike.direction_margin >= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN
         and block.score <= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE
+        and SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE
+        <= patch.center_score
+        <= SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE
+    )
+
+
+def _supported_full_spike_near_distance(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    half_step: bool,
+) -> float | None:
+    if not half_step:
+        if _is_supported_full_spike_candidate(spike, block, patch):
+            return SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+        if _is_low_signal_supported_full_spike_candidate(spike, block, patch):
+            return LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+        return None
+    if _is_half_step_supported_full_spike_candidate(spike, block, patch):
+        return HALF_STEP_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+    if _is_low_signal_supported_full_spike_candidate(spike, block, patch):
+        return HALF_STEP_LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+    return None
+
+
+def _is_half_step_supported_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    return (
+        spike.score >= HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_SCORE
+        and spike.outline_delta >= HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA
+        and spike.direction_margin >= HALF_STEP_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN
+        and block.score <= HALF_STEP_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE
         and SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE
         <= patch.center_score
         <= SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE
