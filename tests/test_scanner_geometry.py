@@ -29,9 +29,12 @@ from jtool_scanner.scanner import (
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
     _is_blocklike_spike_candidate,
+    _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_full_spike_candidate,
     _is_dark_outline_half_step_full_spike_candidate,
+    _is_edge_outline_block_patch,
+    _is_edge_weak_block_patch,
     _normalize_full_spike_origin,
     _outline_block_score,
 )
@@ -317,6 +320,44 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertFalse(_is_blocklike_spike_candidate(off_grid))
         self.assertFalse(_is_blocklike_spike_candidate(strong_spike))
 
+    def test_center_heavy_block_candidate_accepts_textured_block_shape(self) -> None:
+        candidate = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.35, border_score=0.10, center_score=0.50),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.45),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.32),
+        )
+
+        self.assertTrue(_is_center_heavy_block_candidate(candidate))
+
+    def test_center_heavy_block_candidate_rejects_weak_or_off_grid_shape(self) -> None:
+        weak_center = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.35, border_score=0.10, center_score=0.49),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.45),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.32),
+        )
+        weak_block = _GeometryPatchCandidate(
+            96,
+            128,
+            _PatchFeatures((), edge_density=0.35, border_score=0.10, center_score=0.50),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.45),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.31),
+        )
+        off_grid = _GeometryPatchCandidate(
+            100,
+            128,
+            _PatchFeatures((), edge_density=0.35, border_score=0.10, center_score=0.50),
+            spike=_GeometryClass("spike_up", OBJ_SPIKE_UP, 0.45),
+            block=_GeometryClass("block", OBJ_BLOCK, 0.32),
+        )
+
+        self.assertFalse(_is_center_heavy_block_candidate(weak_center))
+        self.assertFalse(_is_center_heavy_block_candidate(weak_block))
+        self.assertFalse(_is_center_heavy_block_candidate(off_grid))
+
     def test_block_run_gap_accepts_structural_neighbor_pairs(self) -> None:
         self.assertTrue(_is_block_run_gap(64, 96, {(32, 96), (96, 96)}))
         self.assertTrue(_is_block_run_gap(64, 96, {(64, 64), (64, 128)}))
@@ -481,6 +522,76 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_dark_outline_half_step_full_spike_candidate(candidate))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_score))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_outline))
+
+    def test_edge_outline_block_patch_accepts_hollow_edge_tile(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.18,
+            center_score=0.02,
+        )
+
+        self.assertTrue(_is_edge_outline_block_patch(patch))
+
+    def test_edge_outline_block_patch_rejects_weak_or_center_heavy_tile(self) -> None:
+        weak_edge = _PatchFeatures(
+            (),
+            edge_density=0.11,
+            border_score=0.18,
+            center_score=0.02,
+        )
+        weak_border = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.17,
+            center_score=0.02,
+        )
+        center_heavy = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.18,
+            center_score=0.03,
+        )
+
+        self.assertFalse(_is_edge_outline_block_patch(weak_edge))
+        self.assertFalse(_is_edge_outline_block_patch(weak_border))
+        self.assertFalse(_is_edge_outline_block_patch(center_heavy))
+
+    def test_edge_weak_block_patch_accepts_low_signal_room_edge_tile(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.08,
+            center_score=0.0,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.21)
+
+        self.assertTrue(_is_edge_weak_block_patch(patch, block))
+
+    def test_edge_weak_block_patch_rejects_weak_components(self) -> None:
+        block = _GeometryClass("block", OBJ_BLOCK, 0.21)
+        weak_block = _GeometryClass("block", OBJ_BLOCK, 0.20)
+        weak_edge = _PatchFeatures(
+            (),
+            edge_density=0.11,
+            border_score=0.08,
+            center_score=0.0,
+        )
+        weak_border = _PatchFeatures(
+            (),
+            edge_density=0.12,
+            border_score=0.07,
+            center_score=0.0,
+        )
+
+        self.assertFalse(
+            _is_edge_weak_block_patch(
+                _PatchFeatures((), 0.12, 0.08, 0.0),
+                weak_block,
+            )
+        )
+        self.assertFalse(_is_edge_weak_block_patch(weak_edge, block))
+        self.assertFalse(_is_edge_weak_block_patch(weak_border, block))
 
     def test_block_run_gap_patch_rejects_weak_noise(self) -> None:
         weak_patch = _PatchFeatures(

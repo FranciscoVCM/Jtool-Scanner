@@ -83,6 +83,15 @@ BLOCKLIKE_SPIKE_MAX_SPIKE_SCORE = 0.28
 BLOCKLIKE_SPIKE_MIN_BORDER_SCORE = 0.12
 BLOCKLIKE_SPIKE_MAX_CENTER_SCORE = 0.02
 BLOCKLIKE_SPIKE_BLOCK_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.001
+CENTER_HEAVY_BLOCK_MIN_BLOCK_SCORE = 0.32
+CENTER_HEAVY_BLOCK_MIN_CENTER_SCORE = 0.50
+EDGE_BLOCK_EXTENSION_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.003
+EDGE_OUTLINE_BLOCK_MIN_EDGE = 0.12
+EDGE_OUTLINE_BLOCK_MIN_BORDER = 0.18
+EDGE_OUTLINE_BLOCK_MAX_CENTER = 0.02
+EDGE_WEAK_BLOCK_MIN_BLOCK_SCORE = 0.21
+EDGE_WEAK_BLOCK_MIN_EDGE = 0.12
+EDGE_WEAK_BLOCK_MIN_BORDER = 0.08
 BLOCK_RUN_GAP_STEP = 32
 BLOCK_RUN_GAP_MIN_BLOCK_SCORE = 0.12
 BLOCK_RUN_GAP_MIN_EDGE_DENSITY = 0.11
@@ -803,6 +812,19 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                         GRID_SIZE,
                     )
                 )
+                if _is_center_heavy_block_candidate(candidate):
+                    detections.append(
+                        _geometry_detection(
+                            "block",
+                            OBJ_BLOCK,
+                            candidate.x,
+                            candidate.y,
+                            candidate.block.score,
+                            image,
+                            room,
+                            GRID_SIZE,
+                        )
+                    )
         elif _accept_block(candidate):
             detections.append(
                 _geometry_detection(
@@ -857,7 +879,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     detections = _recover_block_run_gaps(detections, image, room)
     detections = _recover_dark_outline_block_runs(detections, image, room)
     normalized = _normalize_full_spike_detections(_dedupe_geometry(detections))
-    return _recover_dark_outline_full_spikes(
+    recovered = _recover_dark_outline_full_spikes(
         _recover_dark_outline_block_runs(
             _dedupe_normalized_full_spikes(normalized),
             image,
@@ -866,6 +888,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
         image,
         room,
     )
+    return _recover_edge_blocks(recovered, image, room)
 
 
 @dataclass(frozen=True, slots=True)
@@ -1186,6 +1209,14 @@ def _is_blocklike_spike_candidate(candidate: _GeometryPatchCandidate) -> bool:
     )
 
 
+def _is_center_heavy_block_candidate(candidate: _GeometryPatchCandidate) -> bool:
+    return (
+        _is_block_aligned(candidate.x, candidate.y)
+        and candidate.block.score >= CENTER_HEAVY_BLOCK_MIN_BLOCK_SCORE
+        and candidate.patch.center_score >= CENTER_HEAVY_BLOCK_MIN_CENTER_SCORE
+    )
+
+
 def _outline_block_score(candidate: _GeometryPatchCandidate) -> float | None:
     if candidate.x % OUTLINE_BLOCK_GRID_STEP or candidate.y % OUTLINE_BLOCK_GRID_STEP:
         return None
@@ -1456,6 +1487,112 @@ def _recover_dark_outline_full_spikes(
     return recovered
 
 
+def _recover_edge_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    block_positions = {(det.x, det.y) for det in recovered if det.type_id == OBJ_BLOCK}
+    geometry_positions = {
+        (det.x, det.y)
+        for det in recovered
+        if det.type_id in GEOMETRY_TYPES
+    }
+    added: list[Detection] = []
+
+    for edge_x, offscreen_x, support_x in (
+        (0, -GRID_SIZE, GRID_SIZE),
+        (ROOM_WIDTH - GRID_SIZE, ROOM_WIDTH, ROOM_WIDTH - GRID_SIZE * 2),
+    ):
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+            if (offscreen_x, y) in block_positions:
+                continue
+            if (edge_x, y) not in block_positions:
+                continue
+            has_vertical_support = (
+                (edge_x, y - GRID_SIZE) in block_positions
+                and (edge_x, y + GRID_SIZE) in block_positions
+            )
+            has_inward_geometry = (support_x, y) in geometry_positions
+            has_inward_block = (support_x, y) in block_positions
+            if not (
+                has_vertical_support
+                and has_inward_geometry
+                and not has_inward_block
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    offscreen_x,
+                    y,
+                    EDGE_BLOCK_EXTENSION_SCORE,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            block_positions.add((offscreen_x, y))
+
+    for x in (0, ROOM_WIDTH - GRID_SIZE):
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, BLOCK_ALIGNMENT_STEP):
+            if (x, y) in block_positions:
+                continue
+            if (x, y) in geometry_positions:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not _is_edge_outline_block_patch(patch):
+                continue
+            added.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    max(EDGE_BLOCK_EXTENSION_SCORE, _classify_block(patch).score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            block_positions.add((x, y))
+
+    y = ROOM_HEIGHT - GRID_SIZE
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+        if (x, y) in block_positions:
+            continue
+        if (x, y) in geometry_positions:
+            continue
+        if not (
+            (x - GRID_SIZE, y) in geometry_positions
+            or (x + GRID_SIZE, y) in geometry_positions
+        ):
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        block = _classify_block(patch)
+        if not _is_edge_weak_block_patch(patch, block):
+            continue
+        added.append(
+            _geometry_detection(
+                "block",
+                OBJ_BLOCK,
+                x,
+                y,
+                max(EDGE_BLOCK_EXTENSION_SCORE, block.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        block_positions.add((x, y))
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
 def _is_dark_outline_room(image: RGBImage, room: Box) -> bool:
     dark = outline = total = 0
     step = 16
@@ -1501,6 +1638,25 @@ def _is_dark_outline_half_step_full_spike_candidate(spike: _GeometryClass) -> bo
         spike.score >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE
         and spike.outline_delta
         >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA
+    )
+
+
+def _is_edge_outline_block_patch(patch: _PatchFeatures) -> bool:
+    return (
+        patch.edge_density >= EDGE_OUTLINE_BLOCK_MIN_EDGE
+        and patch.border_score >= EDGE_OUTLINE_BLOCK_MIN_BORDER
+        and patch.center_score <= EDGE_OUTLINE_BLOCK_MAX_CENTER
+    )
+
+
+def _is_edge_weak_block_patch(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+) -> bool:
+    return (
+        block.score >= EDGE_WEAK_BLOCK_MIN_BLOCK_SCORE
+        and patch.edge_density >= EDGE_WEAK_BLOCK_MIN_EDGE
+        and patch.border_score >= EDGE_WEAK_BLOCK_MIN_BORDER
     )
 
 
