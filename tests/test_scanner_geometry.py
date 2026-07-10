@@ -37,6 +37,7 @@ from jtool_scanner.scanner import (
     _is_edge_weak_block_patch,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
+    _is_supported_full_spike_candidate,
     _normalize_full_spike_origin,
     _outline_block_score,
     _ColorProfile,
@@ -525,6 +526,43 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_dark_outline_half_step_full_spike_candidate(candidate))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_score))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_outline))
+
+    def test_supported_full_spike_candidate_requires_nonblock_triangle_body(self) -> None:
+        spike = _GeometryClass(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            0.24,
+            direction_margin=0.06,
+            outline_delta=0.12,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.32)
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.18,
+            border_score=0.08,
+            center_score=0.28,
+        )
+
+        self.assertTrue(_is_supported_full_spike_candidate(spike, block, patch))
+        self.assertFalse(
+            _is_supported_full_spike_candidate(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.41),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _is_supported_full_spike_candidate(
+                spike,
+                block,
+                _PatchFeatures(
+                    (),
+                    edge_density=0.18,
+                    border_score=0.08,
+                    center_score=0.10,
+                ),
+            )
+        )
 
     def test_pale_outline_apple_room_requires_bright_low_saturation_room(self) -> None:
         self.assertTrue(_is_pale_outline_apple_room(_ColorProfile(230, 232, 231, 0.02)))

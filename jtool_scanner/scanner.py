@@ -118,6 +118,14 @@ DARK_OUTLINE_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.12
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE = 0.275
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE = 24.0
+SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.22
+SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
+SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
+SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE = 0.40
+SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE = 0.20
+SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE = 0.35
+SUPPORTED_FULL_SPIKE_MIN_NEAR_DISTANCE = 24.0
+SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 48.0
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -932,6 +940,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
         image,
         room,
     )
+    recovered = _recover_supported_full_spikes(recovered, image, room)
     return _recover_edge_blocks(recovered, image, room)
 
 
@@ -1531,6 +1540,54 @@ def _recover_dark_outline_full_spikes(
     return recovered
 
 
+def _recover_supported_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    added: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y)) < SUPPORTED_FULL_SPIKE_MIN_NEAR_DISTANCE
+                for det in [*full_spikes, *added]
+            ):
+                continue
+            block = _classify_block(patch)
+            if not _is_supported_full_spike_candidate(spike, block, patch):
+                continue
+            if not any(
+                det.type_id == spike.type_id
+                and SUPPORTED_FULL_SPIKE_MIN_NEAR_DISTANCE
+                <= distance((x, y), (det.x, det.y))
+                <= SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+                for det in full_spikes
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    max(0.241, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
 def _recover_edge_blocks(
     detections: list[Detection],
     image: RGBImage,
@@ -1682,6 +1739,22 @@ def _is_dark_outline_half_step_full_spike_candidate(spike: _GeometryClass) -> bo
         spike.score >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE
         and spike.outline_delta
         >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA
+    )
+
+
+def _is_supported_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    return (
+        spike.score >= SUPPORTED_FULL_SPIKE_MIN_SCORE
+        and spike.outline_delta >= SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA
+        and spike.direction_margin >= SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN
+        and block.score <= SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE
+        and SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE
+        <= patch.center_score
+        <= SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE
     )
 
 
