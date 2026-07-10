@@ -126,6 +126,11 @@ SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE = 0.20
 SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE = 0.35
 SUPPORTED_FULL_SPIKE_MIN_NEAR_DISTANCE = 24.0
 SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 48.0
+LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.17
+LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.04
+LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.01
+LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE = 0.22
+LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE = 96.0
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -1561,13 +1566,17 @@ def _recover_supported_full_spikes(
             ):
                 continue
             block = _classify_block(patch)
-            if not _is_supported_full_spike_candidate(spike, block, patch):
+            if _is_supported_full_spike_candidate(spike, block, patch):
+                max_near_distance = SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+            elif _is_low_signal_supported_full_spike_candidate(spike, block, patch):
+                max_near_distance = LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+            else:
                 continue
             if not any(
                 det.type_id == spike.type_id
                 and SUPPORTED_FULL_SPIKE_MIN_NEAR_DISTANCE
                 <= distance((x, y), (det.x, det.y))
-                <= SUPPORTED_FULL_SPIKE_MAX_NEAR_DISTANCE
+                <= max_near_distance
                 for det in full_spikes
             ):
                 continue
@@ -1752,6 +1761,22 @@ def _is_supported_full_spike_candidate(
         and spike.outline_delta >= SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA
         and spike.direction_margin >= SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN
         and block.score <= SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE
+        and SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE
+        <= patch.center_score
+        <= SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE
+    )
+
+
+def _is_low_signal_supported_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    return (
+        spike.score >= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_SCORE
+        and spike.outline_delta >= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA
+        and spike.direction_margin >= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN
+        and block.score <= LOW_SIGNAL_SUPPORTED_FULL_SPIKE_MAX_BLOCK_SCORE
         and SUPPORTED_FULL_SPIKE_MIN_CENTER_SCORE
         <= patch.center_score
         <= SUPPORTED_FULL_SPIKE_MAX_CENTER_SCORE
