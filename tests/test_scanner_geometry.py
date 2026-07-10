@@ -29,7 +29,9 @@ from jtool_scanner.scanner import (
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
     _is_blocklike_spike_candidate,
-    _is_red_outline_block_run_fill_patch,
+    _is_dark_outline_block_run_fill_patch,
+    _is_dark_outline_full_spike_candidate,
+    _is_dark_outline_half_step_full_spike_candidate,
     _normalize_full_spike_origin,
     _outline_block_score,
 )
@@ -225,6 +227,58 @@ class ScannerGeometryTests(unittest.TestCase):
             (OBJ_SAVE, 224, 40),
         ])
 
+    def test_strong_full_spike_can_coexist_with_water_anchor(self) -> None:
+        water = Detection("water_2", OBJ_WATER_2, 720, 96, 0.60, Box(720, 96, 32, 32))
+        strong_spike = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            720,
+            96,
+            0.49,
+            Box(720, 96, 32, 32),
+        )
+
+        result = _dedupe_overlapping_geometry([water, strong_spike])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_WATER_2, 720, 96),
+            (OBJ_SPIKE_DOWN, 720, 96),
+        ])
+
+    def test_weak_full_spike_still_loses_to_water_anchor(self) -> None:
+        water = Detection("water_2", OBJ_WATER_2, 720, 96, 0.60, Box(720, 96, 32, 32))
+        weak_spike = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            720,
+            96,
+            0.47,
+            Box(720, 96, 32, 32),
+        )
+
+        result = _dedupe_overlapping_geometry([water, weak_spike])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_WATER_2, 720, 96),
+        ])
+
+    def test_full_spike_still_loses_to_save_anchor(self) -> None:
+        save = Detection("save", OBJ_SAVE, 720, 96, 0.95, Box(720, 96, 32, 32))
+        strong_spike = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            720,
+            96,
+            0.80,
+            Box(720, 96, 32, 32),
+        )
+
+        result = _dedupe_overlapping_geometry([save, strong_spike])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_SAVE, 720, 96),
+        ])
+
     def test_blocklike_spike_candidate_accepts_hollow_aligned_outline(self) -> None:
         candidate = _GeometryPatchCandidate(
             96,
@@ -350,7 +404,7 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         )
 
-    def test_red_outline_run_fill_patch_accepts_only_low_signal_interiors(self) -> None:
+    def test_dark_outline_run_fill_patch_accepts_only_low_signal_interiors(self) -> None:
         low_signal = _PatchFeatures(
             (),
             edge_density=0.03,
@@ -370,9 +424,63 @@ class ScannerGeometryTests(unittest.TestCase):
             center_score=0.0,
         )
 
-        self.assertTrue(_is_red_outline_block_run_fill_patch(low_signal))
-        self.assertFalse(_is_red_outline_block_run_fill_patch(textured))
-        self.assertFalse(_is_red_outline_block_run_fill_patch(border_heavy))
+        self.assertTrue(_is_dark_outline_block_run_fill_patch(low_signal))
+        self.assertFalse(_is_dark_outline_block_run_fill_patch(textured))
+        self.assertFalse(_is_dark_outline_block_run_fill_patch(border_heavy))
+
+    def test_dark_outline_full_spike_candidate_uses_triangle_geometry(self) -> None:
+        candidate = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.26,
+            direction_margin=0.0,
+            outline_delta=0.12,
+        )
+        weak_score = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.25,
+            direction_margin=0.0,
+            outline_delta=0.12,
+        )
+        weak_outline = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.26,
+            direction_margin=0.0,
+            outline_delta=0.11,
+        )
+
+        self.assertTrue(_is_dark_outline_full_spike_candidate(candidate))
+        self.assertFalse(_is_dark_outline_full_spike_candidate(weak_score))
+        self.assertFalse(_is_dark_outline_full_spike_candidate(weak_outline))
+
+    def test_dark_outline_half_step_full_spike_candidate_is_stricter(self) -> None:
+        candidate = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.275,
+            direction_margin=0.0,
+            outline_delta=0.14,
+        )
+        weak_score = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.274,
+            direction_margin=0.0,
+            outline_delta=0.14,
+        )
+        weak_outline = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.275,
+            direction_margin=0.0,
+            outline_delta=0.13,
+        )
+
+        self.assertTrue(_is_dark_outline_half_step_full_spike_candidate(candidate))
+        self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_score))
+        self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_outline))
 
     def test_block_run_gap_patch_rejects_weak_noise(self) -> None:
         weak_patch = _PatchFeatures(

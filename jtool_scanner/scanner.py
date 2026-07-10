@@ -96,13 +96,19 @@ BLOCK_COLOR_ANCHOR_COEXIST_MIN_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE
 BLOCK_COLOR_ANCHOR_TYPES = frozenset(
     {OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT, OBJ_WATER_2}
 )
-RED_OUTLINE_ROOM_MIN_DARK_RATIO = 0.65
-RED_OUTLINE_ROOM_MIN_RED_DARK_RATIO = 0.12
-RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP = 8
-RED_OUTLINE_BLOCK_RUN_MAX_GAP = 192
-RED_OUTLINE_BLOCK_FILL_MAX_EDGE = 0.07
-RED_OUTLINE_BLOCK_FILL_MAX_BORDER = 0.06
-RED_OUTLINE_BLOCK_FILL_MAX_CENTER = 0.02
+FULL_SPIKE_WATER_COEXIST_MIN_SCORE = 0.48
+DARK_OUTLINE_ROOM_MIN_DARK_RATIO = 0.65
+DARK_OUTLINE_ROOM_MIN_OUTLINE_RATIO = 0.08
+DARK_OUTLINE_BLOCK_RUN_ANCHOR_SLOP = 8
+DARK_OUTLINE_BLOCK_RUN_MAX_GAP = 192
+DARK_OUTLINE_BLOCK_FILL_MAX_EDGE = 0.07
+DARK_OUTLINE_BLOCK_FILL_MAX_BORDER = 0.06
+DARK_OUTLINE_BLOCK_FILL_MAX_CENTER = 0.02
+DARK_OUTLINE_FULL_SPIKE_MIN_SCORE = 0.26
+DARK_OUTLINE_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.12
+DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE = 0.275
+DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
+DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE = 24.0
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -849,10 +855,14 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
 
     detections = _dedupe_geometry(detections)
     detections = _recover_block_run_gaps(detections, image, room)
-    detections = _recover_red_outline_block_runs(detections, image, room)
+    detections = _recover_dark_outline_block_runs(detections, image, room)
     normalized = _normalize_full_spike_detections(_dedupe_geometry(detections))
-    return _recover_red_outline_block_runs(
-        _dedupe_normalized_full_spikes(normalized),
+    return _recover_dark_outline_full_spikes(
+        _recover_dark_outline_block_runs(
+            _dedupe_normalized_full_spikes(normalized),
+            image,
+            room,
+        ),
         image,
         room,
     )
@@ -1306,12 +1316,12 @@ def _can_recover_nearby_hollow_block(
     )
 
 
-def _recover_red_outline_block_runs(
+def _recover_dark_outline_block_runs(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
-    if not _is_dark_red_outline_room(image, room):
+    if not _is_dark_outline_room(image, room):
         return detections
 
     recovered = list(detections)
@@ -1322,8 +1332,8 @@ def _recover_red_outline_block_runs(
         anchor_x = round_to_step(det.x, PREFERRED_BLOCK_ALIGNMENT_STEP)
         anchor_y = round_to_step(det.y, PREFERRED_BLOCK_ALIGNMENT_STEP)
         if (
-            abs(det.x - anchor_x) <= RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
-            and abs(det.y - anchor_y) <= RED_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
+            abs(det.x - anchor_x) <= DARK_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
+            and abs(det.y - anchor_y) <= DARK_OUTLINE_BLOCK_RUN_ANCHOR_SLOP
         ):
             anchors[anchor_x].add(anchor_y)
 
@@ -1338,7 +1348,7 @@ def _recover_red_outline_block_runs(
             gap = end_y - start_y
             if (
                 gap <= BLOCK_RUN_GAP_STEP
-                or gap > RED_OUTLINE_BLOCK_RUN_MAX_GAP
+                or gap > DARK_OUTLINE_BLOCK_RUN_MAX_GAP
                 or gap % BLOCK_RUN_GAP_STEP
             ):
                 continue
@@ -1351,7 +1361,7 @@ def _recover_red_outline_block_runs(
                 ):
                     continue
                 patch = _patch_features(image, room, x, y, GRID_SIZE)
-                if not _is_red_outline_block_run_fill_patch(patch):
+                if not _is_dark_outline_block_run_fill_patch(patch):
                     continue
                 added.append(
                     _geometry_detection(
@@ -1371,8 +1381,83 @@ def _recover_red_outline_block_runs(
     return recovered
 
 
-def _is_dark_red_outline_room(image: RGBImage, room: Box) -> bool:
-    dark = red_dark = total = 0
+def _recover_dark_outline_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if not _is_dark_outline_room(image, room):
+        return detections
+
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    added: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y)) < 24
+                for det in [*full_spikes, *added]
+            ):
+                continue
+            if not _is_dark_outline_full_spike_candidate(spike):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    all_full_spikes = [*full_spikes, *added]
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
+            if (
+                x % PREFERRED_BLOCK_ALIGNMENT_STEP == 0
+                and y % PREFERRED_BLOCK_ALIGNMENT_STEP == 0
+            ):
+                continue
+            if any(
+                distance((x, y), (det.x, det.y))
+                < DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE
+                for det in all_full_spikes
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if not _is_dark_outline_half_step_full_spike_candidate(spike):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            all_full_spikes.append(added[-1])
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_dark_outline_room(image: RGBImage, room: Box) -> bool:
+    dark = outline = total = 0
     step = 16
     for y in range(max(0, room.y), min(image.height, room.bottom), step):
         row = image.row(y)
@@ -1382,23 +1467,40 @@ def _is_dark_red_outline_room(image: RGBImage, room: Box) -> bool:
             g = row[offset + 1]
             b = row[offset + 2]
             total += 1
-            if r + g + b < 80:
+            brightness = r + g + b
+            saturation = max(r, g, b) - min(r, g, b)
+            if brightness < 80:
                 dark += 1
-            if r > 60 and g < 50 and b < 50:
-                red_dark += 1
+            if brightness >= 80 and saturation >= 35:
+                outline += 1
     if total == 0:
         return False
     return (
-        dark / total >= RED_OUTLINE_ROOM_MIN_DARK_RATIO
-        and red_dark / total >= RED_OUTLINE_ROOM_MIN_RED_DARK_RATIO
+        dark / total >= DARK_OUTLINE_ROOM_MIN_DARK_RATIO
+        and outline / total >= DARK_OUTLINE_ROOM_MIN_OUTLINE_RATIO
     )
 
 
-def _is_red_outline_block_run_fill_patch(patch: _PatchFeatures) -> bool:
+def _is_dark_outline_block_run_fill_patch(patch: _PatchFeatures) -> bool:
     return (
-        patch.edge_density <= RED_OUTLINE_BLOCK_FILL_MAX_EDGE
-        and patch.border_score <= RED_OUTLINE_BLOCK_FILL_MAX_BORDER
-        and patch.center_score <= RED_OUTLINE_BLOCK_FILL_MAX_CENTER
+        patch.edge_density <= DARK_OUTLINE_BLOCK_FILL_MAX_EDGE
+        and patch.border_score <= DARK_OUTLINE_BLOCK_FILL_MAX_BORDER
+        and patch.center_score <= DARK_OUTLINE_BLOCK_FILL_MAX_CENTER
+    )
+
+
+def _is_dark_outline_full_spike_candidate(spike: _GeometryClass) -> bool:
+    return (
+        spike.score >= DARK_OUTLINE_FULL_SPIKE_MIN_SCORE
+        and spike.outline_delta >= DARK_OUTLINE_FULL_SPIKE_MIN_OUTLINE_DELTA
+    )
+
+
+def _is_dark_outline_half_step_full_spike_candidate(spike: _GeometryClass) -> bool:
+    return (
+        spike.score >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE
+        and spike.outline_delta
+        >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA
     )
 
 
@@ -1597,10 +1699,16 @@ def _geometry_anchor_conflicts(det: Detection, anchor: Detection) -> bool:
 
 
 def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool:
-    return (
+    if (
         det.type_id == OBJ_BLOCK
         and anchor.type_id in BLOCK_COLOR_ANCHOR_TYPES
         and det.score >= BLOCK_COLOR_ANCHOR_COEXIST_MIN_SCORE
+    ):
+        return True
+    return (
+        det.type_id in FULL_SPIKE_TYPES
+        and anchor.type_id == OBJ_WATER_2
+        and det.score >= FULL_SPIKE_WATER_COEXIST_MIN_SCORE
     )
 
 
