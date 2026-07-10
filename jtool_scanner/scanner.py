@@ -74,6 +74,8 @@ FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 FULL_SPIKE_AXIS_SNAP_STEP = 16
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
+FULL_SPIKE_RUN_GAP_DISTANCE = 64
+FULL_SPIKE_RUN_GAP_SCORE = 0.241
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -952,6 +954,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
         room,
     )
     recovered = _recover_supported_full_spikes(recovered, image, room)
+    recovered = _recover_full_spike_run_gaps(recovered, image, room)
     return _recover_edge_blocks(recovered, image, room)
 
 
@@ -1635,6 +1638,60 @@ def _recover_supported_full_spikes_on_grid(
                     GRID_SIZE,
                 )
             )
+
+
+def _recover_full_spike_run_gaps(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    occupied = {(det.type_id, det.x, det.y) for det in full_spikes}
+    added: list[Detection] = []
+
+    for index, first in enumerate(full_spikes):
+        for second in full_spikes[index + 1 :]:
+            if first.type_id != second.type_id:
+                continue
+            if (
+                first.y == second.y
+                and abs(first.x - second.x) == FULL_SPIKE_RUN_GAP_DISTANCE
+            ):
+                x = (first.x + second.x) // 2
+                y = first.y
+            elif (
+                first.x == second.x
+                and abs(first.y - second.y) == FULL_SPIKE_RUN_GAP_DISTANCE
+            ):
+                x = first.x
+                y = (first.y + second.y) // 2
+            else:
+                continue
+            if (first.type_id, x, y) in occupied:
+                continue
+            if not (
+                0 <= x <= ROOM_WIDTH - GRID_SIZE
+                and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    first.kind,
+                    first.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_RUN_GAP_SCORE, min(first.score, second.score)),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            occupied.add((first.type_id, x, y))
+
+    if added:
+        recovered.extend(added)
+    return recovered
 
 
 def _recover_edge_blocks(

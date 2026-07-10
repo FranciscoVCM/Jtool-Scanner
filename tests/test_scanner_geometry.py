@@ -42,8 +42,10 @@ from jtool_scanner.scanner import (
     _is_supported_full_spike_candidate,
     _normalize_full_spike_origin,
     _outline_block_score,
+    _recover_full_spike_run_gaps,
     _ColorProfile,
 )
+from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
@@ -109,6 +111,80 @@ class ScannerGeometryTests(unittest.TestCase):
                 (OBJ_SPIKE_DOWN, 72, 104),
                 (OBJ_SPIKE_UP, 64, 96),
             ],
+        )
+
+    def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
+        image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        first = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            192,
+            208,
+            0.55,
+            Box(192, 208, 32, 32),
+        )
+        second = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            256,
+            208,
+            0.50,
+            Box(256, 208, 32, 32),
+        )
+
+        result = _recover_full_spike_run_gaps(
+            [first, second],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertIn(
+            (OBJ_SPIKE_UP, 224, 208),
+            [(det.type_id, det.x, det.y) for det in result],
+        )
+
+    def test_full_spike_run_gap_recovery_keeps_existing_midpoint_unique(self) -> None:
+        image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        detections = [
+            Detection(
+                "spike_up",
+                OBJ_SPIKE_UP,
+                192,
+                208,
+                0.55,
+                Box(192, 208, 32, 32),
+            ),
+            Detection(
+                "spike_up",
+                OBJ_SPIKE_UP,
+                224,
+                208,
+                0.60,
+                Box(224, 208, 32, 32),
+            ),
+            Detection(
+                "spike_up",
+                OBJ_SPIKE_UP,
+                256,
+                208,
+                0.50,
+                Box(256, 208, 32, 32),
+            ),
+        ]
+
+        result = _recover_full_spike_run_gaps(
+            detections,
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertEqual(
+            1,
+            sum(
+                1
+                for det in result
+                if det.type_id == OBJ_SPIKE_UP and det.x == 224 and det.y == 208
+            ),
         )
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
