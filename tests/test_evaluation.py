@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import unittest
 
-from jtool_scanner.constants import OBJ_BLOCK, OBJ_SAVE, OBJ_WATER, OBJ_WATER_2
+from jtool_scanner.constants import (
+    OBJ_BLOCK,
+    OBJ_SAVE,
+    OBJ_SPIKE_UP,
+    OBJ_WATER,
+    OBJ_WATER_2,
+)
 from jtool_scanner.evaluation import (
     aggregate_evaluations,
     build_match_details,
@@ -78,6 +84,39 @@ class EvaluationTests(unittest.TestCase):
         )
         self.assertEqual(details["blocks"]["missed_truth"][0]["x"], 320)
         self.assertIsNone(details["blocks"]["missed_truth"][0]["nearest_detection"])
+
+    def test_evaluate_scan_uses_maximum_matching_for_close_candidates(self) -> None:
+        truth = JMap(
+            objects=[
+                JMapObject(100, 100, OBJ_SPIKE_UP),
+                JMapObject(124, 100, OBJ_SPIKE_UP),
+            ]
+        )
+        detections = [
+            Detection("spike_up", OBJ_SPIKE_UP, 112, 100, 0.9, Box(0, 0, 32, 32)),
+            Detection("spike_up", OBJ_SPIKE_UP, 100, 100, 0.8, Box(0, 0, 32, 32)),
+        ]
+
+        evaluation = evaluate_scan("synthetic", detections, truth, tolerance=16)
+
+        self.assertEqual(evaluation.matched_full_spikes, 2)
+
+    def test_match_details_use_maximum_matching_for_missed_lists(self) -> None:
+        truth = JMap(
+            objects=[
+                JMapObject(100, 100, OBJ_SPIKE_UP),
+                JMapObject(124, 100, OBJ_SPIKE_UP),
+            ]
+        )
+        detections = [
+            Detection("spike_up", OBJ_SPIKE_UP, 112, 100, 0.9, Box(0, 0, 32, 32)),
+            Detection("spike_up", OBJ_SPIKE_UP, 100, 100, 0.8, Box(0, 0, 32, 32)),
+        ]
+
+        details = build_match_details(detections, truth, tolerance=16)
+
+        self.assertEqual(details["full_spikes"]["unmatched_detection_count"], 0)
+        self.assertEqual(details["full_spikes"]["missed_truth_count"], 0)
 
 
 if __name__ == "__main__":

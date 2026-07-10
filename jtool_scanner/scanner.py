@@ -165,6 +165,19 @@ CATHARSIS_TAIL_MIN_BLUE_LIFT = 2.5
 CATHARSIS_DARK_TAIL_MAX_BRIGHTNESS = 45.0
 CATHARSIS_DARK_TAIL_MIN_BLUE_LIFT = 8.0
 CATHARSIS_DARK_TAIL_MAX_EDGE_DENSITY = 0.04
+OUTLINE_APPLE_ROOM_MIN_BRIGHTNESS = 205.0
+OUTLINE_APPLE_ROOM_MAX_SATURATION = 0.05
+OUTLINE_APPLE_MIN_WIDTH = 6
+OUTLINE_APPLE_MAX_WIDTH = 12
+OUTLINE_APPLE_MIN_HEIGHT = 3
+OUTLINE_APPLE_MAX_HEIGHT = 12
+OUTLINE_APPLE_MIN_DENSITY = 0.10
+OUTLINE_APPLE_MAX_DENSITY = 0.75
+OUTLINE_APPLE_MIN_PATCH_BRIGHTNESS = 225.0
+OUTLINE_APPLE_MAX_PATCH_SATURATION = 0.03
+OUTLINE_APPLE_MIN_EDGE_DENSITY = 0.18
+OUTLINE_APPLE_MAX_BORDER_SCORE = 0.35
+OUTLINE_APPLE_MIN_CENTER_SCORE = 0.10
 
 
 @dataclass(frozen=True, slots=True)
@@ -356,7 +369,38 @@ def _detect_apples(
             continue
         score = min(1.0, density * 1.35)
         detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
+    detections.extend(_detect_outline_apples(image, room, grid_step, anchors + detections))
     return _dedupe_detections(detections, min_distance=40)
+
+
+def _detect_outline_apples(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    room_profile = _room_color_profile(image, room)
+    if not _is_pale_outline_apple_room(room_profile):
+        return []
+
+    detections: list[Detection] = []
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: _is_outline_apple_dark_neutral(r, g, b),
+    )
+    for box, pixels in components:
+        density = len(pixels) / box.area
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        profile = _patch_color_profile(image, room, map_x, map_y, GRID_SIZE)
+        features = _patch_features(image, room, map_x, map_y, GRID_SIZE)
+        if not _is_outline_apple_component(box, density, features, profile):
+            continue
+        if _near_anchor(map_x, map_y, anchors, max_distance=40):
+            continue
+        score = min(1.0, 0.45 + density + features.center_score * 0.25)
+        detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
+    return detections
 
 
 def _detect_walljumps(
@@ -1984,6 +2028,35 @@ def _is_tinted_save_yellow(r: int, g: int, b: int) -> bool:
 
 def _is_apple_red(r: int, g: int, b: int) -> bool:
     return r > 150 and g < 95 and b < 95 and r > g * 1.8 and r > b * 1.8
+
+
+def _is_outline_apple_dark_neutral(r: int, g: int, b: int) -> bool:
+    return r < 170 and g < 170 and b < 170 and max(r, g, b) - min(r, g, b) < 60
+
+
+def _is_pale_outline_apple_room(profile: _ColorProfile) -> bool:
+    return (
+        _profile_brightness(profile) >= OUTLINE_APPLE_ROOM_MIN_BRIGHTNESS
+        and profile.saturation <= OUTLINE_APPLE_ROOM_MAX_SATURATION
+    )
+
+
+def _is_outline_apple_component(
+    box: Box,
+    density: float,
+    features: _PatchFeatures,
+    profile: _ColorProfile,
+) -> bool:
+    return (
+        OUTLINE_APPLE_MIN_WIDTH <= box.width <= OUTLINE_APPLE_MAX_WIDTH
+        and OUTLINE_APPLE_MIN_HEIGHT <= box.height <= OUTLINE_APPLE_MAX_HEIGHT
+        and OUTLINE_APPLE_MIN_DENSITY <= density <= OUTLINE_APPLE_MAX_DENSITY
+        and _profile_brightness(profile) >= OUTLINE_APPLE_MIN_PATCH_BRIGHTNESS
+        and profile.saturation <= OUTLINE_APPLE_MAX_PATCH_SATURATION
+        and features.edge_density >= OUTLINE_APPLE_MIN_EDGE_DENSITY
+        and features.border_score <= OUTLINE_APPLE_MAX_BORDER_SCORE
+        and features.center_score >= OUTLINE_APPLE_MIN_CENTER_SCORE
+    )
 
 
 def _is_walljump_green(r: int, g: int, b: int) -> bool:

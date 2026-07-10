@@ -35,8 +35,11 @@ from jtool_scanner.scanner import (
     _is_dark_outline_half_step_full_spike_candidate,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
+    _is_outline_apple_component,
+    _is_pale_outline_apple_room,
     _normalize_full_spike_origin,
     _outline_block_score,
+    _ColorProfile,
 )
 
 
@@ -522,6 +525,46 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_dark_outline_half_step_full_spike_candidate(candidate))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_score))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_outline))
+
+    def test_pale_outline_apple_room_requires_bright_low_saturation_room(self) -> None:
+        self.assertTrue(_is_pale_outline_apple_room(_ColorProfile(230, 232, 231, 0.02)))
+        self.assertFalse(_is_pale_outline_apple_room(_ColorProfile(150, 150, 150, 0.02)))
+        self.assertFalse(_is_pale_outline_apple_room(_ColorProfile(230, 220, 180, 0.08)))
+
+    def test_outline_apple_component_uses_compact_shape_signal(self) -> None:
+        candidate = Box(10, 20, 10, 4)
+        features = _PatchFeatures(
+            (),
+            edge_density=0.28,
+            border_score=0.17,
+            center_score=0.46,
+        )
+        profile = _ColorProfile(240, 240, 240, 0.0)
+
+        self.assertTrue(
+            _is_outline_apple_component(candidate, 0.47, features, profile)
+        )
+        self.assertFalse(
+            _is_outline_apple_component(
+                Box(10, 20, 18, 4),
+                0.47,
+                features,
+                profile,
+            )
+        )
+        self.assertFalse(
+            _is_outline_apple_component(
+                candidate,
+                0.47,
+                _PatchFeatures(
+                    (),
+                    edge_density=0.12,
+                    border_score=0.17,
+                    center_score=0.46,
+                ),
+                profile,
+            )
+        )
 
     def test_edge_outline_block_patch_accepts_hollow_edge_tile(self) -> None:
         patch = _PatchFeatures(

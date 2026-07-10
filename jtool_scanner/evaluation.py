@@ -26,7 +26,7 @@ from .constants import (
     OBJ_WARP,
     OBJECT_NAMES,
 )
-from .geometry import Box, distance
+from .geometry import Box
 from .jmap import JMap
 from .scanner import Detection, scan_png
 
@@ -274,23 +274,20 @@ def _match_group(
     type_ids: frozenset[int],
     tolerance: float,
 ) -> int:
-    remaining = [
-        (obj.x, obj.y)
+    group_truth = [
+        obj
         for type_id in type_ids
         for obj in truth.objects_of_type(type_id)
     ]
-    matched = 0
-    for detection in [det for det in detections if det.type_id in type_ids]:
-        if not remaining:
-            break
-        best_index = min(
-            range(len(remaining)),
-            key=lambda index: distance((detection.x, detection.y), remaining[index]),
+    group_detections = [det for det in detections if det.type_id in type_ids]
+    return len(
+        _maximum_object_matching(
+            group_detections,
+            group_truth,
+            tolerance,
+            strict_type=False,
         )
-        if distance((detection.x, detection.y), remaining[best_index]) <= tolerance:
-            matched += 1
-            remaining.pop(best_index)
-    return matched
+    )
 
 
 def _match_count(
@@ -299,19 +296,8 @@ def _match_count(
     type_id: int,
     tolerance: float,
 ) -> int:
-    remaining = truth[:]
-    matched = 0
-    for detection in [det for det in detections if det.type_id == type_id]:
-        if not remaining:
-            break
-        best_index = min(
-            range(len(remaining)),
-            key=lambda index: distance((detection.x, detection.y), remaining[index]),
-        )
-        if distance((detection.x, detection.y), remaining[best_index]) <= tolerance:
-            matched += 1
-            remaining.pop(best_index)
-    return matched
+    group_detections = [det for det in detections if det.type_id == type_id]
+    return len(_maximum_coordinate_matching(group_detections, truth, tolerance))
 
 
 def _match_detail_group(
@@ -321,46 +307,30 @@ def _match_detail_group(
     tolerance: float,
     strict_type: bool,
 ) -> dict:
-    tolerance_sq = tolerance * tolerance
     group_truth = [
         obj
         for type_id in type_ids
         for obj in truth.objects_of_type(type_id)
     ]
     group_detections = [det for det in detections if det.type_id in type_ids]
-    remaining = group_truth[:]
-    unmatched_detections: list[Detection] = []
-
-    for detection in group_detections:
-        candidate_indexes = [
-            index
-            for index, obj in enumerate(remaining)
-            if not strict_type or obj.type_id == detection.type_id
-        ]
-        if not candidate_indexes:
-            unmatched_detections.append(detection)
-            continue
-        best_index = min(
-            candidate_indexes,
-            key=lambda index: _distance_sq(
-                detection.x,
-                detection.y,
-                remaining[index].x,
-                remaining[index].y,
-            ),
-        )
-        if (
-            _distance_sq(
-                detection.x,
-                detection.y,
-                remaining[best_index].x,
-                remaining[best_index].y,
-            )
-            <= tolerance_sq
-        ):
-            remaining.pop(best_index)
-        else:
-            unmatched_detections.append(detection)
+    matched = _maximum_object_matching(
+        group_detections,
+        group_truth,
+        tolerance,
+        strict_type=strict_type,
+    )
+    matched_detection_indexes = set(matched)
+    matched_truth_indexes = set(matched.values())
+    unmatched_detections = [
+        detection
+        for index, detection in enumerate(group_detections)
+        if index not in matched_detection_indexes
+    ]
+    remaining = [
+        obj
+        for index, obj in enumerate(group_truth)
+        if index not in matched_truth_indexes
+    ]
 
     return {
         "unmatched_detection_count": len(unmatched_detections),
@@ -373,6 +343,86 @@ def _match_detail_group(
             _truth_detail(obj, group_detections, strict_type)
             for obj in remaining
         ],
+    }
+
+
+def _maximum_coordinate_matching(
+    detections: list[Detection],
+    truth: list[tuple[int, int]],
+    tolerance: float,
+) -> dict[int, int]:
+    tolerance_sq = tolerance * tolerance
+    edges = [
+        [
+            truth_index
+            for truth_index, (truth_x, truth_y) in sorted(
+                enumerate(truth),
+                key=lambda item: _distance_sq(
+                    detection.x,
+                    detection.y,
+                    item[1][0],
+                    item[1][1],
+                ),
+            )
+            if _distance_sq(detection.x, detection.y, truth_x, truth_y)
+            <= tolerance_sq
+        ]
+        for detection in detections
+    ]
+    return _maximum_matching_from_edges(edges)
+
+
+def _maximum_object_matching(
+    detections: list[Detection],
+    truth: list,
+    tolerance: float,
+    strict_type: bool,
+) -> dict[int, int]:
+    tolerance_sq = tolerance * tolerance
+    edges = [
+        [
+            truth_index
+            for truth_index, obj in sorted(
+                enumerate(truth),
+                key=lambda item: _distance_sq(
+                    detection.x,
+                    detection.y,
+                    item[1].x,
+                    item[1].y,
+                ),
+            )
+            if (not strict_type or obj.type_id == detection.type_id)
+            and _distance_sq(detection.x, detection.y, obj.x, obj.y) <= tolerance_sq
+        ]
+        for detection in detections
+    ]
+    return _maximum_matching_from_edges(edges)
+
+
+def _maximum_matching_from_edges(edges: list[list[int]]) -> dict[int, int]:
+    truth_to_detection: dict[int, int] = {}
+
+    def try_match(detection_index: int, seen_truth: set[int]) -> bool:
+        for truth_index in edges[detection_index]:
+            if truth_index in seen_truth:
+                continue
+            seen_truth.add(truth_index)
+            previous_detection = truth_to_detection.get(truth_index)
+            if previous_detection is None or try_match(previous_detection, seen_truth):
+                truth_to_detection[truth_index] = detection_index
+                return True
+        return False
+
+    detection_order = sorted(
+        range(len(edges)),
+        key=lambda index: (len(edges[index]) == 0, len(edges[index]), index),
+    )
+    for detection_index in detection_order:
+        if edges[detection_index]:
+            try_match(detection_index, set())
+    return {
+        detection_index: truth_index
+        for truth_index, detection_index in truth_to_detection.items()
     }
 
 
