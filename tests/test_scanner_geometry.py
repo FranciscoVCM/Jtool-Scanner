@@ -3,12 +3,15 @@ from __future__ import annotations
 import unittest
 
 from jtool_scanner.constants import (
+    OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
+    OBJ_SAVE,
     OBJ_SPIKE_DOWN,
     OBJ_SPIKE_LEFT,
     OBJ_SPIKE_RIGHT,
     OBJ_SPIKE_UP,
+    OBJ_WATER_2,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
@@ -21,6 +24,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _dedupe_geometry,
+    _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
     _is_block_run_gap,
     _is_blocklike_spike_candidate,
@@ -177,6 +181,47 @@ class ScannerGeometryTests(unittest.TestCase):
         result = _dedupe_geometry([half_shifted, aligned_32])
 
         self.assertEqual([(det.x, det.y) for det in result], [(96, 96)])
+
+    def test_strong_block_can_coexist_with_color_anchor(self) -> None:
+        water = Detection("water_2", OBJ_WATER_2, 224, 40, 0.50, Box(224, 40, 32, 32))
+        strong_block = Detection("block", OBJ_BLOCK, 224, 32, 0.36, Box(224, 32, 32, 32))
+
+        result = _dedupe_overlapping_geometry([water, strong_block])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_WATER_2, 224, 40),
+            (OBJ_BLOCK, 224, 32),
+        ])
+
+    def test_very_weak_block_still_loses_to_color_anchor(self) -> None:
+        water = Detection("water_2", OBJ_WATER_2, 224, 40, 0.50, Box(224, 40, 32, 32))
+        weak_block = Detection("block", OBJ_BLOCK, 224, 32, 0.27, Box(224, 32, 32, 32))
+
+        result = _dedupe_overlapping_geometry([water, weak_block])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_WATER_2, 224, 40),
+        ])
+
+    def test_block_still_loses_to_apple_anchor(self) -> None:
+        apple = Detection("apple", OBJ_APPLE, 224, 40, 0.80, Box(224, 40, 32, 32))
+        strong_block = Detection("block", OBJ_BLOCK, 224, 32, 0.80, Box(224, 32, 32, 32))
+
+        result = _dedupe_overlapping_geometry([apple, strong_block])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_APPLE, 224, 40),
+        ])
+
+    def test_block_still_loses_to_save_anchor(self) -> None:
+        save = Detection("save", OBJ_SAVE, 224, 40, 0.95, Box(224, 40, 32, 32))
+        strong_block = Detection("block", OBJ_BLOCK, 224, 32, 0.80, Box(224, 32, 32, 32))
+
+        result = _dedupe_overlapping_geometry([save, strong_block])
+
+        self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
+            (OBJ_SAVE, 224, 40),
+        ])
 
     def test_blocklike_spike_candidate_accepts_hollow_aligned_outline(self) -> None:
         candidate = _GeometryPatchCandidate(

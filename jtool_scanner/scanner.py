@@ -92,6 +92,10 @@ BLOCK_RUN_GAP_HOLLOW_MIN_BORDER_SCORE = 0.035
 BLOCK_RUN_GAP_HOLLOW_MAX_CENTER_SCORE = 0.02
 BLOCK_RUN_GAP_MAX_PASSES = 6
 BLOCK_RUN_GAP_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE + 0.002
+BLOCK_COLOR_ANCHOR_COEXIST_MIN_SCORE = WEAK_BLOCK_ALIGNED_MIN_SCORE
+BLOCK_COLOR_ANCHOR_TYPES = frozenset(
+    {OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT, OBJ_WATER_2}
+)
 OUTLINE_BLOCK_GRID_STEP = 16
 OUTLINE_BLOCK_CENTER_MAX = 0.02
 OUTLINE_BLOCK_BORDER_MIN = 0.10
@@ -1453,10 +1457,24 @@ def _dedupe_overlapping_geometry(detections: list[Detection]) -> list[Detection]
         if det.type_id not in GEOMETRY_TYPES:
             result.append(det)
             continue
-        if any(distance((det.x, det.y), (anchor.x, anchor.y)) < 20 for anchor in anchors):
+        if any(_geometry_anchor_conflicts(det, anchor) for anchor in anchors):
             continue
         result.append(det)
     return result
+
+
+def _geometry_anchor_conflicts(det: Detection, anchor: Detection) -> bool:
+    if distance((det.x, det.y), (anchor.x, anchor.y)) >= 20:
+        return False
+    return not _can_geometry_coexist_with_anchor(det, anchor)
+
+
+def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool:
+    return (
+        det.type_id == OBJ_BLOCK
+        and anchor.type_id in BLOCK_COLOR_ANCHOR_TYPES
+        and det.score >= BLOCK_COLOR_ANCHOR_COEXIST_MIN_SCORE
+    )
 
 
 def _near_anchor(
