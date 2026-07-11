@@ -181,6 +181,34 @@ LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.15
 LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.12
 LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_PAIR_DISTANCE = 48
 LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_SUPPORT_DISTANCE = 24.0
+LOW_BORDER_SIDE_MINI_RECOVERY_MIN_SCORE = 0.10
+LOW_BORDER_SIDE_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.07
+LOW_BORDER_SIDE_MINI_RECOVERY_MAX_EDGE_DENSITY = 0.105
+LOW_BORDER_SIDE_MINI_RECOVERY_MIN_CENTER_SCORE = 0.07
+LOW_BORDER_SIDE_MINI_RECOVERY_MAX_CENTER_SCORE = 0.20
+LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BORDER_SCORE = 0.06
+LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.11
+LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.24
+LOW_BORDER_SIDE_MINI_RECOVERY_NEAR_BLOCK_COUNT = 2
+LOW_BORDER_SIDE_MINI_RECOVERY_SUPPORT_DISTANCE = 24.0
+LOW_BORDER_SIDE_MINI_RECOVERY_BLOCK_DISTANCE = 40.0
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.07
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_EDGE_DENSITY = 0.08
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_CENTER_SCORE = 0.12
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_CENTER_SCORE = 0.13
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_BORDER_SCORE = 0.04
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BORDER_SCORE = 0.05
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.085
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.08
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_SCORE = 0.02
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_OUTLINE_DELTA = -0.08
+ULTRA_FAINT_LEFT_MINI_RECOVERY_NEAR_FULL_COUNT = 1
+ULTRA_FAINT_LEFT_MINI_RECOVERY_NEAR_BLOCK_COUNT = 4
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_SAME_FULL_DISTANCE = 30.0
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_SAME_FULL_DISTANCE = 40.0
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_OPPOSITE_FULL_DISTANCE = 16.0
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_OPPOSITE_FULL_DISTANCE = 24.0
+ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BLOCK_DISTANCE = 16.0
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.70
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_OUTLINE_DELTA = -0.05
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.70
@@ -1158,6 +1186,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_border_supported_up_mini_spikes(recovered, image, room)
     recovered = _recover_diagonal_anchor_up_mini_spikes(recovered, image, room)
     recovered = _recover_low_contrast_paired_up_mini_spikes(recovered, image, room)
+    recovered = _recover_low_border_side_mini_spikes(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
@@ -3503,6 +3532,214 @@ def _has_low_contrast_paired_up_mini_spike_support(
         for det in detections
     )
     return has_full_spike_support and has_lower_block_support
+
+
+def _recover_low_border_side_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if _is_low_border_side_mini_spike_patch(patch, block, best_score):
+                for kind, type_id, direction in (
+                    ("mini_spike_right", OBJ_MINI_SPIKE_RIGHT, "right"),
+                    ("mini_spike_left", OBJ_MINI_SPIKE_LEFT, "left"),
+                ):
+                    score, _outline_delta = _triangle_direction_score(patch, direction)
+                    if not _is_low_border_side_mini_spike_candidate(score):
+                        continue
+                    if not _has_low_border_side_mini_spike_support(
+                        recovered,
+                        x,
+                        y,
+                        type_id,
+                    ):
+                        continue
+                    if _has_nearby_same_mini_spike(recovered, added, type_id, x, y):
+                        continue
+                    added.append(
+                        _geometry_detection(
+                            kind,
+                            type_id,
+                            x,
+                            y,
+                            score,
+                            image,
+                            room,
+                            16,
+                        )
+                    )
+
+            score, outline_delta = _triangle_direction_score(patch, "left")
+            if _is_ultra_faint_left_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                outline_delta,
+                best_score,
+            ) and _has_ultra_faint_left_mini_spike_support(recovered, x, y):
+                if not _has_nearby_same_mini_spike(
+                    recovered,
+                    added,
+                    OBJ_MINI_SPIKE_LEFT,
+                    x,
+                    y,
+                ):
+                    added.append(
+                        _geometry_detection(
+                            "mini_spike_left",
+                            OBJ_MINI_SPIKE_LEFT,
+                            x,
+                            y,
+                            score,
+                            image,
+                            room,
+                            16,
+                        )
+                    )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_low_border_side_mini_spike_patch(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    best_score: float,
+) -> bool:
+    return (
+        patch.edge_density >= LOW_BORDER_SIDE_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.edge_density <= LOW_BORDER_SIDE_MINI_RECOVERY_MAX_EDGE_DENSITY
+        and patch.center_score >= LOW_BORDER_SIDE_MINI_RECOVERY_MIN_CENTER_SCORE
+        and patch.center_score <= LOW_BORDER_SIDE_MINI_RECOVERY_MAX_CENTER_SCORE
+        and patch.border_score <= LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BORDER_SCORE
+        and block.score <= LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= LOW_BORDER_SIDE_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _is_low_border_side_mini_spike_candidate(score: float) -> bool:
+    return score >= LOW_BORDER_SIDE_MINI_RECOVERY_MIN_SCORE
+
+
+def _has_low_border_side_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+    type_id: int,
+) -> bool:
+    near_block_count = sum(
+        1
+        for det in detections
+        if det.type_id == OBJ_BLOCK
+        and distance((x, y), (det.x, det.y))
+        <= LOW_BORDER_SIDE_MINI_RECOVERY_BLOCK_DISTANCE
+    )
+    if near_block_count != LOW_BORDER_SIDE_MINI_RECOVERY_NEAR_BLOCK_COUNT:
+        return False
+
+    same_full_type = (
+        OBJ_SPIKE_RIGHT if type_id == OBJ_MINI_SPIKE_RIGHT else OBJ_SPIKE_LEFT
+    )
+    opposite_full_type = (
+        OBJ_SPIKE_LEFT if type_id == OBJ_MINI_SPIKE_RIGHT else OBJ_SPIKE_RIGHT
+    )
+    return any(
+        det.type_id in {same_full_type, opposite_full_type}
+        and distance((x, y), (det.x, det.y))
+        <= LOW_BORDER_SIDE_MINI_RECOVERY_SUPPORT_DISTANCE
+        for det in detections
+    )
+
+
+def _is_ultra_faint_left_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    outline_delta: float,
+    best_score: float,
+) -> bool:
+    return (
+        patch.edge_density >= ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.edge_density <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_EDGE_DENSITY
+        and patch.center_score >= ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_CENTER_SCORE
+        and patch.center_score <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_CENTER_SCORE
+        and patch.border_score >= ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_BORDER_SCORE
+        and patch.border_score <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BORDER_SCORE
+        and block.score <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+        and score <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_SCORE
+        and outline_delta <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_OUTLINE_DELTA
+    )
+
+
+def _has_ultra_faint_left_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
+    blocks = [det for det in detections if det.type_id == OBJ_BLOCK]
+    near_full_count = sum(
+        1
+        for det in full_spikes
+        if distance((x, y), (det.x, det.y)) <= GRID_SIZE
+    )
+    near_block_count = sum(
+        1
+        for det in blocks
+        if distance((x, y), (det.x, det.y))
+        <= LOW_BORDER_SIDE_MINI_RECOVERY_BLOCK_DISTANCE
+    )
+    same_full_distance = min(
+        (
+            distance((x, y), (det.x, det.y))
+            for det in full_spikes
+            if det.type_id == OBJ_SPIKE_LEFT
+        ),
+        default=999.0,
+    )
+    opposite_full_distance = min(
+        (
+            distance((x, y), (det.x, det.y))
+            for det in full_spikes
+            if det.type_id == OBJ_SPIKE_RIGHT
+        ),
+        default=999.0,
+    )
+    block_distance = min(
+        (distance((x, y), (det.x, det.y)) for det in blocks),
+        default=999.0,
+    )
+    has_block_above = any(det.x == x and det.y == y - GRID_SIZE for det in blocks)
+    has_right_block_support = any(
+        det.x == x + GRID_SIZE // 2 and abs(det.y - y) <= GRID_SIZE
+        for det in blocks
+    )
+    return (
+        near_full_count == ULTRA_FAINT_LEFT_MINI_RECOVERY_NEAR_FULL_COUNT
+        and near_block_count == ULTRA_FAINT_LEFT_MINI_RECOVERY_NEAR_BLOCK_COUNT
+        and ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_SAME_FULL_DISTANCE
+        <= same_full_distance
+        <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_SAME_FULL_DISTANCE
+        and ULTRA_FAINT_LEFT_MINI_RECOVERY_MIN_OPPOSITE_FULL_DISTANCE
+        <= opposite_full_distance
+        <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_OPPOSITE_FULL_DISTANCE
+        and block_distance <= ULTRA_FAINT_LEFT_MINI_RECOVERY_MAX_BLOCK_DISTANCE
+        and has_block_above
+        and has_right_block_support
+    )
 
 
 def _recover_dense_adjacent_up_mini_spikes(

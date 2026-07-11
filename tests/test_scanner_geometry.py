@@ -64,13 +64,18 @@ from jtool_scanner.scanner import (
     _has_left_spike_supports,
     _has_low_contrast_paired_up_mini_spike_pair,
     _has_low_contrast_paired_up_mini_spike_support,
+    _has_low_border_side_mini_spike_support,
+    _has_ultra_faint_left_mini_spike_support,
     _is_low_contrast_mini_up_candidate,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_border_supported_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
     _is_diagonal_anchor_up_mini_spike_candidate,
     _is_low_contrast_paired_up_mini_spike_candidate,
+    _is_low_border_side_mini_spike_candidate,
+    _is_low_border_side_mini_spike_patch,
     _is_mixed_cluster_up_mini_spike_candidate,
+    _is_ultra_faint_left_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -1397,6 +1402,209 @@ class ScannerGeometryTests(unittest.TestCase):
                 ],
                 480,
                 272,
+            )
+        )
+
+    def test_low_border_side_mini_requires_sparse_block_support(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.09,
+            border_score=0.05,
+            center_score=0.12,
+        )
+
+        self.assertTrue(
+            _is_low_border_side_mini_spike_patch(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.08),
+                0.20,
+            )
+        )
+        self.assertFalse(
+            _is_low_border_side_mini_spike_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.09,
+                    border_score=0.09,
+                    center_score=0.12,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.08),
+                0.20,
+            )
+        )
+        self.assertTrue(_is_low_border_side_mini_spike_candidate(0.11))
+        self.assertFalse(_is_low_border_side_mini_spike_candidate(0.09))
+        self.assertTrue(
+            _has_low_border_side_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        0,
+                        128,
+                        0.30,
+                        Box(0, 128, 32, 32),
+                    ),
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        32,
+                        160,
+                        0.30,
+                        Box(32, 160, 32, 32),
+                    ),
+                    Detection(
+                        "spike_right",
+                        OBJ_SPIKE_RIGHT,
+                        24,
+                        128,
+                        0.30,
+                        Box(24, 128, 32, 32),
+                    ),
+                ],
+                32,
+                128,
+                OBJ_MINI_SPIKE_RIGHT,
+            )
+        )
+        self.assertFalse(
+            _has_low_border_side_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        0,
+                        128,
+                        0.30,
+                        Box(0, 128, 32, 32),
+                    ),
+                    Detection(
+                        "spike_right",
+                        OBJ_SPIKE_RIGHT,
+                        24,
+                        128,
+                        0.30,
+                        Box(24, 128, 32, 32),
+                    ),
+                ],
+                32,
+                128,
+                OBJ_MINI_SPIKE_RIGHT,
+            )
+        )
+
+    def test_ultra_faint_left_mini_requires_local_spike_and_block_layout(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.074,
+            border_score=0.045,
+            center_score=0.125,
+        )
+
+        self.assertTrue(
+            _is_ultra_faint_left_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.08),
+                0.01,
+                -0.09,
+                0.076,
+            )
+        )
+        self.assertFalse(
+            _is_ultra_faint_left_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.08),
+                0.04,
+                -0.09,
+                0.076,
+            )
+        )
+        self.assertTrue(
+            _has_ultra_faint_left_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        80,
+                        384,
+                        0.30,
+                        Box(80, 384, 32, 32),
+                    ),
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        96,
+                        416,
+                        0.30,
+                        Box(96, 416, 32, 32),
+                    ),
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        96,
+                        384,
+                        0.30,
+                        Box(96, 384, 32, 32),
+                    ),
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        96,
+                        448,
+                        0.30,
+                        Box(96, 448, 32, 32),
+                    ),
+                    Detection(
+                        "spike_right",
+                        OBJ_SPIKE_RIGHT,
+                        64,
+                        400,
+                        0.30,
+                        Box(64, 400, 32, 32),
+                    ),
+                    Detection(
+                        "spike_left",
+                        OBJ_SPIKE_LEFT,
+                        88,
+                        448,
+                        0.30,
+                        Box(88, 448, 32, 32),
+                    ),
+                ],
+                80,
+                416,
+            )
+        )
+        self.assertFalse(
+            _has_ultra_faint_left_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        96,
+                        416,
+                        0.30,
+                        Box(96, 416, 32, 32),
+                    ),
+                    Detection(
+                        "spike_right",
+                        OBJ_SPIKE_RIGHT,
+                        64,
+                        400,
+                        0.30,
+                        Box(64, 400, 32, 32),
+                    ),
+                    Detection(
+                        "spike_left",
+                        OBJ_SPIKE_LEFT,
+                        88,
+                        448,
+                        0.30,
+                        Box(88, 448, 32, 32),
+                    ),
+                ],
+                80,
+                416,
             )
         )
 
