@@ -27,6 +27,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _can_recover_axis_supported_mini_spike,
+    _can_recover_horizontal_side_mini_spike,
     _dedupe_geometry,
     _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
@@ -47,7 +48,10 @@ from jtool_scanner.scanner import (
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
     _has_axis_mini_spike_support,
+    _has_horizontal_side_mini_spike_support,
+    _has_low_contrast_mini_up_pair,
     _has_left_spike_supports,
+    _is_low_contrast_mini_up_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -670,6 +674,124 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertIn(
             (OBJ_MINI_SPIKE_LEFT, 128, 112),
             [(det.type_id, det.x, det.y) for det in result],
+        )
+
+    def test_horizontal_side_mini_support_uses_strong_same_row_anchor(self) -> None:
+        detections = [
+            Detection(
+                "mini_spike_right",
+                OBJ_MINI_SPIKE_RIGHT,
+                656,
+                592,
+                0.80,
+                Box(656, 592, 16, 16),
+            ),
+            Detection(
+                "mini_spike_right",
+                OBJ_MINI_SPIKE_RIGHT,
+                704,
+                544,
+                0.90,
+                Box(704, 544, 16, 16),
+            ),
+        ]
+
+        self.assertTrue(
+            _has_horizontal_side_mini_spike_support(
+                detections,
+                OBJ_MINI_SPIKE_RIGHT,
+                704,
+                592,
+            )
+        )
+        self.assertFalse(
+            _has_horizontal_side_mini_spike_support(
+                detections,
+                OBJ_MINI_SPIKE_RIGHT,
+                704,
+                576,
+            )
+        )
+
+    def test_horizontal_side_mini_recovery_requires_clear_side_shape(self) -> None:
+        clear_patch = _PatchFeatures(
+            (),
+            edge_density=0.45,
+            border_score=0.30,
+            center_score=0.40,
+        )
+        weak_patch = _PatchFeatures(
+            (),
+            edge_density=0.39,
+            border_score=0.30,
+            center_score=0.40,
+        )
+        mini = _GeometryClass(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            0.60,
+            direction_margin=0.01,
+            outline_delta=0.19,
+        )
+
+        self.assertTrue(
+            _can_recover_horizontal_side_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.50),
+                clear_patch,
+            )
+        )
+        self.assertFalse(
+            _can_recover_horizontal_side_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.50),
+                weak_patch,
+            )
+        )
+
+    def test_low_contrast_mini_up_candidate_requires_pairable_weak_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.08,
+            border_score=0.05,
+            center_score=0.12,
+        )
+
+        self.assertTrue(
+            _is_low_contrast_mini_up_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.20),
+                0.14,
+                0.06,
+            )
+        )
+        self.assertFalse(
+            _is_low_contrast_mini_up_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.26),
+                0.14,
+                0.06,
+            )
+        )
+        self.assertTrue(
+            _has_low_contrast_mini_up_pair(
+                {
+                    (544, 112): 0.14,
+                    (560, 112): 0.14,
+                },
+                544,
+                112,
+            )
+        )
+        self.assertFalse(
+            _has_low_contrast_mini_up_pair(
+                {
+                    (544, 112): 0.14,
+                    (592, 112): 0.14,
+                },
+                544,
+                112,
+            )
         )
 
     def test_block_accepts_weak_aligned_candidate(self) -> None:

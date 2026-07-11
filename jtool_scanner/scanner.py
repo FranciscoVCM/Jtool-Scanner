@@ -91,6 +91,22 @@ MINI_SPIKE_AXIS_RECOVERY_THRESHOLDS = {
     OBJ_MINI_SPIKE_RIGHT: (0.54, 0.16, 64, 0.22, 0.25, 0.55),
     OBJ_MINI_SPIKE_DOWN: (0.58, 0.18, 64, 0.25, 0.25, 0.55),
 }
+HORIZONTAL_SIDE_MINI_RECOVERY_MIN_SCORE = 0.58
+HORIZONTAL_SIDE_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.18
+HORIZONTAL_SIDE_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.40
+HORIZONTAL_SIDE_MINI_RECOVERY_MIN_CENTER_SCORE = 0.38
+HORIZONTAL_SIDE_MINI_RECOVERY_ANCHOR_SCORE = 0.75
+HORIZONTAL_SIDE_MINI_RECOVERY_MIN_DISTANCE = 16
+HORIZONTAL_SIDE_MINI_RECOVERY_MAX_DISTANCE = 64
+HORIZONTAL_SIDE_MINI_RECOVERY_BLOCKLIKE_SCORE = 0.82
+HORIZONTAL_SIDE_MINI_RECOVERY_BLOCKLIKE_MARGIN = -0.02
+LOW_CONTRAST_MINI_UP_MIN_SCORE = 0.13
+LOW_CONTRAST_MINI_UP_MIN_OUTLINE_DELTA = 0.055
+LOW_CONTRAST_MINI_UP_MIN_EDGE_DENSITY = 0.075
+LOW_CONTRAST_MINI_UP_MIN_CENTER_SCORE = 0.10
+LOW_CONTRAST_MINI_UP_MAX_BLOCK_SCORE = 0.25
+LOW_CONTRAST_MINI_UP_PAIR_DISTANCE = 16
+LOW_CONTRAST_MINI_UP_STRONG_ANCHOR_SCORE = 0.45
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
@@ -345,6 +361,8 @@ def scan_image(
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
     if include_geometry:
         detections.extend(_detect_geometry(image, box, grid_step))
+        detections = _dedupe_overlapping_geometry(detections)
+        detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     return ScanResult(image.width, image.height, box, detections)
@@ -1007,8 +1025,8 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                     )
                 )
 
-    for y in range(0, ROOM_HEIGHT - 16 + 1, step):
-        for x in range(0, ROOM_WIDTH - 16 + 1, step):
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
             patch = _patch_features(image, room, x, y, 16)
             if patch.edge_density < 0.045:
                 continue
@@ -1050,6 +1068,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_weak_full_spike_companions(recovered, image, room)
     recovered = _recover_edge_blocks(recovered, image, room)
     recovered = _recover_axis_supported_mini_spikes(recovered, image, room)
+    recovered = _recover_horizontal_side_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
 
@@ -2651,6 +2670,167 @@ def _mini_spike_axis_recovery_thresholds(
     type_id: int,
 ) -> tuple[float, float, int, float, float, float] | None:
     return MINI_SPIKE_AXIS_RECOVERY_THRESHOLDS.get(type_id)
+
+
+def _recover_horizontal_side_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            for mini in _classify_mini_spike_candidates(patch):
+                if not _can_recover_horizontal_side_mini_spike(mini, block, patch):
+                    continue
+                if _has_nearby_same_mini_spike(recovered, added, mini.type_id, x, y):
+                    continue
+                if not _has_horizontal_side_mini_spike_support(
+                    recovered,
+                    mini.type_id,
+                    x,
+                    y,
+                ):
+                    continue
+                added.append(
+                    _geometry_detection(
+                        mini.kind,
+                        mini.type_id,
+                        x,
+                        y,
+                        mini.score,
+                        image,
+                        room,
+                        16,
+                    )
+                )
+                break
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _can_recover_horizontal_side_mini_spike(
+    mini: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    if mini.type_id not in (OBJ_MINI_SPIKE_RIGHT, OBJ_MINI_SPIKE_LEFT):
+        return False
+    if mini.score < HORIZONTAL_SIDE_MINI_RECOVERY_MIN_SCORE:
+        return False
+    if mini.outline_delta < HORIZONTAL_SIDE_MINI_RECOVERY_MIN_OUTLINE_DELTA:
+        return False
+    if patch.edge_density < HORIZONTAL_SIDE_MINI_RECOVERY_MIN_EDGE_DENSITY:
+        return False
+    if patch.center_score < HORIZONTAL_SIDE_MINI_RECOVERY_MIN_CENTER_SCORE:
+        return False
+    return not (
+        block.score > HORIZONTAL_SIDE_MINI_RECOVERY_BLOCKLIKE_SCORE
+        and mini.direction_margin < HORIZONTAL_SIDE_MINI_RECOVERY_BLOCKLIKE_MARGIN
+    )
+
+
+def _has_horizontal_side_mini_spike_support(
+    detections: list[Detection],
+    type_id: int,
+    x: int,
+    y: int,
+) -> bool:
+    return any(
+        det.type_id == type_id
+        and det.score >= HORIZONTAL_SIDE_MINI_RECOVERY_ANCHOR_SCORE
+        and det.y == y
+        and HORIZONTAL_SIDE_MINI_RECOVERY_MIN_DISTANCE
+        <= abs(det.x - x)
+        <= HORIZONTAL_SIDE_MINI_RECOVERY_MAX_DISTANCE
+        for det in detections
+    )
+
+
+def _recover_low_contrast_mini_up_pairs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if any(
+        det.type_id in MINI_SPIKE_TYPES
+        and det.score >= LOW_CONTRAST_MINI_UP_STRONG_ANCHOR_SCORE
+        for det in detections
+    ):
+        return detections
+
+    recovered = list(detections)
+    candidates: dict[tuple[int, int], float] = {}
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            score, outline_delta = _triangle_direction_score(patch, "up")
+            block = _classify_block(patch)
+            if _is_low_contrast_mini_up_candidate(
+                patch,
+                block,
+                score,
+                outline_delta,
+            ):
+                candidates[(x, y)] = score
+
+    added: list[Detection] = []
+    for (x, y), score in sorted(
+        candidates.items(),
+        key=lambda item: (item[0][1], item[0][0]),
+    ):
+        if not _has_low_contrast_mini_up_pair(candidates, x, y):
+            continue
+        if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                x,
+                y,
+                score,
+                image,
+                room,
+                16,
+            )
+        )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_low_contrast_mini_up_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    outline_delta: float,
+) -> bool:
+    return (
+        score >= LOW_CONTRAST_MINI_UP_MIN_SCORE
+        and outline_delta >= LOW_CONTRAST_MINI_UP_MIN_OUTLINE_DELTA
+        and patch.edge_density >= LOW_CONTRAST_MINI_UP_MIN_EDGE_DENSITY
+        and patch.center_score >= LOW_CONTRAST_MINI_UP_MIN_CENTER_SCORE
+        and block.score <= LOW_CONTRAST_MINI_UP_MAX_BLOCK_SCORE
+    )
+
+
+def _has_low_contrast_mini_up_pair(
+    candidates: dict[tuple[int, int], float],
+    x: int,
+    y: int,
+) -> bool:
+    return (
+        (x - LOW_CONTRAST_MINI_UP_PAIR_DISTANCE, y) in candidates
+        or (x + LOW_CONTRAST_MINI_UP_PAIR_DISTANCE, y) in candidates
+    )
 
 
 def _recover_edge_blocks(
