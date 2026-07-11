@@ -140,6 +140,19 @@ AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_BLOCK_SCORE = 0.35
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.46
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.52
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE = 16
+MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_SCORE = 0.40
+MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.50
+MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.55
+MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_BLOCK_SCORE = 0.55
+MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.60
+MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.60
+MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_X_SLOP = 8
+MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MIN_X_DISTANCE = 8
+MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MAX_X_DISTANCE = 24
+MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MIN_Y_DISTANCE = 8
+MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MAX_Y_DISTANCE = 40
+MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MIN_Y_DISTANCE = 24
+MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MAX_Y_DISTANCE = 40
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.70
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_OUTLINE_DELTA = -0.05
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.70
@@ -1113,6 +1126,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_extended_left_mini_spikes(recovered, image, room)
     recovered = _recover_adjacent_up_mini_spike_pairs(recovered, image, room)
     recovered = _recover_ambiguous_adjacent_up_mini_spikes(recovered, image, room)
+    recovered = _recover_mixed_cluster_up_mini_spikes(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
@@ -3100,6 +3114,94 @@ def _has_ambiguous_adjacent_up_mini_spike_pair(
         (x - AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
         or (x + AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
     )
+
+
+def _recover_mixed_cluster_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            score, _outline_delta = _triangle_direction_score(patch, "up")
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if not _is_mixed_cluster_up_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                best_score,
+            ):
+                continue
+            if not _has_mixed_cluster_up_mini_spike_support(recovered, x, y):
+                continue
+            if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+                continue
+            added.append(
+                _geometry_detection(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    16,
+                )
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_mixed_cluster_up_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    best_score: float,
+) -> bool:
+    return (
+        score >= MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_SCORE
+        and patch.edge_density >= MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.center_score >= MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_CENTER_SCORE
+        and block.score >= MIXED_CLUSTER_UP_MINI_RECOVERY_MIN_BLOCK_SCORE
+        and block.score <= MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _has_mixed_cluster_up_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    has_right_support = any(
+        det.type_id == OBJ_MINI_SPIKE_RIGHT
+        and MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MIN_X_DISTANCE
+        <= det.x - x
+        <= MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MAX_X_DISTANCE
+        and MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MIN_Y_DISTANCE
+        <= det.y - y
+        <= MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MAX_Y_DISTANCE
+        for det in detections
+    )
+    has_down_support = any(
+        det.type_id == OBJ_MINI_SPIKE_DOWN
+        and abs(det.x - x) <= MIXED_CLUSTER_UP_MINI_RECOVERY_MAX_X_SLOP
+        and MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MIN_Y_DISTANCE
+        <= det.y - y
+        <= MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MAX_Y_DISTANCE
+        for det in detections
+    )
+    return has_right_support and has_down_support
 
 
 def _recover_dense_adjacent_up_mini_spikes(

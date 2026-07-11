@@ -58,10 +58,12 @@ from jtool_scanner.scanner import (
     _has_extended_left_mini_spike_support,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
+    _has_mixed_cluster_up_mini_spike_support,
     _has_left_spike_supports,
     _is_low_contrast_mini_up_candidate,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
+    _is_mixed_cluster_up_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -1093,6 +1095,71 @@ class ScannerGeometryTests(unittest.TestCase):
                 },
                 128,
                 112,
+            )
+        )
+
+    def test_mixed_cluster_up_mini_requires_right_and_down_support(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.51,
+            border_score=0.40,
+            center_score=0.56,
+        )
+
+        self.assertTrue(
+            _is_mixed_cluster_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.57),
+                0.41,
+                0.59,
+            )
+        )
+        self.assertFalse(
+            _is_mixed_cluster_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.61),
+                0.41,
+                0.59,
+            )
+        )
+        self.assertTrue(
+            _has_mixed_cluster_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_right",
+                        OBJ_MINI_SPIKE_RIGHT,
+                        64,
+                        160,
+                        0.62,
+                        Box(64, 160, 16, 16),
+                    ),
+                    Detection(
+                        "mini_spike_down",
+                        OBJ_MINI_SPIKE_DOWN,
+                        48,
+                        176,
+                        0.85,
+                        Box(48, 176, 16, 16),
+                    ),
+                ],
+                48,
+                144,
+            )
+        )
+        self.assertFalse(
+            _has_mixed_cluster_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_right",
+                        OBJ_MINI_SPIKE_RIGHT,
+                        64,
+                        160,
+                        0.62,
+                        Box(64, 160, 16, 16),
+                    )
+                ],
+                48,
+                144,
             )
         )
 
