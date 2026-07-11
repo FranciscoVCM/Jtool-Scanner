@@ -59,10 +59,17 @@ from jtool_scanner.scanner import (
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
     _has_mixed_cluster_up_mini_spike_support,
+    _has_border_supported_up_mini_spike_support,
+    _has_diagonal_anchor_up_mini_spike_support,
     _has_left_spike_supports,
+    _has_low_contrast_paired_up_mini_spike_pair,
+    _has_low_contrast_paired_up_mini_spike_support,
     _is_low_contrast_mini_up_candidate,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
+    _is_border_supported_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
+    _is_diagonal_anchor_up_mini_spike_candidate,
+    _is_low_contrast_paired_up_mini_spike_candidate,
     _is_mixed_cluster_up_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
@@ -1160,6 +1167,236 @@ class ScannerGeometryTests(unittest.TestCase):
                 ],
                 48,
                 144,
+            )
+        )
+
+    def test_border_supported_up_mini_requires_border_heavy_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.34,
+            border_score=0.36,
+            center_score=0.24,
+        )
+
+        self.assertTrue(
+            _is_border_supported_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.40),
+                0.29,
+                0.36,
+            )
+        )
+        self.assertFalse(
+            _is_border_supported_up_mini_spike_candidate(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.34,
+                    border_score=0.24,
+                    center_score=0.41,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.40),
+                0.29,
+                0.36,
+            )
+        )
+        self.assertTrue(
+            _has_border_supported_up_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        544,
+                        144,
+                        0.50,
+                        Box(544, 144, 32, 32),
+                    ),
+                    Detection(
+                        "spike_up",
+                        OBJ_SPIKE_UP,
+                        544,
+                        144,
+                        0.52,
+                        Box(544, 144, 32, 32),
+                    ),
+                ],
+                560,
+                144,
+            )
+        )
+        self.assertFalse(
+            _has_border_supported_up_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        544,
+                        144,
+                        0.50,
+                        Box(544, 144, 32, 32),
+                    )
+                ],
+                560,
+                144,
+            )
+        )
+
+    def test_diagonal_anchor_up_mini_requires_strong_offset_anchor(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.07,
+            border_score=0.15,
+            center_score=0.0,
+        )
+
+        self.assertTrue(
+            _is_diagonal_anchor_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.12),
+                0.05,
+                0.22,
+            )
+        )
+        self.assertFalse(
+            _is_diagonal_anchor_up_mini_spike_candidate(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.07,
+                    border_score=0.15,
+                    center_score=0.08,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.12),
+                0.05,
+                0.22,
+            )
+        )
+        self.assertTrue(
+            _has_diagonal_anchor_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_up",
+                        OBJ_MINI_SPIKE_UP,
+                        288,
+                        528,
+                        0.76,
+                        Box(288, 528, 16, 16),
+                    ),
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        288,
+                        576,
+                        0.88,
+                        Box(288, 576, 32, 32),
+                    ),
+                ],
+                272,
+                560,
+            )
+        )
+        self.assertFalse(
+            _has_diagonal_anchor_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_up",
+                        OBJ_MINI_SPIKE_UP,
+                        288,
+                        528,
+                        0.76,
+                        Box(288, 528, 16, 16),
+                    )
+                ],
+                272,
+                560,
+            )
+        )
+
+    def test_low_contrast_paired_up_mini_requires_pair_and_support(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.09,
+            border_score=0.08,
+            center_score=0.11,
+        )
+
+        self.assertTrue(
+            _is_low_contrast_paired_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.12),
+                0.07,
+                0.11,
+            )
+        )
+        self.assertFalse(
+            _is_low_contrast_paired_up_mini_spike_candidate(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.13,
+                    border_score=0.08,
+                    center_score=0.11,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.12),
+                0.07,
+                0.11,
+            )
+        )
+        self.assertTrue(
+            _has_low_contrast_paired_up_mini_spike_pair(
+                {
+                    (480, 272): 0.07,
+                    (528, 272): 0.07,
+                },
+                480,
+                272,
+            )
+        )
+        self.assertFalse(
+            _has_low_contrast_paired_up_mini_spike_pair(
+                {
+                    (480, 272): 0.07,
+                    (512, 272): 0.07,
+                },
+                480,
+                272,
+            )
+        )
+        self.assertTrue(
+            _has_low_contrast_paired_up_mini_spike_support(
+                [
+                    Detection(
+                        "block",
+                        OBJ_BLOCK,
+                        480,
+                        288,
+                        0.28,
+                        Box(480, 288, 32, 32),
+                    ),
+                    Detection(
+                        "spike_up",
+                        OBJ_SPIKE_UP,
+                        496,
+                        256,
+                        0.28,
+                        Box(496, 256, 32, 32),
+                    ),
+                ],
+                480,
+                272,
+            )
+        )
+        self.assertFalse(
+            _has_low_contrast_paired_up_mini_spike_support(
+                [
+                    Detection(
+                        "spike_up",
+                        OBJ_SPIKE_UP,
+                        496,
+                        256,
+                        0.28,
+                        Box(496, 256, 32, 32),
+                    )
+                ],
+                480,
+                272,
             )
         )
 

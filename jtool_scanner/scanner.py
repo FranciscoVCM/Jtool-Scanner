@@ -153,6 +153,34 @@ MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MIN_Y_DISTANCE = 8
 MIXED_CLUSTER_UP_MINI_RECOVERY_RIGHT_MAX_Y_DISTANCE = 40
 MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MIN_Y_DISTANCE = 24
 MIXED_CLUSTER_UP_MINI_RECOVERY_DOWN_MAX_Y_DISTANCE = 40
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_SCORE = 0.28
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.32
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.20
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_CENTER_SCORE = 0.30
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_BORDER_SCORE = 0.30
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_BLOCK_SCORE = 0.35
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.42
+BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.37
+BORDER_SUPPORTED_UP_MINI_RECOVERY_SUPPORT_DISTANCE = 24.0
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MIN_SCORE = 0.04
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.06
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_CENTER_SCORE = 0.05
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.16
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.24
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_SCORE = 0.70
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_X_OFFSET = 16
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_Y_OFFSET = -32
+DIAGONAL_ANCHOR_UP_MINI_RECOVERY_BLOCK_DISTANCE = 24.0
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_Y = 32
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_SCORE = 0.06
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.08
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_EDGE_DENSITY = 0.12
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.08
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_CENTER_SCORE = 0.14
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.15
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.12
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_PAIR_DISTANCE = 48
+LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_SUPPORT_DISTANCE = 24.0
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.70
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_OUTLINE_DELTA = -0.05
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.70
@@ -1127,6 +1155,9 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_adjacent_up_mini_spike_pairs(recovered, image, room)
     recovered = _recover_ambiguous_adjacent_up_mini_spikes(recovered, image, room)
     recovered = _recover_mixed_cluster_up_mini_spikes(recovered, image, room)
+    recovered = _recover_border_supported_up_mini_spikes(recovered, image, room)
+    recovered = _recover_diagonal_anchor_up_mini_spikes(recovered, image, room)
+    recovered = _recover_low_contrast_paired_up_mini_spikes(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
@@ -3202,6 +3233,276 @@ def _has_mixed_cluster_up_mini_spike_support(
         for det in detections
     )
     return has_right_support and has_down_support
+
+
+def _recover_border_supported_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            score, _outline_delta = _triangle_direction_score(patch, "up")
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if not _is_border_supported_up_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                best_score,
+            ):
+                continue
+            if not _has_border_supported_up_mini_spike_support(recovered, x, y):
+                continue
+            if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+                continue
+            added.append(
+                _geometry_detection(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    16,
+                )
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_border_supported_up_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    best_score: float,
+) -> bool:
+    return (
+        score >= BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_SCORE
+        and patch.edge_density >= BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.center_score >= BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_CENTER_SCORE
+        and patch.center_score <= BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_CENTER_SCORE
+        and patch.border_score >= BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_BORDER_SCORE
+        and block.score >= BORDER_SUPPORTED_UP_MINI_RECOVERY_MIN_BLOCK_SCORE
+        and block.score <= BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= BORDER_SUPPORTED_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _has_border_supported_up_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    has_full_spike_support = any(
+        det.type_id in FULL_SPIKE_TYPES
+        and distance((x, y), (det.x, det.y))
+        <= BORDER_SUPPORTED_UP_MINI_RECOVERY_SUPPORT_DISTANCE
+        for det in detections
+    )
+    has_block_support = any(
+        det.type_id == OBJ_BLOCK
+        and distance((x, y), (det.x, det.y))
+        <= BORDER_SUPPORTED_UP_MINI_RECOVERY_SUPPORT_DISTANCE
+        for det in detections
+    )
+    return has_full_spike_support and has_block_support
+
+
+def _recover_diagonal_anchor_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            score, _outline_delta = _triangle_direction_score(patch, "up")
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if not _is_diagonal_anchor_up_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                best_score,
+            ):
+                continue
+            if not _has_diagonal_anchor_up_mini_spike_support(recovered, x, y):
+                continue
+            if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+                continue
+            added.append(
+                _geometry_detection(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    16,
+                )
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_diagonal_anchor_up_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    best_score: float,
+) -> bool:
+    return (
+        score >= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MIN_SCORE
+        and patch.edge_density >= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.center_score <= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_CENTER_SCORE
+        and block.score <= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _has_diagonal_anchor_up_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    has_anchor = any(
+        det.type_id == OBJ_MINI_SPIKE_UP
+        and det.score >= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_SCORE
+        and det.x == x + DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_X_OFFSET
+        and det.y == y + DIAGONAL_ANCHOR_UP_MINI_RECOVERY_ANCHOR_Y_OFFSET
+        for det in detections
+    )
+    has_block_shelf = any(
+        det.type_id == OBJ_BLOCK
+        and det.y >= y - 16
+        and distance((x, y), (det.x, det.y))
+        <= DIAGONAL_ANCHOR_UP_MINI_RECOVERY_BLOCK_DISTANCE
+        for det in detections
+    )
+    return has_anchor and has_block_shelf
+
+
+def _recover_low_contrast_paired_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    candidates: dict[tuple[int, int], float] = {}
+
+    for y in range(LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_Y, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            score, _outline_delta = _triangle_direction_score(patch, "up")
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if _is_low_contrast_paired_up_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                best_score,
+            ):
+                candidates[(x, y)] = score
+
+    added: list[Detection] = []
+    for (x, y), score in sorted(
+        candidates.items(),
+        key=lambda item: (item[0][1], item[0][0]),
+    ):
+        if not _has_low_contrast_paired_up_mini_spike_pair(candidates, x, y):
+            continue
+        if not _has_low_contrast_paired_up_mini_spike_support(recovered, x, y):
+            continue
+        if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                x,
+                y,
+                score,
+                image,
+                room,
+                16,
+            )
+        )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_low_contrast_paired_up_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    best_score: float,
+) -> bool:
+    return (
+        score >= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_SCORE
+        and patch.edge_density >= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.edge_density <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_EDGE_DENSITY
+        and patch.center_score >= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MIN_CENTER_SCORE
+        and patch.center_score <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_CENTER_SCORE
+        and block.score <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _has_low_contrast_paired_up_mini_spike_pair(
+    candidates: dict[tuple[int, int], float],
+    x: int,
+    y: int,
+) -> bool:
+    return (
+        (x - LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
+        or (x + LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
+    )
+
+
+def _has_low_contrast_paired_up_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    has_full_spike_support = any(
+        det.type_id in FULL_SPIKE_TYPES
+        and distance((x, y), (det.x, det.y))
+        <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_SUPPORT_DISTANCE
+        for det in detections
+    )
+    has_lower_block_support = any(
+        det.type_id == OBJ_BLOCK
+        and det.y >= y
+        and distance((x, y), (det.x, det.y))
+        <= LOW_CONTRAST_PAIRED_UP_MINI_RECOVERY_SUPPORT_DISTANCE
+        for det in detections
+    )
+    return has_full_spike_support and has_lower_block_support
 
 
 def _recover_dense_adjacent_up_mini_spikes(
