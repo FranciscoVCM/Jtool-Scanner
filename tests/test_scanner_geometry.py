@@ -86,6 +86,7 @@ from jtool_scanner.scanner import (
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
+    _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
@@ -190,10 +191,60 @@ class ScannerGeometryTests(unittest.TestCase):
             ],
         )
 
-    def test_blocklike_mini_spike_noise_requires_sparse_full_spike_support(self) -> None:
-        self.assertTrue(_is_blocklike_mini_spike_noise_candidate(0.99, 2))
-        self.assertFalse(_is_blocklike_mini_spike_noise_candidate(0.97, 2))
-        self.assertFalse(_is_blocklike_mini_spike_noise_candidate(0.99, 3))
+    def test_duplicate_mini_spike_cell_prune_keeps_highest_score_candidate(self) -> None:
+        weak = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            96,
+            128,
+            0.60,
+            Box(96, 128, 16, 16),
+        )
+        strong = Detection(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            96,
+            128,
+            0.80,
+            Box(96, 128, 16, 16),
+        )
+        separate = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            112,
+            128,
+            0.50,
+            Box(112, 128, 16, 16),
+        )
+
+        result = _prune_duplicate_mini_spike_cells([weak, separate, strong])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [
+                (OBJ_MINI_SPIKE_LEFT, 112, 128),
+                (OBJ_MINI_SPIKE_DOWN, 96, 128),
+            ],
+        )
+
+    def test_blocklike_mini_spike_noise_candidate_uses_broad_and_directional_cuts(
+        self,
+    ) -> None:
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.90, 4)
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_DOWN, 0.80, 4)
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_RIGHT, 0.80, 4)
+        )
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.80, 4)
+        )
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.89, 4)
+        )
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()

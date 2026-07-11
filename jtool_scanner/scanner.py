@@ -233,6 +233,8 @@ FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE = 0.25
 BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.98
 BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE = 24.0
 BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS = 2
+BLOCKLIKE_MINI_SPIKE_BROAD_NOISE_BLOCK_SCORE = 0.90
+BLOCKLIKE_DOWN_RIGHT_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.80
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4277,12 +4279,36 @@ def _prune_blocklike_mini_spike_noise(
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
+    detections = _prune_duplicate_mini_spike_cells(detections)
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
     return [
         det
         for det in detections
         if not _is_blocklike_mini_spike_noise(det, image, room, full_spikes)
     ]
+
+
+def _prune_duplicate_mini_spike_cells(detections: list[Detection]) -> list[Detection]:
+    best_by_cell: dict[tuple[int, int], Detection] = {}
+    for detection in detections:
+        if detection.type_id not in MINI_SPIKE_TYPES:
+            continue
+        key = (detection.x, detection.y)
+        current = best_by_cell.get(key)
+        if current is None or _mini_spike_cell_rank(detection) > _mini_spike_cell_rank(
+            current
+        ):
+            best_by_cell[key] = detection
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in MINI_SPIKE_TYPES
+        or best_by_cell[(detection.x, detection.y)] is detection
+    ]
+
+
+def _mini_spike_cell_rank(detection: Detection) -> tuple[float, int]:
+    return detection.score, -detection.type_id
 
 
 def _is_blocklike_mini_spike_noise(
@@ -4300,7 +4326,11 @@ def _is_blocklike_mini_spike_noise(
         full_spikes,
         BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
     )
-    return _is_blocklike_mini_spike_noise_candidate(block.score, full_supports)
+    return _is_blocklike_mini_spike_noise_candidate(
+        detection.type_id,
+        block.score,
+        full_supports,
+    )
 
 
 def _nearby_full_spike_support_count(
@@ -4317,9 +4347,17 @@ def _nearby_full_spike_support_count(
 
 
 def _is_blocklike_mini_spike_noise_candidate(
+    type_id: int,
     block_score: float,
     full_supports: int,
 ) -> bool:
+    if block_score >= BLOCKLIKE_MINI_SPIKE_BROAD_NOISE_BLOCK_SCORE:
+        return True
+    if (
+        type_id in (OBJ_MINI_SPIKE_RIGHT, OBJ_MINI_SPIKE_DOWN)
+        and block_score >= BLOCKLIKE_DOWN_RIGHT_MINI_SPIKE_NOISE_BLOCK_SCORE
+    ):
+        return True
     return (
         block_score >= BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
         and full_supports <= BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS
