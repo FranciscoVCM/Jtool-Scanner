@@ -26,6 +26,7 @@ from jtool_scanner.scanner import (
     _accept_block_run_gap_patch,
     _accept_full_spike,
     _accept_mini_spike,
+    _is_adjacent_up_mini_spike_candidate,
     _can_recover_axis_supported_mini_spike,
     _can_recover_horizontal_side_mini_spike,
     _dedupe_geometry,
@@ -48,6 +49,7 @@ from jtool_scanner.scanner import (
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
     _has_axis_mini_spike_support,
+    _has_adjacent_up_mini_spike_pair,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
     _has_left_spike_supports,
@@ -761,16 +763,16 @@ class ScannerGeometryTests(unittest.TestCase):
             _is_low_contrast_mini_up_candidate(
                 patch,
                 _GeometryClass("block", OBJ_BLOCK, 0.20),
-                0.14,
-                0.06,
+                0.09,
+                0.05,
             )
         )
         self.assertFalse(
             _is_low_contrast_mini_up_candidate(
                 patch,
-                _GeometryClass("block", OBJ_BLOCK, 0.26),
-                0.14,
-                0.06,
+                _GeometryClass("block", OBJ_BLOCK, 0.21),
+                0.09,
+                0.05,
             )
         )
         self.assertTrue(
@@ -791,6 +793,56 @@ class ScannerGeometryTests(unittest.TestCase):
                 },
                 544,
                 112,
+            )
+        )
+
+    def test_adjacent_up_mini_candidate_requires_clear_up_pair_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.43,
+            border_score=0.30,
+            center_score=0.26,
+        )
+        mini = _GeometryClass(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            0.48,
+            direction_margin=0.01,
+            outline_delta=0.04,
+        )
+
+        self.assertTrue(
+            _is_adjacent_up_mini_spike_candidate(
+                mini,
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.54),
+            )
+        )
+        self.assertFalse(
+            _is_adjacent_up_mini_spike_candidate(
+                mini,
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.56),
+            )
+        )
+        self.assertTrue(
+            _has_adjacent_up_mini_spike_pair(
+                {
+                    (352, 304): 0.50,
+                    (368, 304): 0.55,
+                },
+                352,
+                304,
+            )
+        )
+        self.assertFalse(
+            _has_adjacent_up_mini_spike_pair(
+                {
+                    (352, 304): 0.50,
+                    (400, 304): 0.55,
+                },
+                352,
+                304,
             )
         )
 
