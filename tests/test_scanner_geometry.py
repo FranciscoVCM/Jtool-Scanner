@@ -30,6 +30,8 @@ from jtool_scanner.scanner import (
     _is_block_run_gap,
     _is_blocklike_full_spike_recovery_candidate,
     _is_blocklike_spike_candidate,
+    _is_bottom_edge_up_spike_continuation_anchor,
+    _is_bottom_edge_up_spike_continuation_patch,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_full_spike_candidate,
@@ -336,6 +338,58 @@ class ScannerGeometryTests(unittest.TestCase):
                     edge_density=0.34,
                     border_score=0.20,
                     center_score=0.25,
+                )
+            )
+        )
+
+    def test_bottom_edge_up_spike_continuation_anchor_requires_bottom_half_step(self) -> None:
+        anchor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            160,
+            568,
+            0.44,
+            Box(160, 568, 32, 32),
+        )
+        wrong_y = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            160,
+            560,
+            0.44,
+            Box(160, 560, 32, 32),
+        )
+        weak = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            160,
+            568,
+            0.43,
+            Box(160, 568, 32, 32),
+        )
+
+        self.assertTrue(_is_bottom_edge_up_spike_continuation_anchor(anchor))
+        self.assertFalse(_is_bottom_edge_up_spike_continuation_anchor(wrong_y))
+        self.assertFalse(_is_bottom_edge_up_spike_continuation_anchor(weak))
+
+    def test_bottom_edge_up_spike_continuation_patch_requires_texture(self) -> None:
+        self.assertTrue(
+            _is_bottom_edge_up_spike_continuation_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.27,
+                    border_score=0.15,
+                    center_score=0.18,
+                )
+            )
+        )
+        self.assertFalse(
+            _is_bottom_edge_up_spike_continuation_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.26,
+                    border_score=0.15,
+                    center_score=0.18,
                 )
             )
         )
