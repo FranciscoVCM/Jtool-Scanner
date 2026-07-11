@@ -46,10 +46,14 @@ from jtool_scanner.scanner import (
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
     _is_supported_full_spike_candidate,
+    _is_up_spike_full_step_continuation_patch,
+    _is_up_spike_half_step_continuation_patch,
     _normalize_full_spike_origin,
     _outline_block_score,
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
+    _recover_up_spike_lateral_continuations,
+    _triangle_masks,
     _ColorProfile,
 )
 from jtool_scanner.image import RGBImage
@@ -392,6 +396,98 @@ class ScannerGeometryTests(unittest.TestCase):
                     center_score=0.18,
                 )
             )
+        )
+
+    def test_up_spike_half_step_continuation_patch_requires_strong_up_outline(self) -> None:
+        self.assertTrue(
+            _is_up_spike_half_step_continuation_patch(
+                _up_outline_patch(
+                    edge_density=0.37,
+                    border_score=0.25,
+                    center_score=0.45,
+                )
+            )
+        )
+        self.assertFalse(
+            _is_up_spike_half_step_continuation_patch(
+                _up_outline_patch(
+                    edge_density=0.36,
+                    border_score=0.25,
+                    center_score=0.45,
+                )
+            )
+        )
+
+    def test_up_spike_full_step_continuation_patch_requires_dense_texture(self) -> None:
+        self.assertTrue(
+            _is_up_spike_full_step_continuation_patch(
+                _up_outline_patch(
+                    edge_density=0.48,
+                    border_score=0.38,
+                    center_score=0.58,
+                )
+            )
+        )
+        self.assertFalse(
+            _is_up_spike_full_step_continuation_patch(
+                _up_outline_patch(
+                    edge_density=0.48,
+                    border_score=0.38,
+                    center_score=0.57,
+                )
+            )
+        )
+
+    def test_up_spike_lateral_continuation_recovers_half_step_run(self) -> None:
+        image = _up_spike_test_image([(176, 208)])
+        anchor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            192,
+            208,
+            0.44,
+            Box(192, 208, 32, 32),
+        )
+        run_support = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            256,
+            208,
+            0.38,
+            Box(256, 208, 32, 32),
+        )
+
+        result = _recover_up_spike_lateral_continuations(
+            [anchor, run_support],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertIn(
+            (OBJ_SPIKE_UP, 176, 208),
+            [(det.type_id, det.x, det.y) for det in result],
+        )
+
+    def test_up_spike_lateral_continuation_recovers_strong_full_step(self) -> None:
+        image = _up_spike_test_image([(448, 272)])
+        anchor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            480,
+            272,
+            0.60,
+            Box(480, 272, 32, 32),
+        )
+
+        result = _recover_up_spike_lateral_continuations(
+            [anchor],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertIn(
+            (OBJ_SPIKE_UP, 448, 272),
+            [(det.type_id, det.x, det.y) for det in result],
         )
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
@@ -1061,6 +1157,37 @@ def _textured_test_image(width: int = 800, height: int = 608) -> RGBImage:
         for x in range(width):
             value = 255 if (x // 2 + y // 2) % 2 else 0
             data.extend((value, value, value))
+    return RGBImage(width, height, bytes(data))
+
+
+def _up_outline_patch(
+    *,
+    edge_density: float,
+    border_score: float,
+    center_score: float,
+) -> _PatchFeatures:
+    edge_mask = [False] * 256
+    outline, _outside = _triangle_masks("up")
+    for position in outline:
+        edge_mask[position] = True
+    return _PatchFeatures(tuple(edge_mask), edge_density, border_score, center_score)
+
+
+def _up_spike_test_image(
+    targets: list[tuple[int, int]],
+    width: int = 800,
+    height: int = 608,
+) -> RGBImage:
+    data = bytearray([255] * (width * height * 3))
+    for x, y in targets:
+        for local_y in range(32):
+            for local_x in range(32):
+                side = abs(local_x - 15.5) * 2
+                if local_y < side - 2:
+                    continue
+                value = 0 if (local_x // 2 + local_y // 2) % 2 else 255
+                offset = ((y + local_y) * width + x + local_x) * 3
+                data[offset : offset + 3] = bytes((value, value, value))
     return RGBImage(width, height, bytes(data))
 
 

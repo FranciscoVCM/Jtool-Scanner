@@ -99,6 +99,22 @@ BOTTOM_EDGE_UP_SPIKE_CONTINUATION_X_OFFSET = 16
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_EDGE_DENSITY = 0.27
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_BORDER_SCORE = 0.15
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_CENTER_SCORE = 0.18
+UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
+UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
+UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
+UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_OFFSET = 64
+UP_SPIKE_HALF_STEP_CONTINUATION_MIN_EDGE_DENSITY = 0.37
+UP_SPIKE_HALF_STEP_CONTINUATION_MIN_BORDER_SCORE = 0.25
+UP_SPIKE_HALF_STEP_CONTINUATION_MIN_CENTER_SCORE = 0.45
+UP_SPIKE_HALF_STEP_CONTINUATION_MIN_SCORE = 0.40
+UP_SPIKE_HALF_STEP_CONTINUATION_MIN_OUTLINE_DELTA = 0.10
+UP_SPIKE_FULL_STEP_CONTINUATION_ANCHOR_SCORE = 0.60
+UP_SPIKE_FULL_STEP_CONTINUATION_X_OFFSET = -32
+UP_SPIKE_FULL_STEP_CONTINUATION_MIN_EDGE_DENSITY = 0.48
+UP_SPIKE_FULL_STEP_CONTINUATION_MIN_BORDER_SCORE = 0.38
+UP_SPIKE_FULL_STEP_CONTINUATION_MIN_CENTER_SCORE = 0.58
+UP_SPIKE_FULL_STEP_CONTINUATION_MIN_SCORE = 0.52
+UP_SPIKE_FULL_STEP_CONTINUATION_MIN_OUTLINE_DELTA = 0.10
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -981,6 +997,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_blocklike_full_spikes(recovered, image, room)
     recovered = _recover_edge_full_spike_continuations(recovered, image, room)
     recovered = _recover_bottom_edge_up_spike_continuations(recovered, image, room)
+    recovered = _recover_up_spike_lateral_continuations(recovered, image, room)
     return _recover_edge_blocks(recovered, image, room)
 
 
@@ -1233,11 +1250,8 @@ def _best_triangle_class(
 ) -> _GeometryClass | None:
     candidates: list[tuple[float, str, int, float]] = []
     for kind, type_id, direction in classes:
-        outline, outside = _triangle_masks(direction)
-        outline_hits = sum(1 for pos in outline if patch.edge_mask[pos]) / len(outline)
-        outside_hits = sum(1 for pos in outside if patch.edge_mask[pos]) / max(1, len(outside))
-        score = outline_hits * 0.78 + patch.edge_density * 0.38 - outside_hits * 0.18
-        candidates.append((score, kind, type_id, outline_hits - outside_hits))
+        score, outline_delta = _triangle_direction_score(patch, direction)
+        candidates.append((score, kind, type_id, outline_delta))
     candidates.sort(reverse=True)
     best_score, kind, type_id, outline_delta = candidates[0]
     second_score = candidates[1][0] if len(candidates) > 1 else 0.0
@@ -1248,6 +1262,17 @@ def _best_triangle_class(
         best_score - second_score,
         outline_delta,
     )
+
+
+def _triangle_direction_score(
+    patch: _PatchFeatures,
+    direction: str,
+) -> tuple[float, float]:
+    outline, outside = _triangle_masks(direction)
+    outline_hits = sum(1 for pos in outline if patch.edge_mask[pos]) / len(outline)
+    outside_hits = sum(1 for pos in outside if patch.edge_mask[pos]) / max(1, len(outside))
+    score = outline_hits * 0.78 + patch.edge_density * 0.38 - outside_hits * 0.18
+    return score, outline_hits - outside_hits
 
 
 def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
@@ -1914,6 +1939,119 @@ def _is_bottom_edge_up_spike_continuation_patch(patch: _PatchFeatures) -> bool:
         patch.edge_density >= BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_EDGE_DENSITY
         and patch.border_score >= BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_BORDER_SCORE
         and patch.center_score >= BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_CENTER_SCORE
+    )
+
+
+def _recover_up_spike_lateral_continuations(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    up_spikes = [det for det in recovered if det.type_id == OBJ_SPIKE_UP]
+    support_positions = {
+        (det.x, det.y)
+        for det in up_spikes
+        if det.score >= UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE
+    }
+    added: list[Detection] = []
+
+    for spike in up_spikes:
+        if spike.score >= UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE:
+            x = spike.x + UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET
+            y = spike.y
+            has_run_support = (
+                spike.x + UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_OFFSET,
+                spike.y,
+            ) in support_positions
+            if has_run_support:
+                _add_up_spike_lateral_continuation(
+                    recovered,
+                    added,
+                    image,
+                    room,
+                    x,
+                    y,
+                    spike.score,
+                    half_step=True,
+                )
+
+        if spike.score >= UP_SPIKE_FULL_STEP_CONTINUATION_ANCHOR_SCORE:
+            _add_up_spike_lateral_continuation(
+                recovered,
+                added,
+                image,
+                room,
+                spike.x + UP_SPIKE_FULL_STEP_CONTINUATION_X_OFFSET,
+                spike.y,
+                spike.score,
+                half_step=False,
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _add_up_spike_lateral_continuation(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+    score: float,
+    *,
+    half_step: bool,
+) -> None:
+    if not (0 <= x <= ROOM_WIDTH - GRID_SIZE and 0 <= y <= ROOM_HEIGHT - GRID_SIZE):
+        return
+    if any(
+        det.type_id == OBJ_SPIKE_UP and distance((x, y), (det.x, det.y)) < 12
+        for det in [*recovered, *added]
+    ):
+        return
+
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    if half_step:
+        if not _is_up_spike_half_step_continuation_patch(patch):
+            return
+    elif not _is_up_spike_full_step_continuation_patch(patch):
+        return
+
+    added.append(
+        _geometry_detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            x,
+            y,
+            max(FULL_SPIKE_WATER_COEXIST_MIN_SCORE, score),
+            image,
+            room,
+            GRID_SIZE,
+        )
+    )
+
+
+def _is_up_spike_half_step_continuation_patch(patch: _PatchFeatures) -> bool:
+    score, outline_delta = _triangle_direction_score(patch, "up")
+    return (
+        patch.edge_density >= UP_SPIKE_HALF_STEP_CONTINUATION_MIN_EDGE_DENSITY
+        and patch.border_score >= UP_SPIKE_HALF_STEP_CONTINUATION_MIN_BORDER_SCORE
+        and patch.center_score >= UP_SPIKE_HALF_STEP_CONTINUATION_MIN_CENTER_SCORE
+        and score >= UP_SPIKE_HALF_STEP_CONTINUATION_MIN_SCORE
+        and outline_delta >= UP_SPIKE_HALF_STEP_CONTINUATION_MIN_OUTLINE_DELTA
+    )
+
+
+def _is_up_spike_full_step_continuation_patch(patch: _PatchFeatures) -> bool:
+    score, outline_delta = _triangle_direction_score(patch, "up")
+    return (
+        patch.edge_density >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_EDGE_DENSITY
+        and patch.border_score >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_BORDER_SCORE
+        and patch.center_score >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_CENTER_SCORE
+        and score >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_SCORE
+        and outline_delta >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_OUTLINE_DELTA
     )
 
 
