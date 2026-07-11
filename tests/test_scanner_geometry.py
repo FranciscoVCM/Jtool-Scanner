@@ -234,13 +234,16 @@ class ScannerGeometryTests(unittest.TestCase):
             _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.90, 4)
         )
         self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_DOWN, 0.80, 4)
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_DOWN, 0.78, 4)
         )
         self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_RIGHT, 0.80, 4)
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_RIGHT, 0.78, 4)
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.85, 4)
         )
         self.assertFalse(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.80, 4)
+            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.84, 4)
         )
         self.assertFalse(
             _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.89, 4)
