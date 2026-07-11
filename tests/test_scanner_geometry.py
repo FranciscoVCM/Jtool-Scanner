@@ -26,6 +26,7 @@ from jtool_scanner.scanner import (
     _accept_block_run_gap_patch,
     _accept_full_spike,
     _accept_mini_spike,
+    _can_recover_diagonal_side_mini_spike,
     _is_adjacent_up_mini_spike_candidate,
     _can_recover_axis_supported_mini_spike,
     _can_recover_horizontal_side_mini_spike,
@@ -50,10 +51,13 @@ from jtool_scanner.scanner import (
     _is_half_step_supported_full_spike_candidate,
     _has_axis_mini_spike_support,
     _has_adjacent_up_mini_spike_pair,
+    _has_dense_adjacent_up_mini_spike_support,
+    _has_diagonal_side_mini_spike_support,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
     _has_left_spike_supports,
     _is_low_contrast_mini_up_candidate,
+    _is_dense_adjacent_up_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -751,6 +755,79 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         )
 
+    def test_diagonal_side_mini_support_uses_nearby_vertical_offset_anchor(self) -> None:
+        detections = [
+            Detection(
+                "mini_spike_right",
+                OBJ_MINI_SPIKE_RIGHT,
+                112,
+                544,
+                0.75,
+                Box(112, 544, 16, 16),
+            ),
+            Detection(
+                "mini_spike_right",
+                OBJ_MINI_SPIKE_RIGHT,
+                160,
+                512,
+                0.90,
+                Box(160, 512, 16, 16),
+            ),
+        ]
+
+        self.assertTrue(
+            _has_diagonal_side_mini_spike_support(
+                detections,
+                OBJ_MINI_SPIKE_RIGHT,
+                96,
+                512,
+            )
+        )
+        self.assertFalse(
+            _has_diagonal_side_mini_spike_support(
+                detections,
+                OBJ_MINI_SPIKE_RIGHT,
+                96,
+                544,
+            )
+        )
+
+    def test_diagonal_side_mini_recovery_requires_clear_side_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.36,
+            border_score=0.30,
+            center_score=0.46,
+        )
+        mini = _GeometryClass(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            0.53,
+            direction_margin=0.0,
+            outline_delta=0.29,
+        )
+
+        self.assertTrue(
+            _can_recover_diagonal_side_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.60),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _can_recover_diagonal_side_mini_spike(
+                _GeometryClass(
+                    "mini_spike_right",
+                    OBJ_MINI_SPIKE_RIGHT,
+                    0.53,
+                    direction_margin=-0.06,
+                    outline_delta=0.29,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.66),
+                patch,
+            )
+        )
+
     def test_low_contrast_mini_up_candidate_requires_pairable_weak_shape(self) -> None:
         patch = _PatchFeatures(
             (),
@@ -843,6 +920,63 @@ class ScannerGeometryTests(unittest.TestCase):
                 },
                 352,
                 304,
+            )
+        )
+
+    def test_dense_adjacent_up_mini_requires_textured_blocklike_neighbor(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.72,
+            border_score=0.40,
+            center_score=0.82,
+        )
+
+        self.assertTrue(
+            _is_dense_adjacent_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.82),
+                0.72,
+                -0.04,
+            )
+        )
+        self.assertFalse(
+            _is_dense_adjacent_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.79),
+                0.72,
+                -0.04,
+            )
+        )
+        self.assertTrue(
+            _has_dense_adjacent_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_up",
+                        OBJ_MINI_SPIKE_UP,
+                        656,
+                        560,
+                        0.47,
+                        Box(656, 560, 16, 16),
+                    )
+                ],
+                672,
+                560,
+            )
+        )
+        self.assertFalse(
+            _has_dense_adjacent_up_mini_spike_support(
+                [
+                    Detection(
+                        "mini_spike_up",
+                        OBJ_MINI_SPIKE_UP,
+                        640,
+                        560,
+                        0.47,
+                        Box(640, 560, 16, 16),
+                    )
+                ],
+                672,
+                560,
             )
         )
 
