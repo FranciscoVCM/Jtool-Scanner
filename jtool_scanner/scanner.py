@@ -67,6 +67,30 @@ MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 MINI_SPIKE_BLOCKLIKE_SCORE = 0.80
 MINI_SPIKE_BLOCKLIKE_DIRECTION_MARGIN = 0.06
+MINI_SPIKE_AXIS_RECOVERY_BLOCKLIKE_SCORE = 0.84
+MINI_SPIKE_AXIS_RECOVERY_BLOCKLIKE_DIRECTION_MARGIN = 0.025
+MINI_SPIKE_AXIS_RECOVERY_DUPLICATE_DISTANCE = 8.0
+MINI_SPIKE_AXIS_RECOVERY_ANCHOR_SCORE = 0.45
+MINI_SPIKE_AXIS_RECOVERY_THRESHOLDS = {
+    OBJ_MINI_SPIKE_LEFT: (
+        0.50,
+        0.10,
+        96,
+        0.20,
+        0.20,
+        MINI_SPIKE_AXIS_RECOVERY_ANCHOR_SCORE,
+    ),
+    OBJ_MINI_SPIKE_UP: (
+        0.48,
+        0.08,
+        96,
+        0.18,
+        0.18,
+        MINI_SPIKE_AXIS_RECOVERY_ANCHOR_SCORE,
+    ),
+    OBJ_MINI_SPIKE_RIGHT: (0.54, 0.16, 64, 0.22, 0.25, 0.55),
+    OBJ_MINI_SPIKE_DOWN: (0.58, 0.18, 64, 0.25, 0.25, 0.55),
+}
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
@@ -1025,6 +1049,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_up_spike_lateral_continuations(recovered, image, room)
     recovered = _recover_weak_full_spike_companions(recovered, image, room)
     recovered = _recover_edge_blocks(recovered, image, room)
+    recovered = _recover_axis_supported_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
 
@@ -1269,6 +1294,35 @@ def _classify_mini_spike(patch: _PatchFeatures) -> _GeometryClass | None:
             ("mini_spike_down", OBJ_MINI_SPIKE_DOWN, "down"),
         ],
     )
+
+
+def _classify_mini_spike_candidates(patch: _PatchFeatures) -> list[_GeometryClass]:
+    candidates: list[tuple[float, str, int, float]] = []
+    for kind, type_id, direction in [
+        ("mini_spike_up", OBJ_MINI_SPIKE_UP, "up"),
+        ("mini_spike_right", OBJ_MINI_SPIKE_RIGHT, "right"),
+        ("mini_spike_left", OBJ_MINI_SPIKE_LEFT, "left"),
+        ("mini_spike_down", OBJ_MINI_SPIKE_DOWN, "down"),
+    ]:
+        score, outline_delta = _triangle_direction_score(patch, direction)
+        candidates.append((score, kind, type_id, outline_delta))
+    candidates.sort(reverse=True)
+    classes: list[_GeometryClass] = []
+    for index, (score, kind, type_id, outline_delta) in enumerate(candidates):
+        if index == 0:
+            alternate_score = candidates[1][0]
+        else:
+            alternate_score = candidates[0][0]
+        classes.append(
+            _GeometryClass(
+                kind,
+                type_id,
+                score,
+                score - alternate_score,
+                outline_delta,
+            )
+        )
+    return classes
 
 
 def _best_triangle_class(
@@ -2458,6 +2512,145 @@ def _patch_in_ranges(
 def _value_in_range(value: float, value_range: tuple[float, float]) -> bool:
     minimum, maximum = value_range
     return minimum <= value <= maximum
+
+
+def _recover_axis_supported_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+    candidate_positions: set[tuple[int, int]] = set()
+
+    for det in recovered:
+        if det.type_id not in MINI_SPIKE_TYPES:
+            continue
+        thresholds = _mini_spike_axis_recovery_thresholds(det.type_id)
+        if thresholds is None:
+            continue
+        _score_min, _outline_min, max_distance, _edge_min, _center_min, anchor_score = (
+            thresholds
+        )
+        if det.score < anchor_score:
+            continue
+        for offset in range(16, max_distance + 1, 8):
+            for signed_offset in (-offset, offset):
+                if det.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN):
+                    x = det.x + signed_offset
+                    y = det.y
+                else:
+                    x = det.x
+                    y = det.y + signed_offset
+                if (
+                    0 <= x <= ROOM_WIDTH - 16
+                    and 0 <= y <= ROOM_HEIGHT - 16
+                    and x % 16 == 0
+                    and y % 16 == 0
+                ):
+                    candidate_positions.add((x, y))
+
+    for x, y in sorted(
+        candidate_positions,
+        key=lambda position: (position[1], position[0]),
+    ):
+        patch = _patch_features(image, room, x, y, 16)
+        block = _classify_block(patch)
+        for mini in _classify_mini_spike_candidates(patch):
+            if not _can_recover_axis_supported_mini_spike(mini, block, patch):
+                continue
+            if _has_nearby_same_mini_spike(recovered, added, mini.type_id, x, y):
+                continue
+            if not _has_axis_mini_spike_support(recovered, mini.type_id, x, y):
+                continue
+            added.append(
+                _geometry_detection(
+                    mini.kind,
+                    mini.type_id,
+                    x,
+                    y,
+                    mini.score,
+                    image,
+                    room,
+                    16,
+                )
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _can_recover_axis_supported_mini_spike(
+    mini: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    thresholds = _mini_spike_axis_recovery_thresholds(mini.type_id)
+    if thresholds is None:
+        return False
+    score_min, outline_min, _max_distance, edge_min, center_min, _anchor_score = (
+        thresholds
+    )
+    if mini.score < score_min:
+        return False
+    if mini.outline_delta < outline_min:
+        return False
+    if patch.edge_density < edge_min:
+        return False
+    if patch.center_score < center_min:
+        return False
+    return not (
+        block.score > MINI_SPIKE_AXIS_RECOVERY_BLOCKLIKE_SCORE
+        and mini.direction_margin < MINI_SPIKE_AXIS_RECOVERY_BLOCKLIKE_DIRECTION_MARGIN
+    )
+
+
+def _has_axis_mini_spike_support(
+    detections: list[Detection],
+    type_id: int,
+    x: int,
+    y: int,
+) -> bool:
+    thresholds = _mini_spike_axis_recovery_thresholds(type_id)
+    if thresholds is None:
+        return False
+    _score_min, _outline_min, max_distance, _edge_min, _center_min, anchor_score = (
+        thresholds
+    )
+    for det in detections:
+        if det.type_id != type_id or det.score < anchor_score:
+            continue
+        if type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN):
+            support_distance = abs(det.x - x)
+            same_axis = det.y == y
+        else:
+            support_distance = abs(det.y - y)
+            same_axis = det.x == x
+        if same_axis and 8 < support_distance <= max_distance:
+            return True
+    return False
+
+
+def _has_nearby_same_mini_spike(
+    recovered: list[Detection],
+    added: list[Detection],
+    type_id: int,
+    x: int,
+    y: int,
+) -> bool:
+    return any(
+        det.type_id == type_id
+        and distance((x, y), (det.x, det.y))
+        <= MINI_SPIKE_AXIS_RECOVERY_DUPLICATE_DISTANCE
+        for det in [*recovered, *added]
+    )
+
+
+def _mini_spike_axis_recovery_thresholds(
+    type_id: int,
+) -> tuple[float, float, int, float, float, float] | None:
+    return MINI_SPIKE_AXIS_RECOVERY_THRESHOLDS.get(type_id)
 
 
 def _recover_edge_blocks(

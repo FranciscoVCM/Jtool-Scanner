@@ -6,6 +6,9 @@ from jtool_scanner.constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
+    OBJ_MINI_SPIKE_LEFT,
+    OBJ_MINI_SPIKE_RIGHT,
+    OBJ_MINI_SPIKE_UP,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
     OBJ_SPIKE_LEFT,
@@ -23,6 +26,7 @@ from jtool_scanner.scanner import (
     _accept_block_run_gap_patch,
     _accept_full_spike,
     _accept_mini_spike,
+    _can_recover_axis_supported_mini_spike,
     _dedupe_geometry,
     _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
@@ -42,6 +46,7 @@ from jtool_scanner.scanner import (
     _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
+    _has_axis_mini_spike_support,
     _has_left_spike_supports,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
@@ -54,6 +59,7 @@ from jtool_scanner.scanner import (
     _patch_in_ranges,
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
+    _recover_axis_supported_mini_spikes,
     _recover_up_spike_lateral_continuations,
     _triangle_masks,
     _value_in_range,
@@ -572,6 +578,99 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(_accept_mini_spike(mini, block))
+
+    def test_axis_mini_spike_support_uses_same_direction_axis(self) -> None:
+        detections = [
+            Detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                128,
+                96,
+                0.50,
+                Box(128, 96, 16, 16),
+            ),
+            Detection(
+                "mini_spike_left",
+                OBJ_MINI_SPIKE_LEFT,
+                320,
+                240,
+                0.50,
+                Box(320, 240, 16, 16),
+            ),
+            Detection(
+                "mini_spike_right",
+                OBJ_MINI_SPIKE_RIGHT,
+                160,
+                96,
+                0.90,
+                Box(160, 96, 16, 16),
+            ),
+        ]
+
+        self.assertTrue(
+            _has_axis_mini_spike_support(detections, OBJ_MINI_SPIKE_UP, 176, 96)
+        )
+        self.assertTrue(
+            _has_axis_mini_spike_support(detections, OBJ_MINI_SPIKE_LEFT, 320, 288)
+        )
+        self.assertFalse(
+            _has_axis_mini_spike_support(detections, OBJ_MINI_SPIKE_UP, 128, 144)
+        )
+        self.assertFalse(
+            _has_axis_mini_spike_support(detections, OBJ_MINI_SPIKE_RIGHT, 224, 96)
+        )
+
+    def test_axis_supported_mini_spike_recovery_rejects_blocklike_noise(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.25,
+            border_score=0.25,
+            center_score=0.25,
+        )
+        mini = _GeometryClass(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            0.55,
+            direction_margin=0.01,
+            outline_delta=0.12,
+        )
+
+        self.assertTrue(
+            _can_recover_axis_supported_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.50),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _can_recover_axis_supported_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.90),
+                patch,
+            )
+        )
+
+    def test_axis_supported_mini_spike_recovery_adds_supported_candidate(self) -> None:
+        image = _mini_left_test_image([(128, 112)])
+        support = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            128,
+            64,
+            0.60,
+            Box(128, 64, 16, 16),
+        )
+
+        result = _recover_axis_supported_mini_spikes(
+            [support],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertIn(
+            (OBJ_MINI_SPIKE_LEFT, 128, 112),
+            [(det.type_id, det.x, det.y) for det in result],
+        )
 
     def test_block_accepts_weak_aligned_candidate(self) -> None:
         candidate = _GeometryPatchCandidate(
@@ -1221,6 +1320,24 @@ def _up_spike_test_image(
             for local_x in range(32):
                 side = abs(local_x - 15.5) * 2
                 if local_y < side - 2:
+                    continue
+                value = 0 if (local_x // 2 + local_y // 2) % 2 else 255
+                offset = ((y + local_y) * width + x + local_x) * 3
+                data[offset : offset + 3] = bytes((value, value, value))
+    return RGBImage(width, height, bytes(data))
+
+
+def _mini_left_test_image(
+    targets: list[tuple[int, int]],
+    width: int = 800,
+    height: int = 608,
+) -> RGBImage:
+    data = bytearray([255] * (width * height * 3))
+    for x, y in targets:
+        for local_y in range(16):
+            for local_x in range(16):
+                side = abs(local_y - 7.5) * 2
+                if local_x < side - 1:
                     continue
                 value = 0 if (local_x // 2 + local_y // 2) % 2 else 255
                 offset = ((y + local_y) * width + x + local_x) * 3
