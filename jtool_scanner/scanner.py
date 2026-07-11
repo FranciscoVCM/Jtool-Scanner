@@ -110,6 +110,16 @@ DIAGONAL_SIDE_MINI_RECOVERY_MIN_Y_DISTANCE = 32
 DIAGONAL_SIDE_MINI_RECOVERY_MAX_Y_DISTANCE = 48
 DIAGONAL_SIDE_MINI_RECOVERY_BLOCKLIKE_SCORE = 0.65
 DIAGONAL_SIDE_MINI_RECOVERY_BLOCKLIKE_MARGIN = -0.05
+EXTENDED_LEFT_MINI_RECOVERY_MIN_SCORE = 0.45
+EXTENDED_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.12
+EXTENDED_LEFT_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.40
+EXTENDED_LEFT_MINI_RECOVERY_MIN_CENTER_SCORE = 0.45
+EXTENDED_LEFT_MINI_RECOVERY_ANCHOR_SCORE = 0.65
+EXTENDED_LEFT_MINI_RECOVERY_MAX_X_SLOP = 16
+EXTENDED_LEFT_MINI_RECOVERY_MIN_Y_DISTANCE = 48
+EXTENDED_LEFT_MINI_RECOVERY_MAX_Y_DISTANCE = 64
+EXTENDED_LEFT_MINI_RECOVERY_BLOCKLIKE_SCORE = 0.70
+EXTENDED_LEFT_MINI_RECOVERY_BLOCKLIKE_MARGIN = -0.05
 LOW_CONTRAST_MINI_UP_MIN_SCORE = 0.055
 LOW_CONTRAST_MINI_UP_MIN_OUTLINE_DELTA = 0.04
 LOW_CONTRAST_MINI_UP_MIN_EDGE_DENSITY = 0.035
@@ -1093,6 +1103,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_axis_supported_mini_spikes(recovered, image, room)
     recovered = _recover_horizontal_side_mini_spikes(recovered, image, room)
     recovered = _recover_diagonal_side_mini_spikes(recovered, image, room)
+    recovered = _recover_extended_left_mini_spikes(recovered, image, room)
     recovered = _recover_adjacent_up_mini_spike_pairs(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
@@ -2856,6 +2867,81 @@ def _has_diagonal_side_mini_spike_support(
         and DIAGONAL_SIDE_MINI_RECOVERY_MIN_Y_DISTANCE
         <= abs(det.y - y)
         <= DIAGONAL_SIDE_MINI_RECOVERY_MAX_Y_DISTANCE
+        for det in detections
+    )
+
+
+def _recover_extended_left_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            for mini in _classify_mini_spike_candidates(patch):
+                if not _can_recover_extended_left_mini_spike(mini, block, patch):
+                    continue
+                if _has_nearby_same_mini_spike(recovered, added, mini.type_id, x, y):
+                    continue
+                if not _has_extended_left_mini_spike_support(recovered, x, y):
+                    continue
+                added.append(
+                    _geometry_detection(
+                        mini.kind,
+                        mini.type_id,
+                        x,
+                        y,
+                        mini.score,
+                        image,
+                        room,
+                        16,
+                    )
+                )
+                break
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _can_recover_extended_left_mini_spike(
+    mini: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    if mini.type_id != OBJ_MINI_SPIKE_LEFT:
+        return False
+    if mini.score < EXTENDED_LEFT_MINI_RECOVERY_MIN_SCORE:
+        return False
+    if mini.outline_delta < EXTENDED_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA:
+        return False
+    if patch.edge_density < EXTENDED_LEFT_MINI_RECOVERY_MIN_EDGE_DENSITY:
+        return False
+    if patch.center_score < EXTENDED_LEFT_MINI_RECOVERY_MIN_CENTER_SCORE:
+        return False
+    return not (
+        block.score > EXTENDED_LEFT_MINI_RECOVERY_BLOCKLIKE_SCORE
+        and mini.direction_margin < EXTENDED_LEFT_MINI_RECOVERY_BLOCKLIKE_MARGIN
+    )
+
+
+def _has_extended_left_mini_spike_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    return any(
+        det.type_id == OBJ_MINI_SPIKE_LEFT
+        and det.score >= EXTENDED_LEFT_MINI_RECOVERY_ANCHOR_SCORE
+        and abs(det.x - x) <= EXTENDED_LEFT_MINI_RECOVERY_MAX_X_SLOP
+        and EXTENDED_LEFT_MINI_RECOVERY_MIN_Y_DISTANCE
+        <= abs(det.y - y)
+        <= EXTENDED_LEFT_MINI_RECOVERY_MAX_Y_DISTANCE
         for det in detections
     )
 

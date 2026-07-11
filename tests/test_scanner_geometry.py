@@ -27,6 +27,7 @@ from jtool_scanner.scanner import (
     _accept_full_spike,
     _accept_mini_spike,
     _can_recover_diagonal_side_mini_spike,
+    _can_recover_extended_left_mini_spike,
     _is_adjacent_up_mini_spike_candidate,
     _can_recover_axis_supported_mini_spike,
     _can_recover_horizontal_side_mini_spike,
@@ -53,6 +54,7 @@ from jtool_scanner.scanner import (
     _has_adjacent_up_mini_spike_pair,
     _has_dense_adjacent_up_mini_spike_support,
     _has_diagonal_side_mini_spike_support,
+    _has_extended_left_mini_spike_support,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
     _has_left_spike_supports,
@@ -824,6 +826,65 @@ class ScannerGeometryTests(unittest.TestCase):
                     outline_delta=0.29,
                 ),
                 _GeometryClass("block", OBJ_BLOCK, 0.66),
+                patch,
+            )
+        )
+
+    def test_extended_left_mini_support_uses_farther_vertical_offset_anchor(self) -> None:
+        detections = [
+            Detection(
+                "mini_spike_left",
+                OBJ_MINI_SPIKE_LEFT,
+                576,
+                528,
+                0.68,
+                Box(576, 528, 16, 16),
+            ),
+            Detection(
+                "mini_spike_left",
+                OBJ_MINI_SPIKE_LEFT,
+                608,
+                560,
+                0.90,
+                Box(608, 560, 16, 16),
+            ),
+        ]
+
+        self.assertTrue(_has_extended_left_mini_spike_support(detections, 560, 592))
+        self.assertFalse(_has_extended_left_mini_spike_support(detections, 560, 528))
+
+    def test_extended_left_mini_recovery_requires_supported_left_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.41,
+            border_score=0.30,
+            center_score=0.46,
+        )
+        mini = _GeometryClass(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            0.46,
+            direction_margin=0.0,
+            outline_delta=0.13,
+        )
+
+        self.assertTrue(
+            _can_recover_extended_left_mini_spike(
+                mini,
+                _GeometryClass("block", OBJ_BLOCK, 0.60),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _can_recover_extended_left_mini_spike(
+                _GeometryClass(
+                    "mini_spike_left",
+                    OBJ_MINI_SPIKE_LEFT,
+                    0.46,
+                    direction_margin=-0.06,
+                    outline_delta=0.13,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.71),
                 patch,
             )
         )
