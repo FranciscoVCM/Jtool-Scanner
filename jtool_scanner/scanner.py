@@ -133,6 +133,13 @@ ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.42
 ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.25
 ADJACENT_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.55
 ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE = 16
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.23
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.40
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.40
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_BLOCK_SCORE = 0.35
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.46
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE = 0.52
+AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE = 16
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.70
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_OUTLINE_DELTA = -0.05
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.70
@@ -1105,6 +1112,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_diagonal_side_mini_spikes(recovered, image, room)
     recovered = _recover_extended_left_mini_spikes(recovered, image, room)
     recovered = _recover_adjacent_up_mini_spike_pairs(recovered, image, room)
+    recovered = _recover_ambiguous_adjacent_up_mini_spikes(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
@@ -3012,6 +3020,85 @@ def _has_adjacent_up_mini_spike_pair(
     return (
         (x - ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
         or (x + ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
+    )
+
+
+def _recover_ambiguous_adjacent_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    candidates: dict[tuple[int, int], float] = {}
+
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            patch = _patch_features(image, room, x, y, 16)
+            block = _classify_block(patch)
+            score, _outline_delta = _triangle_direction_score(patch, "up")
+            best_score = max(
+                _triangle_direction_score(patch, direction)[0]
+                for direction in ("up", "right", "down", "left")
+            )
+            if _is_ambiguous_adjacent_up_mini_spike_candidate(
+                patch,
+                block,
+                score,
+                best_score,
+            ):
+                candidates[(x, y)] = score
+
+    added: list[Detection] = []
+    for (x, y), score in sorted(
+        candidates.items(),
+        key=lambda item: (item[0][1], item[0][0]),
+    ):
+        if not _has_ambiguous_adjacent_up_mini_spike_pair(candidates, x, y):
+            continue
+        if _has_nearby_same_mini_spike(recovered, added, OBJ_MINI_SPIKE_UP, x, y):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                x,
+                y,
+                score,
+                image,
+                room,
+                16,
+            )
+        )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_ambiguous_adjacent_up_mini_spike_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    score: float,
+    best_score: float,
+) -> bool:
+    return (
+        score >= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE
+        and patch.edge_density >= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY
+        and patch.center_score >= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE
+        and block.score >= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_BLOCK_SCORE
+        and block.score <= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+        and best_score <= AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MAX_BEST_TRIANGLE_SCORE
+    )
+
+
+def _has_ambiguous_adjacent_up_mini_spike_pair(
+    candidates: dict[tuple[int, int], float],
+    x: int,
+    y: int,
+) -> bool:
+    return (
+        (x - AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
+        or (x + AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE, y) in candidates
     )
 
 

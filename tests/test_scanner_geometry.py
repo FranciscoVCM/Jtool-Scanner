@@ -52,6 +52,7 @@ from jtool_scanner.scanner import (
     _is_half_step_supported_full_spike_candidate,
     _has_axis_mini_spike_support,
     _has_adjacent_up_mini_spike_pair,
+    _has_ambiguous_adjacent_up_mini_spike_pair,
     _has_dense_adjacent_up_mini_spike_support,
     _has_diagonal_side_mini_spike_support,
     _has_extended_left_mini_spike_support,
@@ -59,6 +60,7 @@ from jtool_scanner.scanner import (
     _has_low_contrast_mini_up_pair,
     _has_left_spike_supports,
     _is_low_contrast_mini_up_candidate,
+    _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
@@ -1038,6 +1040,59 @@ class ScannerGeometryTests(unittest.TestCase):
                 ],
                 672,
                 560,
+            )
+        )
+
+    def test_ambiguous_adjacent_up_mini_requires_paired_blocklike_shape(self) -> None:
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.43,
+            border_score=0.30,
+            center_score=0.44,
+        )
+
+        self.assertTrue(
+            _is_ambiguous_adjacent_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.44),
+                0.24,
+                0.50,
+            )
+        )
+        self.assertFalse(
+            _is_ambiguous_adjacent_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.47),
+                0.24,
+                0.50,
+            )
+        )
+        self.assertFalse(
+            _is_ambiguous_adjacent_up_mini_spike_candidate(
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.44),
+                0.24,
+                0.53,
+            )
+        )
+        self.assertTrue(
+            _has_ambiguous_adjacent_up_mini_spike_pair(
+                {
+                    (128, 112): 0.28,
+                    (144, 112): 0.24,
+                },
+                128,
+                112,
+            )
+        )
+        self.assertFalse(
+            _has_ambiguous_adjacent_up_mini_spike_pair(
+                {
+                    (128, 112): 0.28,
+                    (176, 112): 0.24,
+                },
+                128,
+                112,
             )
         )
 
