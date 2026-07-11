@@ -79,6 +79,19 @@ FULL_SPIKE_RUN_GAP_SCORE = 0.241
 FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY = 0.35
 FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE = 0.20
 FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE = 0.25
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_BLOCK_SCORE = 0.45
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_CENTER_SCORE = 0.20
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_CENTER_SCORE = 0.35
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_NEAR_DISTANCE = 12.0
+BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_NEAR_DISTANCE = 96.0
+EDGE_FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.75
+EDGE_FULL_SPIKE_CONTINUATION_STEP = 32
+EDGE_FULL_SPIKE_CONTINUATION_MIN_EDGE_DENSITY = 0.35
+EDGE_FULL_SPIKE_CONTINUATION_MIN_BORDER_SCORE = 0.20
+EDGE_FULL_SPIKE_CONTINUATION_MIN_CENTER_SCORE = 0.25
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -958,6 +971,8 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     )
     recovered = _recover_supported_full_spikes(recovered, image, room)
     recovered = _recover_full_spike_run_gaps(recovered, image, room)
+    recovered = _recover_blocklike_full_spikes(recovered, image, room)
+    recovered = _recover_edge_full_spike_continuations(recovered, image, room)
     return _recover_edge_blocks(recovered, image, room)
 
 
@@ -1705,6 +1720,132 @@ def _is_full_spike_run_gap_patch(patch: _PatchFeatures) -> bool:
         patch.edge_density >= FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY
         and patch.border_score >= FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE
         and patch.center_score >= FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE
+    )
+
+
+def _recover_blocklike_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    added: list[Detection] = []
+
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y))
+                < BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_NEAR_DISTANCE
+                for det in [*full_spikes, *added]
+            ):
+                continue
+            block = _classify_block(patch)
+            if not _is_blocklike_full_spike_recovery_candidate(spike, block, patch):
+                continue
+            if not any(
+                det.type_id == spike.type_id
+                and BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_NEAR_DISTANCE
+                <= distance((x, y), (det.x, det.y))
+                <= BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_NEAR_DISTANCE
+                for det in full_spikes
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_WATER_COEXIST_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_blocklike_full_spike_recovery_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+) -> bool:
+    return (
+        spike.score >= BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE
+        and spike.outline_delta >= BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA
+        and spike.direction_margin >= BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN
+        and block.score <= BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_BLOCK_SCORE
+        and BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_CENTER_SCORE
+        <= patch.center_score
+        <= BLOCKLIKE_FULL_SPIKE_RECOVERY_MAX_CENTER_SCORE
+    )
+
+
+def _recover_edge_full_spike_continuations(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    occupied = {(det.type_id, det.x, det.y) for det in full_spikes}
+    added: list[Detection] = []
+
+    for spike in full_spikes:
+        if not _is_edge_full_spike_continuation_anchor(spike):
+            continue
+        for y in (
+            spike.y - EDGE_FULL_SPIKE_CONTINUATION_STEP,
+            spike.y + EDGE_FULL_SPIKE_CONTINUATION_STEP,
+        ):
+            x = spike.x
+            if (spike.type_id, x, y) in occupied:
+                continue
+            if not (0 <= y <= ROOM_HEIGHT - GRID_SIZE):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not _is_edge_full_spike_continuation_patch(patch):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_WATER_COEXIST_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            occupied.add((spike.type_id, x, y))
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_edge_full_spike_continuation_anchor(spike: Detection) -> bool:
+    return spike.score >= EDGE_FULL_SPIKE_CONTINUATION_MIN_SCORE and (
+        (spike.type_id == OBJ_SPIKE_LEFT and spike.x == 0)
+        or (spike.type_id == OBJ_SPIKE_RIGHT and spike.x == ROOM_WIDTH - GRID_SIZE)
+    )
+
+
+def _is_edge_full_spike_continuation_patch(patch: _PatchFeatures) -> bool:
+    return (
+        patch.edge_density >= EDGE_FULL_SPIKE_CONTINUATION_MIN_EDGE_DENSITY
+        and patch.border_score >= EDGE_FULL_SPIKE_CONTINUATION_MIN_BORDER_SCORE
+        and patch.center_score >= EDGE_FULL_SPIKE_CONTINUATION_MIN_CENTER_SCORE
     )
 
 

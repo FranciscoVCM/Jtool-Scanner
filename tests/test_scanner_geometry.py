@@ -28,6 +28,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
+    _is_blocklike_full_spike_recovery_candidate,
     _is_blocklike_spike_candidate,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
@@ -35,6 +36,8 @@ from jtool_scanner.scanner import (
     _is_dark_outline_half_step_full_spike_candidate,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
+    _is_edge_full_spike_continuation_anchor,
+    _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
@@ -44,6 +47,7 @@ from jtool_scanner.scanner import (
     _normalize_full_spike_origin,
     _outline_block_score,
     _recover_full_spike_run_gaps,
+    _recover_blocklike_full_spikes,
     _ColorProfile,
 )
 from jtool_scanner.image import RGBImage
@@ -201,6 +205,132 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertFalse(
             _is_full_spike_run_gap_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.34,
+                    border_score=0.20,
+                    center_score=0.25,
+                )
+            )
+        )
+
+    def test_blocklike_full_spike_recovery_requires_medium_center_body(self) -> None:
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.39,
+            direction_margin=0.06,
+            outline_delta=0.11,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.40)
+        patch = _PatchFeatures(
+            (),
+            edge_density=0.30,
+            border_score=0.20,
+            center_score=0.25,
+        )
+
+        self.assertTrue(
+            _is_blocklike_full_spike_recovery_candidate(spike, block, patch)
+        )
+        self.assertFalse(
+            _is_blocklike_full_spike_recovery_candidate(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.46),
+                patch,
+            )
+        )
+        self.assertFalse(
+            _is_blocklike_full_spike_recovery_candidate(
+                spike,
+                block,
+                _PatchFeatures(
+                    (),
+                    edge_density=0.30,
+                    border_score=0.20,
+                    center_score=0.40,
+                ),
+            )
+        )
+
+    def test_blocklike_full_spike_recovery_uses_same_direction_support(self) -> None:
+        image = _textured_test_image()
+        supported = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            224,
+            96,
+            0.55,
+            Box(224, 96, 32, 32),
+        )
+
+        result = _recover_blocklike_full_spikes(
+            [supported],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertTrue(
+            any(
+                det.type_id == OBJ_SPIKE_UP
+                and 128 <= det.x <= 320
+                and det.y == 96
+                for det in result
+            )
+        )
+
+    def test_edge_full_spike_continuation_anchor_requires_facing_room_edge(self) -> None:
+        left_edge = Detection(
+            "spike_left",
+            OBJ_SPIKE_LEFT,
+            0,
+            192,
+            0.75,
+            Box(0, 192, 32, 32),
+        )
+        right_edge = Detection(
+            "spike_right",
+            OBJ_SPIKE_RIGHT,
+            768,
+            192,
+            0.75,
+            Box(768, 192, 32, 32),
+        )
+        interior = Detection(
+            "spike_left",
+            OBJ_SPIKE_LEFT,
+            32,
+            192,
+            0.75,
+            Box(32, 192, 32, 32),
+        )
+        weak = Detection(
+            "spike_left",
+            OBJ_SPIKE_LEFT,
+            0,
+            192,
+            0.74,
+            Box(0, 192, 32, 32),
+        )
+
+        self.assertTrue(_is_edge_full_spike_continuation_anchor(left_edge))
+        self.assertTrue(_is_edge_full_spike_continuation_anchor(right_edge))
+        self.assertFalse(_is_edge_full_spike_continuation_anchor(interior))
+        self.assertFalse(_is_edge_full_spike_continuation_anchor(weak))
+
+    def test_edge_full_spike_continuation_patch_requires_texture(self) -> None:
+        self.assertTrue(
+            _is_edge_full_spike_continuation_patch(
+                _PatchFeatures(
+                    (),
+                    edge_density=0.35,
+                    border_score=0.20,
+                    center_score=0.25,
+                )
+            )
+        )
+        self.assertFalse(
+            _is_edge_full_spike_continuation_patch(
                 _PatchFeatures(
                     (),
                     edge_density=0.34,
