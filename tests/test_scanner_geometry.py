@@ -36,6 +36,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
+    _is_blocklike_mini_spike_noise_candidate,
     _is_blocklike_full_spike_recovery_candidate,
     _is_blocklike_spike_candidate,
     _is_bottom_edge_up_spike_continuation_anchor,
@@ -85,6 +86,7 @@ from jtool_scanner.scanner import (
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
+    _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
     _recover_axis_supported_mini_spikes,
@@ -160,6 +162,38 @@ class ScannerGeometryTests(unittest.TestCase):
                 (OBJ_SPIKE_UP, 64, 96),
             ],
         )
+
+    def test_final_full_spike_prune_removes_low_score_and_tight_duplicate(self) -> None:
+        strong = Detection("spike_up", OBJ_SPIKE_UP, 64, 96, 0.80, Box(64, 96, 32, 32))
+        duplicate = Detection("spike_up", OBJ_SPIKE_UP, 68, 100, 0.50, Box(68, 100, 32, 32))
+        low_score = Detection("spike_left", OBJ_SPIKE_LEFT, 192, 128, 0.24, Box(192, 128, 32, 32))
+        nearby_other_direction = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            68,
+            100,
+            0.40,
+            Box(68, 100, 32, 32),
+        )
+        save = Detection("save", OBJ_SAVE, 224, 192, 1.00, Box(224, 192, 32, 32))
+
+        result = _prune_recovered_full_spike_noise(
+            [duplicate, low_score, nearby_other_direction, save, strong]
+        )
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [
+                (OBJ_SPIKE_DOWN, 64, 100),
+                (OBJ_SAVE, 224, 192),
+                (OBJ_SPIKE_UP, 64, 96),
+            ],
+        )
+
+    def test_blocklike_mini_spike_noise_requires_sparse_full_spike_support(self) -> None:
+        self.assertTrue(_is_blocklike_mini_spike_noise_candidate(0.99, 2))
+        self.assertFalse(_is_blocklike_mini_spike_noise_candidate(0.97, 2))
+        self.assertFalse(_is_blocklike_mini_spike_noise_candidate(0.99, 3))
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()

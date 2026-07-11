@@ -223,11 +223,16 @@ FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 FULL_SPIKE_AXIS_SNAP_STEP = 16
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
+FULL_SPIKE_FINAL_MIN_SCORE = 0.241
+FULL_SPIKE_FINAL_DEDUPE_DISTANCE = 12.0
 FULL_SPIKE_RUN_GAP_DISTANCE = 64
 FULL_SPIKE_RUN_GAP_SCORE = 0.241
 FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY = 0.35
 FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE = 0.20
 FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE = 0.25
+BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.98
+BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE = 24.0
+BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS = 2
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -473,6 +478,7 @@ def scan_image(
         detections = _dedupe_overlapping_geometry(detections)
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
+        detections = _prune_final_geometry_noise(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     return ScanResult(image.width, image.height, box, detections)
 
@@ -4231,6 +4237,93 @@ def _dedupe_normalized_full_spikes(detections: list[Detection]) -> list[Detectio
             continue
         kept_full_spikes.append(detection)
     return [det for det in detections if id(det) not in removed_full_spike_ids]
+
+
+def _prune_final_geometry_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    detections = _prune_recovered_full_spike_noise(detections)
+    return _prune_blocklike_mini_spike_noise(detections, image, room)
+
+
+def _prune_recovered_full_spike_noise(detections: list[Detection]) -> list[Detection]:
+    normalized = _normalize_full_spike_detections(detections)
+    kept_full_spikes: list[Detection] = []
+    removed_full_spike_ids: set[int] = set()
+    full_spikes = sorted(
+        (det for det in normalized if det.type_id in FULL_SPIKE_TYPES),
+        key=lambda det: (-det.score, det.y, det.x),
+    )
+    for detection in full_spikes:
+        if detection.score < FULL_SPIKE_FINAL_MIN_SCORE:
+            removed_full_spike_ids.add(id(detection))
+            continue
+        if any(
+            detection.type_id == kept.type_id
+            and distance((detection.x, detection.y), (kept.x, kept.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for kept in kept_full_spikes
+        ):
+            removed_full_spike_ids.add(id(detection))
+            continue
+        kept_full_spikes.append(detection)
+    return [det for det in normalized if id(det) not in removed_full_spike_ids]
+
+
+def _prune_blocklike_mini_spike_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
+    return [
+        det
+        for det in detections
+        if not _is_blocklike_mini_spike_noise(det, image, room, full_spikes)
+    ]
+
+
+def _is_blocklike_mini_spike_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    full_spikes: list[Detection],
+) -> bool:
+    if detection.type_id not in MINI_SPIKE_TYPES:
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, 16)
+    block = _classify_block(patch)
+    full_supports = _nearby_full_spike_support_count(
+        detection,
+        full_spikes,
+        BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
+    )
+    return _is_blocklike_mini_spike_noise_candidate(block.score, full_supports)
+
+
+def _nearby_full_spike_support_count(
+    detection: Detection,
+    full_spikes: list[Detection],
+    max_distance: float,
+) -> int:
+    return sum(
+        1
+        for full_spike in full_spikes
+        if distance((detection.x, detection.y), (full_spike.x, full_spike.y))
+        <= max_distance
+    )
+
+
+def _is_blocklike_mini_spike_noise_candidate(
+    block_score: float,
+    full_supports: int,
+) -> bool:
+    return (
+        block_score >= BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
+        and full_supports <= BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS
+    )
 
 
 def _normalize_full_spike_origin(type_id: int, x: int, y: int) -> tuple[int, int]:
