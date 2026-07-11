@@ -42,6 +42,7 @@ from jtool_scanner.scanner import (
     _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
+    _has_left_spike_supports,
     _is_low_signal_supported_full_spike_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
@@ -50,10 +51,12 @@ from jtool_scanner.scanner import (
     _is_up_spike_half_step_continuation_patch,
     _normalize_full_spike_origin,
     _outline_block_score,
+    _patch_in_ranges,
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
     _recover_up_spike_lateral_continuations,
     _triangle_masks,
+    _value_in_range,
     _ColorProfile,
 )
 from jtool_scanner.image import RGBImage
@@ -489,6 +492,40 @@ class ScannerGeometryTests(unittest.TestCase):
             (OBJ_SPIKE_UP, 448, 272),
             [(det.type_id, det.x, det.y) for det in result],
         )
+
+    def test_patch_range_helper_accepts_values_inside_all_ranges(self) -> None:
+        patch = _PatchFeatures((), edge_density=0.25, border_score=0.15, center_score=0.30)
+
+        self.assertTrue(_value_in_range(0.25, (0.20, 0.30)))
+        self.assertTrue(
+            _patch_in_ranges(
+                patch,
+                (0.20, 0.30),
+                (0.10, 0.20),
+                (0.25, 0.35),
+            )
+        )
+        self.assertFalse(_value_in_range(0.31, (0.20, 0.30)))
+        self.assertFalse(
+            _patch_in_ranges(
+                patch,
+                (0.26, 0.30),
+                (0.10, 0.20),
+                (0.25, 0.35),
+            )
+        )
+
+    def test_left_spike_supports_require_counted_nearby_left_spikes(self) -> None:
+        detections = [
+            Detection("spike_left", OBJ_SPIKE_LEFT, 704, 96, 0.60, Box(704, 96, 32, 32)),
+            Detection("spike_left", OBJ_SPIKE_LEFT, 568, 64, 0.55, Box(568, 64, 32, 32)),
+            Detection("spike_left", OBJ_SPIKE_LEFT, 640, 160, 0.70, Box(640, 160, 32, 32)),
+            Detection("spike_right", OBJ_SPIKE_RIGHT, 656, 64, 0.90, Box(656, 64, 32, 32)),
+        ]
+
+        self.assertTrue(_has_left_spike_supports(detections, 640, 64, 40, 80, 2))
+        self.assertFalse(_has_left_spike_supports(detections, 640, 64, 40, 60, 2))
+        self.assertFalse(_has_left_spike_supports(detections, 640, 64, 40, 80, 3))
 
     def test_outline_block_accepts_aligned_empty_center_patch(self) -> None:
         candidate = _GeometryPatchCandidate(

@@ -115,6 +115,31 @@ UP_SPIKE_FULL_STEP_CONTINUATION_MIN_BORDER_SCORE = 0.38
 UP_SPIKE_FULL_STEP_CONTINUATION_MIN_CENTER_SCORE = 0.58
 UP_SPIKE_FULL_STEP_CONTINUATION_MIN_SCORE = 0.52
 UP_SPIKE_FULL_STEP_CONTINUATION_MIN_OUTLINE_DELTA = 0.10
+WEAK_TOP_LEFT_COMPANION_EDGE_RANGE = (0.22, 0.30)
+WEAK_TOP_LEFT_COMPANION_BORDER_RANGE = (0.14, 0.20)
+WEAK_TOP_LEFT_COMPANION_CENTER_RANGE = (0.29, 0.35)
+WEAK_SHIFTED_LEFT_COMPANION_EDGE_RANGE = (0.265, 0.32)
+WEAK_SHIFTED_LEFT_COMPANION_BORDER_RANGE = (0.20, 0.25)
+WEAK_SHIFTED_LEFT_COMPANION_CENTER_RANGE = (0.33, 0.38)
+WEAK_RIGHT_COMPANION_EDGE_RANGE = (0.22, 0.25)
+WEAK_RIGHT_COMPANION_BORDER_RANGE = (0.12, 0.15)
+WEAK_RIGHT_COMPANION_CENTER_RANGE = (0.28, 0.32)
+WEAK_RIGHT_COMPANION_SCORE_RANGE = (0.30, 0.33)
+WEAK_RIGHT_COMPANION_MIN_OUTLINE_DELTA = 0.14
+WEAK_UP_COMPANION_EDGE_RANGE = (0.18, 0.21)
+WEAK_UP_COMPANION_BORDER_RANGE = (0.06, 0.09)
+WEAK_UP_COMPANION_CENTER_RANGE = (0.23, 0.27)
+WEAK_UP_COMPANION_SCORE_RANGE = (0.12, 0.15)
+WEAK_BLOCKLIKE_UP_COMPANION_EDGE_RANGE = (0.36, 0.39)
+WEAK_BLOCKLIKE_UP_COMPANION_BORDER_RANGE = (0.39, 0.42)
+WEAK_BLOCKLIKE_UP_COMPANION_CENTER_RANGE = (0.27, 0.30)
+WEAK_BLOCKLIKE_UP_COMPANION_SCORE_RANGE = (0.19, 0.22)
+DENSE_SAME_TILE_LEFT_COMPANION_MIN_EDGE_DENSITY = 0.60
+DENSE_SAME_TILE_LEFT_COMPANION_MIN_BORDER_SCORE = 0.38
+DENSE_SAME_TILE_LEFT_COMPANION_MIN_CENTER_SCORE = 0.90
+DENSE_VERTICAL_PAIR_LEFT_COMPANION_EDGE_RANGE = (0.52, 0.56)
+DENSE_VERTICAL_PAIR_LEFT_COMPANION_BORDER_RANGE = (0.46, 0.50)
+DENSE_VERTICAL_PAIR_LEFT_COMPANION_CENTER_RANGE = (0.53, 0.57)
 BLOCK_MIN_SCORE = 0.30
 WEAK_BLOCK_ALIGNED_MIN_SCORE = 0.28
 BLOCK_ALIGNMENT_STEP = 16
@@ -998,7 +1023,9 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_edge_full_spike_continuations(recovered, image, room)
     recovered = _recover_bottom_edge_up_spike_continuations(recovered, image, room)
     recovered = _recover_up_spike_lateral_continuations(recovered, image, room)
-    return _recover_edge_blocks(recovered, image, room)
+    recovered = _recover_weak_full_spike_companions(recovered, image, room)
+    recovered = _recover_edge_blocks(recovered, image, room)
+    return _recover_weak_full_spike_companions(recovered, image, room)
 
 
 @dataclass(frozen=True, slots=True)
@@ -2053,6 +2080,384 @@ def _is_up_spike_full_step_continuation_patch(patch: _PatchFeatures) -> bool:
         and score >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_SCORE
         and outline_delta >= UP_SPIKE_FULL_STEP_CONTINUATION_MIN_OUTLINE_DELTA
     )
+
+
+def _recover_weak_full_spike_companions(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    recovered = list(detections)
+    added: list[Detection] = []
+
+    for spike in recovered:
+        if spike.type_id == OBJ_SPIKE_RIGHT and spike.score >= 0.30:
+            _try_add_weak_top_left_companion(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_LEFT and spike.score >= 0.50:
+            _try_add_shifted_weak_left_companion(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_LEFT and spike.score >= 0.35:
+            _try_add_weak_right_companions(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_RIGHT and spike.score >= 0.24:
+            _try_add_weak_up_companion(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_DOWN and spike.score >= 0.50:
+            _try_add_blocklike_weak_up_companion(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_UP and spike.score >= 0.75:
+            _try_add_dense_same_tile_left_companion(recovered, added, image, room, spike)
+        if spike.type_id == OBJ_SPIKE_RIGHT and spike.score >= 0.65:
+            _try_add_dense_vertical_pair_left_companion(
+                recovered,
+                added,
+                image,
+                room,
+                spike,
+            )
+
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _try_add_weak_top_left_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x
+    y = spike.y
+    if y > GRID_SIZE:
+        return
+    if not any(
+        det.type_id == OBJ_SPIKE_DOWN
+        and det.x == x
+        and abs(det.y - (y - 24)) <= 8
+        for det in recovered
+    ):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    if not _patch_in_ranges(
+        patch,
+        WEAK_TOP_LEFT_COMPANION_EDGE_RANGE,
+        WEAK_TOP_LEFT_COMPANION_BORDER_RANGE,
+        WEAK_TOP_LEFT_COMPANION_CENTER_RANGE,
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_LEFT,
+        "spike_left",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _try_add_shifted_weak_left_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x + 24
+    y = spike.y + 16
+    if not any(
+        det.type_id in (OBJ_SPIKE_RIGHT, OBJ_SPIKE_DOWN)
+        and distance((x, y), (det.x, det.y)) <= 24
+        for det in recovered
+    ):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    if not _patch_in_ranges(
+        patch,
+        WEAK_SHIFTED_LEFT_COMPANION_EDGE_RANGE,
+        WEAK_SHIFTED_LEFT_COMPANION_BORDER_RANGE,
+        WEAK_SHIFTED_LEFT_COMPANION_CENTER_RANGE,
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_LEFT,
+        "spike_left",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _try_add_weak_right_companions(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    for offset_x, offset_y in ((32, 8), (32, -24), (64, 24)):
+        x = spike.x + offset_x
+        y = spike.y + offset_y
+        if not any(
+            det.type_id in (OBJ_SPIKE_DOWN, OBJ_SPIKE_UP)
+            and distance((x, y), (det.x, det.y)) <= 48
+            for det in recovered
+        ):
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        score, outline_delta = _triangle_direction_score(patch, "right")
+        if not (
+            _patch_in_ranges(
+                patch,
+                WEAK_RIGHT_COMPANION_EDGE_RANGE,
+                WEAK_RIGHT_COMPANION_BORDER_RANGE,
+                WEAK_RIGHT_COMPANION_CENTER_RANGE,
+            )
+            and _value_in_range(score, WEAK_RIGHT_COMPANION_SCORE_RANGE)
+            and outline_delta >= WEAK_RIGHT_COMPANION_MIN_OUTLINE_DELTA
+        ):
+            continue
+        _add_weak_full_spike_companion(
+            recovered,
+            added,
+            image,
+            room,
+            OBJ_SPIKE_RIGHT,
+            "spike_right",
+            x,
+            y,
+            spike.score,
+        )
+
+
+def _try_add_weak_up_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x
+    y = spike.y
+    if not any(
+        det.type_id == OBJ_SPIKE_UP
+        and 24 <= distance((x, y), (det.x, det.y)) <= 48
+        for det in recovered
+    ):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    score, _outline_delta = _triangle_direction_score(patch, "up")
+    if not (
+        _patch_in_ranges(
+            patch,
+            WEAK_UP_COMPANION_EDGE_RANGE,
+            WEAK_UP_COMPANION_BORDER_RANGE,
+            WEAK_UP_COMPANION_CENTER_RANGE,
+        )
+        and _value_in_range(score, WEAK_UP_COMPANION_SCORE_RANGE)
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_UP,
+        "spike_up",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _try_add_blocklike_weak_up_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x - 16
+    y = spike.y
+    if not any(
+        det.type_id == OBJ_SPIKE_LEFT and distance((x, y), (det.x, det.y)) <= 48
+        for det in recovered
+    ):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    score, _outline_delta = _triangle_direction_score(patch, "up")
+    if not (
+        _patch_in_ranges(
+            patch,
+            WEAK_BLOCKLIKE_UP_COMPANION_EDGE_RANGE,
+            WEAK_BLOCKLIKE_UP_COMPANION_BORDER_RANGE,
+            WEAK_BLOCKLIKE_UP_COMPANION_CENTER_RANGE,
+        )
+        and _value_in_range(score, WEAK_BLOCKLIKE_UP_COMPANION_SCORE_RANGE)
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_UP,
+        "spike_up",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _try_add_dense_same_tile_left_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x
+    y = spike.y
+    if x % PREFERRED_BLOCK_ALIGNMENT_STEP or y % PREFERRED_BLOCK_ALIGNMENT_STEP:
+        return
+    if not _has_left_spike_supports(recovered, x, y, 40, 80, 2):
+        return
+    if not any(
+        det.type_id == OBJ_SPIKE_RIGHT and distance((x, y), (det.x, det.y)) <= 24
+        for det in recovered
+    ):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    if not (
+        patch.edge_density >= DENSE_SAME_TILE_LEFT_COMPANION_MIN_EDGE_DENSITY
+        and patch.border_score >= DENSE_SAME_TILE_LEFT_COMPANION_MIN_BORDER_SCORE
+        and patch.center_score >= DENSE_SAME_TILE_LEFT_COMPANION_MIN_CENTER_SCORE
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_LEFT,
+        "spike_left",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _try_add_dense_vertical_pair_left_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    spike: Detection,
+) -> None:
+    x = spike.x
+    y = spike.y - 16
+    if not any(
+        det.type_id == OBJ_SPIKE_DOWN
+        and distance((spike.x, spike.y), (det.x, det.y)) <= 4
+        for det in recovered
+    ):
+        return
+    if not _has_left_spike_supports(recovered, x, y, 48, 72, 2):
+        return
+    patch = _patch_features(image, room, x, y, GRID_SIZE)
+    if not _patch_in_ranges(
+        patch,
+        DENSE_VERTICAL_PAIR_LEFT_COMPANION_EDGE_RANGE,
+        DENSE_VERTICAL_PAIR_LEFT_COMPANION_BORDER_RANGE,
+        DENSE_VERTICAL_PAIR_LEFT_COMPANION_CENTER_RANGE,
+    ):
+        return
+    _add_weak_full_spike_companion(
+        recovered,
+        added,
+        image,
+        room,
+        OBJ_SPIKE_LEFT,
+        "spike_left",
+        x,
+        y,
+        spike.score,
+    )
+
+
+def _has_left_spike_supports(
+    detections: list[Detection],
+    x: int,
+    y: int,
+    min_distance: float,
+    max_distance: float,
+    required: int,
+) -> bool:
+    support_count = sum(
+        1
+        for det in detections
+        if det.type_id == OBJ_SPIKE_LEFT
+        and det.score >= 0.50
+        and min_distance <= distance((x, y), (det.x, det.y)) <= max_distance
+    )
+    return support_count >= required
+
+
+def _add_weak_full_spike_companion(
+    recovered: list[Detection],
+    added: list[Detection],
+    image: RGBImage,
+    room: Box,
+    type_id: int,
+    kind: str,
+    x: int,
+    y: int,
+    score: float,
+) -> None:
+    if not (0 <= x <= ROOM_WIDTH - GRID_SIZE and 0 <= y <= ROOM_HEIGHT - GRID_SIZE):
+        return
+    detection_score = max(FULL_SPIKE_WATER_COEXIST_MIN_SCORE, score)
+    nearby_same_type = [
+        det
+        for det in [*recovered, *added]
+        if det.type_id == type_id and distance((x, y), (det.x, det.y)) <= 12
+    ]
+    if any(det.score >= detection_score for det in nearby_same_type):
+        return
+    added.append(
+        _geometry_detection(
+            kind,
+            type_id,
+            x,
+            y,
+            detection_score,
+            image,
+            room,
+            GRID_SIZE,
+        )
+    )
+
+
+def _patch_in_ranges(
+    patch: _PatchFeatures,
+    edge_range: tuple[float, float],
+    border_range: tuple[float, float],
+    center_range: tuple[float, float],
+) -> bool:
+    return (
+        _value_in_range(patch.edge_density, edge_range)
+        and _value_in_range(patch.border_score, border_range)
+        and _value_in_range(patch.center_score, center_range)
+    )
+
+
+def _value_in_range(value: float, value_range: tuple[float, float]) -> bool:
+    minimum, maximum = value_range
+    return minimum <= value <= maximum
 
 
 def _recover_edge_blocks(
