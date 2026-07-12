@@ -243,6 +243,14 @@ BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_SCORE = 0.84
 BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_DIRECTION_MARGIN = 0.08
 BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.12
 BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 2
+CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.90
+CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_DISTANCE = 48.0
+CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_MIN_NEIGHBORS = 4
+FULL_OVERLAP_MINI_SPIKE_NOISE_DISTANCE = 32.0
+FULL_OVERLAP_MINI_SPIKE_NOISE_MIN_FULL_SUPPORTS = 8
+CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_SCORE = 0.86
+CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_OUTLINE_DELTA = 0.09
+CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MAX_FULL_OVERLAP_SUPPORTS = 3
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4288,12 +4296,20 @@ def _prune_blocklike_mini_spike_noise(
     room: Box,
 ) -> list[Detection]:
     detections = _prune_duplicate_mini_spike_cells(detections)
+    mini_spikes = [det for det in detections if det.type_id in MINI_SPIKE_TYPES]
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
     blocks = [det for det in detections if det.type_id == OBJ_BLOCK]
     return [
         det
         for det in detections
-        if not _is_blocklike_mini_spike_noise(det, image, room, full_spikes, blocks)
+        if not _is_blocklike_mini_spike_noise(
+            det,
+            image,
+            room,
+            mini_spikes,
+            full_spikes,
+            blocks,
+        )
     ]
 
 
@@ -4324,6 +4340,7 @@ def _is_blocklike_mini_spike_noise(
     detection: Detection,
     image: RGBImage,
     room: Box,
+    mini_spikes: list[Detection],
     full_spikes: list[Detection],
     blocks: list[Detection],
 ) -> bool:
@@ -4332,10 +4349,20 @@ def _is_blocklike_mini_spike_noise(
     patch = _patch_features(image, room, detection.x, detection.y, 16)
     block = _classify_block(patch)
     mini = _mini_spike_class_for_detection(detection, patch)
+    mini_neighbors = _nearby_mini_spike_support_count(
+        detection,
+        mini_spikes,
+        CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_DISTANCE,
+    )
     full_supports = _nearby_full_spike_support_count(
         detection,
         full_spikes,
         BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
+    )
+    full_overlap_supports = _nearby_full_spike_support_count(
+        detection,
+        full_spikes,
+        FULL_OVERLAP_MINI_SPIKE_NOISE_DISTANCE,
     )
     block_supports = _nearby_block_support_count(
         detection,
@@ -4349,7 +4376,9 @@ def _is_blocklike_mini_spike_noise(
         mini.direction_margin if mini else 0.0,
         mini.outline_delta if mini else 0.0,
         full_supports,
+        full_overlap_supports,
         block_supports,
+        mini_neighbors,
     )
 
 
@@ -4362,6 +4391,20 @@ def _nearby_full_spike_support_count(
         1
         for full_spike in full_spikes
         if distance((detection.x, detection.y), (full_spike.x, full_spike.y))
+        <= max_distance
+    )
+
+
+def _nearby_mini_spike_support_count(
+    detection: Detection,
+    mini_spikes: list[Detection],
+    max_distance: float,
+) -> int:
+    return sum(
+        1
+        for mini_spike in mini_spikes
+        if mini_spike is not detection
+        and distance((detection.x, detection.y), (mini_spike.x, mini_spike.y))
         <= max_distance
     )
 
@@ -4399,8 +4442,21 @@ def _is_blocklike_mini_spike_noise_candidate(
     direction_margin: float,
     outline_delta: float,
     full_supports: int,
+    full_overlap_supports: int,
     block_supports: int,
+    mini_neighbors: int,
 ) -> bool:
+    if _is_crowded_blocklike_mini_spike_noise(
+        type_id,
+        block_score,
+        mini_score,
+        outline_delta,
+        full_overlap_supports,
+        mini_neighbors,
+    ):
+        return True
+    if _is_full_overlap_mini_spike_noise(full_overlap_supports):
+        return True
     if _is_supported_blocklike_down_right_mini_spike(
         type_id,
         block_score,
@@ -4426,6 +4482,32 @@ def _is_blocklike_mini_spike_noise_candidate(
         block_score >= BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
         and full_supports <= BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS
     )
+
+
+def _is_crowded_blocklike_mini_spike_noise(
+    type_id: int,
+    block_score: float,
+    mini_score: float,
+    outline_delta: float,
+    full_overlap_supports: int,
+    mini_neighbors: int,
+) -> bool:
+    if (
+        type_id in (OBJ_MINI_SPIKE_RIGHT, OBJ_MINI_SPIKE_DOWN)
+        and mini_score >= CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_SCORE
+        and outline_delta >= CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_OUTLINE_DELTA
+        and full_overlap_supports
+        <= CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MAX_FULL_OVERLAP_SUPPORTS
+    ):
+        return False
+    return (
+        block_score >= CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
+        and mini_neighbors >= CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_MIN_NEIGHBORS
+    )
+
+
+def _is_full_overlap_mini_spike_noise(full_overlap_supports: int) -> bool:
+    return full_overlap_supports >= FULL_OVERLAP_MINI_SPIKE_NOISE_MIN_FULL_SUPPORTS
 
 
 def _is_supported_blocklike_down_right_mini_spike(

@@ -238,7 +238,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.0,
                 0.0,
                 4,
+                0,
                 4,
+                0,
             )
         )
         self.assertTrue(
@@ -249,7 +251,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.0,
                 -0.1,
                 4,
+                0,
                 4,
+                0,
             )
         )
         self.assertTrue(
@@ -260,7 +264,48 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.0,
                 -0.1,
                 4,
+                0,
                 4,
+                0,
+            )
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.90,
+                0.80,
+                0.2,
+                0.05,
+                0,
+                0,
+                1,
+                4,
+            )
+        )
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.90,
+                0.86,
+                0.2,
+                0.09,
+                0,
+                3,
+                1,
+                4,
+            )
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.50,
+                0.90,
+                0.2,
+                0.2,
+                0,
+                8,
+                1,
+                0,
             )
         )
         self.assertFalse(
@@ -271,7 +316,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.0,
                 0.0,
                 4,
+                0,
                 1,
+                0,
             )
         )
         self.assertFalse(
@@ -282,7 +329,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.08,
                 0.12,
                 4,
+                0,
                 2,
+                0,
             )
         )
         self.assertTrue(
@@ -293,7 +342,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.2,
                 0.2,
                 4,
+                0,
                 1,
+                0,
             )
         )
         self.assertFalse(
@@ -304,7 +355,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.2,
                 0.2,
                 4,
+                0,
                 1,
+                0,
             )
         )
         self.assertFalse(
@@ -315,7 +368,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.2,
                 0.2,
                 4,
+                0,
                 1,
+                0,
             )
         )
 
