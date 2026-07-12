@@ -281,6 +281,28 @@ RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SAME_TYPE_NEIGHBORS = 2
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MIN_SCORE = 0.50
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_NEIGHBORS = 2
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_OUTLINE_DELTA = 0.36
+RESIDUAL_SPARSE_UP_MINI_NOISE_MIN_SCORE = 0.70
+RESIDUAL_SPARSE_UP_MINI_NOISE_MAX_NEIGHBORS = 3
+RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MIN_FULL_SUPPORTS = 2
+RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MAX_BLOCK_SUPPORTS = 1
+RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MAX_OUTLINE_DELTA = 0.30
+RESIDUAL_SPARSE_DOWN_MINI_NOISE_MIN_SCORE = 0.60
+RESIDUAL_SPARSE_DOWN_MINI_NOISE_MAX_NEIGHBORS = 0
+RESIDUAL_EXTENDED_UP_MINI_NOISE_MIN_BLOCK_SCORE = 0.60
+RESIDUAL_EXTENDED_UP_MINI_NOISE_MAX_OUTLINE_DELTA = 0.44
+RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MIN_BLOCK_SCORE = 0.60
+RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MAX_OUTLINE_DELTA = 0.20
+RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MIN_SCORE = 0.85
+RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MAX_NEIGHBORS = 4
+RESIDUAL_LEFT_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
+RESIDUAL_LEFT_STACK_KEEP_MAX_FULL_SUPPORTS = 1
+RESIDUAL_LEFT_STACK_KEEP_MIN_BLOCK_SUPPORTS = 3
+RESIDUAL_LEFT_STACK_KEEP_MAX_OUTLINE_DELTA = 0.18
+RESIDUAL_DOWN_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
+RESIDUAL_DOWN_STACK_KEEP_MAX_FULL_SUPPORTS = 2
+RESIDUAL_DOWN_STACK_KEEP_MIN_BLOCK_SUPPORTS = 3
+RESIDUAL_DOWN_STACK_KEEP_MIN_OUTLINE_DELTA = 0.18
+RESIDUAL_DOWN_STACK_KEEP_MAX_OUTLINE_DELTA = 0.24
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4340,7 +4362,14 @@ def _prune_blocklike_mini_spike_noise(
             full_spikes,
             blocks,
         )
-        and not _is_residual_mini_spike_noise(det, image, room, mini_spikes)
+        and not _is_residual_mini_spike_noise(
+            det,
+            image,
+            room,
+            mini_spikes,
+            full_spikes,
+            blocks,
+        )
     ]
 
 
@@ -4487,6 +4516,8 @@ def _is_residual_mini_spike_noise(
     image: RGBImage,
     room: Box,
     mini_spikes: list[Detection],
+    full_spikes: list[Detection],
+    blocks: list[Detection],
 ) -> bool:
     if detection.type_id not in MINI_SPIKE_TYPES:
         return False
@@ -4510,6 +4541,16 @@ def _is_residual_mini_spike_noise(
         mini_spikes,
         CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_DISTANCE,
     )
+    full_overlap_supports = _nearby_full_spike_support_count(
+        detection,
+        full_spikes,
+        FULL_OVERLAP_MINI_SPIKE_NOISE_DISTANCE,
+    )
+    block_supports = _nearby_block_support_count(
+        detection,
+        blocks,
+        BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
+    )
     return _is_residual_mini_spike_noise_candidate(
         detection.type_id,
         block.score,
@@ -4519,6 +4560,8 @@ def _is_residual_mini_spike_noise(
         same_type_close,
         same_type_axis,
         mini_neighbors,
+        full_overlap_supports,
+        block_supports,
     )
 
 
@@ -4531,6 +4574,8 @@ def _is_residual_mini_spike_noise_candidate(
     same_type_close: int,
     same_type_axis: int,
     mini_neighbors: int,
+    full_overlap_supports: int,
+    block_supports: int,
 ) -> bool:
     if _is_supported_residual_up_mini_spike(
         type_id,
@@ -4561,6 +4606,46 @@ def _is_residual_mini_spike_noise_candidate(
         and mini_score >= RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MIN_SCORE
         and mini_neighbors <= RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_NEIGHBORS
         and outline_delta < RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_OUTLINE_DELTA
+    ) or (
+        type_id == OBJ_MINI_SPIKE_UP
+        and mini_score >= RESIDUAL_SPARSE_UP_MINI_NOISE_MIN_SCORE
+        and mini_neighbors <= RESIDUAL_SPARSE_UP_MINI_NOISE_MAX_NEIGHBORS
+    ) or (
+        type_id == OBJ_MINI_SPIKE_LEFT
+        and full_overlap_supports
+        >= RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MIN_FULL_SUPPORTS
+        and block_supports <= RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MAX_BLOCK_SUPPORTS
+        and outline_delta < RESIDUAL_LEFT_OVERLAP_MINI_NOISE_MAX_OUTLINE_DELTA
+    ) or (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and mini_score >= RESIDUAL_SPARSE_DOWN_MINI_NOISE_MIN_SCORE
+        and mini_neighbors <= RESIDUAL_SPARSE_DOWN_MINI_NOISE_MAX_NEIGHBORS
+    ) or (
+        type_id == OBJ_MINI_SPIKE_UP
+        and block_score >= RESIDUAL_EXTENDED_UP_MINI_NOISE_MIN_BLOCK_SCORE
+        and outline_delta < RESIDUAL_EXTENDED_UP_MINI_NOISE_MAX_OUTLINE_DELTA
+    ) or (
+        type_id == OBJ_MINI_SPIKE_LEFT
+        and block_score >= RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MIN_BLOCK_SCORE
+        and outline_delta < RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MAX_OUTLINE_DELTA
+        and not _is_supported_residual_left_stack_mini_spike(
+            type_id,
+            outline_delta,
+            same_type_close,
+            full_overlap_supports,
+            block_supports,
+        )
+    ) or (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and mini_score >= RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MIN_SCORE
+        and mini_neighbors <= RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MAX_NEIGHBORS
+        and not _is_supported_residual_down_stack_mini_spike(
+            type_id,
+            outline_delta,
+            same_type_close,
+            full_overlap_supports,
+            block_supports,
+        )
     )
 
 
@@ -4579,6 +4664,39 @@ def _is_supported_residual_up_mini_spike(
         and outline_delta < RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_OUTLINE_DELTA
         and direction_margin < RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_DIRECTION_MARGIN
         and same_type_axis >= RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SAME_TYPE_NEIGHBORS
+    )
+
+
+def _is_supported_residual_left_stack_mini_spike(
+    type_id: int,
+    outline_delta: float,
+    same_type_close: int,
+    full_overlap_supports: int,
+    block_supports: int,
+) -> bool:
+    return (
+        type_id == OBJ_MINI_SPIKE_LEFT
+        and same_type_close >= RESIDUAL_LEFT_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS
+        and full_overlap_supports <= RESIDUAL_LEFT_STACK_KEEP_MAX_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_LEFT_STACK_KEEP_MIN_BLOCK_SUPPORTS
+        and outline_delta < RESIDUAL_LEFT_STACK_KEEP_MAX_OUTLINE_DELTA
+    )
+
+
+def _is_supported_residual_down_stack_mini_spike(
+    type_id: int,
+    outline_delta: float,
+    same_type_close: int,
+    full_overlap_supports: int,
+    block_supports: int,
+) -> bool:
+    return (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and same_type_close >= RESIDUAL_DOWN_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS
+        and full_overlap_supports <= RESIDUAL_DOWN_STACK_KEEP_MAX_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_DOWN_STACK_KEEP_MIN_BLOCK_SUPPORTS
+        and outline_delta >= RESIDUAL_DOWN_STACK_KEEP_MIN_OUTLINE_DELTA
+        and outline_delta <= RESIDUAL_DOWN_STACK_KEEP_MAX_OUTLINE_DELTA
     )
 
 
