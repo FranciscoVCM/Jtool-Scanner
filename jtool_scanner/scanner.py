@@ -294,6 +294,11 @@ RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MIN_BLOCK_SCORE = 0.60
 RESIDUAL_EXTENDED_LEFT_MINI_NOISE_MAX_OUTLINE_DELTA = 0.20
 RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MIN_SCORE = 0.85
 RESIDUAL_STRONG_SPARSE_DOWN_MINI_NOISE_MAX_NEIGHBORS = 4
+RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_SCORE = 0.75
+RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS = 0
+RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_FULL_SUPPORTS = 2
+RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_CONTEXTUAL_SCORE = 0.45
+RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
 RESIDUAL_LEFT_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
 RESIDUAL_LEFT_STACK_KEEP_MAX_FULL_SUPPORTS = 1
 RESIDUAL_LEFT_STACK_KEEP_MIN_BLOCK_SUPPORTS = 3
@@ -537,6 +542,7 @@ def scan_image(
     include_color_objects: bool = False,
     include_geometry: bool = False,
 ) -> ScanResult:
+    _PATCH_FEATURE_CACHE.clear()
     box = room_box or detect_room_box(image)
     detections: list[Detection] = []
     detections.extend(_detect_saves(image, box, grid_step))
@@ -550,7 +556,9 @@ def scan_image(
         detections = _dedupe_overlapping_geometry(detections)
         detections = _prune_final_geometry_noise(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
-    return ScanResult(image.width, image.height, box, detections)
+    result = ScanResult(image.width, image.height, box, detections)
+    _PATCH_FEATURE_CACHE.clear()
+    return result
 
 
 def detect_room_box(image: RGBImage) -> Box:
@@ -1275,6 +1283,15 @@ class _PatchFeatures:
     center_score: float
 
 
+# Geometry recovery passes revisit the same grid cells repeatedly.  The cache is
+# intentionally scoped to one public scan by scan_image(), so it cannot leak
+# image-specific features into a later screenshot.
+_PATCH_FEATURE_CACHE: dict[
+    tuple[int, int, int, int, int, int, int, int, int],
+    tuple[RGBImage, _PatchFeatures],
+] = {}
+
+
 @dataclass(frozen=True, slots=True)
 class _GeometryClass:
     kind: str
@@ -1434,6 +1451,20 @@ def _patch_features(
     map_y: int,
     map_size: int,
 ) -> _PatchFeatures:
+    cache_key = (
+        id(image),
+        room.x,
+        room.y,
+        room.width,
+        room.height,
+        map_x,
+        map_y,
+        map_size,
+        image.width,
+    )
+    cached = _PATCH_FEATURE_CACHE.get(cache_key)
+    if cached is not None and cached[0] is image:
+        return cached[1]
     sample = 16
     scale_x = room.width / ROOM_WIDTH
     scale_y = room.height / ROOM_HEIGHT
@@ -1478,7 +1509,9 @@ def _patch_features(
     # Low-contrast screenshots can still be meaningful if the whole patch has
     # steady texture; add a small normalized gradient contribution.
     edge_density = max(edge_density, min(0.30, total_strength / (len(edges) * 260)))
-    return _PatchFeatures(tuple(edges), edge_density, border_score, center_score)
+    features = _PatchFeatures(tuple(edges), edge_density, border_score, center_score)
+    _PATCH_FEATURE_CACHE[cache_key] = (image, features)
+    return features
 
 
 def _classify_block(patch: _PatchFeatures) -> _GeometryClass:
@@ -4646,6 +4679,19 @@ def _is_residual_mini_spike_noise_candidate(
             full_overlap_supports,
             block_supports,
         )
+    ) or (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and mini_score >= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_SCORE
+        and same_type_close <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS
+    ) or (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and mini_score >= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_CONTEXTUAL_SCORE
+        and same_type_close <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS
+        and full_overlap_supports >= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_FULL_SUPPORTS
+    ) or (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and same_type_close <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS
+        and direction_margin <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN
     )
 
 

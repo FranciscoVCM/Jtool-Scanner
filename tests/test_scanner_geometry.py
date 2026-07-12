@@ -394,6 +394,34 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertTrue(
             _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.40,
+                0.30,
+                0.18,
+                0.50,
+                0,
+                0,
+                5,
+                0,
+                0,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.40,
+                0.50,
+                0.20,
+                0.50,
+                0,
+                0,
+                5,
+                2,
+                0,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
                 OBJ_MINI_SPIKE_UP,
                 0.72,
                 0.80,
@@ -474,6 +502,20 @@ class ScannerGeometryTests(unittest.TestCase):
                 4,
                 3,
                 2,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.40,
+                0.80,
+                0.20,
+                0.50,
+                0,
+                0,
+                5,
+                0,
+                0,
             )
         )
 
