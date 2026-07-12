@@ -89,6 +89,7 @@ from jtool_scanner.scanner import (
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
+    _prune_adaptive_block_noise,
     _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
@@ -425,6 +426,20 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(
             _is_residual_mini_spike_noise_candidate(
                 OBJ_MINI_SPIKE_DOWN,
+                0.65,
+                0.70,
+                0.15,
+                0.40,
+                1,
+                1,
+                3,
+                3,
+                2,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
                 0.40,
                 0.30,
                 0.18,
@@ -683,6 +698,35 @@ class ScannerGeometryTests(unittest.TestCase):
                 [candidate, diagonal_only],
             )
         )
+
+    def test_adaptive_block_noise_prunes_bimodal_dense_room(self) -> None:
+        weak = [
+            Detection("block", OBJ_BLOCK, x * 32, 0, 0.35, Box(x * 32, 0, 32, 32))
+            for x in range(192)
+        ]
+        strong = [
+            Detection(
+                "block",
+                OBJ_BLOCK,
+                (x + 192) * 32,
+                0,
+                0.80,
+                Box((x + 192) * 32, 0, 32, 32),
+            )
+            for x in range(64)
+        ]
+        mini = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            0,
+            0,
+            0.5,
+            Box(0, 0, 16, 16),
+        )
+
+        result = _prune_adaptive_block_noise([*weak, *strong, mini])
+
+        self.assertEqual(result, [*strong, mini])
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()
