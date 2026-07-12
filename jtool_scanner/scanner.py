@@ -251,6 +251,20 @@ FULL_OVERLAP_MINI_SPIKE_NOISE_MIN_FULL_SUPPORTS = 7
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_SCORE = 1.01
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_OUTLINE_DELTA = 0.09
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MAX_FULL_OVERLAP_SUPPORTS = 3
+AGGRESSIVE_DOWN_MINI_RECOVERY_MIN_SCORE = 0.76
+AGGRESSIVE_DOWN_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.0
+AGGRESSIVE_DOWN_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 1
+AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MIN_SCORE = 0.84
+AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.09
+AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MAX_FULL_OVERLAP_SUPPORTS = 3
+AGGRESSIVE_UP_MINI_RECOVERY_MIN_SCORE = 0.20
+AGGRESSIVE_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.50
+AGGRESSIVE_UP_MINI_RECOVERY_MIN_FULL_OVERLAP_SUPPORTS = 6
+AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_SCORE = 0.75
+AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.18
+AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.86
+AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 2
+AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_NEIGHBORS = 8
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4446,6 +4460,16 @@ def _is_blocklike_mini_spike_noise_candidate(
     block_supports: int,
     mini_neighbors: int,
 ) -> bool:
+    if _is_aggressive_mini_spike_recovery_candidate(
+        type_id,
+        block_score,
+        mini_score,
+        outline_delta,
+        full_overlap_supports,
+        block_supports,
+        mini_neighbors,
+    ):
+        return False
     if _is_crowded_blocklike_mini_spike_noise(
         type_id,
         block_score,
@@ -4482,6 +4506,44 @@ def _is_blocklike_mini_spike_noise_candidate(
         block_score >= BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
         and full_supports <= BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS
     )
+
+
+def _is_aggressive_mini_spike_recovery_candidate(
+    type_id: int,
+    block_score: float,
+    mini_score: float,
+    outline_delta: float,
+    full_overlap_supports: int,
+    block_supports: int,
+    mini_neighbors: int,
+) -> bool:
+    if type_id == OBJ_MINI_SPIKE_DOWN:
+        return (
+            mini_score >= AGGRESSIVE_DOWN_MINI_RECOVERY_MIN_SCORE
+            and outline_delta >= AGGRESSIVE_DOWN_MINI_RECOVERY_MIN_OUTLINE_DELTA
+            and block_supports <= AGGRESSIVE_DOWN_MINI_RECOVERY_MAX_BLOCK_SUPPORTS
+        ) or (
+            mini_score >= AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MIN_SCORE
+            and outline_delta >= AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MIN_OUTLINE_DELTA
+            and full_overlap_supports
+            <= AGGRESSIVE_STRONG_DOWN_MINI_RECOVERY_MAX_FULL_OVERLAP_SUPPORTS
+        )
+    if type_id == OBJ_MINI_SPIKE_UP:
+        return (
+            mini_score >= AGGRESSIVE_UP_MINI_RECOVERY_MIN_SCORE
+            and block_score <= AGGRESSIVE_UP_MINI_RECOVERY_MAX_BLOCK_SCORE
+            and full_overlap_supports
+            >= AGGRESSIVE_UP_MINI_RECOVERY_MIN_FULL_OVERLAP_SUPPORTS
+        )
+    if type_id == OBJ_MINI_SPIKE_LEFT:
+        return (
+            mini_score >= AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_SCORE
+            and outline_delta >= AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA
+            and block_score < AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE
+            and block_supports <= AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS
+            and mini_neighbors >= AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_NEIGHBORS
+        )
+    return False
 
 
 def _is_crowded_blocklike_mini_spike_noise(
