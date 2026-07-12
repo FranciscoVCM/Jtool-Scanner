@@ -316,6 +316,7 @@ RESIDUAL_DENSE_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
 ADAPTIVE_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ADAPTIVE_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.75
 ADAPTIVE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.75
+AGGRESSIVE_BLOCK_PRUNE_MAX_SCORE = 0.30
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4371,6 +4372,7 @@ def _prune_final_geometry_noise(
     detections = _prune_recovered_full_spike_noise(detections)
     detections = _prune_blocklike_mini_spike_noise(detections, image, room)
     detections = _prune_isolated_weak_block_noise(detections)
+    detections = _prune_aggressive_block_noise(detections)
     return _prune_adaptive_block_noise(detections)
 
 
@@ -4418,6 +4420,15 @@ def _prune_adaptive_block_noise(detections: list[Detection]) -> list[Detection]:
         for detection in detections
         if detection.type_id != OBJ_BLOCK
         or detection.score >= ADAPTIVE_BLOCK_PRUNE_SCORE_THRESHOLD
+    ]
+
+
+def _prune_aggressive_block_noise(detections: list[Detection]) -> list[Detection]:
+    return [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_BLOCK
+        or detection.score >= AGGRESSIVE_BLOCK_PRUNE_MAX_SCORE
     ]
 
 
