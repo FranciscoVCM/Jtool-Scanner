@@ -236,6 +236,13 @@ BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS = 2
 BLOCKLIKE_MINI_SPIKE_BROAD_NOISE_BLOCK_SCORE = 0.90
 BLOCKLIKE_LEFT_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.85
 BLOCKLIKE_DOWN_RIGHT_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.78
+BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MIN_SCORE = 0.76
+BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.0
+BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 1
+BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_SCORE = 0.84
+BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_DIRECTION_MARGIN = 0.08
+BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.12
+BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 2
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4282,10 +4289,11 @@ def _prune_blocklike_mini_spike_noise(
 ) -> list[Detection]:
     detections = _prune_duplicate_mini_spike_cells(detections)
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
+    blocks = [det for det in detections if det.type_id == OBJ_BLOCK]
     return [
         det
         for det in detections
-        if not _is_blocklike_mini_spike_noise(det, image, room, full_spikes)
+        if not _is_blocklike_mini_spike_noise(det, image, room, full_spikes, blocks)
     ]
 
 
@@ -4317,20 +4325,31 @@ def _is_blocklike_mini_spike_noise(
     image: RGBImage,
     room: Box,
     full_spikes: list[Detection],
+    blocks: list[Detection],
 ) -> bool:
     if detection.type_id not in MINI_SPIKE_TYPES:
         return False
     patch = _patch_features(image, room, detection.x, detection.y, 16)
     block = _classify_block(patch)
+    mini = _mini_spike_class_for_detection(detection, patch)
     full_supports = _nearby_full_spike_support_count(
         detection,
         full_spikes,
         BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
     )
+    block_supports = _nearby_block_support_count(
+        detection,
+        blocks,
+        BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
+    )
     return _is_blocklike_mini_spike_noise_candidate(
         detection.type_id,
         block.score,
+        detection.score,
+        mini.direction_margin if mini else 0.0,
+        mini.outline_delta if mini else 0.0,
         full_supports,
+        block_supports,
     )
 
 
@@ -4347,11 +4366,50 @@ def _nearby_full_spike_support_count(
     )
 
 
+def _nearby_block_support_count(
+    detection: Detection,
+    blocks: list[Detection],
+    max_distance: float,
+) -> int:
+    return sum(
+        1
+        for block in blocks
+        if distance((detection.x, detection.y), (block.x, block.y)) <= max_distance
+    )
+
+
+def _mini_spike_class_for_detection(
+    detection: Detection,
+    patch: _PatchFeatures,
+) -> _GeometryClass | None:
+    return next(
+        (
+            mini
+            for mini in _classify_mini_spike_candidates(patch)
+            if mini.type_id == detection.type_id
+        ),
+        None,
+    )
+
+
 def _is_blocklike_mini_spike_noise_candidate(
     type_id: int,
     block_score: float,
+    mini_score: float,
+    direction_margin: float,
+    outline_delta: float,
     full_supports: int,
+    block_supports: int,
 ) -> bool:
+    if _is_supported_blocklike_down_right_mini_spike(
+        type_id,
+        block_score,
+        mini_score,
+        direction_margin,
+        outline_delta,
+        block_supports,
+    ):
+        return False
     if block_score >= BLOCKLIKE_MINI_SPIKE_BROAD_NOISE_BLOCK_SCORE:
         return True
     if (
@@ -4367,6 +4425,35 @@ def _is_blocklike_mini_spike_noise_candidate(
     return (
         block_score >= BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE
         and full_supports <= BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS
+    )
+
+
+def _is_supported_blocklike_down_right_mini_spike(
+    type_id: int,
+    block_score: float,
+    mini_score: float,
+    direction_margin: float,
+    outline_delta: float,
+    block_supports: int,
+) -> bool:
+    if type_id not in (OBJ_MINI_SPIKE_RIGHT, OBJ_MINI_SPIKE_DOWN):
+        return False
+    if block_score < BLOCKLIKE_DOWN_RIGHT_MINI_SPIKE_NOISE_BLOCK_SCORE:
+        return False
+    if (
+        mini_score >= BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MIN_SCORE
+        and outline_delta >= BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MIN_OUTLINE_DELTA
+        and block_supports <= BLOCKLIKE_DOWN_RIGHT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS
+    ):
+        return True
+    return (
+        mini_score >= BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_SCORE
+        and direction_margin
+        >= BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_DIRECTION_MARGIN
+        and outline_delta
+        >= BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MIN_OUTLINE_DELTA
+        and block_supports
+        <= BLOCKLIKE_DOWN_RIGHT_STRONG_MINI_RECOVERY_MAX_BLOCK_SUPPORTS
     )
 
 

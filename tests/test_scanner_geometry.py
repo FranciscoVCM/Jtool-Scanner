@@ -231,22 +231,92 @@ class ScannerGeometryTests(unittest.TestCase):
         self,
     ) -> None:
         self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.90, 4)
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_UP,
+                0.90,
+                0.50,
+                0.0,
+                0.0,
+                4,
+                4,
+            )
         )
         self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_DOWN, 0.78, 4)
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.78,
+                0.50,
+                0.0,
+                -0.1,
+                4,
+                4,
+            )
         )
         self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_RIGHT, 0.78, 4)
-        )
-        self.assertTrue(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.85, 4)
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.78,
+                0.50,
+                0.0,
+                -0.1,
+                4,
+                4,
+            )
         )
         self.assertFalse(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_LEFT, 0.84, 4)
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.78,
+                0.76,
+                0.0,
+                0.0,
+                4,
+                1,
+            )
         )
         self.assertFalse(
-            _is_blocklike_mini_spike_noise_candidate(OBJ_MINI_SPIKE_UP, 0.89, 4)
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.78,
+                0.84,
+                0.08,
+                0.12,
+                4,
+                2,
+            )
+        )
+        self.assertTrue(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_LEFT,
+                0.85,
+                0.90,
+                0.2,
+                0.2,
+                4,
+                1,
+            )
+        )
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_LEFT,
+                0.84,
+                0.90,
+                0.2,
+                0.2,
+                4,
+                1,
+            )
+        )
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_UP,
+                0.89,
+                0.90,
+                0.2,
+                0.2,
+                4,
+                1,
+            )
         )
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
