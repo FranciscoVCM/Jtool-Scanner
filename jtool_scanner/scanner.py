@@ -329,6 +329,8 @@ SUPPORTED_BLOCK_CELL_BORDER_SCORE = 0.28
 SUPPORTED_BOUNDARY_BLOCK_CELL_MIN_SCORE = 0.42
 OFF_GRID_BLOCK_PRUNE_MIN_BLOCK_COUNT = 64
 OFF_GRID_BLOCK_PRUNE_MAX_RATIO = 0.05
+DARK_OUTLINE_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
+DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.30
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4442,7 +4444,12 @@ def _prune_final_geometry_noise(
     detections = _prune_isolated_weak_block_noise(detections)
     detections = _prune_adaptive_block_noise(detections)
     detections = _prune_adaptive_weak_block_noise(detections)
-    return _prune_sparse_off_grid_block_noise(detections)
+    detections = _prune_sparse_off_grid_block_noise(detections)
+    if _is_dark_outline_room(image, room):
+        detections = _prune_dark_outline_low_signal_blocks(detections)
+        detections = _recover_dark_outline_block_runs(detections, image, room)
+        detections = _recover_block_run_gaps(detections, image, room)
+    return detections
 
 
 def _prune_isolated_weak_block_noise(detections: list[Detection]) -> list[Detection]:
@@ -4489,6 +4496,18 @@ def _prune_sparse_off_grid_block_noise(detections: list[Detection]) -> list[Dete
         return detections
     remove_ids = {id(detection) for detection in off_grid}
     return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _prune_dark_outline_low_signal_blocks(detections: list[Detection]) -> list[Detection]:
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < DARK_OUTLINE_BLOCK_PRUNE_MIN_BLOCK_COUNT:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_BLOCK
+        or detection.score >= DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD
+    ]
 
 
 def _prune_adaptive_block_noise(detections: list[Detection]) -> list[Detection]:

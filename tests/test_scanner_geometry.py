@@ -92,6 +92,7 @@ from jtool_scanner.scanner import (
     _prune_adaptive_block_noise,
     _prune_adaptive_weak_block_noise,
     _prune_isolated_weak_block_noise,
+    _prune_dark_outline_low_signal_blocks,
     _prune_sparse_off_grid_block_noise,
     _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
@@ -834,6 +835,21 @@ class ScannerGeometryTests(unittest.TestCase):
         result = _prune_sparse_off_grid_block_noise([*aligned, *outliers])
 
         self.assertEqual(result, [*aligned, *outliers])
+
+    def test_dark_outline_low_signal_prune_keeps_other_objects(self) -> None:
+        weak = [
+            Detection("block", OBJ_BLOCK, index * 32, 0, 0.282, Box(0, 0, 32, 32))
+            for index in range(192)
+        ]
+        strong = [
+            Detection("block", OBJ_BLOCK, (index + 192) * 32, 0, 0.50, Box(0, 0, 32, 32))
+            for index in range(64)
+        ]
+        mini = Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 0, 0, 0.282, Box(0, 0, 16, 16))
+
+        result = _prune_dark_outline_low_signal_blocks([*weak, *strong, mini])
+
+        self.assertEqual(result, [*strong, mini])
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()
