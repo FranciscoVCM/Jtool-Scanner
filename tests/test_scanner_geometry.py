@@ -78,6 +78,7 @@ from jtool_scanner.scanner import (
     _is_mixed_cluster_up_mini_spike_candidate,
     _is_ultra_faint_left_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
+    _is_residual_mini_spike_noise_candidate,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
     _is_supported_full_spike_candidate,
@@ -370,6 +371,71 @@ class ScannerGeometryTests(unittest.TestCase):
                 4,
                 0,
                 1,
+                0,
+            )
+        )
+
+    def test_residual_mini_spike_noise_candidate_prunes_supported_false_shapes(
+        self,
+    ) -> None:
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_DOWN,
+                0.92,
+                0.88,
+                0.08,
+                0.20,
+                0,
+                0,
+                5,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_UP,
+                0.72,
+                0.80,
+                0.08,
+                0.35,
+                0,
+                0,
+                4,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.55,
+                0.60,
+                0.08,
+                0.20,
+                0,
+                0,
+                2,
+            )
+        )
+
+        self.assertFalse(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_UP,
+                0.90,
+                0.72,
+                -0.05,
+                -0.02,
+                1,
+                2,
+                6,
+            )
+        )
+        self.assertFalse(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.12,
+                0.20,
+                0.0,
+                0.05,
+                0,
+                0,
                 0,
             )
         )

@@ -265,6 +265,22 @@ AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.18
 AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.86
 AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 2
 AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_NEIGHBORS = 8
+RESIDUAL_DOWN_MINI_NOISE_MIN_BLOCK_SCORE = 0.90
+RESIDUAL_DOWN_MINI_NOISE_MAX_OUTLINE_DELTA = 0.28
+RESIDUAL_UP_CLUSTER_NOISE_MIN_SAME_TYPE_NEIGHBORS = 2
+RESIDUAL_UP_CLUSTER_NOISE_MAX_DIRECTION_MARGIN = 0.12
+RESIDUAL_UP_BLOCKLIKE_NOISE_MIN_BLOCK_SCORE = 0.70
+RESIDUAL_UP_BLOCKLIKE_NOISE_MAX_DIRECTION_MARGIN = 0.10
+RESIDUAL_BLOCKLIKE_MINI_NOISE_MIN_BLOCK_SCORE = 0.85
+RESIDUAL_BLOCKLIKE_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.06
+RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SCORE = 0.70
+RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_BLOCK_SCORE = 0.85
+RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_OUTLINE_DELTA = 0.02
+RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_DIRECTION_MARGIN = 0.02
+RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SAME_TYPE_NEIGHBORS = 2
+RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MIN_SCORE = 0.50
+RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_NEIGHBORS = 2
+RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_OUTLINE_DELTA = 0.36
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.38
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 BLOCKLIKE_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.05
@@ -4324,6 +4340,7 @@ def _prune_blocklike_mini_spike_noise(
             full_spikes,
             blocks,
         )
+        and not _is_residual_mini_spike_noise(det, image, room, mini_spikes)
     ]
 
 
@@ -4423,6 +4440,22 @@ def _nearby_mini_spike_support_count(
     )
 
 
+def _nearby_same_type_mini_spike_support_count(
+    detection: Detection,
+    mini_spikes: list[Detection],
+    max_dx: int,
+    max_dy: int,
+) -> int:
+    return sum(
+        1
+        for mini_spike in mini_spikes
+        if mini_spike is not detection
+        and mini_spike.type_id == detection.type_id
+        and abs(mini_spike.x - detection.x) <= max_dx
+        and abs(mini_spike.y - detection.y) <= max_dy
+    )
+
+
 def _nearby_block_support_count(
     detection: Detection,
     blocks: list[Detection],
@@ -4446,6 +4479,106 @@ def _mini_spike_class_for_detection(
             if mini.type_id == detection.type_id
         ),
         None,
+    )
+
+
+def _is_residual_mini_spike_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    mini_spikes: list[Detection],
+) -> bool:
+    if detection.type_id not in MINI_SPIKE_TYPES:
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, 16)
+    block = _classify_block(patch)
+    mini = _mini_spike_class_for_detection(detection, patch)
+    same_type_close = _nearby_same_type_mini_spike_support_count(
+        detection,
+        mini_spikes,
+        16,
+        16,
+    )
+    same_type_axis = _nearby_same_type_mini_spike_support_count(
+        detection,
+        mini_spikes,
+        32,
+        16,
+    )
+    mini_neighbors = _nearby_mini_spike_support_count(
+        detection,
+        mini_spikes,
+        CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_DISTANCE,
+    )
+    return _is_residual_mini_spike_noise_candidate(
+        detection.type_id,
+        block.score,
+        detection.score,
+        mini.direction_margin if mini else 0.0,
+        mini.outline_delta if mini else 0.0,
+        same_type_close,
+        same_type_axis,
+        mini_neighbors,
+    )
+
+
+def _is_residual_mini_spike_noise_candidate(
+    type_id: int,
+    block_score: float,
+    mini_score: float,
+    direction_margin: float,
+    outline_delta: float,
+    same_type_close: int,
+    same_type_axis: int,
+    mini_neighbors: int,
+) -> bool:
+    if _is_supported_residual_up_mini_spike(
+        type_id,
+        block_score,
+        mini_score,
+        direction_margin,
+        outline_delta,
+        same_type_axis,
+    ):
+        return False
+    return (
+        type_id == OBJ_MINI_SPIKE_DOWN
+        and block_score >= RESIDUAL_DOWN_MINI_NOISE_MIN_BLOCK_SCORE
+        and outline_delta < RESIDUAL_DOWN_MINI_NOISE_MAX_OUTLINE_DELTA
+    ) or (
+        type_id == OBJ_MINI_SPIKE_UP
+        and same_type_close >= RESIDUAL_UP_CLUSTER_NOISE_MIN_SAME_TYPE_NEIGHBORS
+        and direction_margin < RESIDUAL_UP_CLUSTER_NOISE_MAX_DIRECTION_MARGIN
+    ) or (
+        type_id == OBJ_MINI_SPIKE_UP
+        and block_score >= RESIDUAL_UP_BLOCKLIKE_NOISE_MIN_BLOCK_SCORE
+        and direction_margin < RESIDUAL_UP_BLOCKLIKE_NOISE_MAX_DIRECTION_MARGIN
+    ) or (
+        block_score >= RESIDUAL_BLOCKLIKE_MINI_NOISE_MIN_BLOCK_SCORE
+        and direction_margin < RESIDUAL_BLOCKLIKE_MINI_NOISE_MAX_DIRECTION_MARGIN
+    ) or (
+        type_id == OBJ_MINI_SPIKE_RIGHT
+        and mini_score >= RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MIN_SCORE
+        and mini_neighbors <= RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_NEIGHBORS
+        and outline_delta < RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_OUTLINE_DELTA
+    )
+
+
+def _is_supported_residual_up_mini_spike(
+    type_id: int,
+    block_score: float,
+    mini_score: float,
+    direction_margin: float,
+    outline_delta: float,
+    same_type_axis: int,
+) -> bool:
+    return (
+        type_id == OBJ_MINI_SPIKE_UP
+        and mini_score >= RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SCORE
+        and block_score >= RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_BLOCK_SCORE
+        and outline_delta < RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_OUTLINE_DELTA
+        and direction_margin < RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_DIRECTION_MARGIN
+        and same_type_axis >= RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SAME_TYPE_NEIGHBORS
     )
 
 
