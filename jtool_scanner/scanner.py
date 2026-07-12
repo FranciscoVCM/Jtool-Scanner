@@ -318,6 +318,11 @@ ADAPTIVE_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.75
 ADAPTIVE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.75
 ADAPTIVE_WEAK_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.65
 ADAPTIVE_WEAK_BLOCK_PRUNE_SCORE_THRESHOLD = 0.50
+ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SCORE_THRESHOLD = 0.48
+ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SUPPORT_DISTANCE = 32
+ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.50
+ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MAX_UPPER_QUARTILE_SCORE = 0.60
+ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_SCORE_THRESHOLD = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4430,14 +4435,47 @@ def _prune_adaptive_weak_block_noise(detections: list[Detection]) -> list[Detect
         return detections
     scores = sorted(detection.score for detection in blocks)
     upper_quartile = scores[len(scores) * 3 // 4]
-    if upper_quartile < ADAPTIVE_WEAK_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE:
+    if upper_quartile >= ADAPTIVE_WEAK_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE:
+        threshold = ADAPTIVE_WEAK_BLOCK_PRUNE_SCORE_THRESHOLD
+    elif (
+        ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE
+        <= upper_quartile
+        < ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MAX_UPPER_QUARTILE_SCORE
+    ):
+        threshold = ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_SCORE_THRESHOLD
+    else:
         return detections
     return [
         detection
         for detection in detections
         if detection.type_id != OBJ_BLOCK
-        or detection.score >= ADAPTIVE_WEAK_BLOCK_PRUNE_SCORE_THRESHOLD
+        or detection.score >= threshold
+        or _is_supported_room_boundary_block(detection, blocks)
     ]
+
+
+def _is_supported_room_boundary_block(
+    detection: Detection,
+    blocks: list[Detection],
+) -> bool:
+    """Keep a clipped edge tile when its adjacent run supports the reading."""
+    if detection.score < ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SCORE_THRESHOLD:
+        return False
+    if not (
+        detection.x in (0, ROOM_WIDTH - GRID_SIZE)
+        or detection.y in (0, ROOM_HEIGHT - GRID_SIZE)
+    ):
+        return False
+    step = ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SUPPORT_DISTANCE
+    return any(
+        other is not detection
+        and other.score >= ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SCORE_THRESHOLD
+        and (
+            (other.x == detection.x and abs(other.y - detection.y) == step)
+            or (other.y == detection.y and abs(other.x - detection.x) == step)
+        )
+        for other in blocks
+    )
 
 
 def _prune_recovered_full_spike_noise(detections: list[Detection]) -> list[Detection]:

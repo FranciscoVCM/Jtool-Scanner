@@ -767,6 +767,32 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertEqual(result, [*strong, mini])
 
+    def test_adaptive_weak_block_noise_prunes_mid_signal_tail(self) -> None:
+        weak = [
+            Detection("block", OBJ_BLOCK, index * 32, 64, 0.34, Box(0, 0, 32, 32))
+            for index in range(192)
+        ]
+        strong = [
+            Detection("block", OBJ_BLOCK, (index + 192) * 32, 64, 0.52, Box(0, 0, 32, 32))
+            for index in range(64)
+        ]
+
+        result = _prune_adaptive_weak_block_noise([*weak, *strong])
+
+        self.assertEqual(result, strong)
+
+    def test_adaptive_weak_block_noise_keeps_supported_boundary_tile(self) -> None:
+        boundary = Detection("block", OBJ_BLOCK, 288, 0, 0.4998, Box(0, 0, 32, 32))
+        support = Detection("block", OBJ_BLOCK, 256, 0, 0.54, Box(0, 0, 32, 32))
+        filler = [
+            Detection("block", OBJ_BLOCK, 1000 + index * 64, 64, 0.55, Box(0, 0, 32, 32))
+            for index in range(256)
+        ]
+
+        result = _prune_adaptive_weak_block_noise([boundary, support, *filler])
+
+        self.assertIn(boundary, result)
+
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()
         first = Detection(
