@@ -327,6 +327,8 @@ SUPPORTED_BLOCK_CELL_MIN_SCORE = 0.46
 SUPPORTED_BLOCK_CELL_EDGE_SCORE = 0.36
 SUPPORTED_BLOCK_CELL_BORDER_SCORE = 0.28
 SUPPORTED_BOUNDARY_BLOCK_CELL_MIN_SCORE = 0.42
+OFF_GRID_BLOCK_PRUNE_MIN_BLOCK_COUNT = 64
+OFF_GRID_BLOCK_PRUNE_MAX_RATIO = 0.05
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4439,7 +4441,8 @@ def _prune_final_geometry_noise(
     detections = _prune_blocklike_mini_spike_noise(detections, image, room)
     detections = _prune_isolated_weak_block_noise(detections)
     detections = _prune_adaptive_block_noise(detections)
-    return _prune_adaptive_weak_block_noise(detections)
+    detections = _prune_adaptive_weak_block_noise(detections)
+    return _prune_sparse_off_grid_block_noise(detections)
 
 
 def _prune_isolated_weak_block_noise(detections: list[Detection]) -> list[Detection]:
@@ -4470,6 +4473,21 @@ def _prune_isolated_weak_block_noise(detections: list[Detection]) -> list[Detect
             and nearby_blocks <= ISOLATED_WEAK_BLOCK_PRUNE_MAX_NEARBY_BLOCKS
         ):
             remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _prune_sparse_off_grid_block_noise(detections: list[Detection]) -> list[Detection]:
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < OFF_GRID_BLOCK_PRUNE_MIN_BLOCK_COUNT:
+        return detections
+    off_grid = [
+        detection
+        for detection in blocks
+        if not _is_block_aligned_to(detection.x, detection.y, BLOCK_ALIGNMENT_STEP)
+    ]
+    if len(off_grid) / len(blocks) > OFF_GRID_BLOCK_PRUNE_MAX_RATIO:
+        return detections
+    remove_ids = {id(detection) for detection in off_grid}
     return [detection for detection in detections if id(detection) not in remove_ids]
 
 

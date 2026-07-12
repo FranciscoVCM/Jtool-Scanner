@@ -92,6 +92,7 @@ from jtool_scanner.scanner import (
     _prune_adaptive_block_noise,
     _prune_adaptive_weak_block_noise,
     _prune_isolated_weak_block_noise,
+    _prune_sparse_off_grid_block_noise,
     _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
@@ -805,6 +806,34 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(any(det.x == 736 and det.y == 480 for det in result))
+
+    def test_sparse_off_grid_block_noise_removes_outliers(self) -> None:
+        aligned = [
+            Detection("block", OBJ_BLOCK, index * 32, 0, 0.5, Box(0, 0, 32, 32))
+            for index in range(64)
+        ]
+        outliers = [
+            Detection("block", OBJ_BLOCK, 2048 + index * 32, 8, 0.5, Box(0, 0, 32, 32))
+            for index in range(2)
+        ]
+
+        result = _prune_sparse_off_grid_block_noise([*aligned, *outliers])
+
+        self.assertEqual(result, aligned)
+
+    def test_sparse_off_grid_block_noise_keeps_real_offset_population(self) -> None:
+        aligned = [
+            Detection("block", OBJ_BLOCK, index * 32, 0, 0.5, Box(0, 0, 32, 32))
+            for index in range(64)
+        ]
+        outliers = [
+            Detection("block", OBJ_BLOCK, 2048 + index * 32, 8, 0.5, Box(0, 0, 32, 32))
+            for index in range(4)
+        ]
+
+        result = _prune_sparse_off_grid_block_noise([*aligned, *outliers])
+
+        self.assertEqual(result, [*aligned, *outliers])
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()
