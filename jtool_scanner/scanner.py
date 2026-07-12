@@ -316,6 +316,10 @@ RESIDUAL_DENSE_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
 ADAPTIVE_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ADAPTIVE_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.75
 ADAPTIVE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.75
+ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
+ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
+ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
+ISOLATED_WEAK_BLOCK_PRUNE_MAX_NEARBY_BLOCKS = 0
 RESIDUAL_LEFT_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
 RESIDUAL_LEFT_STACK_KEEP_MAX_FULL_SUPPORTS = 1
 RESIDUAL_LEFT_STACK_KEEP_MIN_BLOCK_SUPPORTS = 3
@@ -4366,7 +4370,39 @@ def _prune_final_geometry_noise(
 ) -> list[Detection]:
     detections = _prune_recovered_full_spike_noise(detections)
     detections = _prune_blocklike_mini_spike_noise(detections, image, room)
+    detections = _prune_isolated_weak_block_noise(detections)
     return _prune_adaptive_block_noise(detections)
+
+
+def _prune_isolated_weak_block_noise(detections: list[Detection]) -> list[Detection]:
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT:
+        return detections
+    remove_ids: set[int] = set()
+    for detection in blocks:
+        if detection.score >= ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE:
+            continue
+        axis_support = sum(
+            1
+            for other in blocks
+            if other is not detection
+            and (
+                (other.x == detection.x and abs(other.y - detection.y) == 32)
+                or (other.y == detection.y and abs(other.x - detection.x) == 32)
+            )
+        )
+        nearby_blocks = sum(
+            1
+            for other in blocks
+            if other is not detection
+            and distance((other.x, other.y), (detection.x, detection.y)) <= 40
+        )
+        if (
+            axis_support <= ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT
+            and nearby_blocks <= ISOLATED_WEAK_BLOCK_PRUNE_MAX_NEARBY_BLOCKS
+        ):
+            remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
 
 
 def _prune_adaptive_block_noise(detections: list[Detection]) -> list[Detection]:
