@@ -299,6 +299,16 @@ RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS = 0
 RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_FULL_SUPPORTS = 2
 RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MIN_CONTEXTUAL_SCORE = 0.45
 RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
+RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MIN_FULL_SUPPORTS = 3
+RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MIN_BLOCK_SUPPORTS = 2
+RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
+RESIDUAL_DIAGONAL_RIGHT_STEP_KEEP_MIN_FULL_SUPPORTS = 4
+RESIDUAL_DIAGONAL_RIGHT_STEP_KEEP_MIN_BLOCK_SUPPORTS = 2
+RESIDUAL_AXIS_LEFT_STEP_KEEP_MAX_FULL_SUPPORTS = 3
+RESIDUAL_AXIS_LEFT_STEP_KEEP_MIN_BLOCK_SUPPORTS = 2
+RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MIN_FULL_SUPPORTS = 3
+RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MIN_BLOCK_SUPPORTS = 2
+RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MAX_DIRECTION_MARGIN = 0.20
 RESIDUAL_LEFT_STACK_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
 RESIDUAL_LEFT_STACK_KEEP_MAX_FULL_SUPPORTS = 1
 RESIDUAL_LEFT_STACK_KEEP_MIN_BLOCK_SUPPORTS = 3
@@ -4518,6 +4528,36 @@ def _nearby_same_type_mini_spike_support_count(
     )
 
 
+def _has_diagonal_right_mini_step_support(
+    detection: Detection,
+    mini_spikes: list[Detection],
+) -> bool:
+    if detection.type_id != OBJ_MINI_SPIKE_RIGHT:
+        return False
+    return any(
+        mini_spike is not detection
+        and mini_spike.type_id == OBJ_MINI_SPIKE_RIGHT
+        and abs(mini_spike.x - detection.x) == 16
+        and abs(mini_spike.y - detection.y) == 32
+        for mini_spike in mini_spikes
+    )
+
+
+def _has_axis_left_mini_step_support(
+    detection: Detection,
+    mini_spikes: list[Detection],
+) -> bool:
+    if detection.type_id != OBJ_MINI_SPIKE_LEFT:
+        return False
+    return any(
+        mini_spike is not detection
+        and mini_spike.type_id == OBJ_MINI_SPIKE_LEFT
+        and mini_spike.x == detection.x
+        and abs(mini_spike.y - detection.y) == 32
+        for mini_spike in mini_spikes
+    )
+
+
 def _nearby_block_support_count(
     detection: Detection,
     blocks: list[Detection],
@@ -4584,6 +4624,19 @@ def _is_residual_mini_spike_noise(
         blocks,
         BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE,
     )
+    if (
+        _has_diagonal_right_mini_step_support(detection, mini_spikes)
+        and full_overlap_supports
+        >= RESIDUAL_DIAGONAL_RIGHT_STEP_KEEP_MIN_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_DIAGONAL_RIGHT_STEP_KEEP_MIN_BLOCK_SUPPORTS
+    ):
+        return False
+    if (
+        _has_axis_left_mini_step_support(detection, mini_spikes)
+        and full_overlap_supports <= RESIDUAL_AXIS_LEFT_STEP_KEEP_MAX_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_AXIS_LEFT_STEP_KEEP_MIN_BLOCK_SUPPORTS
+    ):
+        return False
     return _is_residual_mini_spike_noise_candidate(
         detection.type_id,
         block.score,
@@ -4692,6 +4745,18 @@ def _is_residual_mini_spike_noise_candidate(
         type_id == OBJ_MINI_SPIKE_DOWN
         and same_type_close <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_SAME_TYPE_NEIGHBORS
         and direction_margin <= RESIDUAL_ISOLATED_DOWN_MINI_NOISE_MAX_DIRECTION_MARGIN
+    ) or (
+        type_id == OBJ_MINI_SPIKE_RIGHT
+        and same_type_close == 0
+        and full_overlap_supports >= RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MIN_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MIN_BLOCK_SUPPORTS
+        and direction_margin <= RESIDUAL_ISOLATED_RIGHT_MINI_NOISE_MAX_DIRECTION_MARGIN
+    ) or (
+        type_id == OBJ_MINI_SPIKE_LEFT
+        and same_type_close == 0
+        and full_overlap_supports >= RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MIN_FULL_SUPPORTS
+        and block_supports >= RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MIN_BLOCK_SUPPORTS
+        and direction_margin <= RESIDUAL_ISOLATED_LEFT_MINI_NOISE_MAX_DIRECTION_MARGIN
     )
 
 

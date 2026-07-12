@@ -52,10 +52,12 @@ from jtool_scanner.scanner import (
     _is_full_spike_run_gap_patch,
     _is_half_step_supported_full_spike_candidate,
     _has_axis_mini_spike_support,
+    _has_axis_left_mini_step_support,
     _has_adjacent_up_mini_spike_pair,
     _has_ambiguous_adjacent_up_mini_spike_pair,
     _has_dense_adjacent_up_mini_spike_support,
     _has_diagonal_side_mini_spike_support,
+    _has_diagonal_right_mini_step_support,
     _has_extended_left_mini_spike_support,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
@@ -394,6 +396,34 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertTrue(
             _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.65,
+                0.70,
+                0.15,
+                0.40,
+                0,
+                0,
+                3,
+                3,
+                2,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_LEFT,
+                0.65,
+                0.70,
+                0.15,
+                0.40,
+                0,
+                0,
+                3,
+                3,
+                2,
+            )
+        )
+        self.assertTrue(
+            _is_residual_mini_spike_noise_candidate(
                 OBJ_MINI_SPIKE_DOWN,
                 0.40,
                 0.30,
@@ -573,6 +603,84 @@ class ScannerGeometryTests(unittest.TestCase):
                 1,
                 2,
                 3,
+            )
+        )
+
+    def test_diagonal_right_mini_step_support_requires_half_step_pair(self) -> None:
+        candidate = Detection(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            112,
+            544,
+            0.70,
+            Box(112, 544, 16, 16),
+        )
+        diagonal_support = Detection(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            96,
+            512,
+            0.65,
+            Box(96, 512, 16, 16),
+        )
+        vertical_only = Detection(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            112,
+            512,
+            0.65,
+            Box(112, 512, 16, 16),
+        )
+
+        self.assertTrue(
+            _has_diagonal_right_mini_step_support(
+                candidate,
+                [candidate, diagonal_support],
+            )
+        )
+        self.assertFalse(
+            _has_diagonal_right_mini_step_support(
+                candidate,
+                [candidate, vertical_only],
+            )
+        )
+
+    def test_axis_left_mini_step_support_requires_vertical_half_step_pair(self) -> None:
+        candidate = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            304,
+            384,
+            0.70,
+            Box(304, 384, 16, 16),
+        )
+        vertical_support = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            304,
+            416,
+            0.65,
+            Box(304, 416, 16, 16),
+        )
+        diagonal_only = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            320,
+            416,
+            0.65,
+            Box(320, 416, 16, 16),
+        )
+
+        self.assertTrue(
+            _has_axis_left_mini_step_support(
+                candidate,
+                [candidate, vertical_support],
+            )
+        )
+        self.assertFalse(
+            _has_axis_left_mini_step_support(
+                candidate,
+                [candidate, diagonal_only],
             )
         )
 
