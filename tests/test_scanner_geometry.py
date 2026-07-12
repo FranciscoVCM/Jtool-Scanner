@@ -97,6 +97,7 @@ from jtool_scanner.scanner import (
     _recover_full_spike_run_gaps,
     _recover_blocklike_full_spikes,
     _recover_axis_supported_mini_spikes,
+    _recover_supported_block_cells,
     _recover_up_spike_lateral_continuations,
     _triangle_masks,
     _value_in_range,
@@ -792,6 +793,18 @@ class ScannerGeometryTests(unittest.TestCase):
         result = _prune_adaptive_weak_block_noise([boundary, support, *filler])
 
         self.assertIn(boundary, result)
+
+    def test_supported_block_cells_recover_a_strong_grid_gap(self) -> None:
+        image = _textured_test_image()
+        first = Detection("block", OBJ_BLOCK, 704, 480, 0.55, Box(704, 480, 32, 32))
+        second = Detection("block", OBJ_BLOCK, 768, 480, 0.55, Box(768, 480, 32, 32))
+        vertical = Detection("block", OBJ_BLOCK, 736, 448, 0.55, Box(736, 448, 32, 32))
+
+        result = _recover_supported_block_cells(
+            [first, second, vertical], image, Box(0, 0, 800, 608)
+        )
+
+        self.assertTrue(any(det.x == 736 and det.y == 480 for det in result))
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()

@@ -323,6 +323,10 @@ ADAPTIVE_WEAK_BLOCK_PRUNE_BOUNDARY_SUPPORT_DISTANCE = 32
 ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MIN_UPPER_QUARTILE_SCORE = 0.50
 ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_MAX_UPPER_QUARTILE_SCORE = 0.60
 ADAPTIVE_MID_SIGNAL_BLOCK_PRUNE_SCORE_THRESHOLD = 0.35
+SUPPORTED_BLOCK_CELL_MIN_SCORE = 0.46
+SUPPORTED_BLOCK_CELL_EDGE_SCORE = 0.36
+SUPPORTED_BLOCK_CELL_BORDER_SCORE = 0.28
+SUPPORTED_BOUNDARY_BLOCK_CELL_MIN_SCORE = 0.42
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -1300,6 +1304,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_low_contrast_paired_up_mini_spikes(recovered, image, room)
     recovered = _recover_low_border_side_mini_spikes(recovered, image, room)
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
+    recovered = _recover_supported_block_cells(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
 
 
@@ -4133,6 +4138,61 @@ def _recover_edge_blocks(
 
     if added:
         recovered.extend(added)
+    return recovered
+
+
+def _recover_supported_block_cells(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover strong grid cells revealed by a completed same-axis block run."""
+    recovered = list(detections)
+    block_positions = {(det.x, det.y) for det in recovered if det.type_id == OBJ_BLOCK}
+    added: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            if (x, y) in block_positions:
+                continue
+            axis_support = sum(
+                position in block_positions
+                for position in (
+                    (x - GRID_SIZE, y),
+                    (x + GRID_SIZE, y),
+                    (x, y - GRID_SIZE),
+                    (x, y + GRID_SIZE),
+                )
+            )
+            if axis_support < 2:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            boundary = x in (0, ROOM_WIDTH - GRID_SIZE) or y in (0, ROOM_HEIGHT - GRID_SIZE)
+            min_score = (
+                SUPPORTED_BOUNDARY_BLOCK_CELL_MIN_SCORE
+                if boundary
+                else SUPPORTED_BLOCK_CELL_MIN_SCORE
+            )
+            if not (
+                block.score >= min_score
+                and patch.edge_density >= SUPPORTED_BLOCK_CELL_EDGE_SCORE
+                and patch.border_score >= SUPPORTED_BLOCK_CELL_BORDER_SCORE
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    block.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            block_positions.add((x, y))
+    recovered.extend(added)
     return recovered
 
 
