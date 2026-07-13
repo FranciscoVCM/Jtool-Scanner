@@ -337,6 +337,7 @@ DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MAX_CENTER = 0.02
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_SCORE = 0.30
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
+DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4467,6 +4468,11 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+        detections = _recover_dark_outline_low_signal_run_gaps(
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4595,6 +4601,49 @@ def _recover_dark_outline_center_heavy_blocks(
                     x,
                     y,
                     block.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            block_positions.add((x, y))
+    return recovered
+
+
+def _recover_dark_outline_low_signal_run_gaps(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Fill faint cells enclosed by a same-axis two-cell block run."""
+    recovered = list(detections)
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in recovered
+        if detection.type_id == OBJ_BLOCK
+    }
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            if (x, y) in block_positions:
+                continue
+            has_run = (
+                ((x - GRID_SIZE, y) in block_positions and (x - GRID_SIZE * 2, y) in block_positions)
+                or ((x + GRID_SIZE, y) in block_positions and (x + GRID_SIZE * 2, y) in block_positions)
+                or ((x, y - GRID_SIZE) in block_positions and (x, y - GRID_SIZE * 2) in block_positions)
+                or ((x, y + GRID_SIZE) in block_positions and (x, y + GRID_SIZE * 2) in block_positions)
+            )
+            if not has_run:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if patch.edge_density < DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE:
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    BLOCK_RUN_GAP_SCORE,
                     image,
                     room,
                     GRID_SIZE,
