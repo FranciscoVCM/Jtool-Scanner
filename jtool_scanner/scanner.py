@@ -233,7 +233,7 @@ FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
 FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
 FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE = 40
 FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE = 0.30
-FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE = 40
+FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
 FULL_SPIKE_FINAL_DEDUPE_DISTANCE = 12.0
@@ -4607,13 +4607,43 @@ def _prune_full_spike_shape_noise(
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
-    """Keep support markers internal until a structural recovery can select them."""
+    """Keep only off-grid support markers that belong to a spike run."""
+    support_candidates = [
+        detection
+        for detection in detections
+        if detection.kind == "full_spike_support"
+    ]
     kept = [
         detection
         for detection in detections
         if detection.kind != "full_spike_support"
+        or _has_full_spike_perpendicular_neighbor(detection, support_candidates)
     ]
     return _prune_isolated_weak_full_spike_noise(kept)
+
+
+def _has_full_spike_perpendicular_neighbor(
+    detection: Detection,
+    full_spikes: list[Detection],
+) -> bool:
+    """Require a same-direction neighbor along the spike run axis."""
+    if detection.type_id not in FULL_SPIKE_TYPES:
+        return False
+    for other in full_spikes:
+        if other is detection or other.type_id != detection.type_id:
+            continue
+        if detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+            aligned = other.y == detection.y
+            run_distance = abs(other.x - detection.x)
+        else:
+            aligned = other.x == detection.x
+            run_distance = abs(other.y - detection.y)
+        if (
+            aligned
+            and 8 < run_distance <= FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE
+        ):
+            return True
+    return False
 
 
 def _prune_isolated_weak_full_spike_noise(
@@ -4628,13 +4658,7 @@ def _prune_isolated_weak_full_spike_noise(
         for detection in detections
         if detection.type_id not in FULL_SPIKE_TYPES
         or detection.score >= FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE
-        or any(
-            other is not detection
-            and other.type_id == detection.type_id
-            and distance((detection.x, detection.y), (other.x, other.y))
-            <= FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE
-            for other in full_spikes
-        )
+        or _has_full_spike_perpendicular_neighbor(detection, full_spikes)
     ]
 
 
