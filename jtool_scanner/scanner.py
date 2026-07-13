@@ -331,6 +331,9 @@ OFF_GRID_BLOCK_PRUNE_MIN_BLOCK_COUNT = 64
 OFF_GRID_BLOCK_PRUNE_MAX_RATIO = 0.05
 DARK_OUTLINE_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.32
+DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_EDGE = 0.03
+DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_BORDER = 0.02
+DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MAX_CENTER = 0.02
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4439,6 +4442,7 @@ def _prune_final_geometry_noise(
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
+    original_detections = list(detections)
     detections = _prune_recovered_full_spike_noise(detections)
     detections = _prune_blocklike_mini_spike_noise(detections, image, room)
     detections = _prune_isolated_weak_block_noise(detections)
@@ -4449,6 +4453,12 @@ def _prune_final_geometry_noise(
         detections = _prune_dark_outline_low_signal_blocks(detections)
         detections = _recover_dark_outline_block_runs(detections, image, room)
         detections = _recover_block_run_gaps(detections, image, room)
+        detections = _recover_dark_outline_supported_low_signal_blocks(
+            original_detections,
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4508,6 +4518,42 @@ def _prune_dark_outline_low_signal_blocks(detections: list[Detection]) -> list[D
         if detection.type_id != OBJ_BLOCK
         or detection.score >= DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD
     ]
+
+
+def _recover_dark_outline_supported_low_signal_blocks(
+    candidates: list[Detection],
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    recovered = list(detections)
+    for candidate in candidates:
+        if candidate.type_id != OBJ_BLOCK:
+            continue
+        if candidate.score >= DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD:
+            continue
+        position = (candidate.x, candidate.y)
+        if position in block_positions:
+            continue
+        if candidate.x < 0:
+            recovered.append(candidate)
+            block_positions.add(position)
+            continue
+        patch = _patch_features(image, room, candidate.x, candidate.y, GRID_SIZE)
+        if not (
+            patch.edge_density >= DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_EDGE
+            and patch.border_score >= DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_BORDER
+            and patch.center_score <= DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MAX_CENTER
+        ):
+            continue
+        recovered.append(candidate)
+        block_positions.add(position)
+    return recovered
 
 
 def _prune_adaptive_block_noise(detections: list[Detection]) -> list[Detection]:
