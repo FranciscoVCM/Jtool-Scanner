@@ -96,6 +96,7 @@ from jtool_scanner.scanner import (
     _prune_isolated_weak_block_noise,
     _prune_dark_outline_low_signal_blocks,
     _prune_full_spike_shape_noise,
+    _prune_isolated_weak_full_spike_noise,
     _prune_sparse_off_grid_block_noise,
     _recover_dark_outline_supported_low_signal_blocks,
     _recover_dark_outline_long_low_signal_runs,
@@ -176,6 +177,28 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertEqual(result, [regular])
+
+    def test_isolated_weak_full_spike_noise_requires_same_direction_neighbor(self) -> None:
+        isolated = Detection("spike_up", OBJ_SPIKE_UP, 64, 64, 0.24, Box(64, 64, 32, 32))
+        supported = Detection("spike_up", OBJ_SPIKE_UP, 96, 64, 0.24, Box(96, 64, 32, 32))
+        other_direction = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            64,
+            96,
+            0.24,
+            Box(64, 96, 32, 32),
+        )
+
+        result = _prune_isolated_weak_full_spike_noise(
+            [isolated, supported, other_direction]
+        )
+
+        self.assertEqual(result, [isolated, supported])
+        self.assertNotIn(
+            isolated,
+            _prune_isolated_weak_full_spike_noise([isolated, other_direction]),
+        )
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(
