@@ -2803,8 +2803,14 @@ def _recover_weak_full_spike_runs(
             ):
                 continue
             if not any(
-                det.type_id == spike.type_id
-                and distance((x, y), (det.x, det.y)) <= FULL_SPIKE_WEAK_RUN_NEIGHBOR_DISTANCE
+                _has_full_spike_run_anchor(
+                    spike.type_id,
+                    x,
+                    y,
+                    det,
+                )
+                and _full_spike_run_distance(spike.type_id, x, y, det)
+                <= FULL_SPIKE_WEAK_RUN_NEIGHBOR_DISTANCE
                 for det in [*full_spikes, *added]
             ):
                 continue
@@ -2829,6 +2835,30 @@ def _recover_weak_full_spike_runs(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _has_full_spike_run_anchor(
+    type_id: int,
+    x: int,
+    y: int,
+    detection: Detection,
+) -> bool:
+    if detection.type_id != type_id:
+        return False
+    if type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+        return detection.y == y and detection.x != x
+    return detection.x == x and detection.y != y
+
+
+def _full_spike_run_distance(
+    type_id: int,
+    x: int,
+    y: int,
+    detection: Detection,
+) -> int:
+    if type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+        return abs(detection.x - x)
+    return abs(detection.y - y)
 
 
 def _is_weak_full_spike_run_shape(

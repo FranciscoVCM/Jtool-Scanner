@@ -51,6 +51,8 @@ from jtool_scanner.scanner import (
     _is_strong_full_spike_shape_candidate,
     _is_strong_offgrid_full_spike_shape,
     _is_weak_full_spike_run_shape,
+    _has_full_spike_run_anchor,
+    _full_spike_run_distance,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
     _is_edge_full_spike_continuation_anchor,
@@ -289,6 +291,12 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.70,
             )
         )
+
+    def test_weak_full_spike_run_anchor_uses_perpendicular_axis(self) -> None:
+        anchor = Detection("spike_up", OBJ_SPIKE_UP, 112, 64, 0.40, Box(112, 64, 32, 32))
+        self.assertTrue(_has_full_spike_run_anchor(OBJ_SPIKE_UP, 64, 64, anchor))
+        self.assertEqual(_full_spike_run_distance(OBJ_SPIKE_UP, 64, 64, anchor), 48)
+        self.assertFalse(_has_full_spike_run_anchor(OBJ_SPIKE_UP, 64, 80, anchor))
 
     def test_full_spike_support_requires_perpendicular_same_direction_run(self) -> None:
         up_a = Detection(
