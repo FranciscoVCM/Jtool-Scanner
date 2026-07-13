@@ -340,8 +340,12 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT = 200
-LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.12
-LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.22
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.15
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.35
+LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_EDGE = 0.12
+LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BORDER = 0.15
+LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MAX_CENTER = 0.05
+LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BLOCK_COUNT = 160
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4458,6 +4462,7 @@ def _prune_final_geometry_noise(
     detections = _prune_adaptive_weak_block_noise(detections)
     detections = _prune_sparse_off_grid_block_noise(detections)
     detections = _prune_low_signal_block_patches(detections, image, room)
+    detections = _recover_low_signal_boundary_blocks(detections, image, room)
     if _is_dark_outline_room(image, room):
         detections = _prune_dark_outline_low_signal_blocks(detections)
         detections = _recover_dark_outline_block_runs(detections, image, room)
@@ -4565,6 +4570,94 @@ def _prune_low_signal_block_patches(
         ):
             remove_ids.add(id(detection))
     return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _recover_low_signal_boundary_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover faint boundary cells supported by an adjacent block run."""
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BLOCK_COUNT:
+        return detections
+    if _is_dark_outline_room(image, room):
+        return detections
+    positions = {(detection.x, detection.y) for detection in blocks}
+    recovered = list(detections)
+    boundary_positions = set()
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+        boundary_positions.add((x, 0))
+        boundary_positions.add((x, ROOM_HEIGHT - GRID_SIZE))
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        boundary_positions.add((0, y))
+        boundary_positions.add((ROOM_WIDTH - GRID_SIZE, y))
+    for x, y in sorted(boundary_positions):
+        if (x, y) in positions:
+            continue
+        if not any(
+            position in positions
+            for position in ((x - GRID_SIZE, y), (x + GRID_SIZE, y), (x, y - GRID_SIZE), (x, y + GRID_SIZE))
+        ):
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        if not (
+            patch.edge_density >= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_EDGE
+            and patch.border_score >= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BORDER
+            and patch.center_score <= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MAX_CENTER
+        ):
+            continue
+        block = _classify_block(patch)
+        recovered.append(
+            _geometry_detection(
+                "block",
+                OBJ_BLOCK,
+                x,
+                y,
+                max(BLOCK_RUN_GAP_SCORE, block.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        positions.add((x, y))
+    continuation_positions = set()
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+        continuation_positions.add((x, GRID_SIZE))
+        continuation_positions.add((x, ROOM_HEIGHT - GRID_SIZE * 2))
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        continuation_positions.add((GRID_SIZE, y))
+        continuation_positions.add((ROOM_WIDTH - GRID_SIZE * 2, y))
+    for x, y in sorted(continuation_positions):
+        if (x, y) in positions:
+            continue
+        if not any(
+            position in positions
+            for position in ((x - GRID_SIZE, y), (x + GRID_SIZE, y), (x, y - GRID_SIZE), (x, y + GRID_SIZE))
+        ):
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        if not (
+            patch.edge_density >= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_EDGE
+            and patch.border_score >= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BORDER
+            and patch.center_score <= LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MAX_CENTER
+        ):
+            continue
+        block = _classify_block(patch)
+        recovered.append(
+            _geometry_detection(
+                "block",
+                OBJ_BLOCK,
+                x,
+                y,
+                max(BLOCK_RUN_GAP_SCORE, block.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        positions.add((x, y))
+    return recovered
 
 
 def _recover_dark_outline_supported_low_signal_blocks(
