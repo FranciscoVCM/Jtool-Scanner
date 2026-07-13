@@ -340,7 +340,7 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT = 200
-LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.23
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.24
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.35
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_EDGE = 0.12
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BORDER = 0.15
@@ -351,10 +351,13 @@ LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_BORDER = 0.18
 LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MAX_CENTER = 0.12
 LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_SCORE = 0.20
 LOW_SIGNAL_MIXED_GRID_MIN_OFFSET_RATIO = 0.08
-LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MIN_EDGE = 0.18
-LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MIN_BORDER = 0.35
+LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MIN_EDGE = 0.20
+LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MIN_BORDER = 0.28
 LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MAX_CENTER = 0.08
 LOW_SIGNAL_FUZZY_BLOCK_RECOVERY_MAX_DISTANCE = 40.0
+LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MIN_EDGE = 0.20
+LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MIN_BORDER = 0.28
+LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MAX_CENTER = 0.18
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4474,6 +4477,7 @@ def _prune_final_geometry_noise(
     detections = _recover_low_signal_boundary_blocks(detections, image, room)
     detections = _recover_low_signal_supported_blocks(detections, image, room)
     detections = _recover_low_signal_fuzzy_blocks(detections, image, room)
+    detections = _recover_low_signal_bottom_boundary_blocks(detections, image, room)
     if _is_dark_outline_room(image, room):
         detections = _prune_dark_outline_low_signal_blocks(detections)
         detections = _recover_dark_outline_block_runs(detections, image, room)
@@ -4768,6 +4772,47 @@ def _recover_low_signal_fuzzy_blocks(
                 )
             )
             positions.add((x, y))
+    return recovered
+
+
+def _recover_low_signal_bottom_boundary_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover strong-border cells on the bottom boundary of mixed-grid rooms."""
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BLOCK_COUNT:
+        return detections
+    if _is_dark_outline_room(image, room) or not _has_mixed_grid_block_population(blocks):
+        return detections
+    positions = {(detection.x, detection.y) for detection in blocks}
+    recovered = list(detections)
+    y = ROOM_HEIGHT - GRID_SIZE
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+        if (x, y) in positions:
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        if not (
+            patch.edge_density >= LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MIN_EDGE
+            and patch.border_score >= LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MIN_BORDER
+            and patch.center_score <= LOW_SIGNAL_BOTTOM_BOUNDARY_RECOVERY_MAX_CENTER
+        ):
+            continue
+        block = _classify_block(patch)
+        recovered.append(
+            _geometry_detection(
+                "block",
+                OBJ_BLOCK,
+                x,
+                y,
+                max(BLOCK_RUN_GAP_SCORE, block.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        positions.add((x, y))
     return recovered
 
 
