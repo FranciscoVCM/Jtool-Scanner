@@ -26,6 +26,7 @@ from jtool_scanner.scanner import (
     _accept_block,
     _accept_block_run_gap_patch,
     _accept_full_spike,
+    _accept_full_spike_support,
     _accept_mini_spike,
     _can_recover_diagonal_side_mini_spike,
     _can_recover_extended_left_mini_spike,
@@ -94,6 +95,7 @@ from jtool_scanner.scanner import (
     _prune_adaptive_weak_block_noise,
     _prune_isolated_weak_block_noise,
     _prune_dark_outline_low_signal_blocks,
+    _prune_full_spike_shape_noise,
     _prune_sparse_off_grid_block_noise,
     _recover_dark_outline_supported_low_signal_blocks,
     _recover_dark_outline_long_low_signal_runs,
@@ -105,6 +107,7 @@ from jtool_scanner.scanner import (
     _recover_supported_block_cells,
     _recover_up_spike_lateral_continuations,
     _triangle_masks,
+    _triangle_side_coverage,
     _value_in_range,
     _ColorProfile,
 )
@@ -135,6 +138,44 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(_accept_full_spike(spike, block))
+
+    def test_off_grid_full_spike_support_requires_substantial_directional_shape(self) -> None:
+        accepted = _GeometryClass("spike_up", OBJ_SPIKE_UP, 0.36, 0.08, 0.14)
+        weak_score = _GeometryClass("spike_up", OBJ_SPIKE_UP, 0.29, 0.08, 0.14)
+        weak_margin = _GeometryClass("spike_up", OBJ_SPIKE_UP, 0.36, 0.03, 0.14)
+        weak_outline = _GeometryClass("spike_up", OBJ_SPIKE_UP, 0.36, 0.08, 0.09)
+
+        self.assertTrue(_accept_full_spike_support(accepted))
+        self.assertFalse(_accept_full_spike_support(weak_score))
+        self.assertFalse(_accept_full_spike_support(weak_margin))
+        self.assertFalse(_accept_full_spike_support(weak_outline))
+
+    def test_full_spike_support_markers_are_not_emitted_at_final_boundary(self) -> None:
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        support = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_UP,
+            72,
+            104,
+            0.70,
+            Box(72, 104, 32, 32),
+        )
+        regular = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            96,
+            0.80,
+            Box(64, 96, 32, 32),
+        )
+
+        result = _prune_full_spike_shape_noise(
+            [support, regular],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertEqual(result, [regular])
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(
@@ -2679,6 +2720,20 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_dark_outline_full_spike_candidate(candidate))
         self.assertFalse(_is_dark_outline_full_spike_candidate(weak_score))
         self.assertFalse(_is_dark_outline_full_spike_candidate(weak_outline))
+
+    def test_full_spike_side_coverage_rejects_a_single_edge_fragment(self) -> None:
+        full_triangle = _up_outline_patch(
+            edge_density=0.20,
+            border_score=0.20,
+            center_score=0.20,
+        )
+        base_only = [False] * 256
+        for x in range(16):
+            base_only[15 * 16 + x] = True
+        fragment = _PatchFeatures(tuple(base_only), 0.06, 0.06, 0.0)
+
+        self.assertGreaterEqual(_triangle_side_coverage(full_triangle, "up"), 0.45)
+        self.assertLess(_triangle_side_coverage(fragment, "up"), 0.45)
 
     def test_dark_outline_half_step_full_spike_candidate_is_stricter(self) -> None:
         candidate = _GeometryClass(

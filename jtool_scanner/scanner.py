@@ -222,6 +222,16 @@ FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
 FULL_SPIKE_BLOCKLIKE_OUTLINE_DELTA = 0.26
 FULL_SPIKE_BLOCKLIKE_SCORE_MARGIN = 0.04
 FULL_SPIKE_AXIS_SNAP_STEP = 16
+FULL_SPIKE_PRIMARY_GRID_STEP = 16
+FULL_SPIKE_SUPPORT_MIN_SCORE = 0.30
+FULL_SPIKE_SUPPORT_MIN_DIRECTION_MARGIN = 0.04
+FULL_SPIKE_SUPPORT_MIN_OUTLINE_DELTA = 0.10
+FULL_SPIKE_MIN_SIDE_COVERAGE = 0.60
+FULL_SPIKE_MIN_OUTPUT_DIRECTION_MARGIN = 0.03
+FULL_SPIKE_CONTINUATION_MIN_SIDE_COVERAGE = 0.35
+FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
+FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
+FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE = 40
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
 FULL_SPIKE_FINAL_DEDUPE_DISTANCE = 12.0
@@ -1196,6 +1206,7 @@ def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[
 
 def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
     step = max(8, grid_step)
+    full_spike_step = max(FULL_SPIKE_PRIMARY_GRID_STEP, step)
     detections: list[Detection] = []
     patch_candidates: list[_GeometryPatchCandidate] = []
     outline_block_candidates = 0
@@ -1221,6 +1232,10 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     )
 
     for candidate in patch_candidates:
+        full_spike_on_primary_grid = (
+            candidate.x % full_spike_step == 0
+            and candidate.y % full_spike_step == 0
+        )
         if candidate.spike and _accept_full_spike(candidate.spike, candidate.block):
             if _is_blocklike_spike_candidate(candidate):
                 detections.append(
@@ -1235,7 +1250,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                         GRID_SIZE,
                     )
                 )
-            else:
+            elif full_spike_on_primary_grid:
                 detections.append(
                     _geometry_detection(
                         candidate.spike.kind,
@@ -1248,19 +1263,35 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
                         GRID_SIZE,
                     )
                 )
-                if _is_center_heavy_block_candidate(candidate):
-                    detections.append(
-                        _geometry_detection(
-                            "block",
-                            OBJ_BLOCK,
-                            candidate.x,
-                            candidate.y,
-                            candidate.block.score,
-                            image,
-                            room,
-                            GRID_SIZE,
-                        )
+            elif _accept_full_spike_support(candidate.spike):
+                detections.append(
+                    _geometry_detection(
+                        "full_spike_support",
+                        candidate.spike.type_id,
+                        candidate.x,
+                        candidate.y,
+                        candidate.spike.score,
+                        image,
+                        room,
+                        GRID_SIZE,
                     )
+                )
+            if (
+                not _is_blocklike_spike_candidate(candidate)
+                and _is_center_heavy_block_candidate(candidate)
+            ):
+                detections.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        candidate.x,
+                        candidate.y,
+                        candidate.block.score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
         elif _accept_block(candidate):
             detections.append(
                 _geometry_detection(
@@ -1694,6 +1725,15 @@ def _accept_full_spike(spike: _GeometryClass, block: _GeometryClass) -> bool:
     return True
 
 
+def _accept_full_spike_support(spike: _GeometryClass) -> bool:
+    """Accept an off-grid spike only when its directional shape is substantial."""
+    return (
+        spike.score >= FULL_SPIKE_SUPPORT_MIN_SCORE
+        and spike.direction_margin >= FULL_SPIKE_SUPPORT_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_SUPPORT_MIN_OUTLINE_DELTA
+    )
+
+
 def _accept_mini_spike(mini: _GeometryClass, block: _GeometryClass) -> bool:
     if mini.score < MINI_SPIKE_MIN_SCORE:
         return False
@@ -1780,6 +1820,41 @@ def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
             elif not inside:
                 outside.append(pos)
     return outline, outside
+
+
+def _triangle_side_coverage(patch: _PatchFeatures, direction: str) -> float:
+    """Measure edge coverage along the two expected sloping triangle sides."""
+    sample = 16
+
+    def hit(x: int, y: int) -> bool:
+        x = max(0, min(sample - 1, x))
+        y = max(0, min(sample - 1, y))
+        return patch.edge_mask[y * sample + x]
+
+    def side_y(x: int) -> int:
+        return round(abs(x - (sample - 1) / 2) * 2)
+
+    def side_x(y: int) -> int:
+        return (sample - 1) - round(abs(y - (sample - 1) / 2) * 2)
+
+    hits = 0
+    if direction in ("up", "down"):
+        flipped = direction == "down"
+        for x in range(sample):
+            y = side_y(x)
+            if flipped:
+                y = sample - 1 - y
+            if any(hit(x, candidate_y) for candidate_y in range(y - 1, y + 2)):
+                hits += 1
+    else:
+        flipped = direction == "left"
+        for y in range(sample):
+            x = side_x(y)
+            if flipped:
+                x = sample - 1 - x
+            if any(hit(candidate_x, y) for candidate_x in range(x - 1, x + 2)):
+                hits += 1
+    return hits / sample
 
 
 def _geometry_detection(
@@ -4522,7 +4597,58 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
-    return detections
+    return _prune_full_spike_shape_noise(detections, image, room)
+
+
+def _prune_full_spike_shape_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Keep support markers internal until a structural recovery can select them."""
+    return [
+        detection
+        for detection in detections
+        if detection.kind != "full_spike_support"
+    ]
+
+
+def _is_strong_full_spike_shape(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    directions: dict[int, str],
+) -> bool:
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    return bool(
+        spike is not None
+        and spike.direction_margin >= FULL_SPIKE_MIN_OUTPUT_DIRECTION_MARGIN
+        and _triangle_side_coverage(patch, directions[detection.type_id])
+        >= FULL_SPIKE_MIN_SIDE_COVERAGE
+    )
+
+
+def _has_full_spike_axis_continuation_anchor(
+    detection: Detection,
+    strong_candidates: list[Detection],
+) -> bool:
+    return any(
+        other.type_id == detection.type_id
+        and (
+            (
+                other.x == detection.x
+                and 0 < abs(other.y - detection.y)
+                <= FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE
+            )
+            or (
+                other.y == detection.y
+                and 0 < abs(other.x - detection.x)
+                <= FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE
+            )
+        )
+        for other in strong_candidates
+    )
 
 
 def _prune_isolated_weak_block_noise(detections: list[Detection]) -> list[Detection]:
