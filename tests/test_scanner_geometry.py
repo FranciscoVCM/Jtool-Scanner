@@ -46,6 +46,7 @@ from jtool_scanner.scanner import (
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_full_spike_candidate,
+    _is_weak_full_spike_shape_recovery,
     _is_dark_outline_half_step_full_spike_candidate,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
@@ -213,6 +214,20 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertIn(
             isolated,
             _prune_isolated_weak_full_spike_noise([isolated, diagonal_neighbor]),
+        )
+
+    def test_weak_full_spike_shape_recovery_requires_coherent_triangle(self) -> None:
+        image = _textured_test_image()
+        room = Box(0, 0, 800, 608)
+        weak = Detection("spike_up", OBJ_SPIKE_UP, 64, 64, 0.25, Box(64, 64, 32, 32))
+
+        self.assertFalse(_is_weak_full_spike_shape_recovery(weak, image, room))
+        self.assertFalse(
+            _is_weak_full_spike_shape_recovery(
+                Detection("full_spike_support", OBJ_SPIKE_UP, 64, 64, 0.25, Box(64, 64, 32, 32)),
+                image,
+                room,
+            )
         )
 
     def test_full_spike_support_requires_perpendicular_same_direction_run(self) -> None:

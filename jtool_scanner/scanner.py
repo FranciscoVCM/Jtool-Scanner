@@ -236,9 +236,14 @@ FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_SIDE_COVERAGE = 0.75
 FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_ISOLATED_SUPPORT_MIN_SIDE_COVERAGE = 0.875
 FULL_SPIKE_ISOLATED_SUPPORT_MIN_CENTER_SCORE = 0.45
+FULL_SPIKE_WEAK_SHAPE_MIN_SCORE = 0.241
+FULL_SPIKE_WEAK_SHAPE_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_WEAK_SHAPE_MIN_DIRECTION_MARGIN = 0.05
+FULL_SPIKE_WEAK_SHAPE_MIN_EDGE_DENSITY = 0.20
+FULL_SPIKE_WEAK_SHAPE_MAX_BLOCK_SCORE = 0.25
 FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
-FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 3
+FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
 FULL_SPIKE_CONTINUATION_MIN_SIDE_COVERAGE = 0.35
 FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
 FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
@@ -4650,7 +4655,7 @@ def _prune_full_spike_shape_noise(
         for detection in kept
         if not _is_ambiguous_right_full_spike_noise(detection, image, room)
     ]
-    return _prune_isolated_weak_full_spike_noise(kept)
+    return _prune_isolated_weak_full_spike_noise(kept, image, room)
 
 
 def _has_full_spike_perpendicular_neighbor(
@@ -4756,6 +4761,8 @@ def _is_ambiguous_right_full_spike_noise(
 
 def _prune_isolated_weak_full_spike_noise(
     detections: list[Detection],
+    image: RGBImage | None = None,
+    room: Box | None = None,
 ) -> list[Detection]:
     """Remove weak full spikes unless nearby geometry supports them."""
     full_spikes = [
@@ -4767,7 +4774,47 @@ def _prune_isolated_weak_full_spike_noise(
         if detection.type_id not in FULL_SPIKE_TYPES
         or detection.score >= FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE
         or _has_full_spike_nearby_neighbor(detection, full_spikes)
+        or (
+            image is not None
+            and room is not None
+            and _is_weak_full_spike_shape_recovery(detection, image, room)
+        )
     ]
+
+
+def _is_weak_full_spike_shape_recovery(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Keep a weak isolated spike only when its local triangle is coherent."""
+    if (
+        detection.kind == "full_spike_support"
+        or detection.score < FULL_SPIKE_WEAK_SHAPE_MIN_SCORE
+        or detection.score >= FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE
+    ):
+        return False
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    direction = direction_by_type.get(detection.type_id)
+    if direction is None:
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    block = _classify_block(patch)
+    return bool(
+        spike is not None
+        and spike.type_id == detection.type_id
+        and spike.direction_margin >= FULL_SPIKE_WEAK_SHAPE_MIN_DIRECTION_MARGIN
+        and _triangle_side_coverage(patch, direction)
+        >= FULL_SPIKE_WEAK_SHAPE_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_WEAK_SHAPE_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_WEAK_SHAPE_MAX_BLOCK_SCORE
+    )
 
 
 def _has_full_spike_nearby_neighbor(
