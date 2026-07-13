@@ -843,7 +843,7 @@ class ScannerGeometryTests(unittest.TestCase):
             for index in range(192)
         ]
         strong = [
-            Detection("block", OBJ_BLOCK, (index + 192) * 32, 0, 0.50, Box(0, 0, 32, 32))
+            Detection("block", OBJ_BLOCK, (index + 192) * 32, 0, 0.80, Box(0, 0, 32, 32))
             for index in range(64)
         ]
         mini = Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 0, 0, 0.282, Box(0, 0, 16, 16))
