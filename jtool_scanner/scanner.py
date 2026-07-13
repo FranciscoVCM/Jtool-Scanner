@@ -340,12 +340,17 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT = 200
-LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.15
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.20
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.35
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_EDGE = 0.12
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BORDER = 0.15
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MAX_CENTER = 0.05
 LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BLOCK_COUNT = 160
+LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_EDGE = 0.17
+LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_BORDER = 0.18
+LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MAX_CENTER = 0.12
+LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_SCORE = 0.20
+LOW_SIGNAL_MIXED_GRID_MIN_OFFSET_RATIO = 0.08
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4463,6 +4468,7 @@ def _prune_final_geometry_noise(
     detections = _prune_sparse_off_grid_block_noise(detections)
     detections = _prune_low_signal_block_patches(detections, image, room)
     detections = _recover_low_signal_boundary_blocks(detections, image, room)
+    detections = _recover_low_signal_supported_blocks(detections, image, room)
     if _is_dark_outline_room(image, room):
         detections = _prune_dark_outline_low_signal_blocks(detections)
         detections = _recover_dark_outline_block_runs(detections, image, room)
@@ -4583,6 +4589,8 @@ def _recover_low_signal_boundary_blocks(
         return detections
     if _is_dark_outline_room(image, room):
         return detections
+    if not _has_mixed_grid_block_population(blocks):
+        return detections
     positions = {(detection.x, detection.y) for detection in blocks}
     recovered = list(detections)
     boundary_positions = set()
@@ -4595,10 +4603,12 @@ def _recover_low_signal_boundary_blocks(
     for x, y in sorted(boundary_positions):
         if (x, y) in positions:
             continue
-        if not any(
+        has_neighbor = any(
             position in positions
             for position in ((x - GRID_SIZE, y), (x + GRID_SIZE, y), (x, y - GRID_SIZE), (x, y + GRID_SIZE))
-        ):
+        )
+        is_boundary = x in (0, ROOM_WIDTH - GRID_SIZE) or y in (0, ROOM_HEIGHT - GRID_SIZE)
+        if not has_neighbor and not is_boundary:
             continue
         patch = _patch_features(image, room, x, y, GRID_SIZE)
         if not (
@@ -4658,6 +4668,69 @@ def _recover_low_signal_boundary_blocks(
         )
         positions.add((x, y))
     return recovered
+
+
+def _recover_low_signal_supported_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover faint block patches with one aligned structural neighbor."""
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if len(blocks) < LOW_SIGNAL_BOUNDARY_BLOCK_RECOVERY_MIN_BLOCK_COUNT:
+        return detections
+    if _is_dark_outline_room(image, room):
+        return detections
+    if not _has_mixed_grid_block_population(blocks):
+        return detections
+    positions = {(detection.x, detection.y) for detection in blocks}
+    recovered = list(detections)
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            if (x, y) in positions:
+                continue
+            if not any(
+                position in positions
+                for position in ((x - GRID_SIZE, y), (x + GRID_SIZE, y), (x, y - GRID_SIZE), (x, y + GRID_SIZE))
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            if not (
+                block.score >= LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_SCORE
+                and patch.edge_density >= LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_EDGE
+                and patch.border_score >= LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MIN_BORDER
+                and patch.center_score <= LOW_SIGNAL_SUPPORTED_BLOCK_RECOVERY_MAX_CENTER
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    max(BLOCK_RUN_GAP_SCORE, block.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            positions.add((x, y))
+    return recovered
+
+
+def _has_mixed_grid_block_population(blocks: list[Detection]) -> bool:
+    if not blocks:
+        return False
+    offset_count = sum(
+        not _is_block_aligned_to(
+            detection.x,
+            detection.y,
+            PREFERRED_BLOCK_ALIGNMENT_STEP,
+        )
+        for detection in blocks
+    )
+    return offset_count / len(blocks) >= LOW_SIGNAL_MIXED_GRID_MIN_OFFSET_RATIO
 
 
 def _recover_dark_outline_supported_low_signal_blocks(
