@@ -231,6 +231,9 @@ FULL_SPIKE_MIN_OUTPUT_DIRECTION_MARGIN = 0.03
 FULL_SPIKE_STRONG_SUPPORT_MIN_SIDE_COVERAGE = 0.70
 FULL_SPIKE_STRONG_SUPPORT_MIN_DIRECTION_MARGIN = 0.12
 FULL_SPIKE_STRONG_SUPPORT_MAX_BLOCK_SCORE = 0.55
+FULL_SPIKE_UNANCHORED_SUPPORT_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.06
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
@@ -4620,13 +4623,25 @@ def _prune_full_spike_shape_noise(
         for detection in detections
         if detection.kind == "full_spike_support"
     ]
+    support_neighbor_counts = {
+        id(detection): _count_full_spike_perpendicular_neighbors(
+            detection,
+            support_candidates,
+        )
+        for detection in support_candidates
+    }
     kept = [
         detection
         for detection in detections
         if detection.kind != "full_spike_support"
-        or _count_full_spike_perpendicular_neighbors(detection, support_candidates)
+        or support_neighbor_counts[id(detection)]
         >= FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
-        or _is_strong_full_spike_support(detection, image, room)
+        or _is_strong_full_spike_support(
+            detection,
+            image,
+            room,
+            support_neighbor_counts[id(detection)],
+        )
     ]
     kept = [
         detection
@@ -4673,6 +4688,7 @@ def _is_strong_full_spike_support(
     detection: Detection,
     image: RGBImage,
     room: Box,
+    perpendicular_neighbors: int,
 ) -> bool:
     """Recover an unanchored support marker only with a clear triangle shape."""
     if detection.type_id not in FULL_SPIKE_TYPES:
@@ -4688,11 +4704,27 @@ def _is_strong_full_spike_support(
     if spike is None or spike.type_id != detection.type_id:
         return False
     block = _classify_block(patch)
-    return bool(
+    side_coverage = _triangle_side_coverage(
+        patch,
+        direction_by_type[detection.type_id],
+    )
+    if (
         spike.direction_margin >= FULL_SPIKE_STRONG_SUPPORT_MIN_DIRECTION_MARGIN
-        and _triangle_side_coverage(patch, direction_by_type[detection.type_id])
-        >= FULL_SPIKE_STRONG_SUPPORT_MIN_SIDE_COVERAGE
+        and side_coverage >= FULL_SPIKE_STRONG_SUPPORT_MIN_SIDE_COVERAGE
         and block.score <= FULL_SPIKE_STRONG_SUPPORT_MAX_BLOCK_SCORE
+    ):
+        return True
+    if (
+        perpendicular_neighbors == 0
+        and spike.direction_margin >= FULL_SPIKE_STRONG_SUPPORT_MIN_DIRECTION_MARGIN
+        and side_coverage >= FULL_SPIKE_UNANCHORED_SUPPORT_MIN_SIDE_COVERAGE
+    ):
+        return True
+    return bool(
+        perpendicular_neighbors == 1
+        and spike.direction_margin
+        >= FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_DIRECTION_MARGIN
+        and side_coverage >= FULL_SPIKE_SINGLE_NEIGHBOR_SUPPORT_MIN_SIDE_COVERAGE
     )
 
 
