@@ -338,6 +338,7 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_SCORE = 0.30
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
+DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4473,6 +4474,11 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+        detections = _recover_dark_outline_double_run_gaps(
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4650,6 +4656,57 @@ def _recover_dark_outline_low_signal_run_gaps(
                 )
             )
             block_positions.add((x, y))
+    return recovered
+
+
+def _recover_dark_outline_double_run_gaps(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Fill two consecutive faint cells bracketed by a same-axis block run."""
+    recovered = list(detections)
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in recovered
+        if detection.type_id == OBJ_BLOCK
+    }
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE * 3 + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            vertical = (x, y) in block_positions and (x, y + GRID_SIZE * 3) in block_positions
+            horizontal = (x, y) in block_positions and (x + GRID_SIZE * 3, y) in block_positions
+            if not (vertical or horizontal):
+                continue
+            gaps = (
+                ((x, y + GRID_SIZE), (x, y + GRID_SIZE * 2))
+                if vertical
+                else ((x + GRID_SIZE, y), (x + GRID_SIZE * 2, y))
+            )
+            if any(position in block_positions for position in gaps):
+                continue
+            patches = [
+                _patch_features(image, room, position[0], position[1], GRID_SIZE)
+                for position in gaps
+            ]
+            if any(
+                patch.edge_density < DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE
+                for patch in patches
+            ):
+                continue
+            for position in gaps:
+                recovered.append(
+                    _geometry_detection(
+                        "block",
+                        OBJ_BLOCK,
+                        position[0],
+                        position[1],
+                        BLOCK_RUN_GAP_SCORE,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+                block_positions.add(position)
     return recovered
 
 
