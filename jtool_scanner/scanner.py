@@ -241,6 +241,12 @@ FULL_SPIKE_WEAK_SHAPE_MIN_SIDE_COVERAGE = 0.75
 FULL_SPIKE_WEAK_SHAPE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_WEAK_SHAPE_MIN_EDGE_DENSITY = 0.20
 FULL_SPIKE_WEAK_SHAPE_MAX_BLOCK_SCORE = 0.25
+FULL_SPIKE_STRONG_SHAPE_MIN_SCORE = 0.42
+FULL_SPIKE_STRONG_SHAPE_MIN_DIRECTION_MARGIN = 0.06
+FULL_SPIKE_STRONG_SHAPE_MIN_OUTLINE_DELTA = 0.12
+FULL_SPIKE_STRONG_SHAPE_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_STRONG_SHAPE_MIN_BLOCK_MARGIN = 0.10
+FULL_SPIKE_STRONG_SHAPE_MIN_EDGE_DENSITY = 0.20
 FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
@@ -1381,6 +1387,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_bottom_edge_up_spike_continuations(recovered, image, room)
     recovered = _recover_up_spike_lateral_continuations(recovered, image, room)
     recovered = _recover_weak_full_spike_companions(recovered, image, room)
+    recovered = _recover_strong_full_spike_shapes(recovered, image, room)
     recovered = _recover_edge_blocks(recovered, image, room)
     recovered = _recover_axis_supported_mini_spikes(recovered, image, room)
     recovered = _recover_horizontal_side_mini_spikes(recovered, image, room)
@@ -2583,6 +2590,76 @@ def _recover_weak_full_spike_companions(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _recover_strong_full_spike_shapes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover clear native-grid triangles that lost to a block interpretation."""
+    recovered = list(detections)
+    added: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, PREFERRED_BLOCK_ALIGNMENT_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            block = _classify_block(patch)
+            direction_by_type = {
+                OBJ_SPIKE_UP: "up",
+                OBJ_SPIKE_RIGHT: "right",
+                OBJ_SPIKE_LEFT: "left",
+                OBJ_SPIKE_DOWN: "down",
+            }
+            direction = direction_by_type[spike.type_id]
+            side_coverage = _triangle_side_coverage(patch, direction)
+            if not _is_strong_full_spike_shape_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage,
+            ):
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y)) < 24
+                for det in [*recovered, *added]
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    spike.kind,
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_strong_full_spike_shape_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+) -> bool:
+    """Require a strong triangle and a meaningful margin over block texture."""
+    return (
+        spike.score >= FULL_SPIKE_STRONG_SHAPE_MIN_SCORE
+        and spike.direction_margin >= FULL_SPIKE_STRONG_SHAPE_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_STRONG_SHAPE_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_STRONG_SHAPE_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_STRONG_SHAPE_MIN_EDGE_DENSITY
+        and spike.score >= block.score + FULL_SPIKE_STRONG_SHAPE_MIN_BLOCK_MARGIN
+    )
 
 
 def _try_add_weak_top_left_companion(
