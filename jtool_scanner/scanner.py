@@ -330,10 +330,13 @@ SUPPORTED_BOUNDARY_BLOCK_CELL_MIN_SCORE = 0.42
 OFF_GRID_BLOCK_PRUNE_MIN_BLOCK_COUNT = 64
 OFF_GRID_BLOCK_PRUNE_MAX_RATIO = 0.05
 DARK_OUTLINE_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
-DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.32
+DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD = 0.40
 DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_EDGE = 0.03
 DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MIN_BORDER = 0.02
 DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MAX_CENTER = 0.02
+DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_SCORE = 0.30
+DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
+DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4459,6 +4462,11 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+        detections = _recover_dark_outline_center_heavy_blocks(
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4553,6 +4561,46 @@ def _recover_dark_outline_supported_low_signal_blocks(
             continue
         recovered.append(candidate)
         block_positions.add(position)
+    return recovered
+
+
+def _recover_dark_outline_center_heavy_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover 32px cells whose strong center texture was masked by a spike."""
+    recovered = list(detections)
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in recovered
+        if detection.type_id == OBJ_BLOCK
+    }
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            if (x, y) in block_positions:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            if not (
+                block.score >= DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_SCORE
+                and patch.edge_density >= DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE
+                and patch.center_score >= DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    block.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            block_positions.add((x, y))
     return recovered
 
 
