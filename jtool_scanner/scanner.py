@@ -339,6 +339,8 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
+DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_EDGE = 0.20
+DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_CENTER = 0.20
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT = 200
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.24
 LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.35
@@ -4503,6 +4505,11 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+        detections = _prune_dark_outline_off_grid_low_signal_blocks(
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4998,6 +5005,32 @@ def _recover_dark_outline_double_run_gaps(
                 )
                 block_positions.add(position)
     return recovered
+
+
+def _prune_dark_outline_off_grid_low_signal_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Remove weak half-step blocks in a room whose block grid is 32px-dominant."""
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if not blocks or not _is_dark_outline_room(image, room):
+        return detections
+    remove_ids = set()
+    for detection in blocks:
+        if _is_block_aligned_to(
+            detection.x,
+            detection.y,
+            PREFERRED_BLOCK_ALIGNMENT_STEP,
+        ):
+            continue
+        patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        if (
+            patch.edge_density < DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_EDGE
+            and patch.center_score < DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_CENTER
+        ):
+            remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
 
 
 def _prune_adaptive_block_noise(detections: list[Detection]) -> list[Detection]:
