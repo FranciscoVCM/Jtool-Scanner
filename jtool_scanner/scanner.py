@@ -339,6 +339,9 @@ DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
 DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT = 200
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE = 0.12
+LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER = 0.22
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_SCORE = 0.35
 ISOLATED_WEAK_BLOCK_PRUNE_MIN_BLOCK_COUNT = 256
 ISOLATED_WEAK_BLOCK_PRUNE_MAX_AXIS_SUPPORT = 0
@@ -4454,6 +4457,7 @@ def _prune_final_geometry_noise(
     detections = _prune_adaptive_block_noise(detections)
     detections = _prune_adaptive_weak_block_noise(detections)
     detections = _prune_sparse_off_grid_block_noise(detections)
+    detections = _prune_low_signal_block_patches(detections, image, room)
     if _is_dark_outline_room(image, room):
         detections = _prune_dark_outline_low_signal_blocks(detections)
         detections = _recover_dark_outline_block_runs(detections, image, room)
@@ -4538,6 +4542,29 @@ def _prune_dark_outline_low_signal_blocks(detections: list[Detection]) -> list[D
         if detection.type_id != OBJ_BLOCK
         or detection.score >= DARK_OUTLINE_BLOCK_PRUNE_SCORE_THRESHOLD
     ]
+
+
+def _prune_low_signal_block_patches(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Drop texture-free block patches in dense, non-dark-outline rooms."""
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if (
+        len(blocks) < LOW_SIGNAL_BLOCK_PATCH_PRUNE_MIN_BLOCK_COUNT
+        or _is_dark_outline_room(image, room)
+    ):
+        return detections
+    remove_ids = set()
+    for detection in blocks:
+        patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        if (
+            patch.edge_density < LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_EDGE
+            and patch.center_score < LOW_SIGNAL_BLOCK_PATCH_PRUNE_MAX_CENTER
+        ):
+            remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
 
 
 def _recover_dark_outline_supported_low_signal_blocks(
