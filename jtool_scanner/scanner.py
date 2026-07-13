@@ -337,7 +337,14 @@ DARK_OUTLINE_SUPPORTED_LOW_BLOCK_MAX_CENTER = 0.02
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_SCORE = 0.30
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_EDGE = 0.25
 DARK_OUTLINE_CENTER_HEAVY_BLOCK_MIN_CENTER = 0.50
-DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.02
+DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE = 0.25
+DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_FAINT_ANCHOR_SCORE = 0.35
+DARK_OUTLINE_LONG_RUN_MIN_ANCHOR_SPAN = 128
+DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_EDGE = 0.03
+DARK_OUTLINE_LONG_RUN_MIN_CANDIDATE_EDGE = 0.015
+DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_BORDER = 0.06
+DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_CENTER = 0.02
+DARK_OUTLINE_LONG_RUN_MIN_ANCHOR_SCORE = 0.30
 DARK_OUTLINE_DOUBLE_RUN_GAP_MIN_EDGE = 0.015
 DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_EDGE = 0.20
 DARK_OUTLINE_OFF_GRID_LOW_SIGNAL_MAX_CENTER = 0.20
@@ -4510,6 +4517,11 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+        detections = _recover_dark_outline_long_low_signal_runs(
+            detections,
+            image,
+            room,
+        )
     return detections
 
 
@@ -4939,7 +4951,14 @@ def _recover_dark_outline_low_signal_run_gaps(
                 continue
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             if patch.edge_density < DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_EDGE:
-                continue
+                if not _has_dark_outline_faint_gap_anchor_support(
+                    block_positions,
+                    image,
+                    room,
+                    x,
+                    y,
+                ):
+                    continue
             recovered.append(
                 _geometry_detection(
                     "block",
@@ -4953,6 +4972,98 @@ def _recover_dark_outline_low_signal_run_gaps(
                 )
             )
             block_positions.add((x, y))
+    return recovered
+
+
+def _has_dark_outline_faint_gap_anchor_support(
+    block_positions: set[tuple[int, int]],
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> bool:
+    """Keep a faint gap only when it is centered in a strong axis run."""
+    for dx, dy in ((GRID_SIZE, 0), (0, GRID_SIZE)):
+        near_a = (x - dx, y - dy)
+        near_b = (x + dx, y + dy)
+        far_a = (x - dx * 2, y - dy * 2)
+        far_b = (x + dx * 2, y + dy * 2)
+        if not all(position in block_positions for position in (near_a, near_b, far_a, far_b)):
+            continue
+        anchor_scores = []
+        for anchor_x, anchor_y in (far_a, far_b):
+            if not (0 <= anchor_x <= ROOM_WIDTH - GRID_SIZE and 0 <= anchor_y <= ROOM_HEIGHT - GRID_SIZE):
+                continue
+            anchor_scores.append(
+                _classify_block(
+                    _patch_features(image, room, anchor_x, anchor_y, GRID_SIZE)
+                ).score
+            )
+        if anchor_scores and max(anchor_scores) >= DARK_OUTLINE_LOW_SIGNAL_RUN_GAP_MIN_FAINT_ANCHOR_SCORE:
+            return True
+    return False
+
+
+def _recover_dark_outline_long_low_signal_runs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Restore faint candidate cells between strong anchors on long runs."""
+    if not _is_dark_outline_room(image, room):
+        return detections
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    strong_by_x: defaultdict[int, set[int]] = defaultdict(set)
+    strong_by_y: defaultdict[int, set[int]] = defaultdict(set)
+    for detection in detections:
+        if (
+            detection.type_id == OBJ_BLOCK
+            and detection.score >= DARK_OUTLINE_LONG_RUN_MIN_ANCHOR_SCORE
+        ):
+            strong_by_x[detection.x].add(detection.y)
+            strong_by_y[detection.y].add(detection.x)
+
+    recovered = list(detections)
+    added: list[Detection] = []
+    for axis_values, vertical in ((strong_by_x, True), (strong_by_y, False)):
+        for fixed, anchors in axis_values.items():
+            ordered = sorted(anchors)
+            for start, end in zip(ordered, ordered[1:]):
+                if end - start < DARK_OUTLINE_LONG_RUN_MIN_ANCHOR_SPAN:
+                    continue
+                for position in range(start + GRID_SIZE, end, GRID_SIZE):
+                    x, y = (fixed, position) if vertical else (position, fixed)
+                    if (x, y) in block_positions:
+                        continue
+                    patch = _patch_features(image, room, x, y, GRID_SIZE)
+                    if not (
+                        DARK_OUTLINE_LONG_RUN_MIN_CANDIDATE_EDGE
+                        <= patch.edge_density
+                        < DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_EDGE
+                        and patch.border_score
+                        <= DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_BORDER
+                        and patch.center_score
+                        <= DARK_OUTLINE_LONG_RUN_MAX_CANDIDATE_CENTER
+                    ):
+                        continue
+                    added.append(
+                        _geometry_detection(
+                            "block",
+                            OBJ_BLOCK,
+                            x,
+                            y,
+                            BLOCK_RUN_GAP_SCORE,
+                            image,
+                            room,
+                            GRID_SIZE,
+                        )
+                    )
+                    block_positions.add((x, y))
+    recovered.extend(added)
     return recovered
 
 

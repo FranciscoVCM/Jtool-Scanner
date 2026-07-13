@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest import mock
 
 from jtool_scanner.constants import (
     OBJ_APPLE,
@@ -95,6 +96,7 @@ from jtool_scanner.scanner import (
     _prune_dark_outline_low_signal_blocks,
     _prune_sparse_off_grid_block_noise,
     _recover_dark_outline_supported_low_signal_blocks,
+    _recover_dark_outline_long_low_signal_runs,
     _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
@@ -860,6 +862,31 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertEqual(result, [])
+
+    def test_dark_outline_long_run_recovery_fills_faint_interior_cells(self) -> None:
+        image = _textured_test_image()
+        anchors = [
+            Detection("block", OBJ_BLOCK, 96, 0, 0.50, Box(96, 0, 32, 32)),
+            Detection("block", OBJ_BLOCK, 96, 128, 0.50, Box(96, 128, 32, 32)),
+        ]
+        faint_patch = _PatchFeatures((), 0.02, 0.0, 0.0)
+        with mock.patch(
+            "jtool_scanner.scanner._is_dark_outline_room",
+            return_value=True,
+        ), mock.patch(
+            "jtool_scanner.scanner._patch_features",
+            return_value=faint_patch,
+        ):
+            result = _recover_dark_outline_long_low_signal_runs(
+                anchors,
+                image,
+                Box(0, 0, 800, 608),
+            )
+
+        self.assertEqual(
+            {(det.x, det.y) for det in result if det.type_id == OBJ_BLOCK},
+            {(96, 0), (96, 32), (96, 64), (96, 96), (96, 128)},
+        )
 
     def test_full_spike_run_gap_recovery_fills_same_direction_midpoint(self) -> None:
         image = _textured_test_image()
