@@ -89,6 +89,8 @@ from jtool_scanner.scanner import (
     _is_up_spike_full_step_continuation_patch,
     _is_up_spike_half_step_continuation_patch,
     _has_full_spike_perpendicular_neighbor,
+    _count_full_spike_perpendicular_neighbors,
+    _is_ambiguous_right_full_spike_noise,
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
@@ -200,6 +202,18 @@ class ScannerGeometryTests(unittest.TestCase):
             isolated,
             _prune_isolated_weak_full_spike_noise([isolated, other_direction]),
         )
+        diagonal_neighbor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            80,
+            80,
+            0.24,
+            Box(80, 80, 32, 32),
+        )
+        self.assertIn(
+            isolated,
+            _prune_isolated_weak_full_spike_noise([isolated, diagonal_neighbor]),
+        )
 
     def test_full_spike_support_requires_perpendicular_same_direction_run(self) -> None:
         up_a = Detection(
@@ -236,6 +250,10 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertTrue(_has_full_spike_perpendicular_neighbor(up_a, [up_a, up_b]))
+        self.assertEqual(
+            _count_full_spike_perpendicular_neighbors(up_a, [up_a, up_b]),
+            1,
+        )
         self.assertFalse(
             _has_full_spike_perpendicular_neighbor(up_a, [up_a, up_axis_neighbor])
         )

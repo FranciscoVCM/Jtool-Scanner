@@ -228,11 +228,18 @@ FULL_SPIKE_SUPPORT_MIN_DIRECTION_MARGIN = 0.04
 FULL_SPIKE_SUPPORT_MIN_OUTLINE_DELTA = 0.10
 FULL_SPIKE_MIN_SIDE_COVERAGE = 0.60
 FULL_SPIKE_MIN_OUTPUT_DIRECTION_MARGIN = 0.03
+FULL_SPIKE_STRONG_SUPPORT_MIN_SIDE_COVERAGE = 0.70
+FULL_SPIKE_STRONG_SUPPORT_MIN_DIRECTION_MARGIN = 0.12
+FULL_SPIKE_STRONG_SUPPORT_MAX_BLOCK_SCORE = 0.55
+FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.06
+FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
+FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
 FULL_SPIKE_CONTINUATION_MIN_SIDE_COVERAGE = 0.35
 FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
 FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
 FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE = 40
 FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE = 0.30
+FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE = 40
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
@@ -4617,7 +4624,14 @@ def _prune_full_spike_shape_noise(
         detection
         for detection in detections
         if detection.kind != "full_spike_support"
-        or _has_full_spike_perpendicular_neighbor(detection, support_candidates)
+        or _count_full_spike_perpendicular_neighbors(detection, support_candidates)
+        >= FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
+        or _is_strong_full_spike_support(detection, image, room)
+    ]
+    kept = [
+        detection
+        for detection in kept
+        if not _is_ambiguous_right_full_spike_noise(detection, image, room)
     ]
     return _prune_isolated_weak_full_spike_noise(kept)
 
@@ -4627,8 +4641,17 @@ def _has_full_spike_perpendicular_neighbor(
     full_spikes: list[Detection],
 ) -> bool:
     """Require a same-direction neighbor along the spike run axis."""
+    return _count_full_spike_perpendicular_neighbors(detection, full_spikes) >= 1
+
+
+def _count_full_spike_perpendicular_neighbors(
+    detection: Detection,
+    full_spikes: list[Detection],
+) -> int:
+    """Count same-direction candidates along the perpendicular run axis."""
     if detection.type_id not in FULL_SPIKE_TYPES:
-        return False
+        return 0
+    count = 0
     for other in full_spikes:
         if other is detection or other.type_id != detection.type_id:
             continue
@@ -4642,14 +4665,59 @@ def _has_full_spike_perpendicular_neighbor(
             aligned
             and 8 < run_distance <= FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE
         ):
-            return True
-    return False
+            count += 1
+    return count
+
+
+def _is_strong_full_spike_support(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Recover an unanchored support marker only with a clear triangle shape."""
+    if detection.type_id not in FULL_SPIKE_TYPES:
+        return False
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    if spike is None or spike.type_id != detection.type_id:
+        return False
+    block = _classify_block(patch)
+    return bool(
+        spike.direction_margin >= FULL_SPIKE_STRONG_SUPPORT_MIN_DIRECTION_MARGIN
+        and _triangle_side_coverage(patch, direction_by_type[detection.type_id])
+        >= FULL_SPIKE_STRONG_SUPPORT_MIN_SIDE_COVERAGE
+        and block.score <= FULL_SPIKE_STRONG_SUPPORT_MAX_BLOCK_SCORE
+    )
+
+
+def _is_ambiguous_right_full_spike_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Reject right-facing texture with weak orientation evidence."""
+    if detection.type_id != OBJ_SPIKE_RIGHT:
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    return bool(
+        spike is not None
+        and spike.type_id == OBJ_SPIKE_RIGHT
+        and spike.direction_margin < FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN
+        and patch.edge_density >= FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY
+    )
 
 
 def _prune_isolated_weak_full_spike_noise(
     detections: list[Detection],
 ) -> list[Detection]:
-    """Remove weak full spikes unless a same-direction run supports them."""
+    """Remove weak full spikes unless nearby geometry supports them."""
     full_spikes = [
         detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
     ]
@@ -4658,8 +4726,22 @@ def _prune_isolated_weak_full_spike_noise(
         for detection in detections
         if detection.type_id not in FULL_SPIKE_TYPES
         or detection.score >= FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE
-        or _has_full_spike_perpendicular_neighbor(detection, full_spikes)
+        or _has_full_spike_nearby_neighbor(detection, full_spikes)
     ]
+
+
+def _has_full_spike_nearby_neighbor(
+    detection: Detection,
+    full_spikes: list[Detection],
+) -> bool:
+    """Treat a nearby same-direction candidate as support for a weak spike."""
+    return any(
+        other is not detection
+        and other.type_id == detection.type_id
+        and distance((detection.x, detection.y), (other.x, other.y))
+        <= FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE
+        for other in full_spikes
+    )
 
 
 def _is_strong_full_spike_shape(
