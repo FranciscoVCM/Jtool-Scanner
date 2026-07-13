@@ -4933,8 +4933,16 @@ def _prune_full_spike_shape_noise(
         detection
         for detection in detections
         if detection.kind != "full_spike_support"
-        or support_neighbor_counts[id(detection)]
-        >= FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
+        or (
+            support_neighbor_counts[id(detection)]
+            >= FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
+            and not _is_weak_two_neighbor_support_noise(
+                detection,
+                image,
+                room,
+                support_neighbor_counts[id(detection)],
+            )
+        )
         or _is_strong_full_spike_support(
             detection,
             image,
@@ -4948,6 +4956,29 @@ def _prune_full_spike_shape_noise(
         if not _is_ambiguous_right_full_spike_noise(detection, image, room)
     ]
     return _prune_isolated_weak_full_spike_noise(kept, image, room)
+
+
+def _is_weak_two_neighbor_support_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    perpendicular_neighbors: int,
+) -> bool:
+    """Reject block-heavy two-neighbor markers with weak direction evidence."""
+    if (
+        detection.kind != "full_spike_support"
+        or perpendicular_neighbors != FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
+    ):
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    block = _classify_block(patch)
+    return bool(
+        spike is not None
+        and spike.type_id == detection.type_id
+        and block.score >= 0.55
+        and spike.direction_margin < 0.10
+    )
 
 
 def _has_full_spike_perpendicular_neighbor(

@@ -51,6 +51,7 @@ from jtool_scanner.scanner import (
     _is_strong_full_spike_shape_candidate,
     _is_strong_offgrid_full_spike_shape,
     _is_weak_full_spike_run_shape,
+    _is_weak_two_neighbor_support_noise,
     _has_full_spike_run_anchor,
     _full_spike_run_distance,
     _is_edge_outline_block_patch,
@@ -290,6 +291,13 @@ class ScannerGeometryTests(unittest.TestCase):
                 patch,
                 0.70,
             )
+        )
+
+    def test_weak_two_neighbor_support_noise_requires_block_heavy_ambiguity(self) -> None:
+        image = _textured_test_image()
+        support = Detection("full_spike_support", OBJ_SPIKE_UP, 64, 64, 0.40, Box(64, 64, 32, 32))
+        self.assertFalse(
+            _is_weak_two_neighbor_support_noise(support, image, Box(0, 0, 800, 608), 1)
         )
 
     def test_weak_full_spike_run_anchor_uses_perpendicular_axis(self) -> None:
