@@ -49,6 +49,7 @@ from jtool_scanner.scanner import (
     _is_weak_full_spike_shape_recovery,
     _is_dark_outline_half_step_full_spike_candidate,
     _is_strong_full_spike_shape_candidate,
+    _is_strong_offgrid_full_spike_shape,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
     _is_edge_full_spike_continuation_anchor,
@@ -243,6 +244,27 @@ class ScannerGeometryTests(unittest.TestCase):
                 _GeometryClass("block", OBJ_BLOCK, 0.55),
                 patch,
                 0.80,
+            )
+        )
+
+    def test_strong_offgrid_full_spike_shape_rejects_block_heavy_patch(self) -> None:
+        spike = _GeometryClass("spike_up", OBJ_SPIKE_UP, 0.45, 0.10, 0.16)
+        patch = _PatchFeatures((), edge_density=0.24, border_score=0.20, center_score=0.30)
+
+        self.assertTrue(
+            _is_strong_offgrid_full_spike_shape(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.40),
+                patch,
+                0.75,
+            )
+        )
+        self.assertFalse(
+            _is_strong_offgrid_full_spike_shape(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.56),
+                patch,
+                0.75,
             )
         )
 
