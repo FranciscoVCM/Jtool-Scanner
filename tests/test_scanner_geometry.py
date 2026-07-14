@@ -107,6 +107,7 @@ from jtool_scanner.scanner import (
     _prune_dark_outline_low_signal_blocks,
     _prune_full_spike_shape_noise,
     _prune_isolated_weak_full_spike_noise,
+    _prune_isolated_weak_full_spike_shape_noise,
     _prune_sparse_off_grid_block_noise,
     _recover_dark_outline_supported_low_signal_blocks,
     _recover_dark_outline_long_low_signal_runs,
@@ -389,6 +390,52 @@ class ScannerGeometryTests(unittest.TestCase):
                 (OBJ_SPIKE_UP, 64, 96),
             ],
         )
+
+    def test_geometry_dedupe_prefers_primary_grid_spike_over_support_marker(self) -> None:
+        primary = Detection("spike_up", OBJ_SPIKE_UP, 480, 256, 0.54, Box(480, 256, 32, 32))
+        support = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_UP,
+            480,
+            272,
+            0.65,
+            Box(480, 272, 32, 32),
+        )
+
+        result = _dedupe_geometry([support, primary])
+
+        self.assertEqual(result, [primary])
+
+    def test_strong_mini_geometry_survives_full_overlap_noise_prune(self) -> None:
+        self.assertFalse(
+            _is_blocklike_mini_spike_noise_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.64,
+                0.84,
+                0.33,
+                0.55,
+                3,
+                7,
+                1,
+                7,
+            )
+        )
+
+    def test_isolated_weak_full_spike_shape_noise_is_pruned(self) -> None:
+        weak = Detection(
+            "spike_right",
+            OBJ_SPIKE_RIGHT,
+            480,
+            256,
+            0.35,
+            Box(480, 256, 32, 32),
+        )
+        result = _prune_isolated_weak_full_spike_shape_noise(
+            [weak],
+            _textured_test_image(),
+            Box(0, 0, 800, 608),
+        )
+        self.assertEqual(result, [])
 
     def test_final_full_spike_prune_removes_low_score_and_tight_duplicate(self) -> None:
         strong = Detection("spike_up", OBJ_SPIKE_UP, 64, 96, 0.80, Box(64, 96, 32, 32))

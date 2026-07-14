@@ -62,7 +62,7 @@ COLOR_OBJECT_TYPES = frozenset(
     }
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
-MINI_SPIKE_COEXIST_SCORE = 0.60
+MINI_SPIKE_COEXIST_SCORE = 0.48
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 MINI_SPIKE_BLOCKLIKE_SCORE = 0.80
@@ -267,12 +267,17 @@ FULL_SPIKE_WEAK_RUN_NEIGHBOR_DISTANCE = 64
 FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
+FULL_SPIKE_FINAL_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 4
 FULL_SPIKE_CONTINUATION_MIN_SIDE_COVERAGE = 0.35
 FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
 FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
 FULL_SPIKE_CONTINUATION_MAX_AXIS_DISTANCE = 40
 FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE = 0.30
 FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE = 40
+FULL_SPIKE_ISOLATED_SHAPE_PRUNE_MAX_SCORE = 0.42
+FULL_SPIKE_ISOLATED_SHAPE_MAX_DIRECTION_MARGIN = 0.08
+FULL_SPIKE_ISOLATED_SHAPE_MIN_SIDE_COVERAGE = 0.60
+FULL_SPIKE_ISOLATED_SHAPE_MAX_BLOCK_SCORE = 0.55
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
@@ -300,6 +305,9 @@ CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_DISTANCE = 48.0
 CROWDED_BLOCKLIKE_MINI_SPIKE_NOISE_MIN_NEIGHBORS = 4
 FULL_OVERLAP_MINI_SPIKE_NOISE_DISTANCE = 32.0
 FULL_OVERLAP_MINI_SPIKE_NOISE_MIN_FULL_SUPPORTS = 7
+STRONG_MINI_SPIKE_KEEP_MIN_SCORE = 0.80
+STRONG_MINI_SPIKE_KEEP_MIN_DIRECTION_MARGIN = 0.20
+STRONG_MINI_SPIKE_KEEP_MIN_OUTLINE_DELTA = 0.35
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_SCORE = 1.01
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MIN_OUTLINE_DELTA = 0.09
 CROWDED_BLOCKLIKE_DOWN_RIGHT_MINI_KEEP_MAX_FULL_OVERLAP_SUPPORTS = 3
@@ -4863,6 +4871,11 @@ def _prune_final_geometry_noise(
 ) -> list[Detection]:
     original_detections = list(detections)
     detections = _prune_recovered_full_spike_noise(detections)
+    detections = _prune_isolated_weak_full_spike_shape_noise(
+        detections,
+        image,
+        room,
+    )
     detections = _prune_blocklike_mini_spike_noise(detections, image, room)
     detections = _prune_isolated_weak_block_noise(detections)
     detections = _prune_adaptive_block_noise(detections)
@@ -4935,7 +4948,7 @@ def _prune_full_spike_shape_noise(
         if detection.kind != "full_spike_support"
         or (
             support_neighbor_counts[id(detection)]
-            >= FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
+            >= FULL_SPIKE_FINAL_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS
             and not _is_weak_two_neighbor_support_noise(
                 detection,
                 image,
@@ -5103,6 +5116,96 @@ def _prune_isolated_weak_full_spike_noise(
             and _is_weak_full_spike_shape_recovery(detection, image, room)
         )
     ]
+
+
+def _prune_isolated_weak_full_spike_shape_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject weak isolated shapes unless their local triangle is coherent."""
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    axis_support = _full_spike_axis_support(full_spikes)
+    return [
+        detection
+        for detection in detections
+        if not _is_isolated_weak_full_spike_shape_noise(
+            detection,
+            axis_support.get(id(detection), False),
+            image,
+            room,
+        )
+    ]
+
+
+def _full_spike_axis_support(
+    full_spikes: list[Detection],
+) -> dict[int, bool]:
+    grouped: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for detection in full_spikes:
+        axis = (
+            detection.y
+            if detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+            else detection.x
+        )
+        grouped[(detection.type_id, axis)].append(detection)
+    support: dict[int, bool] = {}
+    for detection in full_spikes:
+        axis = (
+            detection.y
+            if detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+            else detection.x
+        )
+        has_neighbor = False
+        for other in grouped[(detection.type_id, axis)]:
+            if other is detection:
+                continue
+            run_distance = (
+                abs(other.x - detection.x)
+                if detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+                else abs(other.y - detection.y)
+            )
+            if 0 < run_distance <= FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE:
+                has_neighbor = True
+        support[id(detection)] = has_neighbor
+    return support
+
+
+def _is_isolated_weak_full_spike_shape_noise(
+    detection: Detection,
+    axis_support: bool,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    if (
+        detection.type_id not in FULL_SPIKE_TYPES
+        or detection.kind == "full_spike_support"
+        or detection.score >= FULL_SPIKE_ISOLATED_SHAPE_PRUNE_MAX_SCORE
+    ):
+        return False
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    direction = direction_by_type[detection.type_id]
+    if axis_support:
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    block = _classify_block(patch)
+    side_coverage = _triangle_side_coverage(patch, direction)
+    if spike is None or spike.type_id != detection.type_id:
+        return True
+    if block.score > FULL_SPIKE_ISOLATED_SHAPE_MAX_BLOCK_SCORE:
+        return True
+    return (
+        spike.direction_margin < FULL_SPIKE_ISOLATED_SHAPE_MAX_DIRECTION_MARGIN
+        and side_coverage < FULL_SPIKE_ISOLATED_SHAPE_MIN_SIDE_COVERAGE
+    )
 
 
 def _is_weak_full_spike_shape_recovery(
@@ -6362,6 +6465,12 @@ def _is_blocklike_mini_spike_noise_candidate(
         mini_neighbors,
     ):
         return True
+    if _is_strong_mini_spike_geometry(
+        mini_score,
+        direction_margin,
+        outline_delta,
+    ):
+        return False
     if _is_full_overlap_mini_spike_noise(full_overlap_supports):
         return True
     if _is_supported_blocklike_down_right_mini_spike(
@@ -6455,6 +6564,18 @@ def _is_full_overlap_mini_spike_noise(full_overlap_supports: int) -> bool:
     return full_overlap_supports >= FULL_OVERLAP_MINI_SPIKE_NOISE_MIN_FULL_SUPPORTS
 
 
+def _is_strong_mini_spike_geometry(
+    mini_score: float,
+    direction_margin: float,
+    outline_delta: float,
+) -> bool:
+    return (
+        mini_score >= STRONG_MINI_SPIKE_KEEP_MIN_SCORE
+        and direction_margin >= STRONG_MINI_SPIKE_KEEP_MIN_DIRECTION_MARGIN
+        and outline_delta >= STRONG_MINI_SPIKE_KEEP_MIN_OUTLINE_DELTA
+    )
+
+
 def _is_supported_blocklike_down_right_mini_spike(
     type_id: int,
     block_score: float,
@@ -6517,12 +6638,27 @@ def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:
     return sorted(result, key=lambda item: (item.y, item.x, -item.score))
 
 
-def _geometry_dedupe_key(detection: Detection) -> tuple[bool, int, float]:
+def _geometry_dedupe_key(detection: Detection) -> tuple[bool, int, int, float]:
     return (
         detection.type_id in MINI_SPIKE_TYPES,
         _block_alignment_rank(detection),
+        _full_spike_dedupe_rank(detection),
         -detection.score,
     )
+
+
+def _full_spike_dedupe_rank(detection: Detection) -> int:
+    if detection.type_id not in FULL_SPIKE_TYPES:
+        return 0
+    if detection.kind == "full_spike_support":
+        return 2
+    if _is_block_aligned_to(
+        detection.x,
+        detection.y,
+        PREFERRED_BLOCK_ALIGNMENT_STEP,
+    ):
+        return 0
+    return 1
 
 
 def _block_alignment_rank(detection: Detection) -> int:
