@@ -629,6 +629,22 @@ class ScannerGeometryTests(unittest.TestCase):
                 run_supported=True,
             )
         )
+        self.assertFalse(
+            _is_low_signal_supported_full_spike_recovery(
+                supported,
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.21,
+                    direction_margin=0.02,
+                    outline_delta=0.10,
+                ),
+                block,
+                patch,
+                side_coverage=0.625,
+                run_supported=True,
+            )
+        )
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(
