@@ -309,6 +309,8 @@ FULL_SPIKE_RUN_GAP_SCORE = 0.241
 FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY = 0.35
 FULL_SPIKE_RUN_GAP_MIN_BORDER_SCORE = 0.20
 FULL_SPIKE_RUN_GAP_MIN_CENTER_SCORE = 0.25
+FULL_SPIKE_RUN_GAP_ORIENTATION_SCORE_CEILING = 0.40
+FULL_SPIKE_RUN_GAP_MIN_DIRECTION_MARGIN = 0.03
 BLOCKLIKE_MINI_SPIKE_NOISE_BLOCK_SCORE = 0.98
 BLOCKLIKE_MINI_SPIKE_NOISE_SUPPORT_DISTANCE = 24.0
 BLOCKLIKE_MINI_SPIKE_NOISE_MAX_FULL_SUPPORTS = 2
@@ -2280,13 +2282,23 @@ def _recover_full_spike_run_gaps(
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             if not _is_full_spike_run_gap_patch(patch):
                 continue
+            gap_score = max(FULL_SPIKE_RUN_GAP_SCORE, min(first.score, second.score))
+            if gap_score <= FULL_SPIKE_RUN_GAP_ORIENTATION_SCORE_CEILING:
+                midpoint = _classify_full_spike(patch)
+                if (
+                    midpoint is None
+                    or midpoint.type_id != first.type_id
+                    or midpoint.direction_margin
+                    < FULL_SPIKE_RUN_GAP_MIN_DIRECTION_MARGIN
+                ):
+                    continue
             added.append(
                 _geometry_detection(
                     "full_spike_gap",
                     first.type_id,
                     x,
                     y,
-                    max(FULL_SPIKE_RUN_GAP_SCORE, min(first.score, second.score)),
+                    gap_score,
                     image,
                     room,
                     GRID_SIZE,
