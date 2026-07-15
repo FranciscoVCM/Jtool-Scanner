@@ -268,6 +268,8 @@ FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
 FULL_SPIKE_FINAL_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 4
+FULL_SPIKE_ISOLATED_WEAK_MIN_NEIGHBORS = 2
+FULL_SPIKE_ISOLATED_WEAK_ONE_NEIGHBOR_MIN_SCORE = 0.27
 FULL_SPIKE_CONTINUATION_MIN_SIDE_COVERAGE = 0.35
 FULL_SPIKE_CONTINUATION_MIN_SCORE = 0.24
 FULL_SPIKE_CONTINUATION_MIN_OUTLINE_DELTA = 0.05
@@ -5316,7 +5318,15 @@ def _prune_isolated_weak_full_spike_noise(
         for detection in detections
         if detection.type_id not in FULL_SPIKE_TYPES
         or detection.score >= FULL_SPIKE_ISOLATED_WEAK_MAX_SCORE
-        or _has_full_spike_nearby_neighbor(detection, full_spikes)
+        or _has_full_spike_nearby_neighbors(
+            detection,
+            full_spikes,
+            FULL_SPIKE_ISOLATED_WEAK_MIN_NEIGHBORS,
+        )
+        or (
+            detection.score >= FULL_SPIKE_ISOLATED_WEAK_ONE_NEIGHBOR_MIN_SCORE
+            and _has_full_spike_nearby_neighbor(detection, full_spikes)
+        )
         or (
             image is not None
             and room is not None
@@ -5462,6 +5472,21 @@ def _has_full_spike_nearby_neighbor(
         <= FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE
         for other in full_spikes
     )
+
+
+def _has_full_spike_nearby_neighbors(
+    detection: Detection,
+    full_spikes: list[Detection],
+    minimum: int,
+) -> bool:
+    return sum(
+        1
+        for other in full_spikes
+        if other is not detection
+        and other.type_id == detection.type_id
+        and distance((detection.x, detection.y), (other.x, other.y))
+        <= FULL_SPIKE_ISOLATED_NEIGHBOR_DISTANCE
+    ) >= minimum
 
 
 def _is_strong_full_spike_shape(

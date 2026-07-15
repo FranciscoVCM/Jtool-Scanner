@@ -194,6 +194,14 @@ class ScannerGeometryTests(unittest.TestCase):
     def test_isolated_weak_full_spike_noise_requires_same_direction_neighbor(self) -> None:
         isolated = Detection("spike_up", OBJ_SPIKE_UP, 64, 64, 0.24, Box(64, 64, 32, 32))
         supported = Detection("spike_up", OBJ_SPIKE_UP, 96, 64, 0.24, Box(96, 64, 32, 32))
+        second_supported = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            32,
+            64,
+            0.24,
+            Box(32, 64, 32, 32),
+        )
         other_direction = Detection(
             "spike_down",
             OBJ_SPIKE_DOWN,
@@ -204,10 +212,11 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         result = _prune_isolated_weak_full_spike_noise(
-            [isolated, supported, other_direction]
+            [isolated, supported, second_supported, other_direction]
         )
 
-        self.assertEqual(result, [isolated, supported])
+        self.assertIn(isolated, result)
+        self.assertNotIn(supported, result)
         self.assertNotIn(
             isolated,
             _prune_isolated_weak_full_spike_noise([isolated, other_direction]),
@@ -220,9 +229,25 @@ class ScannerGeometryTests(unittest.TestCase):
             0.24,
             Box(80, 80, 32, 32),
         )
-        self.assertIn(
+        self.assertNotIn(
             isolated,
             _prune_isolated_weak_full_spike_noise([isolated, diagonal_neighbor]),
+        )
+        self.assertNotIn(
+            isolated,
+            _prune_isolated_weak_full_spike_noise([isolated, supported]),
+        )
+        stronger_isolated = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.27,
+            Box(64, 64, 32, 32),
+        )
+        self.assertIn(
+            stronger_isolated,
+            _prune_isolated_weak_full_spike_noise([stronger_isolated, supported]),
         )
 
     def test_weak_full_spike_shape_recovery_requires_coherent_triangle(self) -> None:
