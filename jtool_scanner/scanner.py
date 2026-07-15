@@ -247,6 +247,12 @@ FULL_SPIKE_STRONG_SHAPE_MIN_OUTLINE_DELTA = 0.12
 FULL_SPIKE_STRONG_SHAPE_MIN_SIDE_COVERAGE = 0.75
 FULL_SPIKE_STRONG_SHAPE_MIN_BLOCK_MARGIN = 0.10
 FULL_SPIKE_STRONG_SHAPE_MIN_EDGE_DENSITY = 0.20
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SCORE = 0.22
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_DIRECTION_MARGIN = 0.06
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_OUTLINE_DELTA = 0.12
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_EDGE_DENSITY = 0.18
+FULL_SPIKE_GRID_SHAPE_RECOVERY_MAX_BLOCK_SCORE = 0.40
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -1447,6 +1453,7 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_strong_full_spike_shapes(recovered, image, room)
     recovered = _recover_strong_offgrid_full_spikes(recovered, image, room)
     recovered = _recover_weak_full_spike_runs(recovered, image, room)
+    recovered = _recover_grid_shape_full_spikes(recovered, image, room)
     recovered = _recover_edge_blocks(recovered, image, room)
     recovered = _recover_axis_supported_mini_spikes(recovered, image, room)
     recovered = _recover_horizontal_side_mini_spikes(recovered, image, room)
@@ -2885,6 +2892,101 @@ def _recover_weak_full_spike_runs(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _recover_grid_shape_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover clear triangles on the 16px grid missed by primary detection."""
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    added: list[Detection] = []
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y)) < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for det in [*full_spikes, *added]
+            ):
+                continue
+            run_support_count = sum(
+                1
+                for det in [*full_spikes, *added]
+                if det.type_id == spike.type_id
+                and (
+                    (
+                        spike.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+                        and abs(det.y - y) <= FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE
+                        and 8 < abs(det.x - x) <= FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE
+                    )
+                    or (
+                        spike.type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT)
+                        and abs(det.x - x) <= FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE
+                        and 8 < abs(det.y - y) <= FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE
+                    )
+                )
+            )
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(
+                patch,
+                direction_by_type[spike.type_id],
+            )
+            if not _is_grid_shape_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage,
+                run_support_count >= 1,
+            ):
+                continue
+            added.append(
+                _geometry_detection(
+                    "full_spike_shape_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_FINAL_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _is_grid_shape_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    run_supported: bool,
+) -> bool:
+    return (
+        run_supported
+        and spike.score >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_GRID_SHAPE_RECOVERY_MAX_BLOCK_SCORE
+        and spike.score >= block.score
+    )
 
 
 def _has_full_spike_run_anchor(
