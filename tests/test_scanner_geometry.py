@@ -115,6 +115,7 @@ from jtool_scanner.scanner import (
     _prune_duplicate_mini_spike_cells,
     _prune_recovered_full_spike_noise,
     _recover_full_spike_run_gaps,
+    _recover_pruned_full_spikes,
     _recover_blocklike_full_spikes,
     _recover_axis_supported_mini_spikes,
     _recover_supported_block_cells,
@@ -351,6 +352,89 @@ class ScannerGeometryTests(unittest.TestCase):
             _has_full_spike_perpendicular_neighbor(up_a, [up_a, up_axis_neighbor])
         )
         self.assertFalse(_has_full_spike_perpendicular_neighbor(up_a, [up_a, down]))
+
+    def test_pruned_full_spike_recovery_uses_offset_tolerant_run_support(self) -> None:
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 800, 608)
+        candidate = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.35,
+            Box(64, 64, 32, 32),
+        )
+        anchor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            160,
+            72,
+            0.70,
+            Box(160, 72, 32, 32),
+        )
+        patch = _PatchFeatures((), edge_density=0.24, border_score=0.20, center_score=0.35)
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.40,
+            direction_margin=0.08,
+            outline_delta=0.20,
+        )
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=spike),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.30),
+            ),
+            mock.patch("jtool_scanner.scanner._triangle_side_coverage", return_value=0.50),
+        ):
+            result = _recover_pruned_full_spikes(
+                [candidate, anchor],
+                [anchor],
+                image,
+                room,
+            )
+
+        self.assertIn(candidate, result)
+        self.assertIn(anchor, result)
+
+    def test_pruned_full_spike_recovery_rejects_unsupported_weak_candidate(self) -> None:
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 800, 608)
+        candidate = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.35,
+            Box(64, 64, 32, 32),
+        )
+        patch = _PatchFeatures((), edge_density=0.24, border_score=0.20, center_score=0.35)
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.40,
+            direction_margin=0.05,
+            outline_delta=0.12,
+        )
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=spike),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.30),
+            ),
+            mock.patch("jtool_scanner.scanner._triangle_side_coverage", return_value=0.50),
+        ):
+            result = _recover_pruned_full_spikes(
+                [candidate],
+                [],
+                image,
+                room,
+            )
+
+        self.assertNotIn(candidate, result)
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(

@@ -290,6 +290,14 @@ FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_SIDE_COVERAGE = 0.56
 FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MAX_BLOCK_SCORE = 0.55
 FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_STRONG_SIDE_COVERAGE = 0.80
+FULL_SPIKE_RECALL_RECOVERY_MIN_SCORE = 0.30
+FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE = 0.50
+FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY = 0.20
+FULL_SPIKE_RECALL_RECOVERY_MAX_BLOCK_SCORE = 0.45
+FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA = 0.10
+FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN = 0.04
+FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE = 96
+FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE = 16
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
@@ -4934,7 +4942,107 @@ def _prune_final_geometry_noise(
             room,
         )
     detections = _prune_primary_isolated_full_spikes(detections, image, room)
-    return _prune_full_spike_shape_noise(detections, image, room)
+    detections = _prune_full_spike_shape_noise(detections, image, room)
+    return _recover_pruned_full_spikes(
+        original_detections,
+        detections,
+        image,
+        room,
+    )
+
+
+def _recover_pruned_full_spikes(
+    original_detections: list[Detection],
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover strong candidates removed only by final full-spike pruning."""
+    recovered = list(detections)
+    full_spikes = [
+        detection
+        for detection in recovered
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    original_full_spikes = [
+        detection
+        for detection in original_detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    candidates: list[Detection] = []
+    for detection in original_detections:
+        direction = direction_by_type.get(detection.type_id)
+        if direction is None:
+            continue
+        if any(
+            existing.type_id == detection.type_id
+            and distance((detection.x, detection.y), (existing.x, existing.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for existing in full_spikes
+        ):
+            continue
+        patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        spike = _classify_full_spike(patch)
+        if spike is None or spike.type_id != detection.type_id:
+            continue
+        block = _classify_block(patch)
+        side_coverage = _triangle_side_coverage(patch, direction)
+        if not (
+            detection.score >= FULL_SPIKE_RECALL_RECOVERY_MIN_SCORE
+            and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
+            and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
+            and block.score <= FULL_SPIKE_RECALL_RECOVERY_MAX_BLOCK_SCORE
+            and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
+            and spike.direction_margin
+            >= FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN
+        ):
+            continue
+        run_supported = any(
+            other.type_id == detection.type_id
+            and (
+                (
+                    detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+                    and abs(other.y - detection.y)
+                    <= FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE
+                    and 8 < abs(other.x - detection.x)
+                    <= FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE
+                )
+                or (
+                    detection.type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT)
+                    and abs(other.x - detection.x)
+                    <= FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE
+                    and 8 < abs(other.y - detection.y)
+                    <= FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE
+                )
+            )
+            for other in original_full_spikes
+        )
+        isolated_shape = (
+            detection.score >= 0.42
+            and side_coverage >= 0.625
+            and patch.edge_density >= 0.25
+            and spike.direction_margin >= 0.08
+        )
+        if not run_supported and not isolated_shape:
+            continue
+        candidates.append(detection)
+
+    for detection in sorted(candidates, key=lambda item: (-item.score, item.y, item.x)):
+        if any(
+            existing.type_id == detection.type_id
+            and distance((detection.x, detection.y), (existing.x, existing.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for existing in recovered
+        ):
+            continue
+        recovered.append(detection)
+    return recovered
 
 
 def _prune_full_spike_shape_noise(
