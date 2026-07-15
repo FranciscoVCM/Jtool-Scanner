@@ -100,6 +100,7 @@ from jtool_scanner.scanner import (
     _is_ambiguous_right_full_spike_noise,
     _is_ambiguous_full_spike_noise,
     _is_block_heavy_full_spike_support_noise,
+    _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
@@ -571,6 +572,63 @@ class ScannerGeometryTests(unittest.TestCase):
             ),
         ):
             self.assertFalse(_is_block_heavy_full_spike_support_noise(support, image, room))
+
+    def test_low_signal_supported_recovery_requires_provenance_and_run_support(self) -> None:
+        supported = Detection(
+            "full_spike_supported",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.24,
+            Box(64, 64, 32, 32),
+        )
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.30,
+            direction_margin=0.02,
+            outline_delta=0.10,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.40)
+        patch = _PatchFeatures((), edge_density=0.16, border_score=0.20, center_score=0.35)
+
+        self.assertTrue(
+            _is_low_signal_supported_full_spike_recovery(
+                supported,
+                spike,
+                block,
+                patch,
+                side_coverage=0.625,
+                run_supported=True,
+            )
+        )
+        self.assertFalse(
+            _is_low_signal_supported_full_spike_recovery(
+                supported,
+                spike,
+                block,
+                patch,
+                side_coverage=0.625,
+                run_supported=False,
+            )
+        )
+        self.assertFalse(
+            _is_low_signal_supported_full_spike_recovery(
+                Detection(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    64,
+                    64,
+                    0.24,
+                    Box(64, 64, 32, 32),
+                ),
+                spike,
+                block,
+                patch,
+                side_coverage=0.625,
+                run_supported=True,
+            )
+        )
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(

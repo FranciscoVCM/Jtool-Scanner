@@ -301,6 +301,10 @@ FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN = 0.04
 FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE = 96
 FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE = 16
+FULL_SPIKE_SUPPORTED_RECOVERY_MIN_SCORE = 0.24
+FULL_SPIKE_SUPPORTED_RECOVERY_MIN_EDGE_DENSITY = 0.16
+FULL_SPIKE_SUPPORTED_RECOVERY_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_SUPPORTED_RECOVERY_MIN_DIRECTION_MARGIN = 0.02
 FULL_SPIKE_FINAL_RECOVERY_MAX_BLOCK_SCORE = 0.45
 FULL_SPIKE_FINAL_RECOVERY_MAX_DIRECTION_MARGIN = 0.12
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
@@ -5011,16 +5015,6 @@ def _recover_pruned_full_spikes(
             continue
         block = _classify_block(patch)
         side_coverage = _triangle_side_coverage(patch, direction)
-        if not (
-            detection.score >= FULL_SPIKE_RECALL_RECOVERY_MIN_SCORE
-            and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
-            and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
-            and block.score <= FULL_SPIKE_RECALL_RECOVERY_MAX_BLOCK_SCORE
-            and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
-            and spike.direction_margin
-            >= FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN
-        ):
-            continue
         run_supported = any(
             other.type_id == detection.type_id
             and (
@@ -5041,6 +5035,25 @@ def _recover_pruned_full_spikes(
             )
             for other in original_full_spikes
         )
+        standard_recovery = (
+            detection.score >= FULL_SPIKE_RECALL_RECOVERY_MIN_SCORE
+            and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
+            and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
+            and block.score <= FULL_SPIKE_RECALL_RECOVERY_MAX_BLOCK_SCORE
+            and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
+            and spike.direction_margin
+            >= FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN
+        )
+        supported_recovery = _is_low_signal_supported_full_spike_recovery(
+            detection,
+            spike,
+            block,
+            patch,
+            side_coverage,
+            run_supported,
+        )
+        if not (standard_recovery or supported_recovery):
+            continue
         isolated_shape = (
             detection.score >= 0.42
             and side_coverage >= 0.625
@@ -5061,6 +5074,28 @@ def _recover_pruned_full_spikes(
             continue
         recovered.append(detection)
     return recovered
+
+
+def _is_low_signal_supported_full_spike_recovery(
+    detection: Detection,
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    run_supported: bool,
+) -> bool:
+    """Allow only provenance-supported candidates to use the weaker gate."""
+    return bool(
+        detection.kind == "full_spike_supported"
+        and run_supported
+        and detection.score >= FULL_SPIKE_SUPPORTED_RECOVERY_MIN_SCORE
+        and side_coverage >= FULL_SPIKE_SUPPORTED_RECOVERY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_SUPPORTED_RECOVERY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_RECALL_RECOVERY_MAX_BLOCK_SCORE
+        and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
+        and spike.direction_margin
+        >= FULL_SPIKE_SUPPORTED_RECOVERY_MIN_DIRECTION_MARGIN
+    )
 
 
 def _prune_final_full_spike_recovery_noise(
