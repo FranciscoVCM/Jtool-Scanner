@@ -62,7 +62,7 @@ COLOR_OBJECT_TYPES = frozenset(
     }
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
-MINI_SPIKE_COEXIST_SCORE = 0.48
+MINI_SPIKE_COEXIST_SCORE = 0.60
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 MINI_SPIKE_BLOCKLIKE_SCORE = 0.80
@@ -278,6 +278,18 @@ FULL_SPIKE_ISOLATED_SHAPE_PRUNE_MAX_SCORE = 0.42
 FULL_SPIKE_ISOLATED_SHAPE_MAX_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_ISOLATED_SHAPE_MIN_SIDE_COVERAGE = 0.60
 FULL_SPIKE_ISOLATED_SHAPE_MAX_BLOCK_SCORE = 0.55
+FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MAX_SCORE = 0.70
+FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MIN_SIDE_COVERAGE = 0.70
+FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MAX_BLOCK_SCORE = 0.55
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_DIRECTION_MARGIN = 0.18
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_FALLBACK_MIN_DIRECTION_MARGIN = 0.15
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_OUTLINE_DELTA = 0.30
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_EDGE_DENSITY = 0.22
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_SCORE = 0.44
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_EDGE_DENSITY = 0.30
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_SIDE_COVERAGE = 0.56
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MAX_BLOCK_SCORE = 0.55
+FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_STRONG_SIDE_COVERAGE = 0.80
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
@@ -2208,7 +2220,7 @@ def _recover_supported_full_spikes_on_grid(
                 continue
             added.append(
                 _geometry_detection(
-                    spike.kind,
+                    "full_spike_supported",
                     spike.type_id,
                     x,
                     y,
@@ -2260,7 +2272,7 @@ def _recover_full_spike_run_gaps(
                 continue
             added.append(
                 _geometry_detection(
-                    first.kind,
+                    "full_spike_gap",
                     first.type_id,
                     x,
                     y,
@@ -4921,6 +4933,7 @@ def _prune_final_geometry_noise(
             image,
             room,
         )
+    detections = _prune_primary_isolated_full_spikes(detections, image, room)
     return _prune_full_spike_shape_noise(detections, image, room)
 
 
@@ -4969,6 +4982,92 @@ def _prune_full_spike_shape_noise(
         if not _is_ambiguous_right_full_spike_noise(detection, image, room)
     ]
     return _prune_isolated_weak_full_spike_noise(kept, image, room)
+
+
+def _prune_primary_isolated_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject weak primary spikes that lack a coherent run or side shape."""
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    axis_support = _full_spike_axis_support(full_spikes)
+    return [
+        detection
+        for detection in detections
+        if not _is_primary_isolated_full_spike_noise(
+            detection,
+            axis_support.get(id(detection), False),
+            image,
+            room,
+        )
+    ]
+
+
+def _is_primary_isolated_full_spike_noise(
+    detection: Detection,
+    axis_support: bool,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    if (
+        detection.type_id not in FULL_SPIKE_TYPES
+        or detection.kind not in {
+            "spike_up",
+            "spike_right",
+            "spike_left",
+            "spike_down",
+        }
+        or detection.score >= FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MAX_SCORE
+        or axis_support
+    ):
+        return False
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    direction = direction_by_type[detection.type_id]
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    if (
+        spike is not None
+        and spike.type_id == detection.type_id
+        and spike.outline_delta >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_OUTLINE_DELTA
+        and (
+            spike.direction_margin
+            >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_DIRECTION_MARGIN
+            or (
+                spike.direction_margin
+                >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_FALLBACK_MIN_DIRECTION_MARGIN
+                and patch.edge_density
+                >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_EDGE_DENSITY
+            )
+        )
+    ):
+        return False
+    block = _classify_block(patch)
+    side_coverage = _triangle_side_coverage(patch, direction)
+    if (
+        detection.score >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_MIN_SCORE
+        and patch.edge_density
+        >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_EDGE_DENSITY
+        and side_coverage
+        >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MIN_SIDE_COVERAGE
+        and (
+            block.score <= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_MAX_BLOCK_SCORE
+            or side_coverage
+            >= FULL_SPIKE_PRIMARY_ISOLATED_KEEP_PROFILE_STRONG_SIDE_COVERAGE
+        )
+    ):
+        return False
+    return (
+        side_coverage < FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MIN_SIDE_COVERAGE
+        or block.score > FULL_SPIKE_PRIMARY_ISOLATED_PRUNE_MAX_BLOCK_SCORE
+    )
 
 
 def _is_weak_two_neighbor_support_noise(

@@ -108,6 +108,7 @@ from jtool_scanner.scanner import (
     _prune_full_spike_shape_noise,
     _prune_isolated_weak_full_spike_noise,
     _prune_isolated_weak_full_spike_shape_noise,
+    _prune_primary_isolated_full_spikes,
     _prune_sparse_off_grid_block_noise,
     _recover_dark_outline_supported_low_signal_blocks,
     _recover_dark_outline_long_low_signal_runs,
@@ -436,6 +437,73 @@ class ScannerGeometryTests(unittest.TestCase):
             Box(0, 0, 800, 608),
         )
         self.assertEqual(result, [])
+
+    def test_primary_isolated_full_spike_prune_preserves_run_and_strong_shape(self) -> None:
+        weak = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            480,
+            256,
+            0.60,
+            Box(480, 256, 32, 32),
+        )
+        run_neighbor = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            528,
+            256,
+            0.60,
+            Box(528, 256, 32, 32),
+        )
+        with mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.70),
+        ), mock.patch(
+            "jtool_scanner.scanner._triangle_side_coverage",
+            return_value=0.40,
+        ):
+            result = _prune_primary_isolated_full_spikes(
+                [weak],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+        self.assertEqual(result, [])
+
+        strong = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            480,
+            256,
+            0.60,
+            Box(480, 256, 32, 32),
+        )
+        with mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.30),
+        ), mock.patch(
+            "jtool_scanner.scanner._triangle_side_coverage",
+            return_value=0.80,
+        ):
+            result = _prune_primary_isolated_full_spikes(
+                [strong],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+        self.assertEqual(result, [strong])
+
+        with mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.70),
+        ), mock.patch(
+            "jtool_scanner.scanner._triangle_side_coverage",
+            return_value=0.40,
+        ):
+            result = _prune_primary_isolated_full_spikes(
+                [weak, run_neighbor],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+        self.assertEqual(result, [weak, run_neighbor])
 
     def test_final_full_spike_prune_removes_low_score_and_tight_duplicate(self) -> None:
         strong = Detection("spike_up", OBJ_SPIKE_UP, 64, 96, 0.80, Box(64, 96, 32, 32))
