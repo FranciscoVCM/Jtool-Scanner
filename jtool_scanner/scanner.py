@@ -266,6 +266,7 @@ FULL_SPIKE_WEAK_RUN_MAX_BLOCK_SCORE = 0.40
 FULL_SPIKE_WEAK_RUN_NEIGHBOR_DISTANCE = 64
 FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN = 0.10
 FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY = 0.30
+FULL_SPIKE_AMBIGUOUS_MAX_SCORE = 0.45
 FULL_SPIKE_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 2
 FULL_SPIKE_FINAL_SUPPORT_MIN_PERPENDICULAR_NEIGHBORS = 4
 FULL_SPIKE_ISOLATED_WEAK_MIN_NEIGHBORS = 2
@@ -5103,6 +5104,11 @@ def _prune_full_spike_shape_noise(
         for detection in kept
         if not _is_ambiguous_right_full_spike_noise(detection, image, room)
     ]
+    kept = [
+        detection
+        for detection in kept
+        if not _is_ambiguous_full_spike_noise(detection, image, room)
+    ]
     return _prune_isolated_weak_full_spike_noise(kept, image, room)
 
 
@@ -5311,6 +5317,26 @@ def _is_ambiguous_right_full_spike_noise(
     return bool(
         spike is not None
         and spike.type_id == OBJ_SPIKE_RIGHT
+        and spike.direction_margin < FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN
+        and patch.edge_density >= FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY
+    )
+
+
+def _is_ambiguous_full_spike_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    if (
+        detection.type_id not in FULL_SPIKE_TYPES
+        or detection.score >= FULL_SPIKE_AMBIGUOUS_MAX_SCORE
+    ):
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    return bool(
+        spike is not None
+        and spike.type_id == detection.type_id
         and spike.direction_margin < FULL_SPIKE_AMBIGUOUS_RIGHT_MAX_DIRECTION_MARGIN
         and patch.edge_density >= FULL_SPIKE_AMBIGUOUS_RIGHT_MIN_EDGE_DENSITY
     )

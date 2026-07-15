@@ -98,6 +98,7 @@ from jtool_scanner.scanner import (
     _has_full_spike_perpendicular_neighbor,
     _count_full_spike_perpendicular_neighbors,
     _is_ambiguous_right_full_spike_noise,
+    _is_ambiguous_full_spike_noise,
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
@@ -460,6 +461,59 @@ class ScannerGeometryTests(unittest.TestCase):
             )
 
         self.assertNotIn(candidate, result)
+
+    def test_ambiguous_full_spike_noise_uses_score_and_orientation_gates(self) -> None:
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 800, 608)
+        patch = _PatchFeatures((), edge_density=0.35, border_score=0.20, center_score=0.35)
+        weak_ambiguous = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.40,
+            Box(64, 64, 32, 32),
+        )
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.40,
+            direction_margin=0.05,
+            outline_delta=0.20,
+        )
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=spike),
+        ):
+            self.assertTrue(_is_ambiguous_full_spike_noise(weak_ambiguous, image, room))
+            self.assertFalse(
+                _is_ambiguous_full_spike_noise(
+                    Detection(
+                        "spike_up",
+                        OBJ_SPIKE_UP,
+                        64,
+                        64,
+                        0.50,
+                        Box(64, 64, 32, 32),
+                    ),
+                    image,
+                    room,
+                )
+            )
+            self.assertFalse(
+                _is_ambiguous_full_spike_noise(
+                    Detection(
+                        "spike_down",
+                        OBJ_SPIKE_DOWN,
+                        64,
+                        64,
+                        0.40,
+                        Box(64, 64, 32, 32),
+                    ),
+                    image,
+                    room,
+                )
+            )
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(
