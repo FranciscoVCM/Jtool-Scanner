@@ -99,6 +99,7 @@ from jtool_scanner.scanner import (
     _count_full_spike_perpendicular_neighbors,
     _is_ambiguous_right_full_spike_noise,
     _is_ambiguous_full_spike_noise,
+    _is_block_heavy_full_spike_support_noise,
     _normalize_full_spike_origin,
     _outline_block_score,
     _patch_in_ranges,
@@ -514,6 +515,62 @@ class ScannerGeometryTests(unittest.TestCase):
                     room,
                 )
             )
+
+    def test_final_support_noise_requires_block_dominance_and_weak_orientation(self) -> None:
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 800, 608)
+        support = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.50,
+            Box(64, 64, 32, 32),
+        )
+        patch = _PatchFeatures((), edge_density=0.40, border_score=0.20, center_score=0.35)
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.45,
+            direction_margin=0.10,
+            outline_delta=0.20,
+        )
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=spike),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.50),
+            ),
+        ):
+            self.assertTrue(_is_block_heavy_full_spike_support_noise(support, image, room))
+
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=spike),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.40),
+            ),
+        ):
+            self.assertFalse(_is_block_heavy_full_spike_support_noise(support, image, room))
+
+        weak_margin_spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.45,
+            direction_margin=0.12,
+            outline_delta=0.20,
+        )
+        with (
+            mock.patch("jtool_scanner.scanner._patch_features", return_value=patch),
+            mock.patch("jtool_scanner.scanner._classify_full_spike", return_value=weak_margin_spike),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.50),
+            ),
+        ):
+            self.assertFalse(_is_block_heavy_full_spike_support_noise(support, image, room))
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(

@@ -301,6 +301,8 @@ FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA = 0.10
 FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN = 0.04
 FULL_SPIKE_RECALL_RECOVERY_NEIGHBOR_DISTANCE = 96
 FULL_SPIKE_RECALL_RECOVERY_AXIS_TOLERANCE = 16
+FULL_SPIKE_FINAL_RECOVERY_MAX_BLOCK_SCORE = 0.45
+FULL_SPIKE_FINAL_RECOVERY_MAX_DIRECTION_MARGIN = 0.12
 FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
@@ -4958,12 +4960,13 @@ def _prune_final_geometry_noise(
         )
     detections = _prune_primary_isolated_full_spikes(detections, image, room)
     detections = _prune_full_spike_shape_noise(detections, image, room)
-    return _recover_pruned_full_spikes(
+    recovered = _recover_pruned_full_spikes(
         original_detections,
         detections,
         image,
         room,
     )
+    return _prune_final_full_spike_recovery_noise(recovered, image, room)
 
 
 def _recover_pruned_full_spikes(
@@ -5058,6 +5061,37 @@ def _recover_pruned_full_spikes(
             continue
         recovered.append(detection)
     return recovered
+
+
+def _prune_final_full_spike_recovery_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Remove re-added support markers that remain block-dominant."""
+    return [
+        detection
+        for detection in detections
+        if not _is_block_heavy_full_spike_support_noise(detection, image, room)
+    ]
+
+
+def _is_block_heavy_full_spike_support_noise(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    if detection.kind != "full_spike_support":
+        return False
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    block = _classify_block(patch)
+    return bool(
+        spike is not None
+        and spike.type_id == detection.type_id
+        and block.score >= FULL_SPIKE_FINAL_RECOVERY_MAX_BLOCK_SCORE
+        and spike.direction_margin < FULL_SPIKE_FINAL_RECOVERY_MAX_DIRECTION_MARGIN
+    )
 
 
 def _prune_full_spike_shape_noise(
