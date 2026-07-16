@@ -45,6 +45,7 @@ from jtool_scanner.scanner import (
     _is_bottom_edge_up_spike_continuation_patch,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
+    _is_dark_outline_eight_step_full_spike_candidate,
     _is_dark_outline_full_spike_candidate,
     _is_weak_full_spike_shape_recovery,
     _is_dark_outline_half_step_full_spike_candidate,
@@ -65,6 +66,7 @@ from jtool_scanner.scanner import (
     _has_adjacent_up_mini_spike_pair,
     _has_ambiguous_adjacent_up_mini_spike_pair,
     _has_dense_adjacent_up_mini_spike_support,
+    _has_dark_outline_axial_support,
     _has_diagonal_side_mini_spike_support,
     _has_diagonal_right_mini_step_support,
     _has_extended_left_mini_spike_support,
@@ -78,6 +80,7 @@ from jtool_scanner.scanner import (
     _has_low_contrast_paired_up_mini_spike_support,
     _has_low_border_side_mini_spike_support,
     _has_ultra_faint_left_mini_spike_support,
+    _has_four_quadrant_block_support,
     _is_low_contrast_mini_up_candidate,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_border_supported_up_mini_spike_candidate,
@@ -113,6 +116,7 @@ from jtool_scanner.scanner import (
     _is_supported_shape_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
+    _forms_full_spike_orientation_junction,
     _normalize_full_spike_detections,
     _outline_block_score,
     _patch_in_ranges,
@@ -3607,6 +3611,110 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_is_dark_outline_half_step_full_spike_candidate(candidate))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_score))
         self.assertFalse(_is_dark_outline_half_step_full_spike_candidate(weak_outline))
+
+    def test_dark_outline_eight_step_candidate_combines_margin_and_block_score(
+        self,
+    ) -> None:
+        spike = _GeometryClass(
+            "spike_left",
+            OBJ_SPIKE_LEFT,
+            0.249,
+            direction_margin=0.108,
+            outline_delta=0.236,
+        )
+        patch = _PatchFeatures((), 0.172, 0.0, 0.0)
+
+        self.assertTrue(
+            _is_dark_outline_eight_step_full_spike_candidate(
+                spike,
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.175),
+                0.625,
+            )
+        )
+        self.assertFalse(
+            _is_dark_outline_eight_step_full_spike_candidate(
+                spike,
+                patch,
+                _GeometryClass("block", OBJ_BLOCK, 0.19),
+                0.625,
+            )
+        )
+
+    def test_dark_outline_axial_support_requires_primary_anchor(self) -> None:
+        image_box = Box(0, 0, 32, 32)
+        primary = Detection(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            448,
+            160,
+            0.4,
+            image_box,
+        )
+        provisional = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_DOWN,
+            448,
+            160,
+            0.4,
+            image_box,
+        )
+
+        self.assertTrue(
+            _has_dark_outline_axial_support(
+                [primary],
+                OBJ_SPIKE_DOWN,
+                OBJ_SPIKE_DOWN,
+                448,
+                184,
+                require_primary=True,
+            )
+        )
+        self.assertFalse(
+            _has_dark_outline_axial_support(
+                [provisional],
+                OBJ_SPIKE_DOWN,
+                OBJ_SPIKE_DOWN,
+                448,
+                184,
+                require_primary=True,
+            )
+        )
+
+    def test_four_quadrant_block_support_requires_every_corner(self) -> None:
+        image_box = Box(0, 0, 32, 32)
+        blocks = [
+            Detection("block", OBJ_BLOCK, x, y, 0.4, image_box)
+            for x, y in ((84, 84), (116, 84), (84, 116), (116, 116))
+        ]
+
+        self.assertTrue(_has_four_quadrant_block_support(blocks, 100, 100))
+        self.assertFalse(_has_four_quadrant_block_support(blocks[:-1], 100, 100))
+
+    def test_full_spike_orientation_junction_rotates_support_pattern(self) -> None:
+        image_box = Box(0, 0, 32, 32)
+        supports = [
+            Detection("spike_down", OBJ_SPIKE_DOWN, 100, 116, 0.4, image_box),
+            Detection("spike_right", OBJ_SPIKE_RIGHT, 108, 84, 0.4, image_box),
+            Detection("spike_left", OBJ_SPIKE_LEFT, 84, 84, 0.4, image_box),
+        ]
+
+        self.assertTrue(
+            _forms_full_spike_orientation_junction(
+                OBJ_SPIKE_UP,
+                100,
+                100,
+                supports,
+            )
+        )
+        self.assertFalse(
+            _forms_full_spike_orientation_junction(
+                OBJ_SPIKE_UP,
+                100,
+                100,
+                supports[:-1],
+            )
+        )
 
     def test_supported_full_spike_candidate_requires_nonblock_triangle_body(self) -> None:
         spike = _GeometryClass(

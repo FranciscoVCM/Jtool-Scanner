@@ -761,6 +761,35 @@ DARK_OUTLINE_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.12
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE = 0.275
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.14
 DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE = 24.0
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_SCORE = 0.245
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.09
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_STRONG_DIRECTION_MARGIN = 0.13
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.16
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_SIDE_COVERAGE = 0.55
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_EDGE_DENSITY = 0.16
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MAX_BLOCK_SCORE = 0.30
+DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_LOW_BLOCK_SCORE = 0.18
+DARK_OUTLINE_AXIAL_MIN_DISTANCE = 24
+DARK_OUTLINE_AXIAL_MAX_DISTANCE = 40
+DARK_OUTLINE_AXIAL_MAX_CROSS_DISTANCE = 8
+DARK_OUTLINE_AXIAL_MIN_SCORE = 0.20
+DARK_OUTLINE_AXIAL_MAX_SCORE = 0.245
+DARK_OUTLINE_AXIAL_MIN_DIRECTION_MARGIN = 0.04
+DARK_OUTLINE_AXIAL_MIN_OUTLINE_DELTA = 0.05
+DARK_OUTLINE_AXIAL_MAX_OUTLINE_DELTA = 0.10
+DARK_OUTLINE_AXIAL_MIN_SIDE_COVERAGE = 0.50
+DARK_OUTLINE_AXIAL_MIN_EDGE_DENSITY = 0.14
+DARK_OUTLINE_AXIAL_MAX_BLOCK_SCORE = 0.25
+DARK_OUTLINE_JUNCTION_MIN_SCORE = 0.30
+DARK_OUTLINE_JUNCTION_MAX_SCORE = 0.36
+DARK_OUTLINE_JUNCTION_MIN_DIRECTION_MARGIN = 0.03
+DARK_OUTLINE_JUNCTION_MIN_OUTLINE_DELTA = 0.10
+DARK_OUTLINE_JUNCTION_MIN_SIDE_COVERAGE = 0.50
+DARK_OUTLINE_JUNCTION_MIN_EDGE_DENSITY = 0.25
+DARK_OUTLINE_JUNCTION_MIN_BLOCK_SCORE = 0.28
+DARK_OUTLINE_JUNCTION_MAX_BLOCK_SCORE = 0.35
+DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET = 8
+DARK_OUTLINE_JUNCTION_MAX_BLOCK_OFFSET = 24
 SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.22
 SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
 SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
@@ -973,6 +1002,21 @@ def scan_image(
         detections = _recover_sparse_primary_opposite_pairs(
             detections,
             raw_full_spike_support,
+            image,
+            box,
+        )
+        detections = _recover_dark_outline_eight_step_full_spikes(
+            detections,
+            image,
+            box,
+        )
+        detections = _recover_dark_outline_axial_continuations(
+            detections,
+            image,
+            box,
+        )
+        detections = _recover_dark_outline_block_junction_spikes(
+            detections,
             image,
             box,
         )
@@ -2422,6 +2466,285 @@ def _recover_dark_outline_full_spikes(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _recover_dark_outline_eight_step_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if not _is_dark_outline_room(image, room):
+        return detections
+
+    recovered = list(detections)
+    full_spikes = [
+        detection for detection in recovered if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            if (
+                x % FULL_SPIKE_AXIS_SNAP_STEP == 0
+                and y % FULL_SPIKE_AXIS_SNAP_STEP == 0
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or any(
+                detection.type_id == spike.type_id
+                and distance((x, y), (detection.x, detection.y))
+                < DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE
+                for detection in full_spikes
+            ):
+                continue
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(
+                patch,
+                spike.kind.removeprefix("spike_"),
+            )
+            if not _is_dark_outline_eight_step_full_spike_candidate(
+                spike,
+                patch,
+                block,
+                side_coverage,
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_dark_outline_eight_step_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            full_spikes.append(recovered[-1])
+    return recovered
+
+
+def _recover_dark_outline_axial_continuations(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if not _is_dark_outline_room(image, room):
+        return detections
+
+    recovered = list(detections)
+    full_spikes = [
+        detection for detection in recovered if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or any(
+                detection.type_id == spike.type_id
+                and distance((x, y), (detection.x, detection.y))
+                < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for detection in full_spikes
+            ):
+                continue
+            if not _has_dark_outline_axial_support(
+                full_spikes,
+                spike.type_id,
+                spike.type_id,
+                x,
+                y,
+                require_primary=True,
+            ):
+                continue
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(
+                patch,
+                spike.kind.removeprefix("spike_"),
+            )
+            if not (
+                DARK_OUTLINE_AXIAL_MIN_SCORE
+                <= spike.score
+                <= DARK_OUTLINE_AXIAL_MAX_SCORE
+                and spike.direction_margin
+                >= DARK_OUTLINE_AXIAL_MIN_DIRECTION_MARGIN
+                and DARK_OUTLINE_AXIAL_MIN_OUTLINE_DELTA
+                <= spike.outline_delta
+                <= DARK_OUTLINE_AXIAL_MAX_OUTLINE_DELTA
+                and side_coverage >= DARK_OUTLINE_AXIAL_MIN_SIDE_COVERAGE
+                and patch.edge_density >= DARK_OUTLINE_AXIAL_MIN_EDGE_DENSITY
+                and block.score <= DARK_OUTLINE_AXIAL_MAX_BLOCK_SCORE
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_dark_outline_axial_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            full_spikes.append(recovered[-1])
+    return recovered
+
+
+def _recover_dark_outline_block_junction_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    if not _is_dark_outline_room(image, room):
+        return detections
+
+    recovered = list(detections)
+    full_spikes = [
+        detection for detection in recovered if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    blocks = [detection for detection in recovered if detection.type_id == OBJ_BLOCK]
+    opposite_types = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+    }
+    for y in range(
+        DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET,
+        ROOM_HEIGHT - GRID_SIZE - DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET + 1,
+        8,
+    ):
+        for x in range(
+            DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET,
+            ROOM_WIDTH - GRID_SIZE - DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET + 1,
+            8,
+        ):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or any(
+                detection.type_id == spike.type_id
+                and distance((x, y), (detection.x, detection.y))
+                < DARK_OUTLINE_HALF_STEP_FULL_SPIKE_ISOLATION_DISTANCE
+                for detection in full_spikes
+            ):
+                continue
+            if not _has_dark_outline_axial_support(
+                full_spikes,
+                spike.type_id,
+                opposite_types[spike.type_id],
+                x,
+                y,
+            ) or not _has_four_quadrant_block_support(blocks, x, y):
+                continue
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(
+                patch,
+                spike.kind.removeprefix("spike_"),
+            )
+            if not (
+                DARK_OUTLINE_JUNCTION_MIN_SCORE
+                <= spike.score
+                <= DARK_OUTLINE_JUNCTION_MAX_SCORE
+                and spike.direction_margin
+                >= DARK_OUTLINE_JUNCTION_MIN_DIRECTION_MARGIN
+                and spike.outline_delta
+                >= DARK_OUTLINE_JUNCTION_MIN_OUTLINE_DELTA
+                and side_coverage >= DARK_OUTLINE_JUNCTION_MIN_SIDE_COVERAGE
+                and patch.edge_density >= DARK_OUTLINE_JUNCTION_MIN_EDGE_DENSITY
+                and DARK_OUTLINE_JUNCTION_MIN_BLOCK_SCORE
+                <= block.score
+                <= DARK_OUTLINE_JUNCTION_MAX_BLOCK_SCORE
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_dark_outline_block_junction_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            full_spikes.append(recovered[-1])
+    return recovered
+
+
+def _has_dark_outline_axial_support(
+    full_spikes: list[Detection],
+    candidate_type: int,
+    support_type: int,
+    x: int,
+    y: int,
+    *,
+    require_primary: bool = False,
+) -> bool:
+    expected_kind = {
+        OBJ_SPIKE_UP: "spike_up",
+        OBJ_SPIKE_RIGHT: "spike_right",
+        OBJ_SPIKE_LEFT: "spike_left",
+        OBJ_SPIKE_DOWN: "spike_down",
+    }[support_type]
+    for support in full_spikes:
+        if support.type_id != support_type or (
+            require_primary and support.kind != expected_kind
+        ):
+            continue
+        dx = support.x - x
+        dy = support.y - y
+        if candidate_type == OBJ_SPIKE_UP:
+            aligned = (
+                abs(dx) <= DARK_OUTLINE_AXIAL_MAX_CROSS_DISTANCE
+                and DARK_OUTLINE_AXIAL_MIN_DISTANCE
+                <= dy
+                <= DARK_OUTLINE_AXIAL_MAX_DISTANCE
+            )
+        elif candidate_type == OBJ_SPIKE_DOWN:
+            aligned = (
+                abs(dx) <= DARK_OUTLINE_AXIAL_MAX_CROSS_DISTANCE
+                and -DARK_OUTLINE_AXIAL_MAX_DISTANCE
+                <= dy
+                <= -DARK_OUTLINE_AXIAL_MIN_DISTANCE
+            )
+        elif candidate_type == OBJ_SPIKE_RIGHT:
+            aligned = (
+                -DARK_OUTLINE_AXIAL_MAX_DISTANCE
+                <= dx
+                <= -DARK_OUTLINE_AXIAL_MIN_DISTANCE
+                and abs(dy) <= DARK_OUTLINE_AXIAL_MAX_CROSS_DISTANCE
+            )
+        else:
+            aligned = (
+                DARK_OUTLINE_AXIAL_MIN_DISTANCE
+                <= dx
+                <= DARK_OUTLINE_AXIAL_MAX_DISTANCE
+                and abs(dy) <= DARK_OUTLINE_AXIAL_MAX_CROSS_DISTANCE
+            )
+        if aligned:
+            return True
+    return False
+
+
+def _has_four_quadrant_block_support(
+    blocks: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    return all(
+        any(
+            DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET
+            <= x_sign * (block.x - x)
+            <= DARK_OUTLINE_JUNCTION_MAX_BLOCK_OFFSET
+            and DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET
+            <= y_sign * (block.y - y)
+            <= DARK_OUTLINE_JUNCTION_MAX_BLOCK_OFFSET
+            for block in blocks
+        )
+        for x_sign, y_sign in ((-1, -1), (1, -1), (-1, 1), (1, 1))
+    )
 
 
 def _recover_supported_full_spikes(
@@ -6303,6 +6626,31 @@ def _is_dark_outline_half_step_full_spike_candidate(spike: _GeometryClass) -> bo
         spike.score >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_SCORE
         and spike.outline_delta
         >= DARK_OUTLINE_HALF_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA
+    )
+
+
+def _is_dark_outline_eight_step_full_spike_candidate(
+    spike: _GeometryClass,
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    side_coverage: float,
+) -> bool:
+    return (
+        spike.score >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_SCORE
+        and spike.direction_margin
+        >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_OUTLINE_DELTA
+        and side_coverage
+        >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_SIDE_COVERAGE
+        and patch.edge_density
+        >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MIN_EDGE_DENSITY
+        and block.score <= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_MAX_BLOCK_SCORE
+        and (
+            spike.direction_margin
+            >= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_STRONG_DIRECTION_MARGIN
+            or block.score <= DARK_OUTLINE_EIGHT_STEP_FULL_SPIKE_LOW_BLOCK_SCORE
+        )
     )
 
 
