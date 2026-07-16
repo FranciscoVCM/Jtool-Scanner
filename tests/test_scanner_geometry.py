@@ -106,6 +106,7 @@ from jtool_scanner.scanner import (
     _is_block_heavy_full_spike_candidate,
     _is_boundary_full_spike_candidate,
     _is_isolated_coherent_full_spike_candidate,
+    _is_supported_shape_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
     _normalize_full_spike_detections,
@@ -794,6 +795,34 @@ class ScannerGeometryTests(unittest.TestCase):
                 _GeometryClass("block", OBJ_BLOCK, 0.34),
                 _PatchFeatures((), edge_density=0.29, border_score=0.25, center_score=0.40),
                 side_coverage=0.94,
+            )
+        )
+        self.assertTrue(
+            _is_supported_shape_full_spike_candidate(
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.41,
+                    direction_margin=0.10,
+                    outline_delta=0.26,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.32),
+                _PatchFeatures((), edge_density=0.28, border_score=0.30, center_score=0.30),
+                side_coverage=0.70,
+            )
+        )
+        self.assertFalse(
+            _is_supported_shape_full_spike_candidate(
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.41,
+                    direction_margin=0.08,
+                    outline_delta=0.26,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.32),
+                _PatchFeatures((), edge_density=0.28, border_score=0.30, center_score=0.30),
+                side_coverage=0.70,
             )
         )
 

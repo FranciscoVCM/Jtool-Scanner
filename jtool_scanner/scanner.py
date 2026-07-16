@@ -288,6 +288,12 @@ FULL_SPIKE_ISOLATED_COHERENT_MIN_SIDE_COVERAGE = 0.90
 FULL_SPIKE_ISOLATED_COHERENT_MIN_EDGE_DENSITY = 0.28
 FULL_SPIKE_ISOLATED_COHERENT_MAX_BLOCK_SCORE = 0.40
 FULL_SPIKE_ISOLATED_COHERENT_MIN_BLOCK_MARGIN = 0.08
+FULL_SPIKE_SUPPORTED_SHAPE_MIN_SCORE = 0.40
+FULL_SPIKE_SUPPORTED_SHAPE_MIN_DIRECTION_MARGIN = 0.09
+FULL_SPIKE_SUPPORTED_SHAPE_MIN_OUTLINE_DELTA = 0.25
+FULL_SPIKE_SUPPORTED_SHAPE_MIN_SIDE_COVERAGE = 0.6875
+FULL_SPIKE_SUPPORTED_SHAPE_MIN_EDGE_DENSITY = 0.27
+FULL_SPIKE_SUPPORTED_SHAPE_MAX_BLOCK_SCORE = 0.34
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -3124,7 +3130,13 @@ def _recover_post_prune_block_heavy_full_spikes(
                 patch,
                 side_coverage,
             )
-            if not (block_heavy or boundary or isolated_coherent):
+            supported_shape = _is_supported_shape_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage,
+            )
+            if not (block_heavy or boundary or isolated_coherent or supported_shape):
                 continue
             added.append(
                 _geometry_detection(
@@ -3158,6 +3170,24 @@ def _is_isolated_coherent_full_spike_candidate(
         and patch.edge_density >= FULL_SPIKE_ISOLATED_COHERENT_MIN_EDGE_DENSITY
         and block.score <= FULL_SPIKE_ISOLATED_COHERENT_MAX_BLOCK_SCORE
         and spike.score >= block.score + FULL_SPIKE_ISOLATED_COHERENT_MIN_BLOCK_MARGIN
+    )
+
+
+def _is_supported_shape_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+) -> bool:
+    """Accept a supported triangle when its body overlaps a textured tile."""
+    return (
+        spike.score >= FULL_SPIKE_SUPPORTED_SHAPE_MIN_SCORE
+        and spike.direction_margin >= FULL_SPIKE_SUPPORTED_SHAPE_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_SUPPORTED_SHAPE_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_SUPPORTED_SHAPE_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_SUPPORTED_SHAPE_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_SUPPORTED_SHAPE_MAX_BLOCK_SCORE
+        and spike.score >= block.score
     )
 
 
