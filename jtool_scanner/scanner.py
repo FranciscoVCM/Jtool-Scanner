@@ -753,6 +753,11 @@ def scan_image(
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
         detections = _prune_final_geometry_noise(detections, image, box)
+        detections = _recover_post_prune_block_heavy_full_spikes(
+            detections,
+            image,
+            box,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
@@ -3031,6 +3036,72 @@ def _recover_grid_shape_full_spikes(
                     nearby_same_type,
                 )
             if not candidate_ok:
+                continue
+            added.append(
+                _geometry_detection(
+                    "full_spike_shape_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_FINAL_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    if added:
+        recovered.extend(added)
+    return recovered
+
+
+def _recover_post_prune_block_heavy_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Restore strong block-overlap triangles after support pruning has settled."""
+    recovered = list(detections)
+    full_spikes = [det for det in recovered if det.type_id in FULL_SPIKE_TYPES]
+    added: list[Detection] = []
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            if any(
+                det.type_id == spike.type_id
+                and distance((x, y), (det.x, det.y))
+                < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for det in [*full_spikes, *added]
+            ):
+                continue
+            nearby_supported = any(
+                det.type_id == spike.type_id
+                and 0 < distance((x, y), (det.x, det.y))
+                <= FULL_SPIKE_BLOCK_HEAVY_NEARBY_DISTANCE
+                for det in [*full_spikes, *added]
+            )
+            if not nearby_supported:
+                continue
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(
+                patch,
+                direction_by_type[spike.type_id],
+            )
+            if not _is_block_heavy_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage,
+                run_supported=True,
+            ):
                 continue
             added.append(
                 _geometry_detection(
