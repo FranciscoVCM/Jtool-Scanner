@@ -104,6 +104,7 @@ from jtool_scanner.scanner import (
     _is_half_grid_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
+    _normalize_full_spike_detections,
     _outline_block_score,
     _patch_in_ranges,
     _prune_adaptive_block_noise,
@@ -733,6 +734,21 @@ class ScannerGeometryTests(unittest.TestCase):
             _normalize_full_spike_origin(OBJ_SPIKE_RIGHT, 164, 73),
             (164, 80),
         )
+
+    def test_shape_recovery_preserves_half_grid_origin(self) -> None:
+        image_box = Box(0, 0, 32, 32)
+        shape = Detection(
+            "full_spike_shape_recovery",
+            OBJ_SPIKE_UP,
+            168,
+            73,
+            0.5,
+            image_box,
+        )
+        primary = Detection("spike_up", OBJ_SPIKE_UP, 168, 73, 0.5, image_box)
+        normalized = _normalize_full_spike_detections([shape, primary])
+        self.assertEqual((normalized[0].x, normalized[0].y), (168, 73))
+        self.assertEqual((normalized[1].x, normalized[1].y), (160, 73))
 
     def test_normalized_full_spike_dedupe_removes_same_direction_duplicate(self) -> None:
         strong = Detection("spike_up", OBJ_SPIKE_UP, 64, 96, 0.80, Box(64, 96, 32, 32))

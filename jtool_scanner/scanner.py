@@ -5016,7 +5016,14 @@ def _normalize_full_spike_detections(detections: list[Detection]) -> list[Detect
         if detection.type_id not in FULL_SPIKE_TYPES:
             normalized.append(detection)
             continue
-        x, y = _normalize_full_spike_origin(detection.type_id, detection.x, detection.y)
+        if detection.kind == "full_spike_shape_recovery":
+            x, y = detection.x, detection.y
+        else:
+            x, y = _normalize_full_spike_origin(
+                detection.type_id,
+                detection.x,
+                detection.y,
+            )
         normalized.append(
             Detection(
                 detection.kind,
