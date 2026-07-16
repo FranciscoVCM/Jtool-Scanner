@@ -101,6 +101,7 @@ from jtool_scanner.scanner import (
     _is_ambiguous_full_spike_noise,
     _is_block_heavy_full_spike_support_noise,
     _is_grid_shape_full_spike_candidate,
+    _is_half_grid_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
     _outline_block_score,
@@ -673,6 +674,35 @@ class ScannerGeometryTests(unittest.TestCase):
                 block,
                 patch,
                 side_coverage=0.625,
+                run_supported=False,
+            )
+        )
+
+    def test_half_grid_recovery_requires_stronger_shape_and_run_support(self) -> None:
+        spike = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.31,
+            direction_margin=0.17,
+            outline_delta=0.26,
+        )
+        block = _GeometryClass("block", OBJ_BLOCK, 0.20)
+        patch = _PatchFeatures((), edge_density=0.13, border_score=0.20, center_score=0.35)
+        self.assertTrue(
+            _is_half_grid_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage=0.51,
+                run_supported=True,
+            )
+        )
+        self.assertFalse(
+            _is_half_grid_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage=0.51,
                 run_supported=False,
             )
         )

@@ -253,6 +253,12 @@ FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_OUTLINE_DELTA = 0.12
 FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SIDE_COVERAGE = 0.625
 FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_EDGE_DENSITY = 0.18
 FULL_SPIKE_GRID_SHAPE_RECOVERY_MAX_BLOCK_SCORE = 0.40
+FULL_SPIKE_HALF_GRID_RECOVERY_MIN_SCORE = 0.30
+FULL_SPIKE_HALF_GRID_RECOVERY_MIN_DIRECTION_MARGIN = 0.16
+FULL_SPIKE_HALF_GRID_RECOVERY_MIN_OUTLINE_DELTA = 0.25
+FULL_SPIKE_HALF_GRID_RECOVERY_MIN_SIDE_COVERAGE = 0.50
+FULL_SPIKE_HALF_GRID_RECOVERY_MIN_EDGE_DENSITY = 0.12
+FULL_SPIKE_HALF_GRID_RECOVERY_MAX_BLOCK_SCORE = 0.30
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -2909,8 +2915,12 @@ def _recover_grid_shape_full_spikes(
         OBJ_SPIKE_LEFT: "left",
         OBJ_SPIKE_DOWN: "down",
     }
-    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
-        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_AXIS_SNAP_STEP):
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            half_grid = (
+                x % FULL_SPIKE_AXIS_SNAP_STEP != 0
+                or y % FULL_SPIKE_AXIS_SNAP_STEP != 0
+            )
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             spike = _classify_full_spike(patch)
             if spike is None:
@@ -2943,13 +2953,24 @@ def _recover_grid_shape_full_spikes(
                 patch,
                 direction_by_type[spike.type_id],
             )
-            if not _is_grid_shape_full_spike_candidate(
-                spike,
-                block,
-                patch,
-                side_coverage,
-                run_support_count >= 1,
-            ):
+            candidate_ok = (
+                _is_half_grid_full_spike_candidate(
+                    spike,
+                    block,
+                    patch,
+                    side_coverage,
+                    run_support_count >= 1,
+                )
+                if half_grid
+                else _is_grid_shape_full_spike_candidate(
+                    spike,
+                    block,
+                    patch,
+                    side_coverage,
+                    run_support_count >= 1,
+                )
+            )
+            if not candidate_ok:
                 continue
             added.append(
                 _geometry_detection(
@@ -2985,6 +3006,27 @@ def _is_grid_shape_full_spike_candidate(
         and side_coverage >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_SIDE_COVERAGE
         and patch.edge_density >= FULL_SPIKE_GRID_SHAPE_RECOVERY_MIN_EDGE_DENSITY
         and block.score <= FULL_SPIKE_GRID_SHAPE_RECOVERY_MAX_BLOCK_SCORE
+        and spike.score >= block.score
+    )
+
+
+def _is_half_grid_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    run_supported: bool,
+) -> bool:
+    return (
+        run_supported
+        and spike.score >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_HALF_GRID_RECOVERY_MAX_BLOCK_SCORE
         and spike.score >= block.score
     )
 
