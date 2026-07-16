@@ -105,6 +105,7 @@ from jtool_scanner.scanner import (
     _is_nearby_half_grid_full_spike_candidate,
     _is_block_heavy_full_spike_candidate,
     _is_boundary_full_spike_candidate,
+    _is_isolated_coherent_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
     _normalize_full_spike_detections,
@@ -779,6 +780,20 @@ class ScannerGeometryTests(unittest.TestCase):
                 x=480,
                 y=0,
                 nearby_supported=True,
+            )
+        )
+        self.assertTrue(
+            _is_isolated_coherent_full_spike_candidate(
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.47,
+                    direction_margin=0.15,
+                    outline_delta=0.37,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.34),
+                _PatchFeatures((), edge_density=0.29, border_score=0.25, center_score=0.40),
+                side_coverage=0.94,
             )
         )
 
