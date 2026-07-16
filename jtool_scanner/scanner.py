@@ -314,6 +314,27 @@ FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_OUTLINE_DELTA = 0.17
 FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SIDE_COVERAGE = 0.375
 FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_EDGE_DENSITY = 0.28
 FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_BLOCK_SCORE = 0.30
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DENSITY_RATIO = 0.75
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SCORE = 0.30
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SHAPE_SCORE = 0.30
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DIRECTION_MARGIN = 0.09
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_OUTLINE_DELTA = 0.23
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SIDE_COVERAGE = 0.50
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_EDGE_DENSITY = 0.18
+FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_BLOCK_SCORE = 0.40
+FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_CONFLICT_DISTANCE = 16.0
+FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_CONFLICT_DISTANCE = 24.0
+FULL_SPIKE_RAW_SUPPORT_DENSE_LOCAL_DISTANCE = 40.0
+FULL_SPIKE_RAW_SUPPORT_DENSE_SAME_DIRECTION_DISTANCE = 96.0
+FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_LOCAL_SPIKES = 4
+FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_SAME_DIRECTION_SPIKES = 1
+FULL_SPIKE_RAW_SUPPORT_DENSE_RIGHT_MAX_LOCAL_SPIKES = 1
+FULL_SPIKE_RAW_SUPPORTED_MIN_SCORE = 0.241
+FULL_SPIKE_RAW_SUPPORTED_MIN_SHAPE_SCORE = 0.16
+FULL_SPIKE_RAW_SUPPORTED_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_RAW_SUPPORTED_MIN_EDGE_DENSITY = 0.15
+FULL_SPIKE_RAW_SUPPORTED_MAX_BLOCK_SCORE = 0.20
+FULL_SPIKE_RAW_SUPPORTED_NEIGHBOR_DISTANCE = 96.0
 FULL_SPIKE_RAW_PRIMARY_MIN_SCORES = {
     OBJ_SPIKE_UP: 0.45,
     OBJ_SPIKE_LEFT: 0.45,
@@ -792,6 +813,12 @@ def scan_image(
             if detection.kind == "full_spike_support"
             and detection.type_id in FULL_SPIKE_TYPES
         ]
+        raw_supported_full_spikes = [
+            detection
+            for detection in detections
+            if detection.kind == "full_spike_supported"
+            and detection.type_id in FULL_SPIKE_TYPES
+        ]
         raw_primary_full_spikes = [
             detection
             for detection in detections
@@ -810,6 +837,12 @@ def scan_image(
         detections = _recover_raw_full_spike_support(
             detections,
             raw_full_spike_support,
+            image,
+            box,
+        )
+        detections = _recover_raw_supported_full_spikes(
+            detections,
+            raw_supported_full_spikes,
             image,
             box,
         )
@@ -3213,6 +3246,7 @@ def _recover_raw_full_spike_support(
     if not raw_support:
         return detections
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
+    support_context = tuple(full_spikes)
     density_ratio = len(raw_support) / max(1, len(full_spikes))
     informative_density = _is_informative_raw_support_density(density_ratio)
 
@@ -3257,6 +3291,30 @@ def _recover_raw_full_spike_support(
                 side_coverage,
             )
         )
+        if density_ratio >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DENSITY_RATIO:
+            original_x, original_y = _raw_detection_patch_origin(candidate, room)
+            original_patch = _patch_features(
+                image,
+                room,
+                original_x,
+                original_y,
+                GRID_SIZE,
+            )
+            original_spike = _classify_full_spike(original_patch)
+            if original_spike is not None:
+                original_block = _classify_block(original_patch)
+                original_side_coverage = _triangle_side_coverage(
+                    original_patch,
+                    original_spike.kind.removeprefix("spike_"),
+                )
+                preserve = preserve or _is_dense_conflicting_raw_support_candidate(
+                    candidate,
+                    original_spike,
+                    original_block,
+                    original_patch,
+                    original_side_coverage,
+                    support_context,
+                )
         if not preserve:
             continue
         recovered.append(
@@ -3272,6 +3330,139 @@ def _recover_raw_full_spike_support(
             )
         )
     return recovered
+
+
+def _recover_raw_supported_full_spikes(
+    detections: list[Detection],
+    raw_supported: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Restore low-signal triangles that already had same-direction run support."""
+    recovered = list(detections)
+    for candidate in raw_supported:
+        if any(
+            detection.type_id == candidate.type_id
+            and distance((detection.x, detection.y), (candidate.x, candidate.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for detection in recovered
+        ):
+            continue
+        patch = _patch_features(image, room, candidate.x, candidate.y, GRID_SIZE)
+        spike = _classify_full_spike(patch)
+        if spike is None or spike.type_id != candidate.type_id:
+            continue
+        block = _classify_block(patch)
+        side_coverage = _triangle_side_coverage(
+            patch,
+            spike.kind.removeprefix("spike_"),
+        )
+        if not (
+            candidate.score >= FULL_SPIKE_RAW_SUPPORTED_MIN_SCORE
+            and spike.score >= FULL_SPIKE_RAW_SUPPORTED_MIN_SHAPE_SCORE
+            and side_coverage >= FULL_SPIKE_RAW_SUPPORTED_MIN_SIDE_COVERAGE
+            and patch.edge_density >= FULL_SPIKE_RAW_SUPPORTED_MIN_EDGE_DENSITY
+            and block.score <= FULL_SPIKE_RAW_SUPPORTED_MAX_BLOCK_SCORE
+            and any(
+                detection.type_id == candidate.type_id
+                and FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                <= distance(
+                    (detection.x, detection.y),
+                    (candidate.x, candidate.y),
+                )
+                <= FULL_SPIKE_RAW_SUPPORTED_NEIGHBOR_DISTANCE
+                for detection in recovered
+            )
+        ):
+            continue
+        recovered.append(
+            _geometry_detection(
+                "full_spike_raw_supported_recovery",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                max(FULL_SPIKE_FINAL_MIN_SCORE, candidate.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _raw_detection_patch_origin(
+    detection: Detection,
+    room: Box,
+) -> tuple[int, int]:
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    x = round((detection.image_box.x - room.x) / scale_x)
+    y = round((detection.image_box.y - room.y) / scale_y)
+    return x, y
+
+
+def _is_dense_conflicting_raw_support_candidate(
+    candidate: Detection,
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    detections: list[Detection],
+) -> bool:
+    if not (
+        candidate.type_id == spike.type_id
+        and candidate.score >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SCORE
+        and spike.score >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SHAPE_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_BLOCK_SCORE
+    ):
+        return False
+    has_conflicting_spike = any(
+        detection.type_id in FULL_SPIKE_TYPES
+        and detection.type_id != candidate.type_id
+        and FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_CONFLICT_DISTANCE
+        <= distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_CONFLICT_DISTANCE
+        for detection in detections
+    )
+    if not has_conflicting_spike:
+        return False
+    local_spikes = sum(
+        detection.type_id in FULL_SPIKE_TYPES
+        and 0
+        < distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_DENSE_LOCAL_DISTANCE
+        for detection in detections
+    )
+    same_direction_spikes = sum(
+        detection.type_id == candidate.type_id
+        and FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+        <= distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_DENSE_SAME_DIRECTION_DISTANCE
+        for detection in detections
+    )
+    same_direction_local_spikes = sum(
+        detection.type_id == candidate.type_id
+        and FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+        <= distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_DENSE_LOCAL_DISTANCE
+        for detection in detections
+    )
+    if candidate.type_id == OBJ_SPIKE_RIGHT:
+        return (
+            same_direction_local_spikes == 0
+            and local_spikes
+            <= FULL_SPIKE_RAW_SUPPORT_DENSE_RIGHT_MAX_LOCAL_SPIKES
+        )
+    return (
+        same_direction_spikes
+        <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_SAME_DIRECTION_SPIKES
+        and local_spikes <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_LOCAL_SPIKES
+    )
 
 
 def _is_informative_raw_support_density(density_ratio: float) -> bool:
