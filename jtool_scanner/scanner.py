@@ -401,6 +401,36 @@ FULL_SPIKE_RAW_PRIMARY_MIN_SCORES = {
     OBJ_SPIKE_UP: 0.45,
     OBJ_SPIKE_LEFT: 0.45,
 }
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_DENSITY_RATIO = 0.25
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_DENSITY_RATIO = 0.38
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_BLOCK_RATIO = 0.60
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_BLOCK_RATIO = 0.85
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_SCORE = 0.56
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_SCORE = 0.62
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_DIRECTION_MARGIN = 0.04
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_OUTLINE_DELTA = 0.28
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_SIDE_COVERAGE = 0.875
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_EDGE_DENSITY = 0.42
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_BLOCK_SCORE = 0.50
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_BLOCK_SCORE = 0.62
+FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_CONFLICT_DISTANCE = 12.0
+FULL_SPIKE_SPARSE_JUNCTION_GRID_STEP = 8
+FULL_SPIKE_SPARSE_JUNCTION_EDGE_MARGIN = 48
+FULL_SPIKE_SPARSE_JUNCTION_MIN_SCORE = 0.60
+FULL_SPIKE_SPARSE_JUNCTION_MAX_OUTLINE_DELTA = 0.16
+FULL_SPIKE_SPARSE_JUNCTION_MIN_SIDE_COVERAGE = 0.90
+FULL_SPIKE_SPARSE_JUNCTION_MIN_EDGE_DENSITY = 0.55
+FULL_SPIKE_SPARSE_PAIR_MIN_AXIS_DISTANCE = 16
+FULL_SPIKE_SPARSE_PAIR_MAX_AXIS_DISTANCE = 32
+FULL_SPIKE_SPARSE_PAIR_MAX_CROSS_DISTANCE = 8
+FULL_SPIKE_SPARSE_PAIR_MIN_SCORE = 0.54
+FULL_SPIKE_SPARSE_PAIR_MAX_SCORE = 0.60
+FULL_SPIKE_SPARSE_PAIR_MAX_DIRECTION_MARGIN = 0.04
+FULL_SPIKE_SPARSE_PAIR_MAX_OUTLINE_DELTA = 0.08
+FULL_SPIKE_SPARSE_PAIR_MIN_SIDE_COVERAGE = 0.90
+FULL_SPIKE_SPARSE_PAIR_MIN_EDGE_DENSITY = 0.52
+FULL_SPIKE_SPARSE_PAIR_MIN_BLOCK_SCORE = 0.58
+FULL_SPIKE_SPARSE_PAIR_MAX_BLOCK_SCORE = 0.66
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -884,7 +914,8 @@ def scan_image(
         raw_primary_full_spikes = [
             detection
             for detection in detections
-            if detection.kind in {"spike_up", "spike_left"}
+            if detection.kind
+            in {"spike_up", "spike_right", "spike_left", "spike_down"}
             and detection.type_id in FULL_SPIKE_TYPES
         ]
         detections = _dedupe_overlapping_geometry(detections)
@@ -923,6 +954,25 @@ def scan_image(
         detections = _recover_raw_primary_full_spikes(
             detections,
             raw_primary_full_spikes,
+            image,
+            box,
+        )
+        detections = _recover_sparse_support_raw_primary_spikes(
+            detections,
+            raw_full_spike_support,
+            raw_primary_full_spikes,
+            image,
+            box,
+        )
+        detections = _recover_sparse_room_orientation_junctions(
+            detections,
+            raw_full_spike_support,
+            image,
+            box,
+        )
+        detections = _recover_sparse_primary_opposite_pairs(
+            detections,
+            raw_full_spike_support,
             image,
             box,
         )
@@ -3931,6 +3981,350 @@ def _recover_raw_primary_full_spikes(
 def _is_raw_primary_full_spike_candidate(candidate: Detection) -> bool:
     min_score = FULL_SPIKE_RAW_PRIMARY_MIN_SCORES.get(candidate.type_id)
     return min_score is not None and candidate.score >= min_score
+
+
+def _recover_sparse_support_raw_primary_spikes(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    raw_primary: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+    density_ratio = len(raw_support) / len(full_spikes)
+    block_ratio = sum(
+        detection.type_id == OBJ_BLOCK for detection in detections
+    ) / len(full_spikes)
+    if not (
+        FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_DENSITY_RATIO
+        <= density_ratio
+        <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_DENSITY_RATIO
+        and FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_BLOCK_RATIO
+        <= block_ratio
+        <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_BLOCK_RATIO
+    ):
+        return detections
+
+    recovered = list(detections)
+    for candidate in raw_primary:
+        if any(
+            detection.type_id == candidate.type_id
+            and distance((detection.x, detection.y), (candidate.x, candidate.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for detection in recovered
+        ):
+            continue
+        original_x, original_y = _raw_detection_patch_origin(candidate, room)
+        patch = _patch_features(
+            image,
+            room,
+            original_x,
+            original_y,
+            GRID_SIZE,
+        )
+        spike = _classify_full_spike(patch)
+        if spike is None or spike.type_id != candidate.type_id:
+            continue
+        block = _classify_block(patch)
+        side_coverage = _triangle_side_coverage(
+            patch,
+            spike.kind.removeprefix("spike_"),
+        )
+        if not (
+            FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_SCORE
+            <= candidate.score
+            <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_SCORE
+            and spike.direction_margin
+            >= FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_DIRECTION_MARGIN
+            and spike.outline_delta
+            >= FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_OUTLINE_DELTA
+            and side_coverage
+            >= FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_SIDE_COVERAGE
+            and patch.edge_density
+            >= FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_EDGE_DENSITY
+            and FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_BLOCK_SCORE
+            <= block.score
+            <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_BLOCK_SCORE
+            and any(
+                detection.type_id in FULL_SPIKE_TYPES
+                and detection.type_id != candidate.type_id
+                and distance(
+                    (detection.x, detection.y),
+                    (candidate.x, candidate.y),
+                )
+                <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_CONFLICT_DISTANCE
+                for detection in full_spikes
+            )
+        ):
+            continue
+        recovered.append(
+            _geometry_detection(
+                "full_spike_sparse_raw_primary_recovery",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                candidate.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _recover_sparse_room_orientation_junctions(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not _is_sparse_block_mixed_room(detections, raw_support, full_spikes):
+        return detections
+    recovered = list(detections)
+    for y in range(
+        0,
+        ROOM_HEIGHT - GRID_SIZE + 1,
+        FULL_SPIKE_SPARSE_JUNCTION_GRID_STEP,
+    ):
+        for x in range(
+            0,
+            ROOM_WIDTH - GRID_SIZE + 1,
+            FULL_SPIKE_SPARSE_JUNCTION_GRID_STEP,
+        ):
+            if (
+                x < FULL_SPIKE_SPARSE_JUNCTION_EDGE_MARGIN
+                or y < FULL_SPIKE_SPARSE_JUNCTION_EDGE_MARGIN
+                or x + GRID_SIZE
+                > ROOM_WIDTH - FULL_SPIKE_SPARSE_JUNCTION_EDGE_MARGIN
+                or y + GRID_SIZE
+                > ROOM_HEIGHT - FULL_SPIKE_SPARSE_JUNCTION_EDGE_MARGIN
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or any(
+                detection.type_id == spike.type_id
+                and distance((detection.x, detection.y), (x, y))
+                < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for detection in recovered
+            ):
+                continue
+            if not _forms_full_spike_orientation_junction(
+                spike.type_id,
+                x,
+                y,
+                full_spikes,
+            ):
+                continue
+            side_coverage = _triangle_side_coverage(
+                patch,
+                spike.kind.removeprefix("spike_"),
+            )
+            if not (
+                spike.score >= FULL_SPIKE_SPARSE_JUNCTION_MIN_SCORE
+                and spike.outline_delta
+                <= FULL_SPIKE_SPARSE_JUNCTION_MAX_OUTLINE_DELTA
+                and side_coverage >= FULL_SPIKE_SPARSE_JUNCTION_MIN_SIDE_COVERAGE
+                and patch.edge_density >= FULL_SPIKE_SPARSE_JUNCTION_MIN_EDGE_DENSITY
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_sparse_junction_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_FINAL_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
+
+
+def _forms_full_spike_orientation_junction(
+    type_id: int,
+    x: int,
+    y: int,
+    full_spikes: list[Detection],
+) -> bool:
+    # Each tuple is (type, min dx, max dx, min dy, max dy). Rotating this
+    # pattern preserves the same four-direction junction in every orientation.
+    patterns = {
+        OBJ_SPIKE_UP: (
+            (OBJ_SPIKE_DOWN, -8, 8, 8, 24),
+            (OBJ_SPIKE_RIGHT, 0, 24, -24, -8),
+            (OBJ_SPIKE_LEFT, -24, 0, -24, -8),
+        ),
+        OBJ_SPIKE_DOWN: (
+            (OBJ_SPIKE_UP, -8, 8, -24, -8),
+            (OBJ_SPIKE_RIGHT, 0, 24, 8, 24),
+            (OBJ_SPIKE_LEFT, -24, 0, 8, 24),
+        ),
+        OBJ_SPIKE_RIGHT: (
+            (OBJ_SPIKE_LEFT, -24, -8, -8, 8),
+            (OBJ_SPIKE_UP, 8, 24, -24, 0),
+            (OBJ_SPIKE_DOWN, 8, 24, 0, 24),
+        ),
+        OBJ_SPIKE_LEFT: (
+            (OBJ_SPIKE_RIGHT, 8, 24, -8, 8),
+            (OBJ_SPIKE_UP, -24, -8, -24, 0),
+            (OBJ_SPIKE_DOWN, -24, -8, 0, 24),
+        ),
+    }
+    pattern = patterns.get(type_id)
+    if pattern is None:
+        return False
+    return all(
+        any(
+            detection.type_id == support_type
+            and min_dx <= detection.x - x <= max_dx
+            and min_dy <= detection.y - y <= max_dy
+            for detection in full_spikes
+        )
+        for support_type, min_dx, max_dx, min_dy, max_dy in pattern
+    )
+
+
+def _recover_sparse_primary_opposite_pairs(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not _is_sparse_block_mixed_room(detections, raw_support, full_spikes):
+        return detections
+    anchors = [
+        detection
+        for detection in full_spikes
+        if detection.kind == "full_spike_sparse_raw_primary_recovery"
+    ]
+    if not anchors:
+        return detections
+
+    opposite_types = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+    }
+    recovered = list(detections)
+    for anchor in anchors:
+        opposite_type = opposite_types[anchor.type_id]
+        candidates: list[tuple[float, int, int, _GeometryClass]] = []
+        for axis_distance in range(
+            FULL_SPIKE_SPARSE_PAIR_MIN_AXIS_DISTANCE,
+            FULL_SPIKE_SPARSE_PAIR_MAX_AXIS_DISTANCE + 1,
+            FULL_SPIKE_SPARSE_JUNCTION_GRID_STEP,
+        ):
+            for cross_distance in range(
+                -FULL_SPIKE_SPARSE_PAIR_MAX_CROSS_DISTANCE,
+                FULL_SPIKE_SPARSE_PAIR_MAX_CROSS_DISTANCE + 1,
+                FULL_SPIKE_SPARSE_JUNCTION_GRID_STEP,
+            ):
+                x, y = _opposite_pair_candidate_origin(
+                    anchor,
+                    axis_distance,
+                    cross_distance,
+                )
+                if not (0 <= x <= ROOM_WIDTH - GRID_SIZE and 0 <= y <= ROOM_HEIGHT - GRID_SIZE):
+                    continue
+                if any(
+                    detection.type_id == opposite_type
+                    and distance((detection.x, detection.y), (x, y))
+                    < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                    for detection in recovered
+                ):
+                    continue
+                patch = _patch_features(image, room, x, y, GRID_SIZE)
+                spike = _classify_full_spike(patch)
+                if spike is None or spike.type_id != opposite_type:
+                    continue
+                block = _classify_block(patch)
+                side_coverage = _triangle_side_coverage(
+                    patch,
+                    spike.kind.removeprefix("spike_"),
+                )
+                if not (
+                    FULL_SPIKE_SPARSE_PAIR_MIN_SCORE
+                    <= spike.score
+                    <= FULL_SPIKE_SPARSE_PAIR_MAX_SCORE
+                    and spike.direction_margin
+                    <= FULL_SPIKE_SPARSE_PAIR_MAX_DIRECTION_MARGIN
+                    and spike.outline_delta
+                    <= FULL_SPIKE_SPARSE_PAIR_MAX_OUTLINE_DELTA
+                    and side_coverage
+                    >= FULL_SPIKE_SPARSE_PAIR_MIN_SIDE_COVERAGE
+                    and patch.edge_density
+                    >= FULL_SPIKE_SPARSE_PAIR_MIN_EDGE_DENSITY
+                    and FULL_SPIKE_SPARSE_PAIR_MIN_BLOCK_SCORE
+                    <= block.score
+                    <= FULL_SPIKE_SPARSE_PAIR_MAX_BLOCK_SCORE
+                ):
+                    continue
+                candidates.append((spike.score, x, y, spike))
+        if not candidates:
+            continue
+        score, x, y, spike = max(candidates)
+        recovered.append(
+            _geometry_detection(
+                "full_spike_sparse_opposite_pair_recovery",
+                spike.type_id,
+                x,
+                y,
+                max(FULL_SPIKE_FINAL_MIN_SCORE, score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _opposite_pair_candidate_origin(
+    anchor: Detection,
+    axis_distance: int,
+    cross_distance: int,
+) -> tuple[int, int]:
+    if anchor.type_id == OBJ_SPIKE_UP:
+        return anchor.x + cross_distance, anchor.y + axis_distance
+    if anchor.type_id == OBJ_SPIKE_DOWN:
+        return anchor.x + cross_distance, anchor.y - axis_distance
+    if anchor.type_id == OBJ_SPIKE_RIGHT:
+        return anchor.x - axis_distance, anchor.y + cross_distance
+    return anchor.x + axis_distance, anchor.y + cross_distance
+
+
+def _is_sparse_block_mixed_room(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    full_spikes: list[Detection],
+) -> bool:
+    if not full_spikes:
+        return False
+    density_ratio = len(raw_support) / len(full_spikes)
+    block_ratio = sum(
+        detection.type_id == OBJ_BLOCK for detection in detections
+    ) / len(full_spikes)
+    return (
+        FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_DENSITY_RATIO
+        <= density_ratio
+        <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_DENSITY_RATIO
+        and FULL_SPIKE_RAW_PRIMARY_SPARSE_MIN_BLOCK_RATIO
+        <= block_ratio
+        <= FULL_SPIKE_RAW_PRIMARY_SPARSE_MAX_BLOCK_RATIO
+    )
 
 
 def _is_isolated_coherent_full_spike_candidate(
