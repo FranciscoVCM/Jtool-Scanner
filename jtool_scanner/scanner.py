@@ -329,6 +329,68 @@ FULL_SPIKE_RAW_SUPPORT_DENSE_SAME_DIRECTION_DISTANCE = 96.0
 FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_LOCAL_SPIKES = 4
 FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_SAME_DIRECTION_SPIKES = 1
 FULL_SPIKE_RAW_SUPPORT_DENSE_RIGHT_MAX_LOCAL_SPIKES = 1
+FULL_SPIKE_RAW_SUPPORT_MIXED_MIN_DENSITY_RATIO = 0.50
+FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_DENSITY_RATIO = 0.70
+FULL_SPIKE_RAW_SUPPORT_MIXED_MIN_BLOCK_RATIO = 0.65
+FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_BLOCK_RATIO = 0.95
+FULL_SPIKE_RAW_SUPPORT_MIXED_LOCAL_DISTANCE = 40.0
+FULL_SPIKE_RAW_SUPPORT_MIXED_SAME_DIRECTION_DISTANCE = 96.0
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_SCORE = 0.30
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_SCORE = 0.33
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_DIRECTION_MARGIN = 0.10
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_OUTLINE_DELTA = 0.25
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_SIDE_COVERAGE = 0.40
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_EDGE_DENSITY = 0.17
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_EDGE_DENSITY = 0.23
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_BLOCK_SCORE = 0.24
+FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_CONFLICT_DISTANCE = 48.0
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_SCORE = 0.34
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_SCORE = 0.46
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_DIRECTION_MARGIN = 0.03
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_OUTLINE_DELTA = 0.20
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_EDGE_DENSITY = 0.24
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_EDGE_DENSITY = 0.37
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_BLOCK_SCORE = 0.24
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_BLOCK_SCORE = 0.38
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_CONFLICT_DISTANCE = 32.0
+FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_CONFLICT_DISTANCE = 48.0
+FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_LOCAL_SPIKES = 2
+FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_SAME_DIRECTION_SPIKES = 1
+FULL_SPIKE_MIXED_UP_MIN_SCORE = 0.25
+FULL_SPIKE_MIXED_UP_GRID_STEP = 8
+FULL_SPIKE_MIXED_UP_MAX_SCORE = 0.30
+FULL_SPIKE_MIXED_UP_MIN_DIRECTION_MARGIN = 0.095
+FULL_SPIKE_MIXED_UP_MIN_OUTLINE_DELTA = 0.24
+FULL_SPIKE_MIXED_UP_MIN_SIDE_COVERAGE = 0.40
+FULL_SPIKE_MIXED_UP_MIN_EDGE_DENSITY = 0.16
+FULL_SPIKE_MIXED_UP_MAX_EDGE_DENSITY = 0.21
+FULL_SPIKE_MIXED_UP_MAX_BLOCK_SCORE = 0.22
+FULL_SPIKE_MIXED_UP_MIN_SUPPORT_DISTANCE = 24.0
+FULL_SPIKE_MIXED_UP_MAX_SUPPORT_DISTANCE = 96.0
+FULL_SPIKE_MIXED_BOUNDARY_GRID_STEP = 8
+FULL_SPIKE_MIXED_BOUNDARY_BAND = 64
+FULL_SPIKE_MIXED_LEFT_UP_MIN_SCORE = 0.32
+FULL_SPIKE_MIXED_LEFT_UP_MAX_SCORE = 0.35
+FULL_SPIKE_MIXED_LEFT_UP_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_MIXED_LEFT_UP_MIN_EDGE_DENSITY = 0.24
+FULL_SPIKE_MIXED_LEFT_UP_MAX_EDGE_DENSITY = 0.30
+FULL_SPIKE_MIXED_LEFT_UP_MAX_BLOCK_SCORE = 0.35
+FULL_SPIKE_MIXED_TOP_DOWN_MIN_SCORE = 0.27
+FULL_SPIKE_MIXED_TOP_DOWN_MAX_SCORE = 0.30
+FULL_SPIKE_MIXED_TOP_DOWN_MIN_DIRECTION_MARGIN = 0.12
+FULL_SPIKE_MIXED_TOP_DOWN_MIN_OUTLINE_DELTA = 0.25
+FULL_SPIKE_MIXED_TOP_DOWN_MIN_EDGE_DENSITY = 0.15
+FULL_SPIKE_MIXED_TOP_DOWN_MAX_EDGE_DENSITY = 0.20
+FULL_SPIKE_MIXED_TOP_DOWN_MAX_BLOCK_SCORE = 0.20
+FULL_SPIKE_MIXED_BOTTOM_UP_MIN_SCORE = 0.40
+FULL_SPIKE_MIXED_BOTTOM_UP_MAX_SCORE = 0.45
+FULL_SPIKE_MIXED_BOTTOM_UP_MIN_DIRECTION_MARGIN = 0.06
+FULL_SPIKE_MIXED_BOTTOM_UP_MIN_OUTLINE_DELTA = 0.22
+FULL_SPIKE_MIXED_BOTTOM_UP_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_MIXED_BOTTOM_UP_MIN_EDGE_DENSITY = 0.30
+FULL_SPIKE_MIXED_BOTTOM_UP_MAX_EDGE_DENSITY = 0.34
+FULL_SPIKE_MIXED_BOTTOM_UP_MAX_BLOCK_SCORE = 0.33
 FULL_SPIKE_RAW_SUPPORTED_MIN_SCORE = 0.241
 FULL_SPIKE_RAW_SUPPORTED_MIN_SHAPE_SCORE = 0.16
 FULL_SPIKE_RAW_SUPPORTED_MIN_SIDE_COVERAGE = 0.625
@@ -843,6 +905,18 @@ def scan_image(
         detections = _recover_raw_supported_full_spikes(
             detections,
             raw_supported_full_spikes,
+            image,
+            box,
+        )
+        detections = _recover_mixed_room_low_texture_up_spikes(
+            detections,
+            raw_full_spike_support,
+            image,
+            box,
+        )
+        detections = _recover_mixed_room_boundary_spikes(
+            detections,
+            raw_full_spike_support,
             image,
             box,
         )
@@ -3248,7 +3322,11 @@ def _recover_raw_full_spike_support(
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
     support_context = tuple(full_spikes)
     density_ratio = len(raw_support) / max(1, len(full_spikes))
+    block_ratio = sum(
+        detection.type_id == OBJ_BLOCK for detection in detections
+    ) / max(1, len(full_spikes))
     informative_density = _is_informative_raw_support_density(density_ratio)
+    mixed_room = _is_mixed_raw_support_room(density_ratio, block_ratio)
 
     recovered = list(detections)
     for candidate in raw_support:
@@ -3291,7 +3369,10 @@ def _recover_raw_full_spike_support(
                 side_coverage,
             )
         )
-        if density_ratio >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DENSITY_RATIO:
+        if (
+            density_ratio >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DENSITY_RATIO
+            or mixed_room
+        ):
             original_x, original_y = _raw_detection_patch_origin(candidate, room)
             original_patch = _patch_features(
                 image,
@@ -3307,13 +3388,25 @@ def _recover_raw_full_spike_support(
                     original_patch,
                     original_spike.kind.removeprefix("spike_"),
                 )
-                preserve = preserve or _is_dense_conflicting_raw_support_candidate(
-                    candidate,
-                    original_spike,
-                    original_block,
-                    original_patch,
-                    original_side_coverage,
-                    support_context,
+                if density_ratio >= FULL_SPIKE_RAW_SUPPORT_DENSE_MIN_DENSITY_RATIO:
+                    preserve = preserve or _is_dense_conflicting_raw_support_candidate(
+                        candidate,
+                        original_spike,
+                        original_block,
+                        original_patch,
+                        original_side_coverage,
+                        support_context,
+                    )
+                preserve = preserve or (
+                    mixed_room
+                    and _is_mixed_raw_support_candidate(
+                        candidate,
+                        original_spike,
+                        original_block,
+                        original_patch,
+                        original_side_coverage,
+                        support_context,
+                    )
                 )
         if not preserve:
             continue
@@ -3390,6 +3483,201 @@ def _recover_raw_supported_full_spikes(
     return recovered
 
 
+def _recover_mixed_room_low_texture_up_spikes(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+    density_ratio = len(raw_support) / len(full_spikes)
+    block_ratio = sum(
+        detection.type_id == OBJ_BLOCK for detection in detections
+    ) / len(full_spikes)
+    if not _is_mixed_raw_support_room(density_ratio, block_ratio):
+        return detections
+
+    recovered = list(detections)
+    up_spikes = [
+        detection for detection in full_spikes if detection.type_id == OBJ_SPIKE_UP
+    ]
+    up_spikes.extend(
+        detection
+        for detection in raw_support
+        if detection.type_id == OBJ_SPIKE_UP
+    )
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_MIXED_UP_GRID_STEP):
+        for x in range(
+            0,
+            ROOM_WIDTH - GRID_SIZE + 1,
+            FULL_SPIKE_MIXED_UP_GRID_STEP,
+        ):
+            if any(
+                distance((detection.x, detection.y), (x, y))
+                < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for detection in recovered
+                if detection.type_id == OBJ_SPIKE_UP
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or spike.type_id != OBJ_SPIKE_UP:
+                continue
+            block = _classify_block(patch)
+            side_coverage = _triangle_side_coverage(patch, "up")
+            if not (
+                FULL_SPIKE_MIXED_UP_MIN_SCORE
+                <= spike.score
+                <= FULL_SPIKE_MIXED_UP_MAX_SCORE
+                and spike.direction_margin
+                >= FULL_SPIKE_MIXED_UP_MIN_DIRECTION_MARGIN
+                and spike.outline_delta >= FULL_SPIKE_MIXED_UP_MIN_OUTLINE_DELTA
+                and side_coverage >= FULL_SPIKE_MIXED_UP_MIN_SIDE_COVERAGE
+                and FULL_SPIKE_MIXED_UP_MIN_EDGE_DENSITY
+                <= patch.edge_density
+                <= FULL_SPIKE_MIXED_UP_MAX_EDGE_DENSITY
+                and block.score <= FULL_SPIKE_MIXED_UP_MAX_BLOCK_SCORE
+                and any(
+                    FULL_SPIKE_MIXED_UP_MIN_SUPPORT_DISTANCE
+                    <= distance((detection.x, detection.y), (x, y))
+                    <= FULL_SPIKE_MIXED_UP_MAX_SUPPORT_DISTANCE
+                    for detection in up_spikes
+                )
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_mixed_up_recovery",
+                    OBJ_SPIKE_UP,
+                    x,
+                    y,
+                    max(FULL_SPIKE_FINAL_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
+
+
+def _recover_mixed_room_boundary_spikes(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+    density_ratio = len(raw_support) / len(full_spikes)
+    block_ratio = sum(
+        detection.type_id == OBJ_BLOCK for detection in detections
+    ) / len(full_spikes)
+    if not _is_mixed_raw_support_room(density_ratio, block_ratio):
+        return detections
+
+    recovered = list(detections)
+    for y in range(
+        0,
+        ROOM_HEIGHT - GRID_SIZE + 1,
+        FULL_SPIKE_MIXED_BOUNDARY_GRID_STEP,
+    ):
+        for x in range(
+            0,
+            ROOM_WIDTH - GRID_SIZE + 1,
+            FULL_SPIKE_MIXED_BOUNDARY_GRID_STEP,
+        ):
+            if not (
+                x == 0
+                or y <= FULL_SPIKE_MIXED_BOUNDARY_GRID_STEP
+                or y >= ROOM_HEIGHT - FULL_SPIKE_MIXED_BOUNDARY_BAND
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or any(
+                detection.type_id == spike.type_id
+                and distance((detection.x, detection.y), (x, y))
+                < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+                for detection in recovered
+            ):
+                continue
+            block = _classify_block(patch)
+            direction = spike.kind.removeprefix("spike_")
+            side_coverage = _triangle_side_coverage(patch, direction)
+            left_up = (
+                x == 0
+                and spike.type_id == OBJ_SPIKE_UP
+                and FULL_SPIKE_MIXED_LEFT_UP_MIN_SCORE
+                <= spike.score
+                <= FULL_SPIKE_MIXED_LEFT_UP_MAX_SCORE
+                and side_coverage >= FULL_SPIKE_MIXED_LEFT_UP_MIN_SIDE_COVERAGE
+                and FULL_SPIKE_MIXED_LEFT_UP_MIN_EDGE_DENSITY
+                <= patch.edge_density
+                <= FULL_SPIKE_MIXED_LEFT_UP_MAX_EDGE_DENSITY
+                and block.score <= FULL_SPIKE_MIXED_LEFT_UP_MAX_BLOCK_SCORE
+            )
+            top_down = (
+                y <= FULL_SPIKE_MIXED_BOUNDARY_GRID_STEP
+                and spike.type_id == OBJ_SPIKE_DOWN
+                and FULL_SPIKE_MIXED_TOP_DOWN_MIN_SCORE
+                <= spike.score
+                <= FULL_SPIKE_MIXED_TOP_DOWN_MAX_SCORE
+                and spike.direction_margin
+                >= FULL_SPIKE_MIXED_TOP_DOWN_MIN_DIRECTION_MARGIN
+                and spike.outline_delta
+                >= FULL_SPIKE_MIXED_TOP_DOWN_MIN_OUTLINE_DELTA
+                and FULL_SPIKE_MIXED_TOP_DOWN_MIN_EDGE_DENSITY
+                <= patch.edge_density
+                <= FULL_SPIKE_MIXED_TOP_DOWN_MAX_EDGE_DENSITY
+                and block.score <= FULL_SPIKE_MIXED_TOP_DOWN_MAX_BLOCK_SCORE
+            )
+            bottom_up = (
+                y >= ROOM_HEIGHT - FULL_SPIKE_MIXED_BOUNDARY_BAND
+                and spike.type_id == OBJ_SPIKE_UP
+                and FULL_SPIKE_MIXED_BOTTOM_UP_MIN_SCORE
+                <= spike.score
+                <= FULL_SPIKE_MIXED_BOTTOM_UP_MAX_SCORE
+                and spike.direction_margin
+                >= FULL_SPIKE_MIXED_BOTTOM_UP_MIN_DIRECTION_MARGIN
+                and spike.outline_delta
+                >= FULL_SPIKE_MIXED_BOTTOM_UP_MIN_OUTLINE_DELTA
+                and side_coverage >= FULL_SPIKE_MIXED_BOTTOM_UP_MIN_SIDE_COVERAGE
+                and FULL_SPIKE_MIXED_BOTTOM_UP_MIN_EDGE_DENSITY
+                <= patch.edge_density
+                <= FULL_SPIKE_MIXED_BOTTOM_UP_MAX_EDGE_DENSITY
+                and block.score <= FULL_SPIKE_MIXED_BOTTOM_UP_MAX_BLOCK_SCORE
+                and any(
+                    FULL_SPIKE_MIXED_UP_MIN_SUPPORT_DISTANCE
+                    <= distance((detection.x, detection.y), (x, y))
+                    <= FULL_SPIKE_MIXED_UP_MAX_SUPPORT_DISTANCE
+                    for detection in full_spikes
+                    if detection.type_id == OBJ_SPIKE_UP
+                )
+            )
+            if not (left_up or top_down or bottom_up):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "full_spike_mixed_boundary_recovery",
+                    spike.type_id,
+                    x,
+                    y,
+                    max(FULL_SPIKE_FINAL_MIN_SCORE, spike.score),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
+
+
 def _raw_detection_patch_origin(
     detection: Detection,
     room: Box,
@@ -3463,6 +3751,99 @@ def _is_dense_conflicting_raw_support_candidate(
         <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_SAME_DIRECTION_SPIKES
         and local_spikes <= FULL_SPIKE_RAW_SUPPORT_DENSE_MAX_LOCAL_SPIKES
     )
+
+
+def _is_mixed_raw_support_room(
+    density_ratio: float,
+    block_ratio: float,
+) -> bool:
+    return (
+        FULL_SPIKE_RAW_SUPPORT_MIXED_MIN_DENSITY_RATIO
+        <= density_ratio
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_DENSITY_RATIO
+        and FULL_SPIKE_RAW_SUPPORT_MIXED_MIN_BLOCK_RATIO
+        <= block_ratio
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_BLOCK_RATIO
+    )
+
+
+def _is_mixed_raw_support_candidate(
+    candidate: Detection,
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    detections: tuple[Detection, ...],
+) -> bool:
+    if candidate.type_id != spike.type_id:
+        return False
+    local_spikes = sum(
+        detection.type_id in FULL_SPIKE_TYPES
+        and 0
+        < distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_LOCAL_DISTANCE
+        for detection in detections
+    )
+    same_direction_spikes = sum(
+        detection.type_id == candidate.type_id
+        and FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+        <= distance((detection.x, detection.y), (candidate.x, candidate.y))
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_SAME_DIRECTION_DISTANCE
+        for detection in detections
+    )
+    nearest_conflict = min(
+        (
+            distance((detection.x, detection.y), (candidate.x, candidate.y))
+            for detection in detections
+            if detection.type_id in FULL_SPIKE_TYPES
+            and detection.type_id != candidate.type_id
+        ),
+        default=float("inf"),
+    )
+    isolated = (
+        FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_SCORE
+        <= candidate.score
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_OUTLINE_DELTA
+        and side_coverage
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_SIDE_COVERAGE
+        and FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_EDGE_DENSITY
+        <= patch.edge_density
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MAX_BLOCK_SCORE
+        and local_spikes == 0
+        and same_direction_spikes
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_SAME_DIRECTION_SPIKES
+        and nearest_conflict
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_ISOLATED_MIN_CONFLICT_DISTANCE
+    )
+    medium = (
+        FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_SCORE
+        <= candidate.score
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_OUTLINE_DELTA
+        and side_coverage
+        >= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_SIDE_COVERAGE
+        and FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_EDGE_DENSITY
+        <= patch.edge_density
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_EDGE_DENSITY
+        and FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_BLOCK_SCORE
+        <= block.score
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_BLOCK_SCORE
+        and local_spikes <= FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_LOCAL_SPIKES
+        and same_direction_spikes
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MAX_SAME_DIRECTION_SPIKES
+        and FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MIN_CONFLICT_DISTANCE
+        <= nearest_conflict
+        <= FULL_SPIKE_RAW_SUPPORT_MIXED_MEDIUM_MAX_CONFLICT_DISTANCE
+    )
+    return isolated or medium
 
 
 def _is_informative_raw_support_density(density_ratio: float) -> bool:
