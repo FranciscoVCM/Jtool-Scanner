@@ -3095,13 +3095,23 @@ def _recover_post_prune_block_heavy_full_spikes(
                 patch,
                 direction_by_type[spike.type_id],
             )
-            if not _is_block_heavy_full_spike_candidate(
+            block_heavy = _is_block_heavy_full_spike_candidate(
                 spike,
                 block,
                 patch,
                 side_coverage,
                 run_supported=True,
-            ):
+            )
+            boundary = _is_boundary_full_spike_candidate(
+                spike,
+                block,
+                patch,
+                side_coverage,
+                x,
+                y,
+                nearby_supported,
+            )
+            if not (block_heavy or boundary):
                 continue
             added.append(
                 _geometry_detection(
