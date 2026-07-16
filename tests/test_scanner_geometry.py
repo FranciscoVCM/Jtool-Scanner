@@ -102,6 +102,9 @@ from jtool_scanner.scanner import (
     _is_block_heavy_full_spike_support_noise,
     _is_grid_shape_full_spike_candidate,
     _is_half_grid_full_spike_candidate,
+    _is_nearby_half_grid_full_spike_candidate,
+    _is_block_heavy_full_spike_candidate,
+    _is_boundary_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
     _normalize_full_spike_detections,
@@ -678,6 +681,15 @@ class ScannerGeometryTests(unittest.TestCase):
                 run_supported=False,
             )
         )
+        self.assertFalse(
+            _is_grid_shape_full_spike_candidate(
+                spike,
+                _GeometryClass("block", OBJ_BLOCK, 0.23),
+                patch,
+                side_coverage=0.625,
+                run_supported=True,
+            )
+        )
 
     def test_half_grid_recovery_requires_stronger_shape_and_run_support(self) -> None:
         spike = _GeometryClass(
@@ -707,13 +719,66 @@ class ScannerGeometryTests(unittest.TestCase):
                 run_supported=False,
             )
         )
-        self.assertFalse(
-            _is_grid_shape_full_spike_candidate(
-                spike,
-                _GeometryClass("block", OBJ_BLOCK, 0.23),
-                patch,
-                side_coverage=0.625,
+        self.assertTrue(
+            _is_nearby_half_grid_full_spike_candidate(
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.33,
+                    direction_margin=0.11,
+                    outline_delta=0.20,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.25),
+                _PatchFeatures((), edge_density=0.13, border_score=0.20, center_score=0.35),
+                side_coverage=0.51,
+                nearby_supported=True,
+            )
+        )
+        self.assertTrue(
+            _is_block_heavy_full_spike_candidate(
+                _GeometryClass(
+                    "spike_left",
+                    OBJ_SPIKE_LEFT,
+                    0.48,
+                    direction_margin=0.20,
+                    outline_delta=0.29,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.35),
+                _PatchFeatures((), edge_density=0.28, border_score=0.30, center_score=0.22),
+                side_coverage=0.80,
                 run_supported=True,
+            )
+        )
+        self.assertFalse(
+            _is_block_heavy_full_spike_candidate(
+                _GeometryClass(
+                    "spike_left",
+                    OBJ_SPIKE_LEFT,
+                    0.48,
+                    direction_margin=0.20,
+                    outline_delta=0.29,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.35),
+                _PatchFeatures((), edge_density=0.28, border_score=0.30, center_score=0.22),
+                side_coverage=0.80,
+                run_supported=False,
+            )
+        )
+        self.assertTrue(
+            _is_boundary_full_spike_candidate(
+                _GeometryClass(
+                    "spike_right",
+                    OBJ_SPIKE_RIGHT,
+                    0.72,
+                    direction_margin=0.08,
+                    outline_delta=0.30,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.65),
+                _PatchFeatures((), edge_density=0.42, border_score=0.35, center_score=0.70),
+                side_coverage=0.80,
+                x=480,
+                y=0,
+                nearby_supported=True,
             )
         )
 

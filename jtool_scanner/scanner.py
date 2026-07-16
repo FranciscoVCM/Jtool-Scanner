@@ -259,6 +259,28 @@ FULL_SPIKE_HALF_GRID_RECOVERY_MIN_OUTLINE_DELTA = 0.25
 FULL_SPIKE_HALF_GRID_RECOVERY_MIN_SIDE_COVERAGE = 0.50
 FULL_SPIKE_HALF_GRID_RECOVERY_MIN_EDGE_DENSITY = 0.12
 FULL_SPIKE_HALF_GRID_RECOVERY_MAX_BLOCK_SCORE = 0.30
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_SCORE = 0.32
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_DIRECTION_MARGIN = 0.10
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_OUTLINE_DELTA = 0.18
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_SIDE_COVERAGE = 0.50
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_EDGE_DENSITY = 0.12
+FULL_SPIKE_HALF_GRID_NEARBY_MAX_BLOCK_SCORE = 0.32
+FULL_SPIKE_HALF_GRID_NEARBY_MIN_BLOCK_MARGIN = 0.03
+FULL_SPIKE_HALF_GRID_NEARBY_DISTANCE = 16
+FULL_SPIKE_BLOCK_HEAVY_MIN_SCORE = 0.44
+FULL_SPIKE_BLOCK_HEAVY_MIN_DIRECTION_MARGIN = 0.16
+FULL_SPIKE_BLOCK_HEAVY_MIN_OUTLINE_DELTA = 0.24
+FULL_SPIKE_BLOCK_HEAVY_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_BLOCK_HEAVY_MIN_EDGE_DENSITY = 0.26
+FULL_SPIKE_BLOCK_HEAVY_MAX_BLOCK_SCORE = 0.42
+FULL_SPIKE_BLOCK_HEAVY_MIN_BLOCK_MARGIN = 0.08
+FULL_SPIKE_BLOCK_HEAVY_NEARBY_DISTANCE = 40
+FULL_SPIKE_BOUNDARY_MIN_SCORE = 0.58
+FULL_SPIKE_BOUNDARY_MIN_DIRECTION_MARGIN = 0.06
+FULL_SPIKE_BOUNDARY_MIN_OUTLINE_DELTA = 0.22
+FULL_SPIKE_BOUNDARY_MIN_SIDE_COVERAGE = 0.75
+FULL_SPIKE_BOUNDARY_MIN_EDGE_DENSITY = 0.38
+FULL_SPIKE_BOUNDARY_MAX_BLOCK_SCORE = 0.78
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -2948,6 +2970,18 @@ def _recover_grid_shape_full_spikes(
                     )
                 )
             )
+            nearby_same_type = any(
+                det.type_id == spike.type_id
+                and 0 < distance((x, y), (det.x, det.y))
+                <= FULL_SPIKE_HALF_GRID_NEARBY_DISTANCE
+                for det in [*full_spikes, *added]
+            )
+            nearby_cluster_same_type = any(
+                det.type_id == spike.type_id
+                and 0 < distance((x, y), (det.x, det.y))
+                <= FULL_SPIKE_BLOCK_HEAVY_NEARBY_DISTANCE
+                for det in [*full_spikes, *added]
+            )
             block = _classify_block(patch)
             side_coverage = _triangle_side_coverage(
                 patch,
@@ -2970,6 +3004,32 @@ def _recover_grid_shape_full_spikes(
                     run_support_count >= 1,
                 )
             )
+            if half_grid and not candidate_ok:
+                candidate_ok = _is_nearby_half_grid_full_spike_candidate(
+                    spike,
+                    block,
+                    patch,
+                    side_coverage,
+                    nearby_same_type,
+                )
+            if not candidate_ok:
+                candidate_ok = _is_block_heavy_full_spike_candidate(
+                    spike,
+                    block,
+                    patch,
+                    side_coverage,
+                    run_support_count >= 1 or nearby_cluster_same_type,
+                )
+            if not candidate_ok:
+                candidate_ok = _is_boundary_full_spike_candidate(
+                    spike,
+                    block,
+                    patch,
+                    side_coverage,
+                    x,
+                    y,
+                    nearby_same_type,
+                )
             if not candidate_ok:
                 continue
             added.append(
@@ -3028,6 +3088,74 @@ def _is_half_grid_full_spike_candidate(
         and patch.edge_density >= FULL_SPIKE_HALF_GRID_RECOVERY_MIN_EDGE_DENSITY
         and block.score <= FULL_SPIKE_HALF_GRID_RECOVERY_MAX_BLOCK_SCORE
         and spike.score >= block.score
+    )
+
+
+def _is_nearby_half_grid_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    nearby_supported: bool,
+) -> bool:
+    return (
+        nearby_supported
+        and spike.score >= FULL_SPIKE_HALF_GRID_NEARBY_MIN_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_HALF_GRID_NEARBY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_HALF_GRID_NEARBY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_HALF_GRID_NEARBY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_HALF_GRID_NEARBY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_HALF_GRID_NEARBY_MAX_BLOCK_SCORE
+        and spike.score
+        >= block.score + FULL_SPIKE_HALF_GRID_NEARBY_MIN_BLOCK_MARGIN
+    )
+
+
+def _is_block_heavy_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    run_supported: bool,
+) -> bool:
+    """Keep clear triangles whose textured body overlaps a solid tile."""
+    return (
+        run_supported
+        and spike.score >= FULL_SPIKE_BLOCK_HEAVY_MIN_SCORE
+        and spike.direction_margin >= FULL_SPIKE_BLOCK_HEAVY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_BLOCK_HEAVY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_BLOCK_HEAVY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_BLOCK_HEAVY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_BLOCK_HEAVY_MAX_BLOCK_SCORE
+        and spike.score >= block.score + FULL_SPIKE_BLOCK_HEAVY_MIN_BLOCK_MARGIN
+    )
+
+
+def _is_boundary_full_spike_candidate(
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+    x: int,
+    y: int,
+    nearby_supported: bool,
+) -> bool:
+    """Recover a strong shape clipped against a room boundary with support."""
+    on_boundary = x in (0, ROOM_WIDTH - GRID_SIZE) or y in (
+        0,
+        ROOM_HEIGHT - GRID_SIZE,
+    )
+    return (
+        on_boundary
+        and nearby_supported
+        and spike.score >= FULL_SPIKE_BOUNDARY_MIN_SCORE
+        and spike.direction_margin >= FULL_SPIKE_BOUNDARY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_BOUNDARY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_BOUNDARY_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_BOUNDARY_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_BOUNDARY_MAX_BLOCK_SCORE
     )
 
 
