@@ -297,6 +297,10 @@ FULL_SPIKE_SUPPORTED_SHAPE_MAX_BLOCK_SCORE = 0.34
 FULL_SPIKE_RAW_SUPPORT_MIN_SCORE = 0.34
 FULL_SPIKE_RAW_SUPPORT_MIN_DENSITY_RATIO = 0.30
 FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO = 0.50
+FULL_SPIKE_RAW_PRIMARY_MIN_SCORES = {
+    OBJ_SPIKE_UP: 0.45,
+    OBJ_SPIKE_LEFT: 0.45,
+}
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -771,6 +775,12 @@ def scan_image(
             if detection.kind == "full_spike_support"
             and detection.type_id in FULL_SPIKE_TYPES
         ]
+        raw_primary_full_spikes = [
+            detection
+            for detection in detections
+            if detection.kind in {"spike_up", "spike_left"}
+            and detection.type_id in FULL_SPIKE_TYPES
+        ]
         detections = _dedupe_overlapping_geometry(detections)
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
@@ -783,6 +793,12 @@ def scan_image(
         detections = _recover_raw_full_spike_support(
             detections,
             raw_full_spike_support,
+            image,
+            box,
+        )
+        detections = _recover_raw_primary_full_spikes(
+            detections,
+            raw_primary_full_spikes,
             image,
             box,
         )
@@ -3216,6 +3232,44 @@ def _is_informative_raw_support_density(density_ratio: float) -> bool:
         <= density_ratio
         <= FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO
     )
+
+
+def _recover_raw_primary_full_spikes(
+    detections: list[Detection],
+    raw_primary: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Restore high-confidence primary triangles removed by support pruning."""
+    recovered = list(detections)
+    for candidate in raw_primary:
+        if not _is_raw_primary_full_spike_candidate(candidate):
+            continue
+        if any(
+            detection.type_id == candidate.type_id
+            and distance((detection.x, detection.y), (candidate.x, candidate.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for detection in recovered
+        ):
+            continue
+        recovered.append(
+            _geometry_detection(
+                "full_spike_raw_primary_recovery",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                candidate.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _is_raw_primary_full_spike_candidate(candidate: Detection) -> bool:
+    min_score = FULL_SPIKE_RAW_PRIMARY_MIN_SCORES.get(candidate.type_id)
+    return min_score is not None and candidate.score >= min_score
 
 
 def _is_isolated_coherent_full_spike_candidate(
