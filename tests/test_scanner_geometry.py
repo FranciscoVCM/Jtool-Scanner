@@ -106,6 +106,7 @@ from jtool_scanner.scanner import (
     _is_block_heavy_full_spike_candidate,
     _is_boundary_full_spike_candidate,
     _is_isolated_coherent_full_spike_candidate,
+    _is_informative_raw_support_density,
     _is_supported_shape_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
@@ -825,6 +826,10 @@ class ScannerGeometryTests(unittest.TestCase):
                 side_coverage=0.70,
             )
         )
+        self.assertTrue(_is_informative_raw_support_density(0.30))
+        self.assertTrue(_is_informative_raw_support_density(0.50))
+        self.assertFalse(_is_informative_raw_support_density(0.22))
+        self.assertFalse(_is_informative_raw_support_density(0.85))
 
     def test_full_spike_origin_normalization_snaps_stable_axis_only(self) -> None:
         self.assertEqual(

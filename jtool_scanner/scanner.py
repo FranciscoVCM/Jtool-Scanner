@@ -294,6 +294,9 @@ FULL_SPIKE_SUPPORTED_SHAPE_MIN_OUTLINE_DELTA = 0.25
 FULL_SPIKE_SUPPORTED_SHAPE_MIN_SIDE_COVERAGE = 0.6875
 FULL_SPIKE_SUPPORTED_SHAPE_MIN_EDGE_DENSITY = 0.27
 FULL_SPIKE_SUPPORTED_SHAPE_MAX_BLOCK_SCORE = 0.34
+FULL_SPIKE_RAW_SUPPORT_MIN_SCORE = 0.34
+FULL_SPIKE_RAW_SUPPORT_MIN_DENSITY_RATIO = 0.30
+FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO = 0.50
 FULL_SPIKE_OFFGRID_MIN_SCORE = 0.32
 FULL_SPIKE_OFFGRID_MIN_DIRECTION_MARGIN = 0.08
 FULL_SPIKE_OFFGRID_MIN_OUTLINE_DELTA = 0.10
@@ -762,12 +765,24 @@ def scan_image(
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
     if include_geometry:
         detections.extend(_detect_geometry(image, box, grid_step))
+        raw_full_spike_support = [
+            detection
+            for detection in detections
+            if detection.kind == "full_spike_support"
+            and detection.type_id in FULL_SPIKE_TYPES
+        ]
         detections = _dedupe_overlapping_geometry(detections)
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
         detections = _prune_final_geometry_noise(detections, image, box)
         detections = _recover_post_prune_block_heavy_full_spikes(
             detections,
+            image,
+            box,
+        )
+        detections = _recover_raw_full_spike_support(
+            detections,
+            raw_full_spike_support,
             image,
             box,
         )
@@ -3153,6 +3168,54 @@ def _recover_post_prune_block_heavy_full_spikes(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _recover_raw_full_spike_support(
+    detections: list[Detection],
+    raw_support: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Preserve support markers only in rooms where that pass is informative."""
+    if not raw_support:
+        return detections
+    full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
+    density_ratio = len(raw_support) / max(1, len(full_spikes))
+    if not _is_informative_raw_support_density(density_ratio):
+        return detections
+
+    recovered = list(detections)
+    for candidate in raw_support:
+        if candidate.score < FULL_SPIKE_RAW_SUPPORT_MIN_SCORE:
+            continue
+        if any(
+            detection.type_id == candidate.type_id
+            and distance((detection.x, detection.y), (candidate.x, candidate.y))
+            < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
+            for detection in recovered
+        ):
+            continue
+        recovered.append(
+            _geometry_detection(
+                "full_spike_raw_support_recovery",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                max(FULL_SPIKE_FINAL_MIN_SCORE, candidate.score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _is_informative_raw_support_density(density_ratio: float) -> bool:
+    return (
+        FULL_SPIKE_RAW_SUPPORT_MIN_DENSITY_RATIO
+        <= density_ratio
+        <= FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO
+    )
 
 
 def _is_isolated_coherent_full_spike_candidate(
