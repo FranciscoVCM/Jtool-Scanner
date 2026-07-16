@@ -294,9 +294,26 @@ FULL_SPIKE_SUPPORTED_SHAPE_MIN_OUTLINE_DELTA = 0.25
 FULL_SPIKE_SUPPORTED_SHAPE_MIN_SIDE_COVERAGE = 0.6875
 FULL_SPIKE_SUPPORTED_SHAPE_MIN_EDGE_DENSITY = 0.27
 FULL_SPIKE_SUPPORTED_SHAPE_MAX_BLOCK_SCORE = 0.34
-FULL_SPIKE_RAW_SUPPORT_MIN_SCORE = 0.34
+FULL_SPIKE_RAW_SUPPORT_MIN_SCORE = 0.32
 FULL_SPIKE_RAW_SUPPORT_MIN_DENSITY_RATIO = 0.30
 FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO = 0.50
+FULL_SPIKE_RAW_SUPPORT_STRONG_MAX_DENSITY_RATIO = 0.30
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_DENSITY_RATIO = 0.50
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_DENSITY_RATIO = 0.70
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SCORE = 0.33
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SHAPE_SCORE = 0.50
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_DIRECTION_MARGIN = 0.15
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_OUTLINE_DELTA = 0.26
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_EDGE_DENSITY = 0.32
+FULL_SPIKE_RAW_SUPPORT_STRONG_MAX_BLOCK_SCORE = 0.47
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SCORE = 0.33
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SHAPE_SCORE = 0.26
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_DIRECTION_MARGIN = 0.12
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_OUTLINE_DELTA = 0.17
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SIDE_COVERAGE = 0.375
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_EDGE_DENSITY = 0.28
+FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_BLOCK_SCORE = 0.30
 FULL_SPIKE_RAW_PRIMARY_MIN_SCORES = {
     OBJ_SPIKE_UP: 0.45,
     OBJ_SPIKE_LEFT: 0.45,
@@ -3197,19 +3214,50 @@ def _recover_raw_full_spike_support(
         return detections
     full_spikes = [det for det in detections if det.type_id in FULL_SPIKE_TYPES]
     density_ratio = len(raw_support) / max(1, len(full_spikes))
-    if not _is_informative_raw_support_density(density_ratio):
-        return detections
+    informative_density = _is_informative_raw_support_density(density_ratio)
 
     recovered = list(detections)
     for candidate in raw_support:
-        if candidate.score < FULL_SPIKE_RAW_SUPPORT_MIN_SCORE:
-            continue
         if any(
             detection.type_id == candidate.type_id
             and distance((detection.x, detection.y), (candidate.x, candidate.y))
             < FULL_SPIKE_FINAL_DEDUPE_DISTANCE
             for detection in recovered
         ):
+            continue
+        patch = _patch_features(image, room, candidate.x, candidate.y, GRID_SIZE)
+        spike = _classify_full_spike(patch)
+        if spike is None:
+            continue
+        block = _classify_block(patch)
+        side_coverage = _triangle_side_coverage(
+            patch,
+            spike.kind.removeprefix("spike_"),
+        )
+        preserve = informative_density and candidate.score >= FULL_SPIKE_RAW_SUPPORT_MIN_SCORE
+        preserve = preserve or (
+            density_ratio <= FULL_SPIKE_RAW_SUPPORT_STRONG_MAX_DENSITY_RATIO
+            and _is_strong_ambiguous_raw_support_candidate(
+                candidate,
+                spike,
+                block,
+                patch,
+                side_coverage,
+            )
+        )
+        preserve = preserve or (
+            FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_DENSITY_RATIO
+            <= density_ratio
+            <= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_DENSITY_RATIO
+            and _is_low_texture_raw_support_candidate(
+                candidate,
+                spike,
+                block,
+                patch,
+                side_coverage,
+            )
+        )
+        if not preserve:
             continue
         recovered.append(
             _geometry_detection(
@@ -3231,6 +3279,47 @@ def _is_informative_raw_support_density(density_ratio: float) -> bool:
         FULL_SPIKE_RAW_SUPPORT_MIN_DENSITY_RATIO
         <= density_ratio
         <= FULL_SPIKE_RAW_SUPPORT_MAX_DENSITY_RATIO
+    )
+
+
+def _is_strong_ambiguous_raw_support_candidate(
+    candidate: Detection,
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+) -> bool:
+    return (
+        candidate.score >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SCORE
+        and spike.score >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SHAPE_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_SIDE_COVERAGE
+        and patch.edge_density >= FULL_SPIKE_RAW_SUPPORT_STRONG_MIN_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_RAW_SUPPORT_STRONG_MAX_BLOCK_SCORE
+    )
+
+
+def _is_low_texture_raw_support_candidate(
+    candidate: Detection,
+    spike: _GeometryClass,
+    block: _GeometryClass,
+    patch: _PatchFeatures,
+    side_coverage: float,
+) -> bool:
+    return (
+        candidate.type_id == spike.type_id
+        and candidate.score >= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SCORE
+        and spike.score >= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SHAPE_SCORE
+        and spike.direction_margin
+        >= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MIN_SIDE_COVERAGE
+        and patch.edge_density
+        <= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_EDGE_DENSITY
+        and block.score <= FULL_SPIKE_RAW_SUPPORT_LOW_TEXTURE_MAX_BLOCK_SCORE
     )
 
 

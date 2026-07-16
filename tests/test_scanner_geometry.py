@@ -107,7 +107,9 @@ from jtool_scanner.scanner import (
     _is_boundary_full_spike_candidate,
     _is_isolated_coherent_full_spike_candidate,
     _is_informative_raw_support_density,
+    _is_low_texture_raw_support_candidate,
     _is_raw_primary_full_spike_candidate,
+    _is_strong_ambiguous_raw_support_candidate,
     _is_supported_shape_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
     _normalize_full_spike_origin,
@@ -845,6 +847,51 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertFalse(
             _is_raw_primary_full_spike_candidate(
                 Detection("spike_down", OBJ_SPIKE_DOWN, 64, 64, 0.90, image_box)
+            )
+        )
+        raw_support = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_RIGHT,
+            64,
+            64,
+            0.34,
+            image_box,
+        )
+        self.assertTrue(
+            _is_strong_ambiguous_raw_support_candidate(
+                raw_support,
+                _GeometryClass(
+                    "spike_down",
+                    OBJ_SPIKE_DOWN,
+                    0.51,
+                    direction_margin=0.16,
+                    outline_delta=0.27,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.46),
+                _PatchFeatures((), edge_density=0.33, border_score=0.30, center_score=0.30),
+                side_coverage=0.625,
+            )
+        )
+        self.assertTrue(
+            _is_low_texture_raw_support_candidate(
+                Detection(
+                    "full_spike_support",
+                    OBJ_SPIKE_UP,
+                    64,
+                    64,
+                    0.34,
+                    image_box,
+                ),
+                _GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.27,
+                    direction_margin=0.13,
+                    outline_delta=0.18,
+                ),
+                _GeometryClass("block", OBJ_BLOCK, 0.29),
+                _PatchFeatures((), edge_density=0.27, border_score=0.20, center_score=0.20),
+                side_coverage=0.375,
             )
         )
 
