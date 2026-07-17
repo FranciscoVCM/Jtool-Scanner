@@ -14,6 +14,7 @@ DETAIL_GROUP_ORDER = (
     "water",
     "walljumps",
     "platforms",
+    "mini_blocks",
     "blocks",
     "full_spikes",
     "mini_spikes",

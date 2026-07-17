@@ -8,4 +8,4 @@ dist/
 build/
 *.egg-info/
 out/
-
+.artifacts/

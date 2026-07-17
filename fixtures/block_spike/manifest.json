@@ -40,6 +40,13 @@
       "jtool_image": "k3-ex-hades-jtool.png",
       "jmap": "k3-ex-hades.jmap",
       "notes": "Different game/tileset with high spike density and several saves but no warp."
+    },
+    {
+      "id": "cn3-16",
+      "game_image": "cn3-16-game.png",
+      "jtool_image": "cn3-16-jtool.png",
+      "jmap": "cn3-16.jmap",
+      "notes": "Miniblock-heavy CN3 screen with dense full and mini spikes, four saves, and one warp."
     }
   ],
   "references": [
@@ -65,4 +72,3 @@
     }
   ]
 }
-

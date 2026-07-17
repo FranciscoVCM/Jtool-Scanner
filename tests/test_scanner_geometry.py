@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from pathlib import Path
 import unittest
 from unittest import mock
 
 from jtool_scanner.constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
@@ -37,6 +39,7 @@ from jtool_scanner.scanner import (
     _dedupe_geometry,
     _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
+    _detect_mini_blocks,
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
     _is_bright_outline_platform_candidate,
@@ -89,6 +92,7 @@ from jtool_scanner.scanner import (
     _has_four_quadrant_block_support,
     _is_low_contrast_mini_up_candidate,
     _is_low_contrast_platform_candidate,
+    _looks_miniblock_dominant,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_border_supported_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
@@ -152,10 +156,45 @@ from jtool_scanner.scanner import (
     _value_in_range,
     _ColorProfile,
 )
+from jtool_scanner.image import load_png
+from jtool_scanner.jmap import JMap
 from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_miniblock_room_gate_rejects_dense_32px_quarter_cell_topology(self) -> None:
+        thin_rows = {
+            (x, y)
+            for y in range(0, 608, 32)
+            for x in range(0, 800, 16)
+        }
+        dense_cells = {
+            (x, y)
+            for y in range(0, 160, 16)
+            for x in range(0, 640, 16)
+        }
+
+        self.assertTrue(_looks_miniblock_dominant(thin_rows))
+        self.assertFalse(_looks_miniblock_dominant(dense_cells))
+
+    def test_cn3_miniblocks_match_all_truth_inside_excellent_detection_band(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "cn3-16-game.png")
+        truth = JMap.from_file(fixture_dir / "cn3-16.jmap")
+
+        detections = _detect_mini_blocks(image, Box(0, 0, image.width, image.height))
+        detected_positions = {(detection.x, detection.y) for detection in detections}
+        truth_positions = {
+            (obj.x, obj.y)
+            for obj in truth.objects
+            if obj.type_id == OBJ_MINI_BLOCK
+        }
+
+        self.assertEqual(len(truth_positions), 501)
+        self.assertTrue(truth_positions <= detected_positions)
+        self.assertGreaterEqual(len(detections), 550)
+        self.assertLessEqual(len(detections), 625)
+
     def test_full_spike_rejects_blocklike_weak_outline_candidate(self) -> None:
         block = _GeometryClass("block", OBJ_BLOCK, 0.50)
         spike = _GeometryClass(

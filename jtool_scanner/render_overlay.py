@@ -9,6 +9,7 @@ from pathlib import Path
 from .constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
@@ -55,6 +56,7 @@ STROKE_BY_GROUP = {
     "water": "#38bdf8",
     "walljump": "#22c55e",
     "platform": "#facc15",
+    "mini_block": "#a855f7",
     "block": "#f97316",
     "spike": "#f43f5e",
     "mini_spike": "#ec4899",
@@ -247,8 +249,13 @@ def _match_type_ids(type_id: int) -> set[int]:
 
 
 def _truth_image_box(result: ScanResult, truth_item: _TruthItem) -> Box:
-    width = 16 if truth_item.type_id in MINI_SPIKES else 32
-    height = 16 if truth_item.type_id in MINI_SPIKES or truth_item.type_id == OBJ_PLATFORM else 32
+    width = 16 if truth_item.type_id in MINI_SPIKES or truth_item.type_id == OBJ_MINI_BLOCK else 32
+    height = (
+        16
+        if truth_item.type_id in MINI_SPIKES
+        or truth_item.type_id in (OBJ_MINI_BLOCK, OBJ_PLATFORM)
+        else 32
+    )
     scale_x = result.room_box.width / ROOM_WIDTH
     scale_y = result.room_box.height / ROOM_HEIGHT
     return Box(
@@ -276,6 +283,8 @@ def _object_group(type_id: int) -> str:
         return "walljump"
     if type_id == OBJ_PLATFORM:
         return "platform"
+    if type_id == OBJ_MINI_BLOCK:
+        return "mini_block"
     if type_id == OBJ_BLOCK:
         return "block"
     if type_id in FULL_SPIKES:

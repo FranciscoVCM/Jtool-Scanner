@@ -33,14 +33,16 @@ The screenshot scanner has three layers:
 
 - high-confidence save and warp detection, enabled by default
 - conservative color-object detection for apples, water, and walljumps, enabled with `--include-color-objects`
-- experimental platform/block/full-spike/mini-spike geometry detection, enabled with `--include-geometry`
+- experimental platform/miniblock/block/full-spike/mini-spike geometry detection, enabled with `--include-geometry`
 
 Current fixture scan status:
 
 - saves: all Irkara fixture saves are detected and matched
 - warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
 - color objects: apples are reliable on current examples; pale/cyan water is matched on current fixtures; catharsis-style dark gray water is conservatively mapped to JTool water 2; walljump vines are recovered with some extra candidates on light green/white rooms
-- geometry: the opt-in detector matches the current platform, block, full-spike, and mini-spike fixture truth; horizontal platforms use enclosure geometry, outline-heavy rooms get structural block recovery, and room-profiled pruning limits spike noise
+- geometry: the opt-in detector preserves complete platform/block/full-spike/mini-spike recall on the original five stress fixtures; horizontal platforms use enclosure geometry, outline-heavy rooms get structural block recovery, and room-profiled pruning limits spike noise
+- miniblocks: the CN3 fixture matches all 501 miniblocks with 619 detections; a room-scale 16px topology gate learns the local tileset appearance and avoids treating ordinary 32px block rooms as miniblock rooms
+- CN3 follow-up: its existing-object baseline currently matches 27/30 full spikes and 3/54 mini spikes; the alternate red-cross saves and white-outline warp are not detected yet
 - not yet handled: jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant

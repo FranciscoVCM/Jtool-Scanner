@@ -442,6 +442,9 @@ def _scan_fixtures(
                 f"  geometry: platforms {evaluation.matched_platforms}/"
                 f"{evaluation.truth_platforms} matched "
                 f"({evaluation.detected_platforms} detected), "
+                f"mini blocks {evaluation.matched_mini_blocks}/"
+                f"{evaluation.truth_mini_blocks} matched "
+                f"({evaluation.detected_mini_blocks} detected), "
                 f"blocks {evaluation.matched_blocks}/"
                 f"{evaluation.truth_blocks} matched ({evaluation.detected_blocks} detected), "
                 f"full spikes {evaluation.matched_full_spikes}/"
@@ -539,6 +542,12 @@ def _print_evaluation_summary(
             totals["matched_platforms"],
             totals["truth_platforms"],
             totals["detected_platforms"],
+        )
+        _print_metric_summary(
+            "mini blocks",
+            totals["matched_mini_blocks"],
+            totals["truth_mini_blocks"],
+            totals["detected_mini_blocks"],
         )
         _print_metric_summary(
             "blocks",

@@ -4,6 +4,7 @@ import unittest
 
 from jtool_scanner.constants import (
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_UP,
@@ -27,12 +28,14 @@ class EvaluationTests(unittest.TestCase):
                 JMapObject(64, 96, OBJ_SAVE),
                 JMapObject(160, 128, OBJ_WATER),
                 JMapObject(224, 192, OBJ_PLATFORM),
+                JMapObject(288, 224, OBJ_MINI_BLOCK),
             ]
         )
         detections = [
             Detection("save", OBJ_SAVE, 64, 96, 1.0, Box(0, 0, 24, 24)),
             Detection("water_2", OBJ_WATER_2, 160, 128, 0.9, Box(0, 0, 32, 32)),
             Detection("platform", OBJ_PLATFORM, 224, 192, 0.8, Box(0, 0, 32, 16)),
+            Detection("mini_block", OBJ_MINI_BLOCK, 288, 224, 0.8, Box(0, 0, 16, 16)),
         ]
 
         evaluation = evaluate_scan("synthetic", detections, truth, tolerance=8)
@@ -42,6 +45,8 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(evaluation.detected_water, 1)
         self.assertEqual(evaluation.matched_platforms, 1)
         self.assertEqual(evaluation.detected_platforms, 1)
+        self.assertEqual(evaluation.matched_mini_blocks, 1)
+        self.assertEqual(evaluation.detected_mini_blocks, 1)
 
     def test_aggregate_evaluations_sums_metric_fields(self) -> None:
         truth = JMap(
@@ -70,6 +75,7 @@ class EvaluationTests(unittest.TestCase):
                 JMapObject(64, 96, OBJ_SAVE),
                 JMapObject(160, 128, OBJ_WATER),
                 JMapObject(320, 320, OBJ_BLOCK),
+                JMapObject(352, 320, OBJ_MINI_BLOCK),
             ]
         )
         detections = [
@@ -82,6 +88,7 @@ class EvaluationTests(unittest.TestCase):
 
         self.assertEqual(details["water"]["unmatched_detection_count"], 1)
         self.assertEqual(details["blocks"]["missed_truth_count"], 1)
+        self.assertEqual(details["mini_blocks"]["missed_truth_count"], 1)
         self.assertEqual(details["water"]["unmatched_detections"][0]["x"], 400)
         self.assertEqual(
             details["water"]["unmatched_detections"][0]["nearest_truth"]["type_id"],

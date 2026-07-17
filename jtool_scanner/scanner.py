@@ -10,11 +10,13 @@ from __future__ import annotations
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
+from statistics import median
 
 from .constants import (
     GRID_SIZE,
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
@@ -62,7 +64,25 @@ COLOR_OBJECT_TYPES = frozenset(
         OBJ_WATER_2,
     }
 )
-GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
+GEOMETRY_TYPES = frozenset(
+    {OBJ_BLOCK, OBJ_MINI_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
+)
+MINI_BLOCK_SIZE = 16
+MINI_BLOCK_MIN_EDGE_DENSITY = 0.03
+MINI_BLOCK_SEED_MAX_CENTER_SCORE = 0.20
+MINI_BLOCK_GROW_MAX_CENTER_SCORE = 0.25
+MINI_BLOCK_SEED_PROFILE_DISTANCE = 15.0
+MINI_BLOCK_GROW_PROFILE_DISTANCE = 45.0
+MINI_BLOCK_GROW_PASSES = 3
+MINI_BLOCK_ISOLATED_MIN_EDGE_DENSITY = 0.13
+MINI_BLOCK_ISOLATED_PROFILE_DISTANCE = 10.0
+MINI_BLOCK_ROOM_MIN_CELLS = 400
+MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO = 0.50
+MINI_BLOCK_IMPOSTOR_MIN_COVERAGE = 1
+MINI_BLOCK_FULL_SPIKE_MAX_COVERAGE = 1
+MINI_BLOCK_FULL_SPIKE_RECOVERY_EDGE_DENSITY = 0.32
+MINI_BLOCK_FULL_SPIKE_RECOVERY_DIRECTION_MARGIN = 0.13
+MINI_BLOCK_FULL_SPIKE_RECOVERY_OUTLINE_DELTA = 0.20
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
@@ -993,6 +1013,10 @@ def scan_image(
     if include_color_objects:
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
     if include_geometry:
+        mini_blocks = _detect_mini_blocks(image, box)
+        detections.extend(mini_blocks)
+        if mini_blocks:
+            detections = _suppress_miniblock_impostors(detections, image, box)
         detections.extend(_detect_platforms(image, box, detections))
         detections.extend(_detect_geometry(image, box, grid_step))
         raw_full_spike_support = [
@@ -1097,6 +1121,8 @@ def scan_image(
             image,
             box,
         )
+        if mini_blocks:
+            detections = _suppress_miniblock_impostors(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
@@ -2177,6 +2203,187 @@ def _room_color_profile(image: RGBImage, room: Box) -> _ColorProfile:
         avg_g=total_g / count,
         avg_b=total_b / count,
         saturation=total_saturation / (count * 255),
+    )
+
+
+def _detect_mini_blocks(image: RGBImage, room: Box) -> list[Detection]:
+    """Detect rooms whose dominant solid geometry uses 16px block cells.
+
+    Candidate growth compares neighboring patch profiles, so the tileset color
+    is learned from the room instead of being encoded as a fixed palette. The
+    room gate rejects the 2x2 quarter-cell topology produced by ordinary 32px
+    blocks before any miniblock detections are emitted.
+    """
+
+    cells: dict[tuple[int, int], tuple[_PatchFeatures, _ColorProfile]] = {}
+    for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            cells[(x, y)] = (
+                _patch_features(image, room, x, y, MINI_BLOCK_SIZE),
+                _patch_color_profile(image, room, x, y, MINI_BLOCK_SIZE),
+            )
+
+    seed_candidates = {
+        position
+        for position, (patch, _) in cells.items()
+        if patch.edge_density >= MINI_BLOCK_MIN_EDGE_DENSITY
+        and patch.center_score <= MINI_BLOCK_SEED_MAX_CENTER_SCORE
+    }
+    seeds = {
+        position
+        for position in seed_candidates
+        if any(
+            neighbor in seed_candidates
+            and _color_profile_distance(cells[position][1], cells[neighbor][1])
+            <= MINI_BLOCK_SEED_PROFILE_DISTANCE
+            for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE)
+        )
+    }
+    if not seeds:
+        return []
+
+    grown = set(seeds)
+    for _ in range(MINI_BLOCK_GROW_PASSES):
+        added = {
+            position
+            for position, (patch, profile) in cells.items()
+            if position not in grown
+            and patch.edge_density >= MINI_BLOCK_MIN_EDGE_DENSITY
+            and patch.center_score <= MINI_BLOCK_GROW_MAX_CENTER_SCORE
+            and any(
+                neighbor in grown
+                and _color_profile_distance(profile, cells[neighbor][1])
+                <= MINI_BLOCK_GROW_PROFILE_DISTANCE
+                for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE)
+            )
+        }
+        if not added:
+            break
+        grown.update(added)
+
+    learned_profile = _median_color_profile(
+        [cells[position][1] for position in seeds]
+    )
+    grown.update(
+        position
+        for position, (patch, profile) in cells.items()
+        if patch.edge_density >= MINI_BLOCK_ISOLATED_MIN_EDGE_DENSITY
+        and patch.center_score <= MINI_BLOCK_SEED_MAX_CENTER_SCORE
+        and _color_profile_distance(profile, learned_profile)
+        <= MINI_BLOCK_ISOLATED_PROFILE_DISTANCE
+    )
+
+    if not _looks_miniblock_dominant(grown):
+        return []
+
+    return [
+        _geometry_detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            x,
+            y,
+            0.55 + min(0.35, cells[(x, y)][0].edge_density),
+            image,
+            room,
+            MINI_BLOCK_SIZE,
+        )
+        for x, y in sorted(grown, key=lambda position: (position[1], position[0]))
+    ]
+
+
+def _axis_neighbors(position: tuple[int, int], step: int) -> tuple[tuple[int, int], ...]:
+    x, y = position
+    return ((x - step, y), (x + step, y), (x, y - step), (x, y + step))
+
+
+def _median_color_profile(profiles: list[_ColorProfile]) -> _ColorProfile:
+    return _ColorProfile(
+        avg_r=median(profile.avg_r for profile in profiles),
+        avg_g=median(profile.avg_g for profile in profiles),
+        avg_b=median(profile.avg_b for profile in profiles),
+        saturation=median(profile.saturation for profile in profiles),
+    )
+
+
+def _color_profile_distance(first: _ColorProfile, second: _ColorProfile) -> float:
+    return (
+        (first.avg_r - second.avg_r) ** 2
+        + (first.avg_g - second.avg_g) ** 2
+        + (first.avg_b - second.avg_b) ** 2
+    ) ** 0.5
+
+
+def _looks_miniblock_dominant(positions: set[tuple[int, int]]) -> bool:
+    if len(positions) < MINI_BLOCK_ROOM_MIN_CELLS:
+        return False
+    square_cells: set[tuple[int, int]] = set()
+    for x, y in positions:
+        square = {
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        }
+        if square <= positions:
+            square_cells.update(square)
+    return len(square_cells) / len(positions) <= MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO
+
+
+def _suppress_miniblock_impostors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    mini_blocks = [
+        detection for detection in detections if detection.type_id == OBJ_MINI_BLOCK
+    ]
+    if not mini_blocks:
+        return detections
+
+    result: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in (
+            OBJ_BLOCK,
+            OBJ_PLATFORM,
+            OBJ_WATER_2,
+            *FULL_SPIKE_TYPES,
+        ):
+            result.append(detection)
+            continue
+        coverage = sum(
+            detection.x - 8 <= mini_block.x <= detection.x + 24
+            and detection.y - 8 <= mini_block.y <= detection.y + 24
+            for mini_block in mini_blocks
+        )
+        if detection.type_id in FULL_SPIKE_TYPES:
+            if coverage <= MINI_BLOCK_FULL_SPIKE_MAX_COVERAGE:
+                result.append(detection)
+            elif coverage == 2 and _is_strong_miniblock_room_full_spike(
+                detection,
+                image,
+                room,
+            ):
+                result.append(detection)
+            continue
+        if coverage < MINI_BLOCK_IMPOSTOR_MIN_COVERAGE:
+            result.append(detection)
+    return result
+
+
+def _is_strong_miniblock_room_full_spike(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    spike = _classify_full_spike(patch)
+    return (
+        spike is not None
+        and spike.type_id == detection.type_id
+        and patch.edge_density >= MINI_BLOCK_FULL_SPIKE_RECOVERY_EDGE_DENSITY
+        and spike.direction_margin
+        >= MINI_BLOCK_FULL_SPIKE_RECOVERY_DIRECTION_MARGIN
+        and spike.outline_delta >= MINI_BLOCK_FULL_SPIKE_RECOVERY_OUTLINE_DELTA
     )
 
 
@@ -9548,6 +9755,8 @@ def _is_block_aligned_to(x: int, y: int, step: int) -> bool:
 
 
 def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
+    if det.type_id == OBJ_MINI_BLOCK and existing.type_id == OBJ_MINI_BLOCK:
+        return distance((det.x, det.y), (existing.x, existing.y)) < 8
     if det.type_id in MINI_SPIKE_TYPES and existing.type_id in MINI_SPIKE_TYPES:
         return distance((det.x, det.y), (existing.x, existing.y)) < 14
     if det.type_id in MINI_SPIKE_TYPES or existing.type_id in MINI_SPIKE_TYPES:
