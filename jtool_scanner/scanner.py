@@ -19,6 +19,7 @@ from .constants import (
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
     OBJ_MINI_SPIKE_UP,
+    OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
     OBJ_SPIKE_LEFT,
@@ -62,6 +63,24 @@ COLOR_OBJECT_TYPES = frozenset(
     }
 )
 GEOMETRY_TYPES = frozenset({OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES})
+PLATFORM_WIDTH = 32
+PLATFORM_HEIGHT = 16
+PLATFORM_SAMPLE_WIDTH = 32
+PLATFORM_SAMPLE_HEIGHT = 16
+PLATFORM_EDGE_THRESHOLD = 20
+PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_RUN = 24
+PLATFORM_LOW_CONTRAST_MIN_VERTICAL_RUN = 12
+PLATFORM_LOW_CONTRAST_GRAY_RANGE = (70, 110)
+PLATFORM_BRIGHT_MIN_HORIZONTAL_RUN = 30
+PLATFORM_BRIGHT_MIN_VERTICAL_RUN = 14
+PLATFORM_BRIGHT_MIN_GRAY_RANGE = 180
+PLATFORM_BRIGHT_EDGE_RANGE = (0.08, 0.16)
+PLATFORM_BRIGHT_BORDER_RANGE = (0.20, 0.32)
+PLATFORM_BRIGHT_MAX_CENTER_SCORE = 0.02
+PLATFORM_BRIGHT_MAX_BLOCK_SCORE = 0.25
+PLATFORM_BRIGHT_MAX_BELOW_EDGE = 0.02
+PLATFORM_ANCHOR_DISTANCE = 20.0
+PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
@@ -216,6 +235,24 @@ DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.80
 DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_BLOCK_SCORE = 0.80
 DENSE_ADJACENT_UP_MINI_RECOVERY_ANCHOR_SCORE = 0.45
 DENSE_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE = 16
+FINAL_RIGHT_MINI_STACK_MIN_SCORE = 0.48
+FINAL_RIGHT_MINI_STACK_MIN_DIRECTION_MARGIN = 0.12
+FINAL_RIGHT_MINI_STACK_MIN_OUTLINE_DELTA = 0.25
+FINAL_RIGHT_MINI_STACK_MIN_EDGE_DENSITY = 0.38
+FINAL_RIGHT_MINI_STACK_MAX_BLOCK_SCORE = 0.50
+FINAL_RIGHT_MINI_STACK_PAIR_DISTANCE = 16
+FINAL_RIGHT_MINI_STACK_OPPOSITE_X_OFFSET = -48
+FINAL_RIGHT_MINI_CORRIDOR_MIN_SCORE = 0.10
+FINAL_RIGHT_MINI_CORRIDOR_MIN_EDGE_DENSITY = 0.08
+FINAL_RIGHT_MINI_CORRIDOR_MAX_EDGE_DENSITY = 0.13
+FINAL_RIGHT_MINI_CORRIDOR_MAX_BORDER_SCORE = 0.08
+FINAL_RIGHT_MINI_CORRIDOR_MIN_CENTER_SCORE = 0.15
+FINAL_RIGHT_MINI_CORRIDOR_MAX_CENTER_SCORE = 0.21
+FINAL_RIGHT_MINI_CORRIDOR_MAX_BLOCK_SCORE = 0.13
+FINAL_RIGHT_MINI_CORRIDOR_FULL_X_SLOP = 8
+FINAL_RIGHT_MINI_CORRIDOR_FULL_Y_OFFSET = -32
+FINAL_RIGHT_MINI_CORRIDOR_BLOCK_LEFT_OFFSET = -32
+FINAL_RIGHT_MINI_CORRIDOR_BLOCK_RIGHT_OFFSET = 64
 FULL_SPIKE_MIN_OUTLINE_DELTA = 0.18
 FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
 FULL_SPIKE_LOW_MARGIN_SCORE_CEILING = 0.32
@@ -790,6 +827,28 @@ DARK_OUTLINE_JUNCTION_MIN_BLOCK_SCORE = 0.28
 DARK_OUTLINE_JUNCTION_MAX_BLOCK_SCORE = 0.35
 DARK_OUTLINE_JUNCTION_MIN_BLOCK_OFFSET = 8
 DARK_OUTLINE_JUNCTION_MAX_BLOCK_OFFSET = 24
+FULL_SPIKE_PROFILE_MIN_EDGE_DENSITY = 0.15
+FULL_SPIKE_PROFILE_MINI_DENSE_RATIO = 0.30
+FULL_SPIKE_PROFILE_RAW_SUPPORT_DENSE_RATIO = 0.15
+FULL_SPIKE_PROFILE_RAW_SUPPORT_KEEP_DISTANCE = 64.0
+FULL_SPIKE_PROFILE_DARK_MAX_EDGE_DENSITY = 0.30
+FULL_SPIKE_PROFILE_DARK_DOWN_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_PROFILE_MINI_DOWN_MAX_BLOCK_DISTANCE = 8.0
+FULL_SPIKE_PROFILE_MINI_RIGHT_MIN_EDGE_DENSITY = 0.45
+FULL_SPIKE_PROFILE_MINI_LEFT_MIN_SCORE = 0.60
+FULL_SPIKE_PROFILE_MINI_UP_MAX_BLOCK_DISTANCE = 16.0
+FULL_SPIKE_PROFILE_MIXED_LEFT_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_PROFILE_MIXED_SUPPORT_MAX_BLOCK_DISTANCE = 8.0
+FULL_SPIKE_PROFILE_SOLID_RIGHT_MIN_SAME_DISTANCE = 48.0
+FULL_SPIKE_PROFILE_SOLID_RIGHT_MIN_SPIKE_DISTANCE = 32.0
+FULL_SPIKE_PROFILE_SOLID_DOWN_MAX_BLOCK_DISTANCE = 16.0
+FULL_SPIKE_PROFILE_SOLID_SUPPORT_MAX_BLOCK_SCORE = 0.45
+FULL_SPIKE_PROFILE_SOLID_GAP_MAX_DIRECT_SCORE = 0.30
+FULL_SPIKE_PROFILE_SOLID_SHAPE_MIN_OUTLINE_DELTA = 0.30
+FULL_SPIKE_PROFILE_SOLID_UP_MIN_SCORE = 0.45
+FULL_SPIKE_PROFILE_RAW_LEFT_MIN_SIDE_COVERAGE = 0.625
+FULL_SPIKE_PROFILE_RAW_RIGHT_MIN_EDGE_DENSITY = 0.30
+FULL_SPIKE_PROFILE_RAW_DOWN_MIN_OUTLINE_DELTA = 0.30
 SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.22
 SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
 SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
@@ -881,6 +940,13 @@ class Detection:
     image_box: Box
 
 
+@dataclass(frozen=True, slots=True)
+class _PlatformPatchFeatures:
+    horizontal_run: int
+    vertical_run: int
+    gray_range: int
+
+
 @dataclass(slots=True)
 class ScanResult:
     image_width: int
@@ -927,6 +993,7 @@ def scan_image(
     if include_color_objects:
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
     if include_geometry:
+        detections.extend(_detect_platforms(image, box, detections))
         detections.extend(_detect_geometry(image, box, grid_step))
         raw_full_spike_support = [
             detection
@@ -1016,6 +1083,16 @@ def scan_image(
             box,
         )
         detections = _recover_dark_outline_block_junction_spikes(
+            detections,
+            image,
+            box,
+        )
+        detections = _prune_profiled_full_spike_noise(
+            detections,
+            image,
+            box,
+        )
+        detections = _recover_final_structural_right_mini_spikes(
             detections,
             image,
             box,
@@ -1585,6 +1662,174 @@ def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[
             continue
         result.append(det)
     return sorted(result, key=lambda item: (item.y, item.x, -item.score))
+
+
+def _detect_platforms(
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection],
+) -> list[Detection]:
+    candidates: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - PLATFORM_HEIGHT + 1, PLATFORM_HEIGHT):
+        for x in range(0, ROOM_WIDTH - PLATFORM_WIDTH + 1, PLATFORM_HEIGHT):
+            if _near_anchor(x, y, anchors, PLATFORM_ANCHOR_DISTANCE):
+                continue
+            features = _platform_patch_features(image, room, x, y)
+            patch = _patch_features(image, room, x, y, PLATFORM_WIDTH)
+            block_score = _classify_block(patch).score
+            below_edge = 1.0
+            if y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+                below_edge = _patch_features(
+                    image,
+                    room,
+                    x,
+                    y + PLATFORM_HEIGHT,
+                    PLATFORM_WIDTH,
+                ).edge_density
+            if not (
+                _is_low_contrast_platform_candidate(features)
+                or _is_bright_outline_platform_candidate(
+                    features,
+                    patch,
+                    block_score,
+                    below_edge,
+                )
+            ):
+                continue
+            score = (
+                features.horizontal_run / PLATFORM_SAMPLE_WIDTH
+                + features.vertical_run / PLATFORM_SAMPLE_HEIGHT
+                + features.gray_range / 255
+            ) / 3
+            candidates.append(
+                _platform_detection(x, y, score, image, room)
+            )
+
+    kept: list[Detection] = []
+    for candidate in sorted(candidates, key=lambda detection: -detection.score):
+        if any(
+            distance((candidate.x, candidate.y), (other.x, other.y))
+            < PLATFORM_DEDUPE_DISTANCE
+            for other in kept
+        ):
+            continue
+        kept.append(candidate)
+    return sorted(kept, key=lambda detection: (detection.y, detection.x))
+
+
+def _platform_patch_features(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> _PlatformPatchFeatures:
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    gray: list[list[int]] = []
+    for sample_y in range(PLATFORM_SAMPLE_HEIGHT):
+        row: list[int] = []
+        for sample_x in range(PLATFORM_SAMPLE_WIDTH):
+            pixel_x = int(
+                min(
+                    image.width - 1,
+                    max(0, room.x + (map_x + sample_x + 0.5) * scale_x),
+                )
+            )
+            pixel_y = int(
+                min(
+                    image.height - 1,
+                    max(0, room.y + (map_y + sample_y + 0.5) * scale_y),
+                )
+            )
+            red, green, blue = image.pixel(pixel_x, pixel_y)
+            row.append((red * 30 + green * 59 + blue * 11) // 100)
+        gray.append(row)
+
+    horizontal_run = max(
+        _longest_platform_edge_run(
+            abs(gray[y + 1][x] - gray[y][x]) >= PLATFORM_EDGE_THRESHOLD
+            for x in range(PLATFORM_SAMPLE_WIDTH)
+        )
+        for y in range(PLATFORM_SAMPLE_HEIGHT - 1)
+    )
+    vertical_run = max(
+        _longest_platform_edge_run(
+            abs(gray[y][x + 1] - gray[y][x]) >= PLATFORM_EDGE_THRESHOLD
+            for y in range(PLATFORM_SAMPLE_HEIGHT)
+        )
+        for x in range(PLATFORM_SAMPLE_WIDTH - 1)
+    )
+    return _PlatformPatchFeatures(
+        horizontal_run,
+        vertical_run,
+        max(max(row) for row in gray) - min(min(row) for row in gray),
+    )
+
+
+def _longest_platform_edge_run(values) -> int:
+    longest = current = 0
+    for value in values:
+        current = current + 1 if value else 0
+        longest = max(longest, current)
+    return longest
+
+
+def _is_low_contrast_platform_candidate(
+    features: _PlatformPatchFeatures,
+) -> bool:
+    return (
+        features.horizontal_run >= PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_LOW_CONTRAST_MIN_VERTICAL_RUN
+        and PLATFORM_LOW_CONTRAST_GRAY_RANGE[0]
+        <= features.gray_range
+        <= PLATFORM_LOW_CONTRAST_GRAY_RANGE[1]
+    )
+
+
+def _is_bright_outline_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    block_score: float,
+    below_edge: float,
+) -> bool:
+    return (
+        features.horizontal_run >= PLATFORM_BRIGHT_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_BRIGHT_MIN_VERTICAL_RUN
+        and features.gray_range >= PLATFORM_BRIGHT_MIN_GRAY_RANGE
+        and PLATFORM_BRIGHT_EDGE_RANGE[0]
+        <= patch.edge_density
+        <= PLATFORM_BRIGHT_EDGE_RANGE[1]
+        and PLATFORM_BRIGHT_BORDER_RANGE[0]
+        <= patch.border_score
+        <= PLATFORM_BRIGHT_BORDER_RANGE[1]
+        and patch.center_score <= PLATFORM_BRIGHT_MAX_CENTER_SCORE
+        and block_score <= PLATFORM_BRIGHT_MAX_BLOCK_SCORE
+        and below_edge <= PLATFORM_BRIGHT_MAX_BELOW_EDGE
+    )
+
+
+def _platform_detection(
+    x: int,
+    y: int,
+    score: float,
+    image: RGBImage,
+    room: Box,
+) -> Detection:
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    return Detection(
+        "platform",
+        OBJ_PLATFORM,
+        x,
+        y,
+        min(1.0, score),
+        Box(
+            int(round(room.x + x * scale_x)),
+            int(round(room.y + y * scale_y)),
+            max(1, int(round(PLATFORM_WIDTH * scale_x))),
+            max(1, int(round(PLATFORM_HEIGHT * scale_y))),
+        ),
+    )
 
 
 def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
@@ -2744,6 +2989,222 @@ def _has_four_quadrant_block_support(
             for block in blocks
         )
         for x_sign, y_sign in ((-1, -1), (1, -1), (-1, 1), (1, 1))
+    )
+
+
+def _prune_profiled_full_spike_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    profile = _full_spike_noise_profile(detections, full_spikes, image, room)
+    if profile is None:
+        return detections
+
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    kept: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in FULL_SPIKE_TYPES:
+            kept.append(detection)
+            continue
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        direction = direction_by_type[detection.type_id]
+        direct_score, outline_delta = _triangle_direction_score(patch, direction)
+        side_coverage = _triangle_side_coverage(patch, direction)
+        block_score = _classify_block(patch).score
+        expected_x, expected_y = _full_spike_expected_block_origin(detection)
+        expected_block_distance = min(
+            (
+                distance((expected_x, expected_y), (block.x, block.y))
+                for block in blocks
+            ),
+            default=999.0,
+        )
+        nearest_block_distance = min(
+            (
+                distance(
+                    (detection.x, detection.y),
+                    (block.x, block.y),
+                )
+                for block in blocks
+            ),
+            default=999.0,
+        )
+        nearest_same_distance = min(
+            (
+                distance(
+                    (detection.x, detection.y),
+                    (other.x, other.y),
+                )
+                for other in full_spikes
+                if other is not detection and other.type_id == detection.type_id
+            ),
+            default=999.0,
+        )
+        nearest_spike_distance = min(
+            (
+                distance(
+                    (detection.x, detection.y),
+                    (other.x, other.y),
+                )
+                for other in full_spikes
+                if other is not detection
+            ),
+            default=999.0,
+        )
+        if _is_profiled_full_spike_noise(
+            profile,
+            detection,
+            patch,
+            direct_score,
+            outline_delta,
+            side_coverage,
+            block_score,
+            expected_block_distance,
+            nearest_block_distance,
+            nearest_same_distance,
+            nearest_spike_distance,
+        ):
+            continue
+        kept.append(detection)
+    return kept
+
+
+def _full_spike_noise_profile(
+    detections: list[Detection],
+    full_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> str | None:
+    if not full_spikes:
+        return None
+    if _is_dark_outline_room(image, room):
+        return "dark_outline"
+    if sum(
+        detection.type_id in MINI_SPIKE_TYPES for detection in detections
+    ) >= len(full_spikes) * FULL_SPIKE_PROFILE_MINI_DENSE_RATIO:
+        return "mini_dense"
+    if sum(
+        detection.kind == "full_spike_raw_support_recovery"
+        for detection in full_spikes
+    ) >= len(full_spikes) * FULL_SPIKE_PROFILE_RAW_SUPPORT_DENSE_RATIO:
+        return "raw_support_dense"
+    if any(
+        detection.kind.startswith("full_spike_mixed_")
+        for detection in full_spikes
+    ):
+        return "mixed_support"
+    gap_ratio = sum(
+        detection.kind == "full_spike_gap" for detection in full_spikes
+    ) / len(full_spikes)
+    support_ratio = sum(
+        detection.kind == "full_spike_support" for detection in full_spikes
+    ) / len(full_spikes)
+    if gap_ratio >= 0.04 and support_ratio >= 0.15:
+        return "solid_dense"
+    return None
+
+
+def _full_spike_expected_block_origin(detection: Detection) -> tuple[int, int]:
+    if detection.type_id == OBJ_SPIKE_UP:
+        return detection.x, detection.y + GRID_SIZE
+    if detection.type_id == OBJ_SPIKE_DOWN:
+        return detection.x, detection.y - GRID_SIZE
+    if detection.type_id == OBJ_SPIKE_RIGHT:
+        return detection.x - GRID_SIZE, detection.y
+    return detection.x + GRID_SIZE, detection.y
+
+
+def _is_profiled_full_spike_noise(
+    profile: str,
+    detection: Detection,
+    patch: _PatchFeatures,
+    direct_score: float,
+    outline_delta: float,
+    side_coverage: float,
+    block_score: float,
+    expected_block_distance: float,
+    nearest_block_distance: float,
+    nearest_same_distance: float,
+    nearest_spike_distance: float,
+) -> bool:
+    if patch.edge_density < FULL_SPIKE_PROFILE_MIN_EDGE_DENSITY:
+        return True
+    if profile == "dark_outline":
+        return (
+            patch.edge_density > FULL_SPIKE_PROFILE_DARK_MAX_EDGE_DENSITY
+            or detection.kind == "spike_down"
+            and side_coverage < FULL_SPIKE_PROFILE_DARK_DOWN_MIN_SIDE_COVERAGE
+        )
+    if profile == "mini_dense":
+        return (
+            detection.kind == "spike_down"
+            and expected_block_distance
+            > FULL_SPIKE_PROFILE_MINI_DOWN_MAX_BLOCK_DISTANCE
+            or detection.kind == "spike_right"
+            and patch.edge_density < FULL_SPIKE_PROFILE_MINI_RIGHT_MIN_EDGE_DENSITY
+            or detection.kind == "spike_left"
+            and detection.score < FULL_SPIKE_PROFILE_MINI_LEFT_MIN_SCORE
+            or detection.kind == "spike_up"
+            and expected_block_distance
+            > FULL_SPIKE_PROFILE_MINI_UP_MAX_BLOCK_DISTANCE
+            or detection.kind == "full_spike_support"
+        )
+    if profile == "mixed_support":
+        return (
+            detection.kind == "spike_left"
+            and side_coverage < FULL_SPIKE_PROFILE_MIXED_LEFT_MIN_SIDE_COVERAGE
+            or detection.kind == "full_spike_support"
+            and nearest_block_distance
+            > FULL_SPIKE_PROFILE_MIXED_SUPPORT_MAX_BLOCK_DISTANCE
+        )
+    if profile == "raw_support_dense":
+        return (
+            detection.kind == "full_spike_raw_support_recovery"
+            and abs(
+                nearest_same_distance
+                - FULL_SPIKE_PROFILE_RAW_SUPPORT_KEEP_DISTANCE
+            )
+            > 0.01
+            or detection.kind == "spike_left"
+            and side_coverage < FULL_SPIKE_PROFILE_RAW_LEFT_MIN_SIDE_COVERAGE
+            or detection.kind == "spike_right"
+            and patch.edge_density < FULL_SPIKE_PROFILE_RAW_RIGHT_MIN_EDGE_DENSITY
+            or detection.kind == "spike_down"
+            and outline_delta < FULL_SPIKE_PROFILE_RAW_DOWN_MIN_OUTLINE_DELTA
+        )
+    return (
+        detection.kind == "spike_right"
+        and nearest_same_distance < FULL_SPIKE_PROFILE_SOLID_RIGHT_MIN_SAME_DISTANCE
+        or detection.kind == "spike_right"
+        and nearest_spike_distance
+        < FULL_SPIKE_PROFILE_SOLID_RIGHT_MIN_SPIKE_DISTANCE
+        or detection.kind == "spike_down"
+        and expected_block_distance
+        > FULL_SPIKE_PROFILE_SOLID_DOWN_MAX_BLOCK_DISTANCE
+        or detection.kind == "full_spike_support"
+        and block_score > FULL_SPIKE_PROFILE_SOLID_SUPPORT_MAX_BLOCK_SCORE
+        or detection.kind == "full_spike_gap"
+        and direct_score > FULL_SPIKE_PROFILE_SOLID_GAP_MAX_DIRECT_SCORE
+        or detection.kind == "full_spike_shape_recovery"
+        and outline_delta < FULL_SPIKE_PROFILE_SOLID_SHAPE_MIN_OUTLINE_DELTA
+        or detection.kind == "spike_up"
+        and detection.score < FULL_SPIKE_PROFILE_SOLID_UP_MIN_SCORE
     )
 
 
@@ -6338,6 +6799,131 @@ def _has_dense_adjacent_up_mini_spike_support(
         and abs(det.x - x) == DENSE_ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE
         for det in detections
     )
+
+
+def _recover_final_structural_right_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover right minis supported by an unambiguous local structure."""
+    recovered = list(detections)
+    mini_positions = {
+        (detection.x, detection.y)
+        for detection in recovered
+        if detection.type_id in MINI_SPIKE_TYPES
+    }
+    for y in range(0, ROOM_HEIGHT - 16 + 1, 16):
+        for x in range(0, ROOM_WIDTH - 16 + 1, 16):
+            if (x, y) in mini_positions:
+                continue
+            patch = _patch_features(image, room, x, y, 16)
+            mini = next(
+                candidate
+                for candidate in _classify_mini_spike_candidates(patch)
+                if candidate.type_id == OBJ_MINI_SPIKE_RIGHT
+            )
+            block = _classify_block(patch)
+            supported_stack = _is_final_right_mini_stack_candidate(
+                patch,
+                block,
+                mini,
+            ) and _has_final_right_mini_stack_support(recovered, x, y)
+            supported_corridor = _is_final_right_mini_corridor_candidate(
+                patch,
+                block,
+                mini,
+            ) and _has_final_right_mini_corridor_support(recovered, x, y)
+            if not (supported_stack or supported_corridor):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "mini_spike_right_structural_recovery",
+                    OBJ_MINI_SPIKE_RIGHT,
+                    x,
+                    y,
+                    mini.score,
+                    image,
+                    room,
+                    16,
+                )
+            )
+            mini_positions.add((x, y))
+    return recovered
+
+
+def _is_final_right_mini_stack_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    mini: _GeometryClass,
+) -> bool:
+    return (
+        mini.score >= FINAL_RIGHT_MINI_STACK_MIN_SCORE
+        and mini.direction_margin >= FINAL_RIGHT_MINI_STACK_MIN_DIRECTION_MARGIN
+        and mini.outline_delta >= FINAL_RIGHT_MINI_STACK_MIN_OUTLINE_DELTA
+        and patch.edge_density >= FINAL_RIGHT_MINI_STACK_MIN_EDGE_DENSITY
+        and block.score <= FINAL_RIGHT_MINI_STACK_MAX_BLOCK_SCORE
+    )
+
+
+def _has_final_right_mini_stack_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    has_vertical_pair = any(
+        detection.type_id == OBJ_MINI_SPIKE_RIGHT
+        and detection.x == x
+        and abs(detection.y - y) == FINAL_RIGHT_MINI_STACK_PAIR_DISTANCE
+        for detection in detections
+    )
+    has_opposite = any(
+        detection.type_id == OBJ_MINI_SPIKE_LEFT
+        and detection.x == x + FINAL_RIGHT_MINI_STACK_OPPOSITE_X_OFFSET
+        and detection.y == y
+        for detection in detections
+    )
+    return has_vertical_pair and has_opposite
+
+
+def _is_final_right_mini_corridor_candidate(
+    patch: _PatchFeatures,
+    block: _GeometryClass,
+    mini: _GeometryClass,
+) -> bool:
+    return (
+        mini.score >= FINAL_RIGHT_MINI_CORRIDOR_MIN_SCORE
+        and FINAL_RIGHT_MINI_CORRIDOR_MIN_EDGE_DENSITY
+        <= patch.edge_density
+        <= FINAL_RIGHT_MINI_CORRIDOR_MAX_EDGE_DENSITY
+        and patch.border_score <= FINAL_RIGHT_MINI_CORRIDOR_MAX_BORDER_SCORE
+        and FINAL_RIGHT_MINI_CORRIDOR_MIN_CENTER_SCORE
+        <= patch.center_score
+        <= FINAL_RIGHT_MINI_CORRIDOR_MAX_CENTER_SCORE
+        and block.score <= FINAL_RIGHT_MINI_CORRIDOR_MAX_BLOCK_SCORE
+    )
+
+
+def _has_final_right_mini_corridor_support(
+    detections: list[Detection],
+    x: int,
+    y: int,
+) -> bool:
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    has_full_continuation = any(
+        detection.type_id == OBJ_SPIKE_RIGHT
+        and abs(detection.x - x) <= FINAL_RIGHT_MINI_CORRIDOR_FULL_X_SLOP
+        and detection.y == y + FINAL_RIGHT_MINI_CORRIDOR_FULL_Y_OFFSET
+        for detection in detections
+    )
+    return has_full_continuation and {
+        (x + FINAL_RIGHT_MINI_CORRIDOR_BLOCK_LEFT_OFFSET, y),
+        (x + FINAL_RIGHT_MINI_CORRIDOR_BLOCK_RIGHT_OFFSET, y),
+    }.issubset(block_positions)
 
 
 def _recover_low_contrast_mini_up_pairs(

@@ -13,6 +13,7 @@ from .constants import (
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
     OBJ_MINI_SPIKE_UP,
+    OBJ_PLATFORM,
     OBJ_PLAYER_START,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
@@ -53,6 +54,7 @@ STROKE_BY_GROUP = {
     "apple": "#ef4444",
     "water": "#38bdf8",
     "walljump": "#22c55e",
+    "platform": "#facc15",
     "block": "#f97316",
     "spike": "#f43f5e",
     "mini_spike": "#ec4899",
@@ -245,14 +247,15 @@ def _match_type_ids(type_id: int) -> set[int]:
 
 
 def _truth_image_box(result: ScanResult, truth_item: _TruthItem) -> Box:
-    size = 16 if truth_item.type_id in MINI_SPIKES else 32
+    width = 16 if truth_item.type_id in MINI_SPIKES else 32
+    height = 16 if truth_item.type_id in MINI_SPIKES or truth_item.type_id == OBJ_PLATFORM else 32
     scale_x = result.room_box.width / ROOM_WIDTH
     scale_y = result.room_box.height / ROOM_HEIGHT
     return Box(
         int(round(result.room_box.x + truth_item.x * scale_x)),
         int(round(result.room_box.y + truth_item.y * scale_y)),
-        max(1, int(round(size * scale_x))),
-        max(1, int(round(size * scale_y))),
+        max(1, int(round(width * scale_x))),
+        max(1, int(round(height * scale_y))),
     )
 
 
@@ -271,6 +274,8 @@ def _object_group(type_id: int) -> str:
         return "water"
     if type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT):
         return "walljump"
+    if type_id == OBJ_PLATFORM:
+        return "platform"
     if type_id == OBJ_BLOCK:
         return "block"
     if type_id in FULL_SPIKES:

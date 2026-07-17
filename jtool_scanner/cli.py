@@ -439,7 +439,10 @@ def _scan_fixtures(
             )
         if include_geometry:
             print(
-                f"  geometry: blocks {evaluation.matched_blocks}/"
+                f"  geometry: platforms {evaluation.matched_platforms}/"
+                f"{evaluation.truth_platforms} matched "
+                f"({evaluation.detected_platforms} detected), "
+                f"blocks {evaluation.matched_blocks}/"
                 f"{evaluation.truth_blocks} matched ({evaluation.detected_blocks} detected), "
                 f"full spikes {evaluation.matched_full_spikes}/"
                 f"{evaluation.truth_full_spikes} matched "
@@ -531,6 +534,12 @@ def _print_evaluation_summary(
             totals["detected_walljumps"],
         )
     if include_geometry:
+        _print_metric_summary(
+            "platforms",
+            totals["matched_platforms"],
+            totals["truth_platforms"],
+            totals["detected_platforms"],
+        )
         _print_metric_summary(
             "blocks",
             totals["matched_blocks"],

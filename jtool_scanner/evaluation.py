@@ -13,6 +13,7 @@ from .constants import (
     OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
     OBJ_MINI_SPIKE_UP,
+    OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
     OBJ_SPIKE_LEFT,
@@ -49,6 +50,9 @@ class PairEvaluation:
     detected_walljumps: int
     truth_walljumps: int
     matched_walljumps: int
+    detected_platforms: int
+    truth_platforms: int
+    matched_platforms: int
     detected_blocks: int
     truth_blocks: int
     matched_blocks: int
@@ -76,6 +80,9 @@ EVALUATION_TOTAL_FIELDS = (
     "detected_walljumps",
     "truth_walljumps",
     "matched_walljumps",
+    "detected_platforms",
+    "truth_platforms",
+    "matched_platforms",
     "detected_blocks",
     "truth_blocks",
     "matched_blocks",
@@ -176,6 +183,14 @@ def evaluate_scan(
             WALLJUMP_TYPES,
             tolerance,
         ),
+        detected_platforms=_count(detections, OBJ_PLATFORM),
+        truth_platforms=len(truth.objects_of_type(OBJ_PLATFORM)),
+        matched_platforms=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_PLATFORM)],
+            OBJ_PLATFORM,
+            tolerance,
+        ),
         detected_blocks=_count(detections, OBJ_BLOCK),
         truth_blocks=len(truth.objects_of_type(OBJ_BLOCK)),
         matched_blocks=_match_count(
@@ -233,6 +248,7 @@ MATCH_DETAIL_GROUPS = (
     ("apples", frozenset({OBJ_APPLE}), True),
     ("water", WATER_TYPES, False),
     ("walljumps", WALLJUMP_TYPES, False),
+    ("platforms", frozenset({OBJ_PLATFORM}), True),
     ("blocks", frozenset({OBJ_BLOCK}), True),
     ("full_spikes", FULL_SPIKE_TYPES, True),
     ("mini_spikes", MINI_SPIKE_TYPES, True),

@@ -33,15 +33,15 @@ The screenshot scanner has three layers:
 
 - high-confidence save and warp detection, enabled by default
 - conservative color-object detection for apples, water, and walljumps, enabled with `--include-color-objects`
-- experimental block/full-spike/mini-spike geometry detection, enabled with `--include-geometry`
+- experimental platform/block/full-spike/mini-spike geometry detection, enabled with `--include-geometry`
 
 Current fixture scan status:
 
 - saves: all Irkara fixture saves are detected and matched
 - warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
 - color objects: apples are reliable on current examples; pale/cyan water is matched on current fixtures; catharsis-style dark gray water is conservatively mapped to JTool water 2; walljump vines are recovered with some extra candidates on light green/white rooms
-- geometry: the opt-in detector produces useful block and full-spike candidates; outline-heavy rooms get a structural block-recovery pass, ambiguous and block-like full-spike candidates are filtered with outline gates, and block-like mini-spike noise is trimmed but still high on mini-heavy fixtures
-- not yet handled: platforms, jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
+- geometry: the opt-in detector matches the current platform, block, full-spike, and mini-spike fixture truth; horizontal platforms use enclosure geometry, outline-heavy rooms get structural block recovery, and room-profiled pruning limits spike noise
+- not yet handled: jump refreshers, gravity arrows, save variants beyond normal saves, and unknown gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant
 as diagnostics for now, not final playable conversions.

@@ -4,6 +4,7 @@ import unittest
 
 from jtool_scanner.constants import (
     OBJ_BLOCK,
+    OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_UP,
     OBJ_WATER,
@@ -25,11 +26,13 @@ class EvaluationTests(unittest.TestCase):
             objects=[
                 JMapObject(64, 96, OBJ_SAVE),
                 JMapObject(160, 128, OBJ_WATER),
+                JMapObject(224, 192, OBJ_PLATFORM),
             ]
         )
         detections = [
             Detection("save", OBJ_SAVE, 64, 96, 1.0, Box(0, 0, 24, 24)),
             Detection("water_2", OBJ_WATER_2, 160, 128, 0.9, Box(0, 0, 32, 32)),
+            Detection("platform", OBJ_PLATFORM, 224, 192, 0.8, Box(0, 0, 32, 16)),
         ]
 
         evaluation = evaluate_scan("synthetic", detections, truth, tolerance=8)
@@ -37,6 +40,8 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(evaluation.matched_saves, 1)
         self.assertEqual(evaluation.matched_water, 1)
         self.assertEqual(evaluation.detected_water, 1)
+        self.assertEqual(evaluation.matched_platforms, 1)
+        self.assertEqual(evaluation.detected_platforms, 1)
 
     def test_aggregate_evaluations_sums_metric_fields(self) -> None:
         truth = JMap(

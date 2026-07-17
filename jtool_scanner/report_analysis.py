@@ -13,6 +13,7 @@ DETAIL_GROUP_ORDER = (
     "apples",
     "water",
     "walljumps",
+    "platforms",
     "blocks",
     "full_spikes",
     "mini_spikes",

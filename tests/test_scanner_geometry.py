@@ -23,6 +23,7 @@ from jtool_scanner.scanner import (
     _GeometryClass,
     _GeometryPatchCandidate,
     _PatchFeatures,
+    _PlatformPatchFeatures,
     _accept_block,
     _accept_block_run_gap_patch,
     _accept_full_spike,
@@ -38,6 +39,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
+    _is_bright_outline_platform_candidate,
     _is_blocklike_mini_spike_noise_candidate,
     _is_blocklike_full_spike_recovery_candidate,
     _is_blocklike_spike_candidate,
@@ -57,6 +59,8 @@ from jtool_scanner.scanner import (
     _full_spike_run_distance,
     _is_edge_outline_block_patch,
     _is_edge_weak_block_patch,
+    _is_final_right_mini_corridor_candidate,
+    _is_final_right_mini_stack_candidate,
     _is_edge_full_spike_continuation_anchor,
     _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
@@ -70,6 +74,8 @@ from jtool_scanner.scanner import (
     _has_diagonal_side_mini_spike_support,
     _has_diagonal_right_mini_step_support,
     _has_extended_left_mini_spike_support,
+    _has_final_right_mini_corridor_support,
+    _has_final_right_mini_stack_support,
     _has_horizontal_side_mini_spike_support,
     _has_low_contrast_mini_up_pair,
     _has_mixed_cluster_up_mini_spike_support,
@@ -82,6 +88,7 @@ from jtool_scanner.scanner import (
     _has_ultra_faint_left_mini_spike_support,
     _has_four_quadrant_block_support,
     _is_low_contrast_mini_up_candidate,
+    _is_low_contrast_platform_candidate,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_border_supported_up_mini_spike_candidate,
     _is_dense_adjacent_up_mini_spike_candidate,
@@ -93,6 +100,7 @@ from jtool_scanner.scanner import (
     _is_ultra_faint_left_mini_spike_candidate,
     _is_low_signal_supported_full_spike_candidate,
     _is_residual_mini_spike_noise_candidate,
+    _is_profiled_full_spike_noise,
     _is_outline_apple_component,
     _is_pale_outline_apple_room,
     _is_supported_full_spike_candidate,
@@ -3955,6 +3963,175 @@ class ScannerGeometryTests(unittest.TestCase):
             _accept_block_run_gap_patch(
                 weak_patch,
                 _GeometryClass("block", OBJ_BLOCK, 0.04),
+            )
+        )
+
+    def test_final_right_mini_stack_candidate_requires_clear_direction(self) -> None:
+        patch = _PatchFeatures((), 0.394, 0.33, 0.50)
+        block = _GeometryClass("block", OBJ_BLOCK, 0.453)
+        candidate = _GeometryClass(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            0.498,
+            0.129,
+            0.268,
+        )
+
+        self.assertTrue(
+            _is_final_right_mini_stack_candidate(patch, block, candidate)
+        )
+        self.assertFalse(
+            _is_final_right_mini_stack_candidate(
+                patch,
+                block,
+                _GeometryClass(
+                    "mini_spike_right",
+                    OBJ_MINI_SPIKE_RIGHT,
+                    0.498,
+                    0.11,
+                    0.268,
+                ),
+            )
+        )
+
+    def test_final_right_mini_stack_support_requires_opposed_pair(self) -> None:
+        right = Detection(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            96,
+            512,
+            0.52,
+            Box(96, 512, 16, 16),
+        )
+        left = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            48,
+            528,
+            0.70,
+            Box(48, 528, 16, 16),
+        )
+
+        self.assertTrue(_has_final_right_mini_stack_support([right, left], 96, 528))
+        self.assertFalse(_has_final_right_mini_stack_support([right], 96, 528))
+
+    def test_final_right_mini_corridor_candidate_accepts_faint_shape(self) -> None:
+        patch = _PatchFeatures((), 0.102, 0.054, 0.188)
+        block = _GeometryClass("block", OBJ_BLOCK, 0.108)
+        candidate = _GeometryClass(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            0.106,
+            -0.003,
+            0.053,
+        )
+
+        self.assertTrue(
+            _is_final_right_mini_corridor_candidate(patch, block, candidate)
+        )
+        self.assertFalse(
+            _is_final_right_mini_corridor_candidate(
+                _PatchFeatures((), 0.14, 0.054, 0.188),
+                block,
+                candidate,
+            )
+        )
+
+    def test_final_right_mini_corridor_support_requires_both_walls(self) -> None:
+        full = Detection(
+            "spike_right",
+            OBJ_SPIKE_RIGHT,
+            24,
+            96,
+            0.32,
+            Box(24, 96, 32, 32),
+        )
+        left_wall = Detection("block", OBJ_BLOCK, 0, 128, 0.30, Box(0, 128, 32, 32))
+        right_wall = Detection(
+            "block",
+            OBJ_BLOCK,
+            96,
+            128,
+            0.30,
+            Box(96, 128, 32, 32),
+        )
+
+        self.assertTrue(
+            _has_final_right_mini_corridor_support(
+                [full, left_wall, right_wall],
+                32,
+                128,
+            )
+        )
+        self.assertFalse(
+            _has_final_right_mini_corridor_support(
+                [full, left_wall],
+                32,
+                128,
+            )
+        )
+
+    def test_profiled_full_spike_noise_rejects_low_edge_candidate(self) -> None:
+        detection = Detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.50,
+            Box(64, 64, 32, 32),
+        )
+
+        self.assertTrue(
+            _is_profiled_full_spike_noise(
+                "solid_dense",
+                detection,
+                _PatchFeatures((), 0.14, 0.20, 0.20),
+                0.50,
+                0.30,
+                0.75,
+                0.20,
+                0.0,
+                0.0,
+                64.0,
+                64.0,
+            )
+        )
+
+    def test_low_contrast_platform_candidate_requires_long_thin_enclosure(self) -> None:
+        self.assertTrue(
+            _is_low_contrast_platform_candidate(
+                _PlatformPatchFeatures(28, 14, 85)
+            )
+        )
+        self.assertFalse(
+            _is_low_contrast_platform_candidate(
+                _PlatformPatchFeatures(23, 14, 85)
+            )
+        )
+        self.assertFalse(
+            _is_low_contrast_platform_candidate(
+                _PlatformPatchFeatures(28, 14, 120)
+            )
+        )
+
+    def test_bright_platform_candidate_requires_empty_lower_half(self) -> None:
+        features = _PlatformPatchFeatures(32, 16, 255)
+        patch = _PatchFeatures((), 0.117, 0.268, 0.0)
+
+        self.assertTrue(
+            _is_bright_outline_platform_candidate(
+                features,
+                patch,
+                block_score=0.215,
+                below_edge=0.004,
+            )
+        )
+        self.assertFalse(
+            _is_bright_outline_platform_candidate(
+                features,
+                patch,
+                block_score=0.215,
+                below_edge=0.04,
             )
         )
 
