@@ -1150,6 +1150,12 @@ def scan_image(
             image,
             box,
         )
+        detections = _prune_final_mini_spike_noise(
+            detections,
+            image,
+            box,
+            miniblock_room=bool(mini_blocks),
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
@@ -10787,6 +10793,380 @@ def _prune_blocklike_mini_spike_noise(
             blocks,
         )
     ]
+
+
+@dataclass(frozen=True, slots=True)
+class _TriangleFillFeatures:
+    cluster_gap: float
+    inside_density: float
+    outside_density: float
+    density_contrast: float
+    luma_contrast: float
+
+
+def _triangle_fill_features(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    map_size: int,
+    direction: str,
+) -> _TriangleFillFeatures:
+    pixels: list[list[tuple[int, int, int]]] = []
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    for sample_y in range(16):
+        image_y = int(
+            min(
+                image.height - 1,
+                max(
+                    0,
+                    room.y
+                    + (map_y + (sample_y + 0.5) * map_size / 16) * scale_y,
+                ),
+            )
+        )
+        row: list[tuple[int, int, int]] = []
+        for sample_x in range(16):
+            image_x = int(
+                min(
+                    image.width - 1,
+                    max(
+                        0,
+                        room.x
+                        + (map_x + (sample_x + 0.5) * map_size / 16)
+                        * scale_x,
+                    ),
+                )
+            )
+            row.append(image.pixel(image_x, image_y))
+        pixels.append(row)
+
+    luma_values = [sum(pixel) / 3 for row in pixels for pixel in row]
+    low = min(luma_values)
+    high = max(luma_values)
+    for _ in range(12):
+        midpoint = (low + high) / 2
+        lower = [value for value in luma_values if value < midpoint]
+        upper = [value for value in luma_values if value >= midpoint]
+        if not lower or not upper:
+            break
+        low = sum(lower) / len(lower)
+        high = sum(upper) / len(upper)
+    threshold = (low + high) / 2
+
+    inside_values: list[float] = []
+    outside_values: list[float] = []
+    inside_bright = 0
+    outside_bright = 0
+    for sample_y, row in enumerate(pixels):
+        for sample_x, pixel in enumerate(row):
+            if direction == "up":
+                inside = sample_y >= 2 * abs(sample_x - 7.5)
+            elif direction == "down":
+                inside = sample_y <= 15 - 2 * abs(sample_x - 7.5)
+            elif direction == "right":
+                inside = sample_x <= 15 - 2 * abs(sample_y - 7.5)
+            else:
+                inside = sample_x >= 2 * abs(sample_y - 7.5)
+            value = sum(pixel) / 3
+            if inside:
+                inside_values.append(value)
+                inside_bright += value >= threshold
+            else:
+                outside_values.append(value)
+                outside_bright += value >= threshold
+
+    inside_density = inside_bright / len(inside_values)
+    outside_density = outside_bright / len(outside_values)
+    return _TriangleFillFeatures(
+        cluster_gap=high - low,
+        inside_density=inside_density,
+        outside_density=outside_density,
+        density_contrast=inside_density - outside_density,
+        luma_contrast=(
+            sum(inside_values) / len(inside_values)
+            - sum(outside_values) / len(outside_values)
+        ),
+    )
+
+
+def _prune_final_mini_spike_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    *,
+    miniblock_room: bool,
+) -> list[Detection]:
+    mini_spikes = [
+        detection for detection in detections if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    if not mini_spikes:
+        return detections
+    if miniblock_room:
+        kept_mini_spikes = _select_miniblock_room_mini_spikes(
+            detections,
+            mini_spikes,
+            image,
+            room,
+        )
+    else:
+        kept_mini_spikes = []
+        for detection in mini_spikes:
+            direction = {
+                OBJ_MINI_SPIKE_UP: "up",
+                OBJ_MINI_SPIKE_RIGHT: "right",
+                OBJ_MINI_SPIKE_LEFT: "left",
+                OBJ_MINI_SPIKE_DOWN: "down",
+            }[detection.type_id]
+            fill = _triangle_fill_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                MINI_BLOCK_SIZE,
+                direction,
+            )
+            neighbors = _nearby_mini_spike_support_count(
+                detection,
+                mini_spikes,
+                MINI_BLOCK_SIZE,
+            )
+            if not _is_final_legacy_mini_spike_noise(
+                detection.score,
+                fill.inside_density,
+                neighbors,
+            ):
+                kept_mini_spikes.append(detection)
+
+    kept_ids = {id(detection) for detection in kept_mini_spikes}
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in MINI_SPIKE_TYPES or id(detection) in kept_ids
+    ]
+
+
+def _is_final_legacy_mini_spike_noise(
+    score: float,
+    fill_inside: float,
+    neighbors: int,
+) -> bool:
+    return score >= 0.40 and fill_inside >= 0.40 and neighbors == 0
+
+
+def _select_miniblock_room_mini_spikes(
+    detections: list[Detection],
+    mini_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    opposite_types = {
+        OBJ_MINI_SPIKE_UP: OBJ_MINI_SPIKE_DOWN,
+        OBJ_MINI_SPIKE_DOWN: OBJ_MINI_SPIKE_UP,
+        OBJ_MINI_SPIKE_LEFT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_MINI_SPIKE_LEFT,
+    }
+    mini_keys = {
+        (detection.type_id, detection.x, detection.y) for detection in mini_spikes
+    }
+    mini_blocks = [
+        detection for detection in detections if detection.type_id == OBJ_MINI_BLOCK
+    ]
+    block_profiles = [
+        _patch_color_profile(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+        )
+        for detection in mini_blocks
+    ]
+    learned_block_profile = _median_color_profile(block_profiles)
+
+    kept: list[Detection] = []
+    for detection in mini_spikes:
+        direction = directions[detection.type_id]
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+        )
+        block = _classify_block(patch)
+        shape = _mini_spike_class_for_detection(detection, patch)
+        if shape is None:
+            continue
+        side_min = _triangle_min_side_coverage(patch, direction)
+        base_edge = _triangle_base_edge_coverage(patch, direction)
+        fill = _triangle_fill_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+            direction,
+        )
+        profile = _patch_color_profile(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+        )
+        block_profile_distance = _color_profile_distance(
+            profile,
+            learned_block_profile,
+        )
+        neighbors = _nearby_mini_spike_support_count(
+            detection,
+            mini_spikes,
+            MINI_BLOCK_SIZE,
+        )
+        if detection.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN):
+            axis_offsets = tuple(
+                (0, offset) for offset in (-48, -32, -16, 16, 32, 48)
+            )
+            immediate_offsets = ((0, -16), (0, 16))
+        else:
+            axis_offsets = tuple(
+                (offset, 0) for offset in (-48, -32, -16, 16, 32, 48)
+            )
+            immediate_offsets = ((-16, 0), (16, 0))
+        same_type_axis_run = sum(
+            (detection.type_id, detection.x + dx, detection.y + dy) in mini_keys
+            for dx, dy in axis_offsets
+        )
+        same_type_immediate_axis = sum(
+            (detection.type_id, detection.x + dx, detection.y + dy) in mini_keys
+            for dx, dy in immediate_offsets
+        )
+        opposite_type_axis_run = sum(
+            (
+                opposite_types[detection.type_id],
+                detection.x + dx,
+                detection.y + dy,
+            )
+            in mini_keys
+            for dx, dy in axis_offsets
+        )
+        if _is_miniblock_room_mini_spike_candidate(
+            detection.type_id,
+            detection.score,
+            shape.direction_margin,
+            side_min,
+            base_edge,
+            patch.edge_density,
+            patch.border_score,
+            patch.center_score,
+            block.score,
+            profile.saturation,
+            block_profile_distance,
+            fill.inside_density,
+            fill.density_contrast,
+            fill.luma_contrast,
+            neighbors,
+            same_type_axis_run,
+            same_type_immediate_axis,
+            opposite_type_axis_run,
+        ):
+            kept.append(detection)
+    return kept
+
+
+def _is_miniblock_room_mini_spike_candidate(
+    type_id: int,
+    score: float,
+    direction_margin: float,
+    side_min: float,
+    base_edge: float,
+    edge_density: float,
+    border_score: float,
+    center_score: float,
+    block_score: float,
+    saturation: float,
+    block_profile_distance: float,
+    fill_inside: float,
+    fill_density_contrast: float,
+    fill_luma_contrast: float,
+    neighbors: int,
+    same_type_axis_run: int,
+    same_type_immediate_axis: int,
+    opposite_type_axis_run: int,
+) -> bool:
+    core_triangle = side_min >= 0.75 and fill_density_contrast >= 0.40
+    stretched_up_run = (
+        type_id == OBJ_MINI_SPIKE_UP
+        and same_type_axis_run >= 2
+        and opposite_type_axis_run == 0
+    )
+    block_supported_triangle = (
+        base_edge <= 0.50
+        and block_score >= 0.35
+        and fill_density_contrast >= 0.40
+    )
+    low_score_complete_outline = (
+        score <= 0.35 and side_min >= 0.875 and border_score >= 0.30
+    )
+    low_texture_block_relative = (
+        border_score <= 0.20
+        and saturation <= 0.25
+        and block_profile_distance <= 40
+    )
+    low_score_directional = (
+        score <= 0.25 and direction_margin >= -0.05 and block_score >= 0.30
+    )
+    faint_immediate_run = (
+        0.20 <= edge_density <= 0.225 and same_type_immediate_axis >= 2
+    )
+    open_center_shape = (
+        base_edge >= 0.375 and center_score >= 0.40 and block_score <= 0.30
+    )
+    isolated_tip_shape = (
+        base_edge <= 0.25 and neighbors <= 1 and fill_inside >= 0.70
+    )
+    high_border_weak_shape = (
+        score <= 0.30 and edge_density >= 0.30 and border_score >= 0.40
+    )
+    faint_high_border_up = (
+        type_id == OBJ_MINI_SPIKE_UP
+        and edge_density <= 0.25
+        and border_score >= 0.40
+    )
+    center_heavy_directional = (
+        direction_margin >= 0.15
+        and border_score >= 0.30
+        and center_score >= 0.50
+    )
+    saturated_axis_run = (
+        saturation >= 0.40
+        and fill_luma_contrast >= 30
+        and same_type_axis_run >= 2
+    )
+    return core_triangle or any(
+        (
+            stretched_up_run,
+            block_supported_triangle,
+            low_score_complete_outline,
+            low_texture_block_relative,
+            low_score_directional,
+            faint_immediate_run,
+            open_center_shape,
+            isolated_tip_shape,
+            high_border_weak_shape,
+            faint_high_border_up,
+            center_heavy_directional,
+            saturated_axis_run,
+        )
+    )
 
 
 def _prune_duplicate_mini_spike_cells(detections: list[Detection]) -> list[Detection]:

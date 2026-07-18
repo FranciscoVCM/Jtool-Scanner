@@ -64,6 +64,8 @@ from jtool_scanner.scanner import (
     _is_edge_weak_block_patch,
     _is_final_right_mini_corridor_candidate,
     _is_final_right_mini_stack_candidate,
+    _is_final_legacy_mini_spike_noise,
+    _is_miniblock_room_mini_spike_candidate,
     _is_edge_full_spike_continuation_anchor,
     _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
@@ -165,6 +167,59 @@ from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_final_legacy_mini_spike_noise_requires_isolation(self) -> None:
+        self.assertTrue(_is_final_legacy_mini_spike_noise(0.50, 0.60, 0))
+        self.assertFalse(_is_final_legacy_mini_spike_noise(0.50, 0.60, 1))
+        self.assertFalse(_is_final_legacy_mini_spike_noise(0.35, 0.60, 0))
+
+    def test_miniblock_room_mini_spike_accepts_filled_triangle_core(self) -> None:
+        self.assertTrue(
+            _is_miniblock_room_mini_spike_candidate(
+                OBJ_MINI_SPIKE_UP,
+                0.50,
+                0.0,
+                0.875,
+                0.50,
+                0.25,
+                0.25,
+                0.25,
+                0.25,
+                0.25,
+                80.0,
+                0.80,
+                0.50,
+                20.0,
+                0,
+                0,
+                0,
+                0,
+            )
+        )
+
+    def test_miniblock_room_mini_spike_rejects_unstructured_noise(self) -> None:
+        self.assertFalse(
+            _is_miniblock_room_mini_spike_candidate(
+                OBJ_MINI_SPIKE_RIGHT,
+                0.50,
+                -0.20,
+                0.25,
+                0.75,
+                0.27,
+                0.25,
+                0.25,
+                0.40,
+                0.30,
+                80.0,
+                0.35,
+                0.05,
+                5.0,
+                4,
+                0,
+                0,
+                2,
+            )
+        )
+
     def test_low_value_primary_full_spike_requires_compound_defect(self) -> None:
         self.assertTrue(
             _is_low_value_primary_full_spike_geometry(

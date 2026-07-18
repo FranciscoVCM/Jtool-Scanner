@@ -45,7 +45,8 @@ Current eight-room stress-fixture status (24px evaluation tolerance):
 - CN3 objects: both rooms match all saves, warps, visible water, directional walljumps, full spikes, and mini spikes; stretched source spikes are represented by aligned mini-spike runs and walljump strips recover their backing miniblocks
 - active saves: green-centered saves are treated as the active state of the same save object
 - full-spike precision: all 652 fixture spikes match with 799 detections (81.6% precision); CN3-16 is 30/30 with 43 detections and CN3-18 is 50/50 with 60 detections after separating partial-occlusion recovery from broad axis support and pruning incompatible local orientations
-- remaining precision work: dense miniblock-room mini spikes still emit multiple orientation/position hypotheses (CN3-16: 293 detections for 54 truth; CN3-18: 392 for 54 truth)
+- mini-spike precision: all 209 fixture mini spikes match with 286 detections (73.1% precision); a final color-independent triangle-fill and structural-support pass reduces CN3-16 to 62 detections for 54 truth and CN3-18 to 68 for 54 truth
+- remaining precision work: regular blocks have 1,184 detections for 919 truth, while miniblocks have 1,171 detections for 875 truth; these are suitable for draft conversion but remain the largest geometry cleanup opportunities
 - not yet handled: jump refreshers and unknown game-specific gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant
