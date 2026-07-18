@@ -3190,7 +3190,13 @@ def _recover_miniblock_room_full_spikes(
                 base_anchored = (
                     base_support
                     and rank <= 1
-                    and spike.score >= 0.40
+                    and (
+                        spike.score >= 0.425
+                        or (
+                            spike.type_id == OBJ_MINI_SPIKE_UP
+                            and spike.score >= 0.409
+                        )
+                    )
                     and spike.outline_delta >= 0.05
                     and patch.edge_density >= 0.20
                     and side_coverage >= 0.55
@@ -3230,6 +3236,56 @@ def _recover_miniblock_room_full_spikes(
                     and spike.outline_delta >= 0.10
                     and side_coverage >= 0.60
                 )
+                # Occluded 32px spikes expose only a narrow triangle fragment.
+                # Keep these bands separate from ordinary axis support so tile
+                # seams cannot activate broad recovery.
+                precise_occluded_up = (
+                    occluded_up
+                    and (
+                        (
+                            rank == 2
+                            and spike.score >= 0.27
+                            and spike.score <= 0.31
+                            and spike.outline_delta >= -0.09
+                            and spike.outline_delta <= -0.05
+                            and patch.edge_density >= 0.33
+                            and patch.edge_density <= 0.40
+                            and patch.center_score >= 0.40
+                            and patch.center_score <= 0.52
+                            and side_coverage >= 0.35
+                            and side_coverage <= 0.50
+                        )
+                        or (
+                            rank >= 3
+                            and spike.score >= 0.20
+                            and spike.score <= 0.30
+                            and spike.outline_delta >= -0.10
+                            and spike.outline_delta <= 0.0
+                            and patch.edge_density >= 0.28
+                            and patch.edge_density <= 0.35
+                            and patch.center_score >= 0.40
+                            and patch.center_score <= 0.52
+                            and side_coverage >= 0.20
+                            and side_coverage <= 0.35
+                        )
+                    )
+                )
+                precise_occluded_down = (
+                    occluded_down
+                    and spike.score <= 0.33
+                    and patch.edge_density <= 0.40
+                    and patch.center_score <= 0.52
+                    and side_coverage <= 0.30
+                )
+                precise_axis_down = (
+                    axis_strong
+                    and spike.type_id == OBJ_MINI_SPIKE_DOWN
+                    and spike.score >= 0.53
+                    and spike.outline_delta >= 0.45
+                    and patch.edge_density <= 0.28
+                    and patch.center_score <= 0.40
+                    and side_coverage >= 0.90
+                )
                 strong = (
                     rank == 0
                     and spike.score >= 0.62
@@ -3245,10 +3301,10 @@ def _recover_miniblock_room_full_spikes(
                 )
                 if not (
                     base_anchored
-                    or occluded_up
-                    or occluded_down
                     or strong_axis_down
-                    or axis_strong
+                    or precise_occluded_up
+                    or precise_occluded_down
+                    or precise_axis_down
                     or strong
                     or isolated_shape
                 ):
@@ -3256,9 +3312,23 @@ def _recover_miniblock_room_full_spikes(
                 type_id = mini_to_full[spike.type_id]
                 if _has_nearby_detection(result, type_id, x, y, 24.0):
                     continue
+                if base_anchored:
+                    recovery_reason = "base_anchored"
+                elif strong_axis_down:
+                    recovery_reason = "strong_axis_down"
+                elif precise_occluded_up:
+                    recovery_reason = "precise_occluded_up"
+                elif precise_occluded_down:
+                    recovery_reason = "precise_occluded_down"
+                elif precise_axis_down:
+                    recovery_reason = "precise_axis_down"
+                elif strong:
+                    recovery_reason = "strong"
+                else:
+                    recovery_reason = "isolated_shape"
                 result.append(
                     _geometry_detection(
-                        "miniblock_room_full_spike",
+                        f"miniblock_room_full_spike_{recovery_reason}",
                         type_id,
                         x,
                         y,

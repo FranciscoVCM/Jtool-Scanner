@@ -44,7 +44,8 @@ Current eight-room stress-fixture status (24px evaluation tolerance):
 - miniblocks: CN3-16 matches 501/501 with 621 detections and CN3-18 matches 374/374 with 550 detections; a room-scale 16px topology gate learns local tileset appearance and rejects ordinary 32px rooms
 - CN3 objects: both rooms match all saves, warps, visible water, directional walljumps, full spikes, and mini spikes; stretched source spikes are represented by aligned mini-spike runs and walljump strips recover their backing miniblocks
 - active saves: green-centered saves are treated as the active state of the same save object
-- remaining precision work: dense miniblock-room full and mini spikes still emit multiple orientation/position hypotheses (CN3-16: 294/293 detections for 30/54 truth; CN3-18: 334/392 for 50/54 truth)
+- full-spike precision: all 652 fixture spikes match with 1,200 detections; CN3-16 is 30/30 with 127 detections and CN3-18 is 50/50 with 148 detections after separating partial-occlusion recovery from broad axis support
+- remaining precision work: dense miniblock-room mini spikes still emit multiple orientation/position hypotheses (CN3-16: 293 detections for 54 truth; CN3-18: 392 for 54 truth)
 - not yet handled: jump refreshers and unknown game-specific gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant
@@ -71,6 +72,8 @@ The JSON report includes the run settings, aggregate totals, per-fixture
 metrics, artifact paths, unmatched detections, and missed truth objects. Use the
 unmatched/missed coordinate lists to tune scanner thresholds against concrete
 false positives instead of comparing screenshots by hand.
+It also records the detection chosen for every matched truth object, including
+its scanner kind and score, so recovery-path true/false yield can be measured.
 `analyze-report` summarizes those lists by object group, fixture, type, score,
 nearest-distance bucket, snap offset, grid residue, and representative examples.
 

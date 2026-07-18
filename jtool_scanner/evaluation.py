@@ -396,8 +396,28 @@ def _match_detail_group(
     ]
 
     return {
+        "matched_detection_count": len(matched),
         "unmatched_detection_count": len(unmatched_detections),
         "missed_truth_count": len(remaining),
+        "matched_detections": [
+            {
+                **_detection_detail(
+                    group_detections[detection_index],
+                    group_truth,
+                    strict_type,
+                ),
+                "matched_truth": {
+                    "type_id": group_truth[truth_index].type_id,
+                    "type_name": OBJECT_NAMES.get(
+                        group_truth[truth_index].type_id,
+                        f"unknown_{group_truth[truth_index].type_id}",
+                    ),
+                    "x": group_truth[truth_index].x,
+                    "y": group_truth[truth_index].y,
+                },
+            }
+            for detection_index, truth_index in sorted(matched.items())
+        ],
         "unmatched_detections": [
             _detection_detail(detection, group_truth, strict_type)
             for detection in unmatched_detections

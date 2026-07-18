@@ -98,6 +98,12 @@ class EvaluationTests(unittest.TestCase):
         details = build_match_details(detections, truth, tolerance=8)
 
         self.assertEqual(details["water"]["unmatched_detection_count"], 1)
+        self.assertEqual(details["water"]["matched_detection_count"], 1)
+        self.assertEqual(len(details["water"]["matched_detections"]), 1)
+        self.assertEqual(
+            details["water"]["matched_detections"][0]["matched_truth"]["x"],
+            160,
+        )
         self.assertEqual(details["blocks"]["missed_truth_count"], 1)
         self.assertEqual(details["mini_blocks"]["missed_truth_count"], 1)
         self.assertEqual(details["water"]["unmatched_detections"][0]["x"], 400)
