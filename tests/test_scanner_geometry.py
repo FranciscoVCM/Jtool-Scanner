@@ -128,8 +128,10 @@ from jtool_scanner.scanner import (
     _is_strong_ambiguous_raw_support_candidate,
     _is_supported_shape_full_spike_candidate,
     _is_low_signal_supported_full_spike_recovery,
+    _is_low_value_primary_full_spike_geometry,
     _normalize_full_spike_origin,
     _forms_full_spike_orientation_junction,
+    _full_spike_body_miniblock_overlap,
     _normalize_full_spike_detections,
     _outline_block_score,
     _patch_in_ranges,
@@ -163,6 +165,48 @@ from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_low_value_primary_full_spike_requires_compound_defect(self) -> None:
+        self.assertTrue(
+            _is_low_value_primary_full_spike_geometry(
+                OBJ_SPIKE_UP,
+                0.58,
+                0.875,
+                1.0,
+                0.10,
+                0.40,
+                0.52,
+                False,
+            )
+        )
+        self.assertFalse(
+            _is_low_value_primary_full_spike_geometry(
+                OBJ_SPIKE_UP,
+                0.72,
+                1.0,
+                0.50,
+                0.18,
+                0.35,
+                0.32,
+                False,
+            )
+        )
+
+    def test_full_spike_body_miniblock_overlap_rotates_with_orientation(self) -> None:
+        positions = {(32, 48), (48, 48), (96, 64), (96, 80)}
+
+        self.assertEqual(
+            _full_spike_body_miniblock_overlap(OBJ_SPIKE_UP, 32, 48, positions),
+            2,
+        )
+        self.assertEqual(
+            _full_spike_body_miniblock_overlap(OBJ_SPIKE_RIGHT, 96, 64, positions),
+            2,
+        )
+        self.assertEqual(
+            _full_spike_body_miniblock_overlap(OBJ_SPIKE_DOWN, 96, 64, positions),
+            1,
+        )
+
     def test_miniblock_room_gate_rejects_dense_32px_quarter_cell_topology(self) -> None:
         thin_rows = {
             (x, y)

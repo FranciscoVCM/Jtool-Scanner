@@ -7,6 +7,7 @@ for diagnostics, but it is not yet expected to produce final maps by itself.
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -1144,6 +1145,11 @@ def scan_image(
             )
         elif _has_confirmed_gravity_pair(detections):
             detections = _replace_gravity_room_blocks(detections, image, box)
+        detections = _prune_low_value_full_spike_recoveries(
+            detections,
+            image,
+            box,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
@@ -3140,6 +3146,19 @@ def _recover_miniblock_room_mini_spikes(
     return result
 
 
+def _full_spike_body_miniblock_overlap(
+    type_id: int,
+    x: int,
+    y: int,
+    mini_block_positions: set[tuple[int, int]],
+) -> int:
+    if type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+        body_positions = ((x, y), (x + MINI_BLOCK_SIZE, y))
+    else:
+        body_positions = ((x, y), (x, y + MINI_BLOCK_SIZE))
+    return sum(position in mini_block_positions for position in body_positions)
+
+
 def _recover_miniblock_room_full_spikes(
     detections: list[Detection],
     mini_blocks: list[Detection],
@@ -3169,9 +3188,13 @@ def _recover_miniblock_room_full_spikes(
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
             patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            full_spike = _classify_full_spike(patch)
             for rank, spike in enumerate(_classify_mini_spike_candidates(patch)):
                 direction = directions[spike.type_id]
                 side_coverage = _triangle_side_coverage(patch, direction)
+                min_side_coverage = _triangle_min_side_coverage(patch, direction)
+                base_edge_coverage = _triangle_base_edge_coverage(patch, direction)
                 base_dx, base_dy = base_offsets[spike.type_id]
                 base_support = (x + base_dx, y + base_dy) in mini_block_positions
                 axis_support = any(
@@ -3286,6 +3309,80 @@ def _recover_miniblock_room_full_spikes(
                     and patch.center_score <= 0.40
                     and side_coverage >= 0.90
                 )
+                type_id = mini_to_full[spike.type_id]
+                body_overlap = _full_spike_body_miniblock_overlap(
+                    type_id,
+                    x,
+                    y,
+                    mini_block_positions,
+                )
+                exposed_tip_up = (
+                    body_overlap == 2
+                    and spike.type_id == OBJ_MINI_SPIKE_UP
+                    and rank == 0
+                    and spike.score >= 0.47
+                    and spike.outline_delta >= 0.30
+                    and patch.edge_density <= 0.30
+                    and patch.center_score <= 0.25
+                    and side_coverage >= 0.95
+                )
+                classifier_failed = (
+                    full_spike is None or full_spike.type_id != type_id
+                )
+                exposed_partial_body = (
+                    body_overlap == 1
+                    and base_anchored
+                    and (
+                        (
+                            side_coverage >= 0.75
+                            and spike.outline_delta >= 0.30
+                        )
+                        or (
+                            side_coverage <= 0.625
+                            and patch.center_score >= 0.575
+                        )
+                        or (
+                            type_id == OBJ_SPIKE_LEFT
+                            and spike.score <= 0.44
+                            and patch.edge_density <= 0.40
+                        )
+                        or (
+                            type_id == OBJ_SPIKE_UP
+                            and classifier_failed
+                            and 0.49 <= spike.score <= 0.50
+                            and block.score <= 0.55
+                        )
+                        or (
+                            type_id == OBJ_SPIKE_UP
+                            and classifier_failed
+                            and patch.center_score <= 0.43
+                        )
+                        or (
+                            type_id == OBJ_SPIKE_UP
+                            and not classifier_failed
+                            and spike.score >= 0.57
+                            and side_coverage >= 0.875
+                        )
+                    )
+                )
+                coherent_uncovered_body = (
+                    body_overlap == 0
+                    and base_anchored
+                    and (
+                        min_side_coverage >= 1.0
+                        or base_edge_coverage <= 0.1875
+                        or (
+                            type_id == OBJ_SPIKE_UP
+                            and classifier_failed
+                            and spike.score <= 0.42
+                        )
+                        or (
+                            type_id == OBJ_SPIKE_LEFT
+                            and classifier_failed
+                            and spike.score <= 0.465
+                        )
+                    )
+                )
                 strong = (
                     rank == 0
                     and spike.score >= 0.62
@@ -3305,11 +3402,29 @@ def _recover_miniblock_room_full_spikes(
                     or precise_occluded_up
                     or precise_occluded_down
                     or precise_axis_down
+                    or exposed_tip_up
                     or strong
                     or isolated_shape
                 ):
                     continue
-                type_id = mini_to_full[spike.type_id]
+                if (
+                    body_overlap == 2
+                    and not precise_axis_down
+                    and not exposed_tip_up
+                ):
+                    continue
+                if (
+                    body_overlap == 1
+                    and base_anchored
+                    and not exposed_partial_body
+                ):
+                    continue
+                if (
+                    body_overlap == 0
+                    and base_anchored
+                    and not coherent_uncovered_body
+                ):
+                    continue
                 if _has_nearby_detection(result, type_id, x, y, 24.0):
                     continue
                 if base_anchored:
@@ -3322,6 +3437,8 @@ def _recover_miniblock_room_full_spikes(
                     recovery_reason = "precise_occluded_down"
                 elif precise_axis_down:
                     recovery_reason = "precise_axis_down"
+                elif exposed_tip_up:
+                    recovery_reason = "exposed_tip_up"
                 elif strong:
                     recovery_reason = "strong"
                 else:
@@ -3877,6 +3994,68 @@ def _triangle_side_coverage(patch: _PatchFeatures, direction: str) -> float:
                 x = sample - 1 - x
             if any(hit(candidate_x, y) for candidate_x in range(x - 1, x + 2)):
                 hits += 1
+    return hits / sample
+
+
+def _triangle_min_side_coverage(
+    patch: _PatchFeatures,
+    direction: str,
+) -> float:
+    """Measure the weaker of the two triangle slopes."""
+    sample = 16
+
+    def hit(x: int, y: int) -> bool:
+        x = max(0, min(sample - 1, x))
+        y = max(0, min(sample - 1, y))
+        return patch.edge_mask[y * sample + x]
+
+    side_hits = [0, 0]
+    for offset in range(sample // 2):
+        if direction in ("up", "down"):
+            side = round(abs(offset - (sample - 1) / 2) * 2)
+            if direction == "down":
+                side = sample - 1 - side
+            points = ((offset, side), (sample - 1 - offset, side))
+        else:
+            side = (sample - 1) - round(
+                abs(offset - (sample - 1) / 2) * 2
+            )
+            if direction == "left":
+                side = sample - 1 - side
+            points = ((side, offset), (side, sample - 1 - offset))
+        for index, (x, y) in enumerate(points):
+            if any(
+                hit(x + dx, y + dy)
+                for dx in (-1, 0, 1)
+                for dy in (-1, 0, 1)
+            ):
+                side_hits[index] += 1
+    return min(side_hits) / (sample / 2)
+
+
+def _triangle_base_edge_coverage(
+    patch: _PatchFeatures,
+    direction: str,
+) -> float:
+    sample = 16
+
+    def hit(x: int, y: int) -> bool:
+        x = max(0, min(sample - 1, x))
+        y = max(0, min(sample - 1, y))
+        return patch.edge_mask[y * sample + x]
+
+    if direction in ("up", "down"):
+        base = sample - 1 if direction == "up" else 0
+        hits = sum(
+            any(hit(offset, base + delta) for delta in (-1, 0, 1))
+            for offset in range(sample)
+        )
+    else:
+        base = 0 if direction == "right" else sample - 1
+        hits = sum(
+            any(hit(base + delta, offset) for delta in (-1, 0, 1))
+            for offset in range(sample)
+        )
     return hits / sample
 
 
@@ -9028,6 +9207,323 @@ def _prune_final_full_spike_recovery_noise(
         detection
         for detection in detections
         if not _is_block_heavy_full_spike_support_noise(detection, image, room)
+    ]
+
+
+def _prune_low_value_full_spike_recoveries(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    blocks = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    axis_support = _full_spike_axis_support(full_spikes)
+    base_offsets = {
+        OBJ_SPIKE_UP: (0, GRID_SIZE),
+        OBJ_SPIKE_RIGHT: (-GRID_SIZE, 0),
+        OBJ_SPIKE_LEFT: (GRID_SIZE, 0),
+        OBJ_SPIKE_DOWN: (0, -GRID_SIZE),
+    }
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    primary_kinds = {"spike_up", "spike_right", "spike_left", "spike_down"}
+    support_recovery_kinds = {
+        "full_spike_shape_recovery",
+        "full_spike_support",
+    }
+    kept: list[Detection] = []
+    for detection in detections:
+        if detection.kind not in primary_kinds | support_recovery_kinds | {
+            "full_spike_gap",
+            "full_spike_raw_primary_recovery",
+        }:
+            kept.append(detection)
+            continue
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        spike = _classify_full_spike(patch)
+        block = _classify_block(patch)
+        classifier_failed = spike is None or spike.type_id != detection.type_id
+        base_dx, base_dy = base_offsets[detection.type_id]
+        base_supported = (
+            detection.x + base_dx,
+            detection.y + base_dy,
+        ) in blocks
+        if detection.kind in support_recovery_kinds:
+            direction = directions[detection.type_id]
+            min_side_coverage = _triangle_min_side_coverage(patch, direction)
+            base_edge_coverage = _triangle_base_edge_coverage(patch, direction)
+            low_center_shape = patch.center_score <= 0.16
+            coherent_weak_left = (
+                detection.type_id == OBJ_SPIKE_LEFT
+                and min_side_coverage >= 0.875
+                and 0.53 <= detection.score <= 0.54
+                and block.score <= 0.47
+            )
+            if (
+                min_side_coverage >= 1.0
+                or base_edge_coverage <= 0.375
+                or base_supported
+                or axis_support.get(id(detection), False)
+                or low_center_shape
+                or coherent_weak_left
+            ):
+                kept.append(detection)
+            continue
+        if detection.kind in primary_kinds:
+            side_coverage = _triangle_side_coverage(
+                patch,
+                directions[detection.type_id],
+            )
+            min_side_coverage = _triangle_min_side_coverage(
+                patch,
+                directions[detection.type_id],
+            )
+            base_edge_coverage = _triangle_base_edge_coverage(
+                patch,
+                directions[detection.type_id],
+            )
+            direction_margin = (
+                spike.direction_margin
+                if spike is not None and spike.type_id == detection.type_id
+                else -1.0
+            )
+            if _is_low_value_primary_full_spike_geometry(
+                detection.type_id,
+                detection.score,
+                min_side_coverage,
+                base_edge_coverage,
+                direction_margin,
+                patch.center_score,
+                block.score,
+                base_supported,
+            ):
+                continue
+            high_score_low_block = (
+                detection.score >= 0.70 and block.score <= 0.34
+            )
+            failed_up_profile = (
+                detection.type_id == OBJ_SPIKE_UP
+                and classifier_failed
+                and 0.47 <= detection.score <= 0.55
+                and patch.edge_density >= 0.30
+                and block.score <= 0.41
+            )
+            weak_down_outline = (
+                detection.type_id == OBJ_SPIKE_DOWN
+                and 0.32 <= detection.score <= 0.35
+                and side_coverage >= 0.50
+                and spike is not None
+                and spike.type_id == detection.type_id
+                and spike.outline_delta >= 0.30
+                and patch.edge_density <= 0.24
+                and block.score <= 0.26
+            )
+            if (
+                min_side_coverage >= 0.75
+                or base_supported
+                or axis_support.get(id(detection), False)
+                or high_score_low_block
+                or failed_up_profile
+                or weak_down_outline
+            ):
+                kept.append(detection)
+            continue
+        if detection.kind == "full_spike_raw_primary_recovery":
+            if (classifier_failed and block.score <= 0.46) or base_supported:
+                kept.append(detection)
+            continue
+        if (
+            detection.type_id == OBJ_SPIKE_UP
+            and classifier_failed
+            and block.score <= 0.40
+            and axis_support.get(id(detection), False)
+        ):
+            kept.append(detection)
+    return _prune_competing_full_spike_orientations(kept, image, room)
+
+
+def _is_low_value_primary_full_spike_geometry(
+    type_id: int,
+    score: float,
+    min_side_coverage: float,
+    base_edge_coverage: float,
+    direction_margin: float,
+    center_score: float,
+    block_score: float,
+    base_supported: bool,
+) -> bool:
+    """Reject primary candidates with multiple independent shape defects."""
+    empty_center_directionless = (
+        base_edge_coverage >= 0.25
+        and direction_margin <= 0.04
+        and center_score <= 0.20
+    )
+    block_like_closed_shape = (
+        min_side_coverage <= 0.875
+        and base_edge_coverage >= 0.75
+        and block_score >= 0.50
+    )
+    low_score_closed_shape = (
+        score <= 0.60
+        and base_edge_coverage >= 1.0
+        and center_score >= 0.30
+    )
+    unsupported_weak_left = (
+        type_id == OBJ_SPIKE_LEFT
+        and not base_supported
+        and min_side_coverage <= 0.75
+    )
+    incomplete_low_block_shape = (
+        min_side_coverage <= 0.75
+        and base_edge_coverage >= 0.375
+        and block_score <= 0.25
+    )
+    weak_block_like_horizontal = (
+        type_id in (OBJ_SPIKE_RIGHT, OBJ_SPIKE_LEFT)
+        and score <= 0.55
+        and block_score >= 0.45
+    )
+    return (
+        empty_center_directionless
+        or block_like_closed_shape
+        or low_score_closed_shape
+        or unsupported_weak_left
+        or incomplete_low_block_shape
+        or weak_block_like_horizontal
+    )
+
+
+def _prune_competing_full_spike_orientations(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    primary_kinds = {"spike_up", "spike_right", "spike_left", "spike_down"}
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+
+    blocks = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    axis_support = _full_spike_axis_support(full_spikes)
+    base_offsets = {
+        OBJ_SPIKE_UP: (0, GRID_SIZE),
+        OBJ_SPIKE_RIGHT: (-GRID_SIZE, 0),
+        OBJ_SPIKE_LEFT: (GRID_SIZE, 0),
+        OBJ_SPIKE_DOWN: (0, -GRID_SIZE),
+    }
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+
+    qualities: dict[int, float] = {}
+    protected: set[int] = set()
+    for detection in full_spikes:
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        spike = _classify_full_spike(patch)
+        block = _classify_block(patch)
+        classifier_matches = spike is not None and spike.type_id == detection.type_id
+        direction_margin = spike.direction_margin if classifier_matches else -1.0
+        outline_delta = spike.outline_delta if classifier_matches else -1.0
+        side_coverage = _triangle_side_coverage(
+            patch,
+            directions[detection.type_id],
+        )
+        min_side_coverage = _triangle_min_side_coverage(
+            patch,
+            directions[detection.type_id],
+        )
+        base_edge_coverage = _triangle_base_edge_coverage(
+            patch,
+            directions[detection.type_id],
+        )
+        base_dx, base_dy = base_offsets[detection.type_id]
+        base_supported = (
+            detection.x + base_dx,
+            detection.y + base_dy,
+        ) in blocks
+        classifier_failed_high_score = (
+            not classifier_matches and detection.score >= 0.70
+        )
+        qualities[id(detection)] = (
+            2.91 * side_coverage
+            + 0.999 * outline_delta
+            - 0.344 * direction_margin
+            + 0.892 * detection.score
+            + 2.815 * (1.0 - block.score)
+            + 1.081 * float(base_supported)
+            + 0.093 * float(axis_support.get(id(detection), False))
+            - base_edge_coverage
+            + 0.5 * float(classifier_failed_high_score)
+        )
+        if (
+            detection.kind in primary_kinds
+            and not classifier_matches
+            and detection.score >= 0.75
+            and min_side_coverage >= 1.0
+            and patch.center_score >= 0.90
+        ):
+            protected.add(id(detection))
+
+    accepted: list[Detection] = []
+    for detection in sorted(
+        full_spikes,
+        key=lambda item: qualities[id(item)],
+        reverse=True,
+    ):
+        if (
+            detection.kind in primary_kinds
+            and id(detection) not in protected
+            and any(
+                other.type_id != detection.type_id
+                and math.dist(
+                    (detection.x, detection.y),
+                    (other.x, other.y),
+                )
+                <= 16.0
+                and qualities[id(other)] - qualities[id(detection)] >= 0.75
+                for other in accepted
+            )
+        ):
+            continue
+        accepted.append(detection)
+
+    accepted_ids = {id(detection) for detection in accepted}
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in FULL_SPIKE_TYPES
+        or id(detection) in accepted_ids
     ]
 
 
