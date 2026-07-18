@@ -29,7 +29,8 @@ class JMapTests(unittest.TestCase):
             ],
         )
 
-        parsed = JMap.from_text(original.to_text())
+        serialized = original.to_text()
+        parsed = JMap.from_text(serialized)
 
         self.assertEqual(parsed.version, original.version)
         self.assertEqual(
@@ -38,6 +39,7 @@ class JMapTests(unittest.TestCase):
         )
         self.assertEqual(parsed.player_save_x, 49.0)
         self.assertEqual(parsed.player_save_y, 55.0)
+        self.assertFalse(any(line.endswith(" ") for line in serialized.splitlines()))
 
     def test_auto_save_policy_prefers_bottom_left_region(self) -> None:
         jmap = JMap(

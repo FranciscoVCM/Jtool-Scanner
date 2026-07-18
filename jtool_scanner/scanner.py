@@ -1156,6 +1156,10 @@ def scan_image(
             box,
             miniblock_room=bool(mini_blocks),
         )
+        detections = _prune_final_block_noise(detections, image, box)
+        detections = _prune_final_miniblock_noise(detections, image, box)
+        detections = _prune_final_water_noise(detections)
+        detections = _prune_final_walljump_noise(detections)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
@@ -1375,6 +1379,10 @@ def _detect_title_bar_height(image: RGBImage) -> int:
 
 def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
     allow_tinted = _looks_cyan_tinted(image, room)
+    minimum_component_height = max(
+        8,
+        int(round(16 * room.height / ROOM_HEIGHT)),
+    )
     components = _connected_components(
         image,
         room,
@@ -1386,7 +1394,10 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
     detections: list[Detection] = []
     for component in components:
         box, pixels = component
-        if not (8 <= box.width <= 55 and 8 <= box.height <= 80):
+        if not (
+            8 <= box.width <= 55
+            and minimum_component_height <= box.height <= 80
+        ):
             continue
         if box.area > 3200:
             continue
@@ -11167,6 +11178,223 @@ def _is_miniblock_room_mini_spike_candidate(
             saturated_axis_run,
         )
     )
+
+
+def _prune_final_block_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    if not blocks:
+        return detections
+    positions = {(detection.x, detection.y) for detection in blocks}
+    profiles = {
+        position: _patch_color_profile(image, room, *position, GRID_SIZE)
+        for position in positions
+    }
+    learned_profile = _median_color_profile(list(profiles.values()))
+    remove_ids: set[int] = set()
+    for detection in blocks:
+        if detection.x < 0 or detection.y < 0:
+            continue
+        position = (detection.x, detection.y)
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        block = _classify_block(patch)
+        profile = profiles[position]
+        axis_profile_distances = [
+            _color_profile_distance(profile, profiles[neighbor])
+            for neighbor in _axis_neighbors(position, GRID_SIZE)
+            if neighbor in profiles
+        ]
+        diagonal_neighbors = sum(
+            neighbor in positions
+            for neighbor in (
+                (detection.x - GRID_SIZE, detection.y - GRID_SIZE),
+                (detection.x + GRID_SIZE, detection.y - GRID_SIZE),
+                (detection.x - GRID_SIZE, detection.y + GRID_SIZE),
+                (detection.x + GRID_SIZE, detection.y + GRID_SIZE),
+            )
+        )
+        if _is_final_block_noise_candidate(
+            detection.score,
+            patch.edge_density,
+            patch.border_score,
+            patch.center_score,
+            block.score,
+            _color_profile_distance(profile, learned_profile),
+            min(axis_profile_distances, default=999.0),
+            diagonal_neighbors,
+        ):
+            remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _is_final_block_noise_candidate(
+    scanner_score: float,
+    edge_density: float,
+    border_score: float,
+    center_score: float,
+    block_score: float,
+    learned_profile_distance: float,
+    min_axis_profile_distance: float,
+    diagonal_neighbors: int,
+) -> bool:
+    low_texture_background = (
+        edge_density <= 0.15
+        and border_score <= 0.20
+        and learned_profile_distance >= 20
+    )
+    weak_diagonal_fill = (
+        scanner_score <= 0.30
+        and center_score >= 0.10
+        and diagonal_neighbors >= 2
+    )
+    isolated_axis_color = (
+        block_score >= 0.40
+        and min_axis_profile_distance >= 15
+        and diagonal_neighbors >= 3
+    )
+    return low_texture_background or weak_diagonal_fill or isolated_axis_color
+
+
+def _prune_final_miniblock_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    mini_blocks = [
+        detection for detection in detections if detection.type_id == OBJ_MINI_BLOCK
+    ]
+    if not mini_blocks:
+        return detections
+    profiles = [
+        _patch_color_profile(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+        )
+        for detection in mini_blocks
+    ]
+    learned_profile = _median_color_profile(profiles)
+    remove_ids = {
+        id(detection)
+        for detection, profile in zip(mini_blocks, profiles)
+        if _is_final_miniblock_noise_candidate(
+            detection.kind,
+            _color_profile_distance(profile, learned_profile),
+        )
+    }
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _is_final_miniblock_noise_candidate(
+    kind: str,
+    learned_profile_distance: float,
+) -> bool:
+    return kind == "mini_block" and learned_profile_distance > 100
+
+
+def _prune_final_water_noise(detections: list[Detection]) -> list[Detection]:
+    water = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WATER_2, OBJ_WATER_3)
+    ]
+    remove_ids: set[int] = set()
+    for detection in water:
+        if any(
+            other is not detection
+            and other.type_id == detection.type_id
+            and distance((detection.x, detection.y), (other.x, other.y)) <= 24
+            and other.score - detection.score >= 0.40
+            and other.x not in (0, ROOM_WIDTH - GRID_SIZE)
+            and other.y not in (0, ROOM_HEIGHT - GRID_SIZE)
+            for other in water
+        ):
+            remove_ids.add(id(detection))
+    kept = [detection for detection in water if id(detection) not in remove_ids]
+    remove_ids.update(_dense_axis_overlap_ids(kept, MINI_BLOCK_SIZE))
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _prune_final_walljump_noise(detections: list[Detection]) -> list[Detection]:
+    walljumps = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+    ]
+    remove_ids = _dense_axis_overlap_ids(walljumps, MINI_BLOCK_SIZE)
+    kept = [detection for detection in walljumps if id(detection) not in remove_ids]
+    for detection in kept:
+        if any(
+            other is not detection
+            and other.type_id != detection.type_id
+            and distance((detection.x, detection.y), (other.x, other.y)) <= 40
+            and min(
+                abs(other.x - detection.x),
+                abs(other.y - detection.y),
+            ) <= MINI_BLOCK_SIZE
+            and other.score > detection.score
+            for other in kept
+        ):
+            remove_ids.add(id(detection))
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _dense_axis_overlap_ids(
+    detections: list[Detection],
+    step: int,
+) -> set[int]:
+    remove_ids: set[int] = set()
+    for vertical in (True, False):
+        groups: defaultdict[tuple[int, int], list[Detection]] = defaultdict(list)
+        for detection in detections:
+            if id(detection) in remove_ids:
+                continue
+            fixed = detection.x if vertical else detection.y
+            groups[(detection.type_id, fixed)].append(detection)
+        for group in groups.values():
+            ordered = sorted(group, key=lambda item: item.y if vertical else item.x)
+            component: list[Detection] = []
+            for detection in ordered:
+                value = detection.y if vertical else detection.x
+                previous = (
+                    component[-1].y if vertical else component[-1].x
+                ) if component else None
+                if previous is None or value - previous == step:
+                    component.append(detection)
+                    continue
+                remove_ids.update(_dense_axis_component_overlap_ids(component, vertical))
+                component = [detection]
+            remove_ids.update(_dense_axis_component_overlap_ids(component, vertical))
+    return remove_ids
+
+
+def _dense_axis_component_overlap_ids(
+    component: list[Detection],
+    vertical: bool,
+) -> set[int]:
+    if len(component) < 3:
+        return set()
+    ordered = sorted(component, key=lambda item: item.y if vertical else item.x)
+    selected_ids = {id(ordered[0])}
+    last_value = ordered[0].y if vertical else ordered[0].x
+    for detection in ordered[1:]:
+        value = detection.y if vertical else detection.x
+        if value - last_value >= GRID_SIZE:
+            selected_ids.add(id(detection))
+            last_value = value
+    selected_ids.add(id(ordered[-1]))
+    return {id(detection) for detection in ordered if id(detection) not in selected_ids}
 
 
 def _prune_duplicate_mini_spike_cells(detections: list[Detection]) -> list[Detection]:

@@ -37,16 +37,15 @@ The screenshot scanner has three layers:
 
 Current eight-room stress-fixture status (24px evaluation tolerance):
 
-- saves: all Irkara fixture saves are detected and matched
-- warps: all Irkara fixture warps are detected and matched, including the cyan-tinted screen 54 warp
-- color objects: apples, all visible water, directional walljumps, and gravity flippers have complete recall; catharsis-style dark gray water is conservatively mapped to JTool water 2
-- regular geometry: blocks, full spikes, mini spikes, and platforms have complete recall across the manifest; the F189 gravity room matches 154/154 blocks with 250 detections and 85/85 full spikes with 89 detections
-- miniblocks: CN3-16 matches 501/501 with 621 detections and CN3-18 matches 374/374 with 550 detections; a room-scale 16px topology gate learns local tileset appearance and rejects ordinary 32px rooms
+- exact color objects: all 19 visible saves, 9 warps, 4 apples, 35 water objects, 13 directional walljumps, 8 gravity flippers, and 3 platforms match with no excess detections; catharsis-style dark gray water is conservatively mapped to JTool water 2
+- fixture truth includes the six visible K3 saves, three secondary warps, and one F189 up-flipper omitted from the original practice ports, so genuine screenshot objects are not counted as scanner noise
+- regular geometry: blocks, full spikes, mini spikes, and platforms have complete recall across the manifest; all 919 blocks match with 1,039 detections (88.5% precision), including 154/154 F189 blocks with 164 detections
+- miniblocks: CN3-16 matches 501/501 with 563 detections and CN3-18 matches 374/374 with 459 detections; all 875 match with 1,022 detections (85.6% precision)
 - CN3 objects: both rooms match all saves, warps, visible water, directional walljumps, full spikes, and mini spikes; stretched source spikes are represented by aligned mini-spike runs and walljump strips recover their backing miniblocks
 - active saves: green-centered saves are treated as the active state of the same save object
 - full-spike precision: all 652 fixture spikes match with 799 detections (81.6% precision); CN3-16 is 30/30 with 43 detections and CN3-18 is 50/50 with 60 detections after separating partial-occlusion recovery from broad axis support and pruning incompatible local orientations
-- mini-spike precision: all 209 fixture mini spikes match with 286 detections (73.1% precision); a final color-independent triangle-fill and structural-support pass reduces CN3-16 to 62 detections for 54 truth and CN3-18 to 68 for 54 truth
-- remaining precision work: regular blocks have 1,184 detections for 919 truth, while miniblocks have 1,171 detections for 875 truth; these are suitable for draft conversion but remain the largest geometry cleanup opportunities
+- mini-spike precision: all 209 fixture mini spikes match with 287 detections (72.8% precision); a final color-independent triangle-fill and structural-support pass reduces CN3-16 to 62 detections for 54 truth and CN3-18 to 68 for 54 truth
+- remaining precision work is concentrated in geometry hypotheses: full spikes have 799 detections for 652 truth, mini spikes 287 for 209, blocks 1,039 for 919, and miniblocks 1,022 for 875
 - not yet handled: jump refreshers and unknown game-specific gimmicks
 
 The scanner writes partial `.jmap` files from image detections. Those are meant

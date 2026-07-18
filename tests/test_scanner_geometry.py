@@ -18,6 +18,8 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_RIGHT,
     OBJ_SPIKE_UP,
     OBJ_WATER_2,
+    OBJ_WALLJUMP_LEFT,
+    OBJ_WALLJUMP_RIGHT,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
@@ -65,7 +67,11 @@ from jtool_scanner.scanner import (
     _is_final_right_mini_corridor_candidate,
     _is_final_right_mini_stack_candidate,
     _is_final_legacy_mini_spike_noise,
+    _is_final_block_noise_candidate,
+    _is_final_miniblock_noise_candidate,
     _is_miniblock_room_mini_spike_candidate,
+    _dense_axis_component_overlap_ids,
+    _prune_final_walljump_noise,
     _is_edge_full_spike_continuation_anchor,
     _is_edge_full_spike_continuation_patch,
     _is_full_spike_run_gap_patch,
@@ -167,6 +173,57 @@ from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_final_block_noise_candidate_uses_general_patch_structure(self) -> None:
+        self.assertTrue(
+            _is_final_block_noise_candidate(
+                0.50, 0.10, 0.15, 0.05, 0.12, 30.0, 5.0, 1
+            )
+        )
+
+    def test_opposite_walljump_conflicts_require_tight_axis_overlap(self) -> None:
+        left = Detection(
+            "walljump_left",
+            OBJ_WALLJUMP_LEFT,
+            408,
+            576,
+            0.48,
+            Box(0, 0, 1, 1),
+        )
+        right = Detection(
+            "walljump_right",
+            OBJ_WALLJUMP_RIGHT,
+            432,
+            552,
+            0.52,
+            Box(0, 0, 1, 1),
+        )
+        self.assertEqual(_prune_final_walljump_noise([left, right]), [left, right])
+        self.assertFalse(
+            _is_final_block_noise_candidate(
+                0.50, 0.30, 0.30, 0.25, 0.35, 10.0, 5.0, 1
+            )
+        )
+
+    def test_final_miniblock_noise_keeps_structural_recoveries(self) -> None:
+        self.assertTrue(_is_final_miniblock_noise_candidate("mini_block", 101.0))
+        self.assertFalse(
+            _is_final_miniblock_noise_candidate(
+                "mini_block_walljump_backing",
+                150.0,
+            )
+        )
+
+    def test_dense_axis_overlap_uses_minimum_32px_cover(self) -> None:
+        detections = [
+            Detection("water_3", OBJ_WATER_2, 320, y, 1.0, Box(0, 0, 1, 1))
+            for y in (288, 304, 320, 336)
+        ]
+        removed = _dense_axis_component_overlap_ids(detections, True)
+        self.assertEqual(
+            {detection.y for detection in detections if id(detection) in removed},
+            {304},
+        )
+
     def test_final_legacy_mini_spike_noise_requires_isolation(self) -> None:
         self.assertTrue(_is_final_legacy_mini_spike_noise(0.50, 0.60, 0))
         self.assertFalse(_is_final_legacy_mini_spike_noise(0.50, 0.60, 1))

@@ -115,7 +115,7 @@ class JMap:
             "",
             "data repeated below for easy parsing by other tools",
             "objects: (x, y, type)",
-            " ".join(expanded_parts) + (" " if expanded_parts else ""),
+            " ".join(expanded_parts),
             f"version:{self.version}",
             f"infinitejump:{self.infinite_jump}",
             f"dotkid:{self.dot_kid}",
@@ -222,4 +222,3 @@ def _format_number(value: float) -> str:
 
 def _format_float(value: float) -> str:
     return f"{value:.16f}"
-
