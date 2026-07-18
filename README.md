@@ -29,6 +29,67 @@ python -m jtool_scanner.cli analyze-report out\block-spike-scans\report.json --g
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --pair irkara-nr-partysu3 --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --summary
 ```
 
+## Conversion and correction workflow
+
+The scanner can now place a versioned correction project between image
+detection and `.jmap` export. This is the data model the later visual app will
+edit; it is usable from the CLI now and avoids baking false positives into the
+map permanently.
+
+Create a project from a screenshot. Color and geometry scanning are enabled by
+default for this command:
+
+```powershell
+python -m jtool_scanner.cli project-create screen.png out\screen.jscan.json --jmap out\screen.jmap --preview out\screen.svg --diagnostic-preview out\screen-ids.svg
+```
+
+Inspect all candidates, or only candidates near a suspicious location:
+
+```powershell
+python -m jtool_scanner.cli project-summary out\screen.jscan.json
+python -m jtool_scanner.cli project-summary out\screen.jscan.json --list --near 320,448 --radius 48 --include-disabled
+```
+
+Apply one or more corrections in a single command:
+
+```powershell
+python -m jtool_scanner.cli project-edit out\screen.jscan.json `
+  --disable obj-0042 `
+  --move obj-0071:336:448 `
+  --set-type obj-0090:walljump_right `
+  --replace-type water:water_2 `
+  --add 352:448:mini_spike_up `
+  --start-save obj-0114 `
+  --preview out\screen.svg `
+  --diagnostic-preview out\screen-ids.svg
+```
+
+Export the corrected map:
+
+```powershell
+python -m jtool_scanner.cli project-export out\screen.jscan.json out\screen-final.jmap --preview out\screen-final.svg
+```
+
+`project-import` can turn any existing `.jmap` into the same editable format.
+This is useful for comparing scanner output with the hand-built examples:
+
+```powershell
+python -m jtool_scanner.cli project-import existing.jmap out\existing.jscan.json
+```
+
+Each object has a stable ID, map coordinates, JTool type, enabled state,
+scanner kind/score, source-image box, and original detected state. Disabling an
+object is non-destructive, so it can be restored later. Manual additions,
+overlapping objects, type/orientation changes, bulk water changes, exact start
+positions, and selecting one save among many are all preserved in the project.
+The clean SVG represents the exported JTool map; the diagnostic SVG adds object
+IDs and red dashed outlines for disabled candidates.
+
+The correction format already accepts every official JTool 1.3.5 object type,
+including killer blocks and jump refreshers. Those can be added or corrected
+manually now; scanner recognition for them will be trained when suitable screen
+examples are added.
+
 The screenshot scanner has three layers:
 
 - high-confidence save and warp detection, enabled by default
@@ -48,8 +109,9 @@ Current eight-room stress-fixture status (24px evaluation tolerance):
 - remaining precision work is concentrated in geometry hypotheses: full spikes have 799 detections for 652 truth, mini spikes 287 for 209, blocks 1,039 for 919, and miniblocks 1,022 for 875
 - not yet handled: jump refreshers and unknown game-specific gimmicks
 
-The scanner writes partial `.jmap` files from image detections. Those are meant
-as diagnostics for now, not final playable conversions.
+`scan-image` still writes a direct diagnostic `.jmap`. For maps intended for
+editing or play, use `project-create`, correct the stable project, and finish
+with `project-export`.
 
 Detection overlays are SVG files that place colored boxes directly over the
 source screenshot. They are useful for checking whether a miss is caused by room

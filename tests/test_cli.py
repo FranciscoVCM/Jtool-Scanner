@@ -8,9 +8,66 @@ import tempfile
 import unittest
 
 from jtool_scanner.cli import main
+from jtool_scanner.constants import OBJ_BLOCK, OBJ_PLAYER_START, OBJ_SAVE, OBJ_WATER_2
+from jtool_scanner.jmap import JMap, JMapObject
 
 
 class CliTests(unittest.TestCase):
+    def test_correction_project_cli_import_edit_and_export(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            source = base / "source.jmap"
+            project = base / "source.jscan.json"
+            exported = base / "corrected.jmap"
+            preview = base / "corrected.svg"
+            diagnostic = base / "diagnostic.svg"
+            JMap(
+                objects=[
+                    JMapObject(32, 64, OBJ_BLOCK),
+                    JMapObject(64, 512, OBJ_SAVE),
+                    JMapObject(64, 512, OBJ_PLAYER_START),
+                ]
+            ).to_file(source)
+
+            self.assertEqual(main(["project-import", str(source), str(project)]), 0)
+            self.assertEqual(
+                main(
+                    [
+                        "project-edit",
+                        str(project),
+                        "--disable",
+                        "obj-0001",
+                        "--add",
+                        "96:128:water_2",
+                        "--start-save",
+                        "obj-0002",
+                        "--diagnostic-preview",
+                        str(diagnostic),
+                    ]
+                ),
+                0,
+            )
+            self.assertEqual(
+                main(
+                    [
+                        "project-export",
+                        str(project),
+                        str(exported),
+                        "--preview",
+                        str(preview),
+                    ]
+                ),
+                0,
+            )
+
+            result = JMap.from_file(exported)
+            self.assertFalse(result.objects_of_type(OBJ_BLOCK))
+            self.assertEqual(len(result.objects_of_type(OBJ_WATER_2)), 1)
+            self.assertEqual(len(result.objects_of_type(OBJ_SAVE)), 1)
+            self.assertEqual(len(result.objects_of_type(OBJ_PLAYER_START)), 1)
+            self.assertTrue(preview.exists())
+            self.assertIn("correction-overlay", diagnostic.read_text(encoding="utf-8"))
+
     def test_scan_fixtures_can_write_report_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)

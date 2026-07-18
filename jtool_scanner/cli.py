@@ -9,6 +9,11 @@ import json
 from pathlib import Path
 
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
+from .correction import (
+    CorrectionProject,
+    parse_object_type,
+    render_correction_svg,
+)
 from .evaluation import (
     PairEvaluation,
     aggregate_evaluations,
@@ -137,6 +142,87 @@ def main(argv: list[str] | None = None) -> int:
         help="show labels in detection overlays",
     )
 
+    project_create_parser = subparsers.add_parser(
+        "project-create",
+        help="scan a PNG into an editable correction project",
+    )
+    project_create_parser.add_argument("input")
+    project_create_parser.add_argument("output")
+    project_create_parser.add_argument("--room-box", default=None, help="optional x,y,width,height crop")
+    project_create_parser.add_argument("--grid-step", type=int, default=8)
+    project_create_parser.add_argument(
+        "--color-objects",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="enable or disable color-object scanning",
+    )
+    project_create_parser.add_argument(
+        "--geometry",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="enable or disable geometry scanning",
+    )
+    project_create_parser.add_argument("--start-policy", default="auto")
+    project_create_parser.add_argument("--jmap", default=None, help="also export the initial .jmap")
+    project_create_parser.add_argument("--preview", default=None, help="also write a clean SVG preview")
+    project_create_parser.add_argument(
+        "--diagnostic-preview",
+        default=None,
+        help="also write an ID-labelled SVG correction preview",
+    )
+
+    project_import_parser = subparsers.add_parser(
+        "project-import",
+        help="turn an existing .jmap into an editable correction project",
+    )
+    project_import_parser.add_argument("input")
+    project_import_parser.add_argument("output")
+
+    project_summary_parser = subparsers.add_parser(
+        "project-summary",
+        help="summarize or list correction project objects",
+    )
+    project_summary_parser.add_argument("input")
+    project_summary_parser.add_argument("--list", action="store_true", dest="list_objects")
+    project_summary_parser.add_argument("--near", default=None, help="only list objects near map coordinate X,Y")
+    project_summary_parser.add_argument("--radius", type=float, default=40.0)
+    project_summary_parser.add_argument("--include-disabled", action="store_true")
+
+    project_edit_parser = subparsers.add_parser(
+        "project-edit",
+        help="apply corrections by stable object ID",
+    )
+    project_edit_parser.add_argument("input")
+    project_edit_parser.add_argument("--output", default=None, help="output project; defaults to overwriting input")
+    project_edit_parser.add_argument("--disable", action="append", default=[])
+    project_edit_parser.add_argument("--enable", action="append", default=[])
+    project_edit_parser.add_argument("--move", action="append", default=[], help="ID:X:Y")
+    project_edit_parser.add_argument("--set-type", action="append", default=[], help="ID:TYPE")
+    project_edit_parser.add_argument("--add", action="append", default=[], help="X:Y:TYPE")
+    project_edit_parser.add_argument("--replace-type", action="append", default=[], help="OLD:NEW")
+    project_edit_parser.add_argument("--start-save", default=None, help="exact save object ID")
+    project_edit_parser.add_argument("--start-position", default=None, help="exact player start X,Y")
+    project_edit_parser.add_argument("--start-policy", default=None)
+    project_edit_parser.add_argument("--preview", default=None, help="write a clean SVG after editing")
+    project_edit_parser.add_argument(
+        "--diagnostic-preview",
+        default=None,
+        help="write an ID-labelled SVG including disabled candidates",
+    )
+
+    project_export_parser = subparsers.add_parser(
+        "project-export",
+        help="export a correction project to .jmap",
+    )
+    project_export_parser.add_argument("input")
+    project_export_parser.add_argument("output")
+    project_export_parser.add_argument("--preview", default=None, help="optional clean SVG preview")
+    project_export_parser.add_argument(
+        "--diagnostic-preview",
+        default=None,
+        help="optional ID-labelled SVG including disabled candidates",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "summary":
@@ -187,6 +273,52 @@ def main(argv: list[str] | None = None) -> int:
             args.pair_ids,
             args.summary,
             args.report_json,
+        )
+    if args.command == "project-create":
+        return _project_create(
+            args.input,
+            args.output,
+            args.room_box,
+            args.grid_step,
+            args.color_objects,
+            args.geometry,
+            args.start_policy,
+            args.jmap,
+            args.preview,
+            args.diagnostic_preview,
+        )
+    if args.command == "project-import":
+        return _project_import(args.input, args.output)
+    if args.command == "project-summary":
+        return _project_summary(
+            args.input,
+            args.list_objects,
+            args.near,
+            args.radius,
+            args.include_disabled,
+        )
+    if args.command == "project-edit":
+        return _project_edit(
+            args.input,
+            args.output,
+            args.disable,
+            args.enable,
+            args.move,
+            args.set_type,
+            args.add,
+            args.replace_type,
+            args.start_save,
+            args.start_position,
+            args.start_policy,
+            args.preview,
+            args.diagnostic_preview,
+        )
+    if args.command == "project-export":
+        return _project_export(
+            args.input,
+            args.output,
+            args.preview,
+            args.diagnostic_preview,
         )
     raise AssertionError(args.command)
 
@@ -484,6 +616,210 @@ def _scan_fixtures(
     if print_summary:
         _print_evaluation_summary(evaluations, include_color_objects, include_geometry)
     return 0
+
+
+def _project_create(
+    input_path: str,
+    output_path: str,
+    room_box_text: str | None,
+    grid_step: int,
+    include_color_objects: bool,
+    include_geometry: bool,
+    start_policy: str,
+    jmap_path: str | None,
+    preview_path: str | None,
+    diagnostic_preview_path: str | None,
+) -> int:
+    result = scan_png(
+        input_path,
+        room_box=_parse_box(room_box_text),
+        grid_step=grid_step,
+        include_color_objects=include_color_objects,
+        include_geometry=include_geometry,
+    )
+    project = CorrectionProject.from_scan(
+        result,
+        input_path,
+        grid_step=grid_step,
+        include_color_objects=include_color_objects,
+        include_geometry=include_geometry,
+        start_policy=start_policy,
+    )
+    project.to_file(output_path)
+    print(f"wrote {output_path}")
+    print(f"editable detections: {len(project.objects)}")
+    if jmap_path:
+        project.to_jmap().to_file(jmap_path)
+        print(f"wrote {jmap_path}")
+    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(input_path).name)
+    return 0
+
+
+def _project_import(input_path: str, output_path: str) -> int:
+    project = CorrectionProject.from_jmap(JMap.from_file(input_path), input_path)
+    project.to_file(output_path)
+    print(f"wrote {output_path}")
+    print(f"editable objects: {len(project.objects)}")
+    return 0
+
+
+def _project_summary(
+    input_path: str,
+    list_objects: bool,
+    near_text: str | None,
+    radius: float,
+    include_disabled: bool,
+) -> int:
+    project = CorrectionProject.from_file(input_path)
+    enabled = project.object_counts(True)
+    disabled = project.object_counts(False)
+    print(f"project: {input_path}")
+    print(f"source: {project.source_image or 'none'}")
+    print(f"objects: {sum(enabled.values())} enabled, {sum(disabled.values())} disabled")
+    for type_id in sorted(set(enabled) | set(disabled)):
+        suffix = f", {disabled[type_id]} disabled" if disabled[type_id] else ""
+        print(f"  {type_id:>2} {OBJECT_NAMES[type_id]}: {enabled[type_id]} enabled{suffix}")
+    if project.start_save_id:
+        print(f"start: save {project.start_save_id}")
+    elif project.start_position:
+        print(f"start: exact position {project.start_position[0]},{project.start_position[1]}")
+    else:
+        print(f"start: policy {project.start_policy}")
+
+    near = _parse_coordinate_pair(near_text, "near") if near_text else None
+    if list_objects or near is not None:
+        print("object list:")
+        for obj in project.objects:
+            if not obj.enabled and not include_disabled:
+                continue
+            if near is not None and (obj.x - near[0]) ** 2 + (obj.y - near[1]) ** 2 > radius ** 2:
+                continue
+            state = "enabled" if obj.enabled else "disabled"
+            score = f" score={obj.score:.3f}" if obj.score is not None else ""
+            kind = f" kind={obj.detection_kind}" if obj.detection_kind else ""
+            print(
+                f"  {obj.object_id} {obj.type_name} ({obj.x},{obj.y}) "
+                f"{state}{score}{kind} source={obj.source}"
+            )
+    return 0
+
+
+def _project_edit(
+    input_path: str,
+    output_path: str | None,
+    disable_ids: list[str],
+    enable_ids: list[str],
+    moves: list[str],
+    type_changes: list[str],
+    additions: list[str],
+    type_replacements: list[str],
+    start_save_id: str | None,
+    start_position_text: str | None,
+    start_policy: str | None,
+    preview_path: str | None,
+    diagnostic_preview_path: str | None,
+) -> int:
+    project = CorrectionProject.from_file(input_path)
+    for object_id in disable_ids:
+        project.set_enabled(object_id, False)
+    for object_id in enable_ids:
+        project.set_enabled(object_id, True)
+    for value in moves:
+        object_id, x, y = _parse_id_coordinate_triplet(value, "move")
+        project.move_object(object_id, x, y)
+    for value in type_changes:
+        object_id, type_value = _split_once(value, "set-type", "ID:TYPE")
+        project.set_object_type(object_id, parse_object_type(type_value))
+    for value in additions:
+        x_text, y_text, type_value = _split_three(value, "add", "X:Y:TYPE")
+        obj = project.add_object(int(x_text), int(y_text), parse_object_type(type_value))
+        print(f"added {obj.object_id}")
+    for value in type_replacements:
+        old_value, new_value = _split_once(value, "replace-type", "OLD:NEW")
+        changed = project.replace_type(parse_object_type(old_value), parse_object_type(new_value))
+        print(f"retyped {changed} objects")
+    if start_save_id is not None:
+        project.choose_start_save(start_save_id)
+    if start_position_text is not None:
+        project.choose_start_position(*_parse_coordinate_pair(start_position_text, "start-position"))
+    if start_policy is not None:
+        project.choose_start_policy(start_policy)
+
+    out = output_path or input_path
+    project.to_file(out)
+    print(f"wrote {out}")
+    print(
+        f"objects: {sum(project.object_counts(True).values())} enabled, "
+        f"{sum(project.object_counts(False).values())} disabled"
+    )
+    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(input_path).name)
+    return 0
+
+
+def _project_export(
+    input_path: str,
+    output_path: str,
+    preview_path: str | None,
+    diagnostic_preview_path: str | None,
+) -> int:
+    project = CorrectionProject.from_file(input_path)
+    jmap = project.to_jmap()
+    jmap.to_file(output_path)
+    print(f"wrote {output_path}")
+    print(f"exported objects: {len(jmap.objects)}")
+    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(output_path).name)
+    return 0
+
+
+def _write_project_previews(
+    project: CorrectionProject,
+    preview_path: str | None,
+    diagnostic_preview_path: str | None,
+    title: str,
+) -> None:
+    if preview_path:
+        out = Path(preview_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(render_correction_svg(project, title), encoding="utf-8")
+        print(f"wrote {out}")
+    if diagnostic_preview_path:
+        out = Path(diagnostic_preview_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(
+            render_correction_svg(project, title, show_ids=True, show_disabled=True),
+            encoding="utf-8",
+        )
+        print(f"wrote {out}")
+
+
+def _parse_id_coordinate_triplet(value: str, option: str) -> tuple[str, int, int]:
+    object_id, x_text, y_text = _split_three(value, option, "ID:X:Y")
+    return object_id, int(x_text), int(y_text)
+
+
+def _parse_coordinate_pair(value: str, option: str) -> tuple[int, int]:
+    x_text, y_text = _split_once(value, option, "X,Y", separator=",")
+    return int(x_text), int(y_text)
+
+
+def _split_once(
+    value: str,
+    option: str,
+    example: str,
+    *,
+    separator: str = ":",
+) -> tuple[str, str]:
+    parts = value.split(separator)
+    if len(parts) != 2 or not all(parts):
+        raise ValueError(f"--{option} must look like {example}")
+    return parts[0], parts[1]
+
+
+def _split_three(value: str, option: str, example: str) -> tuple[str, str, str]:
+    parts = value.split(":")
+    if len(parts) != 3 or not all(parts):
+        raise ValueError(f"--{option} must look like {example}")
+    return parts[0], parts[1], parts[2]
 
 
 def _spike_count(counts: Counter[int]) -> int:

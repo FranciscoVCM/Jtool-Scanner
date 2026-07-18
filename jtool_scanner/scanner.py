@@ -989,6 +989,28 @@ class ScanResult:
         move_start_to_save(jmap, start_policy)
         return jmap
 
+    def to_correction_project(
+        self,
+        source_image: str | Path | None = None,
+        *,
+        grid_step: int = 8,
+        include_color_objects: bool = True,
+        include_geometry: bool = True,
+        start_policy: str = "auto",
+    ):
+        """Create the editable document used by the correction workflow."""
+
+        from .correction import CorrectionProject
+
+        return CorrectionProject.from_scan(
+            self,
+            source_image,
+            grid_step=grid_step,
+            include_color_objects=include_color_objects,
+            include_geometry=include_geometry,
+            start_policy=start_policy,
+        )
+
 
 def scan_png(
     path: str | Path,

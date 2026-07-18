@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import math
 import re
 
-from .constants import OBJ_PLAYER_START, OBJ_SAVE, ROOM_HEIGHT, ROOM_WIDTH
+from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJ_SAVE_FLIP, ROOM_HEIGHT, ROOM_WIDTH
 from .jmap import JMap, JMapObject
 
 
@@ -18,7 +18,9 @@ class SaveChoice:
 
 
 def choose_save(jmap: JMap, policy: str = "auto") -> SaveChoice | None:
-    saves = _ordered_saves(jmap.objects_of_type(OBJ_SAVE))
+    saves = _ordered_saves(
+        [obj for obj in jmap.objects if obj.type_id in (OBJ_SAVE, OBJ_SAVE_FLIP)]
+    )
     if not saves or policy == "none":
         return None
 
@@ -92,4 +94,3 @@ def _nearest(saves: list[JMapObject], x: int, y: int) -> JMapObject:
 
 def _ordered_saves(saves: list[JMapObject]) -> list[JMapObject]:
     return sorted(saves, key=lambda obj: (obj.y, obj.x))
-
