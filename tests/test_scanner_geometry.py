@@ -88,6 +88,7 @@ from jtool_scanner.scanner import (
     _has_low_contrast_paired_up_mini_spike_pair,
     _has_low_contrast_paired_up_mini_spike_support,
     _has_low_border_side_mini_spike_support,
+    detect_room_box,
     _has_ultra_faint_left_mini_spike_support,
     _has_four_quadrant_block_support,
     _is_low_contrast_mini_up_candidate,
@@ -194,6 +195,14 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(truth_positions <= detected_positions)
         self.assertGreaterEqual(len(detections), 550)
         self.assertLessEqual(len(detections), 625)
+
+    def test_f189_full_block_room_is_not_misclassified_as_miniblocks(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "f189-game.png")
+
+        detections = _detect_mini_blocks(image, detect_room_box(image))
+
+        self.assertEqual(detections, [])
 
     def test_full_spike_rejects_blocklike_weak_outline_candidate(self) -> None:
         block = _GeometryClass("block", OBJ_BLOCK, 0.50)

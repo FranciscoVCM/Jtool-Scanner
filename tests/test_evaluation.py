@@ -10,6 +10,7 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_UP,
     OBJ_WATER,
     OBJ_WATER_2,
+    OBJ_WATER_3,
 )
 from jtool_scanner.evaluation import (
     aggregate_evaluations,
@@ -22,6 +23,16 @@ from jtool_scanner.scanner import Detection
 
 
 class EvaluationTests(unittest.TestCase):
+    def test_evaluation_ignores_fully_offscreen_truth_objects(self) -> None:
+        truth = JMap(objects=[JMapObject(800, 240, OBJ_WATER_3)])
+
+        evaluation = evaluate_scan("offscreen", [], truth, tolerance=8)
+        details = build_match_details([], truth, tolerance=8)
+
+        self.assertEqual(evaluation.truth_water, 0)
+        self.assertEqual(evaluation.matched_water, 0)
+        self.assertEqual(details["water"]["missed_truth_count"], 0)
+
     def test_evaluate_scan_scores_existing_detections(self) -> None:
         truth = JMap(
             objects=[

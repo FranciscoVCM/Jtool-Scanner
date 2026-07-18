@@ -39,6 +39,17 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertEqual(len(warps), 1)
         self.assertEqual((warps[0].x, warps[0].y), (320, 192))
 
+    def test_scan_image_treats_green_active_save_as_save(self) -> None:
+        result = scan_image(
+            _synthetic_active_save_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=16,
+        )
+
+        saves = [det for det in result.detections if det.type_id == OBJ_SAVE]
+        self.assertEqual(len(saves), 1)
+        self.assertEqual((saves[0].x, saves[0].y), (64, 96))
+
     def test_scan_image_can_include_experimental_geometry(self) -> None:
         image = _synthetic_geometry_room()
 
@@ -183,6 +194,14 @@ def _synthetic_room() -> RGBImage:
     _rect(data, width, 68, 100, 24, 24, (235, 220, 40))
     _rect(data, width, 76, 108, 10, 10, (180, 20, 25))
     _ring(data, width, 336, 208, 14, (65, 20, 210))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_active_save_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    _rect(data, width, 68, 100, 24, 24, (235, 220, 40))
+    _rect(data, width, 76, 108, 10, 10, (25, 185, 45))
     return RGBImage(width, height, bytes(data))
 
 

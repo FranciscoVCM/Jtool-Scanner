@@ -13,6 +13,7 @@ DETAIL_GROUP_ORDER = (
     "apples",
     "water",
     "walljumps",
+    "gravity",
     "platforms",
     "mini_blocks",
     "blocks",

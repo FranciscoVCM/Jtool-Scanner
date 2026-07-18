@@ -9,6 +9,8 @@ from pathlib import Path
 from .constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_GRAVITY_DOWN,
+    OBJ_GRAVITY_UP,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -27,6 +29,8 @@ from .constants import (
     OBJ_WATER_3,
     OBJ_WARP,
     OBJECT_NAMES,
+    ROOM_HEIGHT,
+    ROOM_WIDTH,
 )
 from .geometry import Box
 from .jmap import JMap
@@ -54,6 +58,9 @@ class PairEvaluation:
     detected_platforms: int
     truth_platforms: int
     matched_platforms: int
+    detected_gravity: int
+    truth_gravity: int
+    matched_gravity: int
     detected_mini_blocks: int
     truth_mini_blocks: int
     matched_mini_blocks: int
@@ -87,6 +94,9 @@ EVALUATION_TOTAL_FIELDS = (
     "detected_platforms",
     "truth_platforms",
     "matched_platforms",
+    "detected_gravity",
+    "truth_gravity",
+    "matched_gravity",
     "detected_mini_blocks",
     "truth_mini_blocks",
     "matched_mini_blocks",
@@ -198,6 +208,14 @@ def evaluate_scan(
             OBJ_PLATFORM,
             tolerance,
         ),
+        detected_gravity=_count_any(detections, GRAVITY_TYPES),
+        truth_gravity=_count_truth_any(truth, GRAVITY_TYPES),
+        matched_gravity=_match_type_set(
+            detections,
+            truth,
+            GRAVITY_TYPES,
+            tolerance,
+        ),
         detected_mini_blocks=_count(detections, OBJ_MINI_BLOCK),
         truth_mini_blocks=len(truth.objects_of_type(OBJ_MINI_BLOCK)),
         matched_mini_blocks=_match_count(
@@ -257,6 +275,7 @@ MINI_SPIKE_TYPES = frozenset(
 )
 WATER_TYPES = frozenset({OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3})
 WALLJUMP_TYPES = frozenset({OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT})
+GRAVITY_TYPES = frozenset({OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN})
 MATCH_DETAIL_GROUPS = (
     ("saves", frozenset({OBJ_SAVE}), True),
     ("warps", frozenset({OBJ_WARP}), True),
@@ -264,6 +283,7 @@ MATCH_DETAIL_GROUPS = (
     ("water", WATER_TYPES, False),
     ("walljumps", WALLJUMP_TYPES, False),
     ("platforms", frozenset({OBJ_PLATFORM}), True),
+    ("gravity", GRAVITY_TYPES, True),
     ("mini_blocks", frozenset({OBJ_MINI_BLOCK}), True),
     ("blocks", frozenset({OBJ_BLOCK}), True),
     ("full_spikes", FULL_SPIKE_TYPES, True),
@@ -280,7 +300,12 @@ def _count_any(detections: list[Detection], type_ids: frozenset[int]) -> int:
 
 
 def _count_truth_any(jmap: JMap, type_ids: frozenset[int]) -> int:
-    return sum(len(jmap.objects_of_type(type_id)) for type_id in type_ids)
+    return sum(
+        1
+        for type_id in type_ids
+        for obj in jmap.objects_of_type(type_id)
+        if _is_visible_truth_object(obj)
+    )
 
 
 def _match_type_set(
@@ -292,7 +317,11 @@ def _match_type_set(
     return sum(
         _match_count(
             detections,
-            [(obj.x, obj.y) for obj in truth.objects_of_type(type_id)],
+            [
+                (obj.x, obj.y)
+                for obj in truth.objects_of_type(type_id)
+                if _is_visible_truth_object(obj)
+            ],
             type_id,
             tolerance,
         )
@@ -310,6 +339,7 @@ def _match_group(
         obj
         for type_id in type_ids
         for obj in truth.objects_of_type(type_id)
+        if _is_visible_truth_object(obj)
     ]
     group_detections = [det for det in detections if det.type_id in type_ids]
     return len(
@@ -343,6 +373,7 @@ def _match_detail_group(
         obj
         for type_id in type_ids
         for obj in truth.objects_of_type(type_id)
+        if _is_visible_truth_object(obj)
     ]
     group_detections = [det for det in detections if det.type_id in type_ids]
     matched = _maximum_object_matching(
@@ -376,6 +407,10 @@ def _match_detail_group(
             for obj in remaining
         ],
     }
+
+
+def _is_visible_truth_object(obj) -> bool:
+    return obj.x < ROOM_WIDTH and obj.y < ROOM_HEIGHT and obj.x + 32 > 0 and obj.y + 32 > 0
 
 
 def _maximum_coordinate_matching(

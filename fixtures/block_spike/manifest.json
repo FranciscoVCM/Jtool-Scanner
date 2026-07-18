@@ -47,6 +47,20 @@
       "jtool_image": "cn3-16-jtool.png",
       "jmap": "cn3-16.jmap",
       "notes": "Miniblock-heavy CN3 screen with dense full and mini spikes, four saves, and one warp."
+    },
+    {
+      "id": "f189",
+      "game_image": "f189-game.png",
+      "jtool_image": "f189-jtool.png",
+      "jmap": "f189.jmap",
+      "notes": "Mostly 32px geometry with upward and downward gravity flippers."
+    },
+    {
+      "id": "cn3-18",
+      "game_image": "cn3-18-game.png",
+      "jtool_image": "cn3-18-jtool.png",
+      "jmap": "cn3-18.jmap",
+      "notes": "Dense miniblock and mini-spike room with water, directional walljumps, stretched spike approximations, and active saves."
     }
   ],
   "references": [

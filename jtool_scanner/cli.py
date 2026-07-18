@@ -435,7 +435,10 @@ def _scan_fixtures(
                 f"{evaluation.truth_water} matched ({evaluation.detected_water} detected), "
                 f"walljumps {evaluation.matched_walljumps}/"
                 f"{evaluation.truth_walljumps} matched "
-                f"({evaluation.detected_walljumps} detected)"
+                f"({evaluation.detected_walljumps} detected), "
+                f"gravity {evaluation.matched_gravity}/"
+                f"{evaluation.truth_gravity} matched "
+                f"({evaluation.detected_gravity} detected)"
             )
         if include_geometry:
             print(
@@ -535,6 +538,12 @@ def _print_evaluation_summary(
             totals["matched_walljumps"],
             totals["truth_walljumps"],
             totals["detected_walljumps"],
+        )
+        _print_metric_summary(
+            "gravity",
+            totals["matched_gravity"],
+            totals["truth_gravity"],
+            totals["detected_gravity"],
         )
     if include_geometry:
         _print_metric_summary(

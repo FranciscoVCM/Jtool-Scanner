@@ -16,6 +16,8 @@ from .constants import (
     GRID_SIZE,
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_GRAVITY_DOWN,
+    OBJ_GRAVITY_UP,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -30,6 +32,7 @@ from .constants import (
     OBJ_WALLJUMP_LEFT,
     OBJ_WALLJUMP_RIGHT,
     OBJ_WATER_2,
+    OBJ_WATER_3,
     OBJ_WARP,
     ROOM_HEIGHT,
     ROOM_WIDTH,
@@ -62,6 +65,9 @@ COLOR_OBJECT_TYPES = frozenset(
         OBJ_WALLJUMP_LEFT,
         OBJ_WALLJUMP_RIGHT,
         OBJ_WATER_2,
+        OBJ_WATER_3,
+        OBJ_GRAVITY_UP,
+        OBJ_GRAVITY_DOWN,
     }
 )
 GEOMETRY_TYPES = frozenset(
@@ -78,6 +84,8 @@ MINI_BLOCK_ISOLATED_MIN_EDGE_DENSITY = 0.13
 MINI_BLOCK_ISOLATED_PROFILE_DISTANCE = 10.0
 MINI_BLOCK_ROOM_MIN_CELLS = 400
 MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO = 0.50
+MINI_BLOCK_ROOM_MIN_BOUNDARY_CONTRAST = 20.0
+MINI_BLOCK_ROOM_MIN_BOUNDARY_HIT_RATIO = 0.35
 MINI_BLOCK_IMPOSTOR_MIN_COVERAGE = 1
 MINI_BLOCK_FULL_SPIKE_MAX_COVERAGE = 1
 MINI_BLOCK_FULL_SPIKE_RECOVERY_EDGE_DENSITY = 0.32
@@ -1017,6 +1025,11 @@ def scan_image(
         detections.extend(mini_blocks)
         if mini_blocks:
             detections = _suppress_miniblock_impostors(detections, image, box)
+            detections = [
+                detection
+                for detection in detections
+                if detection.type_id not in (OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN)
+            ]
         detections.extend(_detect_platforms(image, box, detections))
         detections.extend(_detect_geometry(image, box, grid_step))
         raw_full_spike_support = [
@@ -1123,10 +1136,204 @@ def scan_image(
         )
         if mini_blocks:
             detections = _suppress_miniblock_impostors(detections, image, box)
+            detections = _recover_miniblock_room_objects(
+                detections,
+                mini_blocks,
+                image,
+                box,
+            )
+        elif _has_confirmed_gravity_pair(detections):
+            detections = _replace_gravity_room_blocks(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     result = ScanResult(image.width, image.height, box, detections)
     _PATCH_FEATURE_CACHE.clear()
     return result
+
+
+def _has_confirmed_gravity_pair(detections: list[Detection]) -> bool:
+    return (
+        sum(detection.type_id == OBJ_GRAVITY_UP for detection in detections) >= 2
+        and sum(detection.type_id == OBJ_GRAVITY_DOWN for detection in detections) >= 2
+    )
+
+
+def _replace_gravity_room_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover repeated 32px tiles in a room with confirmed gravity arrows."""
+
+    profiles: dict[tuple[int, int], _ColorProfile] = {}
+    patches: dict[tuple[int, int], _PatchFeatures] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            profiles[(x, y)] = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            patches[(x, y)] = _patch_features(image, room, x, y, GRID_SIZE)
+
+    profile_samples = [
+        profiles[position]
+        for position, patch in patches.items()
+        if _classify_block(patch).score >= 0.20
+    ]
+    if len(profile_samples) < 80:
+        return detections
+    learned = _median_color_profile(profile_samples)
+    profile_distance = {
+        position: _color_profile_distance(profile, learned)
+        for position, profile in profiles.items()
+    }
+    positions = {
+        position
+        for position, value in profile_distance.items()
+        if value <= 15.0
+    }
+    if len(positions) < 80:
+        return detections
+
+    for _ in range(20):
+        added = {
+            position
+            for position, value in profile_distance.items()
+            if value <= 35.0
+            and any(neighbor in positions for neighbor in _axis_neighbors(position, GRID_SIZE))
+        }
+        previous_count = len(positions)
+        positions.update(added)
+        if len(positions) == previous_count:
+            break
+
+    positions.update(
+        position
+        for position, value in profile_distance.items()
+        if value <= 50.0
+        and patches[position].edge_density >= 0.25
+        and patches[position].border_score >= 0.29
+        and patches[position].center_score <= 0.16
+    )
+    if len(positions) < 100:
+        return detections
+
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_BLOCK
+        and detection.type_id not in FULL_SPIKE_TYPES
+        and not (
+            detection.type_id
+            in (OBJ_WATER_2, OBJ_WATER_3, OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT, OBJ_PLATFORM)
+            and any(
+                distance((detection.x, detection.y), position) <= GRID_SIZE
+                for position in positions
+            )
+        )
+    ]
+    result.extend(
+        _geometry_detection(
+            "gravity_room_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            0.72,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in positions
+    )
+    result.extend(_detect_gravity_room_full_spikes(image, room))
+    return _dedupe_exact_detections(result)
+
+
+def _detect_gravity_room_full_spikes(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    classes = (
+        ("spike_up", OBJ_SPIKE_UP, "up"),
+        ("spike_right", OBJ_SPIKE_RIGHT, "right"),
+        ("spike_left", OBJ_SPIKE_LEFT, "left"),
+        ("spike_down", OBJ_SPIKE_DOWN, "down"),
+    )
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            for kind, type_id, direction in classes:
+                score, colored = _triangle_color_shape_score(
+                    image,
+                    room,
+                    x,
+                    y,
+                    direction,
+                )
+                if score < 0.59 or not 20 <= colored <= 200:
+                    continue
+                detections.append(
+                    _grid_detection(kind, type_id, x, y, score, image, room, GRID_SIZE)
+                )
+
+    # A placed object can retain a half-grid phase after the editor snap changes.
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(16, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            score, colored = _triangle_color_shape_score(image, room, x, y, "up")
+            if score < 0.70 or not 20 <= colored <= 200:
+                continue
+            detections.append(
+                _grid_detection(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _dedupe_exact_detections(detections)
+
+
+def _triangle_color_shape_score(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    direction: str,
+) -> tuple[float, int]:
+    colored: set[tuple[int, int]] = set()
+    expected: set[tuple[int, int]] = set()
+    for sample_y in range(16):
+        for sample_x in range(16):
+            image_x = int(
+                room.x + (map_x + (sample_x + 0.5) * 2) * room.width / ROOM_WIDTH
+            )
+            image_y = int(
+                room.y + (map_y + (sample_y + 0.5) * 2) * room.height / ROOM_HEIGHT
+            )
+            r, g, b = image.pixel(
+                max(0, min(image.width - 1, image_x)),
+                max(0, min(image.height - 1, image_y)),
+            )
+            if min(r, g, b) > 165 and max(r, g, b) - min(r, g, b) < 55:
+                colored.add((sample_x, sample_y))
+
+            if direction == "up":
+                depth = sample_y
+                perpendicular = abs(sample_x - 7.5)
+            elif direction == "down":
+                depth = 15 - sample_y
+                perpendicular = abs(sample_x - 7.5)
+            elif direction == "left":
+                depth = sample_x
+                perpendicular = abs(sample_y - 7.5)
+            else:
+                depth = 15 - sample_x
+                perpendicular = abs(sample_y - 7.5)
+            if perpendicular <= depth * 0.55:
+                expected.add((sample_x, sample_y))
+
+    overlap = len(colored & expected)
+    return 2 * overlap / max(1, len(colored) + len(expected)), len(colored)
 
 
 def detect_room_box(image: RGBImage) -> Box:
@@ -1161,6 +1368,7 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         room,
         lambda r, g, b: _is_save_yellow(r, g, b)
         or _is_save_red(r, g, b)
+        or _is_save_green(r, g, b)
         or (allow_tinted and _is_tinted_save_yellow(r, g, b)),
     )
     detections: list[Detection] = []
@@ -1170,22 +1378,24 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
             continue
         if box.area > 3200:
             continue
-        red = yellow = 0
+        red = green = yellow = 0
         for x, y in pixels:
             r, g, b = image.pixel(x, y)
             if _is_save_red(r, g, b):
                 red += 1
+            if _is_save_green(r, g, b):
+                green += 1
             if _is_save_yellow(r, g, b) or (allow_tinted and _is_tinted_save_yellow(r, g, b)):
                 yellow += 1
         if yellow < 18:
             continue
-        if red < 12 and yellow < 35:
+        if max(red, green) < 12 and yellow < 35:
             continue
-        density = (red + yellow) / box.area
+        density = (red + green + yellow) / box.area
         if density < 0.12:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
-        score = min(1.0, density * 2.5 + min(red, yellow) / 150)
+        score = min(1.0, density * 2.5 + min(red + green, yellow) / 150)
         detections.append(Detection("save", OBJ_SAVE, map_x, map_y, score, box))
     return _dedupe_detections(detections, min_distance=40)
 
@@ -1232,7 +1442,102 @@ def _detect_color_objects(
     detections.extend(_detect_apples(image, room, grid_step, anchors))
     detections.extend(_detect_walljumps(image, room, grid_step, anchors + detections))
     detections.extend(_detect_water(image, room, grid_step, anchors + detections))
+    detections.extend(_detect_gravity_flippers(image, room))
     return detections
+
+
+def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
+    """Detect the standard arrow-shaped gravity flippers.
+
+    Color isolates the sprite from the room, while the arrow template decides
+    whether the component has a head and shaft in the expected orientation.
+    The template is what rejects similarly colored blocks, water, and UI.
+    """
+
+    detections: list[Detection] = []
+    classes = (
+        (
+            "gravity_up",
+            OBJ_GRAVITY_UP,
+            False,
+            lambda r, g, b: r > 140 and r > g + 30 and r > b + 20,
+        ),
+        (
+            "gravity_down",
+            OBJ_GRAVITY_DOWN,
+            True,
+            lambda r, g, b: b > 130 and b > r + 70 and g > r + 50,
+        ),
+    )
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            for kind, type_id, points_down, predicate in classes:
+                score, colored = _arrow_color_shape_score(
+                    image,
+                    room,
+                    x,
+                    y,
+                    predicate,
+                    points_down,
+                )
+                if colored < 30 or colored > 150 or score < 0.60:
+                    continue
+                detections.append(
+                    _grid_detection(
+                        kind,
+                        type_id,
+                        x,
+                        y,
+                        score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+    detections = _dedupe_detections(detections, min_distance=24)
+    up_count = sum(detection.type_id == OBJ_GRAVITY_UP for detection in detections)
+    down_count = sum(detection.type_id == OBJ_GRAVITY_DOWN for detection in detections)
+    if up_count < 2 or down_count < 2:
+        return []
+    return detections
+
+
+def _arrow_color_shape_score(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    predicate,
+    points_down: bool,
+) -> tuple[float, int]:
+    sample = 16
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    colored: set[tuple[int, int]] = set()
+    expected: set[tuple[int, int]] = set()
+
+    for sy in range(sample):
+        for sx in range(sample):
+            image_x = int(room.x + (map_x + (sx + 0.5) * 2) * scale_x)
+            image_y = int(room.y + (map_y + (sy + 0.5) * 2) * scale_y)
+            r, g, b = image.pixel(
+                max(0, min(image.width - 1, image_x)),
+                max(0, min(image.height - 1, image_y)),
+            )
+            if predicate(r, g, b):
+                colored.add((sx, sy))
+
+            oriented_y = sample - 1 - sy if points_down else sy
+            if oriented_y <= 9:
+                half_width = max(0, int(oriented_y * 0.72))
+                if 8 - half_width <= sx <= 8 + half_width:
+                    expected.add((sx, sy))
+            if oriented_y >= 8 and 6 <= sx <= 10:
+                expected.add((sx, sy))
+
+    overlap = len(colored & expected)
+    score = 2 * overlap / max(1, len(colored) + len(expected))
+    return score, len(colored)
 
 
 def _detect_apples(
@@ -2275,6 +2580,8 @@ def _detect_mini_blocks(image: RGBImage, room: Box) -> list[Detection]:
 
     if not _looks_miniblock_dominant(grown):
         return []
+    if not _has_miniblock_boundary_signal(image, room, grown):
+        return []
 
     return [
         _geometry_detection(
@@ -2327,6 +2634,813 @@ def _looks_miniblock_dominant(positions: set[tuple[int, int]]) -> bool:
         if square <= positions:
             square_cells.update(square)
     return len(square_cells) / len(positions) <= MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO
+
+
+def _has_miniblock_boundary_signal(
+    image: RGBImage,
+    room: Box,
+    positions: set[tuple[int, int]],
+) -> bool:
+    """Reject quarter-cell samples from ordinary 32px block rooms.
+
+    True 16px tiles have a visible seam between most adjacent cells. A 32px
+    tile sampled as four 16px patches has no seam at its internal midpoint.
+    Comparing pixels immediately across shared candidate edges is robust to
+    tileset color and screenshots scaled away from native resolution.
+    """
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    contrasts: list[float] = []
+
+    def gray(image_x: int, image_y: int) -> int:
+        r, g, b = image.pixel(
+            max(0, min(image.width - 1, image_x)),
+            max(0, min(image.height - 1, image_y)),
+        )
+        return (r * 30 + g * 59 + b * 11) // 100
+
+    for x, y in positions:
+        if (x + MINI_BLOCK_SIZE, y) in positions:
+            boundary_x = room.x + (x + MINI_BLOCK_SIZE) * scale_x
+            samples = [
+                abs(
+                    gray(int(boundary_x - scale_x), int(room.y + (y + offset) * scale_y))
+                    - gray(int(boundary_x + scale_x), int(room.y + (y + offset) * scale_y))
+                )
+                for offset in range(3, MINI_BLOCK_SIZE - 2)
+            ]
+            contrasts.append(sum(samples) / len(samples))
+        if (x, y + MINI_BLOCK_SIZE) in positions:
+            boundary_y = room.y + (y + MINI_BLOCK_SIZE) * scale_y
+            samples = [
+                abs(
+                    gray(int(room.x + (x + offset) * scale_x), int(boundary_y - scale_y))
+                    - gray(int(room.x + (x + offset) * scale_x), int(boundary_y + scale_y))
+                )
+                for offset in range(3, MINI_BLOCK_SIZE - 2)
+            ]
+            contrasts.append(sum(samples) / len(samples))
+
+    if not contrasts:
+        return False
+    hit_ratio = sum(
+        contrast >= MINI_BLOCK_ROOM_MIN_BOUNDARY_CONTRAST
+        for contrast in contrasts
+    ) / len(contrasts)
+    return hit_ratio >= MINI_BLOCK_ROOM_MIN_BOUNDARY_HIT_RATIO
+
+
+def _recover_miniblock_room_objects(
+    detections: list[Detection],
+    mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover objects whose source sprite is scaled to a 16px tileset."""
+
+    recovered = _recover_miniblock_room_mini_spikes(
+        [
+            detection
+            for detection in detections
+            if detection.type_id not in FULL_SPIKE_TYPES
+            and detection.type_id != OBJ_MINI_BLOCK
+        ]
+        + mini_blocks,
+        mini_blocks,
+        image,
+        room,
+    )
+    recovered = _recover_miniblock_room_full_spikes(
+        recovered,
+        mini_blocks,
+        image,
+        room,
+    )
+    saves = _detect_miniblock_room_red_cross_saves(image, room)
+    warps = _detect_miniblock_room_white_warps(image, room)
+    walljumps = _detect_miniblock_room_dark_walljumps(image, room)
+    recovered.extend(saves)
+    recovered.extend(warps)
+    recovered.extend(walljumps)
+    recovered.extend(_detect_miniblock_room_water(image, room))
+    recovered = _recover_miniblock_backing_cells(
+        recovered,
+        mini_blocks,
+        saves,
+        walljumps,
+        image,
+        room,
+    )
+    recovered = [
+        detection
+        for detection in recovered
+        if detection.type_id not in (OBJ_BLOCK, OBJ_WATER_2)
+    ]
+    return _dedupe_detections(
+        _dedupe_exact_detections(recovered),
+        min_distance=16,
+    )
+
+
+def _recover_miniblock_backing_cells(
+    detections: list[Detection],
+    mini_blocks: list[Detection],
+    saves: list[Detection],
+    walljumps: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    result = list(detections)
+    positions = {(detection.x, detection.y) for detection in mini_blocks}
+
+    def add_cell(x: int, y: int, kind: str) -> None:
+        if not (0 <= x < ROOM_WIDTH and 0 <= y < ROOM_HEIGHT):
+            return
+        if (x, y) in positions:
+            return
+        patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+        result.append(
+            _geometry_detection(
+                kind,
+                OBJ_MINI_BLOCK,
+                x,
+                y,
+                0.55 + min(0.35, patch.edge_density),
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+        positions.add((x, y))
+
+    for walljump in walljumps:
+        block_x = walljump.x + 16 if walljump.type_id == OBJ_WALLJUMP_LEFT else walljump.x
+        for offset in (-16, 0, 16, 32):
+            add_cell(block_x, walljump.y + offset, "mini_block_walljump_backing")
+
+    for save in saves:
+        if save.x < ROOM_WIDTH - GRID_SIZE:
+            continue
+        add_cell(save.x, save.y + GRID_SIZE, "mini_block_save_backing")
+        add_cell(save.x + MINI_BLOCK_SIZE, save.y + GRID_SIZE, "mini_block_save_backing")
+
+    bottom_y = ROOM_HEIGHT - GRID_SIZE
+    lower_y = ROOM_HEIGHT - MINI_BLOCK_SIZE
+    for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        if not any((x + offset, lower_y) in positions for offset in (-16, 16)):
+            continue
+        patch = _patch_features(image, room, x, bottom_y, MINI_BLOCK_SIZE)
+        profile = _patch_color_profile(image, room, x, bottom_y, MINI_BLOCK_SIZE)
+        if (
+            0.10 <= patch.edge_density <= 0.30
+            and 0.25 <= profile.saturation <= 0.50
+        ):
+            add_cell(x, bottom_y, "mini_block_bottom_continuation")
+    return result
+
+
+def _recover_miniblock_room_mini_spikes(
+    detections: list[Detection],
+    mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    mini_block_positions = {(detection.x, detection.y) for detection in mini_blocks}
+    directions = {
+        OBJ_MINI_SPIKE_UP: ("up", 0, 16),
+        OBJ_MINI_SPIKE_RIGHT: ("right", -16, 0),
+        OBJ_MINI_SPIKE_LEFT: ("left", 16, 0),
+        OBJ_MINI_SPIKE_DOWN: ("down", 0, -16),
+    }
+    result = list(detections)
+    candidates: list[
+        tuple[Detection, _GeometryClass, _PatchFeatures, float, int, bool, int]
+    ] = []
+
+    for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+            for rank, mini in enumerate(_classify_mini_spike_candidates(patch)):
+                direction, base_dx, base_dy = directions[mini.type_id]
+                side_coverage = _triangle_side_coverage(patch, direction)
+                base_support = (x + base_dx, y + base_dy) in mini_block_positions
+                axis_support = sum(
+                    (x + dx, y + dy) in mini_block_positions
+                    for dx, dy in ((16, 0), (-16, 0), (0, 16), (0, -16))
+                )
+                candidate = _geometry_detection(
+                    mini.kind,
+                    mini.type_id,
+                    x,
+                    y,
+                    mini.score,
+                    image,
+                    room,
+                    MINI_BLOCK_SIZE,
+                )
+                candidates.append(
+                    (
+                        candidate,
+                        mini,
+                        patch,
+                        side_coverage,
+                        rank,
+                        base_support,
+                        axis_support,
+                    )
+                )
+
+    selected: list[Detection] = []
+    structured_candidates = [
+        item
+        for item in candidates
+        if item[4] == 0
+        and item[1].score >= 0.20
+        and item[1].outline_delta >= -0.15
+        and item[2].edge_density >= 0.20
+        and item[3] >= 0.10
+    ]
+    structured_keys = {
+        (item[0].type_id, item[0].x, item[0].y)
+        for item in structured_candidates
+    }
+    weak_shape_keys = {
+        (item[0].type_id, item[0].x, item[0].y)
+        for item in candidates
+        if item[1].score >= 0.20
+        and item[1].outline_delta >= -0.15
+        and item[2].edge_density >= 0.20
+        and item[3] >= 0.10
+    }
+    opposite_type = {
+        OBJ_MINI_SPIKE_UP: OBJ_MINI_SPIKE_DOWN,
+        OBJ_MINI_SPIKE_DOWN: OBJ_MINI_SPIKE_UP,
+        OBJ_MINI_SPIKE_LEFT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_MINI_SPIKE_LEFT,
+    }
+
+    for candidate, mini, patch, side_coverage, rank, base_support, axis_support in candidates:
+        base_anchored = (
+            base_support
+            and patch.edge_density >= 0.18
+            and (
+                (
+                    rank > 0
+                    and mini.score >= 0.16
+                    and mini.outline_delta >= -0.20
+                    and side_coverage >= 0.10
+                )
+                or (
+                    rank == 0
+                    and mini.score >= 0.28
+                    and mini.outline_delta >= -0.05
+                    and side_coverage >= 0.25
+                )
+            )
+        )
+        candidate_key = (candidate.type_id, candidate.x, candidate.y)
+        candidate_is_weak_shape = (
+            mini.score >= 0.20
+            and mini.outline_delta >= -0.15
+            and patch.edge_density >= 0.20
+            and side_coverage >= 0.10
+        )
+        if candidate.type_id in (OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_RIGHT):
+            opposite_offsets = ((-16, 0), (16, 0))
+        else:
+            opposite_offsets = tuple(
+                (0, offset) for offset in (-48, -32, -16, 16, 32, 48)
+            )
+        opposite_supported = candidate_is_weak_shape and any(
+            (
+                opposite_type[candidate.type_id],
+                candidate.x + dx,
+                candidate.y + dy,
+            )
+            in weak_shape_keys
+            and (
+                rank == 0
+                or (
+                    opposite_type[candidate.type_id],
+                    candidate.x + dx,
+                    candidate.y + dy,
+                )
+                in structured_keys
+            )
+            for dx, dy in opposite_offsets
+        )
+        same_supported = rank == 0 and candidate_key in structured_keys and any(
+            (candidate.type_id, candidate.x + dx, candidate.y + dy)
+            in structured_keys
+            for dx, dy in ((-16, 0), (16, 0), (0, -16), (0, 16))
+        )
+        weak_run_supported = (
+            candidate.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN)
+            and patch.edge_density >= 0.20
+            and side_coverage >= 0.10
+            and sum(
+                (
+                    candidate.type_id,
+                    candidate.x,
+                    candidate.y + offset,
+                )
+                in structured_keys
+                for offset in (-32, -16, 16, 32)
+            )
+            >= 2
+        )
+        if base_anchored or opposite_supported or same_supported or weak_run_supported:
+            selected.append(candidate)
+
+    # Snap-16 maps can retain an 8px phase from objects placed before snap was
+    # enabled. A double-ended two-cell column is strong enough to recover that
+    # alternate phase without scanning every half-phase patch as an object.
+    for y in range(16, ROOM_HEIGHT - 48, MINI_BLOCK_SIZE):
+        for x in range(8, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            first_block = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+            second_block = _patch_features(
+                image, room, x, y + MINI_BLOCK_SIZE, MINI_BLOCK_SIZE
+            )
+            first_profile = _patch_color_profile(
+                image, room, x, y, MINI_BLOCK_SIZE
+            )
+            second_profile = _patch_color_profile(
+                image, room, x, y + MINI_BLOCK_SIZE, MINI_BLOCK_SIZE
+            )
+            up_patch = _patch_features(
+                image, room, x, y - MINI_BLOCK_SIZE, MINI_BLOCK_SIZE
+            )
+            down_patch = _patch_features(
+                image, room, x, y + 2 * MINI_BLOCK_SIZE, MINI_BLOCK_SIZE
+            )
+            up = next(
+                candidate
+                for candidate in _classify_mini_spike_candidates(up_patch)
+                if candidate.type_id == OBJ_MINI_SPIKE_UP
+            )
+            down = next(
+                candidate
+                for candidate in _classify_mini_spike_candidates(down_patch)
+                if candidate.type_id == OBJ_MINI_SPIKE_DOWN
+            )
+            up_side = _triangle_side_coverage(up_patch, "up")
+            down_side = _triangle_side_coverage(down_patch, "down")
+            if not (
+                first_block.edge_density >= 0.10
+                and second_block.edge_density >= 0.10
+                and max(first_block.border_score, second_block.border_score) >= 0.25
+                and first_profile.saturation >= 0.25
+                and second_profile.saturation >= 0.25
+                and _color_profile_distance(first_profile, second_profile) <= 60
+                and up.score >= 0.18
+                and up.outline_delta >= -0.15
+                and down.score >= 0.18
+                and down.outline_delta >= -0.15
+                and max(up_side, down_side) >= 0.50
+            ):
+                continue
+            selected.extend(
+                (
+                    _geometry_detection(
+                        up.kind,
+                        up.type_id,
+                        x,
+                        y - MINI_BLOCK_SIZE,
+                        up.score,
+                        image,
+                        room,
+                        MINI_BLOCK_SIZE,
+                    ),
+                    _geometry_detection(
+                        down.kind,
+                        down.type_id,
+                        x,
+                        y + 2 * MINI_BLOCK_SIZE,
+                        down.score,
+                        image,
+                        room,
+                        MINI_BLOCK_SIZE,
+                    ),
+                )
+            )
+            for block_y, block_patch in (
+                (y, first_block),
+                (y + MINI_BLOCK_SIZE, second_block),
+            ):
+                result.append(
+                    _geometry_detection(
+                        "mini_block_half_phase",
+                        OBJ_MINI_BLOCK,
+                        x,
+                        block_y,
+                        0.55 + min(0.35, block_patch.edge_density),
+                        image,
+                        room,
+                        MINI_BLOCK_SIZE,
+                    )
+                )
+
+    grouped: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for candidate in selected:
+        grouped[(candidate.x, candidate.y)].append(candidate)
+    bounded: list[Detection] = []
+    discarded: list[Detection] = []
+    for hypotheses in grouped.values():
+        ranked = sorted(hypotheses, key=lambda item: item.score, reverse=True)
+        bounded.extend(ranked[:1])
+        discarded.extend(ranked[1:])
+
+    selected_keys = {
+        (candidate.type_id, candidate.x, candidate.y)
+        for candidate in selected
+    }
+    for candidate in discarded:
+        direction, base_dx, base_dy = directions[candidate.type_id]
+        patch = _patch_features(image, room, candidate.x, candidate.y, MINI_BLOCK_SIZE)
+        shape = next(
+            item
+            for item in _classify_mini_spike_candidates(patch)
+            if item.type_id == candidate.type_id
+        )
+        side_coverage = _triangle_side_coverage(patch, direction)
+        profile = _patch_color_profile(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            MINI_BLOCK_SIZE,
+        )
+        base_supported = (
+            candidate.x + base_dx,
+            candidate.y + base_dy,
+        ) in mini_block_positions
+        opposite = opposite_type[candidate.type_id]
+        nearby_opposite = any(
+            (opposite, candidate.x + dx, candidate.y + dy) in selected_keys
+            for dx, dy in (
+                (-16, 0),
+                (16, 0),
+                (0, -48),
+                (0, -32),
+                (0, -16),
+                (0, 16),
+                (0, 32),
+                (0, 48),
+            )
+        )
+        weak_vertical_run = (
+            candidate.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN)
+            and sum(
+                (candidate.type_id, candidate.x, candidate.y + offset)
+                in selected_keys
+                for offset in (-32, -16, 16, 32)
+            )
+            >= 2
+        )
+        long_vertical_pair = (
+            candidate.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN)
+            and any(
+            (opposite, candidate.x, candidate.y + offset) in selected_keys
+            for offset in (-160, -144, -128, -112, -96, -80, -64, 64, 80, 96, 112, 128, 144, 160)
+            )
+        )
+        if (
+            (
+                base_supported
+                and candidate.score >= 0.28
+                and shape.outline_delta >= -0.10
+                and side_coverage >= 0.35
+                and 0.20 <= profile.saturation <= 0.32
+            )
+            or (
+                base_supported
+                and candidate.type_id == OBJ_MINI_SPIKE_DOWN
+                and candidate.score >= 0.16
+                and shape.outline_delta >= -0.13
+                and side_coverage >= 0.18
+                and 0.20 <= profile.saturation <= 0.30
+            )
+            or (candidate.score >= 0.30 and nearby_opposite)
+            or (base_supported and weak_vertical_run)
+            or (base_supported and long_vertical_pair)
+        ):
+            bounded.append(candidate)
+    selected = bounded
+
+    for candidate in selected:
+        if not _has_nearby_detection(
+            result,
+            candidate.type_id,
+            candidate.x,
+            candidate.y,
+            1.0,
+        ):
+            result.append(candidate)
+    return result
+
+
+def _recover_miniblock_room_full_spikes(
+    detections: list[Detection],
+    mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    mini_block_positions = {(detection.x, detection.y) for detection in mini_blocks}
+    mini_to_full = {
+        OBJ_MINI_SPIKE_UP: OBJ_SPIKE_UP,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_LEFT: OBJ_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_DOWN: OBJ_SPIKE_DOWN,
+    }
+    directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    base_offsets = {
+        OBJ_MINI_SPIKE_UP: (0, 32),
+        OBJ_MINI_SPIKE_RIGHT: (-32, 0),
+        OBJ_MINI_SPIKE_LEFT: (32, 0),
+        OBJ_MINI_SPIKE_DOWN: (0, -32),
+    }
+    result = list(detections)
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            for rank, spike in enumerate(_classify_mini_spike_candidates(patch)):
+                direction = directions[spike.type_id]
+                side_coverage = _triangle_side_coverage(patch, direction)
+                base_dx, base_dy = base_offsets[spike.type_id]
+                base_support = (x + base_dx, y + base_dy) in mini_block_positions
+                axis_support = any(
+                    (x + dx, y + dy) in mini_block_positions
+                    for dx, dy in (
+                        (32, 0),
+                        (-32, 0),
+                        (0, 32),
+                        (0, -32),
+                        (16, 0),
+                        (-16, 0),
+                        (0, 16),
+                        (0, -16),
+                    )
+                )
+                base_anchored = (
+                    base_support
+                    and rank <= 1
+                    and spike.score >= 0.40
+                    and spike.outline_delta >= 0.05
+                    and patch.edge_density >= 0.20
+                    and side_coverage >= 0.55
+                )
+                occluded_up = (
+                    axis_support
+                    and rank > 1
+                    and spike.type_id == OBJ_MINI_SPIKE_UP
+                    and spike.score >= 0.22
+                    and spike.outline_delta >= -0.10
+                    and patch.edge_density >= 0.20
+                    and side_coverage >= 0.25
+                )
+                occluded_down = (
+                    axis_support
+                    and rank == 1
+                    and spike.type_id == OBJ_MINI_SPIKE_DOWN
+                    and spike.score >= 0.29
+                    and spike.outline_delta >= 0.0
+                    and patch.edge_density >= 0.33
+                    and patch.center_score >= 0.45
+                    and side_coverage >= 0.25
+                )
+                strong_axis_down = (
+                    axis_support
+                    and rank == 0
+                    and spike.type_id == OBJ_MINI_SPIKE_DOWN
+                    and spike.score >= 0.49
+                    and spike.outline_delta >= 0.25
+                    and patch.edge_density >= 0.35
+                    and side_coverage >= 0.75
+                )
+                axis_strong = (
+                    axis_support
+                    and rank == 0
+                    and spike.score >= 0.50
+                    and spike.outline_delta >= 0.10
+                    and side_coverage >= 0.60
+                )
+                strong = (
+                    rank == 0
+                    and spike.score >= 0.62
+                    and spike.outline_delta >= 0.15
+                    and side_coverage >= 0.65
+                )
+                isolated_shape = (
+                    rank == 0
+                    and spike.score >= 0.48
+                    and spike.outline_delta >= 0.18
+                    and patch.edge_density >= 0.35
+                    and side_coverage >= 0.85
+                )
+                if not (
+                    base_anchored
+                    or occluded_up
+                    or occluded_down
+                    or strong_axis_down
+                    or axis_strong
+                    or strong
+                    or isolated_shape
+                ):
+                    continue
+                type_id = mini_to_full[spike.type_id]
+                if _has_nearby_detection(result, type_id, x, y, 24.0):
+                    continue
+                result.append(
+                    _geometry_detection(
+                        "miniblock_room_full_spike",
+                        type_id,
+                        x,
+                        y,
+                        spike.score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+    return result
+
+
+def _detect_miniblock_room_red_cross_saves(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            stats = _patch_color_stats(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                lambda r, g, b: _is_save_red(r, g, b) or _is_save_green(r, g, b),
+            )
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not (
+                25 <= stats.count <= 70
+                and 0.09 <= stats.density <= 0.28
+                and stats.center_y_ratio >= 0.58
+                and patch.edge_density >= 0.40
+                and patch.center_score >= 0.50
+            ):
+                continue
+            detections.append(
+                _grid_detection("save", OBJ_SAVE, x, y, 0.75, image, room, GRID_SIZE)
+            )
+    return _dedupe_detections(detections, min_distance=40)
+
+
+def _detect_miniblock_room_white_warps(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    bright_neutral = (
+        lambda r, g, b: min(r, g, b) > 170 and max(r, g, b) - min(r, g, b) < 50
+    )
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, bright_neutral)
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not (
+                0.18 <= stats.density <= 0.38
+                and stats.min_quadrant_density >= 0.10
+                and 0.35 <= stats.center_x_ratio <= 0.65
+                and 0.35 <= stats.center_y_ratio <= 0.65
+                and patch.edge_density >= 0.35
+                and patch.center_score >= 0.35
+            ):
+                continue
+            detections.append(
+                _grid_detection("warp", OBJ_WARP, x, y, 0.75, image, room, GRID_SIZE)
+            )
+    return _dedupe_detections(detections, min_distance=40)
+
+
+def _detect_miniblock_room_dark_walljumps(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    dark_green = (
+        lambda r, g, b: g >= 35 and g > r + 20 and g > b + 5 and r < 100
+    )
+    candidates: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(-16, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, 16):
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, dark_green)
+            side_bias = abs(stats.center_x_ratio - 0.5)
+            if not (
+                0.18 <= stats.density <= 0.38
+                and side_bias >= 0.22
+                and 0.35 <= stats.center_y_ratio <= 0.65
+            ):
+                continue
+            type_id = (
+                OBJ_WALLJUMP_LEFT
+                if stats.center_x_ratio > 0.5
+                else OBJ_WALLJUMP_RIGHT
+            )
+            kind = "walljump_left" if type_id == OBJ_WALLJUMP_LEFT else "walljump_right"
+            candidates.append(
+                _grid_detection(
+                    kind,
+                    type_id,
+                    x,
+                    y,
+                    min(1.0, stats.density + side_bias),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    supported = [
+        candidate
+        for candidate in candidates
+        if any(
+            other.x == candidate.x
+            and 16 <= abs(other.y - candidate.y) <= 32
+            for other in candidates
+            if other is not candidate
+        )
+    ]
+    horizontally_deduped: list[Detection] = []
+    for candidate in sorted(supported, key=lambda item: item.score, reverse=True):
+        if any(
+            candidate.y == existing.y
+            and abs(candidate.x - existing.x) <= 16
+            for existing in horizontally_deduped
+        ):
+            continue
+        horizontally_deduped.append(candidate)
+    return sorted(horizontally_deduped, key=lambda item: (item.y, item.x))
+
+
+def _detect_miniblock_room_water(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if not (
+                stats.density >= 0.90
+                and profile.avg_b > profile.avg_r + 90
+                and profile.avg_g > profile.avg_r + 70
+                and 0.35 <= profile.saturation <= 0.65
+                and patch.edge_density <= 0.32
+            ):
+                continue
+            detections.append(
+                _grid_detection(
+                    "water_3",
+                    OBJ_WATER_3,
+                    x,
+                    y,
+                    stats.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _dedupe_detections(detections, min_distance=16)
+
+
+def _has_nearby_detection(
+    detections: list[Detection],
+    type_id: int,
+    x: int,
+    y: int,
+    max_distance: float,
+) -> bool:
+    return any(
+        detection.type_id == type_id
+        and distance((x, y), (detection.x, detection.y)) <= max_distance
+        for detection in detections
+    )
+
+
+def _dedupe_exact_detections(detections: list[Detection]) -> list[Detection]:
+    result: dict[tuple[int, int, int], Detection] = {}
+    for detection in detections:
+        key = (detection.type_id, detection.x, detection.y)
+        existing = result.get(key)
+        if existing is None or detection.score > existing.score:
+            result[key] = detection
+    return list(result.values())
 
 
 def _suppress_miniblock_impostors(
@@ -9913,6 +11027,10 @@ def _is_save_yellow(r: int, g: int, b: int) -> bool:
 
 def _is_save_red(r: int, g: int, b: int) -> bool:
     return r > 120 and g < 95 and b < 95 and r > g * 1.5
+
+
+def _is_save_green(r: int, g: int, b: int) -> bool:
+    return g > 120 and g > r + 35 and g > b + 20
 
 
 def _is_tinted_save_yellow(r: int, g: int, b: int) -> bool:
