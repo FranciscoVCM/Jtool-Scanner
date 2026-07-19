@@ -61,6 +61,34 @@
       "jtool_image": "cn3-18-jtool.png",
       "jmap": "cn3-18.jmap",
       "notes": "Dense miniblock and mini-spike room with water, directional walljumps, stretched spike approximations, and active saves."
+    },
+    {
+      "id": "nang135",
+      "game_image": "nang135-game.png",
+      "jtool_image": "nang135-jtool.png",
+      "jmap": "nang135.jmap",
+      "notes": "Centered 19x13 room dominated by killer blocks, with stars ignored as game-specific triggers."
+    },
+    {
+      "id": "cn2-5-jumprefresh",
+      "game_image": "cn2-5-jumprefresh-game.png",
+      "jtool_image": "cn2-5-jumprefresh-jtool.png",
+      "jmap": "cn2-5-jumprefresh.jmap",
+      "notes": "Irregular 4/8/16px geometry with jump refreshers and overlapping blocks and spikes."
+    },
+    {
+      "id": "nang138",
+      "game_image": "nang138-game.png",
+      "jtool_image": "nang138-jtool.png",
+      "jmap": "nang138.jmap",
+      "notes": "Centered 19x13 room with jump refreshers; stars are ignored game-specific objects."
+    },
+    {
+      "id": "nang128",
+      "game_image": "nang128-game.png",
+      "jtool_image": "nang128-jtool.png",
+      "jmap": "nang128.jmap",
+      "notes": "Centered 19x13 room with killer blocks; orange triggers are ignored."
     }
   ],
   "references": [

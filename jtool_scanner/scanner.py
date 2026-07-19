@@ -19,6 +19,8 @@ from .constants import (
     OBJ_BLOCK,
     OBJ_GRAVITY_DOWN,
     OBJ_GRAVITY_UP,
+    OBJ_JUMP_REFRESHER,
+    OBJ_KILLER_BLOCK,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -1037,9 +1039,23 @@ def scan_image(
     include_geometry: bool = False,
 ) -> ScanResult:
     _PATCH_FEATURE_CACHE.clear()
-    box = room_box or detect_room_box(image)
+    source_image = image
+    source_box = room_box or detect_room_box(image)
+    centered_offset: tuple[int, int] | None = None
+    if room_box is None and _looks_like_centered_19_by_13_room(source_box):
+        image, centered_offset = _pad_centered_19_by_13_room(image.crop(source_box))
+        box = Box(0, 0, image.width, image.height)
+    else:
+        box = source_box
     detections: list[Detection] = []
-    detections.extend(_detect_saves(image, box, grid_step))
+    detections.extend(
+        _detect_saves(
+            image,
+            box,
+            grid_step,
+            allow_weak_active=centered_offset is not None,
+        )
+    )
     detections.extend(_detect_warps(image, box, grid_step))
     if include_color_objects:
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
@@ -1182,10 +1198,453 @@ def scan_image(
         detections = _prune_final_miniblock_noise(detections, image, box)
         detections = _prune_final_water_noise(detections)
         detections = _prune_final_walljump_noise(detections)
+        if centered_offset is not None:
+            detections = _replace_compact_room_geometry(detections, image, box)
+        elif _looks_like_neutral_terrain_room(image, box):
+            detections = _replace_neutral_terrain_geometry(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
-    result = ScanResult(image.width, image.height, box, detections)
+    if centered_offset is not None:
+        offset_x, offset_y = centered_offset
+        detections = [
+            Detection(
+                detection.kind,
+                detection.type_id,
+                detection.x,
+                detection.y,
+                detection.score,
+                Box(
+                    detection.image_box.x - offset_x + source_box.x,
+                    detection.image_box.y - offset_y + source_box.y,
+                    detection.image_box.width,
+                    detection.image_box.height,
+                ),
+            )
+            for detection in detections
+        ]
+    result = ScanResult(
+        source_image.width,
+        source_image.height,
+        source_box,
+        detections,
+    )
     _PATCH_FEATURE_CACHE.clear()
     return result
+
+
+def _looks_like_centered_19_by_13_room(room: Box) -> bool:
+    """Recognize common compact fangame rooms before mapping them to JTool."""
+
+    ratio = room.width / max(1, room.height)
+    return 1.42 <= ratio <= 1.50
+
+
+def _pad_centered_19_by_13_room(image: RGBImage) -> tuple[RGBImage, tuple[int, int]]:
+    """Embed a 19x13 source room in JTool's centered 25x19 canvas."""
+
+    pad_x = int(round(image.width * 3 / 19))
+    pad_y = int(round(image.height * 3 / 13))
+    fill = bytes(_dominant_sample_color(image))
+    output_width = image.width + pad_x * 2
+    fill_row = fill * output_width
+    side = fill * pad_x
+    rows = [fill_row] * pad_y
+    for y in range(image.height):
+        start = y * image.width * 3
+        end = start + image.width * 3
+        rows.append(side + image.data[start:end] + side)
+    rows.extend([fill_row] * pad_y)
+    return RGBImage(output_width, image.height + pad_y * 2, b"".join(rows)), (pad_x, pad_y)
+
+
+def _dominant_sample_color(image: RGBImage) -> tuple[int, int, int]:
+    buckets: dict[tuple[int, int, int], int] = defaultdict(int)
+    step_x = max(1, image.width // 80)
+    step_y = max(1, image.height // 60)
+    for y in range(0, image.height, step_y):
+        for x in range(0, image.width, step_x):
+            r, g, b = image.pixel(x, y)
+            buckets[(r // 16, g // 16, b // 16)] += 1
+    bucket = max(buckets, key=buckets.get)
+    return tuple(min(255, value * 16 + 8) for value in bucket)
+
+
+def _replace_compact_room_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Use native tile occupancy in compact rooms instead of scaled legacy profiles."""
+
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id not in (GEOMETRY_TYPES - {OBJ_BLOCK})
+        and detection.type_id != OBJ_KILLER_BLOCK
+        and detection.type_id != OBJ_PLATFORM
+    ]
+    background = image.pixel(0, 0)
+    blocks: list[Detection] = []
+    killers: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            foreground = sum(
+                math.sqrt(sum((value - background[index]) ** 2 for index, value in enumerate(color))) > 45
+                for color in colors
+            ) / len(colors)
+            red_ratio = sum(
+                color[0] > 90
+                and color[0] > color[1] * 1.25
+                and color[0] > color[2] * 1.30
+                for color in colors
+            ) / len(colors)
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            killer = red_ratio >= 0.97 or (
+                red_ratio >= 0.925 and patch.edge_density >= 0.12
+            )
+            if killer:
+                killers.append(
+                    _geometry_detection(
+                        "killer_block_cross",
+                        OBJ_KILLER_BLOCK,
+                        x,
+                        y,
+                        min(0.99, 0.70 + red_ratio * 0.25),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+            elif foreground >= 0.90 and red_ratio >= 0.60:
+                blocks.append(
+                    _geometry_detection(
+                        "compact_block",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        min(0.96, 0.55 + foreground * 0.25 + red_ratio * 0.15),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+    # Some compact rooms deliberately offset solid blocks by half a tile.
+    # Require a nearly solid, low-edge tile patch on those secondary phases.
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+            if x % GRID_SIZE == 0 and y % GRID_SIZE == 0:
+                continue
+            if not (
+                GRID_SIZE * 5 <= x <= ROOM_WIDTH - GRID_SIZE * 5
+                and GRID_SIZE * 4 <= y <= ROOM_HEIGHT - GRID_SIZE * 5
+            ):
+                continue
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            foreground = sum(
+                math.sqrt(
+                    sum(
+                        (value - background[index]) ** 2
+                        for index, value in enumerate(color)
+                    )
+                )
+                > 45
+                for color in colors
+            ) / len(colors)
+            red_ratio = sum(
+                color[0] > 90
+                and color[0] > color[1] * 1.25
+                and color[0] > color[2] * 1.30
+                for color in colors
+            ) / len(colors)
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if foreground < 0.98 or red_ratio < 0.75 or patch.edge_density > 0.09:
+                continue
+            blocks.append(
+                _geometry_detection(
+                    "compact_offset_block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    min(0.94, 0.58 + foreground * 0.20 + red_ratio * 0.15),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    # Extremely killer-dense rooms can contain backing blocks hidden by the
+    # crossed sprite. Preserve those ambiguous candidates for correction.
+    if len(killers) >= 50:
+        blocks.extend(
+            _geometry_detection(
+                "compact_killer_backing_block",
+                OBJ_BLOCK,
+                detection.x,
+                detection.y,
+                0.46,
+                image,
+                room,
+                GRID_SIZE,
+            )
+            for detection in killers
+        )
+    result.extend(blocks)
+    result.extend(killers)
+    if len(killers) < 50:
+        result.extend(_detect_compact_room_spikes(image, room))
+    return _dedupe_exact_detections(result)
+
+
+def _sample_map_patch_colors(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    map_size: int,
+    sample_size: int = 16,
+) -> list[tuple[int, int, int]]:
+    colors = []
+    for sample_y in range(sample_size):
+        for sample_x in range(sample_size):
+            image_x = int(
+                room.x
+                + (map_x + (sample_x + 0.5) * map_size / sample_size)
+                * room.width
+                / ROOM_WIDTH
+            )
+            image_y = int(
+                room.y
+                + (map_y + (sample_y + 0.5) * map_size / sample_size)
+                * room.height
+                / ROOM_HEIGHT
+            )
+            colors.append(
+                image.pixel(
+                    max(0, min(image.width - 1, image_x)),
+                    max(0, min(image.height - 1, image_y)),
+                )
+            )
+    return colors
+
+
+def _detect_compact_room_spikes(image: RGBImage, room: Box) -> list[Detection]:
+    classes = (
+        ("up", OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP),
+        ("right", OBJ_SPIKE_RIGHT, OBJ_MINI_SPIKE_RIGHT),
+        ("left", OBJ_SPIKE_LEFT, OBJ_MINI_SPIKE_LEFT),
+        ("down", OBJ_SPIKE_DOWN, OBJ_MINI_SPIKE_DOWN),
+    )
+    detections: list[Detection] = []
+    for size, step in ((GRID_SIZE, 16), (MINI_BLOCK_SIZE, 16)):
+        for y in range(0, ROOM_HEIGHT - size + 1, step):
+            for x in range(0, ROOM_WIDTH - size + 1, step):
+                colors = _sample_map_patch_colors(image, room, x, y, size)
+                for direction, full_type, mini_type in classes:
+                    score, colored = _neutral_triangle_score(colors, direction)
+                    minimum = 0.57 if size == GRID_SIZE else 0.60
+                    if score < minimum or not 35 <= colored <= 180:
+                        continue
+                    type_id = full_type if size == GRID_SIZE else mini_type
+                    detections.append(
+                        _geometry_detection(
+                            f"compact_{'full' if size == GRID_SIZE else 'mini'}_spike_{direction}",
+                            type_id,
+                            x,
+                            y,
+                            score,
+                            image,
+                            room,
+                            size,
+                        )
+                    )
+    detections.extend(_opposite_horizontal_spike_candidates(detections, "compact"))
+    return _dedupe_detections(detections, min_distance=12)
+
+
+def _neutral_triangle_score(
+    colors: list[tuple[int, int, int]],
+    direction: str,
+) -> tuple[float, int]:
+    sample = int(round(math.sqrt(len(colors))))
+    colored = {
+        (index % sample, index // sample)
+        for index, color in enumerate(colors)
+        if min(color) > 150 and max(color) - min(color) < 65
+    }
+    expected: set[tuple[int, int]] = set()
+    middle = (sample - 1) / 2
+    for y in range(sample):
+        for x in range(sample):
+            if direction == "up":
+                depth, perpendicular = y, abs(x - middle)
+            elif direction == "down":
+                depth, perpendicular = sample - 1 - y, abs(x - middle)
+            elif direction == "right":
+                depth, perpendicular = x, abs(y - middle)
+            else:
+                depth, perpendicular = sample - 1 - x, abs(y - middle)
+            if perpendicular <= depth * 0.52:
+                expected.add((x, y))
+    overlap = len(colored & expected)
+    return 2 * overlap / max(1, len(colored) + len(expected)), len(colored)
+
+
+def _looks_like_neutral_terrain_room(image: RGBImage, room: Box) -> bool:
+    neutral = green = cyan = dark = count = 0
+    step_x = max(1, room.width // 80)
+    step_y = max(1, room.height // 60)
+    for y in range(room.y, room.bottom, step_y):
+        for x in range(room.x, room.right, step_x):
+            r, g, b = image.pixel(x, y)
+            count += 1
+            neutral += abs(g - r) < 18 and abs(b - g) < 22
+            green += g > r + 18 and abs(b - g) < 30
+            cyan += g > r + 18 and b > r + 18
+            dark += max(r, g, b) < 90
+    return (
+        neutral / max(1, count) >= 0.65
+        and green / max(1, count) >= 0.18
+        and cyan / max(1, count) < 0.35
+        and 0.50 <= dark / max(1, count) <= 0.70
+    )
+
+
+def _replace_neutral_terrain_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id not in GEOMETRY_TYPES
+        and detection.type_id not in (OBJ_WATER_2, OBJ_WATER_3, OBJ_PLATFORM)
+    ]
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            neutral = _neutral_color_ratio(colors)
+            if neutral < 0.78:
+                continue
+            result.append(
+                _geometry_detection(
+                    "terrain_block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    min(0.97, 0.62 + neutral * 0.30),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    result.extend(_detect_neutral_terrain_spikes(image, room))
+    return _dedupe_exact_detections(result)
+
+
+def _detect_neutral_terrain_spikes(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    classes = (
+        ("up", OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP),
+        ("right", OBJ_SPIKE_RIGHT, OBJ_MINI_SPIKE_RIGHT),
+        ("left", OBJ_SPIKE_LEFT, OBJ_MINI_SPIKE_LEFT),
+        ("down", OBJ_SPIKE_DOWN, OBJ_MINI_SPIKE_DOWN),
+    )
+    detections: list[Detection] = []
+    for size in (GRID_SIZE, MINI_BLOCK_SIZE):
+        for y in range(0, ROOM_HEIGHT - size + 1, 8):
+            for x in range(0, ROOM_WIDTH - size + 1, 8):
+                colors = _sample_map_patch_colors(image, room, x, y, size)
+                neutral = _neutral_color_ratio(colors)
+                if neutral < 0.12 or neutral > 0.78:
+                    continue
+                for direction, full_type, mini_type in classes:
+                    score, colored = _masked_triangle_score(
+                        colors,
+                        direction,
+                        lambda color: abs(color[1] - color[0]) < 18
+                        and abs(color[2] - color[1]) < 22,
+                    )
+                    minimum = 0.58 if size == GRID_SIZE else 0.62
+                    if score < minimum or not 24 <= colored <= 190:
+                        continue
+                    detections.append(
+                        _geometry_detection(
+                            f"terrain_{'full' if size == GRID_SIZE else 'mini'}_spike_{direction}",
+                            full_type if size == GRID_SIZE else mini_type,
+                            x,
+                            y,
+                            score,
+                            image,
+                            room,
+                            size,
+                        )
+                    )
+    detections.extend(_opposite_horizontal_spike_candidates(detections, "terrain"))
+    return _dedupe_detections(detections, min_distance=7)
+
+
+def _opposite_horizontal_spike_candidates(
+    detections: list[Detection],
+    profile: str,
+) -> list[Detection]:
+    """Keep the alternative facing when terrain hides one half of a spike."""
+
+    opposites = {
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_LEFT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_MINI_SPIKE_LEFT,
+    }
+    return [
+        Detection(
+            f"{profile}_occluded_horizontal_spike",
+            opposites[detection.type_id],
+            detection.x,
+            detection.y,
+            detection.score * 0.91,
+            detection.image_box,
+        )
+        for detection in detections
+        if detection.type_id in opposites
+    ]
+
+
+def _neutral_color_ratio(colors: list[tuple[int, int, int]]) -> float:
+    return sum(
+        abs(color[1] - color[0]) < 18 and abs(color[2] - color[1]) < 22
+        for color in colors
+    ) / len(colors)
+
+
+def _masked_triangle_score(
+    colors: list[tuple[int, int, int]],
+    direction: str,
+    predicate,
+) -> tuple[float, int]:
+    sample = int(round(math.sqrt(len(colors))))
+    colored = {
+        (index % sample, index // sample)
+        for index, color in enumerate(colors)
+        if predicate(color)
+    }
+    expected: set[tuple[int, int]] = set()
+    middle = (sample - 1) / 2
+    for y in range(sample):
+        for x in range(sample):
+            if direction == "up":
+                depth, perpendicular = y, abs(x - middle)
+            elif direction == "down":
+                depth, perpendicular = sample - 1 - y, abs(x - middle)
+            elif direction == "right":
+                depth, perpendicular = x, abs(y - middle)
+            else:
+                depth, perpendicular = sample - 1 - x, abs(y - middle)
+            if perpendicular <= depth * 0.52:
+                expected.add((x, y))
+    overlap = len(colored & expected)
+    return 2 * overlap / max(1, len(colored) + len(expected)), len(colored)
 
 
 def _has_confirmed_gravity_pair(detections: list[Detection]) -> bool:
@@ -1399,7 +1858,13 @@ def _detect_title_bar_height(image: RGBImage) -> int:
     return blue_rows if blue_rows >= 12 else 0
 
 
-def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
+def _detect_saves(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    *,
+    allow_weak_active: bool = False,
+) -> list[Detection]:
     allow_tinted = _looks_cyan_tinted(image, room)
     minimum_component_height = max(
         8,
@@ -1434,7 +1899,7 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
                 yellow += 1
         if yellow < 18:
             continue
-        if max(red, green) < 12 and yellow < 35:
+        if max(red, green) < 8 and (allow_weak_active or yellow < 35):
             continue
         density = (red + green + yellow) / box.area
         if density < 0.12:
@@ -1442,7 +1907,75 @@ def _detect_saves(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         score = min(1.0, density * 2.5 + min(red + green, yellow) / 150)
         detections.append(Detection("save", OBJ_SAVE, map_x, map_y, score, box))
-    return _dedupe_detections(detections, min_distance=40)
+    if allow_weak_active:
+        detections.extend(_detect_weak_active_save_patches(image, room, grid_step))
+    return _dedupe_detections(detections, min_distance=25)
+
+
+def _detect_active_green_saves(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    detections: list[Detection] = []
+    for box, pixels in _connected_components(image, room, _is_save_green):
+        if not (5 <= box.width <= 45 and 5 <= box.height <= 45):
+            continue
+        if not 0.65 <= box.width / max(1, box.height) <= 1.55:
+            continue
+        if len(pixels) / box.area < 0.28:
+            continue
+        margin = 8
+        yellow = 0
+        for y in range(max(room.y, box.y - margin), min(room.bottom, box.bottom + margin)):
+            for x in range(max(room.x, box.x - margin), min(room.right, box.right + margin)):
+                if _is_save_yellow(*image.pixel(x, y)):
+                    yellow += 1
+        if yellow < 3:
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        detections.append(
+            Detection("save_active", OBJ_SAVE, map_x, map_y, 0.94, box)
+        )
+    return detections
+
+
+def _detect_weak_active_save_patches(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recover low-resolution green saves whose colored pixels fragment."""
+
+    detections: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, grid_step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, grid_step):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            green = sum(
+                color[1] > 85
+                and color[1] > color[0] + 18
+                and color[1] > color[2] + 15
+                for color in colors
+            )
+            yellow = sum(
+                color[0] > 145 and color[1] > 105 and color[2] < 105
+                for color in colors
+            )
+            if green < 15 or yellow < 3:
+                continue
+            detections.append(
+                _geometry_detection(
+                    "save_active_weak_patch",
+                    OBJ_SAVE,
+                    x,
+                    y,
+                    min(0.93, 0.62 + green / 160 + yellow / 200),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _dedupe_detections(detections, min_distance=25)
 
 
 def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
@@ -1474,7 +2007,115 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         if score < 0.55:
             continue
         detections.append(Detection("warp", OBJ_WARP, map_x, map_y, score, box))
+    detections.extend(_detect_outline_warps(image, room, grid_step))
     return _dedupe_detections(detections)
+
+
+def _detect_outline_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: min(r, g, b) > 165 and max(r, g, b) - min(r, g, b) < 55,
+    )
+    candidates = [(box, pixels, False) for box, pixels in components]
+    candidates.extend(
+        (box, pixels, True)
+        for box, pixels in _merge_nearby_outline_components(components, max_gap=8)
+    )
+    detections: list[Detection] = []
+    for box, pixels, merged in candidates:
+        if not (24 <= box.width <= 70 and 24 <= box.height <= 70):
+            continue
+        ratio = box.width / max(1, box.height)
+        density = len(pixels) / box.area
+        minimum_ratio, maximum_ratio = (0.72, 1.35) if merged else (0.78, 1.28)
+        minimum_density = 0.12 if merged else 0.20
+        if not (
+            minimum_ratio <= ratio <= maximum_ratio
+            and minimum_density <= density <= 0.68
+        ):
+            continue
+        if _component_center_fill_ratio(box, pixels) > 0.72:
+            continue
+        if _local_significant_color_buckets(image, box, margin=10) > 22:
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        detections.append(
+            Detection("warp_outline", OBJ_WARP, map_x, map_y, 0.78, box)
+        )
+    return detections
+
+
+def _local_significant_color_buckets(image: RGBImage, box: Box, margin: int) -> int:
+    """Measure local visual complexity so artwork is not treated as an icon."""
+
+    buckets: dict[tuple[int, int, int], int] = defaultdict(int)
+    for y in range(max(0, box.y - margin), min(image.height, box.bottom + margin), 2):
+        for x in range(max(0, box.x - margin), min(image.width, box.right + margin), 2):
+            r, g, b = image.pixel(x, y)
+            buckets[(r // 32, g // 32, b // 32)] += 1
+    total = max(1, sum(buckets.values()))
+    return sum(count / total >= 0.01 for count in buckets.values())
+
+
+def _merge_nearby_outline_components(
+    components: list[tuple[Box, list[tuple[int, int]]]],
+    max_gap: int,
+) -> list[tuple[Box, list[tuple[int, int]]]]:
+    """Join fragmented strokes before applying the closed-outline warp gates."""
+
+    eligible = [component for component in components if component[0].area <= 1400]
+    groups: list[set[int]] = []
+    for index, (box, _) in enumerate(eligible):
+        touching = []
+        for group_index, group in enumerate(groups):
+            if any(
+                _boxes_within_gap(box, eligible[member][0], max_gap)
+                for member in group
+            ):
+                touching.append(group_index)
+        if not touching:
+            groups.append({index})
+            continue
+        merged = {index}
+        for group_index in reversed(touching):
+            merged.update(groups.pop(group_index))
+        groups.append(merged)
+
+    merged_components: list[tuple[Box, list[tuple[int, int]]]] = []
+    for group in groups:
+        # A genuinely fragmented spiral is composed of many short strokes;
+        # two or three nearby components are usually separate spike edges.
+        if len(group) < 8:
+            continue
+        pixels = list(
+            {
+                pixel
+                for member in group
+                for pixel in eligible[member][1]
+            }
+        )
+        min_x = min(pixel[0] for pixel in pixels)
+        min_y = min(pixel[1] for pixel in pixels)
+        max_x = max(pixel[0] for pixel in pixels)
+        max_y = max(pixel[1] for pixel in pixels)
+        box = Box(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+        if box.width <= 70 and box.height <= 70:
+            merged_components.append((box, pixels))
+    return merged_components
+
+
+def _boxes_within_gap(first: Box, second: Box, gap: int) -> bool:
+    return not (
+        first.right + gap < second.x
+        or second.right + gap < first.x
+        or first.bottom + gap < second.y
+        or second.bottom + gap < first.y
+    )
 
 
 def _detect_color_objects(
@@ -1488,7 +2129,80 @@ def _detect_color_objects(
     detections.extend(_detect_walljumps(image, room, grid_step, anchors + detections))
     detections.extend(_detect_water(image, room, grid_step, anchors + detections))
     detections.extend(_detect_gravity_flippers(image, room))
+    refreshers = _detect_jump_refreshers(image, room, grid_step)
+    if refreshers:
+        detections = [
+            detection
+            for detection in detections
+            if detection.type_id not in (OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN)
+            or not any(
+                distance((detection.x, detection.y), (refresher.x, refresher.y)) <= 24
+                for refresher in refreshers
+            )
+        ]
+        detections.extend(refreshers)
     return detections
+
+
+def _detect_jump_refreshers(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    predicates = (
+        lambda r, g, b: b > 110 and b > r + 50 and b > g + 15,
+        lambda r, g, b: min(r, g, b) > 165 and max(r, g, b) - min(r, g, b) < 55,
+    )
+    candidates: list[tuple[Box, list[tuple[int, int]], str]] = []
+    for index, predicate in enumerate(predicates):
+        if index == 1 and not _looks_like_neutral_terrain_room(image, room):
+            continue
+        for box, pixels in _connected_components(image, room, predicate):
+            if index == 0:
+                valid = (
+                    18 <= box.width <= 40
+                    and 18 <= box.height <= 40
+                    and 0.65 <= box.width / max(1, box.height) <= 1.45
+                    and len(pixels) / box.area >= 0.65
+                    and _component_center_fill_ratio(box, pixels) >= 0.95
+                )
+                kind = "jump_refresher_blue"
+            else:
+                valid = (
+                    6 <= box.width <= 14
+                    and 6 <= box.height <= 15
+                    and 0.55 <= box.width / max(1, box.height) <= 1.55
+                    and 24 <= len(pixels) <= 100
+                )
+                kind = "jump_refresher_neutral"
+            if valid:
+                candidates.append((box, pixels, kind))
+    if len(candidates) < 4:
+        return []
+    detections = []
+    for box, pixels, kind in candidates:
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        # The icon is centered in its 16px object cell, unlike 32px sprites.
+        map_x += MINI_BLOCK_SIZE
+        map_y += MINI_BLOCK_SIZE
+        detections.append(
+            Detection(
+                kind,
+                OBJ_JUMP_REFRESHER,
+                map_x,
+                map_y,
+                min(0.98, 0.70 + len(pixels) / max(1000, box.area * 2)),
+                box,
+            )
+        )
+    return _dedupe_detections(detections, min_distance=20)
+
+
+def _component_center_fill_ratio(box: Box, pixels: list[tuple[int, int]]) -> float:
+    center = box.inset(max(1, min(box.width, box.height) // 4))
+    if center.area == 0:
+        return 1.0
+    return sum(center.contains(x, y) for x, y in pixels) / center.area
 
 
 def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:

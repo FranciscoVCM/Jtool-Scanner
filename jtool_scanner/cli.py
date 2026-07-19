@@ -587,7 +587,13 @@ def _scan_fixtures(
                 f"({evaluation.detected_full_spikes} detected), "
                 f"mini spikes {evaluation.matched_mini_spikes}/"
                 f"{evaluation.truth_mini_spikes} matched "
-                f"({evaluation.detected_mini_spikes} detected)"
+                f"({evaluation.detected_mini_spikes} detected), "
+                f"killer blocks {evaluation.matched_killer_blocks}/"
+                f"{evaluation.truth_killer_blocks} matched "
+                f"({evaluation.detected_killer_blocks} detected), "
+                f"jump refreshers {evaluation.matched_jump_refreshers}/"
+                f"{evaluation.truth_jump_refreshers} matched "
+                f"({evaluation.detected_jump_refreshers} detected)"
             )
     if out_base:
         print(f"wrote scans to {out_base}")
@@ -911,6 +917,18 @@ def _print_evaluation_summary(
             totals["matched_mini_spikes"],
             totals["truth_mini_spikes"],
             totals["detected_mini_spikes"],
+        )
+        _print_metric_summary(
+            "killer blocks",
+            totals["matched_killer_blocks"],
+            totals["truth_killer_blocks"],
+            totals["detected_killer_blocks"],
+        )
+        _print_metric_summary(
+            "jump refreshers",
+            totals["matched_jump_refreshers"],
+            totals["truth_jump_refreshers"],
+            totals["detected_jump_refreshers"],
         )
 
 

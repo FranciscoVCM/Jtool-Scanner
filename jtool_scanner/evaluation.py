@@ -11,6 +11,8 @@ from .constants import (
     OBJ_BLOCK,
     OBJ_GRAVITY_DOWN,
     OBJ_GRAVITY_UP,
+    OBJ_JUMP_REFRESHER,
+    OBJ_KILLER_BLOCK,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -73,6 +75,12 @@ class PairEvaluation:
     detected_mini_spikes: int
     truth_mini_spikes: int
     matched_mini_spikes: int
+    detected_killer_blocks: int
+    truth_killer_blocks: int
+    matched_killer_blocks: int
+    detected_jump_refreshers: int
+    truth_jump_refreshers: int
+    matched_jump_refreshers: int
 
 
 EVALUATION_TOTAL_FIELDS = (
@@ -109,6 +117,12 @@ EVALUATION_TOTAL_FIELDS = (
     "detected_mini_spikes",
     "truth_mini_spikes",
     "matched_mini_spikes",
+    "detected_killer_blocks",
+    "truth_killer_blocks",
+    "matched_killer_blocks",
+    "detected_jump_refreshers",
+    "truth_jump_refreshers",
+    "matched_jump_refreshers",
 )
 
 
@@ -217,18 +231,18 @@ def evaluate_scan(
             tolerance,
         ),
         detected_mini_blocks=_count(detections, OBJ_MINI_BLOCK),
-        truth_mini_blocks=len(truth.objects_of_type(OBJ_MINI_BLOCK)),
+        truth_mini_blocks=len(_visible_objects_of_type(truth, OBJ_MINI_BLOCK)),
         matched_mini_blocks=_match_count(
             detections,
-            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_MINI_BLOCK)],
+            [(obj.x, obj.y) for obj in _visible_objects_of_type(truth, OBJ_MINI_BLOCK)],
             OBJ_MINI_BLOCK,
             tolerance,
         ),
         detected_blocks=_count(detections, OBJ_BLOCK),
-        truth_blocks=len(truth.objects_of_type(OBJ_BLOCK)),
+        truth_blocks=len(_visible_objects_of_type(truth, OBJ_BLOCK)),
         matched_blocks=_match_count(
             detections,
-            [(obj.x, obj.y) for obj in truth.objects_of_type(OBJ_BLOCK)],
+            [(obj.x, obj.y) for obj in _visible_objects_of_type(truth, OBJ_BLOCK)],
             OBJ_BLOCK,
             tolerance,
         ),
@@ -246,6 +260,22 @@ def evaluate_scan(
             detections,
             truth,
             MINI_SPIKE_TYPES,
+            tolerance,
+        ),
+        detected_killer_blocks=_count(detections, OBJ_KILLER_BLOCK),
+        truth_killer_blocks=len(_visible_objects_of_type(truth, OBJ_KILLER_BLOCK)),
+        matched_killer_blocks=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in _visible_objects_of_type(truth, OBJ_KILLER_BLOCK)],
+            OBJ_KILLER_BLOCK,
+            tolerance,
+        ),
+        detected_jump_refreshers=_count(detections, OBJ_JUMP_REFRESHER),
+        truth_jump_refreshers=len(_visible_objects_of_type(truth, OBJ_JUMP_REFRESHER)),
+        matched_jump_refreshers=_match_count(
+            detections,
+            [(obj.x, obj.y) for obj in _visible_objects_of_type(truth, OBJ_JUMP_REFRESHER)],
+            OBJ_JUMP_REFRESHER,
             tolerance,
         ),
     )
@@ -288,6 +318,8 @@ MATCH_DETAIL_GROUPS = (
     ("blocks", frozenset({OBJ_BLOCK}), True),
     ("full_spikes", FULL_SPIKE_TYPES, True),
     ("mini_spikes", MINI_SPIKE_TYPES, True),
+    ("killer_blocks", frozenset({OBJ_KILLER_BLOCK}), True),
+    ("jump_refreshers", frozenset({OBJ_JUMP_REFRESHER}), True),
 )
 
 
@@ -431,6 +463,10 @@ def _match_detail_group(
 
 def _is_visible_truth_object(obj) -> bool:
     return obj.x < ROOM_WIDTH and obj.y < ROOM_HEIGHT and obj.x + 32 > 0 and obj.y + 32 > 0
+
+
+def _visible_objects_of_type(jmap: JMap, type_id: int) -> list:
+    return [obj for obj in jmap.objects_of_type(type_id) if _is_visible_truth_object(obj)]
 
 
 def _maximum_coordinate_matching(
