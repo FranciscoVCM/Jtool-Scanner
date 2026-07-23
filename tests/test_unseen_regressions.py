@@ -5,6 +5,7 @@ import unittest
 
 from jtool_scanner.constants import (
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_SAVE,
     OBJ_WARP,
 )
@@ -72,6 +73,19 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual(
             [(detection.kind, detection.x, detection.y) for detection in saves],
             [("save", 480, 552)],
+        )
+        self.assertFalse(
+            any(
+                detection.type_id == OBJ_MINI_BLOCK
+                for detection in self.brick_room.detections
+            )
+        )
+        self.assertGreaterEqual(
+            sum(
+                detection.type_id == OBJ_BLOCK
+                for detection in self.brick_room.detections
+            ),
+            100,
         )
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
