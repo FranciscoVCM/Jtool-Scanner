@@ -10,6 +10,10 @@ from jtool_scanner.constants import (
     OBJ_MINI_BLOCK,
     OBJ_PLATFORM,
     OBJ_SAVE,
+    OBJ_SPIKE_DOWN,
+    OBJ_SPIKE_LEFT,
+    OBJ_SPIKE_RIGHT,
+    OBJ_SPIKE_UP,
     OBJ_WARP,
     OBJ_WATER_2,
     ROOM_HEIGHT,
@@ -193,6 +197,25 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual(
             sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
             73,
+        )
+        component_spikes = [
+            detection
+            for detection in detections
+            if detection.kind.startswith("warm_component_spike_")
+        ]
+        self.assertTrue(
+            all(
+                detection.x % 16 == 0
+                for detection in component_spikes
+                if detection.type_id in {OBJ_SPIKE_UP, OBJ_SPIKE_DOWN}
+            )
+        )
+        self.assertTrue(
+            all(
+                detection.y % 16 == 0
+                for detection in component_spikes
+                if detection.type_id in {OBJ_SPIKE_RIGHT, OBJ_SPIKE_LEFT}
+            )
         )
         self.assertEqual(
             sum(detection.type_id == OBJ_WATER_2 for detection in detections),

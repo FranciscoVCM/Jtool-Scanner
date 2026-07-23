@@ -1803,6 +1803,7 @@ def _replace_warm_tiled_room_geometry(
         )
         >= 0.15
     }
+    rendered_block_positions: set[tuple[int, int]] = set()
     for x, y in sorted(
         block_positions,
         key=lambda position: (position[1], position[0]),
@@ -1810,6 +1811,7 @@ def _replace_warm_tiled_room_geometry(
         colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
         warm_ratio = _warm_terrain_ratio(colors)
         block_y = _warm_tiled_block_origin_y(colors, y)
+        rendered_block_positions.add((x, block_y))
         result.append(
             _geometry_detection(
                 "warm_terrain_block",
@@ -1824,7 +1826,11 @@ def _replace_warm_tiled_room_geometry(
         )
     result.extend(
         [
-            *_detect_warm_tiled_room_spikes(image, room),
+            *_detect_warm_tiled_room_spikes(
+                image,
+                room,
+                rendered_block_positions,
+            ),
             *_detect_warm_tiled_water_spikes(image, room),
         ]
     )
@@ -1855,6 +1861,7 @@ def _warm_tiled_block_origin_y(
 def _detect_warm_tiled_room_spikes(
     image: RGBImage,
     room: Box,
+    block_positions: set[tuple[int, int]],
 ) -> list[Detection]:
     mask = bytearray(ROOM_WIDTH * ROOM_HEIGHT)
     for map_y in range(ROOM_HEIGHT):
@@ -1928,6 +1935,12 @@ def _detect_warm_tiled_room_spikes(
                 direction = "up" if dy > 0 else "down"
                 origin_x = round((min_x - (GRID_SIZE - width) / 2) / 8) * 8
                 origin_y = round(min_y / 8) * 8
+            origin_x, origin_y = _align_warm_spike_to_terrain(
+                origin_x,
+                origin_y,
+                direction,
+                block_positions,
+            )
             if not (
                 0 <= origin_x <= ROOM_WIDTH - GRID_SIZE
                 and 0 <= origin_y <= ROOM_HEIGHT - GRID_SIZE
@@ -1946,6 +1959,49 @@ def _detect_warm_tiled_room_spikes(
                 )
             )
     return _dedupe_detections(detections, min_distance=12)
+
+
+def _align_warm_spike_to_terrain(
+    x: int,
+    y: int,
+    direction: str,
+    block_positions: set[tuple[int, int]],
+) -> tuple[int, int]:
+    """Align an antialiased silhouette with a nearby terrain face."""
+
+    if direction in ("up", "down"):
+        x = x // MINI_BLOCK_SIZE * MINI_BLOCK_SIZE
+        candidates = []
+        for block_x, block_y in block_positions:
+            overlap = min(x + GRID_SIZE, block_x + GRID_SIZE) - max(x, block_x)
+            if overlap < 8:
+                continue
+            face_y = (
+                block_y - GRID_SIZE
+                if direction == "up"
+                else block_y + GRID_SIZE
+            )
+            if abs(face_y - y) <= 12:
+                candidates.append((abs(face_y - y), -overlap, face_y))
+        if candidates:
+            y = min(candidates)[2]
+    else:
+        y = y // MINI_BLOCK_SIZE * MINI_BLOCK_SIZE
+        candidates = []
+        for block_x, block_y in block_positions:
+            overlap = min(y + GRID_SIZE, block_y + GRID_SIZE) - max(y, block_y)
+            if overlap < 8:
+                continue
+            face_x = (
+                block_x - GRID_SIZE
+                if direction == "left"
+                else block_x + GRID_SIZE
+            )
+            if abs(face_x - x) <= 12:
+                candidates.append((abs(face_x - x), -overlap, face_x))
+        if candidates:
+            x = min(candidates)[2]
+    return x, y
 
 
 def _detect_warm_tiled_water_spikes(
