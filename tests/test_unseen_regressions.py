@@ -23,6 +23,7 @@ from jtool_scanner.scanner import (
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
     _infer_source_grid,
+    _warm_room_allows_bottom_block_offset,
     scan_png,
 )
 
@@ -152,6 +153,13 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual(_infer_source_grid(Box(0, 0, 800, 480)), (20, 12))
         self.assertIsNone(_infer_source_grid(Box(0, 0, 1000, 500)))
 
+    def test_bottom_crop_uses_the_room_boundary_lattice(self) -> None:
+        framed_top = {(x, 0) for x in range(0, 448, GRID_SIZE)}
+        sparse_top = {(x, 0) for x in range(0, 192, GRID_SIZE)}
+
+        self.assertFalse(_warm_room_allows_bottom_block_offset(framed_top))
+        self.assertTrue(_warm_room_allows_bottom_block_offset(sparse_top))
+
     def test_rescaled_brick_room_keeps_structural_geometry(self) -> None:
         detections = self.brick_room_rescaled.detections
         self.assertEqual(
@@ -268,23 +276,19 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             for spike in spikes
             for block in blocks
         ]
-        self.assertLessEqual(max(overlaps), GRID_SIZE * 8)
+        self.assertEqual(max(overlaps), 0)
         self.assertTrue(
+            any(
+                detection.type_id == OBJ_BLOCK
+                and detection.y == ROOM_HEIGHT - GRID_SIZE
+                for detection in detections
+            )
+        )
+        self.assertFalse(
             any(
                 detection.type_id == OBJ_BLOCK and detection.y == 584
                 for detection in detections
             )
-        )
-        self.assertGreater(
-            sum(
-                detection.type_id == OBJ_BLOCK and detection.y == 584
-                for detection in detections
-            ),
-            sum(
-                detection.type_id == OBJ_BLOCK
-                and detection.y == ROOM_HEIGHT - GRID_SIZE
-                for detection in detections
-            ),
         )
 
 

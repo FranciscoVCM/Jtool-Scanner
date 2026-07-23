@@ -1804,13 +1804,18 @@ def _replace_warm_tiled_room_geometry(
         >= 0.15
     }
     block_detections: list[Detection] = []
+    allow_bottom_offset = _warm_room_allows_bottom_block_offset(block_positions)
     for x, y in sorted(
         block_positions,
         key=lambda position: (position[1], position[0]),
     ):
         colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
         warm_ratio = _warm_terrain_ratio(colors)
-        block_y = _warm_tiled_block_origin_y(colors, y)
+        block_y = _warm_tiled_block_origin_y(
+            colors,
+            y,
+            allow_bottom_offset=allow_bottom_offset,
+        )
         block_detections.append(
             _geometry_detection(
                 "warm_terrain_block",
@@ -1843,8 +1848,10 @@ def _replace_warm_tiled_room_geometry(
 def _warm_tiled_block_origin_y(
     colors: list[tuple[int, int, int]],
     y: int,
+    *,
+    allow_bottom_offset: bool = True,
 ) -> int:
-    if y != ROOM_HEIGHT - GRID_SIZE:
+    if y != ROOM_HEIGHT - GRID_SIZE or not allow_bottom_offset:
         return y
     top = [
         color
@@ -1859,6 +1866,16 @@ def _warm_tiled_block_origin_y(
     if _warm_terrain_ratio(top) <= 0.10 and _warm_terrain_ratio(lower) >= 0.30:
         return y + 8
     return y
+
+
+def _warm_room_allows_bottom_block_offset(
+    block_positions: set[tuple[int, int]],
+) -> bool:
+    """Keep a cropped bottom row on the room lattice when the top fixes it."""
+
+    top_blocks = sum(y == 0 for _x, y in block_positions)
+    room_columns = ROOM_WIDTH // GRID_SIZE
+    return top_blocks < room_columns * 0.50
 
 
 def _detect_warm_tiled_room_spikes(
@@ -2098,7 +2115,7 @@ def _nearest_clear_spike_face(
                 if spike.type_id == OBJ_SPIKE_RIGHT
                 else block_x - GRID_SIZE
             )
-            y = spike.y
+            y = block_y
         movement = abs(x - spike.x) + abs(y - spike.y)
         if (
             movement <= GRID_SIZE
