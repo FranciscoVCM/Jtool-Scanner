@@ -7,6 +7,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import mimetypes
 from pathlib import Path
+import socket
 import tempfile
 from typing import Any
 from urllib.parse import parse_qs, urlparse
@@ -20,6 +21,21 @@ from .scanner import scan_png
 
 WEB_ROOT = Path(__file__).with_name("web")
 MAX_REQUEST_BYTES = 32 * 1024 * 1024
+
+
+class _ExclusiveThreadingHTTPServer(ThreadingHTTPServer):
+    """Reject a second app process instead of splitting requests on Windows."""
+
+    allow_reuse_address = False
+
+    def server_bind(self) -> None:
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(
+                socket.SOL_SOCKET,
+                socket.SO_EXCLUSIVEADDRUSE,
+                1,
+            )
+        super().server_bind()
 
 
 def scan_image_bytes(
@@ -88,7 +104,7 @@ def serve_app(
     *,
     open_browser: bool = True,
 ) -> None:
-    server = ThreadingHTTPServer((host, port), _AppHandler)
+    server = _ExclusiveThreadingHTTPServer((host, port), _AppHandler)
     url = f"http://{host}:{server.server_port}/"
     print(f"JTool Scanner app: {url}", flush=True)
     if open_browser:
