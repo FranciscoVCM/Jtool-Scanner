@@ -82,13 +82,29 @@ scanner kind/score, source-image box, and original detected state. Disabling an
 object is non-destructive, so it can be restored later. Manual additions,
 overlapping objects, type/orientation changes, bulk water changes, exact start
 positions, and selecting one save among many are all preserved in the project.
+Infinite jump is preserved as map metadata and can be corrected with
+`project-edit --infinite-jump` or `--no-infinite-jump`.
 The clean SVG represents the exported JTool map; the diagnostic SVG adds object
 IDs and red dashed outlines for disabled candidates.
 
-The correction format already accepts every official JTool 1.3.5 object type,
-including killer blocks and jump refreshers. Those can be added or corrected
-manually now; scanner recognition for them will be trained when suitable screen
-examples are added.
+The correction format accepts every official JTool 1.3.5 object type, including
+killer blocks and jump refreshers. Fixed 32px objects can cover a source extent
+with `project-edit --add-extent X:Y:WIDTH:HEIGHT:TYPE`. Extents smaller than the
+JTool object are centered; longer extents use 32px steps plus a final overlap,
+so an 80px strip is represented by objects at offsets 0, 32, and 48.
+
+Room normalization supports source rooms smaller or larger than JTool's 25x19
+grid. Smaller rooms are centered with odd horizontal space biased left and odd
+vertical space biased down. Larger rooms retain the leftmost 25 columns and
+bottommost 19 rows. Common 19x13 rooms are recognized automatically; ambiguous
+layouts can be specified with `--source-grid COLSxROWS` on `inspect-image`,
+`scan-image`, or `project-create`.
+
+Infinite-jump text is recognized from phrases such as "jump many times",
+"infinity jump", "jump infinitely", and "unlimited jumps". PNG commands use
+Tesseract automatically when it is installed, accept deterministic text through
+`--ocr-text`, and can disable OCR with `--no-ocr`. OCR is advisory because game
+fonts vary; the correction project always exposes the final setting.
 
 The screenshot scanner has three layers:
 
@@ -107,7 +123,7 @@ Current eight-room stress-fixture status (24px evaluation tolerance):
 - full-spike precision: all 652 fixture spikes match with 799 detections (81.6% precision); CN3-16 is 30/30 with 43 detections and CN3-18 is 50/50 with 60 detections after separating partial-occlusion recovery from broad axis support and pruning incompatible local orientations
 - mini-spike precision: all 209 fixture mini spikes match with 287 detections (72.8% precision); a final color-independent triangle-fill and structural-support pass reduces CN3-16 to 62 detections for 54 truth and CN3-18 to 68 for 54 truth
 - remaining precision work is concentrated in geometry hypotheses: full spikes have 799 detections for 652 truth, mini spikes 287 for 209, blocks 1,039 for 919, and miniblocks 1,022 for 875
-- not yet handled: jump refreshers and unknown game-specific gimmicks
+- unknown game-specific gimmicks remain intentionally excluded
 
 `scan-image` still writes a direct diagnostic `.jmap`. For maps intended for
 editing or play, use `project-create`, correct the stable project, and finish

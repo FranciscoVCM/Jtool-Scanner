@@ -8,6 +8,9 @@ for diagnostics, but it is not yet expected to produce final maps by itself.
 from __future__ import annotations
 
 import math
+import re
+import shutil
+import subprocess
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -984,10 +987,13 @@ class ScanResult:
     image_height: int
     room_box: Box
     detections: list[Detection] = field(default_factory=list)
+    infinite_jump: int = 0
+    recognized_text: str = ""
+    source_grid: tuple[int, int] | None = None
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
-        jmap = JMap(objects=objects)
+        jmap = JMap(infinite_jump=self.infinite_jump, objects=objects)
         move_start_to_save(jmap, start_policy)
         return jmap
 
@@ -1020,14 +1026,21 @@ def scan_png(
     grid_step: int = GRID_SIZE,
     include_color_objects: bool = False,
     include_geometry: bool = False,
+    source_grid: tuple[int, int] | None = None,
+    recognized_text: str | None = None,
+    enable_ocr: bool = True,
 ) -> ScanResult:
     image = load_png(path)
+    if recognized_text is None and enable_ocr:
+        recognized_text = _extract_text_with_tesseract(path)
     return scan_image(
         image,
         room_box=room_box,
         grid_step=grid_step,
         include_color_objects=include_color_objects,
         include_geometry=include_geometry,
+        source_grid=source_grid,
+        recognized_text=recognized_text,
     )
 
 
@@ -1037,13 +1050,25 @@ def scan_image(
     grid_step: int = GRID_SIZE,
     include_color_objects: bool = False,
     include_geometry: bool = False,
+    source_grid: tuple[int, int] | None = None,
+    recognized_text: str | None = None,
 ) -> ScanResult:
     _PATCH_FEATURE_CACHE.clear()
     source_image = image
     source_box = room_box or detect_room_box(image)
-    centered_offset: tuple[int, int] | None = None
-    if room_box is None and _looks_like_centered_19_by_13_room(source_box):
-        image, centered_offset = _pad_centered_19_by_13_room(image.crop(source_box))
+    normalized_grid = source_grid or _infer_source_grid(source_box)
+    source_translation: tuple[int, int] | None = None
+    compact_room = normalized_grid == (19, 13)
+    if normalized_grid is not None and normalized_grid != (25, 19):
+        normalization = _normalize_room_to_jtool(
+            image.crop(source_box),
+            *normalized_grid,
+        )
+        image = normalization.image
+        source_translation = (
+            source_box.x + normalization.source_offset_x,
+            source_box.y + normalization.source_offset_y,
+        )
         box = Box(0, 0, image.width, image.height)
     else:
         box = source_box
@@ -1053,7 +1078,7 @@ def scan_image(
             image,
             box,
             grid_step,
-            allow_weak_active=centered_offset is not None,
+            allow_weak_active=compact_room,
         )
     )
     detections.extend(_detect_warps(image, box, grid_step))
@@ -1198,13 +1223,13 @@ def scan_image(
         detections = _prune_final_miniblock_noise(detections, image, box)
         detections = _prune_final_water_noise(detections)
         detections = _prune_final_walljump_noise(detections)
-        if centered_offset is not None:
+        if compact_room:
             detections = _replace_compact_room_geometry(detections, image, box)
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
-    if centered_offset is not None:
-        offset_x, offset_y = centered_offset
+    if source_translation is not None:
+        offset_x, offset_y = source_translation
         detections = [
             Detection(
                 detection.kind,
@@ -1213,8 +1238,8 @@ def scan_image(
                 detection.y,
                 detection.score,
                 Box(
-                    detection.image_box.x - offset_x + source_box.x,
-                    detection.image_box.y - offset_y + source_box.y,
+                    detection.image_box.x + offset_x,
+                    detection.image_box.y + offset_y,
                     detection.image_box.width,
                     detection.image_box.height,
                 ),
@@ -1226,34 +1251,128 @@ def scan_image(
         source_image.height,
         source_box,
         detections,
+        int(_text_indicates_infinite_jump(recognized_text or "")),
+        recognized_text or "",
+        normalized_grid,
     )
     _PATCH_FEATURE_CACHE.clear()
     return result
 
 
-def _looks_like_centered_19_by_13_room(room: Box) -> bool:
-    """Recognize common compact fangame rooms before mapping them to JTool."""
+@dataclass(frozen=True, slots=True)
+class _RoomNormalization:
+    image: RGBImage
+    source_offset_x: int
+    source_offset_y: int
+
+
+def _infer_source_grid(room: Box) -> tuple[int, int] | None:
+    """Infer only unambiguous room profiles; callers can supply other grids."""
 
     ratio = room.width / max(1, room.height)
-    return 1.42 <= ratio <= 1.50
+    if 1.42 <= ratio <= 1.50:
+        return 19, 13
+    if 1.29 <= ratio <= 1.34:
+        return 25, 19
+    return None
 
 
-def _pad_centered_19_by_13_room(image: RGBImage) -> tuple[RGBImage, tuple[int, int]]:
-    """Embed a 19x13 source room in JTool's centered 25x19 canvas."""
+def _normalize_room_to_jtool(
+    image: RGBImage,
+    columns: int,
+    rows: int,
+) -> _RoomNormalization:
+    """Center small rooms and take the lower-left viewport of oversized rooms."""
 
-    pad_x = int(round(image.width * 3 / 19))
-    pad_y = int(round(image.height * 3 / 13))
-    fill = bytes(_dominant_sample_color(image))
-    output_width = image.width + pad_x * 2
+    if columns <= 0 or rows <= 0:
+        raise ValueError("source grid dimensions must be positive")
+    target_columns = ROOM_WIDTH // GRID_SIZE
+    target_rows = ROOM_HEIGHT // GRID_SIZE
+    tile_width = image.width / columns
+    tile_height = image.height / rows
+
+    crop_left = 0
+    crop_top = max(0, int(round((rows - target_rows) * tile_height)))
+    crop_width = min(image.width, int(round(target_columns * tile_width)))
+    crop_height = min(image.height - crop_top, int(round(target_rows * tile_height)))
+    cropped = image.crop(Box(crop_left, crop_top, crop_width, crop_height))
+
+    missing_columns = max(0, target_columns - columns)
+    missing_rows = max(0, target_rows - rows)
+    pad_left = int(round((missing_columns // 2) * tile_width))
+    pad_right = int(round((missing_columns - missing_columns // 2) * tile_width))
+    # An odd vertical remainder puts the extra empty row above the room,
+    # biasing the playable content downward.
+    pad_top_rows = (missing_rows + 1) // 2
+    pad_top = int(round(pad_top_rows * tile_height))
+    pad_bottom = int(round((missing_rows - pad_top_rows) * tile_height))
+    normalized = _pad_rgb_image(
+        cropped,
+        pad_left,
+        pad_top,
+        pad_right,
+        pad_bottom,
+        _dominant_sample_color(image),
+    )
+    return _RoomNormalization(
+        normalized,
+        crop_left - pad_left,
+        crop_top - pad_top,
+    )
+
+
+def _pad_rgb_image(
+    image: RGBImage,
+    left: int,
+    top: int,
+    right: int,
+    bottom: int,
+    color: tuple[int, int, int],
+) -> RGBImage:
+    fill = bytes(color)
+    output_width = left + image.width + right
     fill_row = fill * output_width
-    side = fill * pad_x
-    rows = [fill_row] * pad_y
+    side_left = fill * left
+    side_right = fill * right
+    rows = [fill_row] * top
     for y in range(image.height):
         start = y * image.width * 3
         end = start + image.width * 3
-        rows.append(side + image.data[start:end] + side)
-    rows.extend([fill_row] * pad_y)
-    return RGBImage(output_width, image.height + pad_y * 2, b"".join(rows)), (pad_x, pad_y)
+        rows.append(side_left + image.data[start:end] + side_right)
+    rows.extend([fill_row] * bottom)
+    return RGBImage(output_width, top + image.height + bottom, b"".join(rows))
+
+
+def _text_indicates_infinite_jump(text: str) -> bool:
+    normalized = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+    if not re.search(r"\bjump(?:s|ing)?\b", normalized):
+        return False
+    patterns = (
+        r"\binfinit(?:e|y|ely)\b",
+        r"\bunlimited\b",
+        r"\bwithout (?:a )?limit\b",
+        r"\bforever\b",
+        r"\bmany times\b",
+        r"\bas many times\b",
+    )
+    return any(re.search(pattern, normalized) for pattern in patterns)
+
+
+def _extract_text_with_tesseract(path: str | Path) -> str:
+    executable = shutil.which("tesseract")
+    if executable is None:
+        return ""
+    try:
+        completed = subprocess.run(
+            [executable, str(path), "stdout", "--psm", "11"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return completed.stdout if completed.returncode == 0 else ""
 
 
 def _dominant_sample_color(image: RGBImage) -> tuple[int, int, int]:

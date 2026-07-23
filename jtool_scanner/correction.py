@@ -110,6 +110,8 @@ class CorrectionProject:
     grid_step: int = 8
     include_color_objects: bool = True
     include_geometry: bool = True
+    source_grid: tuple[int, int] | None = None
+    recognized_text: str = ""
     start_policy: str = "auto"
     start_save_id: str | None = None
     start_position: tuple[int, int] | None = None
@@ -172,7 +174,10 @@ class CorrectionProject:
             grid_step=grid_step,
             include_color_objects=include_color_objects,
             include_geometry=include_geometry,
+            source_grid=getattr(result, "source_grid", None),
+            recognized_text=getattr(result, "recognized_text", ""),
             start_policy=start_policy,
+            infinite_jump=int(getattr(result, "infinite_jump", 0)),
             objects=objects,
             history=[{"operation": "create_from_scan", "detections": len(objects)}],
         )
@@ -245,6 +250,12 @@ class CorrectionProject:
             grid_step=int(scanner.get("grid_step", 8)),
             include_color_objects=bool(scanner.get("include_color_objects", True)),
             include_geometry=bool(scanner.get("include_geometry", True)),
+            source_grid=(
+                (int(scanner["source_grid"][0]), int(scanner["source_grid"][1]))
+                if scanner.get("source_grid") is not None
+                else None
+            ),
+            recognized_text=str(scanner.get("recognized_text", "")),
             start_policy=str(start.get("policy", "auto")),
             start_save_id=start.get("save_id"),
             start_position=(int(position[0]), int(position[1])) if position is not None else None,
@@ -275,6 +286,8 @@ class CorrectionProject:
                 "grid_step": self.grid_step,
                 "include_color_objects": self.include_color_objects,
                 "include_geometry": self.include_geometry,
+                "source_grid": list(self.source_grid) if self.source_grid is not None else None,
+                "recognized_text": self.recognized_text,
             },
             "start": {
                 "policy": self.start_policy,
@@ -360,6 +373,33 @@ class CorrectionProject:
         self.history.append({"operation": "add", "id": obj.object_id, "x": obj.x, "y": obj.y, "type_id": type_id})
         return obj
 
+    def add_extent(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        type_id: int,
+        *,
+        object_size: int = 32,
+    ) -> list[CorrectionObject]:
+        added = [
+            self.add_object(origin_x, origin_y, type_id)
+            for origin_x, origin_y in object_origins_for_extent(
+                x, y, width, height, object_size
+            )
+        ]
+        self.history.append(
+            {
+                "operation": "add_extent",
+                "bounds": [x, y, width, height],
+                "type_id": type_id,
+                "object_size": object_size,
+                "ids": [obj.object_id for obj in added],
+            }
+        )
+        return added
+
     def set_enabled(self, object_id: str, enabled: bool) -> None:
         obj = self.get_object(object_id)
         obj.enabled = enabled
@@ -439,6 +479,35 @@ def parse_object_type(value: str | int) -> int:
         type_id = _TYPE_IDS_BY_NAME[name]
     _require_official_type(type_id)
     return type_id
+
+
+def object_origins_for_extent(
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+    object_size: int = 32,
+) -> list[tuple[int, int]]:
+    """Cover an extent with fixed objects, centering or overlapping as needed."""
+
+    if width <= 0 or height <= 0 or object_size <= 0:
+        raise ValueError("extent and object dimensions must be positive")
+
+    def axis_origins(start: int, length: int) -> list[int]:
+        if length <= object_size:
+            return [int(round(start + length / 2 - object_size / 2))]
+        end = start + length
+        origins = list(range(start, end - object_size + 1, object_size))
+        final = end - object_size
+        if origins[-1] != final:
+            origins.append(final)
+        return origins
+
+    return [
+        (origin_x, origin_y)
+        for origin_y in axis_origins(y, height)
+        for origin_x in axis_origins(x, width)
+    ]
 
 
 def render_correction_svg(

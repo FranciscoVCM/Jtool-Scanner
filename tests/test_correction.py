@@ -19,6 +19,7 @@ from jtool_scanner.constants import (
 )
 from jtool_scanner.correction import (
     CorrectionProject,
+    object_origins_for_extent,
     parse_object_type,
     render_correction_svg,
 )
@@ -28,6 +29,16 @@ from jtool_scanner.scanner import Detection, ScanResult
 
 
 class CorrectionProjectTests(unittest.TestCase):
+    def test_fixed_object_extent_centers_small_and_overlaps_long_regions(self) -> None:
+        self.assertEqual(
+            object_origins_for_extent(40, 32, 16, 16),
+            [(32, 24)],
+        )
+        self.assertEqual(
+            object_origins_for_extent(100, 200, 32, 80),
+            [(100, 200), (100, 232), (100, 248)],
+        )
+
     def test_scan_project_round_trip_preserves_provenance_and_stable_ids(self) -> None:
         result = ScanResult(
             image_width=960,
@@ -37,6 +48,9 @@ class CorrectionProjectTests(unittest.TestCase):
                 Detection("save", OBJ_SAVE, 64, 512, 0.99, Box(74, 532, 32, 32)),
                 Detection("block", OBJ_BLOCK, 32, 64, 0.81, Box(42, 84, 32, 32)),
             ],
+            infinite_jump=1,
+            recognized_text="You can jump many times",
+            source_grid=(20, 12),
         )
 
         project = result.to_correction_project("screen.png", grid_step=8)
@@ -45,12 +59,16 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertEqual(project.objects[0].type_id, OBJ_BLOCK)
         self.assertEqual(project.objects[0].detection_kind, "block")
         self.assertEqual(project.objects[0].original, {"x": 32, "y": 64, "type_id": OBJ_BLOCK})
+        self.assertEqual(project.infinite_jump, 1)
+        self.assertEqual(project.source_grid, (20, 12))
+        self.assertEqual(project.recognized_text, "You can jump many times")
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "screen.jscan.json"
             project.to_file(path)
             restored = CorrectionProject.from_file(path)
 
         self.assertEqual(restored.to_dict(), project.to_dict())
+        self.assertEqual(restored.to_jmap().infinite_jump, 1)
 
     def test_edits_export_overlaps_bulk_types_and_exact_start_save(self) -> None:
         project = CorrectionProject.from_jmap(

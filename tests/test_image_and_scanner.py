@@ -17,10 +17,54 @@ from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage, load_png
 from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.render_overlay import render_detection_overlay
-from jtool_scanner.scanner import scan_image
+from jtool_scanner.scanner import (
+    _normalize_room_to_jtool,
+    _text_indicates_infinite_jump,
+    scan_image,
+)
 
 
 class ImageAndScannerTests(unittest.TestCase):
+    def test_infinite_jump_phrase_variants_are_recognized_conservatively(self) -> None:
+        positive = (
+            "You can jump many times!!",
+            "You can infinity jump",
+            "You can jump infinitely",
+            "Unlimited jumps",
+            "Jump forever",
+        )
+        for text in positive:
+            with self.subTest(text=text):
+                self.assertTrue(_text_indicates_infinite_jump(text))
+        self.assertFalse(_text_indicates_infinite_jump("You can jump twice"))
+        self.assertFalse(_text_indicates_infinite_jump("Infinite lives"))
+
+    def test_scan_result_carries_infinite_jump_into_jmap(self) -> None:
+        result = scan_image(
+            _synthetic_room(),
+            room_box=Box(0, 0, 800, 608),
+            recognized_text="You can jump infinitely",
+        )
+
+        self.assertEqual(result.infinite_jump, 1)
+        self.assertEqual(result.to_jmap().infinite_jump, 1)
+
+    def test_small_room_normalization_uses_left_and_down_bias(self) -> None:
+        image = RGBImage(640, 384, bytes((12, 18, 24)) * 640 * 384)
+
+        normalized = _normalize_room_to_jtool(image, 20, 12)
+
+        self.assertEqual((normalized.image.width, normalized.image.height), (800, 608))
+        self.assertEqual((normalized.source_offset_x, normalized.source_offset_y), (-64, -128))
+
+    def test_large_room_normalization_keeps_lower_left_viewport(self) -> None:
+        image = RGBImage(960, 704, bytes((12, 18, 24)) * 960 * 704)
+
+        normalized = _normalize_room_to_jtool(image, 30, 22)
+
+        self.assertEqual((normalized.image.width, normalized.image.height), (800, 608))
+        self.assertEqual((normalized.source_offset_x, normalized.source_offset_y), (0, 96))
+
     def test_load_png_reads_fixture_dimensions(self) -> None:
         image = load_png(Path("fixtures/irkara/irkara-58-game.png"))
 

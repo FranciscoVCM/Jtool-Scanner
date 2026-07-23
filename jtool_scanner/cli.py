@@ -74,6 +74,9 @@ def main(argv: list[str] | None = None) -> int:
     inspect_parser.add_argument("--grid-step", type=int, default=16)
     inspect_parser.add_argument("--include-color-objects", action="store_true")
     inspect_parser.add_argument("--include-geometry", action="store_true")
+    inspect_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
+    inspect_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
+    inspect_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
     inspect_parser.add_argument(
         "--overlay",
         default=None,
@@ -93,6 +96,9 @@ def main(argv: list[str] | None = None) -> int:
     scan_parser.add_argument("--grid-step", type=int, default=16)
     scan_parser.add_argument("--include-color-objects", action="store_true")
     scan_parser.add_argument("--include-geometry", action="store_true")
+    scan_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
+    scan_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
+    scan_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
     scan_parser.add_argument("--start-policy", default="auto")
     scan_parser.add_argument(
         "--overlay",
@@ -163,6 +169,9 @@ def main(argv: list[str] | None = None) -> int:
         help="enable or disable geometry scanning",
     )
     project_create_parser.add_argument("--start-policy", default="auto")
+    project_create_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
+    project_create_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
+    project_create_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
     project_create_parser.add_argument("--jmap", default=None, help="also export the initial .jmap")
     project_create_parser.add_argument("--preview", default=None, help="also write a clean SVG preview")
     project_create_parser.add_argument(
@@ -199,10 +208,22 @@ def main(argv: list[str] | None = None) -> int:
     project_edit_parser.add_argument("--move", action="append", default=[], help="ID:X:Y")
     project_edit_parser.add_argument("--set-type", action="append", default=[], help="ID:TYPE")
     project_edit_parser.add_argument("--add", action="append", default=[], help="X:Y:TYPE")
+    project_edit_parser.add_argument(
+        "--add-extent",
+        action="append",
+        default=[],
+        help="X:Y:WIDTH:HEIGHT:TYPE; centers or overlaps fixed 32px objects",
+    )
     project_edit_parser.add_argument("--replace-type", action="append", default=[], help="OLD:NEW")
     project_edit_parser.add_argument("--start-save", default=None, help="exact save object ID")
     project_edit_parser.add_argument("--start-position", default=None, help="exact player start X,Y")
     project_edit_parser.add_argument("--start-policy", default=None)
+    project_edit_parser.add_argument(
+        "--infinite-jump",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="enable or disable infinite jump in the exported map",
+    )
     project_edit_parser.add_argument("--preview", default=None, help="write a clean SVG after editing")
     project_edit_parser.add_argument(
         "--diagnostic-preview",
@@ -242,6 +263,9 @@ def main(argv: list[str] | None = None) -> int:
             args.grid_step,
             args.include_color_objects,
             args.include_geometry,
+            args.source_grid,
+            args.ocr_text,
+            not args.no_ocr,
             args.overlay,
             args.overlay_labels,
         )
@@ -254,6 +278,9 @@ def main(argv: list[str] | None = None) -> int:
             args.grid_step,
             args.include_color_objects,
             args.include_geometry,
+            args.source_grid,
+            args.ocr_text,
+            not args.no_ocr,
             args.start_policy,
             args.overlay,
             args.overlay_labels,
@@ -282,6 +309,9 @@ def main(argv: list[str] | None = None) -> int:
             args.grid_step,
             args.color_objects,
             args.geometry,
+            args.source_grid,
+            args.ocr_text,
+            not args.no_ocr,
             args.start_policy,
             args.jmap,
             args.preview,
@@ -306,10 +336,12 @@ def main(argv: list[str] | None = None) -> int:
             args.move,
             args.set_type,
             args.add,
+            args.add_extent,
             args.replace_type,
             args.start_save,
             args.start_position,
             args.start_policy,
+            args.infinite_jump,
             args.preview,
             args.diagnostic_preview,
         )
@@ -404,6 +436,9 @@ def _inspect_image(
     grid_step: int,
     include_color_objects: bool,
     include_geometry: bool,
+    source_grid_text: str | None,
+    recognized_text: str | None,
+    enable_ocr: bool,
     overlay_path: str | None,
     overlay_labels: bool,
 ) -> int:
@@ -413,12 +448,17 @@ def _inspect_image(
         grid_step=grid_step,
         include_color_objects=include_color_objects,
         include_geometry=include_geometry,
+        source_grid=_parse_source_grid(source_grid_text),
+        recognized_text=recognized_text,
+        enable_ocr=enable_ocr,
     )
     print(f"image: {result.image_width}x{result.image_height}")
     print(
         f"room: {result.room_box.x},{result.room_box.y},"
         f"{result.room_box.width},{result.room_box.height}"
     )
+    print(f"source grid: {result.source_grid or 'unresolved'}")
+    print(f"infinite jump: {result.infinite_jump}")
     if overlay_path:
         _write_detection_overlay(result, input_path, overlay_path, overlay_labels)
     if not result.detections:
@@ -443,6 +483,9 @@ def _scan_image(
     grid_step: int,
     include_color_objects: bool,
     include_geometry: bool,
+    source_grid_text: str | None,
+    recognized_text: str | None,
+    enable_ocr: bool,
     start_policy: str,
     overlay_path: str | None,
     overlay_labels: bool,
@@ -453,11 +496,15 @@ def _scan_image(
         grid_step=grid_step,
         include_color_objects=include_color_objects,
         include_geometry=include_geometry,
+        source_grid=_parse_source_grid(source_grid_text),
+        recognized_text=recognized_text,
+        enable_ocr=enable_ocr,
     )
     jmap = result.to_jmap(start_policy=start_policy)
     jmap.to_file(output_path)
     print(f"wrote {output_path}")
     print(f"detections: {len(result.detections)}")
+    print(f"infinite jump: {result.infinite_jump}")
     if preview_path:
         out = Path(preview_path)
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -631,6 +678,9 @@ def _project_create(
     grid_step: int,
     include_color_objects: bool,
     include_geometry: bool,
+    source_grid_text: str | None,
+    recognized_text: str | None,
+    enable_ocr: bool,
     start_policy: str,
     jmap_path: str | None,
     preview_path: str | None,
@@ -642,6 +692,9 @@ def _project_create(
         grid_step=grid_step,
         include_color_objects=include_color_objects,
         include_geometry=include_geometry,
+        source_grid=_parse_source_grid(source_grid_text),
+        recognized_text=recognized_text,
+        enable_ocr=enable_ocr,
     )
     project = CorrectionProject.from_scan(
         result,
@@ -681,6 +734,7 @@ def _project_summary(
     disabled = project.object_counts(False)
     print(f"project: {input_path}")
     print(f"source: {project.source_image or 'none'}")
+    print(f"infinite jump: {project.infinite_jump}")
     print(f"objects: {sum(enabled.values())} enabled, {sum(disabled.values())} disabled")
     for type_id in sorted(set(enabled) | set(disabled)):
         suffix = f", {disabled[type_id]} disabled" if disabled[type_id] else ""
@@ -718,10 +772,12 @@ def _project_edit(
     moves: list[str],
     type_changes: list[str],
     additions: list[str],
+    extent_additions: list[str],
     type_replacements: list[str],
     start_save_id: str | None,
     start_position_text: str | None,
     start_policy: str | None,
+    infinite_jump: bool | None,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
 ) -> int:
@@ -740,6 +796,20 @@ def _project_edit(
         x_text, y_text, type_value = _split_three(value, "add", "X:Y:TYPE")
         obj = project.add_object(int(x_text), int(y_text), parse_object_type(type_value))
         print(f"added {obj.object_id}")
+    for value in extent_additions:
+        x_text, y_text, width_text, height_text, type_value = _split_five(
+            value,
+            "add-extent",
+            "X:Y:WIDTH:HEIGHT:TYPE",
+        )
+        added = project.add_extent(
+            int(x_text),
+            int(y_text),
+            int(width_text),
+            int(height_text),
+            parse_object_type(type_value),
+        )
+        print(f"added extent as {len(added)} objects")
     for value in type_replacements:
         old_value, new_value = _split_once(value, "replace-type", "OLD:NEW")
         changed = project.replace_type(parse_object_type(old_value), parse_object_type(new_value))
@@ -750,6 +820,11 @@ def _project_edit(
         project.choose_start_position(*_parse_coordinate_pair(start_position_text, "start-position"))
     if start_policy is not None:
         project.choose_start_policy(start_policy)
+    if infinite_jump is not None:
+        project.infinite_jump = int(infinite_jump)
+        project.history.append(
+            {"operation": "set_infinite_jump", "value": project.infinite_jump}
+        )
 
     out = output_path or input_path
     project.to_file(out)
@@ -826,6 +901,17 @@ def _split_three(value: str, option: str, example: str) -> tuple[str, str, str]:
     if len(parts) != 3 or not all(parts):
         raise ValueError(f"--{option} must look like {example}")
     return parts[0], parts[1], parts[2]
+
+
+def _split_five(
+    value: str,
+    option: str,
+    example: str,
+) -> tuple[str, str, str, str, str]:
+    parts = value.split(":")
+    if len(parts) != 5 or not all(parts):
+        raise ValueError(f"--{option} must look like {example}")
+    return parts[0], parts[1], parts[2], parts[3], parts[4]
 
 
 def _spike_count(counts: Counter[int]) -> int:
@@ -971,6 +1057,18 @@ def _write_detection_overlay(
 
 def _parse_box(value: str | None) -> Box | None:
     return Box.from_text(value) if value else None
+
+
+def _parse_source_grid(value: str | None) -> tuple[int, int] | None:
+    if value is None:
+        return None
+    parts = value.lower().split("x")
+    if len(parts) != 2:
+        raise ValueError("--source-grid must look like COLSxROWS")
+    columns, rows = (int(part) for part in parts)
+    if columns <= 0 or rows <= 0:
+        raise ValueError("--source-grid dimensions must be positive")
+    return columns, rows
 
 
 def _format_objects(objects: list) -> str:
