@@ -1491,8 +1491,10 @@ def _replace_compact_room_geometry(
                 )
             )
     # Extremely killer-dense rooms can contain backing blocks hidden by the
-    # crossed sprite. Preserve those ambiguous candidates for correction.
+    # crossed sprite. Boundary junctions are the only useful ambiguous cases;
+    # retaining every crossed tile creates a second copy of the room.
     if len(killers) >= 50:
+        solid_positions = {(block.x, block.y) for block in blocks}
         blocks.extend(
             _geometry_detection(
                 "compact_killer_backing_block",
@@ -1505,11 +1507,32 @@ def _replace_compact_room_geometry(
                 GRID_SIZE,
             )
             for detection in killers
+            if sum(
+                (detection.x + dx, detection.y + dy) in solid_positions
+                for dx, dy in ((-32, 0), (32, 0), (0, -32), (0, 32))
+            )
+            == 3
+            and (detection.x <= 96 or detection.y <= 96)
         )
-    result.extend(blocks)
+    result_blocks = [
+        detection
+        for detection in result
+        if detection.type_id == OBJ_BLOCK
+        and detection.x % GRID_SIZE == 0
+        and detection.y % GRID_SIZE == MINI_BLOCK_SIZE
+    ]
+    result = [
+        detection for detection in result if detection.type_id != OBJ_BLOCK
+    ]
+    result.extend(_dedupe_detections([*result_blocks, *blocks], min_distance=28))
     result.extend(killers)
     if len(killers) < 50:
-        result.extend(_detect_compact_room_spikes(image, room))
+        block_positions = {
+            (detection.x, detection.y)
+            for detection in (*result, *blocks)
+            if detection.type_id == OBJ_BLOCK
+        }
+        result.extend(_detect_compact_room_spikes(image, room, block_positions))
     return _dedupe_exact_detections(result)
 
 
@@ -1545,7 +1568,11 @@ def _sample_map_patch_colors(
     return colors
 
 
-def _detect_compact_room_spikes(image: RGBImage, room: Box) -> list[Detection]:
+def _detect_compact_room_spikes(
+    image: RGBImage,
+    room: Box,
+    block_positions: set[tuple[int, int]],
+) -> list[Detection]:
     classes = (
         ("up", OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP),
         ("right", OBJ_SPIKE_RIGHT, OBJ_MINI_SPIKE_RIGHT),
@@ -1576,7 +1603,92 @@ def _detect_compact_room_spikes(image: RGBImage, room: Box) -> list[Detection]:
                         )
                     )
     detections.extend(_opposite_horizontal_spike_candidates(detections, "compact"))
-    return _dedupe_detections(detections, min_distance=12)
+    full_spikes = []
+    mini_spikes = []
+    has_horizontal_mini_shapes = any(
+        detection.kind == "compact_occluded_horizontal_spike"
+        and detection.score >= 0.76
+        for detection in detections
+    )
+    for detection in detections:
+        if detection.type_id in FULL_SPIKE_TYPES:
+            vertically_clear = (
+                detection.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+                and detection.score >= 0.78
+            )
+            horizontal_supported = (
+                detection.type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT)
+                and detection.score >= 0.60
+                and has_horizontal_mini_shapes
+                and _has_spike_block_support(
+                    detection, block_positions, GRID_SIZE
+                )
+            )
+            if vertically_clear or horizontal_supported:
+                full_spikes.append(detection)
+            continue
+        if detection.type_id not in MINI_SPIKE_TYPES:
+            continue
+        nearby_support = _has_spike_block_support(
+            detection,
+            block_positions,
+            MINI_BLOCK_SIZE,
+            tolerance=16,
+        )
+        clustered_down = (
+            detection.type_id == OBJ_MINI_SPIKE_DOWN
+            and any(
+                other is not detection
+                and other.type_id == OBJ_MINI_SPIKE_DOWN
+                and distance((detection.x, detection.y), (other.x, other.y)) <= 16
+                for other in detections
+            )
+        )
+        keep = (
+            detection.type_id == OBJ_MINI_SPIKE_UP
+            and detection.score
+            >= (0.785 if has_horizontal_mini_shapes else 0.69)
+            or detection.type_id == OBJ_MINI_SPIKE_DOWN
+            and detection.score >= 0.74
+            or detection.kind == "compact_occluded_horizontal_spike"
+            and detection.score >= 0.76
+            or detection.type_id == OBJ_MINI_SPIKE_DOWN
+            and detection.score >= 0.60
+            and nearby_support
+            and has_horizontal_mini_shapes
+            or clustered_down
+            and has_horizontal_mini_shapes
+        )
+        if keep:
+            mini_spikes.append(detection)
+    return [
+        *_dedupe_detections(full_spikes, min_distance=12),
+        *_dedupe_detections(mini_spikes, min_distance=12),
+    ]
+
+
+def _has_spike_block_support(
+    detection: Detection,
+    block_positions: set[tuple[int, int]],
+    size: int,
+    *,
+    tolerance: float = 0,
+) -> bool:
+    offsets = {
+        OBJ_SPIKE_UP: (0, size),
+        OBJ_MINI_SPIKE_UP: (0, size),
+        OBJ_SPIKE_RIGHT: (-size, 0),
+        OBJ_MINI_SPIKE_RIGHT: (-size, 0),
+        OBJ_SPIKE_LEFT: (size, 0),
+        OBJ_MINI_SPIKE_LEFT: (size, 0),
+        OBJ_SPIKE_DOWN: (0, -size),
+        OBJ_MINI_SPIKE_DOWN: (0, -size),
+    }
+    dx, dy = offsets[detection.type_id]
+    support = (detection.x + dx, detection.y + dy)
+    if tolerance <= 0:
+        return support in block_positions
+    return any(distance(support, position) <= tolerance for position in block_positions)
 
 
 def _neutral_triangle_score(
@@ -1638,13 +1750,14 @@ def _replace_neutral_terrain_geometry(
         if detection.type_id not in GEOMETRY_TYPES
         and detection.type_id not in (OBJ_WATER_2, OBJ_WATER_3, OBJ_PLATFORM)
     ]
+    blocks: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
             colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
             neutral = _neutral_color_ratio(colors)
             if neutral < 0.78:
                 continue
-            result.append(
+            blocks.append(
                 _geometry_detection(
                     "terrain_block",
                     OBJ_BLOCK,
@@ -1656,13 +1769,46 @@ def _replace_neutral_terrain_geometry(
                     GRID_SIZE,
                 )
             )
-    result.extend(_detect_neutral_terrain_spikes(image, room))
+    terrain_support_positions = {
+        (detection.x, detection.y) for detection in blocks
+    }
+    primary_positions = {
+        (detection.x, detection.y)
+        for detection in blocks
+        if detection.x % 32 == 0 and detection.y % 32 == 0
+    }
+    primary_support_counts = {
+        (detection.x, detection.y): sum(
+            distance((detection.x, detection.y), position) <= 36
+            for position in primary_positions
+        )
+        for detection in blocks
+    }
+    blocks = [
+        detection
+        for detection in blocks
+        if (detection.x, detection.y) in primary_positions
+        or primary_support_counts[(detection.x, detection.y)] <= 2
+        or (
+            detection.y == ROOM_HEIGHT - GRID_SIZE * 2
+            and primary_support_counts[(detection.x, detection.y)] == 3
+        )
+    ]
+    result.extend(blocks)
+    result.extend(
+        _detect_neutral_terrain_spikes(
+            image,
+            room,
+            terrain_support_positions,
+        )
+    )
     return _dedupe_exact_detections(result)
 
 
 def _detect_neutral_terrain_spikes(
     image: RGBImage,
     room: Box,
+    block_positions: set[tuple[int, int]],
 ) -> list[Detection]:
     classes = (
         ("up", OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP),
@@ -1701,7 +1847,52 @@ def _detect_neutral_terrain_spikes(
                         )
                     )
     detections.extend(_opposite_horizontal_spike_candidates(detections, "terrain"))
-    return _dedupe_detections(detections, min_distance=7)
+    full_spikes = []
+    mini_spikes = []
+    for detection in detections:
+        if detection.type_id in FULL_SPIKE_TYPES:
+            colors = _sample_map_patch_colors(
+                image, room, detection.x, detection.y, GRID_SIZE
+            )
+            material_ratio = sum(
+                r > 115 and b > 120 and r >= g
+                for r, g, b in colors
+            ) / len(colors)
+            if material_ratio >= 0.03:
+                full_spikes.append(
+                    Detection(
+                        detection.kind,
+                        detection.type_id,
+                        detection.x,
+                        detection.y,
+                        min(0.99, detection.score + material_ratio),
+                        detection.image_box,
+                    )
+                )
+            continue
+        if detection.type_id not in MINI_SPIKE_TYPES:
+            continue
+        keep = (
+            detection.type_id == OBJ_MINI_SPIKE_UP
+            and detection.score >= 0.82
+            or detection.kind == "terrain_occluded_horizontal_spike"
+            and detection.score >= 0.78
+        )
+        if keep:
+            mini_spikes.append(detection)
+    full_spikes = _dedupe_detections(full_spikes, min_distance=32)
+    full_spikes = [
+        detection
+        for detection in full_spikes
+        if detection.score >= 0.78
+        or _has_spike_block_support(
+            detection, block_positions, GRID_SIZE
+        )
+    ]
+    return [
+        *full_spikes,
+        *_dedupe_detections(mini_spikes, min_distance=7),
+    ]
 
 
 def _opposite_horizontal_spike_candidates(
@@ -3615,10 +3806,34 @@ def _recover_miniblock_room_objects(
         for detection in recovered
         if detection.type_id not in (OBJ_BLOCK, OBJ_WATER_2)
     ]
+    recovered = _suppress_weaker_miniblock_room_opposites(recovered)
     return _dedupe_detections(
         _dedupe_exact_detections(recovered),
         min_distance=16,
     )
+
+
+def _suppress_weaker_miniblock_room_opposites(
+    detections: list[Detection],
+) -> list[Detection]:
+    opposites = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+    }
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in opposites
+        or not any(
+            other.type_id == opposites[detection.type_id]
+            and other.x == detection.x
+            and other.y == detection.y
+            and other.score > detection.score
+            for other in detections
+        )
+    ]
 
 
 def _recover_miniblock_backing_cells(
@@ -4263,7 +4478,7 @@ def _recover_miniblock_room_full_spikes(
                 )
                 isolated_shape = (
                     rank == 0
-                    and spike.score >= 0.48
+                    and spike.score >= 0.495
                     and spike.outline_delta >= 0.18
                     and patch.edge_density >= 0.35
                     and side_coverage >= 0.85
