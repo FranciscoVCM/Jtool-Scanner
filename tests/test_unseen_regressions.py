@@ -40,6 +40,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             FIXTURES / "brick-save-impostors.png",
             **options,
         )
+        cls.brick_room_rescaled = scan_png(
+            FIXTURES / "brick-focused-source-rescaled.png",
+            **options,
+        )
 
     def test_particle_field_does_not_become_upper_room_geometry(self) -> None:
         geometry_types = {OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
@@ -119,15 +123,59 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             detection.type_id in FULL_SPIKE_TYPES
             for detection in self.brick_room.detections
         )
-        self.assertGreaterEqual(full_spikes, 80)
-        self.assertLessEqual(full_spikes, 120)
+        self.assertGreaterEqual(full_spikes, 70)
+        self.assertLessEqual(full_spikes, 100)
         self.assertLessEqual(len(self.brick_room.detections), 300)
+        self.assertEqual(
+            [
+                (detection.x, detection.y)
+                for detection in self.brick_room.detections
+                if detection.kind == "water_2_half_width"
+            ],
+            [(304, 256)],
+        )
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
         self.assertEqual(_infer_source_grid(Box(0, 0, 1000, 760)), (25, 19))
         self.assertEqual(_infer_source_grid(Box(0, 0, 760, 520)), (19, 13))
         self.assertEqual(_infer_source_grid(Box(0, 0, 800, 480)), (20, 12))
         self.assertIsNone(_infer_source_grid(Box(0, 0, 1000, 500)))
+
+    def test_rescaled_brick_room_keeps_structural_geometry(self) -> None:
+        detections = self.brick_room_rescaled.detections
+        self.assertEqual(
+            [
+                (detection.kind, detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_SAVE
+            ],
+            [("save", 480, 560)],
+        )
+        self.assertFalse(
+            any(
+                detection.type_id in {OBJ_MINI_BLOCK, *MINI_SPIKE_TYPES}
+                for detection in detections
+            )
+        )
+        self.assertLessEqual(len(detections), 290)
+        self.assertTrue(
+            150
+            <= sum(detection.type_id == OBJ_BLOCK for detection in detections)
+            <= 175
+        )
+        self.assertTrue(
+            60
+            <= sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections)
+            <= 90
+        )
+        self.assertEqual(
+            [
+                (detection.x, detection.y)
+                for detection in detections
+                if detection.kind == "water_2_half_width"
+            ],
+            [(304, 256)],
+        )
 
 
 if __name__ == "__main__":

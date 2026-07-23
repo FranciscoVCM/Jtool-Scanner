@@ -1825,10 +1825,16 @@ def _replace_warm_tiled_room_geometry(
         )
         >= 0.15
     )
-    result.extend(
+    spike_candidates = [
         detection
         for detection in detections
         if detection.type_id in FULL_SPIKE_TYPES
+        and _warm_tiled_spike_tip_ratio(
+            detection,
+            image,
+            room,
+        )
+        <= 0.25
         and (
             _warm_tiled_spike_has_support(detection, block_positions)
             or (
@@ -1849,8 +1855,86 @@ def _replace_warm_tiled_room_geometry(
                 )
             )
         )
+        and not (
+            detection.type_id == OBJ_SPIKE_DOWN
+            and detection.y != MINI_BLOCK_SIZE
+            and _warm_terrain_ratio(
+                _sample_map_patch_colors(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                    GRID_SIZE,
+                )
+            )
+            > 0.25
+            and detection.score < 0.55
+        )
+    ]
+    spike_positions = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in spike_candidates
+    }
+    result.extend(
+        detection
+        for detection in spike_candidates
+        if not _is_lower_bracketed_down_spike_noise(
+            detection,
+            spike_positions,
+        )
     )
     return _dedupe_exact_detections(result)
+
+
+def _is_lower_bracketed_down_spike_noise(
+    detection: Detection,
+    spike_positions: set[tuple[int, int, int]],
+) -> bool:
+    if detection.type_id != OBJ_SPIKE_DOWN or detection.y < 520:
+        return False
+    return any(
+        (
+            (OBJ_SPIKE_UP, detection.x - MINI_BLOCK_SIZE, detection.y + y_offset)
+            in spike_positions
+            and (
+                OBJ_SPIKE_UP,
+                detection.x + MINI_BLOCK_SIZE,
+                detection.y + y_offset,
+            )
+            in spike_positions
+        )
+        for y_offset in (-8, 0, 8)
+    )
+
+
+def _warm_tiled_spike_tip_ratio(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> float:
+    colors = _sample_map_patch_colors(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        GRID_SIZE,
+        sample_size=16,
+    )
+    tip_colors = []
+    for index, color in enumerate(colors):
+        sample_x = index % 16
+        sample_y = index // 16
+        if detection.type_id == OBJ_SPIKE_UP:
+            in_tip = sample_y < 8
+        elif detection.type_id == OBJ_SPIKE_DOWN:
+            in_tip = sample_y >= 8
+        elif detection.type_id == OBJ_SPIKE_RIGHT:
+            in_tip = sample_x >= 8
+        else:
+            in_tip = sample_x < 8
+        if in_tip:
+            tip_colors.append(color)
+    return _warm_terrain_ratio(tip_colors)
 
 
 def _warm_tiled_spike_has_support(
@@ -2996,7 +3080,57 @@ def _detect_water(
                 )
             )
     detections.extend(_detect_catharsis_water(image, room, room_profile))
+    if allow_balanced_cyan:
+        detections.extend(_detect_balanced_cyan_half_width_water(image, room))
     return _dedupe_water(detections, min_distance=WATER_DEDUPE_DISTANCE)
+
+
+def _detect_balanced_cyan_half_width_water(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    cells = {
+        (x, y)
+        for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+        if sum(
+            _is_water_blue(*color)
+            for color in _sample_map_patch_colors(
+                image,
+                room,
+                x,
+                y,
+                MINI_BLOCK_SIZE,
+            )
+        )
+        / 256
+        >= 0.75
+    }
+    detections = []
+    for x, y in sorted(cells, key=lambda position: (position[1], position[0])):
+        if (x, y + MINI_BLOCK_SIZE) not in cells:
+            continue
+        if (x, y - MINI_BLOCK_SIZE) in cells or (x, y + GRID_SIZE) in cells:
+            continue
+        if any(
+            (x + offset, cell_y) in cells
+            for offset in (-MINI_BLOCK_SIZE, MINI_BLOCK_SIZE)
+            for cell_y in (y, y + MINI_BLOCK_SIZE)
+        ):
+            continue
+        detections.append(
+            _grid_detection(
+                "water_2_half_width",
+                OBJ_WATER_2,
+                x,
+                y,
+                0.95,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return detections
 
 
 def _detect_catharsis_water(

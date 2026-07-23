@@ -17,3 +17,8 @@ retained to cover failures found during real use.
 - `brick-focused-jtool-before-profile.png` and
   `brick-focused-blend-before-profile.png`: the remaining broad geometry noise
   before warm 32px terrain reconciliation.
+- `brick-focused-source-rescaled.png`: the later full-resolution source used
+  to verify warm-room spike pruning and centered 16px-wide water recovery.
+- `brick-focused-jtool-after-profile.png` and
+  `brick-focused-blend-after-profile.png`: correction-workspace references
+  after save-impostor and broad geometry reconciliation.
