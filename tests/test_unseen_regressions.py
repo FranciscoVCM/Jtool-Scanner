@@ -4,12 +4,15 @@ from pathlib import Path
 import unittest
 
 from jtool_scanner.constants import (
+    GRID_SIZE,
     OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_BLOCK,
+    OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_WARP,
     OBJ_WATER_2,
+    ROOM_HEIGHT,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
@@ -42,6 +45,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         )
         cls.brick_room_rescaled = scan_png(
             FIXTURES / "brick-focused-source-rescaled.png",
+            **options,
+        )
+        cls.brick_room_exact = scan_png(
+            FIXTURES / "brick-focused-source.png",
             **options,
         )
 
@@ -175,6 +182,61 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 if detection.kind == "water_2_half_width"
             ],
             [(304, 256)],
+        )
+
+    def test_exact_brick_room_reconstructs_visible_silhouettes(self) -> None:
+        detections = self.brick_room_exact.detections
+        self.assertEqual(
+            sum(detection.type_id == OBJ_BLOCK for detection in detections),
+            163,
+        )
+        self.assertEqual(
+            sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
+            73,
+        )
+        self.assertEqual(
+            sum(detection.type_id == OBJ_WATER_2 for detection in detections),
+            32,
+        )
+        self.assertEqual(
+            [
+                (detection.kind, detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_SAVE
+            ],
+            [("save", 480, 552)],
+        )
+        self.assertFalse(
+            any(
+                detection.type_id
+                in {OBJ_MINI_BLOCK, OBJ_PLATFORM, OBJ_APPLE, *MINI_SPIKE_TYPES}
+                for detection in detections
+            )
+        )
+        self.assertEqual(
+            [
+                (detection.x, detection.y)
+                for detection in detections
+                if detection.kind == "water_2_half_width"
+            ],
+            [(304, 256)],
+        )
+        self.assertTrue(
+            any(
+                detection.type_id == OBJ_BLOCK and detection.y == 584
+                for detection in detections
+            )
+        )
+        self.assertGreater(
+            sum(
+                detection.type_id == OBJ_BLOCK and detection.y == 584
+                for detection in detections
+            ),
+            sum(
+                detection.type_id == OBJ_BLOCK
+                and detection.y == ROOM_HEIGHT - GRID_SIZE
+                for detection in detections
+            ),
         )
 
 

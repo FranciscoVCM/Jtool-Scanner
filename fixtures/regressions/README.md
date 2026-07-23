@@ -19,6 +19,9 @@ retained to cover failures found during real use.
   before warm 32px terrain reconciliation.
 - `brick-focused-source-rescaled.png`: the later full-resolution source used
   to verify warm-room spike pruning and centered 16px-wide water recovery.
+- `brick-focused-source.png`: the exact source crop used to verify component
+  spike silhouettes, submerged spike formations, narrow water, and the 8px
+  bottom-edge terrain offset.
 - `brick-focused-jtool-after-profile.png` and
   `brick-focused-blend-after-profile.png`: correction-workspace references
   after save-impostor and broad geometry reconciliation.

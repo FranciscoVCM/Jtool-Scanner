@@ -1779,7 +1779,7 @@ def _replace_warm_tiled_room_geometry(
     result = [
         detection
         for detection in detections
-        if detection.type_id not in GEOMETRY_TYPES
+        if detection.type_id not in {*GEOMETRY_TYPES, OBJ_PLATFORM}
         and not (
             detection.type_id == OBJ_APPLE
             and _warm_terrain_ratio(
@@ -1803,158 +1803,306 @@ def _replace_warm_tiled_room_geometry(
         )
         >= 0.15
     }
+    for x, y in sorted(
+        block_positions,
+        key=lambda position: (position[1], position[0]),
+    ):
+        colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+        warm_ratio = _warm_terrain_ratio(colors)
+        block_y = _warm_tiled_block_origin_y(colors, y)
+        result.append(
+            _geometry_detection(
+                "warm_terrain_block",
+                OBJ_BLOCK,
+                x,
+                block_y,
+                0.65 + min(0.30, warm_ratio * 0.30),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
     result.extend(
-        _geometry_detection(
-            "warm_terrain_block",
-            OBJ_BLOCK,
-            x,
-            y,
-            0.65 + min(0.30, warm_ratio * 0.30),
-            image,
-            room,
-            GRID_SIZE,
-        )
-        for x, y in sorted(
-            block_positions,
-            key=lambda position: (position[1], position[0]),
-        )
-        if (
-            warm_ratio := _warm_terrain_ratio(
-                _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
-            )
-        )
-        >= 0.15
-    )
-    spike_candidates = [
-        detection
-        for detection in detections
-        if detection.type_id in FULL_SPIKE_TYPES
-        and _warm_tiled_spike_tip_ratio(
-            detection,
-            image,
-            room,
-        )
-        <= 0.25
-        and (
-            _warm_tiled_spike_has_support(detection, block_positions)
-            or (
-                _warm_terrain_ratio(
-                    _sample_map_patch_colors(
-                        image,
-                        room,
-                        detection.x,
-                        detection.y,
-                        GRID_SIZE,
-                    )
-                )
-                <= 0.25
-                and (
-                    detection.x % MINI_BLOCK_SIZE == 0
-                    and detection.y % MINI_BLOCK_SIZE == 0
-                    or detection.score >= 0.55
-                )
-            )
-        )
-        and not (
-            detection.type_id == OBJ_SPIKE_DOWN
-            and detection.y != MINI_BLOCK_SIZE
-            and _warm_terrain_ratio(
-                _sample_map_patch_colors(
-                    image,
-                    room,
-                    detection.x,
-                    detection.y,
-                    GRID_SIZE,
-                )
-            )
-            > 0.25
-            and detection.score < 0.55
-        )
-    ]
-    spike_positions = {
-        (detection.type_id, detection.x, detection.y)
-        for detection in spike_candidates
-    }
-    result.extend(
-        detection
-        for detection in spike_candidates
-        if not _is_lower_bracketed_down_spike_noise(
-            detection,
-            spike_positions,
-        )
+        [
+            *_detect_warm_tiled_room_spikes(image, room),
+            *_detect_warm_tiled_water_spikes(image, room),
+        ]
     )
     return _dedupe_exact_detections(result)
 
 
-def _is_lower_bracketed_down_spike_noise(
-    detection: Detection,
-    spike_positions: set[tuple[int, int, int]],
-) -> bool:
-    if detection.type_id != OBJ_SPIKE_DOWN or detection.y < 520:
-        return False
-    return any(
-        (
-            (OBJ_SPIKE_UP, detection.x - MINI_BLOCK_SIZE, detection.y + y_offset)
-            in spike_positions
-            and (
-                OBJ_SPIKE_UP,
-                detection.x + MINI_BLOCK_SIZE,
-                detection.y + y_offset,
-            )
-            in spike_positions
-        )
-        for y_offset in (-8, 0, 8)
-    )
+def _warm_tiled_block_origin_y(
+    colors: list[tuple[int, int, int]],
+    y: int,
+) -> int:
+    if y != ROOM_HEIGHT - GRID_SIZE:
+        return y
+    top = [
+        color
+        for index, color in enumerate(colors)
+        if index // 16 < 4
+    ]
+    lower = [
+        color
+        for index, color in enumerate(colors)
+        if index // 16 >= 4
+    ]
+    if _warm_terrain_ratio(top) <= 0.10 and _warm_terrain_ratio(lower) >= 0.30:
+        return y + 8
+    return y
 
 
-def _warm_tiled_spike_tip_ratio(
-    detection: Detection,
+def _detect_warm_tiled_room_spikes(
     image: RGBImage,
     room: Box,
-) -> float:
-    colors = _sample_map_patch_colors(
-        image,
-        room,
-        detection.x,
-        detection.y,
-        GRID_SIZE,
-        sample_size=16,
+) -> list[Detection]:
+    mask = bytearray(ROOM_WIDTH * ROOM_HEIGHT)
+    for map_y in range(ROOM_HEIGHT):
+        image_y = min(
+            image.height - 1,
+            room.y + int((map_y + 0.5) * room.height / ROOM_HEIGHT),
+        )
+        for map_x in range(ROOM_WIDTH):
+            image_x = min(
+                image.width - 1,
+                room.x + int((map_x + 0.5) * room.width / ROOM_WIDTH),
+            )
+            color = image.pixel(image_x, image_y)
+            if min(color) >= 200 and max(color) - min(color) <= 45:
+                mask[map_y * ROOM_WIDTH + map_x] = 1
+
+    type_by_direction = {
+        "up": OBJ_SPIKE_UP,
+        "right": OBJ_SPIKE_RIGHT,
+        "left": OBJ_SPIKE_LEFT,
+        "down": OBJ_SPIKE_DOWN,
+    }
+    detections = []
+    for map_y in range(ROOM_HEIGHT):
+        for map_x in range(ROOM_WIDTH):
+            start = map_y * ROOM_WIDTH + map_x
+            if not mask[start]:
+                continue
+            mask[start] = 0
+            stack = [(map_x, map_y)]
+            pixels = []
+            while stack:
+                pixel_x, pixel_y = stack.pop()
+                pixels.append((pixel_x, pixel_y))
+                for neighbor_x, neighbor_y in (
+                    (pixel_x - 1, pixel_y),
+                    (pixel_x + 1, pixel_y),
+                    (pixel_x, pixel_y - 1),
+                    (pixel_x, pixel_y + 1),
+                ):
+                    if not (
+                        0 <= neighbor_x < ROOM_WIDTH
+                        and 0 <= neighbor_y < ROOM_HEIGHT
+                    ):
+                        continue
+                    neighbor = neighbor_y * ROOM_WIDTH + neighbor_x
+                    if mask[neighbor]:
+                        mask[neighbor] = 0
+                        stack.append((neighbor_x, neighbor_y))
+
+            if not 180 <= len(pixels) <= 400:
+                continue
+            min_x = min(pixel_x for pixel_x, _pixel_y in pixels)
+            max_x = max(pixel_x for pixel_x, _pixel_y in pixels)
+            min_y = min(pixel_y for _pixel_x, pixel_y in pixels)
+            max_y = max(pixel_y for _pixel_x, pixel_y in pixels)
+            width = max_x - min_x + 1
+            height = max_y - min_y + 1
+            if not 14 <= width <= 30 or not 14 <= height <= 30:
+                continue
+
+            center_x = sum(pixel_x for pixel_x, _pixel_y in pixels) / len(pixels)
+            center_y = sum(pixel_y for _pixel_x, pixel_y in pixels) / len(pixels)
+            dx = center_x - (min_x + max_x) / 2
+            dy = center_y - (min_y + max_y) / 2
+            if abs(dx) > abs(dy):
+                direction = "left" if dx > 0 else "right"
+                origin_x = round(min_x / 8) * 8
+                origin_y = round((min_y - (GRID_SIZE - height) / 2) / 8) * 8
+            else:
+                direction = "up" if dy > 0 else "down"
+                origin_x = round((min_x - (GRID_SIZE - width) / 2) / 8) * 8
+                origin_y = round(min_y / 8) * 8
+            if not (
+                0 <= origin_x <= ROOM_WIDTH - GRID_SIZE
+                and 0 <= origin_y <= ROOM_HEIGHT - GRID_SIZE
+            ):
+                continue
+            detections.append(
+                _geometry_detection(
+                    f"warm_component_spike_{direction}",
+                    type_by_direction[direction],
+                    origin_x,
+                    origin_y,
+                    min(0.99, 0.70 + len(pixels) / 1500),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _dedupe_detections(detections, min_distance=12)
+
+
+def _detect_warm_tiled_water_spikes(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    detections = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            water_ratio = sum(_is_water_blue(*color) for color in colors) / len(colors)
+            if water_ratio < 0.50:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            direction = spike.kind.removeprefix("spike_")
+            if not (
+                spike.score >= 0.35
+                and spike.outline_delta >= 0.12
+                and spike.direction_margin >= 0.04
+                and _triangle_side_coverage(patch, direction) >= 0.50
+                and _triangle_min_side_coverage(patch, direction) >= 0.50
+            ):
+                continue
+            detections.append(
+                _geometry_detection(
+                    f"warm_water_spike_{direction}",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    detections.extend(
+        _recover_warm_tiled_water_spike_pairs(image, room)
     )
-    tip_colors = []
-    for index, color in enumerate(colors):
-        sample_x = index % 16
-        sample_y = index // 16
-        if detection.type_id == OBJ_SPIKE_UP:
-            in_tip = sample_y < 8
-        elif detection.type_id == OBJ_SPIKE_DOWN:
-            in_tip = sample_y >= 8
-        elif detection.type_id == OBJ_SPIKE_RIGHT:
-            in_tip = sample_x >= 8
+    return _dedupe_detections(detections, min_distance=20)
+
+
+def _recover_warm_tiled_water_spike_pairs(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover faint submerged spikes only when they form a supported pair."""
+
+    type_by_direction = {
+        "up": OBJ_SPIKE_UP,
+        "right": OBJ_SPIKE_RIGHT,
+        "left": OBJ_SPIKE_LEFT,
+        "down": OBJ_SPIKE_DOWN,
+    }
+    features: dict[
+        tuple[int, int, str],
+        tuple[float, float, float, float],
+    ] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            water_ratio = sum(_is_water_blue(*color) for color in colors) / len(colors)
+            if water_ratio < 0.80:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            for direction in type_by_direction:
+                score, outline_delta = _triangle_direction_score(patch, direction)
+                side = _triangle_side_coverage(patch, direction)
+                minimum_side = _triangle_min_side_coverage(patch, direction)
+                if (
+                    score >= 0.18
+                    and outline_delta >= 0.02
+                    and side >= 0.35
+                    and minimum_side >= 0.35
+                ):
+                    features[(x, y, direction)] = (
+                        score,
+                        outline_delta,
+                        side,
+                        minimum_side,
+                    )
+
+    recovered: list[Detection] = []
+    accepted: set[tuple[int, int, str]] = set()
+
+    def accept_pair(
+        first: tuple[int, int, str],
+        second: tuple[int, int, str],
+        *,
+        strong_score: float,
+        strong_outline: float,
+        strong_side: float,
+        strong_minimum_side: float,
+    ) -> None:
+        first_features = features.get(first)
+        second_features = features.get(second)
+        if first_features is None or second_features is None:
+            return
+        for values in (first_features, second_features):
+            score, outline_delta, side, minimum_side = values
+            if (
+                score < strong_score
+                or outline_delta < strong_outline
+                or side < strong_side
+                or minimum_side < strong_minimum_side
+            ):
+                return
+        accepted.update((first, second))
+
+    for x, y, direction in tuple(features):
+        if direction in ("up", "down"):
+            accept_pair(
+                (x, y, direction),
+                (x + GRID_SIZE, y, direction),
+                strong_score=0.35,
+                strong_outline=0.18,
+                strong_side=0.65,
+                strong_minimum_side=0.75,
+            )
         else:
-            in_tip = sample_x < 8
-        if in_tip:
-            tip_colors.append(color)
-    return _warm_terrain_ratio(tip_colors)
+            accept_pair(
+                (x, y, direction),
+                (x, y + GRID_SIZE, direction),
+                strong_score=0.35,
+                strong_outline=0.18,
+                strong_side=0.65,
+                strong_minimum_side=0.75,
+            )
 
-
-def _warm_tiled_spike_has_support(
-    detection: Detection,
-    block_positions: set[tuple[int, int]],
-) -> bool:
-    if detection.type_id == OBJ_SPIKE_UP:
-        offsets = ((offset, MINI_BLOCK_SIZE) for offset in (-16, 0, 16))
-    elif detection.type_id == OBJ_SPIKE_DOWN:
-        offsets = ((offset, -MINI_BLOCK_SIZE) for offset in (-16, 0, 16))
-    elif detection.type_id == OBJ_SPIKE_RIGHT:
-        offsets = ((-MINI_BLOCK_SIZE, offset) for offset in (-16, 0, 16))
-    elif detection.type_id == OBJ_SPIKE_LEFT:
-        offsets = ((MINI_BLOCK_SIZE, offset) for offset in (-16, 0, 16))
-    else:
-        return False
-    return any(
-        (detection.x + dx, detection.y + dy) in block_positions
-        for dx, dy in offsets
-    )
+        if direction == "left":
+            accept_pair(
+                (x, y, "left"),
+                (x + GRID_SIZE, y, "right"),
+                strong_score=0.19,
+                strong_outline=0.03,
+                strong_side=0.35,
+                strong_minimum_side=0.50,
+            )
+    for x, y, direction in accepted:
+        score, _outline_delta, _side, _minimum_side = features[
+            (x, y, direction)
+        ]
+        recovered.append(
+            _geometry_detection(
+                f"warm_water_pair_spike_{direction}",
+                type_by_direction[direction],
+                x,
+                y,
+                score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
 
 
 def _warm_terrain_ratio(colors: list[tuple[int, int, int]]) -> float:
