@@ -49,15 +49,6 @@
 
       <section id="scanTab" class="panel-content hidden">
         <div class="field">
-          <label for="sourceGrid">Source room size</label>
-          <select id="sourceGrid">
-            <option value="">Detect automatically</option>
-            <option value="25x19">25 × 19</option>
-            <option value="19x13">19 × 13</option>
-            <option value="20x12">20 × 12</option>
-          </select>
-        </div>
-        <div class="field">
           <label for="gridStep">Detection grid</label>
           <select id="gridStep">
             <option value="8">8 px</option>
@@ -70,7 +61,7 @@
         <label class="check-row"><input id="colorScan" type="checkbox" checked> Color objects</label>
         <label class="check-row"><input id="ocrScan" type="checkbox" checked> Detect infinite-jump text</label>
         <button id="rescanButton" class="wide primary" disabled>Scan source image</button>
-        <p class="quiet">Room-size normalization centers smaller screens and uses the established lower-left bias for oversized rooms.</p>
+        <p class="quiet">Room size is detected automatically. Smaller screens are centered; oversized screens use the established lower-left viewport.</p>
       </section>
     </aside>
 

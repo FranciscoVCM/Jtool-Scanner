@@ -37,6 +37,7 @@ from .constants import (
     OBJ_SPIKE_UP,
     OBJ_WALLJUMP_LEFT,
     OBJ_WALLJUMP_RIGHT,
+    OBJ_WATER,
     OBJ_WATER_2,
     OBJ_WATER_3,
     OBJ_WARP,
@@ -1223,6 +1224,11 @@ def scan_image(
         detections = _prune_final_miniblock_noise(detections, image, box)
         detections = _prune_final_water_noise(detections)
         detections = _prune_final_walljump_noise(detections)
+        detections = _prune_particle_field_geometry_noise(
+            detections,
+            image,
+            box,
+        )
         if compact_room:
             detections = _replace_compact_room_geometry(detections, image, box)
         elif _looks_like_neutral_terrain_room(image, box):
@@ -1267,14 +1273,16 @@ class _RoomNormalization:
 
 
 def _infer_source_grid(room: Box) -> tuple[int, int] | None:
-    """Infer only unambiguous room profiles; callers can supply other grids."""
+    """Infer the supported room profiles from their aspect ratio."""
 
     ratio = room.width / max(1, room.height)
-    if 1.42 <= ratio <= 1.50:
-        return 19, 13
-    if 1.29 <= ratio <= 1.34:
-        return 25, 19
-    return None
+    profiles = ((25, 19), (19, 13), (20, 12))
+    columns, rows = min(
+        profiles,
+        key=lambda profile: abs(ratio - profile[0] / profile[1]),
+    )
+    relative_error = abs(ratio - columns / rows) / (columns / rows)
+    return (columns, rows) if relative_error <= 0.025 else None
 
 
 def _normalize_room_to_jtool(
@@ -2219,7 +2227,30 @@ def _detect_saves(
         detections.append(Detection("save", OBJ_SAVE, map_x, map_y, score, box))
     if allow_weak_active:
         detections.extend(_detect_weak_active_save_patches(image, room, grid_step))
+    detections.extend(_detect_outline_saves(image, room, grid_step))
     return _dedupe_detections(detections, min_distance=25)
+
+
+def _detect_outline_saves(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: min(r, g, b) > 165
+        and max(r, g, b) - min(r, g, b) < 55,
+    )
+    detections = []
+    for box, _pixels in components:
+        if not _looks_like_outline_save(image, box):
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        detections.append(
+            Detection("save_outline", OBJ_SAVE, map_x, map_y, 0.91, box)
+        )
+    return detections
 
 
 def _detect_active_green_saves(
@@ -2340,6 +2371,8 @@ def _detect_outline_warps(
     for box, pixels, merged in candidates:
         if not (24 <= box.width <= 70 and 24 <= box.height <= 70):
             continue
+        if _looks_like_outline_save(image, box):
+            continue
         ratio = box.width / max(1, box.height)
         density = len(pixels) / box.area
         minimum_ratio, maximum_ratio = (0.72, 1.35) if merged else (0.78, 1.28)
@@ -2358,6 +2391,39 @@ def _detect_outline_warps(
             Detection("warp_outline", OBJ_WARP, map_x, map_y, 0.78, box)
         )
     return detections
+
+
+def _looks_like_outline_save(image: RGBImage, box: Box) -> bool:
+    if not (
+        24 <= box.width <= 45
+        and 24 <= box.height <= 48
+        and 0.75 <= box.width / max(1, box.height) <= 1.25
+    ):
+        return False
+    rows = [0] * box.height
+    columns = [0] * box.width
+    pixels: list[tuple[int, int]] = []
+    for y in range(box.y, box.bottom):
+        for x in range(box.x, box.right):
+            r, g, b = image.pixel(x, y)
+            if min(r, g, b) <= 165 or max(r, g, b) - min(r, g, b) >= 55:
+                continue
+            pixels.append((x, y))
+            rows[y - box.y] += 1
+            columns[x - box.x] += 1
+    if (
+        len(pixels) / box.area > 0.68
+        or _component_center_fill_ratio(box, pixels) > 0.72
+    ):
+        return False
+    full_rows = sum(count >= box.width * 0.80 for count in rows)
+    full_columns = sum(count >= box.height * 0.80 for count in columns)
+    return (
+        full_rows >= 6
+        and full_columns >= 4
+        or full_rows >= 4
+        and full_columns >= 6
+    )
 
 
 def _local_significant_color_buckets(image: RGBImage, box: Box, margin: int) -> int:
@@ -3786,7 +3852,16 @@ def _recover_miniblock_room_objects(
         image,
         room,
     )
-    saves = _detect_miniblock_room_red_cross_saves(image, room)
+    anchored_saves = [
+        detection
+        for detection in recovered
+        if detection.type_id == OBJ_SAVE and detection.score >= 0.90
+    ]
+    saves = (
+        []
+        if anchored_saves
+        else _detect_miniblock_room_red_cross_saves(image, room)
+    )
     warps = _detect_miniblock_room_white_warps(image, room)
     walljumps = _detect_miniblock_room_dark_walljumps(image, room)
     recovered.extend(saves)
@@ -12248,6 +12323,134 @@ def _is_miniblock_room_mini_spike_candidate(
             saturated_axis_run,
         )
     )
+
+
+def _prune_particle_field_geometry_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject soft particles and banner text above a broad water surface."""
+
+    water_rows: dict[int, int] = defaultdict(int)
+    for detection in detections:
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+            water_rows[detection.y] += 1
+    dense_rows = sorted(y for y, count in water_rows.items() if count >= 12)
+    if len(dense_rows) < 3:
+        return detections
+
+    water_top = dense_rows[0]
+    if water_top < 192 or not _has_upper_particle_field(image, room, water_top):
+        return detections
+
+    geometry = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+        or detection.type_id in FULL_SPIKE_TYPES
+        or detection.type_id in MINI_SPIKE_TYPES
+    ]
+    upper_geometry = [
+        detection for detection in geometry if detection.y < water_top - 32
+    ]
+    components: list[list[Detection]] = []
+    unseen = set(range(len(upper_geometry)))
+    while unseen:
+        seed = unseen.pop()
+        component = [upper_geometry[seed]]
+        queue = deque([seed])
+        while queue:
+            current = upper_geometry[queue.popleft()]
+            neighbors = [
+                index
+                for index in tuple(unseen)
+                if abs(upper_geometry[index].x - current.x) <= 40
+                and abs(upper_geometry[index].y - current.y) <= 40
+            ]
+            for index in neighbors:
+                unseen.remove(index)
+                queue.append(index)
+                component.append(upper_geometry[index])
+        components.append(component)
+
+    rejected: set[int] = set()
+    for component in components:
+        blocks = [
+            detection
+            for detection in component
+            if detection.type_id == OBJ_BLOCK
+        ]
+        component_width = (
+            max(detection.x for detection in component)
+            - min(detection.x for detection in component)
+            + GRID_SIZE
+        )
+        component_height = (
+            max(detection.y for detection in component)
+            - min(detection.y for detection in component)
+            + GRID_SIZE
+        )
+        mean_block_border = (
+            sum(
+                _patch_features(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                    GRID_SIZE,
+                ).border_score
+                for detection in blocks
+            )
+            / len(blocks)
+            if blocks
+            else 1.0
+        )
+        text_like_cluster = (
+            len(component) >= 8
+            and len(blocks) >= 5
+            and component_width >= 192
+            and component_height <= 112
+            and mean_block_border < 0.42
+        )
+        if text_like_cluster:
+            rejected.update(id(detection) for detection in component)
+            continue
+        if len(component) <= 2:
+            rejected.update(
+                id(detection)
+                for detection in component
+                if detection.y < water_top - 64 and detection.score < 0.38
+            )
+
+    return [
+        detection for detection in detections if id(detection) not in rejected
+    ]
+
+
+def _has_upper_particle_field(
+    image: RGBImage,
+    room: Box,
+    water_top: int,
+) -> bool:
+    source_bottom = room.y + int(round(water_top * room.height / ROOM_HEIGHT))
+    upper_room = Box(room.x, room.y, room.width, max(1, source_bottom - room.y))
+    particles = 0
+    for box, pixels in _connected_components(
+        image,
+        upper_room,
+        lambda r, g, b: min(r, g, b) >= 125
+        and max(r, g, b) - min(r, g, b) <= 115,
+    ):
+        if (
+            3 <= len(pixels) <= 350
+            and 2 <= box.width <= 32
+            and 2 <= box.height <= 32
+        ):
+            particles += 1
+            if particles >= 12:
+                return True
+    return False
 
 
 def _prune_final_block_noise(

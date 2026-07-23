@@ -65,7 +65,7 @@
     for (const id of [
       "documentName", "newButton", "openButton", "saveProjectButton", "exportButton",
       "mobilePaletteButton", "mobileInspectorButton",
-      "fileInput", "emptyOpenButton", "rescanButton", "sourceGrid", "gridStep",
+      "fileInput", "emptyOpenButton", "rescanButton", "gridStep",
       "geometryScan", "colorScan", "ocrScan", "paletteSearch", "objectPalette",
       "objectsTab", "scanTab", "inspectorTab", "layersTab",
       "undoButton", "redoButton", "snapSelect", "zoomOut", "zoomIn", "zoomFit",
@@ -233,7 +233,6 @@
         ocr: String(elements.ocrScan.checked),
         start_policy: "auto",
       });
-      if (elements.sourceGrid.value) params.set("source_grid", elements.sourceGrid.value);
       const response = await fetch(`/api/scan?${params}`, {
         method: "POST",
         headers: { "Content-Type": "image/png", "X-Filename": file.name },
@@ -293,11 +292,13 @@
       const grid = state.project.scanner.source_grid;
       let target = { x: 0, y: 0, width: ROOM_WIDTH, height: ROOM_HEIGHT };
       if (grid && (grid[0] !== 25 || grid[1] !== 19)) {
-        const width = Math.min(25, grid[0]) * 32;
-        const height = Math.min(19, grid[1]) * 32;
+        const columns = Math.min(25, grid[0]);
+        const rows = Math.min(19, grid[1]);
+        const width = columns * 32;
+        const height = rows * 32;
         target = {
-          x: Math.floor((ROOM_WIDTH - width) / 64) * 32,
-          y: Math.floor((ROOM_HEIGHT - height) / 64) * 32,
+          x: Math.floor((25 - columns) / 2) * 32,
+          y: Math.ceil((19 - rows) / 2) * 32,
           width,
           height,
         };
