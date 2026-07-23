@@ -14,3 +14,6 @@ retained to cover failures found during real use.
   the former save and miniblock false positives.
 - `brick-full-block-reference.png`: JTool reference confirming that the large
   brick tile is one 32px block rather than four 16px miniblocks.
+- `brick-focused-jtool-before-profile.png` and
+  `brick-focused-blend-before-profile.png`: the remaining broad geometry noise
+  before warm 32px terrain reconciliation.

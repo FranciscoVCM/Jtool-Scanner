@@ -1231,6 +1231,8 @@ def scan_image(
         )
         if compact_room:
             detections = _replace_compact_room_geometry(detections, image, box)
+        elif _looks_like_warm_tiled_room(image, box):
+            detections = _replace_warm_tiled_room_geometry(detections, image, box)
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
@@ -1745,6 +1747,137 @@ def _looks_like_neutral_terrain_room(image: RGBImage, room: Box) -> bool:
         and cyan / max(1, count) < 0.35
         and 0.50 <= dark / max(1, count) <= 0.70
     )
+
+
+def _looks_like_warm_tiled_room(image: RGBImage, room: Box) -> bool:
+    """Identify warm 32px terrain drawn over a bright neutral background."""
+
+    profile = _room_color_profile(image, room)
+    if not (
+        130 <= _profile_brightness(profile) <= 180
+        and 0.08 <= profile.saturation <= 0.14
+    ):
+        return False
+    strong_tiles = sum(
+        _warm_terrain_ratio(
+            _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+        )
+        >= 0.45
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+    )
+    return 80 <= strong_tiles <= 170
+
+
+def _replace_warm_tiled_room_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reconcile repeated full blocks and reject their textured spike impostors."""
+
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id not in GEOMETRY_TYPES
+        and not (
+            detection.type_id == OBJ_APPLE
+            and _warm_terrain_ratio(
+                _sample_map_patch_colors(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                    GRID_SIZE,
+                )
+            )
+            >= 0.50
+        )
+    ]
+    block_positions = {
+        (x, y)
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+        if _warm_terrain_ratio(
+            _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+        )
+        >= 0.15
+    }
+    result.extend(
+        _geometry_detection(
+            "warm_terrain_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            0.65 + min(0.30, warm_ratio * 0.30),
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in sorted(
+            block_positions,
+            key=lambda position: (position[1], position[0]),
+        )
+        if (
+            warm_ratio := _warm_terrain_ratio(
+                _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            )
+        )
+        >= 0.15
+    )
+    result.extend(
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+        and (
+            _warm_tiled_spike_has_support(detection, block_positions)
+            or (
+                _warm_terrain_ratio(
+                    _sample_map_patch_colors(
+                        image,
+                        room,
+                        detection.x,
+                        detection.y,
+                        GRID_SIZE,
+                    )
+                )
+                <= 0.25
+                and (
+                    detection.x % MINI_BLOCK_SIZE == 0
+                    and detection.y % MINI_BLOCK_SIZE == 0
+                    or detection.score >= 0.55
+                )
+            )
+        )
+    )
+    return _dedupe_exact_detections(result)
+
+
+def _warm_tiled_spike_has_support(
+    detection: Detection,
+    block_positions: set[tuple[int, int]],
+) -> bool:
+    if detection.type_id == OBJ_SPIKE_UP:
+        offsets = ((offset, MINI_BLOCK_SIZE) for offset in (-16, 0, 16))
+    elif detection.type_id == OBJ_SPIKE_DOWN:
+        offsets = ((offset, -MINI_BLOCK_SIZE) for offset in (-16, 0, 16))
+    elif detection.type_id == OBJ_SPIKE_RIGHT:
+        offsets = ((-MINI_BLOCK_SIZE, offset) for offset in (-16, 0, 16))
+    elif detection.type_id == OBJ_SPIKE_LEFT:
+        offsets = ((MINI_BLOCK_SIZE, offset) for offset in (-16, 0, 16))
+    else:
+        return False
+    return any(
+        (detection.x + dx, detection.y + dy) in block_positions
+        for dx, dy in offsets
+    )
+
+
+def _warm_terrain_ratio(colors: list[tuple[int, int, int]]) -> float:
+    return sum(
+        red > green + 20 and red > blue + 20 and red > 70
+        for red, green, blue in colors
+    ) / len(colors)
 
 
 def _replace_neutral_terrain_geometry(
@@ -2820,16 +2953,27 @@ def _detect_water(
 ) -> list[Detection]:
     del anchors
     room_profile = _room_color_profile(image, room)
+    allow_balanced_cyan = _looks_like_warm_tiled_room(image, room)
     step = max(8, grid_step)
     detections: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
             profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
-            if not _is_water_profile_candidate(profile, room_profile):
+            if not _is_water_profile_candidate(
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
                 continue
             stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
             features = _patch_features(image, room, x, y, GRID_SIZE)
-            if not _is_water_patch(stats, features, profile, room_profile):
+            if not _is_water_patch(
+                stats,
+                features,
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
                 continue
             score = min(
                 1.0,
@@ -3055,8 +3199,14 @@ def _is_water_patch(
     features: _PatchFeatures,
     profile: _ColorProfile,
     room_profile: _ColorProfile,
+    *,
+    allow_balanced_cyan: bool = False,
 ) -> bool:
-    if not _is_water_profile_candidate(profile, room_profile):
+    if not _is_water_profile_candidate(
+        profile,
+        room_profile,
+        allow_balanced_cyan=allow_balanced_cyan,
+    ):
         return False
 
     red_drop = room_profile.avg_r - profile.avg_r
@@ -3086,13 +3236,24 @@ def _is_water_patch(
 def _is_water_profile_candidate(
     profile: _ColorProfile,
     room_profile: _ColorProfile,
+    *,
+    allow_balanced_cyan: bool = False,
 ) -> bool:
     blue_lift = profile.avg_b - profile.avg_g
-    if blue_lift <= WATER_MIN_BLUE_LIFT or blue_lift > WATER_MAX_BLUE_LIFT:
+    cyan_lift = min(profile.avg_g, profile.avg_b) - profile.avg_r
+    cyan_water = (
+        allow_balanced_cyan
+        and abs(blue_lift) <= 10
+        and cyan_lift >= 28
+    )
+    if (
+        not cyan_water
+        and (blue_lift <= WATER_MIN_BLUE_LIFT or blue_lift > WATER_MAX_BLUE_LIFT)
+    ):
         return False
 
     pale_room = room_profile.avg_b > 200 and room_profile.avg_r > 150
-    if pale_room and profile.avg_g > room_profile.avg_g - 5:
+    if pale_room and not cyan_water and profile.avg_g > room_profile.avg_g - 5:
         return False
     return True
 

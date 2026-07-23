@@ -4,10 +4,12 @@ from pathlib import Path
 import unittest
 
 from jtool_scanner.constants import (
+    OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_BLOCK,
     OBJ_SAVE,
     OBJ_WARP,
+    OBJ_WATER_2,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
@@ -85,8 +87,41 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 detection.type_id == OBJ_BLOCK
                 for detection in self.brick_room.detections
             ),
-            100,
+            140,
         )
+        self.assertLessEqual(
+            sum(
+                detection.type_id == OBJ_BLOCK
+                for detection in self.brick_room.detections
+            ),
+            170,
+        )
+        self.assertFalse(
+            any(
+                detection.type_id in MINI_SPIKE_TYPES
+                for detection in self.brick_room.detections
+            )
+        )
+        self.assertFalse(
+            any(
+                detection.type_id == OBJ_APPLE
+                for detection in self.brick_room.detections
+            )
+        )
+        self.assertGreaterEqual(
+            sum(
+                detection.type_id == OBJ_WATER_2
+                for detection in self.brick_room.detections
+            ),
+            25,
+        )
+        full_spikes = sum(
+            detection.type_id in FULL_SPIKE_TYPES
+            for detection in self.brick_room.detections
+        )
+        self.assertGreaterEqual(full_spikes, 80)
+        self.assertLessEqual(full_spikes, 120)
+        self.assertLessEqual(len(self.brick_room.detections), 300)
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
         self.assertEqual(_infer_source_grid(Box(0, 0, 1000, 760)), (25, 19))
