@@ -244,6 +244,18 @@ def main(argv: list[str] | None = None) -> int:
         help="optional ID-labelled SVG including disabled candidates",
     )
 
+    app_parser = subparsers.add_parser(
+        "app",
+        help="run the local graphical scanner and correction interface",
+    )
+    app_parser.add_argument("--host", default="127.0.0.1")
+    app_parser.add_argument("--port", type=int, default=8765)
+    app_parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="do not open the app in the default browser",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command == "summary":
@@ -352,6 +364,11 @@ def main(argv: list[str] | None = None) -> int:
             args.preview,
             args.diagnostic_preview,
         )
+    if args.command == "app":
+        from .app import serve_app
+
+        serve_app(args.host, args.port, open_browser=not args.no_browser)
+        return 0
     raise AssertionError(args.command)
 
 

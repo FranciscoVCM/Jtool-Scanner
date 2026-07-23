@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JTool Scanner</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="app-bar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">△</span>
+      <strong>JTool Scanner</strong>
+      <span id="documentName" class="document-name">Untitled</span>
+    </div>
+    <nav class="command-bar" aria-label="File commands">
+      <button id="mobilePaletteButton" class="icon-button mobile-only"
+              title="Toggle object palette" aria-label="Toggle object palette"
+              aria-pressed="false">O</button>
+      <button id="mobileInspectorButton" class="icon-button mobile-only"
+              title="Toggle inspector" aria-label="Toggle inspector"
+              aria-pressed="false">I</button>
+      <button id="newButton" class="icon-button" title="New project" aria-label="New project">＋</button>
+      <button id="openButton" title="Open a PNG, correction project, or JMap">Open</button>
+      <button id="saveProjectButton" title="Download editable correction project">Project</button>
+      <button id="exportButton" class="primary" title="Download final JTool map">Export .jmap</button>
+    </nav>
+  </header>
+
+  <main class="workspace">
+    <aside class="left-panel">
+      <div class="panel-tabs" role="tablist">
+        <button class="tab active" data-left-tab="objects" role="tab">Objects</button>
+        <button class="tab" data-left-tab="scan" role="tab">Scan</button>
+      </div>
+
+      <section id="objectsTab" class="panel-content">
+        <div class="tool-row" role="toolbar" aria-label="Canvas tools">
+          <button class="tool active" data-tool="select" title="Select and move objects (V)">↖</button>
+          <button class="tool" data-tool="add" title="Place selected object (A)">＋</button>
+          <button class="tool" data-tool="erase" title="Disable objects (E)">⌫</button>
+        </div>
+        <label class="search-field">
+          <span class="visually-hidden">Filter object types</span>
+          <input id="paletteSearch" type="search" placeholder="Filter objects">
+        </label>
+        <div id="objectPalette" class="object-palette"></div>
+      </section>
+
+      <section id="scanTab" class="panel-content hidden">
+        <div class="field">
+          <label for="sourceGrid">Source room size</label>
+          <select id="sourceGrid">
+            <option value="">Detect automatically</option>
+            <option value="25x19">25 × 19</option>
+            <option value="19x13">19 × 13</option>
+            <option value="20x12">20 × 12</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="gridStep">Detection grid</label>
+          <select id="gridStep">
+            <option value="8">8 px</option>
+            <option value="4">4 px</option>
+            <option value="16">16 px</option>
+            <option value="32">32 px</option>
+          </select>
+        </div>
+        <label class="check-row"><input id="geometryScan" type="checkbox" checked> Geometry objects</label>
+        <label class="check-row"><input id="colorScan" type="checkbox" checked> Color objects</label>
+        <label class="check-row"><input id="ocrScan" type="checkbox" checked> Detect infinite-jump text</label>
+        <button id="rescanButton" class="wide primary" disabled>Scan source image</button>
+        <p class="quiet">Room-size normalization centers smaller screens and uses the established lower-left bias for oversized rooms.</p>
+      </section>
+    </aside>
+
+    <section class="editor-shell">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <button id="undoButton" class="icon-button" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>↶</button>
+          <button id="redoButton" class="icon-button" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>↷</button>
+        </div>
+        <div class="segmented" aria-label="Preview mode">
+          <button data-view="map" class="active">JTool</button>
+          <button data-view="source">Source</button>
+          <button data-view="blend">Blend</button>
+        </div>
+        <div class="toolbar-spacer"></div>
+        <label class="compact-field">Snap
+          <select id="snapSelect">
+            <option>1</option>
+            <option>4</option>
+            <option selected>8</option>
+            <option>16</option>
+            <option>32</option>
+          </select>
+        </label>
+        <button id="zoomOut" class="icon-button" title="Zoom out" aria-label="Zoom out">−</button>
+        <span id="zoomLabel" class="zoom-label">100%</span>
+        <button id="zoomIn" class="icon-button" title="Zoom in" aria-label="Zoom in">＋</button>
+        <button id="zoomFit" class="icon-button" title="Fit map" aria-label="Fit map">⌗</button>
+      </div>
+
+      <div id="stageViewport" class="stage-viewport">
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">△</div>
+          <h1>Open a fangame screen</h1>
+          <p>Scan a PNG, or continue from an existing correction project or JTool map.</p>
+          <button id="emptyOpenButton" class="primary">Open file</button>
+        </div>
+        <div id="stage" class="stage hidden" aria-label="Map correction canvas">
+          <canvas id="sourceLayer" class="stage-layer source-layer" width="800" height="608"></canvas>
+          <img id="mapLayer" class="stage-layer map-layer" alt="JTool map preview">
+          <canvas id="interactionLayer" class="stage-layer" width="800" height="608"></canvas>
+        </div>
+      </div>
+
+      <footer class="status-bar">
+        <span id="statusText">Ready</span>
+        <span id="coordinateText">x 0, y 0</span>
+        <span id="objectCount">0 objects</span>
+      </footer>
+    </section>
+
+    <aside class="right-panel">
+      <div class="panel-tabs" role="tablist">
+        <button class="tab active" data-right-tab="inspector" role="tab">Inspector</button>
+        <button class="tab" data-right-tab="layers" role="tab">Layers</button>
+      </div>
+
+      <section id="inspectorTab" class="panel-content">
+        <div id="noSelection" class="empty-inspector">Select an object to edit it.</div>
+        <div id="selectionInspector" class="hidden">
+          <div class="inspector-heading">
+            <div>
+              <span id="selectedSwatch" class="type-swatch"></span>
+              <strong id="selectedName">Block</strong>
+            </div>
+            <button id="deleteButton" class="danger-icon" title="Delete object" aria-label="Delete object">⌫</button>
+          </div>
+          <div class="field">
+            <label for="objectTypeSelect">Object type</label>
+            <select id="objectTypeSelect"></select>
+          </div>
+          <div class="coordinate-grid">
+            <label>X <input id="objectX" type="number" step="1"></label>
+            <label>Y <input id="objectY" type="number" step="1"></label>
+          </div>
+          <label class="check-row"><input id="objectEnabled" type="checkbox"> Included in export</label>
+          <dl class="metadata">
+            <div><dt>ID</dt><dd id="objectId"></dd></div>
+            <div><dt>Source</dt><dd id="objectSource"></dd></div>
+            <div><dt>Confidence</dt><dd id="objectScore"></dd></div>
+          </dl>
+          <button id="duplicateButton" class="wide">Duplicate</button>
+          <button id="startHereButton" class="wide">Use as start save</button>
+        </div>
+
+        <hr>
+        <h2>Map settings</h2>
+        <label class="check-row"><input id="infiniteJump" type="checkbox"> Infinite jump</label>
+        <div class="field">
+          <label for="startPolicy">Starting position</label>
+          <select id="startPolicy">
+            <option value="auto">Automatic first save</option>
+            <option value="none">Keep exact position</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="bulkWater">Set all water</label>
+          <div class="inline-control">
+            <select id="bulkWater">
+              <option value="14">Water 1</option>
+              <option value="15">Water 2</option>
+              <option value="23">Water 3</option>
+            </select>
+            <button id="applyWaterButton">Apply</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="layersTab" class="panel-content hidden">
+        <div class="layer-controls">
+          <input id="layerSearch" type="search" placeholder="Filter detected objects">
+          <select id="confidenceFilter" title="Minimum confidence">
+            <option value="0">All confidence</option>
+            <option value="0.5">50%+</option>
+            <option value="0.7">70%+</option>
+            <option value="0.85">85%+</option>
+          </select>
+        </div>
+        <div id="layerList" class="layer-list"></div>
+      </section>
+    </aside>
+  </main>
+
+  <input id="fileInput" class="hidden" type="file" accept=".png,.jmap,.json,.jscan.json">
+  <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+  <div id="busyOverlay" class="busy-overlay hidden" role="status">
+    <div class="spinner"></div>
+    <strong id="busyTitle">Scanning screen</strong>
+    <span>This can take a moment on dense rooms.</span>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
