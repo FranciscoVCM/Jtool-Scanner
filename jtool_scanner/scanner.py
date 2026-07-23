@@ -1803,7 +1803,7 @@ def _replace_warm_tiled_room_geometry(
         )
         >= 0.15
     }
-    rendered_block_positions: set[tuple[int, int]] = set()
+    block_detections: list[Detection] = []
     for x, y in sorted(
         block_positions,
         key=lambda position: (position[1], position[0]),
@@ -1811,8 +1811,7 @@ def _replace_warm_tiled_room_geometry(
         colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
         warm_ratio = _warm_terrain_ratio(colors)
         block_y = _warm_tiled_block_origin_y(colors, y)
-        rendered_block_positions.add((x, block_y))
-        result.append(
+        block_detections.append(
             _geometry_detection(
                 "warm_terrain_block",
                 OBJ_BLOCK,
@@ -1824,16 +1823,20 @@ def _replace_warm_tiled_room_geometry(
                 GRID_SIZE,
             )
         )
-    result.extend(
-        [
-            *_detect_warm_tiled_room_spikes(
-                image,
-                room,
-                rendered_block_positions,
-            ),
-            *_detect_warm_tiled_water_spikes(image, room),
-        ]
+    component_spikes = _detect_warm_tiled_room_spikes(
+        image,
+        room,
+        {(detection.x, detection.y) for detection in block_detections},
     )
+    water_spikes = _detect_warm_tiled_water_spikes(image, room)
+    block_detections, spikes = _resolve_warm_terrain_conflicts(
+        block_detections,
+        [*component_spikes, *water_spikes],
+        image,
+        room,
+    )
+    result.extend(block_detections)
+    result.extend(spikes)
     return _dedupe_exact_detections(result)
 
 
@@ -2002,6 +2005,140 @@ def _align_warm_spike_to_terrain(
         if candidates:
             x = min(candidates)[2]
     return x, y
+
+
+def _resolve_warm_terrain_conflicts(
+    blocks: list[Detection],
+    spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> tuple[list[Detection], list[Detection]]:
+    """Prefer clear silhouettes and keep spike bodies outside solid terrain."""
+
+    retained_blocks = []
+    for block in blocks:
+        dominated = any(
+            spike.kind.startswith("warm_component_spike_")
+            and spike.score >= 0.85
+            and block.score <= 0.78
+            and spike.score >= block.score + 0.08
+            and _box_overlap_area(
+                spike.x,
+                spike.y,
+                block.x,
+                block.y,
+            )
+            >= GRID_SIZE * 24
+            for spike in spikes
+        )
+        if not dominated:
+            retained_blocks.append(block)
+
+    block_positions = {
+        (block.x, block.y)
+        for block in retained_blocks
+    }
+    resolved = []
+    for spike in spikes:
+        overlap = _total_block_overlap(spike.x, spike.y, block_positions)
+        if overlap == 0:
+            resolved.append(spike)
+            continue
+        candidate = _nearest_clear_spike_face(
+            spike,
+            block_positions,
+        )
+        if candidate is not None:
+            x, y = candidate
+            resolved.append(
+                _geometry_detection(
+                    f"{spike.kind}_terrain_resolved",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+        elif overlap <= GRID_SIZE * 8:
+            resolved.append(spike)
+    return retained_blocks, _dedupe_detections(resolved, min_distance=12)
+
+
+def _nearest_clear_spike_face(
+    spike: Detection,
+    block_positions: set[tuple[int, int]],
+) -> tuple[int, int] | None:
+    candidates = []
+    for block_x, block_y in block_positions:
+        if spike.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+            overlap = min(
+                spike.x + GRID_SIZE,
+                block_x + GRID_SIZE,
+            ) - max(spike.x, block_x)
+            if overlap < 8:
+                continue
+            x = spike.x
+            y = (
+                block_y - GRID_SIZE
+                if spike.type_id == OBJ_SPIKE_UP
+                else block_y + GRID_SIZE
+            )
+        else:
+            overlap = min(
+                spike.y + GRID_SIZE,
+                block_y + GRID_SIZE,
+            ) - max(spike.y, block_y)
+            if overlap < 8:
+                continue
+            x = (
+                block_x + GRID_SIZE
+                if spike.type_id == OBJ_SPIKE_RIGHT
+                else block_x - GRID_SIZE
+            )
+            y = spike.y
+        movement = abs(x - spike.x) + abs(y - spike.y)
+        if (
+            movement <= GRID_SIZE
+            and _total_block_overlap(x, y, block_positions) == 0
+        ):
+            candidates.append((movement, -overlap, y, x))
+    if not candidates:
+        return None
+    _movement, _overlap, y, x = min(candidates)
+    return x, y
+
+
+def _total_block_overlap(
+    x: int,
+    y: int,
+    block_positions: set[tuple[int, int]],
+) -> int:
+    return sum(
+        _box_overlap_area(x, y, block_x, block_y)
+        for block_x, block_y in block_positions
+    )
+
+
+def _box_overlap_area(
+    first_x: int,
+    first_y: int,
+    second_x: int,
+    second_y: int,
+) -> int:
+    width = max(
+        0,
+        min(first_x + GRID_SIZE, second_x + GRID_SIZE)
+        - max(first_x, second_x),
+    )
+    height = max(
+        0,
+        min(first_y + GRID_SIZE, second_y + GRID_SIZE)
+        - max(first_y, second_y),
+    )
+    return width * height
 
 
 def _detect_warm_tiled_water_spikes(
@@ -3326,7 +3463,7 @@ def _detect_balanced_cyan_half_width_water(
             _grid_detection(
                 "water_2_half_width",
                 OBJ_WATER_2,
-                x,
+                max(0, x - MINI_BLOCK_SIZE),
                 y,
                 0.95,
                 image,

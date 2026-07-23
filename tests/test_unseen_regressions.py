@@ -143,7 +143,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in self.brick_room.detections
                 if detection.kind == "water_2_half_width"
             ],
-            [(304, 256)],
+            [(288, 256)],
         )
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
@@ -185,18 +185,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
                 if detection.kind == "water_2_half_width"
             ],
-            [(304, 256)],
+            [(288, 256)],
         )
 
     def test_exact_brick_room_reconstructs_visible_silhouettes(self) -> None:
         detections = self.brick_room_exact.detections
         self.assertEqual(
             sum(detection.type_id == OBJ_BLOCK for detection in detections),
-            163,
+            156,
         )
         self.assertEqual(
             sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
-            73,
+            72,
         )
         component_spikes = [
             detection
@@ -242,8 +242,33 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
                 if detection.kind == "water_2_half_width"
             ],
-            [(304, 256)],
+            [(288, 256)],
         )
+        blocks = [
+            detection
+            for detection in detections
+            if detection.type_id == OBJ_BLOCK
+        ]
+        spikes = [
+            detection
+            for detection in detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        ]
+        overlaps = [
+            max(
+                0,
+                min(spike.x + GRID_SIZE, block.x + GRID_SIZE)
+                - max(spike.x, block.x),
+            )
+            * max(
+                0,
+                min(spike.y + GRID_SIZE, block.y + GRID_SIZE)
+                - max(spike.y, block.y),
+            )
+            for spike in spikes
+            for block in blocks
+        ]
+        self.assertLessEqual(max(overlaps), GRID_SIZE * 8)
         self.assertTrue(
             any(
                 detection.type_id == OBJ_BLOCK and detection.y == 584
