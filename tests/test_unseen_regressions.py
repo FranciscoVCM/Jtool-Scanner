@@ -19,6 +19,8 @@ from jtool_scanner.constants import (
     ROOM_HEIGHT,
 )
 from jtool_scanner.geometry import Box
+from jtool_scanner.evaluation import evaluate_scan
+from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import (
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
@@ -29,6 +31,7 @@ from jtool_scanner.scanner import (
 
 
 FIXTURES = Path("fixtures/regressions")
+UNSEEN_FIXTURES = FIXTURES / "unseen-rooms"
 
 
 class UnseenScreenRegressionTests(unittest.TestCase):
@@ -53,7 +56,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             **options,
         )
         cls.brick_room_exact = scan_png(
-            FIXTURES / "brick-focused-source.png",
+            UNSEEN_FIXTURES / "ftfa" / "screen-4-source.png",
+            **options,
+        )
+        cls.brick_room_truth = JMap.from_file(
+            UNSEEN_FIXTURES / "ftfa" / "screen-4.jmap"
+        )
+        cls.lap_first = scan_png(
+            UNSEEN_FIXTURES / "lap-around" / "screen-01-source.png",
+            **options,
+        )
+        cls.lap_active_save = scan_png(
+            UNSEEN_FIXTURES / "lap-around" / "screen-11-source.png",
             **options,
         )
 
@@ -90,7 +104,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
 
         self.assertEqual(
             [(detection.kind, detection.x, detection.y) for detection in saves],
-            [("save", 480, 552)],
+            [("save_terrain_aligned", 480, 544)],
         )
         self.assertFalse(
             any(
@@ -112,11 +126,12 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             ),
             170,
         )
-        self.assertFalse(
-            any(
+        self.assertEqual(
+            sum(
                 detection.type_id in MINI_SPIKE_TYPES
                 for detection in self.brick_room.detections
-            )
+            ),
+            2,
         )
         self.assertFalse(
             any(
@@ -168,19 +183,23 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
                 if detection.type_id == OBJ_SAVE
             ],
-            [("save", 480, 560)],
+            [("save_terrain_aligned", 480, 544)],
         )
         self.assertFalse(
-            any(
-                detection.type_id in {OBJ_MINI_BLOCK, *MINI_SPIKE_TYPES}
+            any(detection.type_id == OBJ_MINI_BLOCK for detection in detections)
+        )
+        self.assertEqual(
+            sum(
+                detection.type_id in MINI_SPIKE_TYPES
                 for detection in detections
-            )
+            ),
+            2,
         )
         self.assertLessEqual(len(detections), 290)
         self.assertTrue(
-            150
+            135
             <= sum(detection.type_id == OBJ_BLOCK for detection in detections)
-            <= 175
+            <= 150
         )
         self.assertTrue(
             60
@@ -200,11 +219,11 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         detections = self.brick_room_exact.detections
         self.assertEqual(
             sum(detection.type_id == OBJ_BLOCK for detection in detections),
-            156,
+            144,
         )
         self.assertEqual(
             sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
-            72,
+            76,
         )
         component_spikes = [
             detection
@@ -235,14 +254,21 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
                 if detection.type_id == OBJ_SAVE
             ],
-            [("save", 480, 552)],
+            [("save_terrain_aligned", 480, 544)],
         )
         self.assertFalse(
             any(
                 detection.type_id
-                in {OBJ_MINI_BLOCK, OBJ_PLATFORM, OBJ_APPLE, *MINI_SPIKE_TYPES}
+                in {OBJ_MINI_BLOCK, OBJ_PLATFORM, OBJ_APPLE}
                 for detection in detections
             )
+        )
+        self.assertEqual(
+            sum(
+                detection.type_id in MINI_SPIKE_TYPES
+                for detection in detections
+            ),
+            2,
         )
         self.assertEqual(
             [
@@ -289,6 +315,102 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 detection.type_id == OBJ_BLOCK and detection.y == 584
                 for detection in detections
             )
+        )
+
+    def test_exact_brick_room_matches_the_hand_authored_jmap(self) -> None:
+        evaluation = evaluate_scan(
+            "ftfa-screen-4",
+            self.brick_room_exact.detections,
+            self.brick_room_truth,
+            tolerance=24,
+        )
+
+        self.assertEqual(evaluation.matched_saves, evaluation.truth_saves)
+        self.assertEqual(evaluation.matched_water, evaluation.truth_water)
+        self.assertEqual(evaluation.matched_blocks, evaluation.truth_blocks)
+        self.assertEqual(
+            evaluation.matched_full_spikes,
+            evaluation.truth_full_spikes,
+        )
+        self.assertEqual(
+            evaluation.matched_mini_spikes,
+            evaluation.truth_mini_spikes,
+        )
+        self.assertLessEqual(evaluation.detected_blocks, 145)
+        self.assertLessEqual(evaluation.detected_full_spikes, 76)
+        self.assertEqual(evaluation.detected_mini_spikes, 2)
+
+    def test_dark_room_profile_separates_saves_warps_and_terrain(self) -> None:
+        detections = self.lap_first.detections
+        self.assertEqual(
+            [
+                (detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_SAVE
+            ],
+            [(448, 288), (512, 544)],
+        )
+        self.assertEqual(
+            [
+                (detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_WARP
+            ],
+            [(64, 352)],
+        )
+        self.assertEqual(
+            sum(detection.type_id == OBJ_BLOCK for detection in detections),
+            130,
+        )
+        self.assertEqual(
+            sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
+            93,
+        )
+        self.assertEqual(self._terrain_spike_overlaps(detections), 0)
+
+    def test_lit_grayscale_save_is_not_a_warp(self) -> None:
+        detections = self.lap_active_save.detections
+        self.assertEqual(
+            [
+                (detection.kind, detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_SAVE
+            ],
+            [("dark_save_active_terrain_aligned", 416, 544)],
+        )
+        self.assertFalse(
+            any(detection.type_id == OBJ_WARP for detection in detections)
+        )
+        self.assertEqual(self._terrain_spike_overlaps(detections), 0)
+
+    @staticmethod
+    def _terrain_spike_overlaps(detections) -> int:
+        blocks = [
+            detection
+            for detection in detections
+            if detection.type_id == OBJ_BLOCK
+        ]
+        spikes = [
+            detection
+            for detection in detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        ]
+        return max(
+            (
+                max(
+                    0,
+                    min(spike.x + GRID_SIZE, block.x + GRID_SIZE)
+                    - max(spike.x, block.x),
+                )
+                * max(
+                    0,
+                    min(spike.y + GRID_SIZE, block.y + GRID_SIZE)
+                    - max(spike.y, block.y),
+                )
+                for spike in spikes
+                for block in blocks
+            ),
+            default=0,
         )
 
 

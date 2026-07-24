@@ -1,0 +1,34 @@
+{
+  "name": "Fly the Far Away unseen-room regressions",
+  "room": {
+    "width": 800,
+    "height": 608
+  },
+  "default_start_policy": "auto",
+  "pairs": [
+    {
+      "id": "ftfa-screen-1",
+      "game_image": "screen-1-source.png",
+      "jtool_image": "screen-1-jtool.png",
+      "jmap": "screen-1.jmap"
+    },
+    {
+      "id": "ftfa-screen-2",
+      "game_image": "screen-2-source.png",
+      "jtool_image": "screen-2-jtool.png",
+      "jmap": "screen-2.jmap"
+    },
+    {
+      "id": "ftfa-screen-3",
+      "game_image": "screen-3-source.png",
+      "jtool_image": "screen-3-jtool.png",
+      "jmap": "screen-3.jmap"
+    },
+    {
+      "id": "ftfa-screen-4",
+      "game_image": "screen-4-source.png",
+      "jtool_image": "screen-4-jtool-default.png",
+      "jmap": "screen-4.jmap"
+    }
+  ]
+}
