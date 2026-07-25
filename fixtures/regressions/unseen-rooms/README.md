@@ -26,3 +26,13 @@ references.
   preference once all saves have been detected.
 
 The `*-scan-before.png` files are diagnostic history, not expected output.
+
+## Follow-up
+
+`follow-up/` preserves six manual application retests as source, JTool, and
+blend triplets. Examples 1-3 revisit FTFA alignment and half-width water;
+examples 4-5 cover isolated Lap Around orientation/alignment errors; example 6
+is the low-contrast particle-water room. The last room is intentionally kept as
+a cross-tileset stress case: cyan tile ornaments must not become warps, banner
+text and particles must not become terrain, and submerged spikes need real
+terrain-face support.

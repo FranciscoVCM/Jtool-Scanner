@@ -1279,10 +1279,22 @@ def scan_image(
             image,
             box,
         )
+        detections = _recover_particle_water_room_spikes(
+            detections,
+            image,
+            box,
+        )
         if compact_room:
             detections = _replace_compact_room_geometry(detections, image, box)
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
+    if include_geometry:
+        detections = _reconcile_common_room_geometry(
+            detections,
+            image,
+            box,
+            profile_reconciled=dark_brick_room or warm_tiled_room,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -4453,7 +4465,7 @@ def _detect_balanced_cyan_half_width_water(
             _grid_detection(
                 "water_2_half_width",
                 OBJ_WATER_2,
-                max(0, x - MINI_BLOCK_SIZE),
+                max(0, x - GRID_SIZE),
                 y,
                 0.95,
                 image,
@@ -13958,16 +13970,8 @@ def _prune_particle_field_geometry_noise(
 ) -> list[Detection]:
     """Reject soft particles and banner text above a broad water surface."""
 
-    water_rows: dict[int, int] = defaultdict(int)
-    for detection in detections:
-        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
-            water_rows[detection.y] += 1
-    dense_rows = sorted(y for y, count in water_rows.items() if count >= 12)
-    if len(dense_rows) < 3:
-        return detections
-
-    water_top = dense_rows[0]
-    if water_top < 192 or not _has_upper_particle_field(image, room, water_top):
+    water_top = _particle_water_top(detections, image, room)
+    if water_top is None:
         return detections
 
     geometry = [
@@ -14052,6 +14056,268 @@ def _prune_particle_field_geometry_noise(
     return [
         detection for detection in detections if id(detection) not in rejected
     ]
+
+
+def _particle_water_top(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> int | None:
+    """Return the first broad water row in a room with an upper particle field."""
+
+    water_rows: dict[int, int] = defaultdict(int)
+    for detection in detections:
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+            water_rows[detection.y] += 1
+    dense_rows = sorted(y for y, count in water_rows.items() if count >= 12)
+    if len(dense_rows) < 3:
+        return None
+
+    water_top = dense_rows[0]
+    if water_top < 192 or not _has_upper_particle_field(image, room, water_top):
+        return None
+    return water_top
+
+
+def _recover_particle_water_room_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover low-contrast cyan spikes using local contrast and terrain faces."""
+
+    water_top = _particle_water_top(detections, image, room)
+    if water_top is None:
+        return detections
+
+    blocks = [
+        detection for detection in detections if detection.type_id == OBJ_BLOCK
+    ]
+    block_positions = {(detection.x, detection.y) for detection in blocks}
+    if len(block_positions) < 20:
+        return detections
+
+    classes = (
+        ("up", OBJ_SPIKE_UP),
+        ("right", OBJ_SPIKE_RIGHT),
+        ("left", OBJ_SPIKE_LEFT),
+        ("down", OBJ_SPIKE_DOWN),
+    )
+    candidates: list[Detection] = []
+    for y in range(max(0, water_top - GRID_SIZE), ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            luminance = sorted(sum(color) / 3 for color in colors)
+            median_luminance = luminance[len(luminance) // 2]
+
+            def is_local_outline(color: tuple[int, int, int]) -> bool:
+                red, green, blue = color
+                return (
+                    sum(color) / 3 >= median_luminance + 20
+                    and (
+                        max(color) - min(color) < 90
+                        or green > red + 18
+                        and blue > red + 25
+                    )
+                )
+
+            for direction, type_id in classes:
+                score, colored = _masked_triangle_score(
+                    colors,
+                    direction,
+                    is_local_outline,
+                )
+                support = _warm_spike_support_overlap(
+                    x,
+                    y,
+                    direction,
+                    block_positions,
+                )
+                if not (
+                    30 <= colored <= 220
+                    and (
+                        score >= 0.59
+                        and support >= 24
+                        or score >= 0.65
+                        and support >= 16
+                    )
+                ):
+                    continue
+                candidates.append(
+                    _geometry_detection(
+                        f"particle_water_spike_{direction}",
+                        type_id,
+                        x,
+                        y,
+                        min(0.90, score + support / 160),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+
+    existing_spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    recovered: list[Detection] = []
+    for candidate in sorted(candidates, key=lambda detection: detection.score, reverse=True):
+        if any(
+            detection.type_id == candidate.type_id
+            and distance(
+                (detection.x, detection.y),
+                (candidate.x, candidate.y),
+            )
+            < 12
+            for detection in existing_spikes
+        ):
+            continue
+        if any(
+            detection.type_id == candidate.type_id
+            and distance(
+                (detection.x, detection.y),
+                (candidate.x, candidate.y),
+            )
+            < 24
+            for detection in recovered
+        ):
+            continue
+        recovered.append(candidate)
+    return [*detections, *recovered]
+
+
+def _reconcile_common_room_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    *,
+    profile_reconciled: bool = False,
+) -> list[Detection]:
+    """Apply conservative terrain rules shared by every visual profile."""
+
+    particle_water_top = _particle_water_top(detections, image, room)
+    filtered = [
+        detection
+        for detection in detections
+        if not (
+            particle_water_top is not None
+            and detection.type_id == OBJ_WARP
+            and detection.kind == "warp"
+            and not _has_dark_portal_core(image, detection.image_box)
+        )
+    ]
+    blocks = [
+        detection for detection in filtered if detection.type_id == OBJ_BLOCK
+    ]
+    block_positions = {(detection.x, detection.y) for detection in blocks}
+    if not block_positions:
+        return _dedupe_overlapping_geometry(filtered)
+
+    reconciled: list[Detection] = []
+    for detection in filtered:
+        if detection.type_id not in FULL_SPIKE_TYPES:
+            reconciled.append(detection)
+            continue
+        direction = {
+            OBJ_SPIKE_UP: "up",
+            OBJ_SPIKE_RIGHT: "right",
+            OBJ_SPIKE_LEFT: "left",
+            OBJ_SPIKE_DOWN: "down",
+        }[detection.type_id]
+        old_support = _warm_spike_support_overlap(
+            detection.x,
+            detection.y,
+            direction,
+            block_positions,
+        )
+        aligned_x, aligned_y = _align_warm_spike_to_terrain(
+            detection.x,
+            detection.y,
+            direction,
+            block_positions,
+        )
+        movement = abs(aligned_x - detection.x) + abs(aligned_y - detection.y)
+        new_support = _warm_spike_support_overlap(
+            aligned_x,
+            aligned_y,
+            direction,
+            block_positions,
+        )
+        if movement <= 8 and new_support > old_support:
+            detection = _geometry_detection(
+                f"{detection.kind}_common_aligned",
+                detection.type_id,
+                aligned_x,
+                aligned_y,
+                detection.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+
+        if profile_reconciled:
+            # Profiled rooms already resolved solid overlap and marker
+            # conflicts. They still benefit from the shared 8px face snap.
+            reconciled.append(detection)
+            continue
+
+        overlap = _total_block_overlap(
+            detection.x,
+            detection.y,
+            block_positions,
+        )
+        if overlap <= GRID_SIZE * MINI_BLOCK_SIZE:
+            reconciled.append(detection)
+            continue
+
+        clear_face = _nearest_clear_spike_face(detection, block_positions)
+        if clear_face is None:
+            continue
+        x, y = clear_face
+        reconciled.append(
+            _geometry_detection(
+                f"{detection.kind}_common_resolved",
+                detection.type_id,
+                x,
+                y,
+                detection.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+
+    if profile_reconciled:
+        return _dedupe_exact_detections(reconciled)
+
+    marker_types = (OBJ_SAVE, OBJ_WARP, OBJ_APPLE)
+    markers = [
+        detection for detection in reconciled if detection.type_id in marker_types
+    ]
+    terrain_blocks = [
+        detection for detection in reconciled if detection.type_id == OBJ_BLOCK
+    ]
+    other = [
+        detection
+        for detection in reconciled
+        if detection.type_id not in marker_types and detection.type_id != OBJ_BLOCK
+    ]
+    overlapping_save = any(
+        marker.type_id == OBJ_SAVE
+        and _total_block_overlap(marker.x, marker.y, block_positions) > 0
+        for marker in markers
+    )
+    if overlapping_save:
+        markers, terrain_blocks = _reconcile_terrain_markers(
+            markers,
+            terrain_blocks,
+            image,
+            room,
+        )
+    return _dedupe_exact_detections(
+        _dedupe_overlapping_geometry([*other, *terrain_blocks, *markers])
+    )
 
 
 def _has_upper_particle_field(

@@ -92,7 +92,26 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in self.particle_room.detections
                 if detection.type_id == OBJ_WARP
             ]),
-            1,
+            0,
+        )
+        full_spikes = [
+            detection
+            for detection in self.particle_room.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        ]
+        self.assertTrue(45 <= len(full_spikes) <= 65)
+        blocks = [
+            detection
+            for detection in self.particle_room.detections
+            if detection.type_id == OBJ_BLOCK
+        ]
+        self.assertLessEqual(
+            max(
+                self._overlap_area(spike, block)
+                for spike in full_spikes
+                for block in blocks
+            ),
+            GRID_SIZE * 16,
         )
 
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
@@ -157,9 +176,9 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [
                 (detection.x, detection.y)
                 for detection in self.brick_room.detections
-                if detection.kind == "water_2_half_width"
+            if detection.kind == "water_2_half_width"
             ],
-            [(288, 256)],
+            [(272, 256)],
         )
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
@@ -210,9 +229,9 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [
                 (detection.x, detection.y)
                 for detection in detections
-                if detection.kind == "water_2_half_width"
+            if detection.kind == "water_2_half_width"
             ],
-            [(288, 256)],
+            [(272, 256)],
         )
 
     def test_exact_brick_room_reconstructs_visible_silhouettes(self) -> None:
@@ -274,9 +293,9 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [
                 (detection.x, detection.y)
                 for detection in detections
-                if detection.kind == "water_2_half_width"
+            if detection.kind == "water_2_half_width"
             ],
-            [(288, 256)],
+            [(272, 256)],
         )
         blocks = [
             detection
@@ -411,6 +430,21 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for block in blocks
             ),
             default=0,
+        )
+
+    @staticmethod
+    def _overlap_area(first, second) -> int:
+        return (
+            max(
+                0,
+                min(first.x + GRID_SIZE, second.x + GRID_SIZE)
+                - max(first.x, second.x),
+            )
+            * max(
+                0,
+                min(first.y + GRID_SIZE, second.y + GRID_SIZE)
+                - max(first.y, second.y),
+            )
         )
 
 
