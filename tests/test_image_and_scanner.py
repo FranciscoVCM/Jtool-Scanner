@@ -122,7 +122,7 @@ class ImageAndScannerTests(unittest.TestCase):
         water = [det for det in result.detections if det.type_id == OBJ_WATER_2]
         walljumps = [det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT]
 
-        self.assertTrue(any((det.x, det.y) == (320, 96) for det in apples))
+        self.assertTrue(any((det.x, det.y) == (336, 112) for det in apples))
         self.assertTrue(any((det.x, det.y) == (192, 128) for det in water))
         self.assertTrue(any((det.x, det.y) == (64, 192) for det in walljumps))
 

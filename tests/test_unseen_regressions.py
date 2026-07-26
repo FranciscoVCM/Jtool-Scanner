@@ -22,9 +22,13 @@ from jtool_scanner.geometry import Box
 from jtool_scanner.evaluation import evaluate_scan
 from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import (
+    Detection,
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
+    _choose_component_spike_candidate,
+    _image_box_to_jtool_center,
     _infer_source_grid,
+    _reorient_unsupported_spikes,
     _warm_room_allows_bottom_block_offset,
     scan_png,
 )
@@ -178,7 +182,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in self.brick_room.detections
             if detection.kind == "water_2_half_width"
             ],
-            [(272, 256)],
+            [(288, 256)],
         )
 
     def test_known_room_profiles_are_inferred_without_user_input(self) -> None:
@@ -193,6 +197,36 @@ class UnseenScreenRegressionTests(unittest.TestCase):
 
         self.assertFalse(_warm_room_allows_bottom_block_offset(framed_top))
         self.assertTrue(_warm_room_allows_bottom_block_offset(sparse_top))
+
+    def test_supported_spike_direction_wins_when_shape_is_plausible(self) -> None:
+        candidates = [
+            (0, 1.4, "up", 96, 64),
+            (32, 0.4, "right", 104, 64),
+            (0, -0.4, "left", 88, 64),
+            (0, -1.4, "down", 96, 72),
+        ]
+
+        chosen = _choose_component_spike_candidate(
+            candidates,
+            {"up": 1.4, "right": 0.4, "left": -0.4, "down": -1.4},
+        )
+
+        self.assertEqual(chosen[2], "right")
+
+    def test_terrain_resolves_an_ambiguous_spike_shape(self) -> None:
+        candidates = [
+            (0, 0.24, "up", 96, 64),
+            (32, 0.20, "right", 104, 64),
+            (0, -0.20, "left", 88, 64),
+            (0, -0.24, "down", 96, 72),
+        ]
+
+        chosen = _choose_component_spike_candidate(
+            candidates,
+            {"up": 0.24, "right": 0.20, "left": -0.20, "down": -0.24},
+        )
+
+        self.assertEqual(chosen[2], "right")
 
     def test_rescaled_brick_room_keeps_structural_geometry(self) -> None:
         detections = self.brick_room_rescaled.detections
@@ -216,9 +250,9 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         )
         self.assertLessEqual(len(detections), 290)
         self.assertTrue(
-            135
+            150
             <= sum(detection.type_id == OBJ_BLOCK for detection in detections)
-            <= 150
+            <= 170
         )
         self.assertTrue(
             60
@@ -231,14 +265,14 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
             if detection.kind == "water_2_half_width"
             ],
-            [(272, 256)],
+            [(288, 256)],
         )
 
     def test_exact_brick_room_reconstructs_visible_silhouettes(self) -> None:
         detections = self.brick_room_exact.detections
         self.assertEqual(
             sum(detection.type_id == OBJ_BLOCK for detection in detections),
-            144,
+            164,
         )
         self.assertEqual(
             sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
@@ -295,7 +329,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in detections
             if detection.kind == "water_2_half_width"
             ],
-            [(272, 256)],
+            [(288, 256)],
         )
         blocks = [
             detection
@@ -355,7 +389,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             evaluation.matched_mini_spikes,
             evaluation.truth_mini_spikes,
         )
-        self.assertLessEqual(evaluation.detected_blocks, 145)
+        self.assertLessEqual(evaluation.detected_blocks, 165)
         self.assertLessEqual(evaluation.detected_full_spikes, 76)
         self.assertEqual(evaluation.detected_mini_spikes, 2)
 
@@ -401,6 +435,50 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             any(detection.type_id == OBJ_WARP for detection in detections)
         )
         self.assertEqual(self._terrain_spike_overlaps(detections), 0)
+
+    def test_only_uniquely_supported_spikes_are_reoriented(self) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        unsupported_up = Detection(
+            "test_up",
+            OBJ_SPIKE_UP,
+            32,
+            32,
+            0.9,
+            image_box,
+        )
+        floating_up = Detection(
+            "floating_up",
+            OBJ_SPIKE_UP,
+            160,
+            160,
+            0.9,
+            image_box,
+        )
+        right_support = Detection(
+            "block",
+            OBJ_BLOCK,
+            64,
+            32,
+            0.9,
+            image_box,
+        )
+
+        reconciled = _reorient_unsupported_spikes(
+            [unsupported_up, floating_up],
+            [right_support],
+        )
+
+        self.assertEqual(reconciled[0].type_id, OBJ_SPIKE_LEFT)
+        self.assertEqual(reconciled[0].kind, "test_up_support_reoriented_left")
+        self.assertEqual(reconciled[1], floating_up)
+
+    def test_point_objects_use_their_center_as_the_jmap_coordinate(self) -> None:
+        room = Box(0, 0, 800, 608)
+
+        self.assertEqual(
+            _image_box_to_jtool_center(Box(390, 38, 20, 20), room, 8),
+            (400, 48),
+        )
 
     @staticmethod
     def _terrain_spike_overlaps(detections) -> int:

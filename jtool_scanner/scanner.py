@@ -1889,6 +1889,13 @@ def _replace_warm_tiled_room_geometry(
     block_positions.update(
         _recover_warm_boundary_blocks(block_ratios, block_positions)
     )
+    if any(
+        detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+        for detection in result
+    ):
+        block_positions.update(
+            _recover_shifted_warm_blocks(image, room)
+        )
     block_detections: list[Detection] = []
     allow_bottom_offset = _warm_room_allows_bottom_block_offset(block_positions)
     for x, y in sorted(
@@ -1977,6 +1984,44 @@ def _replace_warm_tiled_room_geometry(
     result.extend(spikes)
     result.extend(mini_spikes)
     return _dedupe_exact_detections(result)
+
+
+def _recover_shifted_warm_blocks(
+    image: RGBImage,
+    room: Box,
+) -> set[tuple[int, int]]:
+    """Recover coherent full blocks placed on the alternate 16px x phase."""
+
+    ratios = {
+        (x, y): _warm_terrain_ratio(
+            _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+        )
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE)
+    }
+    candidates = {
+        position
+        for position, ratio in ratios.items()
+        if position[0] % GRID_SIZE == MINI_BLOCK_SIZE and ratio >= 0.60
+    }
+    recovered = set()
+    for x, y in candidates:
+        adjacent_ratio = max(
+            ratios.get((x - MINI_BLOCK_SIZE, y), 0.0),
+            ratios.get((x + MINI_BLOCK_SIZE, y), 0.0),
+        )
+        same_phase_support = sum(
+            (x + offset_x, y + offset_y) in candidates
+            for offset_x, offset_y in (
+                (-GRID_SIZE, 0),
+                (GRID_SIZE, 0),
+                (0, -GRID_SIZE),
+                (0, GRID_SIZE),
+            )
+        )
+        if ratios[(x, y)] >= adjacent_ratio + 0.02 or same_phase_support >= 3:
+            recovered.add((x, y))
+    return recovered
 
 
 def _recover_warm_boundary_blocks(
@@ -2468,6 +2513,7 @@ def _replace_dark_brick_room_geometry(
         room,
         remove_dominated_blocks=False,
     )
+    spikes = _reorient_unsupported_spikes(spikes, block_detections)
     markers, block_detections = _reconcile_terrain_markers(
         markers,
         block_detections,
@@ -2886,28 +2932,15 @@ def _detect_warm_tiled_room_spikes(
                         origin_y,
                     )
                 )
-            shape_direction = max(shape_evidence, key=shape_evidence.__getitem__)
-            shape_candidate = next(
-                candidate
-                for candidate in candidates
-                if candidate[2] == shape_direction
-            )
-            supported_candidates = [
-                candidate
-                for candidate in candidates
-                if candidate[0] >= 24
-                and candidate[1] >= shape_evidence[shape_direction] - 1.0
-            ]
             (
                 _support,
                 _shape,
                 direction,
                 origin_x,
                 origin_y,
-            ) = (
-                max(supported_candidates)
-                if supported_candidates
-                else shape_candidate
+            ) = _choose_component_spike_candidate(
+                candidates,
+                shape_evidence,
             )
             if not (
                 0 <= origin_x <= ROOM_WIDTH - GRID_SIZE
@@ -2927,6 +2960,83 @@ def _detect_warm_tiled_room_spikes(
                 )
             )
     return _dedupe_detections(detections, min_distance=12)
+
+
+def _choose_component_spike_candidate(
+    candidates: list[tuple[int, float, str, int, int]],
+    shape_evidence: dict[str, float],
+) -> tuple[int, float, str, int, int]:
+    """Use strong terrain support when the visible shape remains plausible."""
+
+    shape_direction = max(shape_evidence, key=shape_evidence.__getitem__)
+    shape_candidate = next(
+        candidate for candidate in candidates if candidate[2] == shape_direction
+    )
+    supported_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate[0] >= 24
+        and candidate[1] >= shape_evidence[shape_direction] - 1.0
+    ]
+    return max(supported_candidates) if supported_candidates else shape_candidate
+
+
+def _reorient_unsupported_spikes(
+    spikes: list[Detection],
+    blocks: list[Detection],
+) -> list[Detection]:
+    """Correct a direction only when one other base has full terrain support."""
+
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    type_by_direction = {
+        direction: type_id
+        for type_id, direction in direction_by_type.items()
+    }
+    block_positions = {(block.x, block.y) for block in blocks}
+    reconciled = []
+    for spike in spikes:
+        direction = direction_by_type.get(spike.type_id)
+        if direction is None:
+            reconciled.append(spike)
+            continue
+        current_support = _warm_spike_support_overlap(
+            spike.x,
+            spike.y,
+            direction,
+            block_positions,
+        )
+        alternatives = [
+            candidate_direction
+            for candidate_direction in direction_by_type.values()
+            if candidate_direction != direction
+            and _warm_spike_support_overlap(
+                spike.x,
+                spike.y,
+                candidate_direction,
+                block_positions,
+            )
+            >= GRID_SIZE
+        ]
+        if current_support > 0 or len(alternatives) != 1:
+            reconciled.append(spike)
+            continue
+        corrected_direction = alternatives[0]
+        reconciled.append(
+            Detection(
+                f"{spike.kind}_support_reoriented_{corrected_direction}",
+                type_by_direction[corrected_direction],
+                spike.x,
+                spike.y,
+                spike.score,
+                spike.image_box,
+            )
+        )
+    return reconciled
 
 
 def _warm_spike_support_overlap(
@@ -4252,7 +4362,7 @@ def _detect_apples(
         density = len(pixels) / box.area
         if density < 0.50:
             continue
-        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        map_x, map_y = _image_box_to_jtool_center(box, room, grid_step)
         if _near_anchor(map_x, map_y, anchors, max_distance=40):
             continue
         score = min(1.0, density * 1.35)
@@ -4279,7 +4389,7 @@ def _detect_outline_apples(
     )
     for box, pixels in components:
         density = len(pixels) / box.area
-        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        map_x, map_y = _image_box_to_jtool_center(box, room, grid_step)
         profile = _patch_color_profile(image, room, map_x, map_y, GRID_SIZE)
         features = _patch_features(image, room, map_x, map_y, GRID_SIZE)
         if not _is_outline_apple_component(box, density, features, profile):
@@ -4465,7 +4575,7 @@ def _detect_balanced_cyan_half_width_water(
             _grid_detection(
                 "water_2_half_width",
                 OBJ_WATER_2,
-                max(0, x - GRID_SIZE),
+                max(0, x - MINI_BLOCK_SIZE),
                 y,
                 0.95,
                 image,
@@ -14104,6 +14214,7 @@ def _recover_particle_water_room_spikes(
         ("down", OBJ_SPIKE_DOWN),
     )
     candidates: list[Detection] = []
+    floating_candidates: list[Detection] = []
     for y in range(max(0, water_top - GRID_SIZE), ROOM_HEIGHT - GRID_SIZE + 1, 8):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
             colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
@@ -14121,12 +14232,14 @@ def _recover_particle_water_room_spikes(
                     )
                 )
 
+            patch_scores: list[tuple[float, int, str, int]] = []
             for direction, type_id in classes:
                 score, colored = _masked_triangle_score(
                     colors,
                     direction,
                     is_local_outline,
                 )
+                patch_scores.append((score, colored, direction, type_id))
                 support = _warm_spike_support_overlap(
                     x,
                     y,
@@ -14156,26 +14269,51 @@ def _recover_particle_water_room_spikes(
                     )
                 )
 
+            if y < water_top + GRID_SIZE:
+                continue
+            patch_scores.sort(reverse=True)
+            best_score, best_colored, best_direction, best_type_id = patch_scores[0]
+            second_score = patch_scores[1][0]
+            if (
+                best_score >= 0.70
+                and best_score - second_score >= 0.075
+                and 30 <= best_colored <= 220
+            ):
+                floating_candidates.append(
+                    _geometry_detection(
+                        f"particle_water_floating_spike_{best_direction}",
+                        best_type_id,
+                        x,
+                        y,
+                        min(0.88, best_score + (best_score - second_score)),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+
     existing_spikes = [
         detection
         for detection in detections
         if detection.type_id in FULL_SPIKE_TYPES
     ]
     recovered: list[Detection] = []
-    for candidate in sorted(candidates, key=lambda detection: detection.score, reverse=True):
+    for candidate in sorted(
+        [*candidates, *floating_candidates],
+        key=lambda detection: detection.score,
+        reverse=True,
+    ):
         if any(
-            detection.type_id == candidate.type_id
-            and distance(
+            distance(
                 (detection.x, detection.y),
                 (candidate.x, candidate.y),
             )
-            < 12
+            < 16
             for detection in existing_spikes
         ):
             continue
         if any(
-            detection.type_id == candidate.type_id
-            and distance(
+            distance(
                 (detection.x, detection.y),
                 (candidate.x, candidate.y),
             )
@@ -14184,7 +14322,21 @@ def _recover_particle_water_room_spikes(
         ):
             continue
         recovered.append(candidate)
-    return [*detections, *recovered]
+    combined = [*detections, *recovered]
+    full_spikes = [
+        detection
+        for detection in combined
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    reconciled_spikes = _reorient_unsupported_spikes(full_spikes, blocks)
+    spike_replacements = {
+        id(original): replacement
+        for original, replacement in zip(full_spikes, reconciled_spikes)
+    }
+    return [
+        spike_replacements.get(id(detection), detection)
+        for detection in combined
+    ]
 
 
 def _reconcile_common_room_geometry(
@@ -15330,6 +15482,14 @@ def _image_box_to_jtool_origin(box: Box, room: Box, grid_step: int) -> tuple[int
     scale_y = room.height / ROOM_HEIGHT
     raw_x = (box.center_x - room.x) / scale_x - GRID_SIZE / 2
     raw_y = (box.center_y - room.y) / scale_y - GRID_SIZE / 2
+    return round_to_step(raw_x, grid_step), round_to_step(raw_y, grid_step)
+
+
+def _image_box_to_jtool_center(box: Box, room: Box, grid_step: int) -> tuple[int, int]:
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    raw_x = (box.center_x - room.x) / scale_x
+    raw_y = (box.center_y - room.y) / scale_y
     return round_to_step(raw_x, grid_step), round_to_step(raw_y, grid_step)
 
 
