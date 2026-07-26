@@ -1975,7 +1975,12 @@ def _replace_warm_tiled_room_geometry(
         )
     )
     spikes = _dedupe_detections(spikes, min_distance=12)
-    spikes = _realign_warm_component_spike_phase(spikes, image, room)
+    spikes = _realign_warm_component_spike_phase(
+        spikes,
+        block_detections,
+        image,
+        room,
+    )
     mini_spikes = _recover_warm_water_mini_spike_pairs(image, room)
     result, block_detections = _reconcile_terrain_markers(
         result,
@@ -1991,10 +1996,11 @@ def _replace_warm_tiled_room_geometry(
 
 def _realign_warm_component_spike_phase(
     spikes: list[Detection],
+    blocks: list[Detection],
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
-    """Move half-phase component origins only when the triangle supports it."""
+    """Align component origins using unique terrain support or triangle shape."""
 
     directions = {
         OBJ_SPIKE_UP: "up",
@@ -2012,9 +2018,46 @@ def _realign_warm_component_spike_phase(
             aligned.append(spike)
             continue
 
-        axis = spike.y if direction in ("up", "down") else spike.x
-        if axis % MINI_BLOCK_SIZE != MINI_BLOCK_SIZE // 2:
-            aligned.append(spike)
+        support_positions: set[tuple[int, int]] = set()
+        for block in blocks:
+            if (
+                direction == "right"
+                and block.x + GRID_SIZE == spike.x
+                and 0 < abs(block.y - spike.y) <= MINI_BLOCK_SIZE
+            ):
+                support_positions.add((spike.x, block.y))
+            elif (
+                direction == "left"
+                and block.x == spike.x + GRID_SIZE
+                and 0 < abs(block.y - spike.y) <= MINI_BLOCK_SIZE
+            ):
+                support_positions.add((spike.x, block.y))
+            elif (
+                direction == "up"
+                and block.y == spike.y + GRID_SIZE
+                and 0 < abs(block.x - spike.x) <= MINI_BLOCK_SIZE
+            ):
+                support_positions.add((block.x, spike.y))
+            elif (
+                direction == "down"
+                and block.y + GRID_SIZE == spike.y
+                and 0 < abs(block.x - spike.x) <= MINI_BLOCK_SIZE
+            ):
+                support_positions.add((block.x, spike.y))
+        if len(support_positions) == 1:
+            x, y = support_positions.pop()
+            aligned.append(
+                _geometry_detection(
+                    f"{spike.kind}_support_aligned",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
             continue
 
         current_patch = _patch_features(
@@ -2026,9 +2069,25 @@ def _realign_warm_component_spike_phase(
         )
         current_score, _ = _triangle_direction_score(current_patch, direction)
         candidates: list[tuple[float, float, int, int]] = []
-        for delta in (-MINI_BLOCK_SIZE // 2, MINI_BLOCK_SIZE // 2):
-            x = spike.x + delta if direction in ("left", "right") else spike.x
-            y = spike.y + delta if direction in ("up", "down") else spike.y
+        candidate_offsets = {
+            (-MINI_BLOCK_SIZE, 0),
+            (MINI_BLOCK_SIZE, 0),
+            (0, -MINI_BLOCK_SIZE),
+            (0, MINI_BLOCK_SIZE),
+        }
+        if spike.x % MINI_BLOCK_SIZE == MINI_BLOCK_SIZE // 2:
+            candidate_offsets.update({
+                (-MINI_BLOCK_SIZE // 2, 0),
+                (MINI_BLOCK_SIZE // 2, 0),
+            })
+        if spike.y % MINI_BLOCK_SIZE == MINI_BLOCK_SIZE // 2:
+            candidate_offsets.update({
+                (0, -MINI_BLOCK_SIZE // 2),
+                (0, MINI_BLOCK_SIZE // 2),
+            })
+        for dx, dy in candidate_offsets:
+            x = spike.x + dx
+            y = spike.y + dy
             if not (
                 0 <= x <= ROOM_WIDTH - GRID_SIZE
                 and 0 <= y <= ROOM_HEIGHT - GRID_SIZE

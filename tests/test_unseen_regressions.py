@@ -19,6 +19,7 @@ from jtool_scanner.constants import (
     ROOM_HEIGHT,
 )
 from jtool_scanner.geometry import Box
+from jtool_scanner.image import RGBImage
 from jtool_scanner.evaluation import evaluate_scan
 from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import (
@@ -29,6 +30,7 @@ from jtool_scanner.scanner import (
     _image_box_to_jtool_center,
     _infer_source_grid,
     _reorient_unsupported_spikes,
+    _realign_warm_component_spike_phase,
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     scan_png,
@@ -610,6 +612,37 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             _reorient_unsupported_spikes([component_up], [side_block]),
             [component_up],
         )
+
+    def test_component_spike_aligns_to_its_unique_adjacent_support(self) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        image = RGBImage(128, 128, bytes(128 * 128 * 3))
+        room = Box(0, 0, 128, 128)
+        spike = Detection(
+            "warm_component_spike_right",
+            OBJ_SPIKE_RIGHT,
+            64,
+            64,
+            0.9,
+            image_box,
+        )
+        support = Detection(
+            "warm_terrain_block",
+            OBJ_BLOCK,
+            32,
+            48,
+            0.9,
+            image_box,
+        )
+
+        aligned = _realign_warm_component_spike_phase(
+            [spike],
+            [support],
+            image,
+            room,
+        )
+
+        self.assertEqual((aligned[0].x, aligned[0].y), (64, 48))
+        self.assertEqual(aligned[0].type_id, OBJ_SPIKE_RIGHT)
 
     def test_compressed_opposite_pair_moves_off_phase_spike_outward(
         self,
