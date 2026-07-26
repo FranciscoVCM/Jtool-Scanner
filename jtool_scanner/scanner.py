@@ -3012,6 +3012,14 @@ def _reorient_unsupported_spikes(
         if direction is None:
             reconciled.append(spike)
             continue
+        if spike.kind.startswith(
+            ("dark_component_spike_", "warm_component_spike_")
+        ):
+            # The component classifier already combines silhouette and terrain
+            # evidence. A second terrain-only vote can rotate a clear triangle
+            # toward an unrelated neighboring block.
+            reconciled.append(spike)
+            continue
         if _spike_base_meets_room_boundary(spike.x, spike.y, direction):
             reconciled.append(spike)
             continue
@@ -3047,6 +3055,69 @@ def _reorient_unsupported_spikes(
                 spike.image_box,
             )
         )
+    return reconciled
+
+
+def _separate_overlapping_opposite_spikes(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Snap compressed opposite-facing pairs back to a 32px separation."""
+
+    opposite_type = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+    }
+    reconciled = list(detections)
+    for index, spike in enumerate(reconciled):
+        opposite = opposite_type.get(spike.type_id)
+        if opposite is None:
+            continue
+        vertical = spike.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+        axis_position = spike.y if vertical else spike.x
+        if axis_position % MINI_BLOCK_SIZE != 8:
+            continue
+
+        for other in reconciled:
+            if other.type_id != opposite:
+                continue
+            if vertical:
+                aligned = spike.x == other.x
+                separation = abs(spike.y - other.y)
+                other_axis = other.y
+            else:
+                aligned = spike.y == other.y
+                separation = abs(spike.x - other.x)
+                other_axis = other.x
+            if (
+                not aligned
+                or separation != GRID_SIZE - 8
+                or other_axis % MINI_BLOCK_SIZE != 0
+            ):
+                continue
+
+            corrected_axis = (
+                other_axis - GRID_SIZE
+                if axis_position < other_axis
+                else other_axis + GRID_SIZE
+            )
+            corrected_x = spike.x if vertical else corrected_axis
+            corrected_y = corrected_axis if vertical else spike.y
+            if not (
+                0 <= corrected_x <= ROOM_WIDTH - GRID_SIZE
+                and 0 <= corrected_y <= ROOM_HEIGHT - GRID_SIZE
+            ):
+                break
+            reconciled[index] = Detection(
+                f"{spike.kind}_opposite_pair_aligned",
+                spike.type_id,
+                corrected_x,
+                corrected_y,
+                spike.score,
+                spike.image_box,
+            )
+            break
     return reconciled
 
 
@@ -14466,6 +14537,7 @@ def _reconcile_common_room_geometry(
             )
         )
 
+    reconciled = _separate_overlapping_opposite_spikes(reconciled)
     if profile_reconciled:
         return _dedupe_exact_detections(reconciled)
 

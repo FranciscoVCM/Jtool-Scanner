@@ -29,6 +29,7 @@ from jtool_scanner.scanner import (
     _image_box_to_jtool_center,
     _infer_source_grid,
     _reorient_unsupported_spikes,
+    _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     scan_png,
 )
@@ -76,6 +77,14 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         )
         cls.lap_bottom_edge = scan_png(
             UNSEEN_FIXTURES / "lap-around" / "screen-06-source.png",
+            **options,
+        )
+        cls.lap_room_08 = scan_png(
+            UNSEEN_FIXTURES / "lap-around" / "screen-08-source.png",
+            **options,
+        )
+        cls.lap_room_09 = scan_png(
+            UNSEEN_FIXTURES / "lap-around" / "screen-09-source.png",
             **options,
         )
 
@@ -509,6 +518,81 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             _reorient_unsupported_spikes([bottom_up], [side_block]),
             [bottom_up],
         )
+
+    def test_lap_room_08_separates_the_bottom_right_opposite_pair(self) -> None:
+        spikes = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in self.lap_room_08.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+
+        self.assertIn((OBJ_SPIKE_UP, 704, 480), spikes)
+        self.assertIn((OBJ_SPIKE_DOWN, 704, 512), spikes)
+        self.assertNotIn((OBJ_SPIKE_UP, 704, 488), spikes)
+
+    def test_lap_room_09_preserves_three_clear_upward_spikes(self) -> None:
+        spikes = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in self.lap_room_09.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+
+        self.assertIn((OBJ_SPIKE_UP, 448, 288), spikes)
+        self.assertIn((OBJ_SPIKE_UP, 384, 288), spikes)
+        self.assertIn((OBJ_SPIKE_UP, 288, 384), spikes)
+
+    def test_component_spike_direction_is_not_overridden_by_incidental_support(
+        self,
+    ) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        component_up = Detection(
+            "dark_component_spike_up",
+            OBJ_SPIKE_UP,
+            32,
+            32,
+            0.9,
+            image_box,
+        )
+        side_block = Detection(
+            "block",
+            OBJ_BLOCK,
+            64,
+            32,
+            0.9,
+            image_box,
+        )
+
+        self.assertEqual(
+            _reorient_unsupported_spikes([component_up], [side_block]),
+            [component_up],
+        )
+
+    def test_compressed_opposite_pair_moves_off_phase_spike_outward(
+        self,
+    ) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        upper = Detection(
+            "component_up",
+            OBJ_SPIKE_UP,
+            704,
+            488,
+            0.9,
+            image_box,
+        )
+        lower = Detection(
+            "component_down",
+            OBJ_SPIKE_DOWN,
+            704,
+            512,
+            0.9,
+            image_box,
+        )
+
+        reconciled = _separate_overlapping_opposite_spikes([upper, lower])
+
+        self.assertEqual((reconciled[0].x, reconciled[0].y), (704, 480))
+        self.assertEqual(reconciled[0].type_id, OBJ_SPIKE_UP)
+        self.assertEqual((reconciled[1].x, reconciled[1].y), (704, 512))
 
     def test_point_objects_use_their_center_as_the_jmap_coordinate(self) -> None:
         room = Box(0, 0, 800, 608)
