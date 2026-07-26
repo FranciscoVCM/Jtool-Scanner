@@ -74,6 +74,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             UNSEEN_FIXTURES / "lap-around" / "screen-11-source.png",
             **options,
         )
+        cls.lap_bottom_edge = scan_png(
+            UNSEEN_FIXTURES / "lap-around" / "screen-06-source.png",
+            **options,
+        )
 
     def test_particle_field_does_not_become_upper_room_geometry(self) -> None:
         geometry_types = {OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
@@ -197,6 +201,16 @@ class UnseenScreenRegressionTests(unittest.TestCase):
 
         self.assertFalse(_warm_room_allows_bottom_block_offset(framed_top))
         self.assertTrue(_warm_room_allows_bottom_block_offset(sparse_top))
+
+    def test_bottom_clipped_up_spike_run_is_kept_in_the_last_cell(self) -> None:
+        bottom_up_spikes = {
+            detection.x
+            for detection in self.lap_bottom_edge.detections
+            if detection.type_id == OBJ_SPIKE_UP
+            and detection.y == ROOM_HEIGHT - GRID_SIZE
+        }
+
+        self.assertTrue({32, 64, 96, 128, 160} <= bottom_up_spikes)
 
     def test_supported_spike_direction_wins_when_shape_is_plausible(self) -> None:
         candidates = [
@@ -471,6 +485,30 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual(reconciled[0].type_id, OBJ_SPIKE_LEFT)
         self.assertEqual(reconciled[0].kind, "test_up_support_reoriented_left")
         self.assertEqual(reconciled[1], floating_up)
+
+    def test_room_edge_support_does_not_reorient_a_cropped_spike(self) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        bottom_up = Detection(
+            "bottom_up",
+            OBJ_SPIKE_UP,
+            32,
+            ROOM_HEIGHT - GRID_SIZE,
+            0.9,
+            image_box,
+        )
+        side_block = Detection(
+            "block",
+            OBJ_BLOCK,
+            64,
+            ROOM_HEIGHT - GRID_SIZE,
+            0.9,
+            image_box,
+        )
+
+        self.assertEqual(
+            _reorient_unsupported_spikes([bottom_up], [side_block]),
+            [bottom_up],
+        )
 
     def test_point_objects_use_their_center_as_the_jmap_coordinate(self) -> None:
         room = Box(0, 0, 800, 608)

@@ -2917,6 +2917,14 @@ def _detect_warm_tiled_room_spikes(
                     direction,
                     block_positions,
                 )
+                if (
+                    direction == "up"
+                    and max_y == ROOM_HEIGHT - 1
+                    and ROOM_HEIGHT - GRID_SIZE
+                    < origin_y
+                    <= ROOM_HEIGHT - GRID_SIZE + 8
+                ):
+                    origin_y = ROOM_HEIGHT - GRID_SIZE
                 support = _warm_spike_support_overlap(
                     origin_x,
                     origin_y,
@@ -3004,6 +3012,9 @@ def _reorient_unsupported_spikes(
         if direction is None:
             reconciled.append(spike)
             continue
+        if _spike_base_meets_room_boundary(spike.x, spike.y, direction):
+            reconciled.append(spike)
+            continue
         current_support = _warm_spike_support_overlap(
             spike.x,
             spike.y,
@@ -3037,6 +3048,21 @@ def _reorient_unsupported_spikes(
             )
         )
     return reconciled
+
+
+def _spike_base_meets_room_boundary(
+    x: int,
+    y: int,
+    direction: str,
+) -> bool:
+    """Treat the cropped room edge as plausible terrain behind a spike base."""
+
+    return (
+        (direction == "up" and y == ROOM_HEIGHT - GRID_SIZE)
+        or (direction == "down" and y == 0)
+        or (direction == "left" and x == ROOM_WIDTH - GRID_SIZE)
+        or (direction == "right" and x == 0)
+    )
 
 
 def _warm_spike_support_overlap(
