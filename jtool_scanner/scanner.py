@@ -1893,8 +1893,10 @@ def _replace_warm_tiled_room_geometry(
         detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
         for detection in result
     ):
-        block_positions.update(
-            _recover_shifted_warm_blocks(image, room)
+        block_positions = _reconcile_shifted_warm_blocks(
+            image,
+            room,
+            block_positions,
         )
     block_detections: list[Detection] = []
     allow_bottom_offset = _warm_room_allows_bottom_block_offset(block_positions)
@@ -2024,6 +2026,55 @@ def _recover_shifted_warm_blocks(
     return recovered
 
 
+def _reconcile_shifted_warm_blocks(
+    image: RGBImage,
+    room: Box,
+    block_positions: set[tuple[int, int]],
+) -> set[tuple[int, int]]:
+    """Choose one coherent 32px tiling for each horizontal terrain run."""
+
+    ratios = {
+        (x, y): _warm_terrain_ratio(
+            _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+        )
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE)
+    }
+    reconciled = set(block_positions)
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        # A cropped room edge can expose only part of an otherwise coherent
+        # boundary row. Its established lattice is more reliable than ratios
+        # from overlapping 32px windows.
+        if y == ROOM_HEIGHT - GRID_SIZE:
+            continue
+        strong_x = [
+            x
+            for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE)
+            if ratios[(x, y)] >= 0.50
+        ]
+        runs: list[list[int]] = []
+        for x in strong_x:
+            if not runs or x - runs[-1][-1] != MINI_BLOCK_SIZE:
+                runs.append([x])
+            else:
+                runs[-1].append(x)
+
+        for run in runs:
+            first = run[0]
+            last = run[-1]
+            selected = set(range(first, last + 1, GRID_SIZE))
+            reconciled = {
+                position
+                for position in reconciled
+                if position[1] != y
+                or not first - MINI_BLOCK_SIZE
+                <= position[0]
+                <= last + MINI_BLOCK_SIZE
+            }
+            reconciled.update((x, y) for x in selected)
+    return reconciled
+
+
 def _recover_warm_boundary_blocks(
     block_ratios: dict[tuple[int, int], float],
     strong_positions: set[tuple[int, int]],
@@ -2042,7 +2093,10 @@ def _recover_warm_boundary_blocks(
             (x, y - GRID_SIZE),
             (x, y + GRID_SIZE),
         )
-        if any(neighbor in strong_positions for neighbor in neighbors):
+        support_count = sum(
+            neighbor in strong_positions for neighbor in neighbors
+        )
+        if support_count >= 2 or ratio >= 0.18 and support_count:
             recovered.add((x, y))
     return recovered
 
@@ -2940,16 +2994,59 @@ def _detect_warm_tiled_room_spikes(
                         origin_y,
                     )
                 )
+            chosen = _choose_component_spike_candidate(
+                candidates,
+                shape_evidence,
+            )
             (
                 _support,
                 _shape,
                 direction,
                 origin_x,
                 origin_y,
-            ) = _choose_component_spike_candidate(
-                candidates,
-                shape_evidence,
+            ) = chosen
+            local_shape = _classify_full_spike(
+                _patch_features(
+                    image,
+                    room,
+                    origin_x,
+                    origin_y,
+                    GRID_SIZE,
+                )
             )
+            if (
+                local_shape is not None
+                and local_shape.direction_margin >= 0.10
+                and local_shape.outline_delta >= 0.15
+            ):
+                local_direction = {
+                    OBJ_SPIKE_UP: "up",
+                    OBJ_SPIKE_RIGHT: "right",
+                    OBJ_SPIKE_LEFT: "left",
+                    OBJ_SPIKE_DOWN: "down",
+                }[local_shape.type_id]
+                local_candidate = next(
+                    candidate
+                    for candidate in candidates
+                    if candidate[2] == local_direction
+                )
+                trust_local_silhouette = (
+                    kind_prefix == "dark_component_spike"
+                    and local_shape.direction_margin >= 0.12
+                    and local_shape.outline_delta >= 0.20
+                )
+                if (
+                    trust_local_silhouette
+                    or local_candidate[0] >= 16
+                    or chosen[0] < 24
+                ):
+                    (
+                        _support,
+                        _shape,
+                        direction,
+                        origin_x,
+                        origin_y,
+                    ) = local_candidate
             if not (
                 0 <= origin_x <= ROOM_WIDTH - GRID_SIZE
                 and 0 <= origin_y <= ROOM_HEIGHT - GRID_SIZE

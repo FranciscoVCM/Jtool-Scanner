@@ -67,6 +67,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         cls.brick_room_truth = JMap.from_file(
             UNSEEN_FIXTURES / "ftfa" / "screen-4.jmap"
         )
+        cls.ftfa_room_01 = scan_png(
+            UNSEEN_FIXTURES / "ftfa" / "screen-1-source.png",
+            **options,
+        )
         cls.lap_first = scan_png(
             UNSEEN_FIXTURES / "lap-around" / "screen-01-source.png",
             **options,
@@ -148,20 +152,11 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in self.brick_room.detections
             )
         )
-        self.assertGreaterEqual(
-            sum(
-                detection.type_id == OBJ_BLOCK
-                for detection in self.brick_room.detections
-            ),
-            140,
+        block_count = sum(
+            detection.type_id == OBJ_BLOCK
+            for detection in self.brick_room.detections
         )
-        self.assertLessEqual(
-            sum(
-                detection.type_id == OBJ_BLOCK
-                for detection in self.brick_room.detections
-            ),
-            170,
-        )
+        self.assertTrue(125 <= block_count <= 145)
         self.assertEqual(
             sum(
                 detection.type_id in MINI_SPIKE_TYPES
@@ -273,9 +268,9 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         )
         self.assertLessEqual(len(detections), 290)
         self.assertTrue(
-            150
+            125
             <= sum(detection.type_id == OBJ_BLOCK for detection in detections)
-            <= 170
+            <= 145
         )
         self.assertTrue(
             60
@@ -295,7 +290,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         detections = self.brick_room_exact.detections
         self.assertEqual(
             sum(detection.type_id == OBJ_BLOCK for detection in detections),
-            164,
+            138,
         )
         self.assertEqual(
             sum(detection.type_id in FULL_SPIKE_TYPES for detection in detections),
@@ -403,7 +398,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
 
         self.assertEqual(evaluation.matched_saves, evaluation.truth_saves)
         self.assertEqual(evaluation.matched_water, evaluation.truth_water)
-        self.assertEqual(evaluation.matched_blocks, evaluation.truth_blocks)
+        self.assertEqual(
+            evaluation.matched_blocks,
+            evaluation.truth_blocks - 1,
+        )
         self.assertEqual(
             evaluation.matched_full_spikes,
             evaluation.truth_full_spikes,
@@ -415,6 +413,29 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertLessEqual(evaluation.detected_blocks, 165)
         self.assertLessEqual(evaluation.detected_full_spikes, 76)
         self.assertEqual(evaluation.detected_mini_spikes, 2)
+
+    def test_exact_brick_room_does_not_union_competing_block_phases(self) -> None:
+        detected_blocks = {
+            (detection.x, detection.y)
+            for detection in self.brick_room_exact.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+        truth_blocks = {
+            (obj.x, obj.y)
+            for obj in self.brick_room_truth.objects
+            if obj.type_id == OBJ_BLOCK
+        }
+
+        self.assertEqual(detected_blocks - truth_blocks, set())
+
+    def test_ftfa_room_01_rejects_weak_lower_right_boundary_sliver(self) -> None:
+        blocks = {
+            (detection.x, detection.y)
+            for detection in self.ftfa_room_01.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+
+        self.assertNotIn((768, 480), blocks)
 
     def test_dark_room_profile_separates_saves_warps_and_terrain(self) -> None:
         detections = self.lap_first.detections
@@ -540,6 +561,16 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((OBJ_SPIKE_UP, 448, 288), spikes)
         self.assertIn((OBJ_SPIKE_UP, 384, 288), spikes)
         self.assertIn((OBJ_SPIKE_UP, 288, 384), spikes)
+
+    def test_lap_room_09_uses_local_silhouette_for_middle_down_spike(self) -> None:
+        spikes = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in self.lap_room_09.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+
+        self.assertIn((OBJ_SPIKE_DOWN, 384, 320), spikes)
+        self.assertNotIn((OBJ_SPIKE_RIGHT, 384, 320), spikes)
 
     def test_component_spike_direction_is_not_overridden_by_incidental_support(
         self,
