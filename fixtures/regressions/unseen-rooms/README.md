@@ -27,6 +27,17 @@ references.
 
 The `*-scan-before.png` files are diagnostic history, not expected output.
 
+The FTFA `manifest.json` is also the first strict golden-room benchmark. Run:
+
+```powershell
+python -m jtool_scanner.cli benchmark fixtures\regressions\unseen-rooms\ftfa\manifest.json out\benchmarks\ftfa
+```
+
+The runner produces a self-contained HTML dashboard and exact coordinate/type
+metrics. Lap Around and follow-up rooms need one hand-corrected `.jmap` each
+before they can join the exact gate; their saved screenshots remain useful
+visual regression references until then.
+
 ## Follow-up
 
 `follow-up/` preserves six manual application retests as source, JTool, and

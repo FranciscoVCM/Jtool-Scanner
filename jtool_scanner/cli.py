@@ -8,6 +8,7 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 
+from .benchmark import BenchmarkOptions, run_benchmark
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
 from .correction import (
     CorrectionProject,
@@ -146,6 +147,40 @@ def main(argv: list[str] | None = None) -> int:
         "--overlay-labels",
         action="store_true",
         help="show labels in detection overlays",
+    )
+
+    benchmark_parser = subparsers.add_parser(
+        "benchmark",
+        help="run strict golden-room scans and build a visual dashboard",
+    )
+    benchmark_parser.add_argument("manifest")
+    benchmark_parser.add_argument("out_dir")
+    benchmark_parser.add_argument("--grid-step", type=int, default=8)
+    benchmark_parser.add_argument(
+        "--color-objects",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    benchmark_parser.add_argument(
+        "--geometry",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    benchmark_parser.add_argument(
+        "--ocr",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    benchmark_parser.add_argument("--start-policy", default="auto")
+    benchmark_parser.add_argument("--diagnostic-tolerance", type=float, default=24)
+    benchmark_parser.add_argument("--baseline", default=None)
+    benchmark_parser.add_argument("--fail-on-regression", action="store_true")
+    benchmark_parser.add_argument(
+        "--pair",
+        action="append",
+        default=None,
+        dest="pair_ids",
+        help="benchmark only this room; may be passed more than once",
     )
 
     project_create_parser = subparsers.add_parser(
@@ -313,6 +348,20 @@ def main(argv: list[str] | None = None) -> int:
             args.summary,
             args.report_json,
         )
+    if args.command == "benchmark":
+        return _benchmark(
+            args.manifest,
+            args.out_dir,
+            args.grid_step,
+            args.color_objects,
+            args.geometry,
+            args.ocr,
+            args.start_policy,
+            args.diagnostic_tolerance,
+            args.baseline,
+            args.fail_on_regression,
+            args.pair_ids,
+        )
     if args.command == "project-create":
         return _project_create(
             args.input,
@@ -370,6 +419,53 @@ def main(argv: list[str] | None = None) -> int:
         serve_app(args.host, args.port, open_browser=not args.no_browser)
         return 0
     raise AssertionError(args.command)
+
+
+def _benchmark(
+    manifest: str,
+    out_dir: str,
+    grid_step: int,
+    color_objects: bool,
+    geometry: bool,
+    ocr: bool,
+    start_policy: str,
+    diagnostic_tolerance: float,
+    baseline: str | None,
+    fail_on_regression: bool,
+    pair_ids: list[str] | None,
+) -> int:
+    options = BenchmarkOptions(
+        grid_step=grid_step,
+        include_color_objects=color_objects,
+        include_geometry=geometry,
+        enable_ocr=ocr,
+        start_policy=start_policy,
+        diagnostic_tolerance=diagnostic_tolerance,
+    )
+    try:
+        report, regressed = run_benchmark(
+            manifest,
+            out_dir,
+            pair_ids=pair_ids,
+            options=options,
+            baseline_path=baseline,
+        )
+    except ValueError as error:
+        print(f"benchmark error: {error}")
+        return 2
+    totals = report["totals"]
+    print(
+        f"{totals['exact']}/{totals['expected']} exact; "
+        f"{totals['false_positive']} false positives; "
+        f"{totals['missed']} missed; "
+        f"{totals['shifted']} shifted; "
+        f"{totals['wrong_orientation']} wrong direction"
+    )
+    print(f"dashboard: {report['artifacts']['dashboard_html']}")
+    print(f"report: {report['artifacts']['report_json']}")
+    if regressed:
+        print(f"baseline regressions: {len(report['baseline']['regressions'])}")
+    return 1 if regressed and fail_on_regression else 0
 
 
 def _summary(input_path: str, start_policy: str) -> int:

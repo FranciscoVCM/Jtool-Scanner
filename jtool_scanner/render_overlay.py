@@ -80,12 +80,18 @@ def render_detection_overlay(
     show_labels: bool = False,
     truth: JMap | None = None,
     tolerance: float = 24,
+    strict_types: bool = False,
 ) -> str:
     """Render scanner detections over the source screenshot."""
 
     image_href = _image_href(image_path)
     matches = (
-        _match_detections_to_truth(result.detections, truth, tolerance)
+        _match_detections_to_truth(
+            result.detections,
+            truth,
+            tolerance,
+            strict_types=strict_types,
+        )
         if truth is not None
         else None
     )
@@ -208,6 +214,7 @@ def _match_detections_to_truth(
     detections: list[Detection],
     truth: JMap,
     tolerance: float,
+    strict_types: bool = False,
 ) -> tuple[set[int], set[int]]:
     remaining = _truth_items(truth)
     matched_detections: set[int] = set()
@@ -216,7 +223,10 @@ def _match_detections_to_truth(
         candidates = [
             truth_item
             for truth_item in remaining
-            if truth_item.type_id in _match_type_ids(detection.type_id)
+            if truth_item.type_id in _match_type_ids(
+                detection.type_id,
+                strict_types=strict_types,
+            )
         ]
         if not candidates:
             continue
@@ -242,8 +252,8 @@ def _truth_items(truth: JMap) -> list[_TruthItem]:
     ]
 
 
-def _match_type_ids(type_id: int) -> set[int]:
-    if type_id in WATER_TYPES:
+def _match_type_ids(type_id: int, strict_types: bool = False) -> set[int]:
+    if type_id in WATER_TYPES and not strict_types:
         return WATER_TYPES
     return {type_id}
 

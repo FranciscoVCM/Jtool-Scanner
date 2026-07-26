@@ -28,6 +28,7 @@ python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --i
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --out-dir out\block-spike-scans --overlays --report-json out\block-spike-scans\report.json
 python -m jtool_scanner.cli analyze-report out\block-spike-scans\report.json --group full_spikes --limit 8
 python -m jtool_scanner.cli scan-fixtures fixtures\block_spike\manifest.json --pair irkara-nr-partysu3 --include-color-objects --include-geometry --grid-step 8 --tolerance 24 --summary
+python -m jtool_scanner.cli benchmark fixtures\regressions\unseen-rooms\ftfa\manifest.json out\benchmarks\ftfa
 ```
 
 ## Graphical app
@@ -175,6 +176,36 @@ It also records the detection chosen for every matched truth object, including
 its scanner kind and score, so recovery-path true/false yield can be measured.
 `analyze-report` summarizes those lists by object group, fixture, type, score,
 nearest-distance bucket, snap offset, grid residue, and representative examples.
+
+## Exact room benchmarks
+
+Use `benchmark` for saved real-world rooms that have an authoritative source
+PNG and hand-corrected `.jmap`. Unlike `scan-fixtures`, this command does not use
+a position tolerance for its score. Type, orientation, X, Y, and duplicate
+counts must match exactly. The kid start is intentionally excluded because it
+is a correction policy; infinite jump is checked as map metadata.
+
+```powershell
+python -m jtool_scanner.cli benchmark fixtures\regressions\unseen-rooms\ftfa\manifest.json out\benchmarks\ftfa
+start out\benchmarks\ftfa\index.html
+```
+
+Each room is scanned once. The output contains a copied source image,
+`detected.jmap`, detected and expected SVGs, a source/detection blend, an exact
+error overlay, and machine-readable `report.json`. `index.html` puts all five
+views and the error list together. Near misses are diagnostic only and are
+classified as shifted, wrong direction, missed, or false positive.
+
+Keep a known-good report and gate later changes against it:
+
+```powershell
+python -m jtool_scanner.cli benchmark fixtures\regressions\unseen-rooms\ftfa\manifest.json out\benchmarks\candidate --baseline out\benchmarks\baseline\report.json --fail-on-regression
+```
+
+The command exits nonzero when any existing room gains exact errors or loses
+exact matches. A room can be selected with `--pair ID` for quick iteration.
+Screens without a corrected `.jmap` remain visual examples; add that reference
+once before promoting them into this exact benchmark.
 
 Start-save policies:
 
