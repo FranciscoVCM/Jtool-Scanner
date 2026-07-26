@@ -1975,6 +1975,7 @@ def _replace_warm_tiled_room_geometry(
         )
     )
     spikes = _dedupe_detections(spikes, min_distance=12)
+    spikes = _realign_warm_component_spike_phase(spikes, image, room)
     mini_spikes = _recover_warm_water_mini_spike_pairs(image, room)
     result, block_detections = _reconcile_terrain_markers(
         result,
@@ -1986,6 +1987,86 @@ def _replace_warm_tiled_room_geometry(
     result.extend(spikes)
     result.extend(mini_spikes)
     return _dedupe_exact_detections(result)
+
+
+def _realign_warm_component_spike_phase(
+    spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Move half-phase component origins only when the triangle supports it."""
+
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    aligned: list[Detection] = []
+    for spike in spikes:
+        direction = directions.get(spike.type_id)
+        if (
+            direction is None
+            or not spike.kind.startswith("warm_component_spike_")
+        ):
+            aligned.append(spike)
+            continue
+
+        axis = spike.y if direction in ("up", "down") else spike.x
+        if axis % MINI_BLOCK_SIZE != MINI_BLOCK_SIZE // 2:
+            aligned.append(spike)
+            continue
+
+        current_patch = _patch_features(
+            image,
+            room,
+            spike.x,
+            spike.y,
+            GRID_SIZE,
+        )
+        current_score, _ = _triangle_direction_score(current_patch, direction)
+        candidates: list[tuple[float, float, int, int]] = []
+        for delta in (-MINI_BLOCK_SIZE // 2, MINI_BLOCK_SIZE // 2):
+            x = spike.x + delta if direction in ("left", "right") else spike.x
+            y = spike.y + delta if direction in ("up", "down") else spike.y
+            if not (
+                0 <= x <= ROOM_WIDTH - GRID_SIZE
+                and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+            ):
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            classification = _classify_full_spike(patch)
+            if classification is None or classification.type_id != spike.type_id:
+                continue
+            candidates.append(
+                (
+                    classification.score,
+                    classification.direction_margin,
+                    x,
+                    y,
+                )
+            )
+
+        if not candidates:
+            aligned.append(spike)
+            continue
+        score, margin, x, y = max(candidates)
+        if score < 0.58 or margin < 0.12 or score < current_score + 0.12:
+            aligned.append(spike)
+            continue
+        aligned.append(
+            _geometry_detection(
+                f"{spike.kind}_phase_aligned",
+                spike.type_id,
+                x,
+                y,
+                max(spike.score, score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return aligned
 
 
 def _recover_shifted_warm_blocks(

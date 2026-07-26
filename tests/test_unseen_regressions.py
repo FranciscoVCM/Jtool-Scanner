@@ -414,6 +414,19 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertLessEqual(evaluation.detected_full_spikes, 76)
         self.assertEqual(evaluation.detected_mini_spikes, 2)
 
+    def test_exact_brick_room_preserves_corrected_lower_spike_landmarks(self) -> None:
+        spikes = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in self.brick_room_exact.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+
+        self.assertIn((OBJ_SPIKE_LEFT, 32, 544), spikes)
+        self.assertIn((OBJ_SPIKE_LEFT, 128, 512), spikes)
+        self.assertIn((OBJ_SPIKE_UP, 240, 352), spikes)
+        self.assertIn((OBJ_SPIKE_LEFT, 448, 384), spikes)
+        self.assertNotIn((OBJ_SPIKE_UP, 240, 360), spikes)
+
     def test_exact_brick_room_does_not_union_competing_block_phases(self) -> None:
         detected_blocks = {
             (detection.x, detection.y)
