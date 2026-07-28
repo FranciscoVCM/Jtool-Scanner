@@ -1925,9 +1925,10 @@ def _replace_warm_tiled_room_geometry(
                 GRID_SIZE,
             )
         )
+    geometry_room = _warm_geometry_room(image, room)
     component_spikes = _detect_warm_tiled_room_spikes(
         image,
-        room,
+        geometry_room,
         {(detection.x, detection.y) for detection in block_detections},
     )
     water_spikes = _detect_warm_tiled_water_spikes(image, room)
@@ -1958,7 +1959,7 @@ def _replace_warm_tiled_room_geometry(
     water_spikes.extend(
         _recover_warm_water_supported_face_spikes(
             image,
-            room,
+            geometry_room,
             block_detections,
         )
     )
@@ -1973,7 +1974,7 @@ def _replace_warm_tiled_room_geometry(
         _recover_warm_water_interlocking_spikes(
             spikes,
             image,
-            room,
+            geometry_room,
         )
     )
     spikes = _dedupe_detections(spikes, min_distance=12)
@@ -1981,19 +1982,19 @@ def _replace_warm_tiled_room_geometry(
         spikes,
         block_detections,
         image,
-        room,
+        geometry_room,
     )
     spikes = _realign_uniquely_supported_component_spikes(
         spikes,
         block_detections,
         image,
-        room,
+        geometry_room,
     )
     spikes = _align_unsupported_opposite_spike_pairs(
         spikes,
         block_detections,
         image,
-        room,
+        geometry_room,
     )
     mini_spikes = _recover_warm_water_mini_spike_pairs(image, room)
     result, block_detections = _reconcile_terrain_markers(
@@ -2006,6 +2007,27 @@ def _replace_warm_tiled_room_geometry(
     result.extend(spikes)
     result.extend(mini_spikes)
     return _dedupe_exact_detections(result)
+
+
+def _warm_geometry_room(image: RGBImage, room: Box) -> Box:
+    """Preserve spike phase when a full room capture is slightly edge-cropped.
+
+    Color objects remain projected through the observed room. Geometry can use
+    the height implied by the reliable 25-column width, preventing a missing
+    bottom strip from distributing an 8px phase error through the room.
+    """
+
+    expected_height = int(round(room.width * 19 / 25))
+    missing_height = expected_height - room.height
+    missing_map_height = missing_height * ROOM_WIDTH / max(1, room.width)
+    if (
+        room.x != 0
+        or room.y != 0
+        or not 2 <= missing_map_height <= 12
+        or expected_height > image.height + 16
+    ):
+        return room
+    return Box(room.x, room.y, room.width, expected_height)
 
 
 def _realign_warm_component_spike_phase(

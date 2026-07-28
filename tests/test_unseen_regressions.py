@@ -68,6 +68,10 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             UNSEEN_FIXTURES / "ftfa" / "screen-4-source.png",
             **options,
         )
+        cls.brick_room_cropped = scan_png(
+            UNSEEN_FIXTURES / "ftfa" / "screen-4-cropped-source.png",
+            **options,
+        )
         cls.brick_room_truth = JMap.from_file(
             UNSEEN_FIXTURES / "ftfa" / "screen-4.jmap"
         )
@@ -431,6 +435,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((OBJ_SPIKE_LEFT, 448, 384), spikes)
         self.assertIn((OBJ_SPIKE_LEFT, 208, 384), spikes)
         self.assertNotIn((OBJ_SPIKE_DOWN, 208, 384), spikes)
+        self.assertNotIn((OBJ_SPIKE_UP, 240, 360), spikes)
+
+    def test_cropped_brick_room_preserves_spike_geometry_phase(self) -> None:
+        spikes = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in self.brick_room_cropped.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+
+        self.assertIn((OBJ_SPIKE_LEFT, 32, 544), spikes)
+        self.assertIn((OBJ_SPIKE_LEFT, 448, 384), spikes)
+        self.assertIn((OBJ_SPIKE_UP, 240, 352), spikes)
         self.assertNotIn((OBJ_SPIKE_UP, 240, 360), spikes)
 
     def test_exact_brick_room_does_not_union_competing_block_phases(self) -> None:
