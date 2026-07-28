@@ -1120,6 +1120,12 @@ def scan_image(
         and not dark_brick_room
         and _looks_like_warm_tiled_room(image, box)
     )
+    outlined_terrain_room = (
+        include_geometry
+        and not dark_brick_room
+        and not warm_tiled_room
+        and _looks_like_outlined_terrain_room(image, box)
+    )
     detections: list[Detection] = []
     detections.extend(
         _detect_saves(
@@ -1287,6 +1293,12 @@ def scan_image(
         )
         if compact_room:
             detections = _replace_compact_room_geometry(detections, image, box)
+        elif outlined_terrain_room:
+            detections = _replace_outlined_terrain_room_geometry(
+                detections,
+                image,
+                box,
+            )
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
     if include_geometry:
@@ -1294,7 +1306,11 @@ def scan_image(
             detections,
             image,
             box,
-            profile_reconciled=dark_brick_room or warm_tiled_room,
+            profile_reconciled=(
+                dark_brick_room
+                or warm_tiled_room
+                or outlined_terrain_room
+            ),
         )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
@@ -1849,6 +1865,343 @@ def _looks_like_dark_brick_room(image: RGBImage, room: Box) -> bool:
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
     )
     return 70 <= strong_tiles <= 300
+
+
+def _outlined_terrain_cell_stats(
+    image: RGBImage,
+    room: Box,
+) -> tuple[float, float, dict[tuple[int, int], float], set[tuple[int, int]]]:
+    """Find repeated dark tile interiors without depending on their outline hue."""
+
+    brightness: dict[tuple[int, int], float] = {}
+    outline_contrast: dict[tuple[int, int], float] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            center = [
+                colors[row * 16 + column]
+                for row in range(5, 11)
+                for column in range(5, 11)
+            ]
+            border = [
+                color
+                for index, color in enumerate(colors)
+                if index // 16 in (0, 1, 14, 15)
+                or index % 16 in (0, 1, 14, 15)
+            ]
+            center_value = median(
+                (red + green + blue) / 3
+                for red, green, blue in center
+            )
+            border_value = median(
+                (red + green + blue) / 3
+                for red, green, blue in border
+            )
+            brightness[(x, y)] = center_value
+            outline_contrast[(x, y)] = border_value - center_value
+
+    room_value = median(brightness.values())
+    dark_values = sorted(
+        value for value in brightness.values() if value < room_value - 12
+    )
+    dark_value = median(dark_values) if dark_values else room_value
+    threshold = min(
+        room_value - 18,
+        dark_value + max(8, (room_value - dark_value) * 0.38),
+    )
+    positions = {
+        position
+        for position, value in brightness.items()
+        if value <= threshold
+        and (
+            outline_contrast[position] >= 3
+            or value <= dark_value + 7
+        )
+    }
+    return room_value, dark_value, brightness, positions
+
+
+def _looks_like_outlined_terrain_room(image: RGBImage, room: Box) -> bool:
+    """Identify dark cell sprites enclosed by a brighter repeated outline."""
+
+    room_value, dark_value, _brightness, positions = (
+        _outlined_terrain_cell_stats(image, room)
+    )
+    return (
+        65 <= room_value <= 100
+        and dark_value <= 42
+        and dark_value <= room_value - 35
+        and 55 <= len(positions) <= 190
+    )
+
+
+def _replace_outlined_terrain_room_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Anchor an outlined room to its cell interiors, then reconcile silhouettes."""
+
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id
+        not in {*GEOMETRY_TYPES, OBJ_PLATFORM, OBJ_SAVE}
+    ]
+    _room_value, _dark_value, brightness, block_positions = (
+        _outlined_terrain_cell_stats(image, room)
+    )
+    block_detections = [
+        _geometry_detection(
+            "outlined_terrain_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            min(0.98, 0.78 + max(0, 55 - brightness[(x, y)]) / 160),
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in sorted(block_positions, key=lambda item: (item[1], item[0]))
+    ]
+
+    generic_spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in {*FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
+        and (detection.x, detection.y) not in block_positions
+    ]
+    full_spikes = [
+        detection
+        for detection in generic_spikes
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    outlined_spikes = _detect_outlined_terrain_spikes(
+        image,
+        room,
+        block_positions,
+    )
+    full_spikes.extend(outlined_spikes)
+    full_spikes = _dedupe_detections(full_spikes, min_distance=12)
+    mini_spikes = [
+        detection
+        for detection in generic_spikes
+        if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    block_detections, full_spikes = _resolve_warm_terrain_conflicts(
+        block_detections,
+        full_spikes,
+        image,
+        room,
+        remove_dominated_blocks=False,
+    )
+    full_spikes = _reorient_unsupported_spikes(
+        full_spikes,
+        block_detections,
+    )
+    markers = _detect_outlined_terrain_saves(image, room)
+    markers, block_detections = _reconcile_terrain_markers(
+        markers,
+        block_detections,
+        image,
+        room,
+    )
+    result.extend(block_detections)
+    result.extend(full_spikes)
+    result.extend(mini_spikes)
+    result.extend(markers)
+    return _dedupe_exact_detections(result)
+
+
+def _detect_outlined_terrain_spikes(
+    image: RGBImage,
+    room: Box,
+    block_positions: set[tuple[int, int]],
+) -> list[Detection]:
+    """Recover hollow full spikes from their three bright outline segments."""
+
+    directions = (
+        ("up", OBJ_SPIKE_UP),
+        ("right", OBJ_SPIKE_RIGHT),
+        ("left", OBJ_SPIKE_LEFT),
+        ("down", OBJ_SPIKE_DOWN),
+    )
+    candidates: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            if (x, y) in block_positions:
+                continue
+            scores = [
+                (
+                    _outlined_triangle_score(image, room, x, y, direction),
+                    direction,
+                    type_id,
+                )
+                for direction, type_id in directions
+            ]
+            scores.sort(reverse=True)
+            score, direction, type_id = scores[0]
+            runner_up = scores[1][0]
+            if score < 0.72 or score - runner_up < 0.10:
+                continue
+            candidates.append(
+                _geometry_detection(
+                    f"outlined_terrain_spike_{direction}",
+                    type_id,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+
+    supported = [
+        detection
+        for detection in candidates
+        if detection.score >= 0.82
+        or _has_spike_block_support(
+            detection,
+            block_positions,
+            GRID_SIZE,
+            tolerance=9,
+        )
+    ]
+    return _dedupe_detections(supported, min_distance=20)
+
+
+def _outlined_triangle_score(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+    direction: str,
+) -> float:
+    """Score a 32px map patch for a hollow triangle without using its hue."""
+
+    if direction == "up":
+        vertices = ((0.50, 0.06), (0.08, 0.94), (0.92, 0.94))
+        interior = ((0.50, 0.42), (0.35, 0.70), (0.65, 0.70))
+        outside = ((0.10, 0.12), (0.90, 0.12))
+    elif direction == "down":
+        vertices = ((0.08, 0.06), (0.92, 0.06), (0.50, 0.94))
+        interior = ((0.35, 0.30), (0.65, 0.30), (0.50, 0.58))
+        outside = ((0.10, 0.88), (0.90, 0.88))
+    elif direction == "left":
+        vertices = ((0.06, 0.50), (0.94, 0.08), (0.94, 0.92))
+        interior = ((0.42, 0.50), (0.70, 0.35), (0.70, 0.65))
+        outside = ((0.12, 0.10), (0.12, 0.90))
+    else:
+        vertices = ((0.06, 0.08), (0.94, 0.50), (0.06, 0.92))
+        interior = ((0.30, 0.35), (0.58, 0.50), (0.30, 0.65))
+        outside = ((0.88, 0.10), (0.88, 0.90))
+
+    edge_values: list[float] = []
+    edge_coverages: list[float] = []
+    interior_values = [
+        _outlined_map_value(image, room, x, y, px, py, radius=1)
+        for px, py in interior
+    ]
+    outside_values = [
+        _outlined_map_value(image, room, x, y, px, py, radius=0)
+        for px, py in outside
+    ]
+    reference = median([*interior_values, *outside_values])
+    for start, end in zip(vertices, (*vertices[1:], vertices[0])):
+        samples = [
+            _outlined_map_value(
+                image,
+                room,
+                x,
+                y,
+                start[0] + (end[0] - start[0]) * step / 10,
+                start[1] + (end[1] - start[1]) * step / 10,
+                radius=2,
+            )
+            for step in range(1, 10)
+        ]
+        edge_values.extend(samples)
+        edge_coverages.append(
+            sum(value >= reference + 20 for value in samples) / len(samples)
+        )
+
+    edge_brightness = median(edge_values)
+    contrast = max(0.0, min(1.0, (edge_brightness - reference) / 85))
+    coverage = min(edge_coverages)
+    balance = 1.0 - min(
+        1.0,
+        (max(edge_coverages) - min(edge_coverages)) / 0.75,
+    )
+    return contrast * 0.48 + coverage * 0.42 + balance * 0.10
+
+
+def _outlined_map_value(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+    patch_x: float,
+    patch_y: float,
+    *,
+    radius: int,
+) -> float:
+    image_x = int(
+        round(room.x + (x + patch_x * GRID_SIZE) * room.width / ROOM_WIDTH)
+    )
+    image_y = int(
+        round(room.y + (y + patch_y * GRID_SIZE) * room.height / ROOM_HEIGHT)
+    )
+    values = []
+    for offset_y in range(-radius, radius + 1):
+        for offset_x in range(-radius, radius + 1):
+            red, green, blue = image.pixel(
+                max(0, min(image.width - 1, image_x + offset_x)),
+                max(0, min(image.height - 1, image_y + offset_y)),
+            )
+            values.append(max(red, green, blue))
+    return max(values)
+
+
+def _detect_outlined_terrain_saves(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Detect compact red/orange save panels without treating outlines as saves."""
+
+    components = _connected_components(
+        image,
+        room,
+        lambda red, green, blue: (
+            red > 100
+            and red > green * 1.22
+            and red > blue * 1.30
+        ),
+    )
+    candidates: list[Detection] = []
+    scale_x = ROOM_WIDTH / room.width
+    scale_y = ROOM_HEIGHT / room.height
+    for box, pixels in components:
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        if not (
+            16 <= map_width <= 34
+            and 10 <= map_height <= 22
+            and len(pixels) >= 35
+        ):
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, 8)
+        candidates.append(
+            Detection(
+                "outlined_terrain_save",
+                OBJ_SAVE,
+                map_x,
+                map_y,
+                min(0.98, 0.78 + len(pixels) / 2500),
+                box,
+            )
+        )
+    return _dedupe_detections(candidates, min_distance=25)
 
 
 def _replace_warm_tiled_room_geometry(

@@ -20,20 +20,26 @@ from jtool_scanner.constants import (
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
+from jtool_scanner.image import load_png
 from jtool_scanner.evaluation import evaluate_scan
 from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import (
     Detection,
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
+    _detect_outlined_terrain_saves,
+    _detect_outlined_terrain_spikes,
     _align_unsupported_opposite_spike_pairs,
     _choose_component_spike_candidate,
     _image_box_to_jtool_center,
     _infer_source_grid,
+    _looks_like_outlined_terrain_room,
+    _outlined_terrain_cell_stats,
     _reorient_unsupported_spikes,
     _realign_warm_component_spike_phase,
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
+    detect_room_box,
     scan_png,
     structural_scan_warnings,
 )
@@ -41,6 +47,39 @@ from jtool_scanner.scanner import (
 
 FIXTURES = Path("fixtures/regressions")
 UNSEEN_FIXTURES = FIXTURES / "unseen-rooms"
+
+
+class OutlinedTerrainRegressionTests(unittest.TestCase):
+    def test_neon_rooms_use_hue_independent_terrain_geometry(self) -> None:
+        fixture_dir = UNSEEN_FIXTURES / "cn3-neon"
+        expected = {
+            "07": (103, 48, 4),
+            "08": (83, 57, 3),
+            "09": (85, 63, 3),
+        }
+
+        for floor, expected_counts in expected.items():
+            with self.subTest(floor=floor):
+                image = load_png(fixture_dir / f"floor-{floor}-source.png")
+                room = detect_room_box(image)
+                self.assertTrue(_looks_like_outlined_terrain_room(image, room))
+                block_positions = _outlined_terrain_cell_stats(image, room)[3]
+                spikes = _detect_outlined_terrain_spikes(
+                    image,
+                    room,
+                    block_positions,
+                )
+                saves = _detect_outlined_terrain_saves(image, room)
+                self.assertEqual(
+                    (len(block_positions), len(spikes), len(saves)),
+                    expected_counts,
+                )
+                self.assertTrue(
+                    all(
+                        detection.type_id in FULL_SPIKE_TYPES
+                        for detection in spikes
+                    )
+                )
 
 
 class UnseenScreenRegressionTests(unittest.TestCase):
