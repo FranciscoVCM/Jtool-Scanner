@@ -89,7 +89,9 @@ def _render_object(obj: JMapObject) -> list[str]:
     if type_id == OBJ_BULLET_BLOCKER:
         return [_rect(x, y, 32, 32, "#d8d8d8", "#111", 1), _rect(x + 8, y + 11, 16, 10, "#a8a8a8", "#555", 1)]
     if type_id == OBJ_APPLE:
-        return [f'<circle cx="{x + 16}" cy="{y + 17}" r="11" fill="#c43" stroke="#711" stroke-width="2"/>']
+        # JTool stores fruit coordinates at the sprite center, unlike terrain
+        # objects whose coordinates describe their top-left corner.
+        return [f'<circle cx="{x}" cy="{y}" r="11" fill="#c43" stroke="#711" stroke-width="2"/>']
     if type_id == OBJ_JUMP_REFRESHER:
         return [f'<circle cx="{x + 16}" cy="{y + 16}" r="12" fill="#d8d8d8" stroke="#777" stroke-width="3"/>']
     if type_id == OBJ_GRAVITY_UP:
@@ -188,4 +190,3 @@ def _arrow(x: int, y: int, up: bool) -> str:
     if up:
         return _polygon([(x + 16, y + 4), (x + 29, y + 18), (x + 21, y + 18), (x + 21, y + 30), (x + 11, y + 30), (x + 11, y + 18), (x + 3, y + 18)], "#ff6060", "#111")
     return _polygon([(x + 16, y + 28), (x + 29, y + 14), (x + 21, y + 14), (x + 21, y + 2), (x + 11, y + 2), (x + 11, y + 14), (x + 3, y + 14)], "#4fc3f7", "#111")
-

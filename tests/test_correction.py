@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from jtool_scanner.constants import (
+    OBJ_APPLE,
     OBJ_BLOCK,
     OBJ_MINI_BLOCK,
     OBJ_PLAYER_START,
@@ -30,6 +31,17 @@ from jtool_scanner.scanner import Detection, ScanResult
 
 
 class CorrectionProjectTests(unittest.TestCase):
+    def test_preview_draws_apple_at_its_center_coordinate(self) -> None:
+        project = CorrectionProject.from_jmap(
+            JMap(objects=[JMapObject(400, 80, OBJ_APPLE)]),
+            "fruit.jmap",
+        )
+
+        svg = render_correction_svg(project)
+
+        self.assertIn('<circle cx="400" cy="80" r="11"', svg)
+        self.assertNotIn('<circle cx="416" cy="97" r="11"', svg)
+
     def test_fixed_object_extent_centers_small_and_overlaps_long_regions(self) -> None:
         self.assertEqual(
             object_origins_for_extent(40, 32, 16, 16),
