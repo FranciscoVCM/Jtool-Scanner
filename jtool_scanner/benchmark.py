@@ -11,7 +11,11 @@ from pathlib import Path
 import shutil
 from typing import Callable
 
+from PIL import Image, ImageDraw
+
 from .constants import (
+    GRID_SIZE,
+    OBJ_BLOCK,
     OBJ_GRAVITY_DOWN,
     OBJ_GRAVITY_UP,
     OBJ_MINI_SPIKE_DOWN,
@@ -26,6 +30,8 @@ from .constants import (
     OBJ_WALLJUMP_LEFT,
     OBJ_WALLJUMP_RIGHT,
     OBJECT_NAMES,
+    ROOM_HEIGHT,
+    ROOM_WIDTH,
 )
 from .geometry import Box
 from .jmap import JMap, JMapObject
@@ -114,6 +120,7 @@ def compare_jmaps(
     exact_count = sum(exact_counter.values())
     metadata_exact = expected.infinite_jump == detected.infinite_jump
     metadata_error_count = 0 if metadata_exact else 1
+    reference_warnings = _reference_warnings(expected)
     return {
         "summary": {
             "expected": len(expected_objects),
@@ -148,6 +155,7 @@ def compare_jmaps(
             "infinite_jump_detected": detected.infinite_jump,
             "infinite_jump_exact": metadata_exact,
         },
+        "reference_warnings": reference_warnings,
     }
 
 
@@ -201,6 +209,14 @@ def run_benchmark(
             result,
             detected,
             expected,
+            comparison,
+        )
+        review_items = _review_items(comparison)
+        _write_source_review_crops(
+            pair_dir,
+            source_path,
+            result,
+            review_items,
         )
         report_pairs.append(
             {
@@ -211,6 +227,7 @@ def run_benchmark(
                 "room_box": _box_dict(result.room_box),
                 "source_grid": list(result.source_grid) if result.source_grid else None,
                 "comparison": comparison,
+                "review_items": review_items,
                 "artifacts": artifacts,
             }
         )
@@ -294,6 +311,7 @@ def render_dashboard(report: dict, output: Path) -> str:
     <span>{summary["shifted"]} shifted</span>
     <span>{summary["wrong_orientation"]} wrong direction</span>
     <span>{summary["metadata_error_count"]} setting errors</span>
+    <span>{len(pair["comparison"].get("reference_warnings", []))} reference warnings</span>
   </div>
   <div class="views">
     {_view("Source", artifacts["source"])}
@@ -301,6 +319,7 @@ def render_dashboard(report: dict, output: Path) -> str:
     {_view("Expected", artifacts["expected_svg"])}
     {_view("Blend", artifacts["blend_svg"])}
     {_view("Errors", artifacts["overlay_svg"])}
+    {_view("Localized review", artifacts["review_svg"], "review")}
   </div>
   <details><summary>Object diagnostics</summary>{_diagnostic_rows(pair["comparison"])}</details>
 </section>"""
@@ -317,6 +336,7 @@ h1,h2{{margin:0 0 10px}} .metrics{{margin-bottom:12px}}
 .views{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}}
 figure{{margin:0;border:1px solid #ccd3d7;background:#dfe4e7}} figcaption{{padding:6px 8px}}
 img{{display:block;width:100%;aspect-ratio:25/19;object-fit:contain;background:#d4d9dc}}
+.review img{{aspect-ratio:auto;max-height:760px}}
 table{{border-collapse:collapse;margin-top:10px;width:100%}}td,th{{padding:5px;border:1px solid #ccd3d7;text-align:left}}
 </style></head><body>
 <header><h1>{escape(report["name"])}</h1>
@@ -333,6 +353,7 @@ def _write_artifacts(
     result: ScanResult,
     detected: JMap,
     expected: JMap,
+    comparison: dict,
 ) -> dict[str, str]:
     pair_dir.mkdir(parents=True, exist_ok=True)
     source_copy = pair_dir / f"source{source_path.suffix.lower() or '.png'}"
@@ -341,6 +362,7 @@ def _write_artifacts(
     expected_svg = pair_dir / "expected.svg"
     overlay_svg = pair_dir / "errors.svg"
     blend_svg = pair_dir / "blend.svg"
+    review_svg = pair_dir / "review.svg"
     shutil.copyfile(source_path, source_copy)
     detected.to_file(detected_jmap)
     detected_markup = render_svg(detected, f"{pair_id} detected")
@@ -362,6 +384,17 @@ def _write_artifacts(
         _render_blend(result, source_path, detected_markup, pair_id),
         encoding="utf-8",
     )
+    review_svg.write_text(
+        _render_review(
+            result,
+            source_path,
+            detected_markup,
+            expected_markup,
+            comparison,
+            pair_id,
+        ),
+        encoding="utf-8",
+    )
     return {
         "source": str(source_copy.resolve()),
         "detected_jmap": str(detected_jmap.resolve()),
@@ -369,6 +402,7 @@ def _write_artifacts(
         "expected_svg": str(expected_svg.resolve()),
         "overlay_svg": str(overlay_svg.resolve()),
         "blend_svg": str(blend_svg.resolve()),
+        "review_svg": str(review_svg.resolve()),
     }
 
 
@@ -386,6 +420,283 @@ def _render_blend(
 <image href="data:image/svg+xml;base64,{encoded_svg}" x="{room.x}" y="{room.y}" width="{room.width}" height="{room.height}" opacity=".58"/>
 </svg>
 """
+
+
+def _review_items(comparison: dict) -> list[dict]:
+    """Flatten exact comparison errors into stable, localized review items."""
+
+    items = []
+    for kind, key in (
+        ("wrong_direction", "wrong_orientation"),
+        ("shifted", "shifted"),
+    ):
+        for item in comparison[key]:
+            expected = item["expected"]
+            detected = item["detected"]
+            items.append(
+                {
+                    "kind": kind,
+                    "type_name": expected["type_name"],
+                    "anchor_x": round((expected["x"] + detected["x"]) / 2),
+                    "anchor_y": round((expected["y"] + detected["y"]) / 2),
+                    "expected": expected,
+                    "detected": detected,
+                    "dx": item["dx"],
+                    "dy": item["dy"],
+                }
+            )
+    for kind, key, object_key in (
+        ("false_positive", "false_positives", "detected"),
+        ("missed", "missed", "expected"),
+    ):
+        for item in comparison[key]:
+            items.append(
+                {
+                    "kind": kind,
+                    "type_name": item["type_name"],
+                    "anchor_x": item["x"],
+                    "anchor_y": item["y"],
+                    object_key: item,
+                }
+            )
+    return sorted(
+        items,
+        key=lambda item: (
+            item["anchor_y"],
+            item["anchor_x"],
+            item["kind"],
+            item["type_name"],
+        ),
+    )
+
+
+def _reference_warnings(expected: JMap) -> list[dict]:
+    """Flag suspicious reference geometry without changing benchmark scoring."""
+
+    blocks = [
+        obj
+        for obj in _benchmark_objects(expected)
+        if obj.type_id == OBJ_BLOCK
+    ]
+    warnings = []
+    for index, block in enumerate(blocks):
+        overlaps = []
+        for other_index, other in enumerate(blocks):
+            if index == other_index:
+                continue
+            overlap_width = max(
+                0,
+                min(block.x + GRID_SIZE, other.x + GRID_SIZE)
+                - max(block.x, other.x),
+            )
+            overlap_height = max(
+                0,
+                min(block.y + GRID_SIZE, other.y + GRID_SIZE)
+                - max(block.y, other.y),
+            )
+            if overlap_width * overlap_height >= GRID_SIZE * GRID_SIZE // 2:
+                overlaps.append(_object_detail(other))
+        if len(overlaps) >= 2:
+            warnings.append(
+                {
+                    "kind": "overlapping_reference_block",
+                    "object": _object_detail(block),
+                    "overlaps": overlaps,
+                }
+            )
+    return warnings
+
+
+def _write_source_review_crops(
+    pair_dir: Path,
+    source_path: Path,
+    result: ScanResult,
+    review_items: list[dict],
+) -> None:
+    """Attach normalized source crops to exact mismatch records."""
+
+    if not review_items:
+        return
+    crop_dir = pair_dir / "review-crops"
+    crop_dir.mkdir(parents=True, exist_ok=True)
+    room = result.room_box
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    crop_size = 112
+    with Image.open(source_path) as opened:
+        source = opened.convert("RGB")
+        for index, item in enumerate(review_items, start=1):
+            map_left = min(
+                max(item["anchor_x"] - crop_size // 2, 0),
+                ROOM_WIDTH - crop_size,
+            )
+            map_top = min(
+                max(item["anchor_y"] - crop_size // 2, 0),
+                ROOM_HEIGHT - crop_size,
+            )
+            left = round(room.x + map_left * scale_x)
+            top = round(room.y + map_top * scale_y)
+            right = round(room.x + (map_left + crop_size) * scale_x)
+            bottom = round(room.y + (map_top + crop_size) * scale_y)
+            crop = source.crop((left, top, right, bottom)).resize((336, 336))
+            marker_x = round((item["anchor_x"] - map_left) * 3)
+            marker_y = round((item["anchor_y"] - map_top) * 3)
+            draw = ImageDraw.Draw(crop)
+            draw.rectangle(
+                (marker_x, marker_y, marker_x + 96, marker_y + 96),
+                outline=(235, 40, 55),
+                width=4,
+            )
+            crop_path = crop_dir / f"{index:03d}-{item['kind']}.png"
+            crop.save(crop_path)
+            item["source_crop"] = str(crop_path.resolve())
+
+
+def _render_review(
+    result: ScanResult,
+    source_path: Path,
+    detected_svg: str,
+    expected_svg: str,
+    comparison: dict,
+    title: str,
+) -> str:
+    """Render separate localized layers so blend ambiguity cannot hide errors."""
+
+    items = _review_items(comparison)
+    width = 980
+    header_height = 54
+    row_height = 230
+    height = header_height + max(1, len(items)) * row_height
+    detected_data = base64.b64encode(detected_svg.encode("utf-8")).decode("ascii")
+    expected_data = base64.b64encode(expected_svg.encode("utf-8")).decode("ascii")
+    source_uri = escape(source_path.resolve().as_uri())
+    rows = []
+    if not items:
+        rows.append(
+            '<text x="28" y="100" font-size="22" fill="#16734a">'
+            "No exact object mismatches.</text>"
+        )
+    for index, item in enumerate(items):
+        top = header_height + index * row_height
+        crop_size = 112
+        crop_x = min(
+            max(item["anchor_x"] - crop_size // 2, 0),
+            ROOM_WIDTH - crop_size,
+        )
+        crop_y = min(
+            max(item["anchor_y"] - crop_size // 2, 0),
+            ROOM_HEIGHT - crop_size,
+        )
+        issue = item["kind"].replace("_", " ")
+        if item["kind"] in ("shifted", "wrong_direction"):
+            issue += f" ({item['dx']:+d},{item['dy']:+d})"
+        label = (
+            f"{index + 1}. {issue}: {item['type_name']} "
+            f"near {item['anchor_x']},{item['anchor_y']}"
+        )
+        rows.append(
+            f'<rect x="12" y="{top + 6}" width="{width - 24}" '
+            f'height="{row_height - 12}" fill="#fff" stroke="#c7cfd3"/>'
+            f'<text x="28" y="{top + 34}" font-size="17" '
+            f'font-weight="600">{escape(label)}</text>'
+            + _review_panel(
+                "Source",
+                28,
+                top + 48,
+                crop_x,
+                crop_y,
+                crop_size,
+                _source_image_markup(result, source_uri),
+                item,
+                "source",
+            )
+            + _review_panel(
+                "Detected only",
+                338,
+                top + 48,
+                crop_x,
+                crop_y,
+                crop_size,
+                (
+                    '<image href="data:image/svg+xml;base64,'
+                    f'{detected_data}" width="{ROOM_WIDTH}" height="{ROOM_HEIGHT}"/>'
+                ),
+                item,
+                "detected",
+            )
+            + _review_panel(
+                "Expected JTool",
+                648,
+                top + 48,
+                crop_x,
+                crop_y,
+                crop_size,
+                (
+                    '<image href="data:image/svg+xml;base64,'
+                    f'{expected_data}" width="{ROOM_WIDTH}" height="{ROOM_HEIGHT}"/>'
+                ),
+                item,
+                "expected",
+            )
+        )
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" '
+        f'height="{height}" viewBox="0 0 {width} {height}">'
+        '<rect width="100%" height="100%" fill="#e8ecee"/>'
+        f'<text x="20" y="34" font-size="22" font-weight="700">'
+        f'{escape(title)} localized mismatch review</text>'
+        + "".join(rows)
+        + "</svg>"
+    )
+
+
+def _source_image_markup(result: ScanResult, source_uri: str) -> str:
+    room = result.room_box
+    scale_x = ROOM_WIDTH / room.width
+    scale_y = ROOM_HEIGHT / room.height
+    return (
+        f'<image href="{source_uri}" '
+        f'x="{-room.x * scale_x}" y="{-room.y * scale_y}" '
+        f'width="{result.image_width * scale_x}" '
+        f'height="{result.image_height * scale_y}"/>'
+    )
+
+
+def _review_panel(
+    label: str,
+    x: int,
+    y: int,
+    crop_x: int,
+    crop_y: int,
+    crop_size: int,
+    image_markup: str,
+    item: dict,
+    layer: str,
+) -> str:
+    panel_width = 286
+    panel_height = 150
+    object_detail = item.get(layer)
+    if layer == "source":
+        object_detail = {
+            "x": item["anchor_x"],
+            "y": item["anchor_y"],
+        }
+    marker = ""
+    if object_detail is not None:
+        marker = (
+            f'<rect x="{object_detail["x"]}" y="{object_detail["y"]}" '
+            'width="32" height="32" fill="none" stroke="#e02b3b" '
+            'stroke-width="3" vector-effect="non-scaling-stroke"/>'
+        )
+    return (
+        f'<text x="{x}" y="{y + 16}" font-size="14">{escape(label)}</text>'
+        f'<svg x="{x}" y="{y + 24}" width="{panel_width}" '
+        f'height="{panel_height}" viewBox="{crop_x} {crop_y} '
+        f'{crop_size} {crop_size}" preserveAspectRatio="xMidYMid meet">'
+        f'<rect x="{crop_x}" y="{crop_y}" width="{crop_size}" '
+        f'height="{crop_size}" fill="#d5dadd"/>'
+        f"{image_markup}{marker}</svg>"
+    )
 
 
 def _match_wrong_orientation(
@@ -597,9 +908,10 @@ def _box_dict(box: Box) -> dict[str, int]:
     return {"x": box.x, "y": box.y, "width": box.width, "height": box.height}
 
 
-def _view(label: str, path: str) -> str:
+def _view(label: str, path: str, class_name: str = "") -> str:
+    class_attribute = f' class="{escape(class_name)}"' if class_name else ""
     return (
-        f'<figure><figcaption>{escape(label)}</figcaption>'
+        f"<figure{class_attribute}><figcaption>{escape(label)}</figcaption>"
         f'<a href="{escape(path)}"><img loading="lazy" src="{escape(path)}" '
         f'alt="{escape(label)}"></a></figure>'
     )
@@ -613,6 +925,14 @@ def _diagnostic_rows(comparison: dict) -> str:
             "<tr><td>Setting</td><td>infinite jump</td>"
             f"<td>{metadata['infinite_jump_expected']}</td>"
             f"<td>{metadata['infinite_jump_detected']}</td><td></td></tr>"
+        )
+    for warning in comparison.get("reference_warnings", []):
+        item = warning["object"]
+        rows.append(
+            "<tr><td>Reference warning</td>"
+            f"<td>{escape(item['type_name'])}</td>"
+            f"<td>{item['x']},{item['y']}</td><td></td>"
+            f"<td>{len(warning['overlaps'])} overlaps</td></tr>"
         )
     for kind, items in (
         ("Wrong direction", comparison["wrong_orientation"]),

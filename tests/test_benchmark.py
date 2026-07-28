@@ -1,6 +1,6 @@
 import json
 
-from jtool_scanner.benchmark import compare_baseline, compare_jmaps
+from jtool_scanner.benchmark import _review_items, compare_baseline, compare_jmaps
 from jtool_scanner.constants import (
     OBJ_BLOCK,
     OBJ_PLAYER_START,
@@ -56,6 +56,16 @@ def test_compare_jmaps_explains_shift_and_wrong_orientation_separately():
     assert result["summary"]["false_positive"] == 0
     assert result["shifted"][0]["dx"] == 8
 
+    review = _review_items(result)
+
+    assert [(item["kind"], item["anchor_x"], item["anchor_y"]) for item in review] == [
+        ("shifted", 104, 100),
+        ("wrong_direction", 200, 200),
+    ]
+    assert review[0]["dx"] == 8
+    assert review[1]["expected"]["type_name"] == "spike_up"
+    assert review[1]["detected"]["type_name"] == "spike_right"
+
 
 def test_compare_jmaps_keeps_distant_objects_as_miss_and_false_positive():
     expected = _map(JMapObject(0, 0, OBJ_BLOCK))
@@ -66,6 +76,46 @@ def test_compare_jmaps_keeps_distant_objects_as_miss_and_false_positive():
     assert result["summary"]["shifted"] == 0
     assert result["summary"]["missed"] == 1
     assert result["summary"]["false_positive"] == 1
+
+
+def test_compare_jmaps_warns_about_redundant_overlapping_reference_blocks():
+    expected = _map(
+        JMapObject(64, 64, OBJ_BLOCK),
+        JMapObject(64, 96, OBJ_BLOCK),
+        JMapObject(64, 80, OBJ_BLOCK),
+    )
+    detected = _map(
+        JMapObject(64, 64, OBJ_BLOCK),
+        JMapObject(64, 96, OBJ_BLOCK),
+    )
+
+    result = compare_jmaps(detected, expected)
+
+    assert result["reference_warnings"] == [
+        {
+            "kind": "overlapping_reference_block",
+            "object": {
+                "type_id": OBJ_BLOCK,
+                "type_name": "block",
+                "x": 64,
+                "y": 80,
+            },
+            "overlaps": [
+                {
+                    "type_id": OBJ_BLOCK,
+                    "type_name": "block",
+                    "x": 64,
+                    "y": 64,
+                },
+                {
+                    "type_id": OBJ_BLOCK,
+                    "type_name": "block",
+                    "x": 64,
+                    "y": 96,
+                },
+            ],
+        }
+    ]
 
 
 def test_compare_jmaps_includes_infinite_jump_in_exact_error_count():

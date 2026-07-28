@@ -461,6 +461,28 @@ def _benchmark(
         f"{totals['shifted']} shifted; "
         f"{totals['wrong_orientation']} wrong direction"
     )
+    for pair in report["pairs"]:
+        for warning in pair["comparison"].get("reference_warnings", []):
+            obj = warning["object"]
+            print(
+                f"{pair['id']} reference warning: {warning['kind']} "
+                f"at ({obj['x']}, {obj['y']})"
+            )
+        review_items = pair.get("review_items", [])
+        if not review_items:
+            continue
+        print(f"{pair['id']} mismatches:")
+        for item in review_items:
+            detail = (
+                f" offset=({item['dx']:+d},{item['dy']:+d})"
+                if "dx" in item
+                else ""
+            )
+            print(
+                f"  {item['kind']} {item['type_name']} "
+                f"near ({item['anchor_x']}, {item['anchor_y']}){detail}"
+            )
+        print(f"  review: {pair['artifacts']['review_svg']}")
     print(f"dashboard: {report['artifacts']['dashboard_html']}")
     print(f"report: {report['artifacts']['report_json']}")
     if regressed:

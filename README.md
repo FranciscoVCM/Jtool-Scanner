@@ -192,9 +192,11 @@ start out\benchmarks\ftfa\index.html
 
 Each room is scanned once. The output contains a copied source image,
 `detected.jmap`, detected and expected SVGs, a source/detection blend, an exact
-error overlay, and machine-readable `report.json`. `index.html` puts all five
-views and the error list together. Near misses are diagnostic only and are
-classified as shifted, wrong direction, missed, or false positive.
+error overlay, a localized `review.svg`, and machine-readable `report.json`.
+The localized review shows separate Source, Detected only, and Expected JTool
+crops for every error, avoiding the ambiguity of translucent overlays. The CLI
+and `review_items` report field identify each shifted, wrong-direction, missed,
+or false-positive object by coordinates.
 
 Keep a known-good report and gate later changes against it:
 
