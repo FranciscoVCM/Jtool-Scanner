@@ -62,7 +62,7 @@ Create a project from a screenshot. Color and geometry scanning are enabled by
 default for this command:
 
 ```powershell
-python -m jtool_scanner.cli project-create screen.png out\screen.jscan.json --jmap out\screen.jmap --preview out\screen.svg --diagnostic-preview out\screen-ids.svg
+python -m jtool_scanner.cli project-create screen.png out\screen.jscan.json --jmap out\screen.jmap --preview out\screen.svg --diagnostic-preview out\screen-ids.svg --blend-preview out\screen-blend.svg
 ```
 
 Inspect all candidates, or only candidates near a suspicious location:
@@ -98,6 +98,13 @@ This is useful for comparing scanner output with the hand-built examples:
 ```powershell
 python -m jtool_scanner.cli project-import existing.jmap out\existing.jscan.json
 ```
+
+For an unseen screenshot with no reference JMap, `--blend-preview` embeds the
+normalized source and overlays the generated JTool geometry. Diagnostic and
+blend previews also outline source-independent structural warnings such as
+unsupported spikes, overlapping opposite spikes, and saves embedded in terrain.
+These are review signals derived from the screenshot scan itself, not
+fixture-specific corrections.
 
 Each object has a stable ID, map coordinates, JTool type, enabled state,
 scanner kind/score, source-image box, and original detected state. Disabling an

@@ -22,6 +22,7 @@ from jtool_scanner.correction import (
     object_origins_for_extent,
     parse_object_type,
     render_correction_svg,
+    render_source_blend_svg,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.jmap import JMap, JMapObject
@@ -51,6 +52,16 @@ class CorrectionProjectTests(unittest.TestCase):
             infinite_jump=1,
             recognized_text="You can jump many times",
             source_grid=(20, 12),
+            structural_warnings=[
+                {
+                    "code": "unsupported_spike",
+                    "severity": "review",
+                    "type_id": 3,
+                    "x": 96,
+                    "y": 128,
+                    "detail": "no terrain support",
+                }
+            ],
         )
 
         project = result.to_correction_project("screen.png", grid_step=8)
@@ -62,6 +73,7 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertEqual(project.infinite_jump, 1)
         self.assertEqual(project.source_grid, (20, 12))
         self.assertEqual(project.recognized_text, "You can jump many times")
+        self.assertEqual(project.structural_warnings[0]["code"], "unsupported_spike")
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "screen.jscan.json"
             project.to_file(path)
@@ -150,6 +162,29 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertIn('id="correction-overlay"', svg)
         self.assertIn("stroke-dasharray", svg)
         self.assertIn("0001", svg)
+
+    def test_source_blend_embeds_source_and_structural_warnings(self) -> None:
+        project = CorrectionProject(
+            source_image="fixtures/regressions/unseen-rooms/ftfa/screen-3-source.png",
+            image_width=966,
+            image_height=726,
+            room_box=Box(0, 0, 966, 726),
+            structural_warnings=[
+                {
+                    "code": "unsupported_spike",
+                    "severity": "review",
+                    "type_id": 3,
+                    "x": 96,
+                    "y": 128,
+                }
+            ],
+        )
+
+        svg = render_source_blend_svg(project)
+
+        self.assertIn("data:image/png;base64,", svg)
+        self.assertIn('x="93" y="125"', svg)
+        self.assertIn('opacity="0.58"', svg)
 
     def test_object_type_parser_accepts_names_aliases_and_ids(self) -> None:
         self.assertEqual(parse_object_type("mini-block"), OBJ_MINI_BLOCK)

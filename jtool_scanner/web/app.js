@@ -75,7 +75,7 @@
       "objectTypeSelect", "objectX", "objectY", "objectEnabled", "objectId",
       "objectSource", "objectScore", "duplicateButton", "startHereButton",
       "infiniteJump", "startPolicy", "bulkWater", "applyWaterButton", "layerSearch",
-      "confidenceFilter", "layerList", "toastRegion", "busyOverlay", "busyTitle",
+      "confidenceFilter", "layerList", "scanWarnings", "toastRegion", "busyOverlay", "busyTitle",
     ]) elements[id] = $(id);
   }
 
@@ -169,7 +169,7 @@
       },
       scanner: {
         grid_step: 8, include_color_objects: true, include_geometry: true,
-        source_grid: null, recognized_text: "",
+        source_grid: null, recognized_text: "", structural_warnings: [],
       },
       start: { policy: "auto", save_id: null, position: null },
       jmap: {
@@ -377,6 +377,26 @@
 
   function renderLayers() {
     if (!state.project) return;
+    const warnings = state.project.scanner.structural_warnings || [];
+    elements.scanWarnings.classList.toggle("hidden", !warnings.length);
+    elements.scanWarnings.innerHTML = warnings.length
+      ? `<strong>${warnings.length} geometry review${warnings.length === 1 ? "" : "s"}</strong>`
+        + warnings.slice(0, 20).map((warning) => `
+          <button class="warning-item" data-warning-x="${warning.x}" data-warning-y="${warning.y}"
+                  data-warning-type="${warning.type_id}">
+            ${prettyName(String(warning.code).replaceAll("_", " "))} at ${warning.x},${warning.y}
+          </button>`).join("")
+      : "";
+    elements.scanWarnings.querySelectorAll("[data-warning-x]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const object = state.project.objects.find((candidate) =>
+          candidate.enabled
+          && candidate.type_id === Number(button.dataset.warningType)
+          && candidate.x === Number(button.dataset.warningX)
+          && candidate.y === Number(button.dataset.warningY));
+        if (object) selectObject(object.id);
+      });
+    });
     const query = elements.layerSearch.value.trim().toLowerCase();
     const minimum = Number(elements.confidenceFilter.value);
     const rows = state.project.objects
@@ -399,8 +419,11 @@
 
   function renderCounts() {
     const enabled = state.project.objects.filter((object) => object.enabled).length;
+    const warnings = state.project.scanner.structural_warnings?.length || 0;
     elements.objectCount.textContent = `${enabled} objects`;
-    elements.statusText.textContent = state.dirty ? "Unsaved corrections" : "Ready";
+    elements.statusText.textContent = state.dirty
+      ? "Unsaved corrections"
+      : warnings ? `${warnings} geometry reviews` : "Ready";
   }
 
   async function updatePreview() {

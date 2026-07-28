@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 from collections import Counter
 from dataclasses import dataclass, field
 from html import escape
@@ -11,6 +12,7 @@ import re
 from typing import Any
 
 from .constants import (
+    GRID_SIZE,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_LEFT,
@@ -112,6 +114,7 @@ class CorrectionProject:
     include_geometry: bool = True
     source_grid: tuple[int, int] | None = None
     recognized_text: str = ""
+    structural_warnings: list[dict[str, Any]] = field(default_factory=list)
     start_policy: str = "auto"
     start_save_id: str | None = None
     start_position: tuple[int, int] | None = None
@@ -176,6 +179,7 @@ class CorrectionProject:
             include_geometry=include_geometry,
             source_grid=getattr(result, "source_grid", None),
             recognized_text=getattr(result, "recognized_text", ""),
+            structural_warnings=list(getattr(result, "structural_warnings", [])),
             start_policy=start_policy,
             infinite_jump=int(getattr(result, "infinite_jump", 0)),
             objects=objects,
@@ -256,6 +260,7 @@ class CorrectionProject:
                 else None
             ),
             recognized_text=str(scanner.get("recognized_text", "")),
+            structural_warnings=list(scanner.get("structural_warnings", [])),
             start_policy=str(start.get("policy", "auto")),
             start_save_id=start.get("save_id"),
             start_position=(int(position[0]), int(position[1])) if position is not None else None,
@@ -288,6 +293,7 @@ class CorrectionProject:
                 "include_geometry": self.include_geometry,
                 "source_grid": list(self.source_grid) if self.source_grid is not None else None,
                 "recognized_text": self.recognized_text,
+                "structural_warnings": list(self.structural_warnings),
             },
             "start": {
                 "policy": self.start_policy,
@@ -516,6 +522,7 @@ def render_correction_svg(
     *,
     show_ids: bool = False,
     show_disabled: bool = False,
+    show_warnings: bool = False,
 ) -> str:
     """Render the exact export plus optional correction IDs and disabled candidates."""
 
@@ -541,9 +548,56 @@ def render_correction_svg(
                 f'font-size="8" fill="{color}" stroke="#fff" stroke-width="2" '
                 f'paint-order="stroke">{label}</text>'
             )
+    if show_warnings:
+        for warning in project.structural_warnings:
+            x = int(warning.get("x", 0))
+            y = int(warning.get("y", 0))
+            severity = str(warning.get("severity", "review"))
+            color = "#d03030" if severity == "high" else "#d97706"
+            overlays.append(
+                f'<rect x="{x - 3}" y="{y - 3}" width="{GRID_SIZE + 6}" '
+                f'height="{GRID_SIZE + 6}" fill="none" stroke="{color}" '
+                'stroke-width="3" stroke-dasharray="5 3"/>'
+            )
     if overlays:
         svg = svg.removesuffix("</svg>") + "\n<g id=\"correction-overlay\">\n" + "\n".join(overlays) + "\n</g>\n</svg>"
     return svg + "\n"
+
+
+def render_source_blend_svg(
+    project: CorrectionProject,
+    source_image: str | Path | None = None,
+    title: str = "JTool source blend",
+) -> str:
+    """Overlay scanner output on the normalized source without a reference JMap."""
+
+    source = Path(source_image or project.source_image or "")
+    if not source.is_file():
+        raise ValueError("source image is required for a blend preview")
+    mime = "image/png" if source.suffix.lower() == ".png" else "image/jpeg"
+    encoded = base64.b64encode(source.read_bytes()).decode("ascii")
+    room = project.room_box
+    rendered = render_correction_svg(
+        project,
+        title,
+        show_warnings=True,
+    )
+    rendered_body = rendered[rendered.find(">") + 1 :].removesuffix("\n</svg>\n")
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="608" '
+        'viewBox="0 0 800 608">\n'
+        f"<title>{escape(title)}</title>\n"
+        '<svg x="0" y="0" width="800" height="608" '
+        f'viewBox="{room.x} {room.y} {room.width} {room.height}" '
+        'preserveAspectRatio="none">\n'
+        f'<image href="data:{mime};base64,{encoded}" width="{project.image_width}" '
+        f'height="{project.image_height}"/>\n'
+        "</svg>\n"
+        '<g opacity="0.58">\n'
+        f"{rendered_body}\n"
+        "</g>\n"
+        "</svg>\n"
+    )
 
 
 def _require_official_type(type_id: int) -> None:

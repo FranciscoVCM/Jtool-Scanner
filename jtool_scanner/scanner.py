@@ -11,7 +11,7 @@ import math
 import re
 import shutil
 import subprocess
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
 from statistics import median
@@ -1029,6 +1029,7 @@ class ScanResult:
     infinite_jump: int = 0
     recognized_text: str = ""
     source_grid: tuple[int, int] | None = None
+    structural_warnings: list[dict[str, object]] = field(default_factory=list)
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
@@ -1322,6 +1323,7 @@ def scan_image(
         int(_text_indicates_infinite_jump(recognized_text or "")),
         recognized_text or "",
         normalized_grid,
+        structural_scan_warnings(detections),
     )
     _PATCH_FEATURE_CACHE.clear()
     return result
@@ -1981,6 +1983,18 @@ def _replace_warm_tiled_room_geometry(
         image,
         room,
     )
+    spikes = _realign_uniquely_supported_component_spikes(
+        spikes,
+        block_detections,
+        image,
+        room,
+    )
+    spikes = _align_unsupported_opposite_spike_pairs(
+        spikes,
+        block_detections,
+        image,
+        room,
+    )
     mini_spikes = _recover_warm_water_mini_spike_pairs(image, room)
     result, block_detections = _reconcile_terrain_markers(
         result,
@@ -2126,6 +2140,139 @@ def _realign_warm_component_spike_phase(
             )
         )
     return aligned
+
+
+def _realign_uniquely_supported_component_spikes(
+    spikes: list[Detection],
+    blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Move an ambiguous component only when terrain gives one clear answer."""
+
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    type_by_direction = {
+        direction: type_id for type_id, direction in direction_by_type.items()
+    }
+    block_positions = {(block.x, block.y) for block in blocks}
+    occupied = [(spike.x, spike.y) for spike in spikes]
+    reconciled: list[Detection] = []
+    for spike in spikes:
+        direction = direction_by_type.get(spike.type_id)
+        if (
+            direction is None
+            or not spike.kind.startswith("warm_component_spike_")
+            or _spike_base_meets_room_boundary(spike.x, spike.y, direction)
+        ):
+            reconciled.append(spike)
+            continue
+
+        current_support = _warm_spike_support_overlap(
+            spike.x,
+            spike.y,
+            direction,
+            block_positions,
+        )
+        candidates: list[tuple[int, int, str, int, int]] = []
+        for candidate_direction in direction_by_type.values():
+            if candidate_direction == direction:
+                continue
+            for dx, dy in (
+                (-16, 0),
+                (-8, 0),
+                (0, -16),
+                (0, -8),
+                (0, 0),
+                (0, 8),
+                (0, 16),
+                (8, 0),
+                (16, 0),
+            ):
+                x = spike.x + dx
+                y = spike.y + dy
+                if not (
+                    0 <= x <= ROOM_WIDTH - GRID_SIZE
+                    and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+                ):
+                    continue
+                if (x, y) != (spike.x, spike.y) and any(
+                    abs(x - other_x) < 12 and abs(y - other_y) < 12
+                    for other_x, other_y in occupied
+                ):
+                    continue
+                support = _warm_spike_support_overlap(
+                    x,
+                    y,
+                    candidate_direction,
+                    block_positions,
+                )
+                if support >= GRID_SIZE:
+                    candidates.append(
+                        (
+                            support,
+                            abs(dx) + abs(dy),
+                            candidate_direction,
+                            x,
+                            y,
+                        )
+                    )
+
+        if not candidates:
+            reconciled.append(spike)
+            continue
+        best_support = max(candidate[0] for candidate in candidates)
+        if best_support < current_support + MINI_BLOCK_SIZE:
+            reconciled.append(spike)
+            continue
+        best = [candidate for candidate in candidates if candidate[0] == best_support]
+        directions = {candidate[2] for candidate in best}
+        if len(directions) > 1:
+            nearby_directions = {
+                candidate_direction
+                for _, _, candidate_direction, candidate_x, candidate_y in best
+                if any(
+                    other is not spike
+                    and direction_by_type.get(other.type_id) == candidate_direction
+                    and abs(other.x - candidate_x) <= GRID_SIZE
+                    and abs(other.y - candidate_y) <= GRID_SIZE
+                    for other in spikes
+                )
+            }
+            if len(nearby_directions) != 1:
+                reconciled.append(spike)
+                continue
+            directions = nearby_directions
+        best = [candidate for candidate in best if candidate[2] in directions]
+        support, movement, corrected_direction, x, y = min(
+            best,
+            key=lambda candidate: (
+                candidate[1],
+                abs(candidate[3] % MINI_BLOCK_SIZE),
+                abs(candidate[4] % MINI_BLOCK_SIZE),
+            ),
+        )
+        if movement > MINI_BLOCK_SIZE:
+            reconciled.append(spike)
+            continue
+        corrected_type = type_by_direction[corrected_direction]
+        reconciled.append(
+            _geometry_detection(
+                f"{spike.kind}_unique_support_{corrected_direction}",
+                corrected_type,
+                x,
+                y,
+                max(spike.score, 0.82),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return reconciled
 
 
 def _recover_shifted_warm_blocks(
@@ -3447,6 +3594,266 @@ def _warm_spike_support_overlap(
         if face_distance <= 8:
             support = max(support, max(0, overlap) - face_distance)
     return support
+
+
+def _align_unsupported_opposite_spike_pairs(
+    spikes: list[Detection],
+    blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Snap isolated opposite pairs to a strong room-wide 16px phase."""
+
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    opposite_type = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+    }
+    block_positions = {(block.x, block.y) for block in blocks}
+    vertical = [
+        spike.y % MINI_BLOCK_SIZE
+        for spike in spikes
+        if spike.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+    ]
+    horizontal = [
+        spike.x % MINI_BLOCK_SIZE
+        for spike in spikes
+        if spike.type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT)
+    ]
+
+    def dominant_phase(phases: list[int]) -> int | None:
+        counts = Counter(phases)
+        if not counts:
+            return None
+        phase, count = counts.most_common(1)[0]
+        if count < 8 or count / len(phases) < 0.80:
+            return None
+        return phase
+
+    phase_by_axis = {
+        "vertical": dominant_phase(vertical),
+        "horizontal": dominant_phase(horizontal),
+    }
+    off_phase_count_by_axis = {
+        "vertical": (
+            sum(phase != phase_by_axis["vertical"] for phase in vertical)
+            if phase_by_axis["vertical"] is not None
+            else 0
+        ),
+        "horizontal": (
+            sum(phase != phase_by_axis["horizontal"] for phase in horizontal)
+            if phase_by_axis["horizontal"] is not None
+            else 0
+        ),
+    }
+    adjusted = list(spikes)
+    used: set[int] = set()
+    for index, spike in enumerate(spikes):
+        if index in used:
+            continue
+        direction = direction_by_type.get(spike.type_id)
+        if direction is None:
+            continue
+        axis = "vertical" if direction in ("up", "down") else "horizontal"
+        target_phase = phase_by_axis[axis]
+        coordinate = spike.y if axis == "vertical" else spike.x
+        if (
+            target_phase is None
+            or off_phase_count_by_axis[axis] != 2
+            or coordinate % MINI_BLOCK_SIZE == target_phase
+        ):
+            continue
+        if _warm_spike_support_overlap(
+            spike.x,
+            spike.y,
+            direction,
+            block_positions,
+        ):
+            continue
+        partner_index = next(
+            (
+                other_index
+                for other_index, other in enumerate(spikes)
+                if other_index != index
+                and other_index not in used
+                and other.type_id == opposite_type[spike.type_id]
+                and (
+                    (
+                        axis == "vertical"
+                        and other.x == spike.x
+                        and abs(other.y - spike.y) == GRID_SIZE
+                    )
+                    or (
+                        axis == "horizontal"
+                        and other.y == spike.y
+                        and abs(other.x - spike.x) == GRID_SIZE
+                    )
+                )
+                and _warm_spike_support_overlap(
+                    other.x,
+                    other.y,
+                    direction_by_type[other.type_id],
+                    block_positions,
+                )
+                == 0
+            ),
+            None,
+        )
+        if partner_index is None:
+            continue
+        delta = (target_phase - coordinate) % MINI_BLOCK_SIZE
+        if delta > MINI_BLOCK_SIZE // 2:
+            delta -= MINI_BLOCK_SIZE
+        elif delta == MINI_BLOCK_SIZE // 2:
+            delta = -delta
+        dx, dy = (0, delta) if axis == "vertical" else (delta, 0)
+        partner = spikes[partner_index]
+        moved = []
+        for item in (spike, partner):
+            x = item.x + dx
+            y = item.y + dy
+            if not (
+                0 <= x <= ROOM_WIDTH - GRID_SIZE
+                and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+            ):
+                moved = []
+                break
+            moved.append(
+                _geometry_detection(
+                    f"{item.kind}_opposite_pair_phase",
+                    item.type_id,
+                    x,
+                    y,
+                    item.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+        if len(moved) != 2:
+            continue
+        adjusted[index], adjusted[partner_index] = moved
+        used.update((index, partner_index))
+    return adjusted
+
+
+def structural_scan_warnings(
+    detections: list[Detection],
+) -> list[dict[str, object]]:
+    """Find suspicious geometry without consulting a reference JMap."""
+
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    opposite_type = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+        OBJ_SPIKE_LEFT: OBJ_SPIKE_RIGHT,
+        OBJ_SPIKE_RIGHT: OBJ_SPIKE_LEFT,
+    }
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    warnings: list[dict[str, object]] = []
+    for spike in spikes:
+        direction = direction_by_type[spike.type_id]
+        overlap = _total_block_overlap(spike.x, spike.y, block_positions)
+        support = _warm_spike_support_overlap(
+            spike.x,
+            spike.y,
+            direction,
+            block_positions,
+        )
+        if overlap > GRID_SIZE * MINI_BLOCK_SIZE:
+            warnings.append(
+                {
+                    "code": "spike_inside_terrain",
+                    "severity": "high",
+                    "type_id": spike.type_id,
+                    "x": spike.x,
+                    "y": spike.y,
+                    "detail": f"spike body overlaps {overlap} square pixels of terrain",
+                }
+            )
+        elif (
+            support == 0
+            and not _spike_base_meets_room_boundary(
+                spike.x,
+                spike.y,
+                direction,
+            )
+        ):
+            warnings.append(
+                {
+                    "code": "unsupported_spike",
+                    "severity": "review",
+                    "type_id": spike.type_id,
+                    "x": spike.x,
+                    "y": spike.y,
+                    "detail": "no detected terrain touches the spike base",
+                }
+            )
+
+    for index, spike in enumerate(spikes):
+        for other in spikes[index + 1 :]:
+            if other.type_id != opposite_type[spike.type_id]:
+                continue
+            overlap = _box_overlap_area(
+                spike.x,
+                spike.y,
+                other.x,
+                other.y,
+            )
+            if overlap <= 0:
+                continue
+            warnings.append(
+                {
+                    "code": "overlapping_opposite_spikes",
+                    "severity": "high",
+                    "type_id": spike.type_id,
+                    "x": spike.x,
+                    "y": spike.y,
+                    "other_type_id": other.type_id,
+                    "other_x": other.x,
+                    "other_y": other.y,
+                    "detail": f"opposite spike bodies overlap by {overlap} square pixels",
+                }
+            )
+
+    for marker in detections:
+        if marker.type_id not in (OBJ_SAVE, OBJ_APPLE, OBJ_WARP):
+            continue
+        overlap = _total_block_overlap(marker.x, marker.y, block_positions)
+        if overlap <= GRID_SIZE * MINI_BLOCK_SIZE:
+            continue
+        warnings.append(
+            {
+                "code": "marker_inside_terrain",
+                "severity": "high",
+                "type_id": marker.type_id,
+                "x": marker.x,
+                "y": marker.y,
+                "detail": f"marker overlaps {overlap} square pixels of terrain",
+            }
+        )
+    return warnings
 
 
 def _align_warm_spike_to_terrain(

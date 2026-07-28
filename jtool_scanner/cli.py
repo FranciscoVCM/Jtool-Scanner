@@ -14,6 +14,7 @@ from .correction import (
     CorrectionProject,
     parse_object_type,
     render_correction_svg,
+    render_source_blend_svg,
 )
 from .evaluation import (
     PairEvaluation,
@@ -214,6 +215,11 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="also write an ID-labelled SVG correction preview",
     )
+    project_create_parser.add_argument(
+        "--blend-preview",
+        default=None,
+        help="also write a source/output blend with structural warnings",
+    )
 
     project_import_parser = subparsers.add_parser(
         "project-import",
@@ -265,6 +271,7 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="write an ID-labelled SVG including disabled candidates",
     )
+    project_edit_parser.add_argument("--blend-preview", default=None)
 
     project_export_parser = subparsers.add_parser(
         "project-export",
@@ -278,6 +285,7 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="optional ID-labelled SVG including disabled candidates",
     )
+    project_export_parser.add_argument("--blend-preview", default=None)
 
     app_parser = subparsers.add_parser(
         "app",
@@ -377,6 +385,7 @@ def main(argv: list[str] | None = None) -> int:
             args.jmap,
             args.preview,
             args.diagnostic_preview,
+            args.blend_preview,
         )
     if args.command == "project-import":
         return _project_import(args.input, args.output)
@@ -405,6 +414,7 @@ def main(argv: list[str] | None = None) -> int:
             args.infinite_jump,
             args.preview,
             args.diagnostic_preview,
+            args.blend_preview,
         )
     if args.command == "project-export":
         return _project_export(
@@ -412,6 +422,7 @@ def main(argv: list[str] | None = None) -> int:
             args.output,
             args.preview,
             args.diagnostic_preview,
+            args.blend_preview,
         )
     if args.command == "app":
         from .app import serve_app
@@ -820,6 +831,7 @@ def _project_create(
     jmap_path: str | None,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
+    blend_preview_path: str | None,
 ) -> int:
     result = scan_png(
         input_path,
@@ -842,10 +854,18 @@ def _project_create(
     project.to_file(output_path)
     print(f"wrote {output_path}")
     print(f"editable detections: {len(project.objects)}")
+    if project.structural_warnings:
+        print(f"geometry reviews: {len(project.structural_warnings)}")
     if jmap_path:
         project.to_jmap().to_file(jmap_path)
         print(f"wrote {jmap_path}")
-    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(input_path).name)
+    _write_project_previews(
+        project,
+        preview_path,
+        diagnostic_preview_path,
+        blend_preview_path,
+        Path(input_path).name,
+    )
     return 0
 
 
@@ -871,6 +891,13 @@ def _project_summary(
     print(f"source: {project.source_image or 'none'}")
     print(f"infinite jump: {project.infinite_jump}")
     print(f"objects: {sum(enabled.values())} enabled, {sum(disabled.values())} disabled")
+    if project.structural_warnings:
+        print(f"geometry reviews: {len(project.structural_warnings)}")
+        for warning in project.structural_warnings[:20]:
+            print(
+                f"  {warning.get('code')} at "
+                f"{warning.get('x')},{warning.get('y')}: {warning.get('detail')}"
+            )
     for type_id in sorted(set(enabled) | set(disabled)):
         suffix = f", {disabled[type_id]} disabled" if disabled[type_id] else ""
         print(f"  {type_id:>2} {OBJECT_NAMES[type_id]}: {enabled[type_id]} enabled{suffix}")
@@ -915,6 +942,7 @@ def _project_edit(
     infinite_jump: bool | None,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
+    blend_preview_path: str | None,
 ) -> int:
     project = CorrectionProject.from_file(input_path)
     for object_id in disable_ids:
@@ -968,7 +996,13 @@ def _project_edit(
         f"objects: {sum(project.object_counts(True).values())} enabled, "
         f"{sum(project.object_counts(False).values())} disabled"
     )
-    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(input_path).name)
+    _write_project_previews(
+        project,
+        preview_path,
+        diagnostic_preview_path,
+        blend_preview_path,
+        Path(input_path).name,
+    )
     return 0
 
 
@@ -977,13 +1011,20 @@ def _project_export(
     output_path: str,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
+    blend_preview_path: str | None,
 ) -> int:
     project = CorrectionProject.from_file(input_path)
     jmap = project.to_jmap()
     jmap.to_file(output_path)
     print(f"wrote {output_path}")
     print(f"exported objects: {len(jmap.objects)}")
-    _write_project_previews(project, preview_path, diagnostic_preview_path, Path(output_path).name)
+    _write_project_previews(
+        project,
+        preview_path,
+        diagnostic_preview_path,
+        blend_preview_path,
+        Path(output_path).name,
+    )
     return 0
 
 
@@ -991,6 +1032,7 @@ def _write_project_previews(
     project: CorrectionProject,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
+    blend_preview_path: str | None,
     title: str,
 ) -> None:
     if preview_path:
@@ -1002,9 +1044,20 @@ def _write_project_previews(
         out = Path(diagnostic_preview_path)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(
-            render_correction_svg(project, title, show_ids=True, show_disabled=True),
+            render_correction_svg(
+                project,
+                title,
+                show_ids=True,
+                show_disabled=True,
+                show_warnings=True,
+            ),
             encoding="utf-8",
         )
+        print(f"wrote {out}")
+    if blend_preview_path:
+        out = Path(blend_preview_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(render_source_blend_svg(project, title=title), encoding="utf-8")
         print(f"wrote {out}")
 
 

@@ -26,6 +26,7 @@ from jtool_scanner.scanner import (
     Detection,
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
+    _align_unsupported_opposite_spike_pairs,
     _choose_component_spike_candidate,
     _image_box_to_jtool_center,
     _infer_source_grid,
@@ -34,6 +35,7 @@ from jtool_scanner.scanner import (
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     scan_png,
+    structural_scan_warnings,
 )
 
 
@@ -402,7 +404,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual(evaluation.matched_water, evaluation.truth_water)
         self.assertEqual(
             evaluation.matched_blocks,
-            evaluation.truth_blocks - 1,
+            evaluation.truth_blocks,
         )
         self.assertEqual(
             evaluation.matched_full_spikes,
@@ -672,6 +674,41 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertEqual((reconciled[0].x, reconciled[0].y), (704, 480))
         self.assertEqual(reconciled[0].type_id, OBJ_SPIKE_UP)
         self.assertEqual((reconciled[1].x, reconciled[1].y), (704, 512))
+
+    def test_unsupported_opposite_pair_uses_strong_room_phase(self) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        room = Box(0, 0, 800, 608)
+        consensus = [
+            Detection("spike_up", OBJ_SPIKE_UP, x, 64, 0.9, image_box)
+            for x in range(32, 288, 32)
+        ]
+        pair = [
+            Detection("warm_component_spike_up", OBJ_SPIKE_UP, 544, 328, 0.9, image_box),
+            Detection("warm_component_spike_down", OBJ_SPIKE_DOWN, 544, 360, 0.9, image_box),
+        ]
+
+        aligned = _align_unsupported_opposite_spike_pairs(
+            [*consensus, *pair],
+            [],
+            image,
+            room,
+        )
+
+        self.assertIn((544, 320, OBJ_SPIKE_UP), {(item.x, item.y, item.type_id) for item in aligned})
+        self.assertIn((544, 352, OBJ_SPIKE_DOWN), {(item.x, item.y, item.type_id) for item in aligned})
+
+    def test_structural_review_flags_unsupported_spike_without_reference(self) -> None:
+        image_box = Box(0, 0, GRID_SIZE, GRID_SIZE)
+        warnings = structural_scan_warnings(
+            [
+                Detection("spike_up", OBJ_SPIKE_UP, 96, 128, 0.9, image_box),
+                Detection("block", OBJ_BLOCK, 320, 320, 0.9, image_box),
+            ]
+        )
+
+        self.assertEqual(warnings[0]["code"], "unsupported_spike")
+        self.assertEqual((warnings[0]["x"], warnings[0]["y"]), (96, 128))
 
     def test_point_objects_use_their_center_as_the_jmap_coordinate(self) -> None:
         room = Box(0, 0, 800, 608)
