@@ -2511,6 +2511,55 @@ def _recover_warm_water_interlocking_spikes(
                 or _triangle_min_side_coverage(patch, direction) < 0.75
             ):
                 continue
+            if (
+                candidate.direction_margin < 0.04
+                and candidate.outline_delta < 0.03
+            ):
+                visible_directions = []
+                for visible_direction, visible_type in (
+                    ("up", OBJ_SPIKE_UP),
+                    ("right", OBJ_SPIKE_RIGHT),
+                    ("left", OBJ_SPIKE_LEFT),
+                    ("down", OBJ_SPIKE_DOWN),
+                ):
+                    visible_score, visible_outline = _triangle_direction_score(
+                        patch,
+                        visible_direction,
+                    )
+                    if (
+                        visible_score >= candidate.score - 0.04
+                        and visible_outline >= candidate.outline_delta + 0.03
+                        and _triangle_side_coverage(
+                            patch,
+                            visible_direction,
+                        ) >= 0.65
+                        and _triangle_min_side_coverage(
+                            patch,
+                            visible_direction,
+                        ) >= 0.75
+                    ):
+                        visible_directions.append(
+                            (
+                                visible_outline,
+                                visible_score,
+                                visible_direction,
+                                visible_type,
+                            )
+                        )
+                if visible_directions:
+                    (
+                        _visible_outline,
+                        visible_score,
+                        direction,
+                        expected_type,
+                    ) = max(visible_directions)
+                    candidate = _GeometryClass(
+                        f"spike_{direction}",
+                        expected_type,
+                        visible_score,
+                        candidate.direction_margin,
+                        _visible_outline,
+                    )
             recovered.append(
                 _geometry_detection(
                     f"warm_water_interlocking_spike_{direction}",

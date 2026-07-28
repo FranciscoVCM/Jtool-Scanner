@@ -427,6 +427,8 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((OBJ_SPIKE_LEFT, 128, 512), spikes)
         self.assertIn((OBJ_SPIKE_UP, 240, 352), spikes)
         self.assertIn((OBJ_SPIKE_LEFT, 448, 384), spikes)
+        self.assertIn((OBJ_SPIKE_LEFT, 208, 384), spikes)
+        self.assertNotIn((OBJ_SPIKE_DOWN, 208, 384), spikes)
         self.assertNotIn((OBJ_SPIKE_UP, 240, 360), spikes)
 
     def test_exact_brick_room_does_not_union_competing_block_phases(self) -> None:
