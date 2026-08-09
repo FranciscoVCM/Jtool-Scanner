@@ -38,6 +38,7 @@ from jtool_scanner.scanner import (
     _outlined_terrain_cell_stats,
     _reorient_unsupported_spikes,
     _realign_warm_component_spike_phase,
+    _reconcile_terrain_markers,
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     detect_room_box,
@@ -149,6 +150,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         ]
 
         self.assertEqual(upper, [])
+
         self.assertEqual(
             [(detection.kind, detection.x, detection.y)
              for detection in self.particle_room.detections
@@ -188,6 +190,35 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             ),
             GRID_SIZE * 16,
         )
+
+    def test_terrain_save_prefers_exact_support_cell_over_partial_overlap(self) -> None:
+        image = load_png(UNSEEN_FIXTURES / "ftfa" / "screen-2-source.png")
+        room = detect_room_box(image)
+        marker = Detection(
+            "save",
+            OBJ_SAVE,
+            120,
+            560,
+            0.9,
+            Box(176, 759, 24, 22),
+        )
+        # The old support score gives both x=120 and x=128 a full 32px
+        # support because x=120 straddles these neighboring cells.  The
+        # canonical JTool anchor is the exact x=128 support cell.
+        blocks = [
+            Detection("warm_terrain_block", OBJ_BLOCK, 96, 576, 0.9, Box(0, 0, 32, 32)),
+            Detection("warm_terrain_block", OBJ_BLOCK, 128, 576, 0.9, Box(0, 0, 32, 32)),
+        ]
+
+        reconciled, _ = _reconcile_terrain_markers(
+            [marker],
+            blocks,
+            image,
+            room,
+        )
+
+        saves = [detection for detection in reconciled if detection.type_id == OBJ_SAVE]
+        self.assertEqual([(detection.x, detection.y) for detection in saves], [(128, 544)])
 
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [

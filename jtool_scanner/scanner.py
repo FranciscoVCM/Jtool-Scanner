@@ -4182,6 +4182,15 @@ def _reconcile_terrain_markers(
                 8,
             ):
                 terrain_overlap = _total_block_overlap(x, y, block_positions)
+                exact_support = sum(
+                    max(
+                        0,
+                        min(x + GRID_SIZE, block_x + GRID_SIZE)
+                        - max(x, block_x),
+                    )
+                    for block_x, block_y in block_positions
+                    if block_y == y + GRID_SIZE and block_x == x
+                )
                 support = sum(
                     max(
                         0,
@@ -4204,6 +4213,12 @@ def _reconcile_terrain_markers(
                 candidates.append(
                     (
                         terrain_overlap > 0,
+                        # A marker can straddle two neighboring support cells
+                        # and otherwise tie the correctly anchored cell.  A
+                        # full-width support at the candidate origin is the
+                        # stronger coordinate signal and avoids an 8px phase
+                        # drift in scaled room captures.
+                        -min(GRID_SIZE, exact_support),
                         -min(GRID_SIZE, support),
                         -min(GRID_SIZE, side_support),
                         movement,
@@ -4211,7 +4226,15 @@ def _reconcile_terrain_markers(
                         x,
                     )
                 )
-        _overlaps, _support, _side_support, _movement, y, x = min(candidates)
+        (
+            _overlaps,
+            _exact_support,
+            _support,
+            _side_support,
+            _movement,
+            y,
+            x,
+        ) = min(candidates)
         reconciled.append(
             _geometry_detection(
                 f"{detection.kind}_terrain_aligned",
