@@ -6,6 +6,7 @@ import unittest
 from jtool_scanner.constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_JUMP_REFRESHER,
     OBJ_PLAYER_START,
     OBJ_SAVE,
     OBJ_SPIKE_UP,
@@ -18,6 +19,12 @@ from jtool_scanner.image import RGBImage, load_png
 from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.render_overlay import render_detection_overlay
 from jtool_scanner.scanner import (
+    _detect_bounded_cool_water,
+    _matches_spatial_background_field,
+    _patch_color_profile,
+    _spatial_background_field,
+    _detect_red_body_header_saves,
+    _detect_weak_active_save_patches,
     _normalize_room_to_jtool,
     _text_indicates_infinite_jump,
     scan_image,
@@ -48,6 +55,23 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertEqual(result.infinite_jump, 1)
         self.assertEqual(result.to_jmap().infinite_jump, 1)
+
+    def test_scan_result_detects_dotkid_visibility_ring(self) -> None:
+        result = scan_image(
+            _synthetic_dotkid_room(),
+            room_box=Box(0, 0, 800, 608),
+        )
+
+        self.assertEqual(result.dot_kid, 1)
+        self.assertEqual(result.to_jmap().dot_kid, 1)
+
+    def test_ordinary_warp_ring_does_not_enable_dotkid(self) -> None:
+        result = scan_image(
+            _synthetic_room(),
+            room_box=Box(0, 0, 800, 608),
+        )
+
+        self.assertEqual(result.dot_kid, 0)
 
     def test_small_room_normalization_uses_left_and_down_bias(self) -> None:
         image = RGBImage(640, 384, bytes((12, 18, 24)) * 640 * 384)
@@ -83,6 +107,28 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertEqual(len(warps), 1)
         self.assertEqual((warps[0].x, warps[0].y), (320, 192))
 
+    def test_filled_purple_component_with_dark_center_is_not_a_warp(self) -> None:
+        result = scan_image(
+            _synthetic_filled_warp_impostor_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=16,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_WARP for det in result.detections)
+        )
+
+    def test_elongated_hollow_purple_component_is_not_a_warp(self) -> None:
+        result = scan_image(
+            _synthetic_elongated_warp_impostor_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=16,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_WARP for det in result.detections)
+        )
+
     def test_scan_image_treats_green_active_save_as_save(self) -> None:
         result = scan_image(
             _synthetic_active_save_room(),
@@ -93,6 +139,62 @@ class ImageAndScannerTests(unittest.TestCase):
         saves = [det for det in result.detections if det.type_id == OBJ_SAVE]
         self.assertEqual(len(saves), 1)
         self.assertEqual((saves[0].x, saves[0].y), (64, 96))
+
+    def test_layout_recovery_finds_player_occluded_active_save(self) -> None:
+        image = _synthetic_occluded_active_save_room()
+
+        saves = _detect_weak_active_save_patches(
+            image,
+            Box(0, 0, 800, 608),
+            8,
+        )
+
+        self.assertEqual(len(saves), 1)
+        self.assertEqual(saves[0].kind, "save_active_layout_recovery")
+        self.assertEqual((saves[0].x, saves[0].y), (96, 96))
+
+    def test_fragmented_red_cross_is_detected_as_save(self) -> None:
+        result = scan_image(
+            _synthetic_fragmented_cross_save_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+        )
+
+        saves = [det for det in result.detections if det.type_id == OBJ_SAVE]
+        self.assertEqual(len(saves), 1)
+        self.assertEqual(saves[0].kind, "save_fragmented_cross")
+
+    def test_red_body_and_pale_header_recover_muted_cross_save(self) -> None:
+        saves = _detect_red_body_header_saves(
+            _synthetic_muted_cross_save_room(with_header=True),
+            Box(0, 0, 800, 608),
+            8,
+        )
+
+        self.assertEqual(
+            [(save.kind, save.x, save.y) for save in saves],
+            [("save_red_body_header", 96, 96)],
+        )
+
+    def test_red_body_without_pale_header_is_not_a_save(self) -> None:
+        saves = _detect_red_body_header_saves(
+            _synthetic_muted_cross_save_room(with_header=False),
+            Box(0, 0, 800, 608),
+            8,
+        )
+
+        self.assertEqual(saves, [])
+
+    def test_repeated_yellow_terrain_is_not_a_field_of_saves(self) -> None:
+        result = scan_image(
+            _synthetic_repeated_yellow_terrain_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_SAVE for det in result.detections)
+        )
 
     def test_scan_image_can_include_experimental_geometry(self) -> None:
         image = _synthetic_geometry_room()
@@ -126,6 +228,28 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertTrue(any((det.x, det.y) == (192, 128) for det in water))
         self.assertTrue(any((det.x, det.y) == (64, 192) for det in walljumps))
 
+    def test_single_blue_disc_is_a_jump_refresher_but_square_texture_is_not(self) -> None:
+        true_result = scan_image(
+            _synthetic_blue_refresher_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        false_result = scan_image(
+            _synthetic_blue_square_texture_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+
+        self.assertEqual(
+            sum(det.type_id == OBJ_JUMP_REFRESHER for det in true_result.detections),
+            1,
+        )
+        self.assertFalse(
+            any(det.type_id == OBJ_JUMP_REFRESHER for det in false_result.detections)
+        )
+
     def test_scan_image_can_recover_sparse_walljump_marks(self) -> None:
         image = _synthetic_sparse_walljump_room()
 
@@ -138,6 +262,22 @@ class ImageAndScannerTests(unittest.TestCase):
         walljumps = [det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT]
 
         self.assertTrue(any((det.x, det.y) == (96, 96) for det in walljumps))
+        self.assertFalse(any((det.x, det.y) == (192, 96) for det in walljumps))
+
+    def test_repeated_sparse_walljump_strip_is_brightness_independent(self) -> None:
+        result = scan_image(
+            _synthetic_dark_repeated_walljump_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+        walljumps = [
+            det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT
+        ]
+
+        self.assertTrue(any((det.x, det.y) == (96, 96) for det in walljumps))
+        self.assertTrue(any((det.x, det.y) == (96, 128) for det in walljumps))
+        self.assertFalse(any(det.x == 192 for det in walljumps))
 
     def test_scan_image_can_include_pale_water(self) -> None:
         image = _synthetic_pale_water_room()
@@ -152,6 +292,74 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertTrue(any((det.x, det.y) == (96, 96) for det in water))
 
+    def test_water_colored_room_background_is_not_water(self) -> None:
+        result = scan_image(
+            _synthetic_water_colored_background_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_WATER_2 for det in result.detections)
+        )
+
+    def test_winding_flat_background_between_solids_is_not_water(self) -> None:
+        result = scan_image(
+            _synthetic_winding_water_colored_background_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_WATER_2 for det in result.detections)
+        )
+
+    def test_broad_basin_with_distinct_top_background_remains_water(self) -> None:
+        result = scan_image(
+            _synthetic_broad_water_basin_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+
+        self.assertGreater(
+            sum(det.type_id == OBJ_WATER_2 for det in result.detections),
+            100,
+        )
+
+    def test_spatial_background_field_follows_gradient_but_excludes_bounded_pool(self) -> None:
+        image = _synthetic_gradient_with_bounded_pool()
+        room = Box(0, 0, 800, 608)
+
+        field = _spatial_background_field(image, room)
+        background = _patch_color_profile(image, room, 640, 256, 32)
+        pool = _patch_color_profile(image, room, 352, 288, 32)
+
+        self.assertGreater(len(field), 1000)
+        self.assertTrue(
+            _matches_spatial_background_field(640, 256, background, field)
+        )
+        self.assertFalse(_matches_spatial_background_field(352, 288, pool, field))
+
+    def test_bounded_violet_water_is_detected_outside_a_broad_background(self) -> None:
+        detections = _detect_bounded_cool_water(
+            _synthetic_bounded_violet_water_room(textured=False),
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertGreaterEqual(len(detections), 3)
+        self.assertTrue(any(96 <= item.x <= 224 for item in detections))
+
+    def test_textured_violet_terrain_is_not_bounded_water(self) -> None:
+        detections = _detect_bounded_cool_water(
+            _synthetic_bounded_violet_water_room(textured=True),
+            Box(0, 0, 800, 608),
+        )
+
+        self.assertEqual(detections, [])
+
     def test_scan_image_maps_catharsis_gray_water_to_water_2(self) -> None:
         image = _synthetic_catharsis_water_room()
 
@@ -165,6 +373,18 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertTrue(any((det.x, det.y) == (128, 96) for det in water))
         self.assertTrue(any((det.x, det.y) == (128, 192) for det in water))
+
+    def test_cyan_tinted_background_columns_are_not_catharsis_water(self) -> None:
+        result = scan_image(
+            _synthetic_cyan_tinted_catharsis_impostor_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+            include_color_objects=True,
+        )
+
+        self.assertFalse(
+            any(det.type_id == OBJ_WATER_2 for det in result.detections)
+        )
 
     def test_scan_image_rejects_saturated_blue_blocks_as_water(self) -> None:
         image = _synthetic_blue_block_room()
@@ -241,11 +461,84 @@ def _synthetic_room() -> RGBImage:
     return RGBImage(width, height, bytes(data))
 
 
+def _synthetic_filled_warp_impostor_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    _rect(data, width, 320, 192, 40, 40, (65, 20, 210))
+    _rect(data, width, 337, 209, 6, 6, (20, 20, 25))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_elongated_warp_impostor_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    purple = (65, 20, 210)
+    _rect(data, width, 320, 192, 54, 4, purple)
+    _rect(data, width, 320, 228, 54, 4, purple)
+    _rect(data, width, 320, 196, 4, 32, purple)
+    _rect(data, width, 370, 196, 4, 32, purple)
+    return RGBImage(width, height, bytes(data))
+
+
 def _synthetic_active_save_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([24, 24, 28] * width * height)
     _rect(data, width, 68, 100, 24, 24, (235, 220, 40))
     _rect(data, width, 76, 108, 10, 10, (25, 185, 45))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_occluded_active_save_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([120, 70, 180] * width * height)
+    _rect(data, width, 96, 96, 32, 12, (20, 20, 25))
+    _rect(data, width, 104, 98, 12, 6, (225, 225, 225))
+    _rect(data, width, 96, 108, 16, 20, (30, 180, 45))
+    _rect(data, width, 112, 108, 16, 20, (225, 190, 35))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_fragmented_cross_save_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    red = (190, 25, 25)
+    yellow = (235, 210, 35)
+    for x, y in ((100, 108), (119, 108), (100, 120), (119, 120)):
+        _rect(data, width, x, y, 10, 7, red)
+    _rect(data, width, 112, 108, 5, 19, yellow)
+    _rect(data, width, 100, 116, 29, 3, yellow)
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_muted_cross_save_room(*, with_header: bool) -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([80, 65, 55] * width * height)
+    _rect(data, width, 96, 104, 30, 20, (175, 60, 45))
+    _rect(data, width, 109, 108, 4, 13, (170, 125, 75))
+    _rect(data, width, 102, 113, 18, 4, (170, 125, 75))
+    if with_header:
+        _rect(data, width, 96, 96, 30, 8, (205, 190, 170))
+        _rect(data, width, 101, 98, 20, 3, (75, 65, 60))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_repeated_yellow_terrain_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([24, 24, 28] * width * height)
+    for row in range(5):
+        for column in range(8):
+            x = 32 + column * 48
+            y = 32 + row * 48
+            _rect(data, width, x, y, 24, 24, (235, 205, 35))
+            _rect(data, width, x + 8, y + 8, 8, 8, (180, 30, 25))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_dotkid_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([95, 134, 75] * width * height)
+    _ring(data, width, 400, 320, 32, (28, 28, 28))
+    _disc(data, width, 400, 320, 2, (190, 45, 35))
     return RGBImage(width, height, bytes(data))
 
 
@@ -274,6 +567,36 @@ def _synthetic_sparse_walljump_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([232, 232, 232] * width * height)
     _rect(data, width, 123, 100, 4, 24, (35, 135, 45))
+    # The same side-biased green marks are tile texture, not a vine, when
+    # embedded in a pastel-green terrain cell.
+    _rect(data, width, 192, 96, 32, 32, (110, 190, 150))
+    _rect(data, width, 219, 100, 4, 24, (35, 135, 45))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_dark_repeated_walljump_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([20, 24, 28] * width * height)
+    green = (35, 135, 45)
+    _rect(data, width, 123, 100, 4, 24, green)
+    _rect(data, width, 123, 132, 4, 24, green)
+    # An isolated side-biased green mark is not enough to establish a vine.
+    _rect(data, width, 219, 100, 4, 24, green)
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_blue_refresher_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([36, 34, 42] * width * height)
+    _disc(data, width, 112, 112, 10, (32, 72, 225))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_blue_square_texture_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([36, 34, 42] * width * height)
+    for x, y in ((96, 96), (192, 144), (320, 224), (496, 384)):
+        _rect(data, width, x, y, 20, 20, (32, 72, 225))
     return RGBImage(width, height, bytes(data))
 
 
@@ -284,6 +607,54 @@ def _synthetic_pale_water_room() -> RGBImage:
     return RGBImage(width, height, bytes(data))
 
 
+def _synthetic_water_colored_background_room() -> RGBImage:
+    width, height = 800, 608
+    return RGBImage(width, height, bytes((60, 150, 190)) * width * height)
+
+
+def _synthetic_winding_water_colored_background_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([115, 70, 45] * width * height)
+    cyan = (60, 150, 190)
+    _rect(data, width, 0, 160, 160, height - 160, cyan)
+    _rect(data, width, 0, 320, 640, 160, cyan)
+    _rect(data, width, 480, 160, 160, height - 160, cyan)
+    _rect(data, width, 320, 480, width - 320, height - 480, cyan)
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_broad_water_basin_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([30, 30, 42] * width * height)
+    _rect(data, width, 0, 192, width, height - 192, (60, 150, 190))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_gradient_with_bounded_pool() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray(width * height * 3)
+    for y in range(height):
+        for x in range(width):
+            offset = (y * width + x) * 3
+            data[offset] = 80 + x * 70 // width
+            data[offset + 1] = 135 + y * 55 // height
+            data[offset + 2] = 205 + x * 35 // width
+    _rect(data, width, 320, 240, 128, 160, (38, 72, 214))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_bounded_violet_water_room(*, textured: bool) -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([174, 198, 220] * width * height)
+    _rect(data, width, 96, 96, 160, 96, (78, 100, 242))
+    if textured:
+        for x in range(96, 257, 16):
+            _rect(data, width, x, 96, 2, 96, (8, 16, 38))
+        for y in range(96, 193, 16):
+            _rect(data, width, 96, y, 160, 2, (8, 16, 38))
+    return RGBImage(width, height, bytes(data))
+
+
 def _synthetic_catharsis_water_room() -> RGBImage:
     width, height = 800, 608
     data = bytearray([24, 24, 32] * width * height)
@@ -291,6 +662,14 @@ def _synthetic_catharsis_water_room() -> RGBImage:
     _rect(data, width, 128, 128, 32, 32, (108, 108, 113))
     _rect(data, width, 128, 160, 32, 32, (4, 3, 23))
     _rect(data, width, 128, 192, 32, 32, (5, 5, 29))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_cyan_tinted_catharsis_impostor_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([16, 23, 39] * width * height)
+    for x in (288, 416, 544):
+        _rect(data, width, x, 96, 64, 320, (64, 78, 94))
     return RGBImage(width, height, bytes(data))
 
 

@@ -8,6 +8,7 @@ import unittest
 from jtool_scanner.constants import (
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_JUMP_REFRESHER,
     OBJ_MINI_BLOCK,
     OBJ_PLAYER_START,
     OBJ_SAVE,
@@ -39,8 +40,54 @@ class CorrectionProjectTests(unittest.TestCase):
 
         svg = render_correction_svg(project)
 
-        self.assertIn('<circle cx="400" cy="80" r="11"', svg)
-        self.assertNotIn('<circle cx="416" cy="97" r="11"', svg)
+        self.assertIn('x="390" y="68" width="21" height="24"', svg)
+        self.assertNotIn('x="400" y="80" width="21" height="24"', svg)
+        self.assertIn('filter="url(#jtool-killer-tint)"', svg)
+
+    def test_preview_draws_jump_refresher_at_its_center_coordinate(self) -> None:
+        project = CorrectionProject.from_jmap(
+            JMap(objects=[JMapObject(416, 192, OBJ_JUMP_REFRESHER)]),
+            "refresher.jmap",
+        )
+
+        svg = render_correction_svg(project)
+
+        self.assertIn('x="401" y="177" width="32" height="32"', svg)
+        self.assertNotIn('x="416" y="192" width="32" height="32"', svg)
+
+    def test_preview_uses_exact_jtool_vine_sprites_on_the_visible_side(self) -> None:
+        project = CorrectionProject.from_jmap(
+            JMap(
+                objects=[
+                    JMapObject(64, 96, OBJ_WALLJUMP_LEFT),
+                    JMapObject(128, 96, OBJ_WALLJUMP_RIGHT),
+                ]
+            ),
+            "vines.jmap",
+        )
+
+        svg = render_correction_svg(project)
+
+        self.assertEqual(svg.count('href="data:image/png;base64,'), 2)
+        self.assertIn('x="64" y="96" width="32" height="32" image-rendering="pixelated"', svg)
+        self.assertIn('x="128" y="96" width="32" height="32" image-rendering="pixelated"', svg)
+
+    def test_preview_embeds_exact_jtool_sprites_for_all_supported_non_placeholder_types(self) -> None:
+        project = CorrectionProject.from_jmap(
+            JMap(
+                objects=[
+                    JMapObject(64 + (type_id % 10) * 32, 64 + (type_id // 10) * 64, type_id)
+                    for type_id in range(1, 27)
+                ]
+            ),
+            "all-sprites.jmap",
+        )
+
+        svg = render_correction_svg(project)
+
+        self.assertEqual(svg.count('href="data:image/png;base64,'), 26)
+        asset_root = Path(__file__).parents[1] / "jtool_scanner" / "assets" / "jtool-pat-default"
+        self.assertEqual(len(list(asset_root.glob("*.png"))), 26)
 
     def test_fixed_object_extent_centers_small_and_overlaps_long_regions(self) -> None:
         self.assertEqual(
@@ -62,6 +109,7 @@ class CorrectionProjectTests(unittest.TestCase):
                 Detection("block", OBJ_BLOCK, 32, 64, 0.81, Box(42, 84, 32, 32)),
             ],
             infinite_jump=1,
+            dot_kid=1,
             recognized_text="You can jump many times",
             source_grid=(20, 12),
             structural_warnings=[
@@ -83,6 +131,7 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertEqual(project.objects[0].detection_kind, "block")
         self.assertEqual(project.objects[0].original, {"x": 32, "y": 64, "type_id": OBJ_BLOCK})
         self.assertEqual(project.infinite_jump, 1)
+        self.assertEqual(project.dot_kid, 1)
         self.assertEqual(project.source_grid, (20, 12))
         self.assertEqual(project.recognized_text, "You can jump many times")
         self.assertEqual(project.structural_warnings[0]["code"], "unsupported_spike")
@@ -93,6 +142,7 @@ class CorrectionProjectTests(unittest.TestCase):
 
         self.assertEqual(restored.to_dict(), project.to_dict())
         self.assertEqual(restored.to_jmap().infinite_jump, 1)
+        self.assertEqual(restored.to_jmap().dot_kid, 1)
 
     def test_edits_export_overlaps_bulk_types_and_exact_start_save(self) -> None:
         project = CorrectionProject.from_jmap(
@@ -197,6 +247,20 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertIn("data:image/png;base64,", svg)
         self.assertIn('x="93" y="125"', svg)
         self.assertIn('opacity="0.58"', svg)
+
+    def test_source_blend_centers_compact_room_like_scanner_normalization(self) -> None:
+        project = CorrectionProject(
+            source_image="fixtures/regressions/unseen-rooms/ftfa/screen-3-source.png",
+            image_width=966,
+            image_height=726,
+            room_box=Box(0, 0, 966, 726),
+            source_grid=(19, 13),
+        )
+
+        svg = render_source_blend_svg(project)
+
+        self.assertIn('<svg x="96" y="96" width="608" height="416"', svg)
+        self.assertIn('viewBox="0 0 966 726"', svg)
 
     def test_object_type_parser_accepts_names_aliases_and_ids(self) -> None:
         self.assertEqual(parse_object_type("mini-block"), OBJ_MINI_BLOCK)

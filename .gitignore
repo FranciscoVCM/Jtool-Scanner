@@ -9,3 +9,4 @@ build/
 *.egg-info/
 out/
 .artifacts/
+local_corpus/

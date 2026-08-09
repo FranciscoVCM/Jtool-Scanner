@@ -11,7 +11,20 @@ The first usable layer is the `.jmap` core:
 - render source-screenshot detection overlays for scanner debugging
 - scan fixture manifests once per image while producing both metrics and previews
 
-Run from this folder:
+## Installation
+
+Use Python 3.12 or newer, then install the only required runtime and test
+packages:
+
+```powershell
+python -m pip install pillow pytest
+```
+
+Tesseract OCR is optional; when it is on `PATH`, PNG scans can use it for
+infinite-jump text. Use `--no-ocr` or explicit `--ocr-text` for deterministic
+scans.
+
+From the repository root, common commands include:
 
 ```powershell
 python -m jtool_scanner.cli app
@@ -45,7 +58,9 @@ can show the source screenshot, the exact JTool-style export preview, or both
 overlaid. Use the palette to add objects; select and drag objects to move them;
 and use the inspector to change type or orientation, disable false positives,
 duplicate objects, choose the starting save, replace water types, and toggle
-infinite jump. Undo and redo cover correction edits.
+infinite jump or dotkid mode. Left and right walljump objects are presented as
+visually distinct Left Vine and Right Vine controls. Undo and redo cover
+correction edits.
 
 Download Project preserves candidates and edit history for later work.
 Download `.jmap` produces the playable map represented by the clean preview.
@@ -111,8 +126,9 @@ scanner kind/score, source-image box, and original detected state. Disabling an
 object is non-destructive, so it can be restored later. Manual additions,
 overlapping objects, type/orientation changes, bulk water changes, exact start
 positions, and selecting one save among many are all preserved in the project.
-Infinite jump is preserved as map metadata and can be corrected with
-`project-edit --infinite-jump` or `--no-infinite-jump`.
+Infinite jump and dotkid mode are preserved as map metadata and can be corrected
+with `project-edit --infinite-jump` / `--no-infinite-jump` and
+`--dot-kid` / `--no-dot-kid`.
 The clean SVG represents the exported JTool map; the diagnostic SVG adds object
 IDs and red dashed outlines for disabled candidates.
 
@@ -134,6 +150,10 @@ Infinite-jump text is recognized from phrases such as "jump many times",
 Tesseract automatically when it is installed, accept deterministic text through
 `--ocr-text`, and can disable OCR with `--no-ocr`. OCR is advisory because game
 fonts vary; the correction project always exposes the final setting.
+Dotkid mode is detected independently from the large, thin visibility ring
+around the player dot. The ring check uses scale-normalized circular topology,
+not a game-specific coordinate or terrain color, and remains editable in the
+project.
 
 The screenshot scanner has three layers:
 

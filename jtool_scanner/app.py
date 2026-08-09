@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from hashlib import sha256
 import json
 import mimetypes
 from pathlib import Path
@@ -20,7 +21,20 @@ from .scanner import scan_png
 
 
 WEB_ROOT = Path(__file__).with_name("web")
+ASSET_ROOT = Path(__file__).with_name("assets")
 MAX_REQUEST_BYTES = 32 * 1024 * 1024
+
+
+def _source_fingerprint() -> str:
+    package_root = Path(__file__).parent
+    digest = sha256()
+    for path in sorted(package_root.glob("*.py")):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+PROCESS_SOURCE_FINGERPRINT = _source_fingerprint()
 
 
 class _ExclusiveThreadingHTTPServer(ThreadingHTTPServer):
@@ -98,6 +112,12 @@ def app_metadata() -> dict[str, Any]:
     }
 
 
+def app_health() -> dict[str, Any]:
+    """Identify the exact source snapshot loaded by this app process."""
+
+    return {"ok": True, "source_fingerprint": PROCESS_SOURCE_FINGERPRINT}
+
+
 def serve_app(
     host: str = "127.0.0.1",
     port: int = 8765,
@@ -126,11 +146,16 @@ class _AppHandler(BaseHTTPRequestHandler):
             self._send_json(app_metadata())
             return
         if parsed.path == "/api/health":
-            self._send_json({"ok": True})
+            self._send_json(app_health())
             return
-        relative = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
-        path = (WEB_ROOT / relative).resolve()
-        if WEB_ROOT.resolve() not in path.parents and path != WEB_ROOT.resolve():
+        if parsed.path.startswith("/assets/"):
+            root = ASSET_ROOT
+            relative = parsed.path.removeprefix("/assets/")
+        else:
+            root = WEB_ROOT
+            relative = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
+        path = (root / relative).resolve()
+        if root.resolve() not in path.parents and path != root.resolve():
             self.send_error(HTTPStatus.NOT_FOUND)
             return
         if not path.is_file():

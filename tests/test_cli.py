@@ -42,6 +42,7 @@ class CliTests(unittest.TestCase):
                         "--start-save",
                         "obj-0002",
                         "--infinite-jump",
+                        "--dot-kid",
                         "--diagnostic-preview",
                         str(diagnostic),
                     ]
@@ -67,6 +68,7 @@ class CliTests(unittest.TestCase):
             self.assertEqual(len(result.objects_of_type(OBJ_SAVE)), 1)
             self.assertEqual(len(result.objects_of_type(OBJ_PLAYER_START)), 1)
             self.assertEqual(result.infinite_jump, 1)
+            self.assertEqual(result.dot_kid, 1)
             self.assertTrue(preview.exists())
             self.assertIn("correction-overlay", diagnostic.read_text(encoding="utf-8"))
 

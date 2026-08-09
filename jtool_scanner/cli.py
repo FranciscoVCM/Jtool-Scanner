@@ -265,6 +265,12 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="enable or disable infinite jump in the exported map",
     )
+    project_edit_parser.add_argument(
+        "--dot-kid",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="enable or disable dotkid mode in the exported map",
+    )
     project_edit_parser.add_argument("--preview", default=None, help="write a clean SVG after editing")
     project_edit_parser.add_argument(
         "--diagnostic-preview",
@@ -412,6 +418,7 @@ def main(argv: list[str] | None = None) -> int:
             args.start_position,
             args.start_policy,
             args.infinite_jump,
+            args.dot_kid,
             args.preview,
             args.diagnostic_preview,
             args.blend_preview,
@@ -940,6 +947,7 @@ def _project_edit(
     start_position_text: str | None,
     start_policy: str | None,
     infinite_jump: bool | None,
+    dot_kid: bool | None,
     preview_path: str | None,
     diagnostic_preview_path: str | None,
     blend_preview_path: str | None,
@@ -987,6 +995,11 @@ def _project_edit(
         project.infinite_jump = int(infinite_jump)
         project.history.append(
             {"operation": "set_infinite_jump", "value": project.infinite_jump}
+        )
+    if dot_kid is not None:
+        project.dot_kid = int(dot_kid)
+        project.history.append(
+            {"operation": "set_dot_kid", "value": project.dot_kid}
         )
 
     out = output_path or input_path

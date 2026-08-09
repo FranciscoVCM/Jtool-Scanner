@@ -13,6 +13,7 @@ import shutil
 import subprocess
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
+from itertools import combinations
 from pathlib import Path
 from statistics import median
 
@@ -77,6 +78,11 @@ COLOR_OBJECT_TYPES = frozenset(
         OBJ_GRAVITY_DOWN,
     }
 )
+LATE_GEOMETRY_ANCHOR_TYPES = frozenset(
+    {
+        OBJ_APPLE,
+    }
+)
 GEOMETRY_TYPES = frozenset(
     {OBJ_BLOCK, OBJ_MINI_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
 )
@@ -118,6 +124,16 @@ DARK_SAVE_ACTIVE_MASK = (
 )
 DARK_SAVE_INACTIVE_MAX_DISTANCE = 140
 DARK_SAVE_ACTIVE_MAX_DISTANCE = 135
+WEAK_ACTIVE_SAVE_MAX_WINDOW_SHARE = 0.015
+WEAK_ACTIVE_SAVE_MIN_GREEN = 18
+WEAK_ACTIVE_SAVE_MIN_YELLOW = 12
+WEAK_ACTIVE_SAVE_YELLOW_GREEN_RATIO = (0.50, 2.20)
+WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS = 6
+WEAK_ACTIVE_SAVE_HEADER_MIN_BRIGHT = 5
+WEAK_ACTIVE_SAVE_HEADER_MIN_DARK = 10
+WEAK_ACTIVE_SAVE_BODY_MIN_GREEN = 18
+WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 12
+WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
 MINI_BLOCK_SIZE = 16
 MINI_BLOCK_MIN_EDGE_DENSITY = 0.03
 MINI_BLOCK_SEED_MAX_CENTER_SCORE = 0.20
@@ -129,21 +145,104 @@ MINI_BLOCK_ISOLATED_MIN_EDGE_DENSITY = 0.13
 MINI_BLOCK_ISOLATED_PROFILE_DISTANCE = 10.0
 MINI_BLOCK_ROOM_MIN_CELLS = 400
 MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO = 0.50
+MINI_BLOCK_ROOM_COMPENSATED_MAX_SQUARE_CELL_RATIO = 0.53
 MINI_BLOCK_ROOM_MIN_BOUNDARY_CONTRAST = 20.0
 MINI_BLOCK_ROOM_MIN_BOUNDARY_HIT_RATIO = 0.55
+MINI_BLOCK_ROOM_RELAXED_BOUNDARY_HIT_RATIO = 0.50
+MINI_BLOCK_ROOM_STRONG_BOUNDARY_HIT_RATIO = 0.70
 MINI_BLOCK_IMPOSTOR_MIN_COVERAGE = 1
 MINI_BLOCK_FULL_SPIKE_MAX_COVERAGE = 1
 MINI_BLOCK_FULL_SPIKE_RECOVERY_EDGE_DENSITY = 0.32
 MINI_BLOCK_FULL_SPIKE_RECOVERY_DIRECTION_MARGIN = 0.13
 MINI_BLOCK_FULL_SPIKE_RECOVERY_OUTLINE_DELTA = 0.20
+REPEATED_TERRAIN_CLUSTER_COUNT = 6
+REPEATED_TERRAIN_MIN_SUPPORT_VOTES = 3
+REPEATED_TERRAIN_MIN_SUPPORT_SHARE = 0.30
+REPEATED_TERRAIN_MIN_SUPPORT_MARGIN = 1.25
+REPEATED_TERRAIN_PAIR_MIN_SUPPORT_SHARE = 0.45
+REPEATED_TERRAIN_PAIR_WEAK_SECONDARY_MIN_SUPPORT_SHARE = 0.30
+REPEATED_TERRAIN_PAIR_MAX_CONTRAST_RATIO = 0.16
+REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_SUPPORT_RATIO = 0.70
+REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_FULL_COVERAGE = 0.95
+REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_COVERAGE_GAIN = 0.05
+REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_EDGE_RATIO = 1.50
+REPEATED_TERRAIN_MIN_CANDIDATES = 12
+REPEATED_TERRAIN_MIN_FULL_COVERAGE = 0.85
+REPEATED_TERRAIN_KEEP_COVERAGE = 0.80
+REPEATED_TERRAIN_REPLACE_MAX_COVERAGE = 0.35
+REPEATED_TERRAIN_MAX_ROOM_COVERAGE = 0.65
+REPEATED_TERRAIN_FIELD_MIN_ROOM_SHARE = 0.30
+REPEATED_TERRAIN_FIELD_MIN_AXIS_INTERIOR = 0.50
+REPEATED_TERRAIN_DENSE_BLOCK_MIN_INTERIOR = 0.25
+REPEATED_TERRAIN_DENSE_BLOCK_MIN_BBOX_FILL = 0.60
+REPEATED_TERRAIN_SMOOTH_EDGE_DENSITY = 0.005
+REPEATED_TERRAIN_PARTNER_MIN_COOCCURRENCE_RATIO = 0.30
+REPEATED_TERRAIN_PARTNER_STRONG_COOCCURRENCE_RATIO = 0.65
+REPEATED_TERRAIN_PARTNER_DOMINANCE_RATIO = 1.50
+SUPPORTED_TERRAIN_MIN_CELLS = 12
+SUPPORTED_TERRAIN_MAX_ROOM_COVERAGE = 0.65
+SUPPORTED_TERRAIN_MIN_BACK_VOTES = 5
+SUPPORTED_TERRAIN_UNSEEDED_MIN_BACK_VOTES = 8
+SUPPORTED_TERRAIN_MIN_SEEDED_POLARITY = 0.50
+SUPPORTED_TERRAIN_MIN_UNSEEDED_POLARITY = 0.68
+SUPPORTED_TERRAIN_MIN_SCORE_MARGIN = 1.25
+SUPPORTED_TERRAIN_UNSEEDED_MAX_BOUNDARY_COMPONENT_SHARE = 0.70
+INVERTED_BOUNDARY_TERRAIN_MIN_ROOM_COVERAGE = 0.30
+INVERTED_BOUNDARY_TERRAIN_MAX_ROOM_COVERAGE = 0.88
+INVERTED_BOUNDARY_TERRAIN_MIN_BACK_VOTES = 2
+INVERTED_BOUNDARY_TERRAIN_MIN_POLARITY = 0.70
+INVERTED_BOUNDARY_TERRAIN_MIN_OTHER_TIP_VOTES = 3
+INVERTED_BOUNDARY_TERRAIN_MIN_MAX_CHANNEL = 40
+SUPPORTED_TERRAIN_KEEP_COVERAGE = 0.80
+SUPPORTED_TERRAIN_REPLACE_MAX_COVERAGE = 0.55
+SUPPORTED_TERRAIN_REPLACE_MAX_CURRENT_PRECISION = 0.55
+SUPPORTED_TERRAIN_REPLACE_MIN_CURRENT_OVERRUN = 1.35
+SUPPORTED_TERRAIN_MATERIAL_CLUSTER_COUNT = 10
+SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_BACK_VOTES = 2
+SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_POLARITY = 0.67
+SUPPORTED_TERRAIN_MATERIAL_MIN_SCALED_BACK_SUPPORT = 0.18
+SUPPORTED_TERRAIN_MATERIAL_MIN_CONTACTS = 8
+SUPPORTED_TERRAIN_MATERIAL_MIN_CONTACT_RATIO = 0.06
+SUPPORTED_TERRAIN_MATERIAL_MAX_COMPONENT_SHARE = 0.15
+SUPPORTED_TERRAIN_MATERIAL_MAX_BOUNDARIES = 2
+SUPPORTED_TERRAIN_MATERIAL_MIN_AXIS_SPAN = 2
+SUPPORTED_TERRAIN_MATERIAL_MIN_LONG_AXIS_SPAN = 4
+SUPPORTED_TERRAIN_MATERIAL_MIN_BLOCK_GAIN = 3
+SUPPORTED_TERRAIN_MATERIAL_MIN_MINIBLOCK_GAIN = 4
+SUPPORTED_TERRAIN_MATERIAL_MIN_WATER_FAMILY_VOTES = 3
+SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_COMPONENT_CELLS = 64
+SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_NARROW_AXIS = 3
+SUPPORTED_TERRAIN_SPIKE_CELL_MIN_SCORE = 0.42
+SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DIRECTION_MARGIN = 0.18
+SUPPORTED_TERRAIN_SPIKE_CELL_MIN_OUTLINE_DELTA = 0.35
+SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DETECTION_OVERLAP = GRID_SIZE * 24
+SUPPORTED_TERRAIN_RECOVERY_MAX_REPEATED_SCORE = 0.42
+SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_RUN = 5
+SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_SPAN = 96
+SUPPORTED_TERRAIN_RECOVERY_MAX_CROSS_AXIS_SPAN = 16
+SUPPORTED_TERRAIN_RECOVERY_OVERLAP_AREA = GRID_SIZE * MINI_BLOCK_SIZE
+SUPPORTED_TERRAIN_RECOVERY_OVERLAP_SCORE_MARGIN = 0.12
+SUPPORTED_TERRAIN_MARKER_MIN_SAVE_SCORE = 0.85
+SUPPORTED_TERRAIN_MARKER_MIN_SAVE_OVERLAP = GRID_SIZE * MINI_BLOCK_SIZE
+SUPPORTED_TERRAIN_MARKER_MIN_PLATFORM_OVERLAP = GRID_SIZE * MINI_BLOCK_SIZE // 2
+MINI_SPIKE_BLOCK_MIN_OVERLAP_COVERAGE = 0.75
+MINI_SPIKE_BLOCK_WIN_MIN_SCORE = 0.72
+MINI_SPIKE_BLOCK_WIN_MIN_MARGIN = 0.30
+MINI_SPIKE_TERRAIN_MOTIF_MIN_CONFLICTS = 20
+MINI_SPIKE_TERRAIN_MOTIF_MIN_ROOM_SHARE = 0.70
+MINI_SPIKE_TERRAIN_MOTIF_MIN_DIRECTION_SHARE = 0.70
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
 PLATFORM_SAMPLE_HEIGHT = 16
 PLATFORM_EDGE_THRESHOLD = 20
 PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_RUN = 24
-PLATFORM_LOW_CONTRAST_MIN_VERTICAL_RUN = 12
-PLATFORM_LOW_CONTRAST_GRAY_RANGE = (70, 110)
+PLATFORM_LOW_CONTRAST_MIN_VERTICAL_RUN = 4
+PLATFORM_LOW_CONTRAST_GRAY_RANGE = (70, 150)
+PLATFORM_LOW_CONTRAST_MAX_SATURATION = 0.20
+PLATFORM_LOW_CONTRAST_CONTEXT_MARGIN = 16
+PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_EDGE_ROWS = 2
+PLATFORM_LOW_CONTRAST_MIN_CENTER_SCORE = 0.08
 PLATFORM_BRIGHT_MIN_HORIZONTAL_RUN = 30
 PLATFORM_BRIGHT_MIN_VERTICAL_RUN = 14
 PLATFORM_BRIGHT_MIN_GRAY_RANGE = 180
@@ -152,6 +251,16 @@ PLATFORM_BRIGHT_BORDER_RANGE = (0.20, 0.32)
 PLATFORM_BRIGHT_MAX_CENTER_SCORE = 0.02
 PLATFORM_BRIGHT_MAX_BLOCK_SCORE = 0.25
 PLATFORM_BRIGHT_MAX_BELOW_EDGE = 0.02
+PLATFORM_TEXTURED_MIN_HORIZONTAL_RUN = 30
+PLATFORM_TEXTURED_MIN_VERTICAL_RUN = 3
+PLATFORM_TEXTURED_GRAY_RANGE = (110, 180)
+PLATFORM_TEXTURED_EDGE_RANGE = (0.16, 0.30)
+PLATFORM_TEXTURED_BORDER_RANGE = (0.30, 0.42)
+PLATFORM_TEXTURED_CENTER_RANGE = (0.08, 0.28)
+PLATFORM_TEXTURED_BLOCK_RANGE = (0.28, 0.40)
+PLATFORM_TEXTURED_MAX_BELOW_EDGE = 0.18
+PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE = 8.0
+PLATFORM_TEXTURED_MAX_SATURATION = 0.20
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
@@ -219,6 +328,8 @@ LOW_CONTRAST_MINI_UP_MIN_CENTER_SCORE = 0.045
 LOW_CONTRAST_MINI_UP_MAX_BLOCK_SCORE = 0.20
 LOW_CONTRAST_MINI_UP_PAIR_DISTANCE = 16
 LOW_CONTRAST_MINI_UP_STRONG_ANCHOR_SCORE = 0.45
+LOW_CONTRAST_MINI_UP_FULL_SCALE_MIN_COUNT = 20
+LOW_CONTRAST_MINI_UP_FULL_SCALE_MAX_MINI_RATIO = 0.05
 ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.47
 ADJACENT_UP_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.03
 ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.42
@@ -910,6 +1021,45 @@ FULL_SPIKE_PROFILE_MINI_DOWN_MAX_BLOCK_DISTANCE = 8.0
 FULL_SPIKE_PROFILE_MINI_RIGHT_MIN_EDGE_DENSITY = 0.45
 FULL_SPIKE_PROFILE_MINI_LEFT_MIN_SCORE = 0.60
 FULL_SPIKE_PROFILE_MINI_UP_MAX_BLOCK_DISTANCE = 16.0
+FULL_SPIKE_SCALE_DOMINANT_MIN_FULL_COUNT = 20
+FULL_SPIKE_SCALE_DOMINANT_MAX_MINI_RATIO = 0.18
+FULL_SPIKE_SCALE_MIN_SCORE = 0.62
+FULL_SPIKE_SCALE_MIN_DIRECTION_MARGIN = 0.32
+FULL_SPIKE_SCALE_MIN_OUTLINE_DELTA = 0.54
+DENSE_MINISPIKE_LATTICE_MIN_RAW_COUNT = 120
+DENSE_MINISPIKE_LATTICE_MIN_AXIS_SHARE = 0.85
+DENSE_MINISPIKE_LATTICE_MIN_RAW_TO_FULL_RATIO = 0.35
+DENSE_MINISPIKE_LATTICE_RECOVERY_MIN_SCORE = 0.31
+DENSE_MINISPIKE_LATTICE_RECOVERY_MIN_OUTLINE_DELTA = 0.05
+DENSE_MINISPIKE_LATTICE_RECOVERY_MAX_ROUNDS = 4
+DENSE_MINISPIKE_LATTICE_PAIR_MIN_SCORE = 0.35
+DENSE_MINISPIKE_LATTICE_PAIR_MIN_OUTLINE_DELTA = 0.02
+DENSE_MINISPIKE_LATTICE_PAIR_STRONG_OUTLINE_DELTA = 0.25
+DENSE_MINISPIKE_LATTICE_MAX_PROFILE_DISTANCE = 75.0
+DENSE_MINISPIKE_LATTICE_FULL_MIN_SCORE = 0.55
+DENSE_MINISPIKE_LATTICE_FULL_MIN_DIRECTION_MARGIN = 0.28
+DENSE_MINISPIKE_LATTICE_FULL_MIN_OUTLINE_DELTA = 0.45
+BLOCK_TEXTURE_MINISPIKE_MIN_BLOCKS = 100
+BLOCK_TEXTURE_MINISPIKE_MIN_EMBEDDED_SHARE = 0.45
+BRIGHT_FILLED_FULL_SPIKE_MIN_COUNT = 20
+BRIGHT_FILLED_FULL_SPIKE_MIN_CURRENT_COUNT = 20
+BRIGHT_FILLED_FULL_SPIKE_MIN_CURRENT_COVERAGE = 0.75
+BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST = 0.40
+BRIGHT_FILLED_FULL_SPIKE_MIN_LUMA_CONTRAST = 20.0
+BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.32
+BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.12
+BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.15
+BRIGHT_FILLED_FULL_SPIKE_RECOVERY_NEARBY_DISTANCE = 24.0
+BRIGHT_NEUTRAL_SPIKE_MIN_COMPONENT_COUNT = 20
+BRIGHT_NEUTRAL_SPIKE_MIN_MAP_AREA = 240.0
+BRIGHT_NEUTRAL_SPIKE_MIN_MAP_WIDTH = 22.0
+BRIGHT_NEUTRAL_SPIKE_MIN_MAP_HEIGHT = 22.0
+BRIGHT_NEUTRAL_SPIKE_MAX_MAP_WIDTH = 45.0
+BRIGHT_NEUTRAL_SPIKE_MAX_MAP_HEIGHT = 45.0
+BRIGHT_NEUTRAL_SPIKE_MIN_CENTROID_ASYMMETRY = 0.08
+BRIGHT_NEUTRAL_SPIKE_MAX_ROOM_MASK_SHARE = 0.15
+BRIGHT_NEUTRAL_SPIKE_MIN_CURRENT_COVERAGE = 0.775
+BRIGHT_NEUTRAL_SPIKE_MAX_CURRENT_MULTIPLIER = 1.25
 FULL_SPIKE_PROFILE_MIXED_LEFT_MIN_SIDE_COVERAGE = 0.625
 FULL_SPIKE_PROFILE_MIXED_SUPPORT_MAX_BLOCK_DISTANCE = 8.0
 FULL_SPIKE_PROFILE_SOLID_RIGHT_MIN_SAME_DISTANCE = 48.0
@@ -959,6 +1109,16 @@ WALLJUMP_PATCH_MAX_DENSITY = 0.095
 WALLJUMP_PATCH_MIN_SIDE_BIAS = 0.28
 WALLJUMP_SPARSE_MIN_LIGHT_RATIO = 0.45
 WALLJUMP_SPARSE_BROAD_LIGHT_RATIO = 0.85
+WALLJUMP_STRIP_PATCH_MIN_COUNT = 5
+WALLJUMP_STRIP_PATCH_MAX_COUNT = 28
+WALLJUMP_STRIP_PATCH_MIN_DENSITY = 0.018
+WALLJUMP_STRIP_PATCH_MAX_DENSITY = 0.11
+WALLJUMP_STRIP_PATCH_MIN_SIDE_BIAS = 0.14
+WALLJUMP_STRIP_PATCH_MIN_CENTER_Y = 0.28
+WALLJUMP_STRIP_PATCH_MAX_CENTER_Y = 0.72
+WALLJUMP_STRIP_MIN_CELLS = 2
+WALLJUMP_SINGLE_SPARSE_MIN_LIGHT_RATIO = 0.50
+WALLJUMP_SINGLE_SPARSE_MIN_SCORE = 0.68
 WATER_MIN_BLUE_LIFT = 10.0
 WATER_MAX_BLUE_LIFT = 55.0
 WATER_PALE_MAX_BLUE_LIFT = 50.0
@@ -967,10 +1127,30 @@ WATER_DENSE_MIN_QUADRANT = 0.08
 WATER_MAX_EDGE_DENSITY = 0.38
 WATER_PALE_MAX_EDGE_DENSITY = 0.42
 WATER_DEDUPE_DISTANCE = 24.0
+SPATIAL_BACKGROUND_STEP = 16
+SPATIAL_BACKGROUND_MAX_EDGE_DENSITY = 0.24
+SPATIAL_BACKGROUND_MAX_NEIGHBOR_DISTANCE = 30.0
+SPATIAL_BACKGROUND_MIN_COMPONENT_CELLS = 100
+SPATIAL_BACKGROUND_MIN_BOUNDARY_CELLS = 10
+SPATIAL_BACKGROUND_WATER_MAX_DISTANCE = 40.0
+COHERENT_WATER_STEP = 8
+COHERENT_WATER_MIN_COMPONENT_CELLS = 14
+BACKGROUND_WATER_GEOMETRY_GAP = 24.0
+BOUNDED_COOL_WATER_STEP = 16
+BOUNDED_COOL_WATER_MIN_SATURATION = 0.40
+BOUNDED_COOL_WATER_MIN_BLUE_OVER_GREEN = 80.0
+BOUNDED_COOL_WATER_MIN_BLUE_OVER_RED = 80.0
+BOUNDED_COOL_WATER_MAX_EDGE_DENSITY = 0.36
+BOUNDED_COOL_WATER_MAX_NEIGHBOR_DISTANCE = 65.0
+BOUNDED_COOL_WATER_MIN_COMPONENT_CELLS = 3
+BOUNDED_COOL_WATER_MIN_COMPONENT_FILL = 0.75
+BOUNDED_COOL_WATER_MAX_COMPONENT_MEDIAN_EDGE = 0.10
 CATHARSIS_ROOM_MAX_BRIGHTNESS = 100.0
 CATHARSIS_ROOM_MAX_SATURATION = 0.16
 CATHARSIS_ROOM_MIN_BLUE_OVER_RED = 8.0
+CATHARSIS_ROOM_MAX_BLUE_OVER_RED = 20.0
 CATHARSIS_ROOM_MIN_GREEN_MINUS_RED = -4.0
+CATHARSIS_ROOM_MAX_GREEN_MINUS_RED = 5.0
 CATHARSIS_MAX_SATURATION = 0.13
 CATHARSIS_WEAK_MIN_BLUE_LIFT = 1.0
 CATHARSIS_WEAK_MIN_BRIGHTNESS = 2.0
@@ -1001,6 +1181,53 @@ OUTLINE_APPLE_MAX_PATCH_SATURATION = 0.03
 OUTLINE_APPLE_MIN_EDGE_DENSITY = 0.18
 OUTLINE_APPLE_MAX_BORDER_SCORE = 0.35
 OUTLINE_APPLE_MIN_CENTER_SCORE = 0.10
+APPLE_ROOM_CORNER_MARGIN = 24
+APPLE_ROOM_CORNER_KEEP_MIN_SCORE = 0.90
+APPLE_DEDUPE_DISTANCE = 12
+APPLE_MIN_RED_BODY_DENSITY = 0.58
+WATER_TINTED_APPLE_SEED_MIN_RED = 100
+WATER_TINTED_APPLE_SEED_MIN_RED_OVER_GREEN = 4
+WATER_TINTED_APPLE_SEED_MIN_RED_OVER_BLUE = -32
+WATER_TINTED_APPLE_SEED_MIN_MAP_WIDTH = 8
+WATER_TINTED_APPLE_SEED_MAX_MAP_WIDTH = 29
+WATER_TINTED_APPLE_SEED_MIN_MAP_HEIGHT = 8
+WATER_TINTED_APPLE_SEED_MAX_MAP_HEIGHT = 31
+WATER_TINTED_APPLE_SEED_MIN_ASPECT = 0.40
+WATER_TINTED_APPLE_SEED_MAX_ASPECT = 1.65
+WATER_TINTED_APPLE_SEED_MIN_DENSITY = 0.25
+WATER_TINTED_APPLE_MAX_WATER_DISTANCE = 32
+WATER_TINTED_APPLE_MIN_CONTOUR_SUPPORT = 0.74
+WATER_TINTED_APPLE_MIN_CONTOUR_PRECISION = 0.82
+WATER_TINTED_APPLE_MIN_EDGE_DENSITY = 0.18
+WATER_TINTED_APPLE_MAX_EDGE_DENSITY = 0.42
+WATER_TINTED_APPLE_MAX_BORDER_SCORE = 0.20
+WATER_TINTED_APPLE_MIN_CENTER_SCORE = 0.18
+WATER_TINTED_APPLE_MAX_CENTER_SCORE = 0.58
+WATER_TINTED_APPLE_ALIGNMENT_STEP = 8
+APPLE_CONTOUR_TEMPLATE_ROWS = (
+    "................",
+    "................",
+    "..........###...",
+    "......#######...",
+    ".....#....##....",
+    "....#.......#...",
+    "...#.........#..",
+    "...#.........#..",
+    "...#.........#..",
+    "...#.........#..",
+    "...#........##..",
+    "....#.......#...",
+    ".....#.....#....",
+    "......#####.....",
+    "................",
+    "................",
+)
+APPLE_CONTOUR_TEMPLATE = frozenset(
+    (x, y)
+    for y, row in enumerate(APPLE_CONTOUR_TEMPLATE_ROWS)
+    for x, value in enumerate(row)
+    if value == "#"
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -1018,6 +1245,7 @@ class _PlatformPatchFeatures:
     horizontal_run: int
     vertical_run: int
     gray_range: int
+    horizontal_edge_rows: int = 0
 
 
 @dataclass(slots=True)
@@ -1027,13 +1255,18 @@ class ScanResult:
     room_box: Box
     detections: list[Detection] = field(default_factory=list)
     infinite_jump: int = 0
+    dot_kid: int = 0
     recognized_text: str = ""
     source_grid: tuple[int, int] | None = None
     structural_warnings: list[dict[str, object]] = field(default_factory=list)
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
-        jmap = JMap(infinite_jump=self.infinite_jump, objects=objects)
+        jmap = JMap(
+            infinite_jump=self.infinite_jump,
+            dot_kid=self.dot_kid,
+            objects=objects,
+        )
         move_start_to_save(jmap, start_policy)
         return jmap
 
@@ -1112,11 +1345,26 @@ def scan_image(
         box = Box(0, 0, image.width, image.height)
     else:
         box = source_box
+    adaptive_compact_blocks: list[Detection] = []
+    adaptive_compact_profile: _ColorProfile | None = None
+    if include_geometry and compact_room:
+        (
+            adaptive_compact_blocks,
+            adaptive_compact_profile,
+        ) = _detect_adaptive_compact_room_blocks(
+            image,
+            box,
+            image.pixel(0, 0),
+        )
+    adaptive_compact_room = adaptive_compact_profile is not None
     dark_brick_room = (
-        include_geometry and _looks_like_dark_brick_room(image, box)
+        include_geometry
+        and not adaptive_compact_room
+        and _looks_like_dark_brick_room(image, box)
     )
     warm_tiled_room = (
         include_geometry
+        and not adaptive_compact_room
         and not dark_brick_room
         and _looks_like_warm_tiled_room(image, box)
     )
@@ -1126,6 +1374,11 @@ def scan_image(
         and not warm_tiled_room
         and _looks_like_outlined_terrain_room(image, box)
     )
+    repeated_terrain_room = False
+    particle_water_room = False
+    mini_blocks: list[Detection] = []
+    raw_full_spikes: list[Detection] = []
+    raw_primary_mini_spikes: list[Detection] = []
     detections: list[Detection] = []
     detections.extend(
         _detect_saves(
@@ -1138,7 +1391,18 @@ def scan_image(
     detections.extend(_detect_warps(image, box, grid_step))
     if include_color_objects:
         detections.extend(_detect_color_objects(image, box, grid_step, detections))
-    if dark_brick_room:
+    if adaptive_compact_room:
+        # Compact 19x13 rooms have a reliable native tile phase.  Handle
+        # their geometry before broad color-profile branches so a reverse
+        # palette cannot accidentally route into the warm-room classifier.
+        detections = _replace_compact_room_geometry(
+            detections,
+            image,
+            box,
+            adaptive_blocks=adaptive_compact_blocks,
+            adaptive_profile=adaptive_compact_profile,
+        )
+    elif dark_brick_room:
         detections = _replace_dark_brick_room_geometry(detections, image, box)
     elif warm_tiled_room:
         detections = _replace_warm_tiled_room_geometry(detections, image, box)
@@ -1160,6 +1424,11 @@ def scan_image(
             if detection.kind == "full_spike_support"
             and detection.type_id in FULL_SPIKE_TYPES
         ]
+        raw_full_spikes = [
+            detection
+            for detection in detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        ]
         raw_supported_full_spikes = [
             detection
             for detection in detections
@@ -1172,6 +1441,11 @@ def scan_image(
             if detection.kind
             in {"spike_up", "spike_right", "spike_left", "spike_down"}
             and detection.type_id in FULL_SPIKE_TYPES
+        ]
+        raw_primary_mini_spikes = [
+            detection
+            for detection in detections
+            if detection.type_id in MINI_SPIKE_TYPES
         ]
         detections = _dedupe_overlapping_geometry(detections)
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
@@ -1291,8 +1565,13 @@ def scan_image(
             image,
             box,
         )
+        particle_water_room = _particle_water_top(detections, image, box) is not None
         if compact_room:
-            detections = _replace_compact_room_geometry(detections, image, box)
+            detections = _replace_compact_room_geometry(
+                detections,
+                image,
+                box,
+            )
         elif outlined_terrain_room:
             detections = _replace_outlined_terrain_room_geometry(
                 detections,
@@ -1301,6 +1580,18 @@ def scan_image(
             )
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
+        elif not mini_blocks and not particle_water_room:
+            detections, repeated_terrain_room = (
+                _replace_repeated_terrain_geometry(detections, image, box)
+            )
+            if not repeated_terrain_room:
+                detections, repeated_terrain_room = (
+                    _replace_supported_cell_terrain_geometry(
+                        detections,
+                        image,
+                        box,
+                    )
+                )
     if include_geometry:
         detections = _reconcile_common_room_geometry(
             detections,
@@ -1310,8 +1601,49 @@ def scan_image(
                 dark_brick_room
                 or warm_tiled_room
                 or outlined_terrain_room
+                or repeated_terrain_room
             ),
         )
+        detections = _reconcile_bright_filled_full_spikes(
+            detections,
+            raw_full_spikes,
+            image,
+            box,
+        )
+        detections = _reconcile_bright_neutral_full_spike_components(
+            detections,
+            image,
+            box,
+            grid_step,
+        )
+        detections = _arbitrate_minispikes_against_blocks(detections)
+        if not mini_blocks:
+            detections = _reconcile_dense_minispike_lattice(
+                detections,
+                raw_primary_mini_spikes,
+                image,
+                box,
+            )
+        detections = _reconcile_local_spike_scale_conflicts(
+            detections,
+            raw_primary_mini_spikes,
+            image,
+            box,
+        )
+        # Late room-scale reconcilers can recover geometry after the first
+        # color-anchor arbitration.  Reapply the same precedence so a sprite
+        # silhouette cannot reappear as a block or spike in the final map.
+        detections = _dedupe_overlapping_geometry(
+            detections,
+            anchor_types=LATE_GEOMETRY_ANCHOR_TYPES,
+        )
+        detections = _prune_detached_top_ui_band(detections, image, box)
+    detections = _prune_spatial_background_water_noise(
+        detections,
+        image,
+        box,
+        include_geometry=include_geometry,
+    )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -1332,17 +1664,143 @@ def scan_image(
             for detection in detections
         ]
     result = ScanResult(
-        source_image.width,
-        source_image.height,
-        source_box,
-        detections,
-        int(_text_indicates_infinite_jump(recognized_text or "")),
-        recognized_text or "",
-        normalized_grid,
-        structural_scan_warnings(detections),
+        image_width=source_image.width,
+        image_height=source_image.height,
+        room_box=source_box,
+        detections=detections,
+        infinite_jump=int(_text_indicates_infinite_jump(recognized_text or "")),
+        dot_kid=int(_detect_dot_kid_marker(image, box)),
+        recognized_text=recognized_text or "",
+        source_grid=normalized_grid,
+        structural_warnings=structural_scan_warnings(detections),
     )
     _PATCH_FEATURE_CACHE.clear()
     return result
+
+
+def _prune_detached_top_ui_band(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Discard a text-like HUD band separated from an embedded playfield.
+
+    Some screenshots retain narrator text and counters above a small room.
+    Ordinary edge scanning can turn the long glyph strokes into a shallow row
+    of blocks and spikes.  Activate only when that row touches the top edge,
+    spans most of the room, is separated by a large empty band, has weak cell
+    interiors, and the lower compact island contains a specific game object.
+    """
+
+    structural = [
+        detection
+        for detection in detections
+        if detection.type_id in GEOMETRY_TYPES
+        or detection.type_id in {OBJ_PLATFORM, OBJ_KILLER_BLOCK}
+    ]
+    rows = sorted({detection.y for detection in structural})
+    if len(rows) < 2:
+        return detections
+    candidates = [
+        (upper, lower)
+        for upper, lower in zip(rows, rows[1:])
+        if lower - upper >= 128
+    ]
+    if not candidates:
+        return detections
+    upper_y, lower_y = max(candidates, key=lambda pair: pair[1] - pair[0])
+    upper = [detection for detection in structural if detection.y <= upper_y]
+    lower = [detection for detection in structural if detection.y >= lower_y]
+    upper_blocks = [
+        detection for detection in upper if detection.type_id == OBJ_BLOCK
+    ]
+    lower_blocks = [
+        detection for detection in lower if detection.type_id == OBJ_BLOCK
+    ]
+    if not upper or not lower or not upper_blocks or not lower_blocks:
+        return detections
+
+    upper_width = (
+        max(detection.x for detection in upper)
+        - min(detection.x for detection in upper)
+        + GRID_SIZE
+    )
+    upper_height = (
+        max(detection.y for detection in upper)
+        - min(detection.y for detection in upper)
+        + GRID_SIZE
+    )
+    upper_center = median(
+        _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        ).center_score
+        for detection in upper_blocks
+    )
+    lower_center = median(
+        _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        ).center_score
+        for detection in lower_blocks
+    )
+    has_lower_anchor = any(
+        detection.y >= lower_y - GRID_SIZE
+        and detection.type_id not in GEOMETRY_TYPES
+        and detection.type_id
+        not in {OBJ_PLATFORM, OBJ_KILLER_BLOCK, OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3}
+        for detection in detections
+    )
+    if not _looks_like_detached_top_ui_band(
+        upper_count=len(upper),
+        upper_block_count=len(upper_blocks),
+        lower_count=len(lower),
+        lower_block_count=len(lower_blocks),
+        upper_min_y=min(detection.y for detection in upper),
+        upper_width=upper_width,
+        upper_height=upper_height,
+        gap=lower_y - upper_y,
+        upper_center=upper_center,
+        lower_center=lower_center,
+        has_lower_anchor=has_lower_anchor,
+    ):
+        return detections
+    return [detection for detection in detections if detection.y >= lower_y]
+
+
+def _looks_like_detached_top_ui_band(
+    *,
+    upper_count: int,
+    upper_block_count: int,
+    lower_count: int,
+    lower_block_count: int,
+    upper_min_y: int,
+    upper_width: int,
+    upper_height: int,
+    gap: int,
+    upper_center: float,
+    lower_center: float,
+    has_lower_anchor: bool,
+) -> bool:
+    return (
+        upper_count >= 20
+        and upper_block_count >= 15
+        and lower_count >= 8
+        and lower_block_count >= 8
+        and upper_min_y <= 0
+        and upper_width >= ROOM_WIDTH * 0.65
+        and upper_height <= 144
+        and gap >= 128
+        and upper_center <= 0.06
+        and lower_center >= upper_center + 0.12
+        and has_lower_anchor
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1446,6 +1904,53 @@ def _text_indicates_infinite_jump(text: str) -> bool:
     return any(re.search(pattern, normalized) for pattern in patterns)
 
 
+def _detect_dot_kid_marker(image: RGBImage, room: Box) -> bool:
+    """Detect the visibility ring used around a dotkid player.
+
+    The marker is substantially larger than a gameplay object: a thin dark
+    circle about two JTool cells across, with an otherwise empty center.  Using
+    its annular topology makes the check independent of the room palette while
+    rejecting dark tiles, text, portals, and ordinary sprite outlines.
+    """
+
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: (r + g + b) / 3 < 65,
+    )
+    for box, pixels in components:
+        map_width = box.width * ROOM_WIDTH / max(1, room.width)
+        map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+        if not (
+            52 <= map_width <= 78
+            and 52 <= map_height <= 78
+            and 0.80 <= map_width / max(1, map_height) <= 1.25
+        ):
+            continue
+        density = len(pixels) / max(1, box.area)
+        if not 0.08 <= density <= 0.22:
+            continue
+
+        center_x = (box.x + box.right - 1) / 2
+        center_y = (box.y + box.bottom - 1) / 2
+        radius = (box.width + box.height) / 4
+        annular_pixels = []
+        angle_bins: set[int] = set()
+        for x, y in pixels:
+            relative_radius = math.hypot(x - center_x, y - center_y) / max(1, radius)
+            if not 0.78 <= relative_radius <= 1.12:
+                continue
+            annular_pixels.append((x, y))
+            angle = math.atan2(y - center_y, x - center_x) + math.pi
+            angle_bins.add(int(angle * 36 / (2 * math.pi)) % 36)
+        if (
+            len(annular_pixels) / max(1, len(pixels)) >= 0.82
+            and len(angle_bins) >= 28
+        ):
+            return True
+    return False
+
+
 def _extract_text_with_tesseract(path: str | Path) -> str:
     executable = shutil.which("tesseract")
     if executable is None:
@@ -1479,6 +1984,9 @@ def _replace_compact_room_geometry(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
+    *,
+    adaptive_blocks: list[Detection] | None = None,
+    adaptive_profile: _ColorProfile | None = None,
 ) -> list[Detection]:
     """Use native tile occupancy in compact rooms instead of scaled legacy profiles."""
 
@@ -1490,21 +1998,22 @@ def _replace_compact_room_geometry(
         and detection.type_id != OBJ_PLATFORM
     ]
     background = image.pixel(0, 0)
-    blocks: list[Detection] = []
+    if adaptive_blocks is None:
+        (
+            adaptive_blocks,
+            adaptive_profile,
+        ) = _detect_adaptive_compact_room_blocks(
+            image,
+            room,
+            background,
+        )
+    blocks: list[Detection] = list(adaptive_blocks)
     killers: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
             colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
-            foreground = sum(
-                math.sqrt(sum((value - background[index]) ** 2 for index, value in enumerate(color))) > 45
-                for color in colors
-            ) / len(colors)
-            red_ratio = sum(
-                color[0] > 90
-                and color[0] > color[1] * 1.25
-                and color[0] > color[2] * 1.30
-                for color in colors
-            ) / len(colors)
+            foreground = _compact_foreground_ratio(colors, background)
+            red_ratio = _compact_red_ratio(colors)
             patch = _patch_features(image, room, x, y, GRID_SIZE)
             killer = red_ratio >= 0.97 or (
                 red_ratio >= 0.925 and patch.edge_density >= 0.12
@@ -1522,7 +2031,11 @@ def _replace_compact_room_geometry(
                         GRID_SIZE,
                     )
                 )
-            elif foreground >= 0.90 and red_ratio >= 0.60:
+            elif (
+                adaptive_profile is None
+                and foreground >= 0.90
+                and red_ratio >= 0.60
+            ):
                 blocks.append(
                     _geometry_detection(
                         "compact_block",
@@ -1535,49 +2048,50 @@ def _replace_compact_room_geometry(
                         GRID_SIZE,
                     )
                 )
+    result = _prune_apples_overlapping_killers(result, killers)
     # Some compact rooms deliberately offset solid blocks by half a tile.
     # Require a nearly solid, low-edge tile patch on those secondary phases.
-    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, MINI_BLOCK_SIZE):
-        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE):
-            if x % GRID_SIZE == 0 and y % GRID_SIZE == 0:
-                continue
-            if not (
-                GRID_SIZE * 5 <= x <= ROOM_WIDTH - GRID_SIZE * 5
-                and GRID_SIZE * 4 <= y <= ROOM_HEIGHT - GRID_SIZE * 5
-            ):
-                continue
-            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
-            foreground = sum(
-                math.sqrt(
-                    sum(
-                        (value - background[index]) ** 2
-                        for index, value in enumerate(color)
-                    )
-                )
-                > 45
-                for color in colors
-            ) / len(colors)
-            red_ratio = sum(
-                color[0] > 90
-                and color[0] > color[1] * 1.25
-                and color[0] > color[2] * 1.30
-                for color in colors
-            ) / len(colors)
-            patch = _patch_features(image, room, x, y, GRID_SIZE)
-            if foreground < 0.98 or red_ratio < 0.75 or patch.edge_density > 0.09:
-                continue
-            blocks.append(
-                _geometry_detection(
-                    "compact_offset_block",
-                    OBJ_BLOCK,
-                    x,
-                    y,
-                    min(0.94, 0.58 + foreground * 0.20 + red_ratio * 0.15),
+    if adaptive_profile is None:
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+            for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+                if x % GRID_SIZE == 0 and y % GRID_SIZE == 0:
+                    continue
+                if not (
+                    GRID_SIZE * 5 <= x <= ROOM_WIDTH - GRID_SIZE * 5
+                    and GRID_SIZE * 4 <= y <= ROOM_HEIGHT - GRID_SIZE * 5
+                ):
+                    continue
+                colors = _sample_map_patch_colors(
                     image,
                     room,
+                    x,
+                    y,
                     GRID_SIZE,
                 )
-            )
+                foreground = _compact_foreground_ratio(colors, background)
+                red_ratio = _compact_red_ratio(colors)
+                patch = _patch_features(image, room, x, y, GRID_SIZE)
+                if (
+                    foreground < 0.98
+                    or red_ratio < 0.75
+                    or patch.edge_density > 0.09
+                ):
+                    continue
+                blocks.append(
+                    _geometry_detection(
+                        "compact_offset_block",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        min(
+                            0.94,
+                            0.58 + foreground * 0.20 + red_ratio * 0.15,
+                        ),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
     # Extremely killer-dense rooms can contain backing blocks hidden by the
     # crossed sprite. Boundary junctions are the only useful ambiguous cases;
     # retaining every crossed tile creates a second copy of the room.
@@ -1602,6 +2116,16 @@ def _replace_compact_room_geometry(
             == 3
             and (detection.x <= 96 or detection.y <= 96)
         )
+    if adaptive_profile is not None:
+        result = _prune_adaptive_compact_room_markers(
+            result,
+            image,
+            room,
+            adaptive_profile,
+            blocks,
+            killers,
+            background,
+        )
     result_blocks = [
         detection
         for detection in result
@@ -1614,7 +2138,15 @@ def _replace_compact_room_geometry(
     ]
     result.extend(_dedupe_detections([*result_blocks, *blocks], min_distance=28))
     result.extend(killers)
-    if len(killers) < 50:
+    if adaptive_profile is not None:
+        result.extend(
+            _detect_adaptive_compact_room_spikes(
+                image,
+                room,
+                adaptive_profile,
+            )
+        )
+    elif len(killers) < 50:
         block_positions = {
             (detection.x, detection.y)
             for detection in (*result, *blocks)
@@ -1622,6 +2154,336 @@ def _replace_compact_room_geometry(
         }
         result.extend(_detect_compact_room_spikes(image, room, block_positions))
     return _dedupe_exact_detections(result)
+
+
+def _detect_adaptive_compact_room_blocks(
+    image: RGBImage,
+    room: Box,
+    background: tuple[int, int, int],
+) -> tuple[list[Detection], _ColorProfile | None]:
+    """Learn a reverse-palette compact-room tile from its outer boundary."""
+
+    cells: dict[
+        tuple[int, int],
+        tuple[float, float, _PatchFeatures, _ColorProfile],
+    ] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            colors = _sample_map_patch_colors(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+            )
+            cells[(x, y)] = (
+                _compact_foreground_ratio(colors, background),
+                _compact_red_ratio(colors),
+                _patch_features(image, room, x, y, GRID_SIZE),
+                _patch_color_profile(image, room, x, y, GRID_SIZE),
+            )
+
+    compact_left = ((ROOM_WIDTH // GRID_SIZE - 19) // 2) * GRID_SIZE
+    compact_top = ((ROOM_HEIGHT // GRID_SIZE - 13) // 2) * GRID_SIZE
+    compact_right = compact_left + (19 - 1) * GRID_SIZE
+    compact_bottom = compact_top + (13 - 1) * GRID_SIZE
+    boundary = {
+        position
+        for position in cells
+        if (
+            position[0] in (compact_left, compact_right)
+            and compact_top <= position[1] <= compact_bottom
+            or position[1] in (compact_top, compact_bottom)
+            and compact_left <= position[0] <= compact_right
+        )
+    }
+
+    seeds: list[tuple[int, int]] = []
+    for position in boundary:
+        foreground, red_ratio, patch, _profile = cells[position]
+        block_score = _classify_block(patch).score
+        spike = _classify_full_spike(patch)
+        spike_score = spike.score if spike is not None else 0.0
+        if (
+            foreground >= 0.20
+            and red_ratio < 0.75
+            and block_score >= 0.28
+            and block_score - spike_score >= -0.02
+        ):
+            seeds.append(position)
+    if len(seeds) < 20:
+        return [], None
+
+    learned = _median_color_profile(
+        [cells[position][3] for position in seeds]
+    )
+    positions: set[tuple[int, int]] = set()
+    for position, (foreground, red_ratio, patch, profile) in cells.items():
+        if (
+            foreground < 0.20
+            or red_ratio >= 0.925
+            or _color_profile_distance(profile, learned) > 22
+        ):
+            continue
+        block_score = _classify_block(patch).score
+        spike = _classify_full_spike(patch)
+        spike_score = spike.score if spike is not None else 0.0
+        if (
+            block_score >= 0.30
+            and block_score >= spike_score
+            or position in boundary
+            and patch.edge_density >= 0.18
+        ):
+            positions.add(position)
+
+    detections = [
+        _geometry_detection(
+            "compact_adaptive_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            0.84,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in sorted(positions, key=lambda item: (item[1], item[0]))
+    ]
+    return detections, learned
+
+
+def _compact_foreground_ratio(
+    colors: list[tuple[int, int, int]],
+    background: tuple[int, int, int],
+) -> float:
+    return sum(
+        math.sqrt(
+            sum(
+                (value - background[index]) ** 2
+                for index, value in enumerate(color)
+            )
+        )
+        > 45
+        for color in colors
+    ) / len(colors)
+
+
+def _compact_red_ratio(colors: list[tuple[int, int, int]]) -> float:
+    return sum(
+        color[0] > 90
+        and color[0] > color[1] * 1.25
+        and color[0] > color[2] * 1.30
+        for color in colors
+    ) / len(colors)
+
+
+def _detect_adaptive_compact_room_spikes(
+    image: RGBImage,
+    room: Box,
+    terrain: _ColorProfile,
+) -> list[Detection]:
+    """Classify white compact-room triangles relative to learned terrain."""
+
+    terrain_luminance = (
+        terrain.avg_r + terrain.avg_g + terrain.avg_b
+    ) / 3
+    components = _connected_components(
+        image,
+        room,
+        lambda red, green, blue: (
+            max(red, green, blue) - min(red, green, blue) <= 40
+            and (red + green + blue) / 3 >= terrain_luminance + 18
+        ),
+    )
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    detections: list[Detection] = []
+    for box, pixels in components:
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        is_mini = 11 <= map_width <= 22 and 11 <= map_height <= 23
+        is_full = 27 <= map_width <= 45 and 27 <= map_height <= 48
+        if not (is_mini or is_full):
+            continue
+        density = len(pixels) / max(1, box.area)
+        if not 0.45 <= density <= 0.62:
+            continue
+        mean_r = sum(image.pixel(x, y)[0] for x, y in pixels) / len(pixels)
+        mean_g = sum(image.pixel(x, y)[1] for x, y in pixels) / len(pixels)
+        mean_b = sum(image.pixel(x, y)[2] for x, y in pixels) / len(pixels)
+        component_profile = _ColorProfile(
+            mean_r,
+            mean_g,
+            mean_b,
+            0.0,
+        )
+        if _color_profile_distance(component_profile, terrain) < 80:
+            continue
+
+        center_x = sum(
+            (x - box.x) / max(1, box.width - 1) for x, _ in pixels
+        ) / len(pixels)
+        center_y = sum(
+            (y - box.y) / max(1, box.height - 1) for _, y in pixels
+        ) / len(pixels)
+        horizontal_deviation = center_x - 0.5
+        vertical_deviation = center_y - 0.5
+        if max(abs(horizontal_deviation), abs(vertical_deviation)) < 0.08:
+            continue
+        if abs(vertical_deviation) >= abs(horizontal_deviation):
+            direction = "up" if vertical_deviation > 0 else "down"
+        else:
+            direction = "left" if horizontal_deviation > 0 else "right"
+        type_ids = {
+            ("up", False): OBJ_SPIKE_UP,
+            ("right", False): OBJ_SPIKE_RIGHT,
+            ("left", False): OBJ_SPIKE_LEFT,
+            ("down", False): OBJ_SPIKE_DOWN,
+            ("up", True): OBJ_MINI_SPIKE_UP,
+            ("right", True): OBJ_MINI_SPIKE_RIGHT,
+            ("left", True): OBJ_MINI_SPIKE_LEFT,
+            ("down", True): OBJ_MINI_SPIKE_DOWN,
+        }
+        map_x, map_y = _image_box_to_jtool_origin(box, room, 8)
+        detections.append(
+            Detection(
+                f"compact_adaptive_{'mini_' if is_mini else ''}spike_{direction}",
+                type_ids[(direction, is_mini)],
+                map_x,
+                map_y,
+                min(0.98, 0.72 + density * 0.35),
+                box,
+            )
+        )
+    return _dedupe_exact_detections(detections)
+
+
+def _prune_adaptive_compact_room_markers(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    terrain: _ColorProfile,
+    blocks: list[Detection],
+    killers: list[Detection],
+    background: tuple[int, int, int],
+) -> list[Detection]:
+    """Remove reverse-palette terrain mistaken for point/color objects."""
+
+    terrain_positions = {
+        (detection.x, detection.y)
+        for detection in (*blocks, *killers)
+    }
+    dense_green_boxes: list[Box] = []
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    for box, pixels in _connected_components(
+        image,
+        room,
+        _is_sparse_walljump_green,
+    ):
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        if (
+            14 <= map_width <= 26
+            and 14 <= map_height <= 26
+            and 0.75 <= map_width / max(0.1, map_height) <= 1.33
+            and len(pixels) / max(1, box.area) >= 0.65
+        ):
+            dense_green_boxes.append(box)
+
+    kept: list[Detection] = []
+    for detection in detections:
+        maximum_terrain_overlap = max(
+            (
+                _box_overlap_area(
+                    detection.x,
+                    detection.y,
+                    terrain_x,
+                    terrain_y,
+                )
+                for terrain_x, terrain_y in terrain_positions
+            ),
+            default=0,
+        )
+        if (
+            detection.kind.startswith("save_outline")
+            and maximum_terrain_overlap >= 512
+        ):
+            continue
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+            if maximum_terrain_overlap >= 384:
+                continue
+            colors = _sample_map_patch_colors(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                GRID_SIZE,
+            )
+            profile = _patch_color_profile(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                GRID_SIZE,
+            )
+            patch = _patch_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                GRID_SIZE,
+            )
+            if (
+                _compact_foreground_ratio(colors, background) >= 0.20
+                and _color_profile_distance(profile, terrain) <= 22
+                and _classify_block(patch).score >= 0.28
+                and patch.edge_density >= 0.18
+            ):
+                continue
+        if (
+            detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+            and any(
+                _boxes_within_gap(detection.image_box, box, 0)
+                for box in dense_green_boxes
+            )
+        ):
+            continue
+        if (
+            detection.type_id == OBJ_APPLE
+            and _apple_overlaps_killer(detection, killers)
+        ):
+            continue
+        kept.append(detection)
+    return kept
+
+
+def _prune_apples_overlapping_killers(
+    detections: list[Detection],
+    killers: list[Detection],
+) -> list[Detection]:
+    if not killers:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_APPLE
+        or not _apple_overlaps_killer(detection, killers)
+    ]
+
+
+def _apple_overlaps_killer(
+    apple: Detection,
+    killers: list[Detection],
+) -> bool:
+    return any(
+        (
+            killer.x <= apple.x < killer.x + GRID_SIZE
+            and killer.y <= apple.y < killer.y + GRID_SIZE
+        )
+        or _boxes_within_gap(apple.image_box, killer.image_box, 0)
+        for killer in killers
+    )
 
 
 def _sample_map_patch_colors(
@@ -5021,7 +5883,7 @@ def _detect_saves(
     allow_tinted = _looks_cyan_tinted(image, room)
     minimum_component_height = max(
         8,
-        int(round(16 * room.height / ROOM_HEIGHT)),
+        int(round(14 * room.height / ROOM_HEIGHT)),
     )
     components = _connected_components(
         image,
@@ -5031,9 +5893,10 @@ def _detect_saves(
         or _is_save_green(r, g, b)
         or (allow_tinted and _is_tinted_save_yellow(r, g, b)),
     )
-    detections: list[Detection] = []
-    for component in components:
-        box, pixels = component
+    candidates: list[
+        tuple[Box, int, int, int, float, float]
+    ] = []
+    for box, pixels in components:
         if not (
             8 <= box.width <= 55
             and minimum_component_height <= box.height <= 80
@@ -5048,7 +5911,9 @@ def _detect_saves(
                 red += 1
             if _is_save_green(r, g, b):
                 green += 1
-            if _is_save_yellow(r, g, b) or (allow_tinted and _is_tinted_save_yellow(r, g, b)):
+            if _is_save_yellow(r, g, b) or (
+                allow_tinted and _is_tinted_save_yellow(r, g, b)
+            ):
                 yellow += 1
         if yellow < 18:
             continue
@@ -5057,13 +5922,274 @@ def _detect_saves(
         density = (red + green + yellow) / box.area
         if density < 0.12:
             continue
+        color_balance = max(red, green) / max(1, yellow)
+        candidates.append((box, red, green, yellow, density, color_balance))
+
+    # Repeated yellow terrain tiles can satisfy the old save palette predicate
+    # hundreds of times in one room.  A real red/green save has a meaningful
+    # secondary-color body; a repeated-texture field is instead overwhelmingly
+    # yellow-only.  Tighten the balance requirement only for that topology so
+    # ordinary rooms and unusual individual save palettes retain the broader
+    # detector.
+    repeated_yellow_texture = (
+        len(candidates) >= 30
+        and sum(candidate[-1] < 0.20 for candidate in candidates)
+        >= len(candidates) * 0.80
+    )
+    minimum_color_balance = 0.25 if repeated_yellow_texture else 0.10
+    detections: list[Detection] = []
+    for box, red, green, yellow, density, color_balance in candidates:
+        if color_balance < minimum_color_balance:
+            continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         score = min(1.0, density * 2.5 + min(red + green, yellow) / 150)
         detections.append(Detection("save", OBJ_SAVE, map_x, map_y, score, box))
-    if allow_weak_active:
-        detections.extend(_detect_weak_active_save_patches(image, room, grid_step))
+    detections.extend(_detect_fragmented_cross_saves(image, room, grid_step))
+    detections.extend(_detect_red_body_header_saves(image, room, grid_step))
+    detections.extend(_detect_weak_active_save_patches(image, room, grid_step))
     detections.extend(_detect_outline_saves(image, room, grid_step))
     return _dedupe_detections(detections, min_distance=25)
+
+
+def _detect_red_body_header_saves(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recover the canonical brick-red save when its gold cross disconnects.
+
+    Blur and palette grading can leave the red body as one dense component
+    while moving every cross pixel just outside the strict save-yellow mask.
+    The body alone is not distinctive enough, so require its map-normalized
+    dimensions *and* the pale, low-saturation title panel immediately above
+    it.  This layout is scale- and palette-tolerant without depending on a
+    particular room or tileset.
+    """
+
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    detections: list[Detection] = []
+    for box, pixels in _connected_components(image, room, _is_save_red):
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        density = len(pixels) / max(1, box.area)
+        if not (
+            24 <= map_width <= 34
+            and 17 <= map_height <= 25
+            and density >= 0.55
+        ):
+            continue
+
+        header_height = max(1, round(15 / scale_y))
+        header_top = max(room.y, box.y - round(12 / scale_y))
+        header_bottom = min(room.bottom, header_top + header_height)
+        header_area = max(1, box.width * (header_bottom - header_top))
+        pale_header_pixels = sum(
+            _is_save_header_pale(*image.pixel(x, y))
+            for y in range(header_top, header_bottom)
+            for x in range(box.x, box.right)
+        )
+        pale_header_share = pale_header_pixels / header_area
+        if pale_header_share < 0.12:
+            continue
+
+        image_scale_x = room.width / ROOM_WIDTH
+        image_scale_y = room.height / ROOM_HEIGHT
+        raw_x = (box.center_x - room.x) / image_scale_x - GRID_SIZE / 2
+        raw_y = (box.y - room.y) / image_scale_y - 8
+        map_x = round_to_step(raw_x, grid_step)
+        map_y = round_to_step(raw_y, grid_step)
+        score = min(0.98, 0.90 + density * 0.06 + pale_header_share * 0.12)
+        detections.append(
+            Detection(
+                "save_red_body_header",
+                OBJ_SAVE,
+                map_x,
+                map_y,
+                score,
+                box,
+            )
+        )
+    return detections
+
+
+def _detect_fragmented_cross_saves(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Detect the four red quadrants of the standard cross-shaped save.
+
+    At several capture scales, antialiasing disconnects the red quadrants from
+    the yellow center.  Treating the whole sprite as one color component then
+    misses the save.  The 2-by-2 component lattice plus its yellow center is a
+    scale-normalized, palette-topology signature and is much less permissive
+    than accepting an isolated red or yellow patch.
+    """
+
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    quadrants: list[tuple[Box, list[tuple[int, int]]]] = []
+    for box, pixels in _connected_components(image, room, _is_save_red):
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        density = len(pixels) / max(1, box.area)
+        if (
+            6 <= map_width <= 14
+            and 4 <= map_height <= 10
+            and 1.05 <= map_width / max(0.1, map_height) <= 2.80
+            and density >= 0.35
+        ):
+            quadrants.append((box, pixels))
+
+    detections: list[Detection] = []
+    seen_boxes: set[tuple[int, int, int, int]] = set()
+    for top_left, _ in quadrants:
+        top_rights = [
+            candidate
+            for candidate, _ in quadrants
+            if (
+                12
+                <= (candidate.center_x - top_left.center_x) * scale_x
+                <= 22
+                and abs(candidate.center_y - top_left.center_y) * scale_y <= 3
+            )
+        ]
+        bottom_lefts = [
+            candidate
+            for candidate, _ in quadrants
+            if (
+                abs(candidate.center_x - top_left.center_x) * scale_x <= 3
+                and 7
+                <= (candidate.center_y - top_left.center_y) * scale_y
+                <= 16
+            )
+        ]
+        for top_right in top_rights:
+            horizontal_gap = (
+                top_right.center_x - top_left.center_x
+            ) * scale_x
+            for bottom_left in bottom_lefts:
+                for bottom_right, _ in quadrants:
+                    if not (
+                        abs(bottom_right.center_x - top_right.center_x) * scale_x
+                        <= 3
+                        and 7
+                        <= (bottom_right.center_y - top_right.center_y) * scale_y
+                        <= 16
+                        and abs(
+                            bottom_right.center_y - bottom_left.center_y
+                        ) * scale_y
+                        <= 3
+                        and abs(
+                            (bottom_right.center_x - bottom_left.center_x)
+                            * scale_x
+                            - horizontal_gap
+                        )
+                        <= 4
+                    ):
+                        continue
+                    boxes = (
+                        top_left,
+                        top_right,
+                        bottom_left,
+                        bottom_right,
+                    )
+                    left = min(box.x for box in boxes)
+                    top = min(box.y for box in boxes)
+                    right = max(box.right for box in boxes)
+                    bottom = max(box.bottom for box in boxes)
+                    key = (left, top, right - left, bottom - top)
+                    if key in seen_boxes:
+                        continue
+                    union = Box(*key)
+                    yellow = sum(
+                        _is_save_yellow(*image.pixel(x, y))
+                        for y in range(union.y, union.bottom)
+                        for x in range(union.x, union.right)
+                    )
+                    if yellow < 8 and not _is_strong_yellowless_save_lattice(
+                        image,
+                        boxes,
+                        union,
+                        scale_x,
+                        scale_y,
+                    ):
+                        continue
+                    seen_boxes.add(key)
+                    map_x, map_y = _image_box_to_jtool_origin(
+                        union,
+                        room,
+                        grid_step,
+                    )
+                    # The red body sits eight map pixels below the full 32px
+                    # save sprite because its white SAVE label occupies the
+                    # upper portion.
+                    map_y = round_to_step(map_y - 8, grid_step)
+                    detections.append(
+                        Detection(
+                            "save_fragmented_cross",
+                            OBJ_SAVE,
+                            map_x,
+                            map_y,
+                            min(0.99, 0.90 + yellow / 400),
+                            union,
+                        )
+                    )
+    return detections
+
+
+def _is_strong_yellowless_save_lattice(
+    image: RGBImage,
+    boxes: tuple[Box, Box, Box, Box],
+    union: Box,
+    scale_x: float,
+    scale_y: float,
+) -> bool:
+    """Recover a save whose yellow center is darkened by the room palette.
+
+    Four dense red quadrants in a regular 2-by-2 lattice are already much
+    more specific than a generic red component.  Require consistent quadrant
+    geometry and a genuinely dark center before allowing that topology to
+    stand in for the usual yellow-center evidence.
+    """
+
+    map_width = union.width * scale_x
+    map_height = union.height * scale_y
+    if not (20 <= map_width <= 30 and 11 <= map_height <= 20):
+        return False
+    widths = [box.width * scale_x for box in boxes]
+    heights = [box.height * scale_y for box in boxes]
+    if (
+        max(widths) / max(0.1, min(widths)) > 1.65
+        or max(heights) / max(0.1, min(heights)) > 1.55
+    ):
+        return False
+    red_counts = [
+        sum(
+            _is_save_red(*image.pixel(x, y))
+            for y in range(box.y, box.bottom)
+            for x in range(box.x, box.right)
+        )
+        for box in boxes
+    ]
+    densities = [
+        count / max(1, box.area)
+        for count, box in zip(red_counts, boxes)
+    ]
+    if min(densities) < 0.60 or sum(red_counts) < 150:
+        return False
+
+    center_x = int(round((union.x + union.right - 1) / 2))
+    center_y = int(round((union.y + union.bottom - 1) / 2))
+    dark = 0
+    total = 0
+    for y in range(max(0, center_y - 3), min(image.height, center_y + 4)):
+        for x in range(max(0, center_x - 3), min(image.width, center_x + 4)):
+            total += 1
+            if max(image.pixel(x, y)) < 110:
+                dark += 1
+    return total >= 36 and dark / total >= 0.28
 
 
 def _detect_outline_saves(
@@ -5121,37 +6247,247 @@ def _detect_weak_active_save_patches(
     room: Box,
     grid_step: int,
 ) -> list[Detection]:
-    """Recover low-resolution green saves whose colored pixels fragment."""
+    """Recover a rare player-occluded active save from its internal layout.
 
-    detections: list[Detection] = []
+    Green/yellow counts alone also describe vines, neon terrain, and decorative
+    tiles.  A usable recovery therefore requires four independent signals: a
+    low-prevalence candidate field, balanced green/yellow body colors, a bright
+    neutral SAVE-title fragment in the upper band, and a dark frame around it.
+    Overlapping windows are clustered before choosing the sprite origin so a
+    player covering one side cannot produce duplicate saves.
+    """
+
+    # The common 8/16/32-pixel scan grids all land on the same two-map-pixel
+    # sample lattice used by ``_sample_map_patch_colors``.  Build summed-area
+    # tables once instead of resampling 256 source pixels for every overlapping
+    # 32-pixel window.  Retain the direct sampler for an unusual odd grid step,
+    # where a shared two-pixel lattice would not be exact.
+    sample_width = ROOM_WIDTH // 2
+    sample_height = ROOM_HEIGHT // 2
+    prefix_stride = sample_width + 1
+    prefix_size = prefix_stride * (sample_height + 1)
+    green_prefix = [0] * prefix_size
+    yellow_prefix = [0] * prefix_size
+    bright_prefix = [0] * prefix_size
+    dark_prefix = [0] * prefix_size
+
+    if grid_step % 2 == 0:
+        for sample_y in range(sample_height):
+            image_y = int(
+                room.y
+                + (sample_y * 2 + 1) * room.height / ROOM_HEIGHT
+            )
+            image_y = max(0, min(image.height - 1, image_y))
+            green_row = yellow_row = bright_row = dark_row = 0
+            previous_row = sample_y * prefix_stride
+            current_row = (sample_y + 1) * prefix_stride
+            for sample_x in range(sample_width):
+                image_x = int(
+                    room.x
+                    + (sample_x * 2 + 1) * room.width / ROOM_WIDTH
+                )
+                image_x = max(0, min(image.width - 1, image_x))
+                color = image.pixel(image_x, image_y)
+                green_row += int(
+                    color[1] > 85
+                    and color[1] > color[0] + 18
+                    and color[1] > color[2] + 15
+                )
+                yellow_row += int(
+                    color[0] > 145 and color[1] > 105 and color[2] < 105
+                )
+                bright_row += int(
+                    min(color) > 165 and max(color) - min(color) < 55
+                )
+                dark_row += int(max(color) < 110)
+                index = current_row + sample_x + 1
+                previous = previous_row + sample_x + 1
+                green_prefix[index] = green_prefix[previous] + green_row
+                yellow_prefix[index] = yellow_prefix[previous] + yellow_row
+                bright_prefix[index] = bright_prefix[previous] + bright_row
+                dark_prefix[index] = dark_prefix[previous] + dark_row
+
+    def prefix_count(
+        prefix: list[int],
+        left: int,
+        top: int,
+        right: int,
+        bottom: int,
+    ) -> int:
+        top_left = top * prefix_stride + left
+        top_right = top * prefix_stride + right
+        bottom_left = bottom * prefix_stride + left
+        bottom_right = bottom * prefix_stride + right
+        return (
+            prefix[bottom_right]
+            - prefix[top_right]
+            - prefix[bottom_left]
+            + prefix[top_left]
+        )
+
+    base_candidates = 0
+    total_windows = 0
+    strong_candidates: list[tuple[int, int, float]] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, grid_step):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, grid_step):
-            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
-            green = sum(
-                color[1] > 85
-                and color[1] > color[0] + 18
-                and color[1] > color[2] + 15
-                for color in colors
-            )
-            yellow = sum(
-                color[0] > 145 and color[1] > 105 and color[2] < 105
-                for color in colors
-            )
-            if green < 15 or yellow < 3:
-                continue
-            detections.append(
-                _geometry_detection(
-                    "save_active_weak_patch",
-                    OBJ_SAVE,
-                    x,
-                    y,
-                    min(0.93, 0.62 + green / 160 + yellow / 200),
-                    image,
-                    room,
-                    GRID_SIZE,
+            total_windows += 1
+            if grid_step % 2 == 0:
+                left = x // 2
+                top = y // 2
+                right = left + GRID_SIZE // 2
+                bottom = top + GRID_SIZE // 2
+                header_bottom = top + WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS
+                green = prefix_count(green_prefix, left, top, right, bottom)
+                yellow = prefix_count(yellow_prefix, left, top, right, bottom)
+                body_green = prefix_count(
+                    green_prefix, left, header_bottom, right, bottom
                 )
+                body_yellow = prefix_count(
+                    yellow_prefix, left, header_bottom, right, bottom
+                )
+                header_bright = prefix_count(
+                    bright_prefix, left, top, right, header_bottom
+                )
+                header_dark = prefix_count(
+                    dark_prefix, left, top, right, header_bottom
+                )
+            else:
+                colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+                green_flags = [
+                    color[1] > 85
+                    and color[1] > color[0] + 18
+                    and color[1] > color[2] + 15
+                    for color in colors
+                ]
+                yellow_flags = [
+                    color[0] > 145 and color[1] > 105 and color[2] < 105
+                    for color in colors
+                ]
+                green = sum(green_flags)
+                yellow = sum(yellow_flags)
+                header_end = WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS * 16
+                header = colors[:header_end]
+                body_green = sum(green_flags[header_end:])
+                body_yellow = sum(yellow_flags[header_end:])
+                header_bright = sum(
+                    min(color) > 165 and max(color) - min(color) < 55
+                    for color in header
+                )
+                header_dark = sum(max(color) < 110 for color in header)
+            if green >= 15 and yellow >= 3:
+                base_candidates += 1
+            if green < WEAK_ACTIVE_SAVE_MIN_GREEN or yellow < WEAK_ACTIVE_SAVE_MIN_YELLOW:
+                continue
+            ratio = yellow / max(1, green)
+            if not (
+                WEAK_ACTIVE_SAVE_YELLOW_GREEN_RATIO[0]
+                <= ratio
+                <= WEAK_ACTIVE_SAVE_YELLOW_GREEN_RATIO[1]
+            ):
+                continue
+            if (
+                header_bright < WEAK_ACTIVE_SAVE_HEADER_MIN_BRIGHT
+                or header_dark < WEAK_ACTIVE_SAVE_HEADER_MIN_DARK
+                or body_green < WEAK_ACTIVE_SAVE_BODY_MIN_GREEN
+                or body_yellow < WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW
+            ):
+                continue
+            score = min(
+                0.93,
+                0.78
+                + header_bright / 200
+                + min(body_green, body_yellow) / 180,
             )
-    return _dedupe_detections(detections, min_distance=25)
+            strong_candidates.append((x, y, score))
+
+    if (
+        not strong_candidates
+        or base_candidates / max(1, total_windows)
+        > WEAK_ACTIVE_SAVE_MAX_WINDOW_SHARE
+    ):
+        return []
+
+    remaining = set(range(len(strong_candidates)))
+    clusters: list[list[tuple[int, int, float]]] = []
+    while remaining:
+        start = remaining.pop()
+        component = [start]
+        queue = [start]
+        while queue:
+            current = queue.pop()
+            current_x, current_y, _ = strong_candidates[current]
+            neighbors = {
+                index
+                for index in remaining
+                if distance(
+                    (current_x, current_y),
+                    (strong_candidates[index][0], strong_candidates[index][1]),
+                )
+                <= WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE
+            }
+            remaining.difference_update(neighbors)
+            component.extend(neighbors)
+            queue.extend(neighbors)
+        clusters.append([strong_candidates[index] for index in component])
+
+    detections: list[Detection] = []
+    for cluster in clusters:
+        map_x = round_to_step(int(round(median(item[0] for item in cluster))), grid_step)
+        map_y = round_to_step(int(round(median(item[1] for item in cluster))), grid_step)
+        detections.append(
+            _geometry_detection(
+                "save_active_layout_recovery",
+                OBJ_SAVE,
+                map_x,
+                map_y,
+                max(item[2] for item in cluster),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return detections
+
+
+_FILLED_CLOUD_WARP_TEMPLATE_16 = (
+    0x0104,
+    0x07DE,
+    0x1FFF,
+    0x1FFF,
+    0x3FFF,
+    0x1FFE,
+    0x3FFC,
+    0x7FFC,
+    0x7FFC,
+    0x7FF8,
+    0x7FF0,
+    0x7FFC,
+    0x7FFC,
+    0x7FFE,
+    0x7FFC,
+    0x303C,
+)
+
+
+def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
+    return max(red, green, blue) <= 80 and max(red, green, blue) - min(
+        red, green, blue
+    ) <= 25
+
+
+def _is_bright_cloud_candidate(red: int, green: int, blue: int) -> bool:
+    return min(red, green, blue) >= 165 and max(red, green, blue) - min(
+        red, green, blue
+    ) <= 55
+
+
+def _cloud_warp_palettes():
+    return (
+        ("dark", _is_dark_cloud_candidate),
+        ("bright", _is_bright_cloud_candidate),
+        ("blue", _is_warp_blue),
+        ("purple", _is_warp_purple),
+    )
 
 
 def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
@@ -5173,18 +6509,512 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
             continue
         # Reject skinny walljump-like fragments and scattered UI text.
         ratio = box.width / max(1, box.height)
-        if ratio < 0.65 or ratio > 1.45:
+        # The JTool warp sprite is nominally square.  Keep modest capture
+        # distortion, but reject elongated spike diamonds and UI fragments.
+        if ratio < 0.78 or ratio > 1.27:
             continue
         has_dark_core = _has_dark_portal_core(image, box)
         if not has_dark_core and not (allow_tinted_warp and density >= 0.45):
+            continue
+        # A colored warp is a hollow spiral/ring.  Bright spike diamonds,
+        # saves with an overlapping player, and other compact foreground
+        # sprites can share the same blue/purple shadow colors and even have
+        # a dark center, but they fill the middle of their component.  Keep
+        # this shape gate palette-independent so unfamiliar purple tilesets
+        # do not turn those sprites into warps.
+        if _component_center_fill_ratio(box, pixels) > 0.22:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         score = min(1.0, density * 2.0 + colored / 500)
         if score < 0.55:
             continue
         detections.append(Detection("warp", OBJ_WARP, map_x, map_y, score, box))
+    detections.extend(_detect_haloed_red_warps(image, room, grid_step))
+    detections.extend(_detect_filled_cloud_warps(image, room, grid_step))
+    detections.extend(_detect_outline_cloud_warps(image, room, grid_step))
+    detections.extend(_detect_dark_silhouette_warps(image, room, grid_step))
     detections.extend(_detect_outline_warps(image, room, grid_step))
     return _dedupe_detections(detections)
+
+
+def _detect_filled_cloud_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recognize the filled cloud portal by normalized silhouette topology.
+
+    This warp family appears as white, black, blue, and purple fills across
+    different games.  Color is used only to isolate a connected foreground
+    component; the decision itself is made from scale-normalized shape, run
+    topology, fill, and isolation from a same-palette field.
+    """
+
+    detections: list[Detection] = []
+    seen_components: set[tuple[int, int, int, int]] = set()
+    for palette_name, predicate in _cloud_warp_palettes():
+        for box, pixels in _connected_components(image, room, predicate):
+            component_key = (box.x, box.y, box.width, box.height)
+            if component_key in seen_components:
+                continue
+            map_width = box.width * ROOM_WIDTH / max(1, room.width)
+            map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+            fill = len(pixels) / max(1, box.area)
+            row_multi, column_multi, run_sum = _component_run_topology(box, pixels)
+            center_fill = _component_center_fill_ratio(box, pixels)
+            silhouette_iou = _component_silhouette_iou(
+                box,
+                pixels,
+                _FILLED_CLOUD_WARP_TEMPLATE_16,
+            )
+            ring_share = _component_ring_predicate_share(
+                image,
+                room,
+                box,
+                predicate,
+                margin=5,
+            )
+            if not _is_filled_cloud_warp_metrics(
+                map_width=map_width,
+                map_height=map_height,
+                fill=fill,
+                row_multi=row_multi,
+                column_multi=column_multi,
+                run_sum=run_sum,
+                center_fill=center_fill,
+                silhouette_iou=silhouette_iou,
+                ring_share=ring_share,
+            ):
+                continue
+            map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            detections.append(
+                Detection(
+                    f"warp_filled_cloud_{palette_name}",
+                    OBJ_WARP,
+                    map_x,
+                    map_y,
+                    min(0.96, 0.76 + silhouette_iou * 0.20),
+                    box,
+                )
+            )
+            seen_components.add(component_key)
+    return _dedupe_detections(detections, min_distance=20)
+
+
+def _detect_outline_cloud_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recognize a cloud-shaped void enclosed by a contrasting contour.
+
+    The inner component and the far exterior share a palette, while the
+    immediate ring is interrupted by the outline.  This relative enclosure
+    test works under light/dark inversion and does not confuse the articulated
+    outline used by several player skins with a portal.
+    """
+
+    detections: list[Detection] = []
+    seen_components: set[tuple[int, int, int, int]] = set()
+    for palette_name, predicate in _cloud_warp_palettes():
+        for box, pixels in _connected_components(image, room, predicate):
+            component_key = (box.x, box.y, box.width, box.height)
+            if component_key in seen_components:
+                continue
+            map_width = box.width * ROOM_WIDTH / max(1, room.width)
+            map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+            fill = len(pixels) / max(1, box.area)
+            row_multi, column_multi, run_sum = _component_run_topology(box, pixels)
+            center_fill = _component_center_fill_ratio(box, pixels)
+            silhouette_iou = _component_silhouette_iou(
+                box,
+                pixels,
+                _FILLED_CLOUD_WARP_TEMPLATE_16,
+            )
+            inner_ring_share, outer_ring_share = (
+                _component_ring_band_predicate_shares(
+                    image,
+                    room,
+                    box,
+                    predicate,
+                    inner_margin=2,
+                    outer_margin=7,
+                )
+            )
+            if not _is_outline_cloud_warp_metrics(
+                map_width=map_width,
+                map_height=map_height,
+                fill=fill,
+                row_multi=row_multi,
+                column_multi=column_multi,
+                run_sum=run_sum,
+                center_fill=center_fill,
+                silhouette_iou=silhouette_iou,
+                inner_ring_share=inner_ring_share,
+                outer_ring_share=outer_ring_share,
+            ):
+                continue
+            map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            detections.append(
+                Detection(
+                    f"warp_outline_cloud_{palette_name}",
+                    OBJ_WARP,
+                    map_x,
+                    map_y,
+                    min(0.94, 0.74 + silhouette_iou * 0.20),
+                    box,
+                )
+            )
+            seen_components.add(component_key)
+    return _dedupe_detections(detections, min_distance=20)
+
+
+def _is_outline_cloud_warp_metrics(
+    *,
+    map_width: float,
+    map_height: float,
+    fill: float,
+    row_multi: float,
+    column_multi: float,
+    run_sum: float,
+    center_fill: float,
+    silhouette_iou: float,
+    inner_ring_share: float,
+    outer_ring_share: float,
+) -> bool:
+    aspect = map_width / max(0.1, map_height)
+    return (
+        17 <= map_width <= 23
+        and 19 <= map_height <= 23
+        and 0.80 <= aspect <= 1.08
+        and 0.68 <= fill <= 0.78
+        and row_multi <= 0.18
+        and column_multi <= 0.22
+        and 2.10 <= run_sum <= 2.40
+        and center_fill >= 0.96
+        and silhouette_iou >= 0.81
+        and inner_ring_share <= 0.40
+        and outer_ring_share >= 0.70
+        and outer_ring_share - inner_ring_share >= 0.35
+    )
+
+
+def _is_filled_cloud_warp_metrics(
+    *,
+    map_width: float,
+    map_height: float,
+    fill: float,
+    row_multi: float,
+    column_multi: float,
+    run_sum: float,
+    center_fill: float,
+    silhouette_iou: float,
+    ring_share: float,
+) -> bool:
+    aspect = map_width / max(0.1, map_height)
+    return (
+        17 <= map_width <= 30
+        and 18 <= map_height <= 30
+        and 0.78 <= aspect <= 1.22
+        and 0.65 <= fill <= 0.82
+        and row_multi <= 0.30
+        and column_multi <= 0.30
+        and 1.80 <= run_sum <= 2.80
+        and center_fill >= 0.90
+        and silhouette_iou >= 0.82
+        and ring_share <= 0.15
+    )
+
+
+def _component_silhouette_iou(
+    box: Box,
+    pixels: list[tuple[int, int]],
+    template: tuple[int, ...],
+) -> float:
+    """Compare a component to a fixed square bit-mask after bbox scaling."""
+
+    sample = len(template)
+    if sample == 0 or box.width <= 0 or box.height <= 0:
+        return 0.0
+    source = set(pixels)
+    rows: list[int] = []
+    for sample_y in range(sample):
+        row = 0
+        for sample_x in range(sample):
+            image_x = min(
+                box.right - 1,
+                box.x + int((sample_x + 0.5) * box.width / sample),
+            )
+            image_y = min(
+                box.bottom - 1,
+                box.y + int((sample_y + 0.5) * box.height / sample),
+            )
+            if (image_x, image_y) in source:
+                row |= 1 << sample_x
+        rows.append(row)
+    intersection = sum(
+        (actual & expected).bit_count()
+        for actual, expected in zip(rows, template)
+    )
+    union = sum(
+        (actual | expected).bit_count()
+        for actual, expected in zip(rows, template)
+    )
+    return intersection / max(1, union)
+
+
+def _component_ring_predicate_share(
+    image: RGBImage,
+    room: Box,
+    box: Box,
+    predicate,
+    *,
+    margin: int,
+) -> float:
+    """Measure whether a component is isolated from its candidate palette."""
+
+    margin_x = max(1, round(margin * room.width / ROOM_WIDTH))
+    margin_y = max(1, round(margin * room.height / ROOM_HEIGHT))
+    left = max(room.x, box.x - margin_x)
+    top = max(room.y, box.y - margin_y)
+    right = min(room.right, box.right + margin_x)
+    bottom = min(room.bottom, box.bottom + margin_y)
+    total = matching = 0
+    for y in range(top, bottom):
+        for x in range(left, right):
+            if box.x <= x < box.right and box.y <= y < box.bottom:
+                continue
+            total += 1
+            matching += int(predicate(*image.pixel(x, y)))
+    return matching / max(1, total)
+
+
+def _component_ring_band_predicate_shares(
+    image: RGBImage,
+    room: Box,
+    box: Box,
+    predicate,
+    *,
+    inner_margin: int,
+    outer_margin: int,
+) -> tuple[float, float]:
+    """Return candidate-palette shares immediately and farther around a box."""
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    inner_x = max(1, round(inner_margin * scale_x))
+    inner_y = max(1, round(inner_margin * scale_y))
+    outer_x = max(inner_x + 1, round(outer_margin * scale_x))
+    outer_y = max(inner_y + 1, round(outer_margin * scale_y))
+    left = max(room.x, box.x - outer_x)
+    top = max(room.y, box.y - outer_y)
+    right = min(room.right, box.right + outer_x)
+    bottom = min(room.bottom, box.bottom + outer_y)
+    totals = [0, 0]
+    matches = [0, 0]
+    for y in range(top, bottom):
+        for x in range(left, right):
+            if box.x <= x < box.right and box.y <= y < box.bottom:
+                continue
+            delta_x = max(box.x - x, x - box.right + 1, 0)
+            delta_y = max(box.y - y, y - box.bottom + 1, 0)
+            band = 0 if delta_x <= inner_x and delta_y <= inner_y else 1
+            totals[band] += 1
+            matches[band] += int(predicate(*image.pixel(x, y)))
+    return (
+        matches[0] / max(1, totals[0]),
+        matches[1] / max(1, totals[1]),
+    )
+
+
+def _detect_haloed_red_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recognize palette-swapped red portal orbs without stealing apples.
+
+    A red warp core can satisfy the apple palette exactly. Its surrounding
+    circular halo, however, crosses the outer band of a normalized 32px patch
+    while the divided core remains less center-heavy than an apple sprite.
+    """
+
+    detections: list[Detection] = []
+    for box, pixels in _connected_components(image, room, _is_apple_red):
+        if not (12 <= box.width <= 28 and 12 <= box.height <= 28):
+            continue
+        ratio = box.width / max(1, box.height)
+        if not (0.65 <= ratio <= 1.45):
+            continue
+        if len(pixels) / max(1, box.area) < 0.50:
+            continue
+        center_x, center_y = _image_box_to_jtool_center(box, room, grid_step)
+        features = _patch_features(
+            image,
+            room,
+            center_x - GRID_SIZE // 2,
+            center_y - GRID_SIZE // 2,
+            GRID_SIZE,
+        )
+        if not _is_haloed_red_warp_patch(features):
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        detections.append(
+            Detection(
+                "warp_haloed_red_orb",
+                OBJ_WARP,
+                map_x,
+                map_y,
+                0.91,
+                box,
+            )
+        )
+    return detections
+
+
+def _is_haloed_red_warp_patch(features: _PatchFeatures) -> bool:
+    return (
+        features.edge_density >= 0.28
+        and features.center_score <= 0.42
+        and features.border_score >= 0.20
+    )
+
+
+def _detect_dark_silhouette_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recognize compact portal silhouettes under an unfamiliar dark palette."""
+
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: max(r, g, b) <= 80 and max(r, g, b) - min(r, g, b) <= 25,
+    )
+    detections: list[Detection] = []
+    for box, pixels in components:
+        map_width = box.width * ROOM_WIDTH / max(1, room.width)
+        map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+        aspect = map_width / max(0.1, map_height)
+        fill = len(pixels) / max(1, box.area)
+        if not (
+            22 <= map_width <= 34
+            and 22 <= map_height <= 34
+            and 0.80 <= aspect <= 1.25
+            and 0.58 <= fill <= 0.86
+        ):
+            continue
+
+        ring_luminance, ring_dark_share = _component_ring_luminance(
+            image,
+            room,
+            box,
+            margin=5,
+        )
+        if ring_luminance is None:
+            continue
+        component_luminance = sum(
+            (30 * image.pixel(x, y)[0]
+             + 59 * image.pixel(x, y)[1]
+             + 11 * image.pixel(x, y)[2])
+            / 100
+            for x, y in pixels
+        ) / len(pixels)
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        patch = _patch_features(image, room, map_x, map_y, GRID_SIZE)
+        row_multi, column_multi, run_sum = _component_run_topology(box, pixels)
+        center_fill = _component_center_fill_ratio(box, pixels)
+        if not _is_dark_silhouette_warp_metrics(
+            map_width=map_width,
+            map_height=map_height,
+            fill=fill,
+            contrast=ring_luminance - component_luminance,
+            ring_dark_share=ring_dark_share,
+            patch=patch,
+            row_multi=row_multi,
+            column_multi=column_multi,
+            run_sum=run_sum,
+            center_fill=center_fill,
+        ):
+            continue
+        detections.append(
+            Detection(
+                "warp_dark_silhouette",
+                OBJ_WARP,
+                map_x,
+                map_y,
+                0.92,
+                box,
+            )
+        )
+    return detections
+
+
+def _component_ring_luminance(
+    image: RGBImage,
+    room: Box,
+    box: Box,
+    *,
+    margin: int,
+) -> tuple[float | None, float]:
+    """Return median ring luminance and near-neutral dark share around a box."""
+
+    margin_x = max(1, round(margin * room.width / ROOM_WIDTH))
+    margin_y = max(1, round(margin * room.height / ROOM_HEIGHT))
+    left = max(room.x, box.x - margin_x)
+    top = max(room.y, box.y - margin_y)
+    right = min(room.right, box.right + margin_x)
+    bottom = min(room.bottom, box.bottom + margin_y)
+    colors = [
+        image.pixel(x, y)
+        for y in range(top, bottom)
+        for x in range(left, right)
+        if not (box.x <= x < box.right and box.y <= y < box.bottom)
+    ]
+    if not colors:
+        return None, 1.0
+    luminance = [
+        (30 * red + 59 * green + 11 * blue) / 100
+        for red, green, blue in colors
+    ]
+    dark_share = sum(
+        max(color) <= 80 and max(color) - min(color) <= 25
+        for color in colors
+    ) / len(colors)
+    return median(luminance), dark_share
+
+
+def _is_dark_silhouette_warp_metrics(
+    *,
+    map_width: float,
+    map_height: float,
+    fill: float,
+    contrast: float,
+    ring_dark_share: float,
+    patch: _PatchFeatures,
+    row_multi: float,
+    column_multi: float,
+    run_sum: float,
+    center_fill: float,
+) -> bool:
+    """Pure morphology gate for a filled, high-contrast portal silhouette."""
+
+    aspect = map_width / max(0.1, map_height)
+    return (
+        22 <= map_width <= 34
+        and 22 <= map_height <= 34
+        and 0.80 <= aspect <= 1.25
+        and 0.58 <= fill <= 0.86
+        and contrast >= 120
+        and ring_dark_share <= 0.12
+        and patch.border_score >= 0.35
+        and patch.center_score <= 0.15
+        and row_multi <= 0.30
+        and column_multi <= 0.30
+        and 1.6 <= run_sum <= 3.2
+        and center_fill >= 0.80
+    )
 
 
 def _detect_outline_warps(
@@ -5198,34 +7028,230 @@ def _detect_outline_warps(
         lambda r, g, b: min(r, g, b) > 165 and max(r, g, b) - min(r, g, b) < 55,
     )
     candidates = [(box, pixels, False) for box, pixels in components]
+    merge_gap = max(
+        1,
+        round(
+            2
+            * max(
+                room.width / ROOM_WIDTH,
+                room.height / ROOM_HEIGHT,
+            )
+        ),
+    )
     candidates.extend(
         (box, pixels, True)
-        for box, pixels in _merge_nearby_outline_components(components, max_gap=8)
+        for box, pixels in _merge_nearby_outline_components(
+            components,
+            room,
+            max_gap=merge_gap,
+        )
     )
     detections: list[Detection] = []
     for box, pixels, merged in candidates:
-        if not (24 <= box.width <= 70 and 24 <= box.height <= 70):
-            continue
-        if _looks_like_outline_save(image, box):
-            continue
-        ratio = box.width / max(1, box.height)
-        density = len(pixels) / box.area
-        minimum_ratio, maximum_ratio = (0.72, 1.35) if merged else (0.78, 1.28)
-        minimum_density = 0.12 if merged else 0.20
-        if not (
-            minimum_ratio <= ratio <= maximum_ratio
-            and minimum_density <= density <= 0.68
+        if not _is_nested_outline_spiral(
+            image,
+            room,
+            box,
+            pixels,
+            fragmented=merged,
         ):
-            continue
-        if _component_center_fill_ratio(box, pixels) > 0.72:
-            continue
-        if _local_significant_color_buckets(image, box, margin=10) > 22:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         detections.append(
-            Detection("warp_outline", OBJ_WARP, map_x, map_y, 0.78, box)
+            Detection(
+                "warp_outline_fragmented" if merged else "warp_outline",
+                OBJ_WARP,
+                map_x,
+                map_y,
+                0.82 if merged else 0.86,
+                box,
+            )
         )
-    return detections
+    detections.extend(
+        _detect_two_piece_outline_warps(
+            image,
+            room,
+            grid_step,
+            components,
+        )
+    )
+    return _dedupe_detections(detections, min_distance=24)
+
+
+def _is_nested_outline_spiral(
+    image: RGBImage,
+    room: Box,
+    box: Box,
+    pixels: list[tuple[int, int]],
+    *,
+    fragmented: bool,
+) -> bool:
+    """Recognize a warp from repeated nested strokes rather than its color."""
+
+    map_width = box.width * ROOM_WIDTH / max(1, room.width)
+    map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+    ratio = map_width / max(0.1, map_height)
+    density = len(pixels) / max(1, box.area)
+    minimum_density = 0.10 if fragmented else 0.20
+    if not (
+        29 <= map_width <= 52
+        and 29 <= map_height <= 52
+        and 0.65 <= ratio <= 1.45
+        and minimum_density <= density <= 0.68
+    ):
+        return False
+    row_multi, column_multi, run_sum = _component_run_topology(box, pixels)
+    if (
+        row_multi < 0.70
+        or column_multi < 0.70
+        or run_sum < 6.10
+        or _local_significant_color_buckets(image, box, margin=10) > 22
+    ):
+        return False
+    # A true outlined save has long rectangular strokes but not the deeper
+    # repeated turns of a spiral.  Only the stronger nested topology may
+    # override the save classifier.
+    if _looks_like_outline_save(image, box):
+        return min(map_width, map_height) >= 30 and run_sum >= 7.0
+    return True
+
+
+def _component_run_topology(
+    box: Box,
+    pixels: list[tuple[int, int]],
+) -> tuple[float, float, float]:
+    """Return repeated-run coverage on both axes and the mean run sum."""
+
+    pixel_set = set(pixels)
+
+    def count_runs(values: list[int]) -> int:
+        if not values:
+            return 0
+        ordered = sorted(values)
+        return 1 + sum(
+            current > previous + 1
+            for previous, current in zip(ordered, ordered[1:])
+        )
+
+    row_runs = [
+        count_runs([x for x in range(box.x, box.right) if (x, y) in pixel_set])
+        for y in range(box.y, box.bottom)
+    ]
+    column_runs = [
+        count_runs([y for y in range(box.y, box.bottom) if (x, y) in pixel_set])
+        for x in range(box.x, box.right)
+    ]
+    row_multi = sum(runs >= 2 for runs in row_runs) / max(1, box.height)
+    column_multi = sum(runs >= 2 for runs in column_runs) / max(1, box.width)
+    run_sum = (
+        sum(row_runs) / max(1, len(row_runs))
+        + sum(column_runs) / max(1, len(column_runs))
+    )
+    return row_multi, column_multi, run_sum
+
+
+def _detect_two_piece_outline_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    components: list[tuple[Box, list[tuple[int, int]]]],
+) -> list[Detection]:
+    """Recover a spiral split into two outer arcs by an occluding tile."""
+
+    gap = max(
+        1,
+        round(
+            6.5
+            * max(
+                room.width / ROOM_WIDTH,
+                room.height / ROOM_HEIGHT,
+            )
+        ),
+    )
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    eligible = [
+        component
+        for component in components
+        if component[0].width * scale_x <= 48
+        and component[0].height * scale_y <= 48
+        and component[0].area <= 1800
+    ]
+    detections: list[Detection] = []
+    for index, (first_box, first_pixels) in enumerate(eligible):
+        for second_box, second_pixels in eligible[index + 1 :]:
+            if not _boxes_within_gap(first_box, second_box, gap):
+                continue
+            pixels = list({*first_pixels, *second_pixels})
+            min_x = min(x for x, _ in pixels)
+            min_y = min(y for _, y in pixels)
+            max_x = max(x for x, _ in pixels)
+            max_y = max(y for _, y in pixels)
+            box = Box(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+            map_width = box.width * scale_x
+            map_height = box.height * scale_y
+            short_axis = min(map_width, map_height)
+            long_axis = max(map_width, map_height)
+            density = len(pixels) / max(1, box.area)
+            if not (
+                28 <= short_axis <= 38
+                and 36 <= long_axis <= 48
+                and 1.15 <= long_axis / max(0.1, short_axis) <= 1.50
+                and 0.07 <= density <= 0.16
+            ):
+                continue
+            center_fill = _component_center_fill_ratio(box, pixels)
+            inner_fraction, outer_fraction = _component_radial_pixel_fractions(
+                box,
+                pixels,
+            )
+            row_multi, column_multi, _run_sum = _component_run_topology(
+                box,
+                pixels,
+            )
+            if not (
+                center_fill <= 0.06
+                and inner_fraction <= 0.04
+                and outer_fraction >= 0.90
+                and min(row_multi, column_multi) >= 0.45
+                and max(row_multi, column_multi) >= 0.85
+                and _local_significant_color_buckets(image, box, margin=10) <= 22
+            ):
+                continue
+            map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            detections.append(
+                Detection(
+                    "warp_outline_two_piece",
+                    OBJ_WARP,
+                    map_x,
+                    map_y,
+                    0.80,
+                    box,
+                )
+            )
+    return _dedupe_detections(detections, min_distance=24)
+
+
+def _component_radial_pixel_fractions(
+    box: Box,
+    pixels: list[tuple[int, int]],
+) -> tuple[float, float]:
+    """Return bright-pixel fractions in the inner and outer ellipse zones."""
+
+    if not pixels:
+        return 0.0, 0.0
+    center_x = (box.x + box.right - 1) / 2
+    center_y = (box.y + box.bottom - 1) / 2
+    radius_x = max(1, box.width / 2)
+    radius_y = max(1, box.height / 2)
+    normalized_distances = [
+        ((x - center_x) / radius_x) ** 2
+        + ((y - center_y) / radius_y) ** 2
+        for x, y in pixels
+    ]
+    inner = sum(distance < 0.16 for distance in normalized_distances)
+    outer = sum(distance > 0.49 for distance in normalized_distances)
+    return inner / len(pixels), outer / len(pixels)
 
 
 def _looks_like_outline_save(image: RGBImage, box: Box) -> bool:
@@ -5248,7 +7274,7 @@ def _looks_like_outline_save(image: RGBImage, box: Box) -> bool:
             columns[x - box.x] += 1
     if (
         len(pixels) / box.area > 0.68
-        or _component_center_fill_ratio(box, pixels) > 0.72
+        or _component_center_fill_ratio(box, pixels) > 0.50
     ):
         return False
     full_rows = sum(count >= box.width * 0.80 for count in rows)
@@ -5275,11 +7301,20 @@ def _local_significant_color_buckets(image: RGBImage, box: Box, margin: int) -> 
 
 def _merge_nearby_outline_components(
     components: list[tuple[Box, list[tuple[int, int]]]],
+    room: Box,
     max_gap: int,
 ) -> list[tuple[Box, list[tuple[int, int]]]]:
     """Join fragmented strokes before applying the closed-outline warp gates."""
 
-    eligible = [component for component in components if component[0].area <= 1400]
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    eligible = [
+        component
+        for component in components
+        if component[0].width * scale_x <= 52
+        and component[0].height * scale_y <= 52
+        and component[0].area <= 1800
+    ]
     groups: list[set[int]] = []
     for index, (box, _) in enumerate(eligible):
         touching = []
@@ -5315,7 +7350,7 @@ def _merge_nearby_outline_components(
         max_x = max(pixel[0] for pixel in pixels)
         max_y = max(pixel[1] for pixel in pixels)
         box = Box(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
-        if box.width <= 70 and box.height <= 70:
+        if box.width * scale_x <= 52 and box.height * scale_y <= 52:
             merged_components.append((box, pixels))
     return merged_components
 
@@ -5338,7 +7373,17 @@ def _detect_color_objects(
     detections: list[Detection] = []
     detections.extend(_detect_apples(image, room, grid_step, anchors))
     detections.extend(_detect_walljumps(image, room, grid_step, anchors + detections))
-    detections.extend(_detect_water(image, room, grid_step, anchors + detections))
+    non_water_anchors = anchors + detections
+    water = _detect_water(image, room, grid_step, non_water_anchors)
+    detections.extend(water)
+    detections.extend(
+        _detect_water_tinted_apples(
+            image,
+            room,
+            non_water_anchors,
+            water,
+        )
+    )
     detections.extend(_detect_gravity_flippers(image, room))
     refreshers = _detect_jump_refreshers(image, room, grid_step)
     if refreshers:
@@ -5352,7 +7397,32 @@ def _detect_color_objects(
             )
         ]
         detections.extend(refreshers)
+        # The gravity detector deliberately requires a repeated pair in both
+        # directions.  Refresher arbitration can remove the blue circular
+        # impostors that supplied one side of that pair; do not leave the
+        # remaining orange triggers or stars behind as orphan flippers.
+        detections = _prune_orphan_gravity_flippers(detections)
     return detections
+
+
+def _prune_orphan_gravity_flippers(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Keep gravity arrows only while both repeated directions remain."""
+
+    remaining_gravity_up = sum(
+        detection.type_id == OBJ_GRAVITY_UP for detection in detections
+    )
+    remaining_gravity_down = sum(
+        detection.type_id == OBJ_GRAVITY_DOWN for detection in detections
+    )
+    if remaining_gravity_up >= 2 and remaining_gravity_down >= 2:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in (OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN)
+    ]
 
 
 def _detect_jump_refreshers(
@@ -5370,12 +7440,18 @@ def _detect_jump_refreshers(
             continue
         for box, pixels in _connected_components(image, room, predicate):
             if index == 0:
+                map_width = box.width * ROOM_WIDTH / max(1, room.width)
+                map_height = box.height * ROOM_HEIGHT / max(1, room.height)
                 valid = (
                     18 <= box.width <= 40
                     and 18 <= box.height <= 40
+                    and 14 <= map_width <= 24
+                    and 14 <= map_height <= 24
                     and 0.65 <= box.width / max(1, box.height) <= 1.45
                     and len(pixels) / box.area >= 0.65
                     and _component_center_fill_ratio(box, pixels) >= 0.95
+                    and _component_corner_fill_ratio(box, pixels) <= 0.40
+                    and _component_blue_halo_ratio(image, box, pixels) <= 1.35
                 )
                 kind = "jump_refresher_blue"
             else:
@@ -5388,7 +7464,14 @@ def _detect_jump_refreshers(
                 kind = "jump_refresher_neutral"
             if valid:
                 candidates.append((box, pixels, kind))
-    if len(candidates) < 4:
+    # A sharply bounded blue refresher is distinctive even when a room has
+    # only one or two of them.  Neutral sprites remain more ambiguous and
+    # retain the repeated-instance requirement.  The halo gate above rejects
+    # diffuse cyan particle blooms such as Zero_Final's bottom-center glow.
+    if (
+        not any(kind == "jump_refresher_blue" for _, _, kind in candidates)
+        and len(candidates) < 4
+    ):
         return []
     detections = []
     for box, pixels, kind in candidates:
@@ -5416,6 +7499,45 @@ def _component_center_fill_ratio(box: Box, pixels: list[tuple[int, int]]) -> flo
     return sum(center.contains(x, y) for x, y in pixels) / center.area
 
 
+def _component_corner_fill_ratio(
+    box: Box,
+    pixels: list[tuple[int, int]],
+) -> float:
+    """Return the filled fraction of four corner quarters of a component box."""
+
+    quarter_width = max(1, box.width // 4)
+    quarter_height = max(1, box.height // 4)
+    filled = sum(
+        (
+            x < box.x + quarter_width
+            or x >= box.right - quarter_width
+        )
+        and (
+            y < box.y + quarter_height
+            or y >= box.bottom - quarter_height
+        )
+        for x, y in pixels
+    )
+    return filled / (4 * quarter_width * quarter_height)
+
+
+def _component_blue_halo_ratio(
+    image: RGBImage,
+    box: Box,
+    pixels: list[tuple[int, int]],
+) -> float:
+    """Measure diffuse cyan surrounding a compact blue sprite component."""
+
+    if not pixels:
+        return float("inf")
+    broad_blue = 0
+    for y in range(max(0, box.y - 2), min(image.height, box.bottom + 2)):
+        for x in range(max(0, box.x - 2), min(image.width, box.right + 2)):
+            red, green, blue = image.pixel(x, y)
+            broad_blue += green > red + 40 and blue > red + 50
+    return broad_blue / len(pixels)
+
+
 def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
     """Detect the standard arrow-shaped gravity flippers.
 
@@ -5425,6 +7547,8 @@ def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
     """
 
     detections: list[Detection] = []
+    weak_detections: list[Detection] = []
+    broad_detections: list[Detection] = []
     classes = (
         (
             "gravity_up",
@@ -5450,26 +7574,76 @@ def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
                     predicate,
                     points_down,
                 )
-                if colored < 30 or colored > 150 or score < 0.60:
+                if colored < 30 or colored > 170 or score < 0.50:
                     continue
-                detections.append(
-                    _grid_detection(
-                        kind,
-                        type_id,
-                        x,
-                        y,
-                        score,
-                        image,
-                        room,
-                        GRID_SIZE,
-                    )
+                detection = _grid_detection(
+                    kind,
+                    type_id,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
                 )
+                weak_detections.append(detection)
+                if score >= 0.60:
+                    broad_detections.append(detection)
+                    if colored <= 150:
+                        detections.append(detection)
     detections = _dedupe_detections(detections, min_distance=24)
     up_count = sum(detection.type_id == OBJ_GRAVITY_UP for detection in detections)
     down_count = sum(detection.type_id == OBJ_GRAVITY_DOWN for detection in detections)
-    if up_count < 2 or down_count < 2:
-        return []
-    return detections
+    if up_count >= 2 and down_count >= 2:
+        return detections
+
+    # A palette-muted member of an otherwise repeated 2+2 arrow family can
+    # fall just below the ordinary template threshold. Recover only the one
+    # missing direction needed to complete that repeated structure.
+    if (up_count == 2 and down_count == 1) or (down_count == 2 and up_count == 1):
+        missing_type = OBJ_GRAVITY_DOWN if down_count == 1 else OBJ_GRAVITY_UP
+        candidates = [
+            detection
+            for detection in _dedupe_detections(weak_detections, min_distance=24)
+            if detection.type_id == missing_type
+            and not any(
+                existing.type_id == missing_type
+                and distance(
+                    (existing.x, existing.y),
+                    (detection.x, detection.y),
+                )
+                < 24
+                for existing in detections
+            )
+        ]
+        if candidates:
+            detections.append(max(candidates, key=lambda item: item.score))
+            return detections
+
+    broad = _dedupe_detections(broad_detections, min_distance=24)
+    up = [item for item in broad if item.type_id == OBJ_GRAVITY_UP]
+    down = [item for item in broad if item.type_id == OBJ_GRAVITY_DOWN]
+    if up and down:
+        best_up = max(up, key=lambda item: item.score)
+        best_down = max(down, key=lambda item: item.score)
+        if _is_distinctive_singleton_gravity_pair(best_up, best_down):
+            return [best_up, best_down]
+    return []
+
+
+def _is_distinctive_singleton_gravity_pair(
+    up: Detection,
+    down: Detection,
+) -> bool:
+    edge_positions = (up, down)
+    touches_edge = any(
+        detection.x <= MINI_BLOCK_SIZE
+        or detection.x >= ROOM_WIDTH - GRID_SIZE - MINI_BLOCK_SIZE
+        or detection.y <= MINI_BLOCK_SIZE
+        or detection.y >= ROOM_HEIGHT - GRID_SIZE - MINI_BLOCK_SIZE
+        for detection in edge_positions
+    )
+    return min(up.score, down.score) >= 0.65 and touches_edge
 
 
 def _arrow_color_shape_score(
@@ -5525,15 +7699,206 @@ def _detect_apples(
         if ratio < 0.65 or ratio > 1.45:
             continue
         density = len(pixels) / box.area
-        if density < 0.50:
+        # A true apple's warm body is compact even across the observed CN3
+        # palettes.  Save-block emblems can have the same hue and bounding
+        # size, but break into substantially sparser fragments (notably
+        # NANG-11), so density is a palette-independent discriminator here.
+        if density < APPLE_MIN_RED_BODY_DENSITY:
             continue
         map_x, map_y = _image_box_to_jtool_center(box, room, grid_step)
         if _near_anchor(map_x, map_y, anchors, max_distance=40):
             continue
         score = min(1.0, density * 1.35)
+        if _is_weak_room_corner_apple(map_x, map_y, score):
+            continue
         detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
     detections.extend(_detect_outline_apples(image, room, grid_step, anchors + detections))
-    return _dedupe_detections(detections, min_distance=20)
+    # Apples can intentionally overlap in compact obstacle clusters.  A 20px
+    # radius collapsed the three distinct sprites at the top of CN3-27; the
+    # red component pass already yields one candidate per sprite, so a small
+    # radius is sufficient to merge only alternate routes for the same apple.
+    return _dedupe_detections(detections, min_distance=APPLE_DEDUPE_DISTANCE)
+
+
+def _detect_water_tinted_apples(
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection],
+    water: list[Detection],
+) -> list[Detection]:
+    """Recover apples whose palette is shifted or split by a water overlay.
+
+    Water can move every apple pixel away from the absolute red predicate, and
+    a hard overlay boundary can leave only half of the warm body visible.  A
+    broad *relative* warm-color component is therefore used only as a search
+    seed.  Acceptance depends on the normalized JTool apple contour, compact
+    edge topology, and independently detected nearby water.  This keeps the
+    rule transferable across water colors without turning arbitrary terrain
+    edges into apples.
+    """
+
+    if not water:
+        return []
+    detections: list[Detection] = []
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    for box, pixels in _connected_components(
+        image,
+        room,
+        _is_relative_warm_apple_seed_color,
+    ):
+        map_width = box.width / max(scale_x, 1e-6)
+        map_height = box.height / max(scale_y, 1e-6)
+        density = len(pixels) / max(1, box.area)
+        if not (
+            WATER_TINTED_APPLE_SEED_MIN_MAP_WIDTH
+            <= map_width
+            <= WATER_TINTED_APPLE_SEED_MAX_MAP_WIDTH
+            and WATER_TINTED_APPLE_SEED_MIN_MAP_HEIGHT
+            <= map_height
+            <= WATER_TINTED_APPLE_SEED_MAX_MAP_HEIGHT
+            and WATER_TINTED_APPLE_SEED_MIN_ASPECT
+            <= map_width / max(1, map_height)
+            <= WATER_TINTED_APPLE_SEED_MAX_ASPECT
+            and density >= WATER_TINTED_APPLE_SEED_MIN_DENSITY
+        ):
+            continue
+        seed_x, seed_y = _image_box_to_jtool_center(
+            box,
+            room,
+            WATER_TINTED_APPLE_ALIGNMENT_STEP,
+        )
+        best: tuple[float, int, int, _PatchFeatures] | None = None
+        for map_y in range(
+            max(GRID_SIZE // 2, seed_y - MINI_BLOCK_SIZE),
+            min(ROOM_HEIGHT - GRID_SIZE // 2, seed_y + MINI_BLOCK_SIZE) + 1,
+            WATER_TINTED_APPLE_ALIGNMENT_STEP,
+        ):
+            for map_x in range(
+                max(GRID_SIZE // 2, seed_x - MINI_BLOCK_SIZE),
+                min(ROOM_WIDTH - GRID_SIZE // 2, seed_x + MINI_BLOCK_SIZE) + 1,
+                WATER_TINTED_APPLE_ALIGNMENT_STEP,
+            ):
+                if any(
+                    anchor.type_id == OBJ_APPLE
+                    and distance((map_x, map_y), (anchor.x, anchor.y)) < 4
+                    for anchor in anchors
+                ):
+                    continue
+                if any(
+                    anchor.type_id != OBJ_APPLE
+                    and distance((map_x, map_y), (anchor.x, anchor.y)) < 40
+                    for anchor in anchors
+                ):
+                    continue
+                if not any(
+                    distance((map_x, map_y), (item.x, item.y))
+                    <= WATER_TINTED_APPLE_MAX_WATER_DISTANCE
+                    for item in water
+                ):
+                    continue
+                features = _patch_features(
+                    image,
+                    room,
+                    map_x - GRID_SIZE // 2,
+                    map_y - GRID_SIZE // 2,
+                    GRID_SIZE,
+                )
+                contour_score, support, precision = _apple_contour_metrics(features)
+                if not _is_water_tinted_apple_patch(
+                    features,
+                    support=support,
+                    precision=precision,
+                ):
+                    continue
+                candidate = (contour_score, map_x, map_y, features)
+                if best is None or candidate[0] > best[0]:
+                    best = candidate
+        if best is None:
+            continue
+        contour_score, map_x, map_y, _features = best
+        extent = _geometry_detection(
+            "apple_water_tinted",
+            OBJ_APPLE,
+            map_x - GRID_SIZE // 2,
+            map_y - GRID_SIZE // 2,
+            0.78 + contour_score * 0.20,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        detections.append(
+            Detection(
+                extent.kind,
+                extent.type_id,
+                map_x,
+                map_y,
+                extent.score,
+                extent.image_box,
+            )
+        )
+    return _dedupe_detections(
+        detections,
+        min_distance=APPLE_DEDUPE_DISTANCE,
+    )
+
+
+def _apple_contour_metrics(
+    features: _PatchFeatures,
+) -> tuple[float, float, float]:
+    """Return contour score, support, and local precision for an apple patch."""
+
+    actual = {
+        (x, y)
+        for y in range(16)
+        for x in range(16)
+        if features.edge_mask[y * 16 + x]
+    }
+    local_actual = {
+        (x, y)
+        for x, y in actual
+        if 2 <= x < 15 and 1 <= y < 15
+    }
+    best = (0.0, 0.0, 0.0)
+    for shift_y in (-1, 0, 1):
+        for shift_x in (-1, 0, 1):
+            expected = {
+                (x + shift_x, y + shift_y)
+                for x, y in APPLE_CONTOUR_TEMPLATE
+                if 0 <= x + shift_x < 16 and 0 <= y + shift_y < 16
+            }
+            allowed = {
+                (x + delta_x, y + delta_y)
+                for x, y in expected
+                for delta_x in (-1, 0, 1)
+                for delta_y in (-1, 0, 1)
+                if 0 <= x + delta_x < 16 and 0 <= y + delta_y < 16
+            }
+            support = len(actual & expected) / max(1, len(expected))
+            precision = len(local_actual & allowed) / max(1, len(local_actual))
+            score = support * precision
+            if score > best[0]:
+                best = (score, support, precision)
+    return best
+
+
+def _is_water_tinted_apple_patch(
+    features: _PatchFeatures,
+    *,
+    support: float,
+    precision: float,
+) -> bool:
+    return (
+        support >= WATER_TINTED_APPLE_MIN_CONTOUR_SUPPORT
+        and precision >= WATER_TINTED_APPLE_MIN_CONTOUR_PRECISION
+        and WATER_TINTED_APPLE_MIN_EDGE_DENSITY
+        <= features.edge_density
+        <= WATER_TINTED_APPLE_MAX_EDGE_DENSITY
+        and features.border_score <= WATER_TINTED_APPLE_MAX_BORDER_SCORE
+        and WATER_TINTED_APPLE_MIN_CENTER_SCORE
+        <= features.center_score
+        <= WATER_TINTED_APPLE_MAX_CENTER_SCORE
+    )
 
 
 def _detect_outline_apples(
@@ -5608,7 +7973,28 @@ def _detect_walljumps(
             else _is_walljump_green
         )
         detections.extend(
-            _detect_sparse_walljump_patches(image, room, grid_step, anchors, predicate)
+            _detect_sparse_walljump_patches(
+                image,
+                room,
+                grid_step,
+                anchors,
+                predicate,
+                reject_pastel_terrain=(
+                    light_ratio >= WALLJUMP_SPARSE_BROAD_LIGHT_RATIO
+                ),
+            )
+        )
+    # Some skins draw each vine as a sequence of disconnected, very small
+    # green marks.  A single patch is ambiguous on dark or green terrain, but
+    # the repeated 32-pixel vertical cadence is highly characteristic and is
+    # independent of room brightness or the surrounding tileset.
+    if not detections:
+        detections.extend(
+            _detect_repeated_sparse_walljump_strips(
+                image,
+                room,
+                anchors,
+            )
         )
     return _dedupe_walljumps(detections, min_distance=32)
 
@@ -5619,6 +8005,8 @@ def _detect_sparse_walljump_patches(
     grid_step: int,
     anchors: list[Detection],
     predicate,
+    *,
+    reject_pastel_terrain: bool = False,
 ) -> list[Detection]:
     detections: list[Detection] = []
     step = max(8, grid_step)
@@ -5636,6 +8024,20 @@ def _detect_sparse_walljump_patches(
                 continue
             if side_bias < WALLJUMP_PATCH_MIN_SIDE_BIAS:
                 continue
+            if reject_pastel_terrain:
+                colors = _sample_map_patch_colors(
+                    image,
+                    room,
+                    x,
+                    y,
+                    GRID_SIZE,
+                )
+                pastel_terrain = sum(
+                    _is_pastel_walljump_impostor_color(red, green, blue)
+                    for red, green, blue in colors
+                ) / len(colors)
+                if pastel_terrain >= 0.12:
+                    continue
             if _near_anchor(x, y, anchors, max_distance=40):
                 continue
             type_id = OBJ_WALLJUMP_LEFT if stats.center_x_ratio > 0.5 else OBJ_WALLJUMP_RIGHT
@@ -5644,6 +8046,109 @@ def _detect_sparse_walljump_patches(
             detections.append(
                 _grid_detection(kind, type_id, x, y, score, image, room, GRID_SIZE)
             )
+    return detections
+
+
+def _detect_repeated_sparse_walljump_strips(
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection],
+) -> list[Detection]:
+    light_ratio = _light_sample_ratio(image, room)
+    candidates: defaultdict[tuple[int, int], dict[int, float]] = defaultdict(dict)
+    step = MINI_BLOCK_SIZE
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            stats = _patch_color_stats(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                _is_sparse_walljump_green,
+            )
+            side_bias = abs(stats.center_x_ratio - 0.5)
+            if not (
+                WALLJUMP_STRIP_PATCH_MIN_COUNT
+                <= stats.count
+                <= WALLJUMP_STRIP_PATCH_MAX_COUNT
+                and WALLJUMP_STRIP_PATCH_MIN_DENSITY
+                <= stats.density
+                <= WALLJUMP_STRIP_PATCH_MAX_DENSITY
+                and side_bias >= WALLJUMP_STRIP_PATCH_MIN_SIDE_BIAS
+                and WALLJUMP_STRIP_PATCH_MIN_CENTER_Y
+                <= stats.center_y_ratio
+                <= WALLJUMP_STRIP_PATCH_MAX_CENTER_Y
+            ):
+                continue
+            colors = _sample_map_patch_colors(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+            )
+            pastel_terrain = sum(
+                _is_pastel_walljump_impostor_color(red, green, blue)
+                for red, green, blue in colors
+            ) / len(colors)
+            if pastel_terrain >= 0.12:
+                continue
+            type_id = (
+                OBJ_WALLJUMP_LEFT
+                if stats.center_x_ratio > 0.5
+                else OBJ_WALLJUMP_RIGHT
+            )
+            score = min(0.90, 0.35 + stats.density * 3 + side_bias)
+            candidates[(x, type_id)][y] = score
+
+    detections: list[Detection] = []
+    for (x, type_id), by_y in candidates.items():
+        phases = {
+            phase: sorted(y for y in by_y if y % GRID_SIZE == phase)
+            for phase in (0, MINI_BLOCK_SIZE)
+        }
+        phase = max(
+            phases,
+            key=lambda item: (
+                len(phases[item]),
+                sum(by_y[y] for y in phases[item]),
+            ),
+        )
+        ordered = phases[phase]
+        groups: list[list[int]] = []
+        for y in ordered:
+            if groups and y == groups[-1][-1] + GRID_SIZE:
+                groups[-1].append(y)
+            else:
+                groups.append([y])
+        for group in groups:
+            repeated = len(group) >= WALLJUMP_STRIP_MIN_CELLS
+            if not repeated and not (
+                light_ratio >= WALLJUMP_SINGLE_SPARSE_MIN_LIGHT_RATIO
+                and by_y[group[0]] >= WALLJUMP_SINGLE_SPARSE_MIN_SCORE
+                and not _near_anchor(x, group[0], anchors, max_distance=32)
+            ):
+                continue
+            kind = (
+                "walljump_left_repeated_strip"
+                if type_id == OBJ_WALLJUMP_LEFT
+                else "walljump_right_repeated_strip"
+            )
+            group_score = sum(by_y[y] for y in group) / len(group)
+            for y in group:
+                detections.append(
+                    _grid_detection(
+                        kind,
+                        type_id,
+                        x,
+                        y,
+                        min(0.94, group_score + 0.04),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
     return detections
 
 
@@ -5656,6 +8161,12 @@ def _detect_water(
     del anchors
     room_profile = _room_color_profile(image, room)
     allow_balanced_cyan = _looks_like_warm_tiled_room(image, room)
+    background_water_profile = _background_water_field_profile(
+        image,
+        room,
+        room_profile,
+        allow_balanced_cyan=allow_balanced_cyan,
+    )
     step = max(8, grid_step)
     detections: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
@@ -5665,6 +8176,12 @@ def _detect_water(
                 profile,
                 room_profile,
                 allow_balanced_cyan=allow_balanced_cyan,
+            ):
+                continue
+            if (
+                background_water_profile is not None
+                and _color_profile_distance(profile, background_water_profile)
+                <= 60
             ):
                 continue
             stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
@@ -5700,7 +8217,450 @@ def _detect_water(
     detections.extend(_detect_catharsis_water(image, room, room_profile))
     if allow_balanced_cyan:
         detections.extend(_detect_balanced_cyan_half_width_water(image, room))
+    if background_water_profile is not None:
+        detections.extend(_detect_bounded_cool_water(image, room))
     return _dedupe_water(detections, min_distance=WATER_DEDUPE_DISTANCE)
+
+
+def _background_water_field_profile(
+    image: RGBImage,
+    room: Box,
+    room_profile: _ColorProfile,
+    *,
+    allow_balanced_cyan: bool,
+) -> _ColorProfile | None:
+    """Learn a room-wide background that happens to look water-colored.
+
+    Water has to differ from the scene behind it.  Sky fills and smooth color
+    gradients instead recur along the top boundary at the same horizontal
+    position.  Sampling on the non-overlapping 32px grid makes that distinction
+    without relying on a particular hue. Returning the learned profile instead
+    of a boolean lets the caller subtract only that material; bounded water of
+    another cyan/purple shade can still be detected in the same room.
+    """
+
+    top_profiles = {
+        x: _patch_color_profile(image, room, x, 0, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+    }
+    candidate_profiles: list[tuple[int, int, _ColorProfile, _PatchFeatures]] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            stats = _patch_color_stats(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                _is_water_blue,
+            )
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            if _is_water_patch(
+                stats,
+                features,
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
+                candidate_profiles.append((x, y, profile, features))
+
+    if len(candidate_profiles) < 12:
+        return None
+    continued_profiles = [
+        profile
+        for x, _y, profile, _features in candidate_profiles
+        if _color_profile_distance(profile, top_profiles[x]) <= 35
+    ]
+    if len(continued_profiles) >= len(candidate_profiles) * 0.65:
+        return _median_color_profile(continued_profiles)
+
+    # A flat background can be cut into winding corridors by foreground
+    # terrain and therefore never appear on the top row at the same x. Such a
+    # field is still unlike a water basin: its largest smooth component has a
+    # low rectangular fill and essentially no internal edge/centre texture.
+    by_position = {
+        (x, y): (profile, features)
+        for x, y, profile, features in candidate_profiles
+    }
+    remaining = set(by_position)
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, GRID_SIZE):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        if len(component) < 64:
+            continue
+        xs = [x for x, _y in component]
+        ys = [y for _x, y in component]
+        bbox_cells = (
+            (max(xs) - min(xs)) // GRID_SIZE + 1
+        ) * (
+            (max(ys) - min(ys)) // GRID_SIZE + 1
+        )
+        bbox_fill = len(component) / max(1, bbox_cells)
+        profiles = [by_position[position][0] for position in component]
+        features = [by_position[position][1] for position in component]
+        profile_ranges = (
+            max(profile.avg_r for profile in profiles)
+            - min(profile.avg_r for profile in profiles),
+            max(profile.avg_g for profile in profiles)
+            - min(profile.avg_g for profile in profiles),
+            max(profile.avg_b for profile in profiles)
+            - min(profile.avg_b for profile in profiles),
+        )
+        mean_edge = sum(item.edge_density for item in features) / len(features)
+        mean_center = sum(item.center_score for item in features) / len(features)
+        if (
+            bbox_fill <= 0.70
+            and mean_edge <= 0.02
+            and mean_center <= 0.02
+            and max(profile_ranges) <= 30
+        ):
+            return _median_color_profile(profiles)
+    return None
+
+
+def _prune_spatial_background_water_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    *,
+    include_geometry: bool,
+) -> list[Detection]:
+    """Subtract smooth scene backgrounds without erasing bounded water.
+
+    A single median color is not enough for photographic skies and broad
+    gradients: every part of the background can be far from that median while
+    still belonging to one spatially connected field.  Learn those fields from
+    low-edge, locally similar patches, then reject water-colored detections that
+    match any member of a boundary-connected field.
+
+    The small residue left by textured sky is rejected only when it overlaps a
+    final structural object and lacks a coherent 8px water region.  This second
+    condition protects bounded pools that naturally touch their containing
+    terrain.
+    """
+
+    water_types = {OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3}
+    water = [detection for detection in detections if detection.type_id in water_types]
+    if len(water) < 12:
+        return detections
+
+    room_profile = _room_color_profile(image, room)
+    allow_balanced_cyan = _looks_like_warm_tiled_room(image, room)
+    learned_background = _background_water_field_profile(
+        image,
+        room,
+        room_profile,
+        allow_balanced_cyan=allow_balanced_cyan,
+    )
+    if learned_background is None:
+        return detections
+
+    background_field = _spatial_background_field(image, room)
+    if not background_field:
+        return detections
+
+    coherent_positions = _coherent_water_candidate_positions(
+        image,
+        room,
+        room_profile,
+        learned_background,
+        allow_balanced_cyan=allow_balanced_cyan,
+    )
+    structural_types = {*GEOMETRY_TYPES, OBJ_PLATFORM, OBJ_SAVE, OBJ_WARP}
+    structural = [
+        detection
+        for detection in detections
+        if detection.type_id in structural_types
+    ]
+    background_profiles = tuple(background_field.values())
+    kept_water: list[Detection] = []
+    for detection in water:
+        if detection.kind == "water_2_bounded_cool":
+            kept_water.append(detection)
+            continue
+        if (detection.x, detection.y) in coherent_positions:
+            kept_water.append(detection)
+            continue
+        profile = _patch_color_profile(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        if min(
+            _color_profile_distance(profile, candidate)
+            for candidate in background_profiles
+        ) <= SPATIAL_BACKGROUND_WATER_MAX_DISTANCE:
+            continue
+        if _matches_spatial_background_field(
+            detection.x,
+            detection.y,
+            profile,
+            background_field,
+        ):
+            continue
+        if include_geometry and any(
+            distance(
+                (detection.x, detection.y),
+                (candidate.x, candidate.y),
+            )
+            <= BACKGROUND_WATER_GEOMETRY_GAP
+            for candidate in structural
+        ):
+            continue
+        kept_water.append(detection)
+    kept_ids = {id(detection) for detection in kept_water}
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in water_types or id(detection) in kept_ids
+    ]
+
+
+def _spatial_background_field(
+    image: RGBImage,
+    room: Box,
+) -> dict[tuple[int, int], _ColorProfile]:
+    """Return broad smooth field positions and their local color profiles."""
+
+    step = SPATIAL_BACKGROUND_STEP
+    profiles = {
+        (x, y): _patch_color_profile(image, room, x, y, GRID_SIZE)
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step)
+    }
+    remaining = {
+        position
+        for position in profiles
+        if _patch_features(image, room, position[0], position[1], GRID_SIZE).edge_density
+        <= SPATIAL_BACKGROUND_MAX_EDGE_DENSITY
+    }
+    broad_field: dict[tuple[int, int], _ColorProfile] = {}
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, step):
+                if neighbor not in remaining:
+                    continue
+                if (
+                    _color_profile_distance(profiles[position], profiles[neighbor])
+                    > SPATIAL_BACKGROUND_MAX_NEIGHBOR_DISTANCE
+                ):
+                    continue
+                remaining.remove(neighbor)
+                component.add(neighbor)
+                queue.append(neighbor)
+
+        boundary_cells = sum(
+            x in {0, ROOM_WIDTH - GRID_SIZE}
+            or y in {0, ROOM_HEIGHT - GRID_SIZE}
+            for x, y in component
+        )
+        if (
+            len(component) >= SPATIAL_BACKGROUND_MIN_COMPONENT_CELLS
+            and boundary_cells >= SPATIAL_BACKGROUND_MIN_BOUNDARY_CELLS
+        ):
+            broad_field.update(
+                (position, profiles[position]) for position in component
+            )
+    return broad_field
+
+
+def _spatial_background_profiles(
+    image: RGBImage,
+    room: Box,
+) -> tuple[_ColorProfile, ...]:
+    """Compatibility view of the learned field used by diagnostics."""
+
+    return tuple(_spatial_background_field(image, room).values())
+
+
+def _matches_spatial_background_field(
+    x: int,
+    y: int,
+    profile: _ColorProfile,
+    field: dict[tuple[int, int], _ColorProfile],
+) -> bool:
+    """Match a detection only to nearby background, never a remote same color."""
+
+    step = SPATIAL_BACKGROUND_STEP
+    low_x = x // step * step
+    low_y = y // step * step
+    high_x = min(ROOM_WIDTH - GRID_SIZE, low_x + step)
+    high_y = min(ROOM_HEIGHT - GRID_SIZE, low_y + step)
+    return any(
+        position in field
+        and _color_profile_distance(profile, field[position])
+        <= SPATIAL_BACKGROUND_WATER_MAX_DISTANCE
+        for position in {
+            (low_x, low_y),
+            (low_x, high_y),
+            (high_x, low_y),
+            (high_x, high_y),
+        }
+    )
+
+
+def _coherent_water_candidate_positions(
+    image: RGBImage,
+    room: Box,
+    room_profile: _ColorProfile,
+    learned_background: _ColorProfile,
+    *,
+    allow_balanced_cyan: bool,
+) -> frozenset[tuple[int, int]]:
+    """Return raw water candidates that form a substantial local region."""
+
+    step = COHERENT_WATER_STEP
+    candidates: set[tuple[int, int]] = set()
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            if not _is_water_profile_candidate(
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
+                continue
+            if _color_profile_distance(profile, learned_background) <= 60:
+                continue
+            stats = _patch_color_stats(image, room, x, y, GRID_SIZE, _is_water_blue)
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            if _is_water_patch(
+                stats,
+                features,
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
+                candidates.add((x, y))
+
+    coherent: set[tuple[int, int]] = set()
+    remaining = set(candidates)
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, step):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        if len(component) >= COHERENT_WATER_MIN_COMPONENT_CELLS:
+            coherent.update(component)
+    return frozenset(coherent)
+
+
+def _detect_bounded_cool_water(
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover local blue/violet water that the cyan predicate cannot see.
+
+    This route is deliberately material-relative.  Candidates must be smooth,
+    strongly blue-dominant cells outside the room's broad spatial background;
+    isolated sprites and warm trigger fields therefore do not qualify.  A
+    small but rectangular/connected component is enough because valid pools
+    can be only one cell tall.
+    """
+
+    background_field = _spatial_background_field(image, room)
+    step = BOUNDED_COOL_WATER_STEP
+    candidates: dict[tuple[int, int], tuple[_ColorProfile, _PatchFeatures]] = {}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, step):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, step):
+            position = (x, y)
+            if position in background_field:
+                continue
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            if (
+                profile.saturation >= BOUNDED_COOL_WATER_MIN_SATURATION
+                and profile.avg_b - profile.avg_g
+                >= BOUNDED_COOL_WATER_MIN_BLUE_OVER_GREEN
+                and profile.avg_b - profile.avg_r
+                >= BOUNDED_COOL_WATER_MIN_BLUE_OVER_RED
+                and features.edge_density
+                <= BOUNDED_COOL_WATER_MAX_EDGE_DENSITY
+            ):
+                candidates[position] = (profile, features)
+
+    detections: list[Detection] = []
+    remaining = set(candidates)
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, step):
+                if neighbor not in remaining:
+                    continue
+                if (
+                    _color_profile_distance(
+                        candidates[position][0],
+                        candidates[neighbor][0],
+                    )
+                    > BOUNDED_COOL_WATER_MAX_NEIGHBOR_DISTANCE
+                ):
+                    continue
+                remaining.remove(neighbor)
+                component.add(neighbor)
+                queue.append(neighbor)
+
+        if len(component) < BOUNDED_COOL_WATER_MIN_COMPONENT_CELLS:
+            continue
+        xs = [x for x, _y in component]
+        ys = [y for _x, y in component]
+        width_cells = (max(xs) - min(xs)) // step + 1
+        height_cells = (max(ys) - min(ys)) // step + 1
+        component_fill = len(component) / max(1, width_cells * height_cells)
+        if component_fill < BOUNDED_COOL_WATER_MIN_COMPONENT_FILL:
+            continue
+        if median(
+            candidates[position][1].edge_density for position in component
+        ) > BOUNDED_COOL_WATER_MAX_COMPONENT_MEDIAN_EDGE:
+            continue
+        if max(xs) - min(xs) < GRID_SIZE and max(ys) - min(ys) < GRID_SIZE:
+            continue
+
+        for x, y in component:
+            profile, features = candidates[(x, y)]
+            score = min(
+                0.96,
+                0.66
+                + min(0.16, (profile.avg_b - profile.avg_g - 80) / 200)
+                + min(0.10, profile.saturation / 5)
+                + min(0.04, max(0.0, 0.20 - features.edge_density)),
+            )
+            detections.append(
+                _grid_detection(
+                    "water_2_bounded_cool",
+                    OBJ_WATER_2,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return detections
 
 
 def _detect_balanced_cyan_half_width_water(
@@ -5856,7 +8816,9 @@ def _is_catharsis_room(profile: _ColorProfile) -> bool:
         brightness <= CATHARSIS_ROOM_MAX_BRIGHTNESS
         and profile.saturation <= CATHARSIS_ROOM_MAX_SATURATION
         and profile.avg_b >= profile.avg_r + CATHARSIS_ROOM_MIN_BLUE_OVER_RED
+        and profile.avg_b <= profile.avg_r + CATHARSIS_ROOM_MAX_BLUE_OVER_RED
         and profile.avg_g >= profile.avg_r + CATHARSIS_ROOM_MIN_GREEN_MINUS_RED
+        and profile.avg_g <= profile.avg_r + CATHARSIS_ROOM_MAX_GREEN_MINUS_RED
     )
 
 
@@ -6055,6 +9017,7 @@ def _detect_platforms(
                 continue
             features = _platform_patch_features(image, room, x, y)
             patch = _patch_features(image, room, x, y, PLATFORM_WIDTH)
+            profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
             block_score = _classify_block(patch).score
             below_edge = 1.0
             if y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
@@ -6066,12 +9029,29 @@ def _detect_platforms(
                     PLATFORM_WIDTH,
                 ).edge_density
             if not (
-                _is_low_contrast_platform_candidate(features)
+                _is_low_contrast_platform_candidate(
+                    features,
+                    profile.saturation,
+                    patch.center_score,
+                )
+                and _has_complete_low_contrast_platform_context(x, y)
                 or _is_bright_outline_platform_candidate(
                     features,
                     patch,
                     block_score,
                     below_edge,
+                )
+                or _is_textured_platform_candidate(
+                    features,
+                    patch,
+                    block_score,
+                    below_edge,
+                )
+                and _is_textured_platform_horizontally_isolated(
+                    image,
+                    room,
+                    x,
+                    y,
                 )
             ):
                 continue
@@ -6124,13 +9104,14 @@ def _platform_patch_features(
             row.append((red * 30 + green * 59 + blue * 11) // 100)
         gray.append(row)
 
-    horizontal_run = max(
+    horizontal_runs = [
         _longest_platform_edge_run(
             abs(gray[y + 1][x] - gray[y][x]) >= PLATFORM_EDGE_THRESHOLD
             for x in range(PLATFORM_SAMPLE_WIDTH)
         )
         for y in range(PLATFORM_SAMPLE_HEIGHT - 1)
-    )
+    ]
+    horizontal_run = max(horizontal_runs)
     vertical_run = max(
         _longest_platform_edge_run(
             abs(gray[y][x + 1] - gray[y][x]) >= PLATFORM_EDGE_THRESHOLD
@@ -6142,6 +9123,7 @@ def _platform_patch_features(
         horizontal_run,
         vertical_run,
         max(max(row) for row in gray) - min(min(row) for row in gray),
+        sum(run >= 12 for run in horizontal_runs),
     )
 
 
@@ -6155,14 +9137,79 @@ def _longest_platform_edge_run(values) -> int:
 
 def _is_low_contrast_platform_candidate(
     features: _PlatformPatchFeatures,
+    saturation: float,
+    center_score: float,
 ) -> bool:
+    """Recognize a dark/neutral thin bar without confusing colored terrain lips.
+
+    The legacy edge-run gate also accepted the straight boundary of any large
+    colored terrain cell.  Low-contrast platforms in the verified fixture are
+    neutral sprites with a compact internal bar; palette-heavy candidates are
+    left to the structurally isolated textured route instead.
+    """
+
     return (
         features.horizontal_run >= PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_RUN
         and features.vertical_run >= PLATFORM_LOW_CONTRAST_MIN_VERTICAL_RUN
         and PLATFORM_LOW_CONTRAST_GRAY_RANGE[0]
         <= features.gray_range
         <= PLATFORM_LOW_CONTRAST_GRAY_RANGE[1]
+        and saturation <= PLATFORM_LOW_CONTRAST_MAX_SATURATION
+        and features.horizontal_edge_rows
+        >= PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_EDGE_ROWS
+        and center_score >= PLATFORM_LOW_CONTRAST_MIN_CENTER_SCORE
     )
+
+
+def _has_complete_low_contrast_platform_context(x: int, y: int) -> bool:
+    """Require enough surrounding image to distinguish a bar from a room edge."""
+
+    margin = PLATFORM_LOW_CONTRAST_CONTEXT_MARGIN
+    return (
+        margin <= x <= ROOM_WIDTH - PLATFORM_WIDTH - margin
+        and margin <= y <= ROOM_HEIGHT - PLATFORM_HEIGHT - margin
+    )
+
+
+def _is_low_contrast_platform_detection(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    if not _has_complete_low_contrast_platform_context(detection.x, detection.y):
+        return False
+    features = _platform_patch_features(image, room, detection.x, detection.y)
+    profile = _patch_color_profile(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    patch = _patch_features(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    return _is_low_contrast_platform_candidate(
+        features,
+        profile.saturation,
+        patch.center_score,
+    )
+
+
+def _is_structural_platform_detection(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    return _is_low_contrast_platform_detection(
+        detection,
+        image,
+        room,
+    ) or _is_textured_platform_detection(detection, image, room)
 
 
 def _is_bright_outline_platform_candidate(
@@ -6184,6 +9231,80 @@ def _is_bright_outline_platform_candidate(
         and patch.center_score <= PLATFORM_BRIGHT_MAX_CENTER_SCORE
         and block_score <= PLATFORM_BRIGHT_MAX_BLOCK_SCORE
         and below_edge <= PLATFORM_BRIGHT_MAX_BELOW_EDGE
+    )
+
+
+def _is_textured_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    block_score: float,
+    below_edge: float,
+) -> bool:
+    """Recognize isolated custom platforms without relying on their palette.
+
+    Some game skins use a shaded wedge or bar instead of JTool's flat sprite.
+    Those sprites retain a nearly full-width horizontal enclosure and a strong
+    internal luminance ramp.  Requiring both separates them from the uniform
+    top edge of a terrain column; supported-terrain arbitration later rejects
+    any remaining candidate that belongs to a learned solid material.
+    """
+
+    return (
+        features.horizontal_run >= PLATFORM_TEXTURED_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_TEXTURED_MIN_VERTICAL_RUN
+        and PLATFORM_TEXTURED_GRAY_RANGE[0]
+        <= features.gray_range
+        <= PLATFORM_TEXTURED_GRAY_RANGE[1]
+        and PLATFORM_TEXTURED_EDGE_RANGE[0]
+        <= patch.edge_density
+        <= PLATFORM_TEXTURED_EDGE_RANGE[1]
+        and PLATFORM_TEXTURED_BORDER_RANGE[0]
+        <= patch.border_score
+        <= PLATFORM_TEXTURED_BORDER_RANGE[1]
+        and PLATFORM_TEXTURED_CENTER_RANGE[0]
+        <= patch.center_score
+        <= PLATFORM_TEXTURED_CENTER_RANGE[1]
+        and PLATFORM_TEXTURED_BLOCK_RANGE[0]
+        <= block_score
+        <= PLATFORM_TEXTURED_BLOCK_RANGE[1]
+        and below_edge <= PLATFORM_TEXTURED_MAX_BELOW_EDGE
+    )
+
+
+def _is_textured_platform_horizontally_isolated(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> bool:
+    """Reject a terrain strip whose texture simply continues through a cell.
+
+    Custom shaded platform art is a bounded, low-chroma 32px sprite. Grass
+    lips and brick rows can have the same internal edge statistics, but their
+    room-local colour profile remains nearly unchanged after a half-cell
+    horizontal shift. Strongly coloured terrain is left to the terrain
+    learners instead of being guessed as a platform.
+    """
+
+    profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
+    if profile.saturation > PLATFORM_TEXTURED_MAX_SATURATION:
+        return False
+    neighbor_distances = [
+        _color_profile_distance(
+            profile,
+            _patch_color_profile(
+                image,
+                room,
+                x + offset,
+                y,
+                PLATFORM_WIDTH,
+            ),
+        )
+        for offset in (-PLATFORM_WIDTH // 2, PLATFORM_WIDTH // 2)
+        if 0 <= x + offset <= ROOM_WIDTH - PLATFORM_WIDTH
+    ]
+    return not neighbor_distances or min(neighbor_distances) >= (
+        PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE
     )
 
 
@@ -6443,6 +9564,48 @@ class _ColorProfile:
     saturation: float
 
 
+@dataclass(frozen=True, slots=True)
+class _RepeatedTerrainProfile:
+    terrain_cells: frozenset[tuple[int, int]]
+    full_blocks: frozenset[tuple[int, int]]
+    seed_cluster: int
+    support_votes: int
+    full_coverage: float
+
+
+@dataclass(frozen=True, slots=True)
+class _RepeatedTerrainClusterMorphology:
+    cell_count: int
+    room_share: float
+    full_coverage: float
+    axis_interior: float
+
+
+@dataclass(frozen=True, slots=True)
+class _RepeatedTerrainPairedSeed:
+    primary_cluster: int
+    clusters: frozenset[int]
+    support_votes: int
+    full_coverage: float
+    edge_density: float
+
+
+@dataclass(frozen=True, slots=True)
+class _SupportedCellTerrainProfile:
+    blocks: frozenset[tuple[int, int]]
+    mini_blocks: frozenset[tuple[int, int]]
+    seed_cluster: int
+    back_votes: int
+    tip_votes: int
+    direct_supports: int
+
+
+@dataclass(frozen=True, slots=True)
+class _SupportedCellTerrainExpansion:
+    blocks: frozenset[tuple[int, int]]
+    mini_blocks: frozenset[tuple[int, int]]
+
+
 def _patch_color_stats(
     image: RGBImage,
     room: Box,
@@ -6626,9 +9789,7 @@ def _detect_mini_blocks(image: RGBImage, room: Box) -> list[Detection]:
         <= MINI_BLOCK_ISOLATED_PROFILE_DISTANCE
     )
 
-    if not _looks_miniblock_dominant(grown):
-        return []
-    if not _has_miniblock_boundary_signal(image, room, grown):
+    if not _looks_like_miniblock_room(image, room, grown):
         return []
 
     return [
@@ -6668,9 +9829,2129 @@ def _color_profile_distance(first: _ColorProfile, second: _ColorProfile) -> floa
     ) ** 0.5
 
 
+def _replace_repeated_terrain_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> tuple[list[Detection], bool]:
+    """Reconcile repeated terrain only when the generic result is clearly poor.
+
+    This is a deliberately conservative fallback for ordinary 25x19 rooms.
+    It learns a room-local palette from repeated 16px cells, anchors the
+    material identity to the backs of detected spikes, and emits only complete
+    2x2 cells.  Established room profiles and miniblock rooms are routed around
+    this function by ``scan_image``.
+    """
+
+    profile = _learn_repeated_terrain_profile(image, room, detections)
+    if profile is None:
+        return detections, False
+
+    current_blocks = [
+        detection for detection in detections if detection.type_id == OBJ_BLOCK
+    ]
+    matched = sum(
+        any(
+            distance((x, y), (detection.x, detection.y)) <= 8
+            for detection in current_blocks
+        )
+        for x, y in profile.full_blocks
+    )
+    current_coverage = matched / max(1, len(profile.full_blocks))
+    if current_coverage >= REPEATED_TERRAIN_KEEP_COVERAGE:
+        return detections, False
+    if (
+        current_coverage > REPEATED_TERRAIN_REPLACE_MAX_COVERAGE
+        or len(profile.full_blocks) < REPEATED_TERRAIN_MIN_CANDIDATES
+    ):
+        return detections, False
+
+    reconciled = [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_BLOCK
+        and not (
+            detection.type_id
+            in (OBJ_APPLE, OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+            and _overlaps_repeated_terrain(detection, profile.full_blocks)
+        )
+        and not (
+            detection.type_id in MINI_SPIKE_TYPES
+            and _contained_by_repeated_terrain(detection, profile.full_blocks)
+        )
+    ]
+    reconciled.extend(
+        _geometry_detection(
+            "repeated_terrain_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            0.78,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in sorted(
+            profile.full_blocks,
+            key=lambda position: (position[1], position[0]),
+        )
+    )
+    return _dedupe_exact_detections(reconciled), True
+
+
+def _replace_supported_cell_terrain_geometry(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> tuple[list[Detection], bool]:
+    """Recover smooth grid terrain from structural object/material support.
+
+    Unlike the repeated-texture learner, this fallback samples the center of
+    each 32px cell.  It is intended for flat or softly shaded tilesets whose
+    interiors contain too few edges for the generic block detector.  Material
+    identity remains room-local and must be supported by save footing, vines,
+    or directional spike polarity; hue and absolute brightness are irrelevant.
+    """
+
+    profile = _learn_supported_cell_terrain_profile(image, room, detections)
+    if profile is None:
+        return detections, False
+    terrain_blocks = _prune_supported_terrain_spike_body_cells(
+        profile.blocks,
+        detections,
+        image,
+        room,
+    )
+    terrain_blocks = _prune_supported_terrain_marker_body_cells(
+        terrain_blocks,
+        detections,
+        image,
+        room,
+    )
+    profile = _SupportedCellTerrainProfile(
+        blocks=terrain_blocks,
+        mini_blocks=profile.mini_blocks,
+        seed_cluster=profile.seed_cluster,
+        back_votes=profile.back_votes,
+        tip_votes=profile.tip_votes,
+        direct_supports=profile.direct_supports,
+    )
+
+    current_blocks = [
+        detection for detection in detections if detection.type_id == OBJ_BLOCK
+    ]
+    matched = sum(
+        any(
+            distance((x, y), (detection.x, detection.y)) <= 8
+            for detection in current_blocks
+        )
+        for x, y in profile.blocks
+    )
+    current_coverage = matched / max(1, len(profile.blocks))
+    current_precision = matched / max(1, len(current_blocks))
+    current_overrun = len(current_blocks) / max(1, len(profile.blocks))
+    material_overrun = (
+        current_precision <= SUPPORTED_TERRAIN_REPLACE_MAX_CURRENT_PRECISION
+        and current_overrun >= SUPPORTED_TERRAIN_REPLACE_MIN_CURRENT_OVERRUN
+    )
+    if current_coverage >= SUPPORTED_TERRAIN_KEEP_COVERAGE and not material_overrun:
+        return detections, False
+    if current_coverage > SUPPORTED_TERRAIN_REPLACE_MAX_COVERAGE:
+        if not material_overrun:
+            return detections, False
+
+    reconciled = [
+        detection
+        for detection in detections
+        if detection.type_id not in (OBJ_BLOCK, OBJ_MINI_BLOCK)
+        and not (
+            detection.type_id == OBJ_PLATFORM
+            and (
+                _platform_conflicts_supported_terrain(
+                    detection,
+                    profile.blocks,
+                    image,
+                    room,
+                )
+                or _overlaps_supported_terrain_cells(
+                    detection,
+                    profile.mini_blocks,
+                    detection_size=(PLATFORM_WIDTH, PLATFORM_HEIGHT),
+                )
+            )
+        )
+        and not (
+            detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+            and (
+                _overlaps_repeated_terrain(detection, profile.blocks)
+                or _overlaps_supported_terrain_cells(
+                    detection,
+                    profile.mini_blocks,
+                )
+            )
+        )
+        and not (
+            detection.type_id == OBJ_APPLE
+            and _supported_detection_overlaps_terrain(
+                detection,
+                profile.blocks,
+                profile.mini_blocks,
+            )
+        )
+        and not (
+            detection.type_id in MINI_SPIKE_TYPES
+            and (
+                _contained_by_repeated_terrain(detection, profile.blocks)
+                or _overlaps_supported_terrain_cells(
+                    detection,
+                    profile.mini_blocks,
+                    detection_size=(MINI_BLOCK_SIZE, MINI_BLOCK_SIZE),
+                )
+            )
+        )
+    ]
+    reconciled.extend(
+        _geometry_detection(
+            "supported_terrain_block",
+            OBJ_BLOCK,
+            x,
+            y,
+            0.80,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, y in sorted(profile.blocks, key=lambda position: (position[1], position[0]))
+    )
+    reconciled.extend(
+        _geometry_detection(
+            "supported_terrain_miniblock",
+            OBJ_MINI_BLOCK,
+            x,
+            y,
+            0.76,
+            image,
+            room,
+            MINI_BLOCK_SIZE,
+        )
+        for x, y in sorted(
+            profile.mini_blocks,
+            key=lambda position: (position[1], position[0]),
+        )
+    )
+    reconciled = _prune_supported_terrain_spike_recovery_noise(reconciled)
+    full_spikes = [
+        detection
+        for detection in reconciled
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    terrain_blocks = [
+        detection
+        for detection in reconciled
+        if detection.type_id == OBJ_BLOCK
+    ]
+    reoriented_spikes = _reorient_unsupported_spikes(
+        full_spikes,
+        terrain_blocks,
+    )
+    spike_replacements = {
+        id(original): replacement
+        for original, replacement in zip(full_spikes, reoriented_spikes)
+    }
+    reconciled = [
+        spike_replacements.get(id(detection), detection)
+        for detection in reconciled
+    ]
+    return _dedupe_exact_detections(reconciled), True
+
+
+def _prune_supported_terrain_spike_body_cells(
+    blocks: frozenset[tuple[int, int]],
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> frozenset[tuple[int, int]]:
+    """Remove cells whose source patch is decisively a spike, not terrain.
+
+    A flat terrain material and a spike made from that material can share the
+    same centre colour.  The material graph therefore needs a final silhouette
+    veto.  Requiring a strong directional triangle *and* a matching scanner
+    detection prevents texture edges from punching arbitrary holes in solids.
+    """
+
+    full_spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return blocks
+
+    retained = set(blocks)
+    for x, y in blocks:
+        spike = _classify_full_spike(
+            _patch_features(image, room, x, y, GRID_SIZE)
+        )
+        if (
+            spike is None
+            or spike.score < SUPPORTED_TERRAIN_SPIKE_CELL_MIN_SCORE
+            or spike.direction_margin
+            < SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DIRECTION_MARGIN
+            or spike.outline_delta < SUPPORTED_TERRAIN_SPIKE_CELL_MIN_OUTLINE_DELTA
+        ):
+            continue
+        if any(
+            detection.type_id == spike.type_id
+            and _box_overlap_area(
+                x,
+                y,
+                detection.x,
+                detection.y,
+            )
+            >= SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DETECTION_OVERLAP
+            for detection in full_spikes
+        ):
+            retained.discard((x, y))
+    return frozenset(retained)
+
+
+def _prune_supported_terrain_marker_body_cells(
+    blocks: frozenset[tuple[int, int]],
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> frozenset[tuple[int, int]]:
+    """Do not emit a solid cell beneath a decisive save or custom platform."""
+
+    saves = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_SAVE
+        and detection.score >= SUPPORTED_TERRAIN_MARKER_MIN_SAVE_SCORE
+    ]
+    platforms = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_PLATFORM
+        and _is_structural_platform_detection(detection, image, room)
+    ]
+    retained = {
+        (x, y)
+        for x, y in blocks
+        if not any(
+            _box_overlap_area(x, y, save.x, save.y)
+            >= SUPPORTED_TERRAIN_MARKER_MIN_SAVE_OVERLAP
+            for save in saves
+        )
+        and not any(
+            _rect_box_overlap_area(
+                x,
+                y,
+                GRID_SIZE,
+                GRID_SIZE,
+                platform.x,
+                platform.y,
+                PLATFORM_WIDTH,
+                PLATFORM_HEIGHT,
+            )
+            >= SUPPORTED_TERRAIN_MARKER_MIN_PLATFORM_OVERLAP
+            for platform in platforms
+        )
+    }
+    return frozenset(retained)
+
+
+def _prune_supported_terrain_spike_recovery_noise(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Suppress weak recovery artifacts exposed by a learned terrain graph.
+
+    Recovery passes deliberately cast a wide net before the room's solid
+    material is known. Once it is known, an unsupported low-score row or
+    column repeated at the tileset period is evidence of a texture seam, not
+    a run of floating hazards. A recovered body that substantially overlaps a
+    much stronger spike is likewise a duplicate candidate for one sprite.
+    """
+
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    blocks = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    raw_unsupported = [
+        detection
+        for detection in spikes
+        if detection.kind.startswith("full_spike_raw_support_recovery")
+        and detection.score <= SUPPORTED_TERRAIN_RECOVERY_MAX_REPEATED_SCORE
+        and _warm_spike_support_overlap(
+            detection.x,
+            detection.y,
+            direction_by_type[detection.type_id],
+            blocks,
+        )
+        == 0
+    ]
+
+    remove_ids: set[int] = set()
+    for candidate in raw_unsupported:
+        vertical_band = [
+            other
+            for other in raw_unsupported
+            if abs(other.x - candidate.x)
+            <= SUPPORTED_TERRAIN_RECOVERY_MAX_CROSS_AXIS_SPAN
+        ]
+        horizontal_band = [
+            other
+            for other in raw_unsupported
+            if abs(other.y - candidate.y)
+            <= SUPPORTED_TERRAIN_RECOVERY_MAX_CROSS_AXIS_SPAN
+        ]
+        if (
+            len(vertical_band) >= SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_RUN
+            and max(item.y for item in vertical_band)
+            - min(item.y for item in vertical_band)
+            >= SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_SPAN
+        ) or (
+            len(horizontal_band) >= SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_RUN
+            and max(item.x for item in horizontal_band)
+            - min(item.x for item in horizontal_band)
+            >= SUPPORTED_TERRAIN_RECOVERY_MIN_REPEATED_SPAN
+        ):
+            remove_ids.add(id(candidate))
+
+    for candidate in spikes:
+        if "recover" not in candidate.kind:
+            continue
+        if any(
+            other is not candidate
+            and other.score
+            >= candidate.score + SUPPORTED_TERRAIN_RECOVERY_OVERLAP_SCORE_MARGIN
+            and _box_overlap_area(
+                candidate.x,
+                candidate.y,
+                other.x,
+                other.y,
+            )
+            >= SUPPORTED_TERRAIN_RECOVERY_OVERLAP_AREA
+            for other in spikes
+        ):
+            remove_ids.add(id(candidate))
+
+    if not remove_ids:
+        return detections
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
+def _learn_supported_cell_terrain_profile(
+    image: RGBImage,
+    room: Box,
+    detections: list[Detection],
+) -> _SupportedCellTerrainProfile | None:
+    cells = {
+        (x, y): _patch_color_profile(
+            image,
+            room,
+            x + GRID_SIZE // 4,
+            y + GRID_SIZE // 4,
+            GRID_SIZE // 2,
+        )
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+    }
+    labels, centers = _cluster_repeated_terrain_cells(cells)
+    if len(centers) < 2:
+        return None
+
+    def probe_cluster(probe: tuple[int, int, int] | None) -> int | None:
+        if probe is None:
+            return None
+        x, y, size = probe
+        if not (0 <= x <= ROOM_WIDTH - size and 0 <= y <= ROOM_HEIGHT - size):
+            return None
+        profile = _patch_color_profile(image, room, x, y, size)
+        return min(
+            range(len(centers)),
+            key=lambda index: _color_profile_distance(profile, centers[index]),
+        )
+
+    def probe_block(probe: tuple[int, int, int] | None) -> tuple[int, int] | None:
+        if probe is None:
+            return None
+        x, y, size = probe
+        if not (0 <= x <= ROOM_WIDTH - size and 0 <= y <= ROOM_HEIGHT - size):
+            return None
+        center_x = x + size / 2
+        center_y = y + size / 2
+        return (
+            min(ROOM_WIDTH - GRID_SIZE, max(0, int(center_x // GRID_SIZE) * GRID_SIZE)),
+            min(ROOM_HEIGHT - GRID_SIZE, max(0, int(center_y // GRID_SIZE) * GRID_SIZE)),
+        )
+
+    back_votes: Counter[int] = Counter()
+    tip_votes: Counter[int] = Counter()
+    supported_positions: defaultdict[int, set[tuple[int, int]]] = defaultdict(set)
+    seen_hazards: set[tuple[int, int, int]] = set()
+    for detection in detections:
+        if detection.type_id not in (*FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES):
+            continue
+        key = (detection.type_id, detection.x, detection.y)
+        if key in seen_hazards:
+            continue
+        seen_hazards.add(key)
+        back_probe = _repeated_terrain_support_probe(detection)
+        back_cluster = probe_cluster(back_probe)
+        tip_cluster = probe_cluster(_supported_terrain_tip_probe(detection))
+        if back_cluster is not None:
+            back_votes[back_cluster] += 1
+            block = probe_block(back_probe)
+            if block is not None:
+                supported_positions[back_cluster].add(block)
+        if tip_cluster is not None:
+            tip_votes[tip_cluster] += 1
+
+    save_votes: Counter[int] = Counter()
+    vine_votes: Counter[int] = Counter()
+    for detection in detections:
+        if detection.type_id == OBJ_SAVE:
+            probe = (
+                detection.x + GRID_SIZE // 4,
+                detection.y + GRID_SIZE,
+                GRID_SIZE // 2,
+            )
+            cluster = probe_cluster(probe)
+            if cluster is not None:
+                save_votes[cluster] += 1
+                block = probe_block(probe)
+                if block is not None:
+                    supported_positions[cluster].add(block)
+        elif detection.type_id == OBJ_WALLJUMP_LEFT:
+            probe = (
+                detection.x + MINI_BLOCK_SIZE,
+                detection.y + 8,
+                MINI_BLOCK_SIZE,
+            )
+            cluster = probe_cluster(probe)
+            if cluster is not None:
+                vine_votes[cluster] += 1
+                block = probe_block(probe)
+                if block is not None:
+                    supported_positions[cluster].add(block)
+        elif detection.type_id == OBJ_WALLJUMP_RIGHT:
+            probe = (detection.x, detection.y + 8, MINI_BLOCK_SIZE)
+            cluster = probe_cluster(probe)
+            if cluster is not None:
+                vine_votes[cluster] += 1
+                block = probe_block(probe)
+                if block is not None:
+                    supported_positions[cluster].add(block)
+
+    open_votes: Counter[int] = Counter()
+    for detection in detections:
+        if detection.type_id != OBJ_APPLE:
+            continue
+        neighboring = Counter(
+            cluster
+            for cluster in (
+                probe_cluster((detection.x - 16, detection.y + 8, 16)),
+                probe_cluster((detection.x + 32, detection.y + 8, 16)),
+                probe_cluster((detection.x + 8, detection.y - 16, 16)),
+                probe_cluster((detection.x + 8, detection.y + 32, 16)),
+            )
+            if cluster is not None
+        )
+        if neighboring:
+            cluster, count = neighboring.most_common(1)[0]
+            if count >= 2:
+                open_votes[cluster] += 1
+
+    cluster_counts = Counter(labels.values())
+    candidates: list[tuple[int, float, int]] = []
+    inverted_boundary_clusters: set[int] = set()
+    for cluster in range(len(centers)):
+        positions = frozenset(
+            position for position, label in labels.items() if label == cluster
+        )
+        count = len(positions)
+        back = back_votes[cluster]
+        tip = tip_votes[cluster]
+        polarity = back / max(1, back + tip)
+        inverted_boundary_terrain = (
+            _is_inverted_boundary_terrain_candidate(
+                centers[cluster],
+                positions,
+                total_cells=len(labels),
+                back_votes=back,
+                tip_votes=tip,
+                other_tip_votes=sum(tip_votes.values()) - tip,
+            )
+        )
+        if inverted_boundary_terrain:
+            inverted_boundary_clusters.add(cluster)
+        ordinarily_sized = (
+            SUPPORTED_TERRAIN_MIN_CELLS <= count
+            <= len(labels) * SUPPORTED_TERRAIN_MAX_ROOM_COVERAGE
+        )
+        if not (ordinarily_sized or inverted_boundary_terrain):
+            continue
+        if (
+            _repeated_terrain_blocks_form_dense_field(positions)
+            and not inverted_boundary_terrain
+        ):
+            continue
+        direct_supports = save_votes[cluster] * 2 + vine_votes[cluster]
+        if direct_supports:
+            if not inverted_boundary_terrain and (
+                back < SUPPORTED_TERRAIN_MIN_BACK_VOTES
+                or polarity < SUPPORTED_TERRAIN_MIN_SEEDED_POLARITY
+            ):
+                continue
+        else:
+            if open_votes[cluster]:
+                continue
+            if not inverted_boundary_terrain and (
+                back < SUPPORTED_TERRAIN_UNSEEDED_MIN_BACK_VOTES
+                or polarity < SUPPORTED_TERRAIN_MIN_UNSEEDED_POLARITY
+                or _supported_terrain_has_dominant_boundary_component(positions)
+            ):
+                continue
+        support_density = back / math.sqrt(max(1, cluster_counts[cluster]))
+        score = (direct_supports * 20 + back) * (0.5 + polarity) + support_density
+        candidates.append((direct_supports, score, cluster))
+
+    if not candidates:
+        return None
+    candidates.sort()
+    direct_supports, top_score, seed_cluster = candidates[-1]
+    if len(candidates) > 1:
+        runner_direct, runner_score, _runner_cluster = candidates[-2]
+        if (
+            direct_supports <= runner_direct
+            and top_score / max(0.001, runner_score)
+            < SUPPORTED_TERRAIN_MIN_SCORE_MARGIN
+        ):
+            return None
+
+    raw_blocks = frozenset(
+        position for position, label in labels.items() if label == seed_cluster
+    )
+    blocks = _filter_supported_terrain_components(
+        raw_blocks,
+        supported_positions[seed_cluster],
+    )
+    if len(blocks) < SUPPORTED_TERRAIN_MIN_CELLS:
+        return None
+    if seed_cluster in inverted_boundary_clusters:
+        # The boundary-dominant seed already represents the solid side of the
+        # room. Its contrasting corridor is intentionally open space, so the
+        # ordinary multi-material growth would invert that distinction again.
+        expansion = _SupportedCellTerrainExpansion(blocks, frozenset())
+    else:
+        expansion = _expand_supported_cell_terrain_materials(
+            image,
+            room,
+            detections,
+            blocks,
+        )
+    return _SupportedCellTerrainProfile(
+        blocks=expansion.blocks,
+        mini_blocks=expansion.mini_blocks,
+        seed_cluster=seed_cluster,
+        back_votes=back_votes[seed_cluster],
+        tip_votes=tip_votes[seed_cluster],
+        direct_supports=direct_supports,
+    )
+
+
+def _is_inverted_boundary_terrain_candidate(
+    profile: _ColorProfile,
+    positions: frozenset[tuple[int, int]],
+    *,
+    total_cells: int,
+    back_votes: int,
+    tip_votes: int,
+    other_tip_votes: int,
+) -> bool:
+    """Recognize solid terrain that is larger than the playable background.
+
+    Most room-local material learners assume the boundary-dominant color is
+    open background. Some unfamiliar tilesets invert that relationship: a
+    narrow playable corridor is cut through a large, smooth solid mass. Only
+    directional spike polarity is strong enough to disambiguate those two
+    regions. Require repeated evidence that this cluster lies behind spike
+    bases while another cluster lies at their tips, and reject near-black
+    boundary fields so starfield backgrounds cannot become solid terrain.
+    """
+
+    room_share = len(positions) / max(1, total_cells)
+    polarity = back_votes / max(1, back_votes + tip_votes)
+    return (
+        INVERTED_BOUNDARY_TERRAIN_MIN_ROOM_COVERAGE
+        <= room_share
+        <= INVERTED_BOUNDARY_TERRAIN_MAX_ROOM_COVERAGE
+        and max(profile.avg_r, profile.avg_g, profile.avg_b)
+        >= INVERTED_BOUNDARY_TERRAIN_MIN_MAX_CHANNEL
+        and back_votes >= INVERTED_BOUNDARY_TERRAIN_MIN_BACK_VOTES
+        and polarity >= INVERTED_BOUNDARY_TERRAIN_MIN_POLARITY
+        and other_tip_votes >= INVERTED_BOUNDARY_TERRAIN_MIN_OTHER_TIP_VOTES
+        and _supported_terrain_has_dominant_boundary_component(positions)
+    )
+
+
+def _expand_supported_cell_terrain_materials(
+    image: RGBImage,
+    room: Box,
+    detections: list[Detection],
+    seed_blocks: frozenset[tuple[int, int]],
+) -> _SupportedCellTerrainExpansion:
+    """Join spatially supported materials without joining their colors.
+
+    Unfamiliar rooms often build one connected solid shape from several hues.
+    A global palette expansion is unsafe because the open field can use one of
+    those same hues.  This pass instead clusters 16px cells, splits every
+    cluster into spatial components, and grows only components which either
+    receive direct object support or repeatedly contact accepted terrain on
+    the room lattice.  Spike-tip polarity, room-boundary and coverage guards
+    keep smooth backgrounds out of the graph.
+    """
+
+    cells = {
+        (x, y): _patch_color_profile(image, room, x, y, MINI_BLOCK_SIZE)
+        for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+    }
+    labels, _centers = _cluster_repeated_terrain_cells(
+        cells,
+        cluster_count=SUPPORTED_TERRAIN_MATERIAL_CLUSTER_COUNT,
+    )
+    if len(set(labels.values())) < 2:
+        return _SupportedCellTerrainExpansion(seed_blocks, frozenset())
+
+    components: list[frozenset[tuple[int, int]]] = []
+    component_clusters: list[int] = []
+    component_for_position: dict[tuple[int, int], int] = {}
+    remaining = set(labels)
+    while remaining:
+        seed = remaining.pop()
+        cluster = labels[seed]
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE):
+                if neighbor in remaining and labels[neighbor] == cluster:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        component_id = len(components)
+        frozen_component = frozenset(component)
+        components.append(frozen_component)
+        component_clusters.append(cluster)
+        component_for_position.update(
+            (position, component_id) for position in frozen_component
+        )
+
+    seed_cells = {
+        position
+        for x, y in seed_blocks
+        for position in (
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        )
+    }
+    seed_label_counts = Counter(labels[position] for position in seed_cells)
+    primary_labels = {
+        cluster
+        for cluster, count in seed_label_counts.items()
+        if count >= max(4, len(seed_cells) * 0.08)
+    }
+
+    back_votes: Counter[int] = Counter()
+    tip_votes: Counter[int] = Counter()
+    object_votes: Counter[int] = Counter()
+    open_votes: Counter[int] = Counter()
+    water_votes: Counter[int] = Counter()
+
+    def probe_component(
+        probe: tuple[int, int, int] | None,
+    ) -> int | None:
+        if probe is None:
+            return None
+        x, y, size = probe
+        if not (0 <= x <= ROOM_WIDTH - size and 0 <= y <= ROOM_HEIGHT - size):
+            return None
+        center_x = x + size / 2
+        center_y = y + size / 2
+        position = (
+            min(
+                ROOM_WIDTH - MINI_BLOCK_SIZE,
+                max(0, int(center_x // MINI_BLOCK_SIZE) * MINI_BLOCK_SIZE),
+            ),
+            min(
+                ROOM_HEIGHT - MINI_BLOCK_SIZE,
+                max(0, int(center_y // MINI_BLOCK_SIZE) * MINI_BLOCK_SIZE),
+            ),
+        )
+        return component_for_position.get(position)
+
+    seen_hazards: set[tuple[int, int, int]] = set()
+    for detection in detections:
+        if detection.type_id in (*FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES):
+            key = (detection.type_id, detection.x, detection.y)
+            if key in seen_hazards:
+                continue
+            seen_hazards.add(key)
+            back_component = probe_component(
+                _repeated_terrain_support_probe(detection)
+            )
+            tip_component = probe_component(_supported_terrain_tip_probe(detection))
+            if back_component is not None:
+                back_votes[back_component] += 1
+            if tip_component is not None:
+                tip_votes[tip_component] += 1
+        elif detection.type_id == OBJ_SAVE:
+            component = probe_component(
+                (
+                    detection.x + GRID_SIZE // 4,
+                    detection.y + GRID_SIZE,
+                    MINI_BLOCK_SIZE,
+                )
+            )
+            if component is not None:
+                object_votes[component] += 2
+        elif detection.type_id == OBJ_WALLJUMP_LEFT:
+            component = probe_component(
+                (
+                    detection.x + MINI_BLOCK_SIZE,
+                    detection.y + 8,
+                    MINI_BLOCK_SIZE,
+                )
+            )
+            if component is not None:
+                object_votes[component] += 1
+        elif detection.type_id == OBJ_WALLJUMP_RIGHT:
+            component = probe_component(
+                (detection.x, detection.y + 8, MINI_BLOCK_SIZE)
+            )
+            if component is not None:
+                object_votes[component] += 1
+        elif detection.type_id == OBJ_APPLE:
+            neighboring_components = {
+                component
+                for component in (
+                    probe_component((detection.x - 16, detection.y + 8, 16)),
+                    probe_component((detection.x + 32, detection.y + 8, 16)),
+                    probe_component((detection.x + 8, detection.y - 16, 16)),
+                    probe_component((detection.x + 8, detection.y + 32, 16)),
+                )
+                if component is not None
+            }
+            for component in neighboring_components:
+                open_votes[component] += 1
+        elif detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+            component = probe_component(
+                (detection.x, detection.y, MINI_BLOCK_SIZE)
+            )
+            if component is not None:
+                water_votes[component] += 1
+
+    cluster_back_votes: Counter[int] = Counter()
+    cluster_tip_votes: Counter[int] = Counter()
+    cluster_water_votes: Counter[int] = Counter()
+    for component_id, cluster in enumerate(component_clusters):
+        cluster_back_votes[cluster] += back_votes[component_id]
+        cluster_tip_votes[cluster] += tip_votes[component_id]
+        cluster_water_votes[cluster] += water_votes[component_id]
+
+    accepted_cells = set(seed_cells)
+    accepted_components: set[int] = set()
+    changed = True
+    while changed:
+        changed = False
+        for component_id, component in enumerate(components):
+            if component_id in accepted_components or component <= accepted_cells:
+                continue
+            overlap = len(component & accepted_cells)
+            contacts = sum(
+                neighbor in accepted_cells
+                for position in component - accepted_cells
+                for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE)
+            )
+            if (
+                not contacts
+                and not back_votes[component_id]
+                and not object_votes[component_id]
+                and not water_votes[component_id]
+            ):
+                continue
+
+            xs = {position[0] for position in component}
+            ys = {position[1] for position in component}
+            boundaries = set()
+            for x, y in component:
+                if x == 0:
+                    boundaries.add("left")
+                if x == ROOM_WIDTH - MINI_BLOCK_SIZE:
+                    boundaries.add("right")
+                if y == 0:
+                    boundaries.add("top")
+                if y == ROOM_HEIGHT - MINI_BLOCK_SIZE:
+                    boundaries.add("bottom")
+
+            back = back_votes[component_id]
+            tip = tip_votes[component_id]
+            polarity = back / max(1, back + tip)
+            cluster = component_clusters[component_id]
+            cluster_back = cluster_back_votes[cluster]
+            cluster_tip = cluster_tip_votes[cluster]
+            cluster_is_tip_facing = (
+                cluster_tip >= cluster_back + 3
+                and cluster_tip > cluster_back * 1.25
+            )
+            room_share = len(component) / max(1, len(cells))
+            contact_ratio = contacts / max(1, len(component) * 4)
+            boundary_field = (
+                room_share > SUPPORTED_TERRAIN_MATERIAL_MAX_COMPONENT_SHARE
+                or len(boundaries) > SUPPORTED_TERRAIN_MATERIAL_MAX_BOUNDARIES
+            )
+
+            direct_support = (
+                object_votes[component_id] > 0
+                or (
+                    back >= SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_BACK_VOTES
+                    and polarity >= SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_POLARITY
+                    and back / math.sqrt(len(component))
+                    >= SUPPORTED_TERRAIN_MATERIAL_MIN_SCALED_BACK_SUPPORT
+                    and not open_votes[component_id]
+                )
+            )
+            seed_material_continuation = (
+                cluster in primary_labels
+                and overlap >= 4
+                and overlap / len(component) >= 0.05
+                and tip <= back + 1
+            )
+            graph_support = (
+                contacts >= SUPPORTED_TERRAIN_MATERIAL_MIN_CONTACTS
+                and contact_ratio >= SUPPORTED_TERRAIN_MATERIAL_MIN_CONTACT_RATIO
+                and (
+                    (
+                        len(xs) >= SUPPORTED_TERRAIN_MATERIAL_MIN_AXIS_SPAN
+                        and len(ys) >= SUPPORTED_TERRAIN_MATERIAL_MIN_AXIS_SPAN
+                    )
+                    or (
+                        max(len(xs), len(ys))
+                        >= SUPPORTED_TERRAIN_MATERIAL_MIN_LONG_AXIS_SPAN
+                        and contact_ratio >= 0.12
+                    )
+                )
+                and not cluster_is_tip_facing
+                and tip <= back
+                and not open_votes[component_id]
+            )
+            narrow_water_material = (
+                water_votes[component_id] > 0
+                and cluster_water_votes[cluster]
+                >= SUPPORTED_TERRAIN_MATERIAL_MIN_WATER_FAMILY_VOTES
+                and cluster_back >= 1
+                and cluster_back >= cluster_tip
+                and len(component)
+                <= SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_COMPONENT_CELLS
+                and min(len(xs), len(ys))
+                <= SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_NARROW_AXIS
+                and max(len(xs), len(ys))
+                >= SUPPORTED_TERRAIN_MATERIAL_MIN_AXIS_SPAN
+                and not boundaries
+                and not open_votes[component_id]
+            )
+            if boundary_field or not (
+                direct_support
+                or seed_material_continuation
+                or graph_support
+                or narrow_water_material
+            ):
+                continue
+            if (
+                len(accepted_cells | set(component))
+                > len(cells) * SUPPORTED_TERRAIN_MAX_ROOM_COVERAGE
+            ):
+                continue
+            accepted_cells.update(component)
+            accepted_components.add(component_id)
+            changed = True
+
+    blocks = frozenset(
+        (x, y)
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+        if {
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        }
+        <= accepted_cells
+    )
+    blocks = _filter_supported_terrain_components(blocks, set(seed_blocks))
+    covered_cells = {
+        position
+        for x, y in blocks
+        for position in (
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        )
+    }
+    residual_cells = accepted_cells - covered_cells
+    mini_blocks = frozenset(
+        position
+        for position in residual_cells
+        if _supported_terrain_residual_cell_is_structural(
+            position,
+            accepted_cells,
+            detections,
+        )
+    )
+    if (
+        len(blocks) < len(seed_blocks) + SUPPORTED_TERRAIN_MATERIAL_MIN_BLOCK_GAIN
+        and len(mini_blocks) < SUPPORTED_TERRAIN_MATERIAL_MIN_MINIBLOCK_GAIN
+    ):
+        return _SupportedCellTerrainExpansion(seed_blocks, frozenset())
+    return _SupportedCellTerrainExpansion(blocks, mini_blocks)
+
+
+def _supported_terrain_residual_cell_is_structural(
+    position: tuple[int, int],
+    accepted_cells: set[tuple[int, int]],
+    detections: list[Detection],
+) -> bool:
+    """Keep connected 16px terrain while rejecting sprite-shaped fringes."""
+
+    x, y = position
+    horizontal = (
+        (x - MINI_BLOCK_SIZE, y) in accepted_cells
+        or (x + MINI_BLOCK_SIZE, y) in accepted_cells
+    )
+    vertical = (
+        (x, y - MINI_BLOCK_SIZE) in accepted_cells
+        or (x, y + MINI_BLOCK_SIZE) in accepted_cells
+    )
+    if not (horizontal or vertical):
+        return False
+    neighbors = [
+        neighbor
+        for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE)
+        if neighbor in accepted_cells
+    ]
+    if not neighbors:
+        return False
+    if len(neighbors) == 1:
+        neighbor_x, neighbor_y = neighbors[0]
+        continuation = (
+            neighbor_x + (neighbor_x - x),
+            neighbor_y + (neighbor_y - y),
+        )
+        if continuation not in accepted_cells:
+            return False
+    for detection in detections:
+        if detection.type_id not in (
+            *FULL_SPIKE_TYPES,
+            *MINI_SPIKE_TYPES,
+            OBJ_APPLE,
+            OBJ_SAVE,
+            OBJ_WARP,
+            OBJ_JUMP_REFRESHER,
+            OBJ_GRAVITY_UP,
+            OBJ_GRAVITY_DOWN,
+        ):
+            continue
+        object_x, object_y, object_width, object_height = (
+            _supported_terrain_detection_bounds(detection)
+        )
+        if _rect_box_overlap_area(
+            x,
+            y,
+            MINI_BLOCK_SIZE,
+            MINI_BLOCK_SIZE,
+            object_x,
+            object_y,
+            object_width,
+            object_height,
+        ) >= MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 2:
+            return False
+    return True
+
+
+def _filter_supported_terrain_components(
+    blocks: frozenset[tuple[int, int]],
+    supported_positions: set[tuple[int, int]],
+) -> frozenset[tuple[int, int]]:
+    remaining = set(blocks)
+    accepted: set[tuple[int, int]] = set()
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, GRID_SIZE):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        if len(component) >= 3 or component & supported_positions:
+            accepted.update(component)
+    return frozenset(accepted)
+
+
+def _supported_terrain_has_dominant_boundary_component(
+    blocks: frozenset[tuple[int, int]],
+) -> bool:
+    """Reject an unseeded gradient band wrapping most of the room boundary."""
+
+    remaining = set(blocks)
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, GRID_SIZE):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        if (
+            len(component)
+            >= len(blocks) * SUPPORTED_TERRAIN_UNSEEDED_MAX_BOUNDARY_COMPONENT_SHARE
+        ):
+            boundaries = set()
+            for x, y in component:
+                if x == 0:
+                    boundaries.add("left")
+                if x == ROOM_WIDTH - GRID_SIZE:
+                    boundaries.add("right")
+                if y == 0:
+                    boundaries.add("top")
+                if y == ROOM_HEIGHT - GRID_SIZE:
+                    boundaries.add("bottom")
+            if len(boundaries) >= 3:
+                return True
+    return False
+
+
+def _supported_terrain_tip_probe(
+    detection: Detection,
+) -> tuple[int, int, int] | None:
+    size = GRID_SIZE if detection.type_id in FULL_SPIKE_TYPES else MINI_BLOCK_SIZE
+    probe_size = MINI_BLOCK_SIZE if size == GRID_SIZE else 8
+    quarter = size // 4
+    if detection.type_id in (OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP):
+        return detection.x + quarter, detection.y - probe_size, probe_size
+    if detection.type_id in (OBJ_SPIKE_DOWN, OBJ_MINI_SPIKE_DOWN):
+        return detection.x + quarter, detection.y + size, probe_size
+    if detection.type_id in (OBJ_SPIKE_RIGHT, OBJ_MINI_SPIKE_RIGHT):
+        return detection.x + size, detection.y + quarter, probe_size
+    if detection.type_id in (OBJ_SPIKE_LEFT, OBJ_MINI_SPIKE_LEFT):
+        return detection.x - probe_size, detection.y + quarter, probe_size
+    return None
+
+
+def _platform_conflicts_supported_terrain(
+    detection: Detection,
+    blocks: frozenset[tuple[int, int]],
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    structural_platform = _is_structural_platform_detection(
+        detection,
+        image,
+        room,
+    )
+    for block_x, block_y in blocks:
+        overlap_width = max(
+            0,
+            min(detection.x + PLATFORM_WIDTH, block_x + GRID_SIZE)
+            - max(detection.x, block_x),
+        )
+        overlap_height = max(
+            0,
+            min(detection.y + PLATFORM_HEIGHT, block_y + GRID_SIZE)
+            - max(detection.y, block_y),
+        )
+        overlap_area = overlap_width * overlap_height
+        if overlap_area >= PLATFORM_WIDTH * PLATFORM_HEIGHT // 2:
+            if structural_platform:
+                solid_neighbors = sum(
+                    neighbor in blocks
+                    for neighbor in _axis_neighbors(
+                        (block_x, block_y),
+                        GRID_SIZE,
+                    )
+                )
+                if solid_neighbors < 2:
+                    continue
+            return True
+        if (
+            not structural_platform
+            and overlap_width >= PLATFORM_WIDTH * 3 // 4
+            and (
+            abs(detection.y - (block_y + GRID_SIZE)) <= 8
+            or abs((detection.y + PLATFORM_HEIGHT) - block_y) <= 8
+            )
+        ):
+            return True
+    return False
+
+
+def _is_textured_platform_detection(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    features = _platform_patch_features(image, room, detection.x, detection.y)
+    patch = _patch_features(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    block_score = _classify_block(patch).score
+    below_edge = 1.0
+    if detection.y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+        below_edge = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y + PLATFORM_HEIGHT,
+            PLATFORM_WIDTH,
+        ).edge_density
+    return (
+        _is_textured_platform_candidate(
+            features,
+            patch,
+            block_score,
+            below_edge,
+        )
+        and _is_textured_platform_horizontally_isolated(
+            image,
+            room,
+            detection.x,
+            detection.y,
+        )
+    )
+
+
+def _overlaps_supported_terrain_cells(
+    detection: Detection,
+    cells: frozenset[tuple[int, int]],
+    *,
+    detection_size: tuple[int, int] = (GRID_SIZE, GRID_SIZE),
+) -> bool:
+    width, height = detection_size
+    return any(
+        _rect_box_overlap_area(
+            detection.x,
+            detection.y,
+            width,
+            height,
+            cell_x,
+            cell_y,
+            MINI_BLOCK_SIZE,
+            MINI_BLOCK_SIZE,
+        )
+        >= MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 2
+        for cell_x, cell_y in cells
+    )
+
+
+def _supported_terrain_detection_bounds(
+    detection: Detection,
+) -> tuple[int, int, int, int]:
+    if detection.type_id == OBJ_APPLE:
+        # JTool stores fruit by its center; the default sprite is 21x24 with
+        # origin (10, 12).  Treating that coordinate as a 32px top-left box
+        # incorrectly deletes fruit next to legitimate terrain.
+        return detection.x - 10, detection.y - 12, 21, 24
+    size = MINI_BLOCK_SIZE if detection.type_id in MINI_SPIKE_TYPES else GRID_SIZE
+    return detection.x, detection.y, size, size
+
+
+def _supported_detection_overlaps_terrain(
+    detection: Detection,
+    blocks: frozenset[tuple[int, int]],
+    mini_blocks: frozenset[tuple[int, int]],
+) -> bool:
+    x, y, width, height = _supported_terrain_detection_bounds(detection)
+    object_area = width * height
+    return any(
+        _rect_box_overlap_area(
+            x,
+            y,
+            width,
+            height,
+            block_x,
+            block_y,
+            GRID_SIZE,
+            GRID_SIZE,
+        )
+        >= object_area // 4
+        for block_x, block_y in blocks
+    ) or any(
+        _rect_box_overlap_area(
+            x,
+            y,
+            width,
+            height,
+            cell_x,
+            cell_y,
+            MINI_BLOCK_SIZE,
+            MINI_BLOCK_SIZE,
+        )
+        >= min(object_area // 4, MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 2)
+        for cell_x, cell_y in mini_blocks
+    )
+
+
+def _learn_repeated_terrain_profile(
+    image: RGBImage,
+    room: Box,
+    detections: list[Detection],
+) -> _RepeatedTerrainProfile | None:
+    """Learn a palette-independent full-block material from one room.
+
+    The clustering intentionally uses only per-cell mean colour.  Topology,
+    spike support, and replacement arbitration provide the stronger evidence;
+    no absolute hue or brightness range is part of the material decision.
+    """
+
+    cells = {
+        (x, y): _patch_color_profile(
+            image,
+            room,
+            x,
+            y,
+            MINI_BLOCK_SIZE,
+        )
+        for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+    }
+    labels, centers = _cluster_repeated_terrain_cells(cells)
+    if len(centers) < 2:
+        return None
+
+    room_contrast = max(
+        _color_profile_distance(first, second)
+        for index, first in enumerate(centers)
+        for second in centers[index + 1 :]
+    )
+    if room_contrast < 12:
+        return None
+
+    votes: Counter[int] = Counter()
+    seen_supports: set[tuple[int, int, int]] = set()
+    for detection in detections:
+        if detection.type_id not in (*FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES):
+            continue
+        support_key = (detection.type_id, detection.x, detection.y)
+        if support_key in seen_supports:
+            continue
+        seen_supports.add(support_key)
+        probe = _repeated_terrain_support_probe(detection)
+        if probe is None:
+            continue
+        probe_x, probe_y, probe_size = probe
+        if not (
+            0 <= probe_x <= ROOM_WIDTH - probe_size
+            and 0 <= probe_y <= ROOM_HEIGHT - probe_size
+        ):
+            continue
+        support_profile = _patch_color_profile(
+            image,
+            room,
+            probe_x,
+            probe_y,
+            probe_size,
+        )
+        cluster = min(
+            range(len(centers)),
+            key=lambda index: _color_profile_distance(
+                support_profile,
+                centers[index],
+            ),
+        )
+        votes[cluster] += 1
+    if sum(votes.values()) < REPEATED_TERRAIN_MIN_SUPPORT_VOTES:
+        return None
+
+    cluster_edges: dict[int, float] = {}
+
+    def cluster_edge_density(cluster: int) -> float:
+        if cluster in cluster_edges:
+            return cluster_edges[cluster]
+        edge_values = [
+            _patch_features(
+                image,
+                room,
+                x,
+                y,
+                MINI_BLOCK_SIZE,
+            ).edge_density
+            for (x, y), label in labels.items()
+            if label == cluster
+        ]
+        cluster_edges[cluster] = median(edge_values) if edge_values else 0.0
+        return cluster_edges[cluster]
+
+    for cluster in votes:
+        cluster_edge_density(cluster)
+    morphology_cache: dict[int, _RepeatedTerrainClusterMorphology] = {}
+
+    def cluster_morphology(cluster: int) -> _RepeatedTerrainClusterMorphology:
+        if cluster not in morphology_cache:
+            morphology_cache[cluster] = _repeated_terrain_cluster_morphology(
+                labels,
+                cluster,
+            )
+        return morphology_cache[cluster]
+
+    eligible_vote_clusters = {
+        cluster
+        for cluster in votes
+        if _is_repeated_terrain_lattice_candidate(cluster_morphology(cluster))
+    }
+    seed_clusters = _repeated_terrain_seed_candidates(
+        eligible_vote_clusters,
+        cluster_edges,
+    )
+    ranked = sorted(
+        (
+            count * (1 + 4 * cluster_edges.get(cluster, 0.0)),
+            count,
+            cluster,
+        )
+        for cluster, count in votes.items()
+        if cluster in seed_clusters
+    )
+    single_seed: tuple[int, int] | None = None
+    if ranked:
+        top_score, top_votes, seed_cluster = ranked[-1]
+        runner_score = ranked[-2][0] if len(ranked) > 1 else 0.0
+        if _repeated_terrain_support_is_decisive(
+            top_score=top_score,
+            top_votes=top_votes,
+            runner_score=runner_score,
+            total_votes=sum(votes.values()),
+        ):
+            single_seed = seed_cluster, top_votes
+
+    paired_seed = _repeated_terrain_paired_seed(
+        labels=labels,
+        centers=centers,
+        votes=votes,
+        edge_densities=cluster_edges,
+        room_contrast=room_contrast,
+    )
+    use_pair = paired_seed is not None and (
+        single_seed is None
+        or _prefer_repeated_terrain_pair_over_single(
+            pair=paired_seed,
+            single_votes=single_seed[1],
+            single_morphology=cluster_morphology(single_seed[0]),
+            single_edge_density=cluster_edges.get(single_seed[0], 0.0),
+        )
+    )
+    if use_pair:
+        assert paired_seed is not None
+        seed_cluster = paired_seed.primary_cluster
+        family = set(paired_seed.clusters)
+        top_votes = paired_seed.support_votes
+    elif single_seed is not None:
+        seed_cluster, top_votes = single_seed
+        family = {seed_cluster}
+    else:
+        return None
+
+    direct_distance = max(10.0, room_contrast * 0.25)
+    for cluster, center in enumerate(centers):
+        if (
+            min(
+                _color_profile_distance(center, centers[member])
+                for member in family
+            )
+            <= direct_distance
+            and _is_repeated_terrain_lattice_candidate(
+                cluster_morphology(cluster)
+            )
+        ):
+            family.add(cluster)
+
+    # Some tilesets alternate materially different colours inside every 32px
+    # tile. Join at most two partners, one at a time, so a smooth background
+    # cluster cannot pull most of the room into the terrain family merely by
+    # touching many real tiles.
+    cluster_counts = Counter(labels.values())
+    for _ in range(2):
+        family_cell_count = sum(cluster_counts[cluster] for cluster in family)
+        family_edge = median(cluster_edge_density(cluster) for cluster in family)
+        candidates: list[tuple[float, int, int]] = []
+        for cluster, center in enumerate(centers):
+            if cluster in family:
+                continue
+            if (
+                min(
+                    _color_profile_distance(center, centers[member])
+                    for member in family
+                )
+                > room_contrast * 0.45
+            ):
+                continue
+            (
+                cooccurrences,
+                occurrences,
+                row_count,
+                column_count,
+            ) = _repeated_terrain_cooccurrences(labels, family, cluster)
+            ratio = cooccurrences / max(1, occurrences)
+            if _accept_repeated_terrain_partner(
+                cooccurrences=cooccurrences,
+                occurrence_ratio=ratio,
+                row_count=row_count,
+                column_count=column_count,
+                candidate_cells=cluster_counts[cluster],
+                family_cells=family_cell_count,
+                total_cells=len(labels),
+                candidate_edge=cluster_edge_density(cluster),
+                family_edge=family_edge,
+            ):
+                candidates.append((ratio, cooccurrences, cluster))
+        if not candidates:
+            break
+        family.add(max(candidates)[2])
+
+    terrain_cells = frozenset(
+        position for position, label in labels.items() if label in family
+    )
+    if not (
+        REPEATED_TERRAIN_MIN_CANDIDATES * 4 <= len(terrain_cells)
+        <= len(cells) * REPEATED_TERRAIN_MAX_ROOM_COVERAGE
+    ):
+        return None
+    full_blocks = frozenset(
+        (x, y)
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+        if {
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        }
+        <= terrain_cells
+    )
+    full_coverage = len(full_blocks) * 4 / len(terrain_cells)
+    if (
+        len(full_blocks) < REPEATED_TERRAIN_MIN_CANDIDATES
+        or full_coverage < REPEATED_TERRAIN_MIN_FULL_COVERAGE
+        or _repeated_terrain_blocks_form_dense_field(full_blocks)
+    ):
+        return None
+    return _RepeatedTerrainProfile(
+        terrain_cells=terrain_cells,
+        full_blocks=full_blocks,
+        seed_cluster=seed_cluster,
+        support_votes=top_votes,
+        full_coverage=full_coverage,
+    )
+
+
+def _repeated_terrain_support_is_decisive(
+    *,
+    top_score: float,
+    top_votes: int,
+    runner_score: float,
+    total_votes: int,
+) -> bool:
+    if (
+        top_votes < REPEATED_TERRAIN_MIN_SUPPORT_VOTES
+        or top_votes / max(1, total_votes) < REPEATED_TERRAIN_MIN_SUPPORT_SHARE
+    ):
+        return False
+    return (
+        runner_score <= 0
+        or top_score / runner_score >= REPEATED_TERRAIN_MIN_SUPPORT_MARGIN
+    )
+
+
+def _repeated_terrain_paired_seed(
+    *,
+    labels: dict[tuple[int, int], int],
+    centers: list[_ColorProfile],
+    votes: Counter[int],
+    edge_densities: dict[int, float],
+    room_contrast: float,
+) -> _RepeatedTerrainPairedSeed | None:
+    """Recover one material split into two close room-local colour clusters.
+
+    Each member can be morphologically incomplete on its own when texture or
+    capture phase assigns alternating 16px quadrants to neighboring clusters.
+    The fallback therefore judges the union, but only after both clusters have
+    independent spike-support votes and the completed 32px topology remains a
+    sparse gameplay lattice rather than a room-sized colour field.
+    """
+
+    total_votes = sum(votes.values())
+    max_distance = max(10.0, room_contrast * REPEATED_TERRAIN_PAIR_MAX_CONTRAST_RATIO)
+    candidates: list[tuple[float, _RepeatedTerrainPairedSeed]] = []
+    for first, second in combinations(range(len(centers)), 2):
+        first_votes = votes[first]
+        second_votes = votes[second]
+        primary_votes = max(first_votes, second_votes)
+        secondary_votes = min(first_votes, second_votes)
+        if primary_votes < REPEATED_TERRAIN_MIN_SUPPORT_VOTES:
+            continue
+        combined_votes = first_votes + second_votes
+        required_share = (
+            REPEATED_TERRAIN_PAIR_MIN_SUPPORT_SHARE
+            if secondary_votes >= REPEATED_TERRAIN_MIN_SUPPORT_VOTES
+            else REPEATED_TERRAIN_PAIR_WEAK_SECONDARY_MIN_SUPPORT_SHARE
+        )
+        if combined_votes / max(1, total_votes) < required_share:
+            continue
+        if _color_profile_distance(centers[first], centers[second]) > max_distance:
+            continue
+
+        pair = {first, second}
+        terrain_cells = frozenset(
+            position for position, label in labels.items() if label in pair
+        )
+        if not (
+            REPEATED_TERRAIN_MIN_CANDIDATES * 4 <= len(terrain_cells)
+            <= len(labels) * REPEATED_TERRAIN_MAX_ROOM_COVERAGE
+        ):
+            continue
+        full_blocks = frozenset(
+            (x, y)
+            for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+            for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+            if {
+                (x, y),
+                (x + MINI_BLOCK_SIZE, y),
+                (x, y + MINI_BLOCK_SIZE),
+                (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+            }
+            <= terrain_cells
+        )
+        full_coverage = len(full_blocks) * 4 / len(terrain_cells)
+        if (
+            len(full_blocks) < REPEATED_TERRAIN_MIN_CANDIDATES
+            or full_coverage < REPEATED_TERRAIN_MIN_FULL_COVERAGE
+            or _repeated_terrain_blocks_form_dense_field(full_blocks)
+        ):
+            continue
+
+        pair_edge = median(
+            edge_densities.get(cluster, 0.0) for cluster in pair
+        )
+        score = combined_votes * (1 + 4 * pair_edge)
+        primary = max(
+            pair,
+            key=lambda cluster: (
+                votes[cluster] * (1 + 4 * edge_densities.get(cluster, 0.0)),
+                -cluster,
+            ),
+        )
+        candidates.append(
+            (
+                score,
+                _RepeatedTerrainPairedSeed(
+                    primary_cluster=primary,
+                    clusters=frozenset(pair),
+                    support_votes=combined_votes,
+                    full_coverage=full_coverage,
+                    edge_density=pair_edge,
+                ),
+            )
+        )
+
+    if not candidates:
+        return None
+    candidates.sort(
+        key=lambda candidate: (
+            candidate[0],
+            candidate[1].support_votes,
+            -candidate[1].primary_cluster,
+            tuple(-cluster for cluster in sorted(candidate[1].clusters)),
+        )
+    )
+    best_score, best = candidates[-1]
+    runner_score = candidates[-2][0] if len(candidates) > 1 else 0.0
+    if (
+        runner_score > 0
+        and best_score / runner_score < REPEATED_TERRAIN_MIN_SUPPORT_MARGIN
+    ):
+        return None
+    return best
+
+
+def _prefer_repeated_terrain_pair_over_single(
+    *,
+    pair: _RepeatedTerrainPairedSeed,
+    single_votes: int,
+    single_morphology: _RepeatedTerrainClusterMorphology,
+    single_edge_density: float,
+) -> bool:
+    """Prefer a highly complete textured union over a weaker smooth lattice.
+
+    This is intentionally an override, not a general score tweak: the paired
+    material must retain most of the single seed's support while making a large
+    topology and texture improvement.  It handles orientation-noisy spike votes
+    without teaching the learner that arbitrary nearby colours form terrain.
+    """
+
+    return (
+        pair.support_votes
+        >= single_votes * REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_SUPPORT_RATIO
+        and pair.full_coverage
+        >= REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_FULL_COVERAGE
+        and pair.full_coverage
+        >= single_morphology.full_coverage
+        + REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_COVERAGE_GAIN
+        and pair.edge_density
+        >= max(
+            REPEATED_TERRAIN_SMOOTH_EDGE_DENSITY * 2,
+            single_edge_density * REPEATED_TERRAIN_PAIR_OVERRIDE_MIN_EDGE_RATIO,
+        )
+    )
+
+
+def _repeated_terrain_cluster_morphology(
+    labels: dict[tuple[int, int], int],
+    cluster: int,
+) -> _RepeatedTerrainClusterMorphology:
+    positions = {
+        position for position, label in labels.items() if label == cluster
+    }
+    if not positions:
+        return _RepeatedTerrainClusterMorphology(0, 0.0, 0.0, 0.0)
+    full_blocks = sum(
+        {
+            (x, y),
+            (x + MINI_BLOCK_SIZE, y),
+            (x, y + MINI_BLOCK_SIZE),
+            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+        }
+        <= positions
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE)
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE)
+    )
+    axis_interior = sum(
+        all(neighbor in positions for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE))
+        for position in positions
+    ) / len(positions)
+    return _RepeatedTerrainClusterMorphology(
+        cell_count=len(positions),
+        room_share=len(positions) / max(1, len(labels)),
+        full_coverage=full_blocks * 4 / len(positions),
+        axis_interior=axis_interior,
+    )
+
+
+def _is_repeated_terrain_lattice_candidate(
+    morphology: _RepeatedTerrainClusterMorphology,
+) -> bool:
+    if morphology.full_coverage < REPEATED_TERRAIN_MIN_FULL_COVERAGE:
+        return False
+    room_field = (
+        morphology.room_share >= REPEATED_TERRAIN_FIELD_MIN_ROOM_SHARE
+        and morphology.axis_interior >= REPEATED_TERRAIN_FIELD_MIN_AXIS_INTERIOR
+    )
+    return not room_field
+
+
+def _repeated_terrain_seed_candidates(
+    eligible_clusters: set[int],
+    edge_densities: dict[int, float],
+) -> set[int]:
+    """Prefer a textured lattice over smooth gradient fragments when possible."""
+
+    textured = {
+        cluster
+        for cluster in eligible_clusters
+        if edge_densities.get(cluster, 0.0) > REPEATED_TERRAIN_SMOOTH_EDGE_DENSITY
+    }
+    return textured or eligible_clusters
+
+
+def _repeated_terrain_blocks_form_dense_field(
+    full_blocks: frozenset[tuple[int, int]],
+) -> bool:
+    """Reject a rectangular colour field fragmented into block-sized cells."""
+
+    if not full_blocks:
+        return False
+    axis_interior = sum(
+        all(neighbor in full_blocks for neighbor in _axis_neighbors(position, GRID_SIZE))
+        for position in full_blocks
+    ) / len(full_blocks)
+    xs = [position[0] for position in full_blocks]
+    ys = [position[1] for position in full_blocks]
+    bbox_cells = (
+        (max(xs) - min(xs)) // GRID_SIZE + 1
+    ) * (
+        (max(ys) - min(ys)) // GRID_SIZE + 1
+    )
+    bbox_fill = len(full_blocks) / bbox_cells
+    return (
+        axis_interior >= REPEATED_TERRAIN_DENSE_BLOCK_MIN_INTERIOR
+        and bbox_fill >= REPEATED_TERRAIN_DENSE_BLOCK_MIN_BBOX_FILL
+    )
+
+
+def _accept_repeated_terrain_partner(
+    *,
+    cooccurrences: int,
+    occurrence_ratio: float,
+    row_count: int,
+    column_count: int,
+    candidate_cells: int,
+    family_cells: int,
+    total_cells: int,
+    candidate_edge: float,
+    family_edge: float,
+) -> bool:
+    if (
+        cooccurrences < 30
+        or occurrence_ratio < REPEATED_TERRAIN_PARTNER_MIN_COOCCURRENCE_RATIO
+        or row_count < 3
+        or column_count < 3
+    ):
+        return False
+    if (
+        family_cells + candidate_cells
+        > total_cells * REPEATED_TERRAIN_MAX_ROOM_COVERAGE
+    ):
+        return False
+    dominant_smooth_background = (
+        candidate_cells > family_cells * REPEATED_TERRAIN_PARTNER_DOMINANCE_RATIO
+        and candidate_edge <= REPEATED_TERRAIN_SMOOTH_EDGE_DENSITY
+        and candidate_edge * 3 < family_edge
+        and occurrence_ratio < REPEATED_TERRAIN_PARTNER_STRONG_COOCCURRENCE_RATIO
+    )
+    return not dominant_smooth_background
+
+
+def _cluster_repeated_terrain_cells(
+    cells: dict[tuple[int, int], _ColorProfile],
+    *,
+    cluster_count: int = REPEATED_TERRAIN_CLUSTER_COUNT,
+) -> tuple[dict[tuple[int, int], int], list[_ColorProfile]]:
+    """Deterministic farthest-first k-means for the room's 16px cells."""
+
+    ordered = sorted(cells)
+    if not ordered:
+        return {}, []
+    centers = [cells[ordered[0]]]
+    for _ in range(1, cluster_count):
+        candidate = max(
+            ordered,
+            key=lambda position: min(
+                _color_profile_distance(cells[position], center)
+                for center in centers
+            ),
+        )
+        if (
+            min(
+                _color_profile_distance(cells[candidate], center)
+                for center in centers
+            )
+            < 1.0
+        ):
+            break
+        centers.append(cells[candidate])
+
+    labels: dict[tuple[int, int], int] = {}
+    for _ in range(24):
+        labels = {
+            position: min(
+                range(len(centers)),
+                key=lambda index: _color_profile_distance(profile, centers[index]),
+            )
+            for position, profile in cells.items()
+        }
+        updated: list[_ColorProfile] = []
+        for cluster, center in enumerate(centers):
+            members = [
+                cells[position]
+                for position, label in labels.items()
+                if label == cluster
+            ]
+            if not members:
+                updated.append(center)
+                continue
+            updated.append(
+                _ColorProfile(
+                    avg_r=sum(member.avg_r for member in members) / len(members),
+                    avg_g=sum(member.avg_g for member in members) / len(members),
+                    avg_b=sum(member.avg_b for member in members) / len(members),
+                    saturation=(
+                        sum(member.saturation for member in members) / len(members)
+                    ),
+                )
+            )
+        movement = max(
+            _color_profile_distance(first, second)
+            for first, second in zip(centers, updated)
+        )
+        centers = updated
+        if movement < 0.25:
+            break
+    labels = {
+        position: min(
+            range(len(centers)),
+            key=lambda index: _color_profile_distance(profile, centers[index]),
+        )
+        for position, profile in cells.items()
+    }
+    return labels, centers
+
+
+def _repeated_terrain_support_probe(
+    detection: Detection,
+) -> tuple[int, int, int] | None:
+    size = GRID_SIZE if detection.type_id in FULL_SPIKE_TYPES else MINI_BLOCK_SIZE
+    probe_size = MINI_BLOCK_SIZE if size == GRID_SIZE else 8
+    quarter = size // 4
+    if detection.type_id in (OBJ_SPIKE_UP, OBJ_MINI_SPIKE_UP):
+        return detection.x + quarter, detection.y + size, probe_size
+    if detection.type_id in (OBJ_SPIKE_DOWN, OBJ_MINI_SPIKE_DOWN):
+        return detection.x + quarter, detection.y - probe_size, probe_size
+    if detection.type_id in (OBJ_SPIKE_RIGHT, OBJ_MINI_SPIKE_RIGHT):
+        return detection.x - probe_size, detection.y + quarter, probe_size
+    if detection.type_id in (OBJ_SPIKE_LEFT, OBJ_MINI_SPIKE_LEFT):
+        return detection.x + size, detection.y + quarter, probe_size
+    return None
+
+
+def _repeated_terrain_cooccurrences(
+    labels: dict[tuple[int, int], int],
+    family: set[int],
+    candidate: int,
+) -> tuple[int, int, int, int]:
+    cooccurrences = 0
+    occurrences = 0
+    rows: set[int] = set()
+    columns: set[int] = set()
+    allowed = family | {candidate}
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+            quad = {
+                labels[(x, y)],
+                labels[(x + MINI_BLOCK_SIZE, y)],
+                labels[(x, y + MINI_BLOCK_SIZE)],
+                labels[(x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE)],
+            }
+            if candidate not in quad:
+                continue
+            occurrences += 1
+            if quad <= allowed and quad & family:
+                cooccurrences += 1
+                rows.add(y)
+                columns.add(x)
+    return cooccurrences, occurrences, len(rows), len(columns)
+
+
+def _overlaps_repeated_terrain(
+    detection: Detection,
+    full_blocks: frozenset[tuple[int, int]],
+) -> bool:
+    return any(
+        _box_overlap_area(detection.x, detection.y, x, y)
+        >= GRID_SIZE * GRID_SIZE // 4
+        for x, y in full_blocks
+    )
+
+
+def _contained_by_repeated_terrain(
+    detection: Detection,
+    full_blocks: frozenset[tuple[int, int]],
+) -> bool:
+    size = MINI_BLOCK_SIZE if detection.type_id in MINI_SPIKE_TYPES else GRID_SIZE
+    return any(
+        block_x <= detection.x
+        and detection.x + size <= block_x + GRID_SIZE
+        and block_y <= detection.y
+        and detection.y + size <= block_y + GRID_SIZE
+        for block_x, block_y in full_blocks
+    )
+
+
+def _arbitrate_minispikes_against_blocks(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Resolve the rare case where a 16px spike is embedded in a block.
+
+    Decorative triangle motifs can closely resemble mini spikes.  When a
+    candidate is mostly covered by an accepted 32px terrain block, retain it
+    only if the spike score strongly and absolutely beats every overlapping
+    block.  This preserves genuine occluding mini spikes while rejecting a
+    repeated tileset decoration without relying on its colour or filename.
+    """
+
+    blocks = [detection for detection in detections if detection.type_id == OBJ_BLOCK]
+    mini_spikes = [
+        detection for detection in detections if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    if not blocks or not mini_spikes:
+        return detections
+
+    rejected_mini_ids: set[int] = set()
+    rejected_block_ids: set[int] = set()
+    mini_area = MINI_BLOCK_SIZE * MINI_BLOCK_SIZE
+    overlaps_by_mini_id: dict[int, list[Detection]] = {}
+    for mini_spike in mini_spikes:
+        overlapping = [
+            block
+            for block in blocks
+            if _sized_box_overlap_area(
+                mini_spike.x,
+                mini_spike.y,
+                MINI_BLOCK_SIZE,
+                block.x,
+                block.y,
+                GRID_SIZE,
+            )
+            / mini_area
+            >= MINI_SPIKE_BLOCK_MIN_OVERLAP_COVERAGE
+        ]
+        overlaps_by_mini_id[id(mini_spike)] = overlapping
+
+    decoration_type = _repeated_terrain_mini_decoration_type(
+        mini_spikes,
+        overlaps_by_mini_id,
+    )
+    for mini_spike in mini_spikes:
+        overlapping = overlaps_by_mini_id[id(mini_spike)]
+        if mini_spike.type_id == decoration_type:
+            rejected_mini_ids.add(id(mini_spike))
+            continue
+        if not overlapping:
+            continue
+        strongest_block = max(overlapping, key=lambda detection: detection.score)
+        mini_wins = (
+            mini_spike.score >= MINI_SPIKE_BLOCK_WIN_MIN_SCORE
+            and mini_spike.score - strongest_block.score
+            >= MINI_SPIKE_BLOCK_WIN_MIN_MARGIN
+        )
+        if mini_wins:
+            rejected_block_ids.update(id(block) for block in overlapping)
+        else:
+            rejected_mini_ids.add(id(mini_spike))
+
+    return [
+        detection
+        for detection in detections
+        if id(detection) not in rejected_mini_ids
+        and id(detection) not in rejected_block_ids
+    ]
+
+
+def _repeated_terrain_mini_decoration_type(
+    mini_spikes: list[Detection],
+    overlaps_by_mini_id: dict[int, list[Detection]],
+) -> int | None:
+    """Identify one repeated mini-spike-shaped motif embedded in terrain."""
+
+    covered = [
+        mini_spike
+        for mini_spike in mini_spikes
+        if overlaps_by_mini_id.get(id(mini_spike))
+    ]
+    if (
+        len(covered) < MINI_SPIKE_TERRAIN_MOTIF_MIN_CONFLICTS
+        or len(covered) / max(1, len(mini_spikes))
+        < MINI_SPIKE_TERRAIN_MOTIF_MIN_ROOM_SHARE
+    ):
+        return None
+    direction_counts = Counter(mini_spike.type_id for mini_spike in covered)
+    type_id, count = direction_counts.most_common(1)[0]
+    if count / len(covered) < MINI_SPIKE_TERRAIN_MOTIF_MIN_DIRECTION_SHARE:
+        return None
+    return type_id
+
+
+def _sized_box_overlap_area(
+    first_x: int,
+    first_y: int,
+    first_size: int,
+    second_x: int,
+    second_y: int,
+    second_size: int,
+) -> int:
+    width = max(
+        0,
+        min(first_x + first_size, second_x + second_size)
+        - max(first_x, second_x),
+    )
+    height = max(
+        0,
+        min(first_y + first_size, second_y + second_size)
+        - max(first_y, second_y),
+    )
+    return width * height
+
+
+def _rect_box_overlap_area(
+    first_x: int,
+    first_y: int,
+    first_width: int,
+    first_height: int,
+    second_x: int,
+    second_y: int,
+    second_width: int,
+    second_height: int,
+) -> int:
+    width = max(
+        0,
+        min(first_x + first_width, second_x + second_width)
+        - max(first_x, second_x),
+    )
+    height = max(
+        0,
+        min(first_y + first_height, second_y + second_height)
+        - max(first_y, second_y),
+    )
+    return width * height
+
+
 def _looks_miniblock_dominant(positions: set[tuple[int, int]]) -> bool:
     if len(positions) < MINI_BLOCK_ROOM_MIN_CELLS:
         return False
+    return (
+        _miniblock_square_cell_ratio(positions)
+        <= MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO
+    )
+
+
+def _miniblock_square_cell_ratio(
+    positions: set[tuple[int, int]],
+) -> float:
+    if not positions:
+        return 1.0
     square_cells: set[tuple[int, int]] = set()
     for x, y in positions:
         square = {
@@ -6681,7 +11962,27 @@ def _looks_miniblock_dominant(positions: set[tuple[int, int]]) -> bool:
         }
         if square <= positions:
             square_cells.update(square)
-    return len(square_cells) / len(positions) <= MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO
+    return len(square_cells) / len(positions)
+
+
+def _looks_like_miniblock_room(
+    image: RGBImage,
+    room: Box,
+    positions: set[tuple[int, int]],
+) -> bool:
+    """Combine cell topology and visible seams as compensating evidence."""
+
+    if len(positions) < MINI_BLOCK_ROOM_MIN_CELLS:
+        return False
+    square_ratio = _miniblock_square_cell_ratio(positions)
+    boundary_ratio = _miniblock_boundary_hit_ratio(image, room, positions)
+    return (
+        square_ratio <= MINI_BLOCK_ROOM_MAX_SQUARE_CELL_RATIO
+        and boundary_ratio >= MINI_BLOCK_ROOM_RELAXED_BOUNDARY_HIT_RATIO
+    ) or (
+        square_ratio <= MINI_BLOCK_ROOM_COMPENSATED_MAX_SQUARE_CELL_RATIO
+        and boundary_ratio >= MINI_BLOCK_ROOM_STRONG_BOUNDARY_HIT_RATIO
+    )
 
 
 def _has_miniblock_boundary_signal(
@@ -6689,6 +11990,17 @@ def _has_miniblock_boundary_signal(
     room: Box,
     positions: set[tuple[int, int]],
 ) -> bool:
+    return (
+        _miniblock_boundary_hit_ratio(image, room, positions)
+        >= MINI_BLOCK_ROOM_MIN_BOUNDARY_HIT_RATIO
+    )
+
+
+def _miniblock_boundary_hit_ratio(
+    image: RGBImage,
+    room: Box,
+    positions: set[tuple[int, int]],
+) -> float:
     """Reject quarter-cell samples from ordinary 32px block rooms.
 
     True 16px tiles have a visible seam between most adjacent cells. A 32px
@@ -6731,12 +12043,11 @@ def _has_miniblock_boundary_signal(
             contrasts.append(sum(samples) / len(samples))
 
     if not contrasts:
-        return False
-    hit_ratio = sum(
+        return 0.0
+    return sum(
         contrast >= MINI_BLOCK_ROOM_MIN_BOUNDARY_CONTRAST
         for contrast in contrasts
     ) / len(contrasts)
-    return hit_ratio >= MINI_BLOCK_ROOM_MIN_BOUNDARY_HIT_RATIO
 
 
 def _recover_miniblock_room_objects(
@@ -7232,6 +12543,933 @@ def _full_spike_body_miniblock_overlap(
     else:
         body_positions = ((x, y), (x, y + MINI_BLOCK_SIZE))
     return sum(position in mini_block_positions for position in body_positions)
+
+
+def _arbitrate_full_spike_scale_duplicates(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Collapse mini fragments only in a decisively full-spike-scale room.
+
+    A full 32px triangle can independently trigger the 16px classifier in its
+    two base halves.  Removing every adjacent mini pair would damage genuine
+    minispike rooms, so this pass first requires full spikes to dominate the
+    room and then verifies the 32px single-triangle silhouette.  Exact minis
+    inside an accepted full spike are removed; a verified uncovered pair can
+    recover the corresponding full spike.
+    """
+
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    mini_spikes = [
+        detection for detection in detections if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    if (
+        len(full_spikes) < FULL_SPIKE_SCALE_DOMINANT_MIN_FULL_COUNT
+        or not mini_spikes
+        or len(mini_spikes)
+        > len(full_spikes) * FULL_SPIKE_SCALE_DOMINANT_MAX_MINI_RATIO
+    ):
+        return detections
+
+    mini_to_full = {
+        OBJ_MINI_SPIKE_UP: OBJ_SPIKE_UP,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_LEFT: OBJ_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_DOWN: OBJ_SPIKE_DOWN,
+    }
+    classification_cache: dict[tuple[int, int, int], _GeometryClass | None] = {}
+
+    def strong_full(type_id: int, x: int, y: int) -> _GeometryClass | None:
+        key = (type_id, x, y)
+        if key not in classification_cache:
+            spike = _classify_full_spike(
+                _patch_features(image, room, x, y, GRID_SIZE)
+            )
+            classification_cache[key] = (
+                spike
+                if spike is not None
+                and spike.type_id == type_id
+                and spike.score >= FULL_SPIKE_SCALE_MIN_SCORE
+                and spike.direction_margin
+                >= FULL_SPIKE_SCALE_MIN_DIRECTION_MARGIN
+                and spike.outline_delta >= FULL_SPIKE_SCALE_MIN_OUTLINE_DELTA
+                else None
+            )
+        return classification_cache[key]
+
+    removed: set[int] = set()
+    for mini in mini_spikes:
+        full_type = mini_to_full[mini.type_id]
+        if any(
+            full.type_id == full_type
+            and full.x <= mini.x
+            and mini.x + MINI_BLOCK_SIZE <= full.x + GRID_SIZE
+            and full.y <= mini.y
+            and mini.y + MINI_BLOCK_SIZE <= full.y + GRID_SIZE
+            and strong_full(full.type_id, full.x, full.y) is not None
+            for full in full_spikes
+        ):
+            removed.add(id(mini))
+
+    remaining_by_position = {
+        (mini.type_id, mini.x, mini.y): mini
+        for mini in mini_spikes
+        if id(mini) not in removed
+    }
+    additions: list[Detection] = []
+    for mini in sorted(
+        remaining_by_position.values(),
+        key=lambda detection: (detection.y, detection.x, detection.type_id),
+    ):
+        if id(mini) in removed:
+            continue
+        if mini.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN):
+            mate_key = (mini.type_id, mini.x + MINI_BLOCK_SIZE, mini.y)
+        else:
+            mate_key = (mini.type_id, mini.x, mini.y + MINI_BLOCK_SIZE)
+        mate = remaining_by_position.get(mate_key)
+        if mate is None or id(mate) in removed:
+            continue
+        full_type = mini_to_full[mini.type_id]
+        spike = strong_full(full_type, mini.x, mini.y)
+        if spike is None:
+            continue
+        removed.update((id(mini), id(mate)))
+        if not any(
+            full.type_id == full_type
+            and full.x == mini.x
+            and full.y == mini.y
+            for full in full_spikes
+        ):
+            additions.append(
+                _geometry_detection(
+                    "full_spike_scale_reconciled",
+                    full_type,
+                    mini.x,
+                    mini.y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+
+    return [detection for detection in detections if id(detection) not in removed] + additions
+
+
+def _reconcile_local_spike_scale_conflicts(
+    detections: list[Detection],
+    raw_mini_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Resolve only locally decisive 16px/32px spike conflicts.
+
+    Room-wide count dominance cannot represent a mixed-scale room.  Native
+    source edge extent retains the scale discarded by the normalized 16x16
+    classifier, while two independent mini hypotheses provide inverse evidence
+    before a full spike is removed.  Independently strong overlaps coexist.
+    """
+
+    mini_to_full = {
+        OBJ_MINI_SPIKE_UP: OBJ_SPIKE_UP,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_LEFT: OBJ_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_DOWN: OBJ_SPIKE_DOWN,
+    }
+    full_to_mini = {full: mini for mini, full in mini_to_full.items()}
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    mini_spikes = [
+        detection for detection in detections if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    if not full_spikes or not mini_spikes:
+        return detections
+
+    extent_cache: dict[tuple[int, int], float] = {}
+    full_class_cache: dict[tuple[int, int], _GeometryClass | None] = {}
+    patch_cache: dict[tuple[int, int, int], _PatchFeatures] = {}
+
+    def patch_at(x: int, y: int, size: int) -> _PatchFeatures:
+        key = (x, y, size)
+        if key not in patch_cache:
+            patch_cache[key] = _patch_features(image, room, x, y, size)
+        return patch_cache[key]
+
+    def native_extent(full: Detection) -> float:
+        key = (full.x, full.y)
+        if key not in extent_cache:
+            extent_cache[key] = _native_edge_component_extent(
+                image,
+                room,
+                full.x,
+                full.y,
+            )
+        return extent_cache[key]
+
+    def full_class(full: Detection) -> _GeometryClass | None:
+        key = (full.x, full.y)
+        if key not in full_class_cache:
+            full_class_cache[key] = _classify_full_spike(
+                patch_at(full.x, full.y, GRID_SIZE)
+            )
+        return full_class_cache[key]
+
+    def full_shape_veto(full: Detection) -> bool:
+        shape = full_class(full)
+        return bool(
+            shape is not None
+            and shape.type_id == full.type_id
+            and shape.score >= 0.52
+            and shape.direction_margin >= 0.15
+            and shape.outline_delta >= 0.30
+        )
+
+    def strong_full_container(full: Detection) -> bool:
+        if native_extent(full) < 26:
+            return False
+        shape = full_class(full)
+        if shape is None or shape.type_id != full.type_id:
+            return False
+        patch = patch_at(full.x, full.y, GRID_SIZE)
+        direction = directions[full.type_id]
+        return (
+            shape.score >= 0.24
+            and shape.outline_delta >= 0.10
+            and _triangle_side_coverage(patch, direction) >= 0.75
+            and _triangle_min_side_coverage(patch, direction) >= 0.75
+        )
+
+    strong_raw_cache: dict[int, bool] = {}
+
+    def strong_raw_mini(mini: Detection) -> bool:
+        key = id(mini)
+        if key not in strong_raw_cache:
+            patch = patch_at(mini.x, mini.y, MINI_BLOCK_SIZE)
+            shape = _classify_mini_spike(patch)
+            direction = directions[mini.type_id]
+            strong_raw_cache[key] = bool(
+                shape is not None
+                and shape.type_id == mini.type_id
+                and _accept_mini_spike(shape, _classify_block(patch))
+                and shape.outline_delta >= 0.15
+                and _triangle_side_coverage(patch, direction) >= 0.75
+                and _triangle_min_side_coverage(patch, direction) >= 0.75
+            )
+        return strong_raw_cache[key]
+
+    removed: set[int] = set()
+    for full in full_spikes:
+        if native_extent(full) > 21 or full_shape_veto(full):
+            continue
+        mini_type = full_to_mini[full.type_id]
+        hypotheses = [
+            mini
+            for mini in raw_mini_spikes
+            if mini.type_id == mini_type
+            and full.x <= mini.x
+            and mini.x + MINI_BLOCK_SIZE <= full.x + GRID_SIZE
+            and full.y <= mini.y
+            and mini.y + MINI_BLOCK_SIZE <= full.y + GRID_SIZE
+            and strong_raw_mini(mini)
+        ]
+        independent = any(
+            abs(first.x - second.x) >= MINI_BLOCK_SIZE
+            or abs(first.y - second.y) >= MINI_BLOCK_SIZE
+            for first, second in combinations(hypotheses, 2)
+        )
+        if independent:
+            removed.add(id(full))
+
+    coherent_fulls = [
+        full
+        for full in full_spikes
+        if id(full) not in removed and strong_full_container(full)
+    ]
+    for mini in mini_spikes:
+        patch = patch_at(mini.x, mini.y, MINI_BLOCK_SIZE)
+        direction = directions[mini.type_id]
+        if (
+            patch.center_score > 0.40
+            or _triangle_min_side_coverage(patch, direction) > 0.625
+        ):
+            continue
+        full_type = mini_to_full[mini.type_id]
+        if any(
+            full.type_id == full_type
+            and full.x <= mini.x
+            and mini.x + MINI_BLOCK_SIZE <= full.x + GRID_SIZE
+            and full.y <= mini.y
+            and mini.y + MINI_BLOCK_SIZE <= full.y + GRID_SIZE
+            for full in coherent_fulls
+        ):
+            removed.add(id(mini))
+
+    return [detection for detection in detections if id(detection) not in removed]
+
+
+def _native_edge_component_extent(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> float:
+    """Return the largest native edge component's smaller map-space extent."""
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    left = max(0, int(round(room.x + map_x * scale_x)))
+    top = max(0, int(round(room.y + map_y * scale_y)))
+    right = min(image.width, int(round(room.x + (map_x + GRID_SIZE) * scale_x)))
+    bottom = min(image.height, int(round(room.y + (map_y + GRID_SIZE) * scale_y)))
+    width = right - left
+    height = bottom - top
+    if width <= 0 or height <= 0:
+        return 0.0
+
+    gray: list[int] = []
+    for y in range(top, bottom):
+        for x in range(left, right):
+            red, green, blue = image.pixel(x, y)
+            gray.append((red * 30 + green * 59 + blue * 11) // 100)
+    edges: set[tuple[int, int]] = set()
+    for y in range(height):
+        for x in range(width):
+            current = gray[y * width + x]
+            right_value = gray[y * width + min(width - 1, x + 1)]
+            down_value = gray[min(height - 1, y + 1) * width + x]
+            if abs(current - right_value) + abs(current - down_value) >= 34:
+                edges.add((x, y))
+
+    maximum = 0.0
+    remaining = set(edges)
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            x, y = queue.pop()
+            for neighbor_y in range(y - 1, y + 2):
+                for neighbor_x in range(x - 1, x + 2):
+                    neighbor = (neighbor_x, neighbor_y)
+                    if neighbor == (x, y) or neighbor not in remaining:
+                        continue
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        xs = [x for x, _y in component]
+        ys = [y for _x, y in component]
+        map_width = (max(xs) - min(xs) + 1) / max(scale_x, 1e-9)
+        map_height = (max(ys) - min(ys) + 1) / max(scale_y, 1e-9)
+        maximum = max(maximum, min(map_width, map_height))
+    return maximum
+
+
+def _reconcile_bright_filled_full_spikes(
+    detections: list[Detection],
+    raw_full_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Assign one final hypothesis to each clear bright triangle silhouette.
+
+    Dense terrain and adjacent spike bases can create many contradictory edge
+    hypotheses.  In a room with abundant locally bright, filled triangles, a
+    two-cluster inside/outside contrast is much more stable than candidate
+    score or terrain support.  Rebuild the full-spike set from those raw source
+    silhouettes; a conservative nearby pass recovers a strong component that
+    the early block/spike arbitration classified as a block.
+    """
+
+    if not raw_full_spikes:
+        return detections
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    raw_by_key: dict[tuple[int, int, int], Detection] = {}
+    for detection in raw_full_spikes:
+        key = (detection.type_id, detection.x, detection.y)
+        previous = raw_by_key.get(key)
+        if previous is None or detection.score > previous.score:
+            raw_by_key[key] = detection
+
+    selected: dict[tuple[int, int, int], Detection] = {}
+    for key, detection in raw_by_key.items():
+        fill = _triangle_fill_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+            directions[detection.type_id],
+        )
+        if _is_bright_filled_full_spike_component(fill):
+            selected[key] = detection
+    current_full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not _should_reconcile_bright_filled_full_spikes(
+        len(selected), len(current_full_spikes)
+    ):
+        return detections
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            key = (spike.type_id, x, y)
+            if key in selected:
+                continue
+            if not (
+                spike.score >= BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_SCORE
+                and spike.direction_margin
+                >= BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN
+                and spike.outline_delta
+                >= BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA
+            ):
+                continue
+            fill = _triangle_fill_features(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                directions[spike.type_id],
+            )
+            if not _is_bright_filled_full_spike_component(fill):
+                continue
+            if not any(
+                distance((x, y), (detection.x, detection.y))
+                <= BRIGHT_FILLED_FULL_SPIKE_RECOVERY_NEARBY_DISTANCE
+                for detection in current_full_spikes
+            ):
+                continue
+            if any(
+                distance((x, y), (candidate.x, candidate.y))
+                <= BRIGHT_FILLED_FULL_SPIKE_RECOVERY_NEARBY_DISTANCE
+                for candidate in selected.values()
+            ):
+                continue
+            selected[key] = _geometry_detection(
+                "full_spike_bright_fill_recovery",
+                spike.type_id,
+                x,
+                y,
+                spike.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in FULL_SPIKE_TYPES
+    ] + list(selected.values())
+
+
+def _is_bright_filled_full_spike_component(
+    fill: _TriangleFillFeatures,
+) -> bool:
+    return (
+        fill.density_contrast
+        >= BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
+        and fill.luma_contrast >= BRIGHT_FILLED_FULL_SPIKE_MIN_LUMA_CONTRAST
+    )
+
+
+def _should_reconcile_bright_filled_full_spikes(
+    selected_count: int,
+    current_full_spike_count: int,
+) -> bool:
+    return (
+        selected_count >= BRIGHT_FILLED_FULL_SPIKE_MIN_COUNT
+        and current_full_spike_count >= BRIGHT_FILLED_FULL_SPIKE_MIN_CURRENT_COUNT
+        and selected_count
+        >= current_full_spike_count * BRIGHT_FILLED_FULL_SPIKE_MIN_CURRENT_COVERAGE
+    )
+
+
+def _reconcile_bright_neutral_full_spike_components(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Rebuild a coherent bright-neutral spike field from source components.
+
+    A filled triangle's pixel centroid lies toward its base, so its dominant
+    normalized centroid offset identifies the apex direction independently of
+    terrain support, candidate score, and palette hue.  The profile activates
+    only for a sizeable low-chroma component field that covers the current
+    spike detections and occupies little of the room; bright backgrounds and
+    isolated UI sprites therefore stay on the ordinary geometry path.
+    """
+
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+    components = _connected_components(
+        image,
+        room,
+        lambda r, g, b: min(r, g, b) > 145 and max(r, g, b) - min(r, g, b) < 65,
+    )
+    mask_pixels = sum(len(pixels) for _, pixels in components)
+    map_area_scale = (
+        ROOM_WIDTH / max(1, room.width) * ROOM_HEIGHT / max(1, room.height)
+    )
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    type_by_direction = {
+        "up": OBJ_SPIKE_UP,
+        "right": OBJ_SPIKE_RIGHT,
+        "left": OBJ_SPIKE_LEFT,
+        "down": OBJ_SPIKE_DOWN,
+    }
+    component_by_key: dict[tuple[int, int, int], Detection] = {}
+    strength_by_key: dict[tuple[int, int, int], float] = {}
+    shape_by_key: dict[tuple[int, int, int], tuple[float, float, float]] = {}
+    for box, pixels in components:
+        map_area = len(pixels) * map_area_scale
+        map_width = box.width * scale_x
+        map_height = box.height * scale_y
+        if (
+            map_area < BRIGHT_NEUTRAL_SPIKE_MIN_MAP_AREA
+            or map_width < BRIGHT_NEUTRAL_SPIKE_MIN_MAP_WIDTH
+            or map_height < BRIGHT_NEUTRAL_SPIKE_MIN_MAP_HEIGHT
+            or map_width > BRIGHT_NEUTRAL_SPIKE_MAX_MAP_WIDTH
+            or map_height > BRIGHT_NEUTRAL_SPIKE_MAX_MAP_HEIGHT
+        ):
+            continue
+        center_x = sum(x for x, _ in pixels) / len(pixels)
+        center_y = sum(y for _, y in pixels) / len(pixels)
+        dx = (center_x - box.center_x) / max(1, box.width)
+        dy = (center_y - box.center_y) / max(1, box.height)
+        strength = max(abs(dx), abs(dy))
+        direction = _bright_neutral_triangle_direction(dx, dy)
+        if (
+            strength < BRIGHT_NEUTRAL_SPIKE_MIN_CENTROID_ASYMMETRY
+            or direction is None
+        ):
+            continue
+        x, y = _image_box_to_jtool_origin(box, room, grid_step)
+        if not (
+            0 <= x <= ROOM_WIDTH - GRID_SIZE
+            and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+        ):
+            continue
+        type_id = type_by_direction[direction]
+        key = (type_id, x, y)
+        if strength <= strength_by_key.get(key, -1.0):
+            continue
+        strength_by_key[key] = strength
+        shape_by_key[key] = (map_area, map_width, map_height)
+        component_by_key[key] = _geometry_detection(
+            "full_spike_bright_neutral_component",
+            type_id,
+            x,
+            y,
+            min(0.99, 0.80 + strength),
+            image,
+            room,
+            GRID_SIZE,
+        )
+
+    current_keys = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in full_spikes
+    }
+    use_ordinary_profile = _should_use_bright_neutral_spike_components(
+        len(component_by_key),
+        len(full_spikes),
+        mask_pixels / max(1, room.area),
+    )
+    shapes = list(shape_by_key.values())
+    use_oversized_profile = bool(shapes) and (
+        _should_use_oversized_bright_neutral_spike_components(
+            component_count=len(component_by_key),
+            current_full_spike_count=len(full_spikes),
+            exact_overlap_count=len(set(component_by_key) & current_keys),
+            median_map_area=median(shape[0] for shape in shapes),
+            median_min_extent=median(min(shape[1], shape[2]) for shape in shapes),
+            component_mask_share=(
+                sum(shape[0] for shape in shapes) / (ROOM_WIDTH * ROOM_HEIGHT)
+            ),
+        )
+    )
+    if not use_ordinary_profile and not use_oversized_profile:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in FULL_SPIKE_TYPES
+    ] + list(component_by_key.values())
+
+
+def _bright_neutral_triangle_direction(dx: float, dy: float) -> str | None:
+    if max(abs(dx), abs(dy)) < BRIGHT_NEUTRAL_SPIKE_MIN_CENTROID_ASYMMETRY:
+        return None
+    if abs(dx) > abs(dy):
+        return "left" if dx > 0 else "right"
+    return "up" if dy > 0 else "down"
+
+
+def _should_use_bright_neutral_spike_components(
+    component_count: int,
+    current_full_spike_count: int,
+    room_mask_share: float,
+) -> bool:
+    return (
+        component_count >= BRIGHT_NEUTRAL_SPIKE_MIN_COMPONENT_COUNT
+        and current_full_spike_count > 0
+        and component_count
+        >= current_full_spike_count * BRIGHT_NEUTRAL_SPIKE_MIN_CURRENT_COVERAGE
+        and component_count
+        <= current_full_spike_count * BRIGHT_NEUTRAL_SPIKE_MAX_CURRENT_MULTIPLIER
+        and room_mask_share <= BRIGHT_NEUTRAL_SPIKE_MAX_ROOM_MASK_SHARE
+    )
+
+
+def _should_use_oversized_bright_neutral_spike_components(
+    *,
+    component_count: int,
+    current_full_spike_count: int,
+    exact_overlap_count: int,
+    median_map_area: float,
+    median_min_extent: float,
+    component_mask_share: float,
+) -> bool:
+    """Recognize a coherent full-spike sprite scale missed by the base grid.
+
+    The component field must be large enough to establish a sprite family,
+    visibly full-scale (rather than a minispike lattice), sparse in the room,
+    and almost entirely out of phase with the current hypotheses.  This lets
+    source shape repair a genuinely unfamiliar tile scale without activating
+    merely because the palette is pale.
+    """
+
+    return (
+        component_count >= 8
+        and current_full_spike_count >= 8
+        and exact_overlap_count <= component_count * 0.10
+        and median_map_area >= 700.0
+        and median_min_extent >= 36.0
+        and component_mask_share <= BRIGHT_NEUTRAL_SPIKE_MAX_ROOM_MASK_SHARE
+    )
+
+
+def _reconcile_dense_minispike_lattice(
+    detections: list[Detection],
+    raw_mini_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Resolve the 16px/32px ambiguity in a repeated minispike field.
+
+    Adjacent 16px triangles can form a convincing 32px triangle at the coarser
+    scale.  Seed from direct mini classifications, extend only along the
+    inferred alternating/same-direction axis, and retain any locally decisive
+    full-size silhouette so a genuinely mixed-scale room remains possible.
+    """
+
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    axis_types = _dense_minispike_lattice_axis(raw_mini_spikes, full_spikes)
+    if axis_types is None:
+        return detections
+    if _looks_like_block_texture_minispike_lattice(
+        detections,
+        raw_mini_spikes,
+        axis_types,
+    ):
+        return detections
+
+    opposite_type = {
+        OBJ_MINI_SPIKE_UP: OBJ_MINI_SPIKE_DOWN,
+        OBJ_MINI_SPIKE_DOWN: OBJ_MINI_SPIKE_UP,
+        OBJ_MINI_SPIKE_LEFT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_MINI_SPIKE_LEFT,
+    }
+    best_by_key: dict[tuple[int, int, int], Detection] = {}
+    for detection in raw_mini_spikes:
+        if detection.type_id not in axis_types:
+            continue
+        key = (detection.type_id, detection.x, detection.y)
+        previous = best_by_key.get(key)
+        if previous is None or detection.score > previous.score:
+            best_by_key[key] = detection
+
+    profile_cache: dict[tuple[int, int], _ColorProfile] = {}
+    class_cache: dict[tuple[int, int], dict[int, _GeometryClass]] = {}
+
+    def profile_at(x: int, y: int) -> _ColorProfile:
+        key = (x, y)
+        if key not in profile_cache:
+            profile_cache[key] = _patch_color_profile(
+                image,
+                room,
+                x,
+                y,
+                MINI_BLOCK_SIZE,
+            )
+        return profile_cache[key]
+
+    def classes_at(x: int, y: int) -> dict[int, _GeometryClass]:
+        key = (x, y)
+        if key not in class_cache:
+            patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+            class_cache[key] = {
+                candidate.type_id: candidate
+                for candidate in _classify_mini_spike_candidates(patch)
+            }
+        return class_cache[key]
+
+    learned_profile = _median_color_profile(
+        [profile_at(x, y) for _, x, y in best_by_key]
+    )
+
+    def matches_learned_profile(x: int, y: int) -> bool:
+        return (
+            _color_profile_distance(profile_at(x, y), learned_profile)
+            <= DENSE_MINISPIKE_LATTICE_MAX_PROFILE_DISTANCE
+        )
+
+    best_by_key = {
+        key: detection
+        for key, detection in best_by_key.items()
+        if matches_learned_profile(detection.x, detection.y)
+    }
+    selected_keys = set(best_by_key)
+    if axis_types == frozenset((OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN)):
+        adjacent_offsets = ((0, -MINI_BLOCK_SIZE), (0, MINI_BLOCK_SIZE))
+        same_offsets = ((0, -GRID_SIZE), (0, GRID_SIZE))
+        pair_offset = (0, MINI_BLOCK_SIZE)
+        pair_x_stop = ROOM_WIDTH - MINI_BLOCK_SIZE + 1
+        pair_y_stop = ROOM_HEIGHT - GRID_SIZE + 1
+    else:
+        adjacent_offsets = ((-MINI_BLOCK_SIZE, 0), (MINI_BLOCK_SIZE, 0))
+        same_offsets = ((-GRID_SIZE, 0), (GRID_SIZE, 0))
+        pair_offset = (MINI_BLOCK_SIZE, 0)
+        pair_x_stop = ROOM_WIDTH - GRID_SIZE + 1
+        pair_y_stop = ROOM_HEIGHT - MINI_BLOCK_SIZE + 1
+
+    pair_additions: dict[tuple[int, int, int], Detection] = {}
+    for y in range(0, pair_y_stop, MINI_BLOCK_SIZE):
+        for x in range(0, pair_x_stop, MINI_BLOCK_SIZE):
+            second_x = x + pair_offset[0]
+            second_y = y + pair_offset[1]
+            if not (
+                matches_learned_profile(x, y)
+                and matches_learned_profile(second_x, second_y)
+            ):
+                continue
+            first_classes = classes_at(x, y)
+            second_classes = classes_at(second_x, second_y)
+            for first_type in axis_types:
+                second_type = opposite_type[first_type]
+                first = first_classes[first_type]
+                second = second_classes[second_type]
+                if (
+                    min(first.score, second.score)
+                    < DENSE_MINISPIKE_LATTICE_PAIR_MIN_SCORE
+                    or min(first.outline_delta, second.outline_delta)
+                    < DENSE_MINISPIKE_LATTICE_PAIR_MIN_OUTLINE_DELTA
+                    or max(first.outline_delta, second.outline_delta)
+                    < DENSE_MINISPIKE_LATTICE_PAIR_STRONG_OUTLINE_DELTA
+                ):
+                    continue
+                for type_id, candidate, candidate_x, candidate_y in (
+                    (first_type, first, x, y),
+                    (second_type, second, second_x, second_y),
+                ):
+                    key = (type_id, candidate_x, candidate_y)
+                    if key not in selected_keys:
+                        pair_additions[key] = _geometry_detection(
+                            "mini_spike_dense_lattice_pair_seed",
+                            type_id,
+                            candidate_x,
+                            candidate_y,
+                            candidate.score,
+                            image,
+                            room,
+                            MINI_BLOCK_SIZE,
+                        )
+    best_by_key.update(pair_additions)
+    selected_keys.update(pair_additions)
+
+    for _ in range(DENSE_MINISPIKE_LATTICE_RECOVERY_MAX_ROUNDS):
+        additions: dict[tuple[int, int, int], Detection] = {}
+        for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+                if not matches_learned_profile(x, y):
+                    continue
+                classes = classes_at(x, y)
+                for type_id in axis_types:
+                    key = (type_id, x, y)
+                    if key in selected_keys:
+                        continue
+                    candidate = classes[type_id]
+                    if (
+                        candidate.score
+                        < DENSE_MINISPIKE_LATTICE_RECOVERY_MIN_SCORE
+                        or candidate.outline_delta
+                        < DENSE_MINISPIKE_LATTICE_RECOVERY_MIN_OUTLINE_DELTA
+                    ):
+                        continue
+                    has_opposite_neighbor = any(
+                        (
+                            opposite_type[type_id],
+                            x + offset_x,
+                            y + offset_y,
+                        )
+                        in selected_keys
+                        for offset_x, offset_y in adjacent_offsets
+                    )
+                    has_same_neighbor = any(
+                        (type_id, x + offset_x, y + offset_y) in selected_keys
+                        for offset_x, offset_y in same_offsets
+                    )
+                    if not (has_opposite_neighbor or has_same_neighbor):
+                        continue
+                    additions[key] = _geometry_detection(
+                        "mini_spike_dense_lattice_recovery",
+                        type_id,
+                        x,
+                        y,
+                        candidate.score,
+                        image,
+                        room,
+                        MINI_BLOCK_SIZE,
+                    )
+        if not additions:
+            break
+        best_by_key.update(additions)
+        selected_keys.update(additions)
+
+    kept: list[Detection] = []
+    for detection in detections:
+        if detection.type_id in MINI_SPIKE_TYPES:
+            continue
+        if detection.type_id in FULL_SPIKE_TYPES and not (
+            _is_strong_full_spike_in_dense_minispike_lattice(
+                detection,
+                image,
+                room,
+            )
+        ):
+            continue
+        kept.append(detection)
+    return [*kept, *best_by_key.values()]
+
+
+def _dense_minispike_lattice_axis(
+    raw_mini_spikes: list[Detection],
+    full_spikes: list[Detection],
+) -> frozenset[int] | None:
+    if len(raw_mini_spikes) < DENSE_MINISPIKE_LATTICE_MIN_RAW_COUNT:
+        return None
+    if len(raw_mini_spikes) < max(
+        1,
+        len(full_spikes) * DENSE_MINISPIKE_LATTICE_MIN_RAW_TO_FULL_RATIO,
+    ):
+        return None
+    vertical = frozenset((OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN))
+    horizontal = frozenset((OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_RIGHT))
+    vertical_count = sum(
+        detection.type_id in vertical for detection in raw_mini_spikes
+    )
+    horizontal_count = sum(
+        detection.type_id in horizontal for detection in raw_mini_spikes
+    )
+    dominant, count = (
+        (vertical, vertical_count)
+        if vertical_count >= horizontal_count
+        else (horizontal, horizontal_count)
+    )
+    if count < len(raw_mini_spikes) * DENSE_MINISPIKE_LATTICE_MIN_AXIS_SHARE:
+        return None
+    return dominant
+
+
+def _looks_like_block_texture_minispike_lattice(
+    detections: list[Detection],
+    raw_mini_spikes: list[Detection],
+    axis_types: frozenset[int],
+) -> bool:
+    """Reject left/right mini fields formed by an X motif inside solid tiles."""
+
+    horizontal = frozenset((OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_RIGHT))
+    if axis_types != horizontal:
+        return False
+    blocks = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    ]
+    if len(blocks) < BLOCK_TEXTURE_MINISPIKE_MIN_BLOCKS:
+        return False
+    embedded = sum(
+        any(
+            _rect_box_overlap_area(
+                mini.x,
+                mini.y,
+                MINI_BLOCK_SIZE,
+                MINI_BLOCK_SIZE,
+                block.x,
+                block.y,
+                GRID_SIZE,
+                GRID_SIZE,
+            )
+            >= MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 2
+            for block in blocks
+        )
+        for mini in raw_mini_spikes
+        if mini.type_id in horizontal
+    )
+    return (
+        embedded
+        >= len(raw_mini_spikes) * BLOCK_TEXTURE_MINISPIKE_MIN_EMBEDDED_SHARE
+    )
+
+
+def _is_strong_full_spike_in_dense_minispike_lattice(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    spike = _classify_full_spike(
+        _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+    )
+    return (
+        spike is not None
+        and spike.type_id == detection.type_id
+        and spike.score >= DENSE_MINISPIKE_LATTICE_FULL_MIN_SCORE
+        and spike.direction_margin
+        >= DENSE_MINISPIKE_LATTICE_FULL_MIN_DIRECTION_MARGIN
+        and spike.outline_delta
+        >= DENSE_MINISPIKE_LATTICE_FULL_MIN_OUTLINE_DELTA
+    )
 
 
 def _recover_miniblock_room_full_spikes(
@@ -12576,6 +18814,8 @@ def _recover_low_contrast_mini_up_pairs(
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
+    if _is_directly_full_scale_dominant(detections):
+        return detections
     if any(
         det.type_id in MINI_SPIKE_TYPES
         and det.score >= LOW_CONTRAST_MINI_UP_STRONG_ANCHOR_SCORE
@@ -12623,6 +18863,30 @@ def _recover_low_contrast_mini_up_pairs(
     if added:
         recovered.extend(added)
     return recovered
+
+
+def _is_directly_full_scale_dominant(detections: list[Detection]) -> bool:
+    """Distinguish weak mini evidence from fragments of clear full spikes.
+
+    The low-contrast pair recovery is intentionally permissive, so the two
+    base halves of a 32px triangle can resemble adjacent 16px up spikes.  A
+    room with many directly classified full spikes and almost no independently
+    classified minis already supplies a strong scale prior; manufacturing a
+    second mini-scale interpretation there only poisons later room profiling.
+    Mixed-scale and genuinely mini-dense rooms retain the recovery.
+    """
+
+    full_count = sum(
+        detection.type_id in FULL_SPIKE_TYPES for detection in detections
+    )
+    mini_count = sum(
+        detection.type_id in MINI_SPIKE_TYPES for detection in detections
+    )
+    return (
+        full_count >= LOW_CONTRAST_MINI_UP_FULL_SCALE_MIN_COUNT
+        and mini_count
+        <= full_count * LOW_CONTRAST_MINI_UP_FULL_SCALE_MAX_MINI_RATIO
+    )
 
 
 def _is_low_contrast_mini_up_candidate(
@@ -16542,22 +22806,48 @@ def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
     )
 
 
-def _dedupe_overlapping_geometry(detections: list[Detection]) -> list[Detection]:
+def _dedupe_overlapping_geometry(
+    detections: list[Detection],
+    anchor_types: frozenset[int] | None = None,
+) -> list[Detection]:
     # Saves and warps are more reliable than the experimental geometry pass.
-    anchors = [det for det in detections if det.type_id not in GEOMETRY_TYPES]
+    anchors = [
+        det
+        for det in detections
+        if det.type_id not in GEOMETRY_TYPES
+        and (anchor_types is None or det.type_id in anchor_types)
+    ]
     result: list[Detection] = []
     for det in detections:
         if det.type_id not in GEOMETRY_TYPES:
             result.append(det)
             continue
-        if any(_geometry_anchor_conflicts(det, anchor) for anchor in anchors):
+        if any(
+            _geometry_anchor_conflicts(
+                det,
+                anchor,
+                include_diagonal_overlap=anchor_types is not None,
+            )
+            for anchor in anchors
+        ):
             continue
         result.append(det)
     return result
 
 
-def _geometry_anchor_conflicts(det: Detection, anchor: Detection) -> bool:
-    if distance((det.x, det.y), (anchor.x, anchor.y)) >= 20:
+def _geometry_anchor_conflicts(
+    det: Detection,
+    anchor: Detection,
+    *,
+    include_diagonal_overlap: bool = False,
+) -> bool:
+    delta_x = abs(det.x - anchor.x)
+    delta_y = abs(det.y - anchor.y)
+    if include_diagonal_overlap:
+        overlaps = max(delta_x, delta_y) < 20
+    else:
+        overlaps = distance((det.x, det.y), (anchor.x, anchor.y)) < 20
+    if not overlaps:
         return False
     return not _can_geometry_coexist_with_anchor(det, anchor)
 
@@ -16698,12 +22988,32 @@ def _is_save_green(r: int, g: int, b: int) -> bool:
     return g > 120 and g > r + 35 and g > b + 20
 
 
+def _is_save_header_pale(r: int, g: int, b: int) -> bool:
+    return min(r, g, b) >= 125 and max(r, g, b) - min(r, g, b) <= 95
+
+
 def _is_tinted_save_yellow(r: int, g: int, b: int) -> bool:
     return r > 95 and g > 145 and 80 < b < 215 and g > r + 25 and g > b + 20
 
 
 def _is_apple_red(r: int, g: int, b: int) -> bool:
     return r > 150 and g < 95 and b < 95 and r > g * 1.8 and r > b * 1.8
+
+
+def _is_relative_warm_apple_seed_color(r: int, g: int, b: int) -> bool:
+    """Find warm apple remnants without assuming an absolute red palette."""
+
+    return (
+        r >= WATER_TINTED_APPLE_SEED_MIN_RED
+        and r - g >= WATER_TINTED_APPLE_SEED_MIN_RED_OVER_GREEN
+        and r - b >= WATER_TINTED_APPLE_SEED_MIN_RED_OVER_BLUE
+    )
+
+
+def _is_weak_room_corner_apple(x: int, y: int, score: float) -> bool:
+    near_x_edge = x <= APPLE_ROOM_CORNER_MARGIN or x >= ROOM_WIDTH - APPLE_ROOM_CORNER_MARGIN
+    near_y_edge = y <= APPLE_ROOM_CORNER_MARGIN or y >= ROOM_HEIGHT - APPLE_ROOM_CORNER_MARGIN
+    return near_x_edge and near_y_edge and score < APPLE_ROOM_CORNER_KEEP_MIN_SCORE
 
 
 def _is_outline_apple_dark_neutral(r: int, g: int, b: int) -> bool:
@@ -16741,6 +23051,12 @@ def _is_walljump_green(r: int, g: int, b: int) -> bool:
 
 def _is_sparse_walljump_green(r: int, g: int, b: int) -> bool:
     return g > 105 and r < 115 and b < 135 and g > r * 1.35 and g > b * 1.20
+
+
+def _is_pastel_walljump_impostor_color(r: int, g: int, b: int) -> bool:
+    """Separate muted green terrain fills from the vine sprite palette."""
+
+    return g > 110 and r > 65 and g > r + 20 and g > b + 10
 
 
 def _is_water_blue(r: int, g: int, b: int) -> bool:

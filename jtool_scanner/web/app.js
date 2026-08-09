@@ -16,7 +16,7 @@
   const GLYPHS = {
     1: "■", 2: "▪", 3: "▲", 4: "▶", 5: "◀", 6: "▼",
     7: "▴", 8: "▸", 9: "◂", 10: "▾", 11: "●", 12: "S",
-    13: "━", 14: "▧", 15: "▧", 16: "▥", 17: "▥", 18: "▣",
+    13: "━", 14: "▧", 15: "▧", 16: "◀", 17: "▶", 18: "▣",
     19: "▬", 20: "K", 21: "◉", 22: "↥", 23: "▧", 24: "⬆",
     25: "⬇", 26: "S", 27: "▫",
   };
@@ -24,11 +24,27 @@
     1: "#aeb4b8", 2: "#aeb4b8", 3: "#d7dcdf", 4: "#d7dcdf",
     5: "#d7dcdf", 6: "#d7dcdf", 7: "#eef1f2", 8: "#eef1f2",
     9: "#eef1f2", 10: "#eef1f2", 11: "#cf513c", 12: "#ebe044",
-    13: "#969da2", 14: "#5ba9e8", 15: "#7ecfd0", 16: "#2b8738",
-    17: "#2b8738", 18: "#b95d61", 19: "#b9c0c4", 20: "#4169e1",
+    13: "#969da2", 14: "#5ba9e8", 15: "#7ecfd0", 16: "#236f33",
+    17: "#46a657", 18: "#b95d61", 19: "#b9c0c4", 20: "#4169e1",
     21: "#7827ff", 22: "#d8d8d8", 23: "#9fe4e4", 24: "#ff6868",
     25: "#55bce8", 26: "#ebe044", 27: "#b95d61",
   };
+  const SPRITES = {
+    1: ["block.png", 32, 32], 2: ["miniblock.png", 16, 16],
+    3: ["spikeup.png", 32, 32], 4: ["spikeright.png", 32, 32],
+    5: ["spikeleft.png", 32, 32], 6: ["spikedown.png", 32, 32],
+    7: ["miniup.png", 16, 16], 8: ["miniright.png", 16, 16],
+    9: ["minileft.png", 16, 16], 10: ["minidown.png", 16, 16],
+    11: ["apple-frame0.png", 21, 24], 12: ["save-frame0.png", 32, 32],
+    13: ["platform.png", 32, 16], 14: ["water1.png", 32, 32],
+    15: ["water2.png", 32, 32], 16: ["walljumpR.png", 32, 32],
+    17: ["walljumpL.png", 32, 32], 18: ["killerblock.png", 32, 32],
+    19: ["bulletblocker.png", 32, 32], 20: ["playerstart.png", 32, 32],
+    21: ["warp.png", 32, 32], 22: ["jumprefresher.png", 32, 32],
+    23: ["water3.png", 32, 32], 24: ["gravity-up.png", 32, 32],
+    25: ["gravity-down.png", 32, 32], 26: ["save-flip.png", 32, 32],
+  };
+  const KILLER_SPRITES = new Set([3, 4, 5, 6, 7, 8, 9, 10, 11, 18]);
 
   const $ = (id) => document.getElementById(id);
   const elements = {};
@@ -74,7 +90,7 @@
       "selectionInspector", "selectedSwatch", "selectedName", "deleteButton",
       "objectTypeSelect", "objectX", "objectY", "objectEnabled", "objectId",
       "objectSource", "objectScore", "duplicateButton", "startHereButton",
-      "infiniteJump", "startPolicy", "bulkWater", "applyWaterButton", "layerSearch",
+      "infiniteJump", "dotKid", "startPolicy", "bulkWater", "applyWaterButton", "layerSearch",
       "confidenceFilter", "layerList", "scanWarnings", "toastRegion", "busyOverlay", "busyTitle",
     ]) elements[id] = $(id);
   }
@@ -105,6 +121,7 @@
     elements.objectY.addEventListener("change", updateSelectedFromInspector);
     elements.objectEnabled.addEventListener("change", updateSelectedFromInspector);
     elements.infiniteJump.addEventListener("change", updateSettings);
+    elements.dotKid.addEventListener("change", updateSettings);
     elements.startPolicy.addEventListener("change", updateStartPolicy);
     elements.applyWaterButton.addEventListener("click", replaceAllWater);
     elements.interactionLayer.addEventListener("pointerdown", onPointerDown);
@@ -146,7 +163,11 @@
         .map((id) => `
           <button class="palette-item ${state.selectedType === id ? "active" : ""}"
                   data-type-id="${id}" title="${prettyName(names.get(id))}">
-            <span class="palette-glyph" style="color:${COLORS[id]}">${GLYPHS[id]}</span>
+            ${SPRITES[id]
+              ? `<img class="palette-sprite ${KILLER_SPRITES.has(id) ? "killer-tint" : ""}"
+                      src="/assets/jtool-pat-default/${SPRITES[id][0]}" alt=""
+                      style="width:${SPRITES[id][1]}px;height:${SPRITES[id][2]}px">`
+              : `<span class="palette-glyph" style="color:${COLORS[id]}">${GLYPHS[id]}</span>`}
             <small>${id}</small>
           </button>`).join("");
       return buttons ? `<section class="palette-group"><h3>${group}</h3><div class="palette-grid">${buttons}</div></section>` : "";
@@ -572,7 +593,10 @@
 
   function updateSettings() {
     if (!state.project) return;
-    mutate(() => { state.project.jmap.infinite_jump = elements.infiniteJump.checked ? 1 : 0; });
+    mutate(() => {
+      state.project.jmap.infinite_jump = elements.infiniteJump.checked ? 1 : 0;
+      state.project.jmap.dot_kid = elements.dotKid.checked ? 1 : 0;
+    });
   }
 
   function updateStartPolicy() {
@@ -589,6 +613,7 @@
   function syncSettings() {
     if (!state.project) return;
     elements.infiniteJump.checked = Boolean(state.project.jmap.infinite_jump);
+    elements.dotKid.checked = Boolean(state.project.jmap.dot_kid);
     elements.startPolicy.value = state.project.start.save_id ? "none" : state.project.start.policy;
   }
 
@@ -831,6 +856,8 @@
   }
 
   function prettyName(name) {
+    if (name === "walljump_left") return "Left Vine";
+    if (name === "walljump_right") return "Right Vine";
     return String(name || "").split("_").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
   }
 

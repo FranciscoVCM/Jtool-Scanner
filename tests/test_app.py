@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from jtool_scanner.app import (
+    app_health,
     app_metadata,
     export_jmap_text,
     import_jmap_text,
@@ -21,6 +22,12 @@ SAMPLE_JMAP = (
 
 
 class GraphicalAppTests(unittest.TestCase):
+    def test_health_identifies_loaded_source_snapshot(self) -> None:
+        health = app_health()
+
+        self.assertTrue(health["ok"])
+        self.assertRegex(health["source_fingerprint"], r"^[0-9a-f]{64}$")
+
     def test_metadata_exposes_room_and_supported_objects(self) -> None:
         metadata = app_metadata()
 
@@ -36,7 +43,11 @@ class GraphicalAppTests(unittest.TestCase):
         self.assertEqual(len(project.objects), 3)
         preview = preview_project(project.to_dict())
         self.assertIn("<svg", preview)
-        self.assertIn(">start<", preview)
+        self.assertEqual(preview.count('href="data:image/png;base64,'), 4)
+        self.assertIn(
+            'x="384" y="384" width="32" height="32" image-rendering="pixelated"',
+            preview,
+        )
 
         exported = JMap.from_text(export_jmap_text(project.to_dict()))
         self.assertEqual(exported.infinite_jump, 1)

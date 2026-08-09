@@ -108,6 +108,8 @@ button.primary:hover:not(:disabled) { background: var(--accent-dark); }
 }
 .palette-item.active { border: 2px solid var(--accent); background: var(--accent-soft); }
 .palette-glyph { font-size: 20px; line-height: 1; }
+.palette-sprite { flex: none; object-fit: contain; image-rendering: pixelated; }
+.palette-sprite.killer-tint { filter: brightness(68.627451%); }
 .palette-item small {
   position: absolute; bottom: 2px; right: 3px; font-size: 8px; color: var(--muted);
 }

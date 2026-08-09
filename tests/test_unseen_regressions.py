@@ -7,6 +7,7 @@ from jtool_scanner.constants import (
     GRID_SIZE,
     OBJ_APPLE,
     OBJ_BLOCK,
+    OBJ_JUMP_REFRESHER,
     OBJ_MINI_BLOCK,
     OBJ_PLATFORM,
     OBJ_SAVE,
@@ -161,6 +162,12 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 if detection.type_id == OBJ_WARP
             ]),
             0,
+        )
+        self.assertFalse(
+            any(
+                detection.type_id == OBJ_JUMP_REFRESHER
+                for detection in self.particle_room.detections
+            )
         )
         full_spikes = [
             detection

@@ -23,6 +23,8 @@ from .constants import (
     OBJ_SAVE_FLIP,
     OFFICIAL_SAVE_IDS,
     OBJECT_NAMES,
+    ROOM_HEIGHT,
+    ROOM_WIDTH,
 )
 from .geometry import Box
 from .jmap import JMap, JMapObject
@@ -182,6 +184,7 @@ class CorrectionProject:
             structural_warnings=list(getattr(result, "structural_warnings", [])),
             start_policy=start_policy,
             infinite_jump=int(getattr(result, "infinite_jump", 0)),
+            dot_kid=int(getattr(result, "dot_kid", 0)),
             objects=objects,
             history=[{"operation": "create_from_scan", "detections": len(objects)}],
         )
@@ -583,12 +586,15 @@ def render_source_blend_svg(
         show_warnings=True,
     )
     rendered_body = rendered[rendered.find(">") + 1 :].removesuffix("\n</svg>\n")
+    map_view, source_view = _source_blend_viewports(project)
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="608" '
         'viewBox="0 0 800 608">\n'
         f"<title>{escape(title)}</title>\n"
-        '<svg x="0" y="0" width="800" height="608" '
-        f'viewBox="{room.x} {room.y} {room.width} {room.height}" '
+        f'<svg x="{map_view.x}" y="{map_view.y}" '
+        f'width="{map_view.width}" height="{map_view.height}" '
+        f'viewBox="{source_view.x} {source_view.y} '
+        f'{source_view.width} {source_view.height}" '
         'preserveAspectRatio="none">\n'
         f'<image href="data:{mime};base64,{encoded}" width="{project.image_width}" '
         f'height="{project.image_height}"/>\n'
@@ -598,6 +604,42 @@ def render_source_blend_svg(
         "</g>\n"
         "</svg>\n"
     )
+
+
+def _source_blend_viewports(project: CorrectionProject) -> tuple[Box, Box]:
+    """Mirror scanner normalization when positioning a source in a blend."""
+
+    room = project.room_box
+    if project.source_grid is None:
+        return Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT), room
+    columns, rows = project.source_grid
+    if columns <= 0 or rows <= 0:
+        return Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT), room
+
+    target_columns = ROOM_WIDTH // GRID_SIZE
+    target_rows = ROOM_HEIGHT // GRID_SIZE
+    tile_width = room.width / columns
+    tile_height = room.height / rows
+    crop_columns = min(columns, target_columns)
+    crop_rows = min(rows, target_rows)
+    crop_left_columns = 0
+    crop_top_rows = max(0, rows - target_rows)
+    source_view = Box(
+        int(round(room.x + crop_left_columns * tile_width)),
+        int(round(room.y + crop_top_rows * tile_height)),
+        int(round(crop_columns * tile_width)),
+        int(round(crop_rows * tile_height)),
+    )
+
+    missing_columns = max(0, target_columns - columns)
+    missing_rows = max(0, target_rows - rows)
+    map_view = Box(
+        (missing_columns // 2) * GRID_SIZE,
+        ((missing_rows + 1) // 2) * GRID_SIZE,
+        crop_columns * GRID_SIZE,
+        crop_rows * GRID_SIZE,
+    )
+    return map_view, source_view
 
 
 def _require_official_type(type_id: int) -> None:

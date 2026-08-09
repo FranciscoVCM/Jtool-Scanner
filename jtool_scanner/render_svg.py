@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import base64
+from functools import lru_cache
 from html import escape
+from pathlib import Path
 
 from .constants import (
     GRID_SIZE,
@@ -39,6 +42,41 @@ from .constants import (
 from .jmap import JMap, JMapObject
 
 
+_JTOOL_SPRITES: dict[int, tuple[str, int, int, int, int, bool]] = {
+    OBJ_BLOCK: ("block.png", 32, 32, 0, 0, False),
+    OBJ_MINI_BLOCK: ("miniblock.png", 16, 16, 0, 0, False),
+    OBJ_SPIKE_UP: ("spikeup.png", 32, 32, 0, 0, True),
+    OBJ_SPIKE_RIGHT: ("spikeright.png", 32, 32, 0, 0, True),
+    OBJ_SPIKE_LEFT: ("spikeleft.png", 32, 32, 0, 0, True),
+    OBJ_SPIKE_DOWN: ("spikedown.png", 32, 32, 0, 0, True),
+    OBJ_MINI_SPIKE_UP: ("miniup.png", 16, 16, 0, 0, True),
+    OBJ_MINI_SPIKE_RIGHT: ("miniright.png", 16, 16, 0, 0, True),
+    OBJ_MINI_SPIKE_LEFT: ("minileft.png", 16, 16, 0, 0, True),
+    OBJ_MINI_SPIKE_DOWN: ("minidown.png", 16, 16, 0, 0, True),
+    # Apple and jump-refresher JMap coordinates are sprite origins rather
+    # than top-left corners.  These offsets mirror the upstream GameMaker
+    # origins (10,12) and (15,15), respectively.
+    OBJ_APPLE: ("apple-frame0.png", 21, 24, -10, -12, True),
+    OBJ_SAVE: ("save-frame0.png", 32, 32, 0, 0, False),
+    OBJ_PLATFORM: ("platform.png", 32, 16, 0, 0, False),
+    OBJ_WATER: ("water1.png", 32, 32, 0, 0, False),
+    OBJ_WATER_2: ("water2.png", 32, 32, 0, 0, False),
+    # Upstream names describe the facing wall, while the app's names describe
+    # the visible half of the grid cell.
+    OBJ_WALLJUMP_LEFT: ("walljumpR.png", 32, 32, 0, 0, False),
+    OBJ_WALLJUMP_RIGHT: ("walljumpL.png", 32, 32, 0, 0, False),
+    OBJ_KILLER_BLOCK: ("killerblock.png", 32, 32, 0, 0, True),
+    OBJ_BULLET_BLOCKER: ("bulletblocker.png", 32, 32, 0, 0, False),
+    OBJ_PLAYER_START: ("playerstart.png", 32, 32, 0, 0, False),
+    OBJ_WARP: ("warp.png", 32, 32, 0, 0, False),
+    OBJ_JUMP_REFRESHER: ("jumprefresher.png", 32, 32, -15, -15, False),
+    OBJ_WATER_3: ("water3.png", 32, 32, 0, 0, False),
+    OBJ_GRAVITY_UP: ("gravity-up.png", 32, 32, 0, 0, False),
+    OBJ_GRAVITY_DOWN: ("gravity-down.png", 32, 32, 0, 0, False),
+    OBJ_SAVE_FLIP: ("save-flip.png", 32, 32, 0, 0, False),
+}
+
+
 def render_svg(jmap: JMap, title: str = "JTool map preview") -> str:
     body: list[str] = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{ROOM_WIDTH}" height="{ROOM_HEIGHT}" '
@@ -47,6 +85,16 @@ def render_svg(jmap: JMap, title: str = "JTool map preview") -> str:
         '<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">',
         '<path d="M 32 0 L 0 0 0 32" fill="none" stroke="#b7b7b7" stroke-width="1"/>',
         "</pattern>",
+        # JTool applies the pat_default skin's idle-killer value (175/255) to
+        # spike, fruit and killer-block sprites.  Preserve the exact sprite
+        # pixels while reproducing that component-wise tint.
+        '<filter id="jtool-killer-tint" color-interpolation-filters="sRGB">',
+        '<feComponentTransfer>',
+        '<feFuncR type="linear" slope="0.68627451"/>',
+        '<feFuncG type="linear" slope="0.68627451"/>',
+        '<feFuncB type="linear" slope="0.68627451"/>',
+        "</feComponentTransfer>",
+        "</filter>",
         "</defs>",
         '<rect width="100%" height="100%" fill="#d3d3d3"/>',
         '<rect width="100%" height="100%" fill="url(#grid)"/>',
@@ -62,6 +110,20 @@ def render_svg(jmap: JMap, title: str = "JTool map preview") -> str:
 def _render_object(obj: JMapObject) -> list[str]:
     x, y, type_id = obj.x, obj.y, obj.type_id
 
+    sprite = _JTOOL_SPRITES.get(type_id)
+    if sprite is not None:
+        filename, width, height, offset_x, offset_y, killer_tint = sprite
+        return [
+            _jtool_sprite(
+                filename,
+                x + offset_x,
+                y + offset_y,
+                width,
+                height,
+                killer_tint=killer_tint,
+            )
+        ]
+
     if type_id == OBJ_BLOCK:
         return [_rect(x, y, 32, 32, "#b8b8b8", "#111", 2), _edge(x, y, 32, 32)]
     if type_id == OBJ_MINI_BLOCK:
@@ -74,7 +136,7 @@ def _render_object(obj: JMapObject) -> list[str]:
         color = {OBJ_WATER: "#5ba9e8", OBJ_WATER_2: "#7ecfd0", OBJ_WATER_3: "#9fe4e4"}[type_id]
         return [_rect(x, y, 32, 32, color, "none", 0, opacity=0.72)]
     if type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT):
-        return [_rect(x + 9, y, 14, 32, "#267b2d", "#0b3710", 1), _walljump_marks(x, y)]
+        raise AssertionError("walljump sprite mapping is incomplete")
     if type_id == OBJ_SAVE or type_id == OBJ_SAVE_FLIP:
         return _save(x, y, flipped=type_id == OBJ_SAVE_FLIP)
     if type_id == OBJ_PLAYER_START:
@@ -93,7 +155,9 @@ def _render_object(obj: JMapObject) -> list[str]:
         # objects whose coordinates describe their top-left corner.
         return [f'<circle cx="{x}" cy="{y}" r="11" fill="#c43" stroke="#711" stroke-width="2"/>']
     if type_id == OBJ_JUMP_REFRESHER:
-        return [f'<circle cx="{x + 16}" cy="{y + 16}" r="12" fill="#d8d8d8" stroke="#777" stroke-width="3"/>']
+        # JTool's refresher sprite uses a centered origin (15,15), so its
+        # stored coordinates are the icon center rather than a cell corner.
+        return [f'<circle cx="{x}" cy="{y}" r="12" fill="#d8d8d8" stroke="#777" stroke-width="3"/>']
     if type_id == OBJ_GRAVITY_UP:
         return [_arrow(x, y, up=True)]
     if type_id == OBJ_GRAVITY_DOWN:
@@ -111,7 +175,7 @@ def _render_priority(type_id: int) -> tuple[int, int]:
         return (2, type_id)
     if type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_RIGHT, OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_DOWN):
         return (2, type_id)
-    if type_id in (OBJ_SAVE, OBJ_PLAYER_START, OBJ_WARP):
+    if type_id in (OBJ_SAVE, OBJ_SAVE_FLIP, OBJ_PLAYER_START, OBJ_WARP):
         return (4, type_id)
     return (3, type_id)
 
@@ -179,10 +243,26 @@ def _warp(x: int, y: int) -> list[str]:
     ]
 
 
-def _walljump_marks(x: int, y: int) -> str:
+@lru_cache(maxsize=None)
+def _jtool_sprite_data(filename: str) -> str:
+    path = Path(__file__).with_name("assets") / "jtool-pat-default" / filename
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
+
+
+def _jtool_sprite(
+    filename: str,
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+    *,
+    killer_tint: bool = False,
+) -> str:
+    filter_attr = ' filter="url(#jtool-killer-tint)"' if killer_tint else ""
     return (
-        f'<path d="M{x + 12} {y + 5} l8 5 -8 5 8 5 -8 5" '
-        'fill="none" stroke="#8bff8f" stroke-width="2"/>'
+        f'<image href="{_jtool_sprite_data(filename)}" x="{x}" y="{y}" '
+        f'width="{width}" height="{height}" image-rendering="pixelated"{filter_attr}/>'
     )
 
 

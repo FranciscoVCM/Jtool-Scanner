@@ -304,10 +304,12 @@ Most class-based tests can also be run with:
 python -m unittest discover -s tests -v
 ```
 
-During preparation of this handoff, the bundled runtime did not contain
-`pytest`. The `unittest` run showed no failure before reaching the 60-second
-verification limit, but it was not allowed to run to completion; do not treat
-that partial run as a new full-suite result.
+The bundled runtime initially lacked `pytest`; installing `pillow pytest`
+completed the documented environment. The latest isolated full run completed
+`308 passed, 46 subtests passed in 562.90s (0:09:22)` with
+`python -m pytest -q -p no:cacheprovider`. The temporary directory override is
+only needed on this Windows host because its default pytest temp root is not
+writable; it is not a scanner workaround.
 
 ## 9. Verified FTFA golden corpus
 
@@ -332,6 +334,11 @@ under ignored `out/benchmarks`.
 The rooms cover warm brick terrain, full spikes, saves, apples, water,
 boundary crops, phase alignment, and multiple JTool visual skins. FTFA-4 has a
 saved exact run at 249/249 after correcting reference-map inconsistencies.
+
+The current unmodified FTFA gate reports `924/928 exact`, with zero false
+positives, two misses, and two shifted saves. The remaining four mismatches are
+known coordinate/reference issues and are retained as review items rather than
+silently relaxed.
 
 ## 10. Verified Lap Around corpus
 
@@ -501,6 +508,9 @@ address binding so a second process fails instead of splitting requests.
     expose correction. Catharsis water maps conservatively to water 2.
 16. Validate every general rule against all established fixtures, not only the
     room that motivated it.
+17. When 16px and 32px material hypotheses coexist, arbitrate with supported
+    topology and tracked fixture truth; never suppress a dense miniblock field
+    merely because it looks visually busy.
 
 ## 15. Known limitations and generalization risks
 
@@ -519,9 +529,11 @@ address binding so a second process fails instead of splitting requests.
 - Custom gimmicks are not representable in standard JTool and should usually
   be ignored.
 - OCR is advisory; game fonts and video overlays vary.
-- Dotkid metadata is preserved by the project/JMap model, but the current web
-  UI does not expose a dedicated dotkid control and the scanner does not claim
-  robust dotkid detection.
+- Dotkid metadata is preserved by the project/JMap model and exposed in the
+  web UI. Automatic detection is intentionally conservative and currently
+  targets the large visibility-ring convention verified by the five CN3
+  dotkid screens; unrelated dotkid visual families may still need manual
+  selection.
 - Bullet blockers, mini killer blocks, and flipped saves are editable/exportable
   types but are not established automatic-scanner corpora.
 - Lap Around cannot be used as an exact gate until corrected JMaps exist.
@@ -553,7 +565,9 @@ address binding so a second process fails instead of splitting requests.
    before accepting them.
 9. Extend exact goldens for CN3/NANG/object families where the corrected JMaps
    already exist.
-10. Decide whether dotkid needs UI exposure and a conservative detector.
+10. Expand dotkid detection only when another visually distinct, reviewed
+    marker family is available; keep the existing visibility-ring rule
+    conservative.
 
 ## 17. Image-corpus policy and verified counts
 
