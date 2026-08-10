@@ -415,3 +415,23 @@ spikes, and saves; exact geometry still needs corrected authoritative maps for
 these giant-review screens. The dotkid ring tests and full suite remain green,
 and FTFA stays at `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
 wrong direction`.
+
+## Checkpoint: Entrance save-count audit (2026-08-10)
+
+CN3-Entrance1, CN3-Entrance2, and CN3-Entrance3 were regenerated with the
+current grid-8 colour/object and geometry workflow. The source/JTool/blend
+review confirms one, two, and three visible `SAVE` sprites respectively, and
+the current JMaps emit exactly one, two, and three save objects. In particular,
+the earlier report of many extra saves on Entrance3 is not reproducible in the
+current scanner; no filename, coordinate, or screen-specific save suppression
+was added. The family still has ordinary terrain/spike geometry that needs a
+corrected authoritative JMap before exact recall can be claimed.
+
+| screen | objects | saves | current artifact |
+| --- | ---: | ---: | --- |
+| `CN3_Entrance1` | 294 | 1 | `.artifacts/bright-review/CN3_Entrance1-current4.jmap` |
+| `CN3_Entrance2` | 348 | 2 | `.artifacts/bright-review/CN3_Entrance2-current4.jmap` |
+| `CN3_Entrance3` | 334 | 3 | `.artifacts/bright-review/CN3_Entrance3-current4.jmap` |
+
+The protected scanner tests and FTFA benchmark remain unchanged at
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
