@@ -6,13 +6,14 @@ private conversation archives and ignored image material remain outside Git.
 
 ## Checkpoint: 2026-08-10
 
-### Repository and runtime baseline
+### Repository and runtime baseline at review start
 
 - Local branch: `main`.
-- Local `HEAD`: `8ac66a0` (`feat: generalize scanner across held-out tilesets`).
-- The local branch is one commit ahead of the cached `origin/main` ref
-  (`acc6883`). No push was performed; the remote network was unavailable
-  during verification.
+- Review started at `8ac66a0` (`feat: generalize scanner across held-out
+  tilesets`), with the cached `origin/main` ref at `acc6883`.
+- The first two review checkpoints were subsequently committed and pushed;
+  the current branch tip is recorded in the Git history rather than repeated
+  in this historical baseline section.
 - Working tree was clean before this checkpoint.
 - The documented app command is `python -m jtool_scanner.cli app`; the local
   app is healthy at `http://127.0.0.1:8765/api/health` (HTTP 200).
@@ -97,3 +98,32 @@ The FTFA exact benchmark remains 926/928 exact, with zero false positives,
 zero shifted objects, and the same two protected boundary misses. The focused
 compact support regression passes. The full suite also passes after this
 batch: 304 tests in 600.394 seconds, `OK`.
+
+## Checkpoint: miniblock primary full-spike noise (2026-08-10)
+
+Dense 16px-cell rooms were still receiving low-confidence horizontal and
+boundary full-spike candidates from late recovery stages. A final, relative
+shape gate now runs only when both conditions hold: the full-spike profile is
+mini-dense and the detected terrain independently has miniblock-dominant cell
+topology. It measures directional triangle-side coverage, so the rule does
+not depend on CN3 colors or screen names and does not route mini-spike-heavy
+Irkara rooms or compact NANG rooms through the gate.
+
+With the gate disabled versus enabled, the focused geometry measurements were:
+
+| fixture | full spikes before | full spikes after | matched truth before | matched truth after |
+| --- | ---: | ---: | ---: | ---: |
+| `cn3-16` | 69 | 35 | 26 | 26 |
+| `cn3-18` | 82 | 47 | 42 | 42 |
+
+The gate removes false candidates while retaining the same matched CN3 truth
+objects. `irkara-nr-partysu3` remains unchanged at 118 detected / 90 matched
+full spikes, and `nang128` and `nang138` remain at 38/38 and 26/26 full-spike
+matches respectively. Their object-specific block, mini, save, warp,
+water, walljump, killer-block and refresher results remain unchanged.
+
+The exact FTFA benchmark remains `926/928 exact; 0 false positives; 2 missed;
+0 shifted; 0 wrong direction`. The new directional gate regression and the
+existing CN3 and compact-room geometry regressions pass. This checkpoint is
+The complete suite passes at 305 tests in 561.600 seconds (`OK`). This
+checkpoint is ready to be committed and pushed as a single coherent batch.

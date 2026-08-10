@@ -224,6 +224,7 @@ from jtool_scanner.scanner import (
     _recover_axis_supported_mini_spikes,
     _recover_supported_block_cells,
     _recover_up_spike_lateral_continuations,
+    _prune_miniblock_room_primary_full_spike_noise,
     _triangle_masks,
     _triangle_side_coverage,
     _value_in_range,
@@ -1246,6 +1247,41 @@ class ScannerGeometryTests(unittest.TestCase):
         matched = truth_positions & detected_positions
 
         self.assertGreaterEqual(len(matched) / len(truth_positions), 0.95)
+
+    def test_miniblock_room_gate_uses_directional_side_coverage(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "cn3-16-game.png")
+        room = Box(0, 0, image.width, image.height)
+        mini_blocks = _detect_mini_blocks(image, room)
+        marker_box = Box(0, 0, 32, 32)
+        candidates = mini_blocks + [
+            Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 64, 64, 0.50, marker_box),
+            Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 96, 64, 0.50, marker_box),
+            Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 128, 64, 0.50, marker_box),
+            Detection("mini_spike_up", OBJ_MINI_SPIKE_UP, 160, 64, 0.50, marker_box),
+            Detection("spike_right", OBJ_SPIKE_RIGHT, 224, 480, 0.60, marker_box),
+            Detection("spike_right", OBJ_SPIKE_RIGHT, 512, 32, 0.34, marker_box),
+            Detection("spike_up", OBJ_SPIKE_UP, 368, 64, 0.63, marker_box),
+            Detection("spike_up", OBJ_SPIKE_UP, 512, 128, 0.42, marker_box),
+        ]
+
+        kept = _prune_miniblock_room_primary_full_spike_noise(
+            candidates,
+            image,
+            room,
+        )
+
+        self.assertEqual(
+            {
+                (detection.kind, detection.x, detection.y)
+                for detection in kept
+                if detection.type_id in {OBJ_SPIKE_RIGHT, OBJ_SPIKE_UP}
+            },
+            {
+                ("spike_right", 224, 480),
+                ("spike_up", 368, 64),
+            },
+        )
 
     def test_f189_full_block_room_is_not_misclassified_as_miniblocks(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

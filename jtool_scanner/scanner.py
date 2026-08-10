@@ -1072,6 +1072,10 @@ FULL_SPIKE_PROFILE_SOLID_UP_MIN_SCORE = 0.45
 FULL_SPIKE_PROFILE_RAW_LEFT_MIN_SIDE_COVERAGE = 0.625
 FULL_SPIKE_PROFILE_RAW_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_PROFILE_RAW_DOWN_MIN_OUTLINE_DELTA = 0.30
+MINIBLOCK_ROOM_PRIMARY_SPIKE_UP_MIN_SIDE_COVERAGE = 0.75
+MINIBLOCK_ROOM_PRIMARY_SPIKE_RIGHT_MIN_SIDE_COVERAGE = 0.875
+MINIBLOCK_ROOM_PRIMARY_SPIKE_LEFT_MIN_SIDE_COVERAGE = 0.75
+MINIBLOCK_ROOM_PRIMARY_SPIKE_DOWN_MIN_SIDE_COVERAGE = 0.75
 SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.22
 SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
 SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
@@ -1638,6 +1642,11 @@ def scan_image(
             anchor_types=LATE_GEOMETRY_ANCHOR_TYPES,
         )
         detections = _prune_detached_top_ui_band(detections, image, box)
+        detections = _prune_miniblock_room_primary_full_spike_noise(
+            detections,
+            image,
+            box,
+        )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -15013,6 +15022,58 @@ def _prune_profiled_full_spike_noise(
             nearest_same_distance,
             nearest_spike_distance,
         ):
+            continue
+        kept.append(detection)
+    return kept
+
+
+def _prune_miniblock_room_primary_full_spike_noise(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Drop weak primary spikes reintroduced by late miniblock recovery.
+
+    Dense 16px-cell rooms are especially prone to turning a seam or a clipped
+    cell boundary into a horizontal full-spike candidate.  The earlier
+    profile pass runs before several late recovery stages, so apply one small
+    final guard after those stages have completed.  This is deliberately
+    limited to rooms whose detected cell topology independently confirms a
+    miniblock-dominant room; mini-spike-heavy rooms with another tileset keep
+    their established recovery rules.
+    """
+
+    full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if _full_spike_noise_profile(detections, full_spikes, image, room) != "mini_dense":
+        return detections
+    miniblock_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+    }
+    if not _looks_miniblock_dominant(miniblock_positions):
+        return detections
+
+    direction_by_kind = {
+        "spike_up": ("up", MINIBLOCK_ROOM_PRIMARY_SPIKE_UP_MIN_SIDE_COVERAGE),
+        "spike_right": (
+            "right",
+            MINIBLOCK_ROOM_PRIMARY_SPIKE_RIGHT_MIN_SIDE_COVERAGE,
+        ),
+        "spike_left": ("left", MINIBLOCK_ROOM_PRIMARY_SPIKE_LEFT_MIN_SIDE_COVERAGE),
+        "spike_down": ("down", MINIBLOCK_ROOM_PRIMARY_SPIKE_DOWN_MIN_SIDE_COVERAGE),
+    }
+    kept: list[Detection] = []
+    for detection in detections:
+        direction_and_threshold = direction_by_kind.get(detection.kind)
+        if direction_and_threshold is None:
+            kept.append(detection)
+            continue
+        direction, threshold = direction_and_threshold
+        patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        if _triangle_side_coverage(patch, direction) < threshold:
             continue
         kept.append(detection)
     return kept
