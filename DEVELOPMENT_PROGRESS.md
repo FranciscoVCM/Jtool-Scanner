@@ -435,3 +435,31 @@ corrected authoritative JMap before exact recall can be claimed.
 
 The protected scanner tests and FTFA benchmark remain unchanged at
 `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+## Checkpoint: Golden save/warp arbitration review (2026-08-10)
+
+CN3-Golden1 through CN3-Golden7 were reviewed as one dark-brown/orange
+tileset family. The current source/JTool/blend outputs do not reproduce the
+earlier concern that dark blocks are being exported as saves: the current
+JMaps contain exactly the visible labeled red `SAVE` sprites (1, 1, 0, 1, 1,
+2, and 2 respectively). No Golden screen emits a warp object in this run.
+The narrow gray panel-like material is classified as a platform candidate on
+the screens where its shape passes the existing platform morphology gate;
+ordinary dark terrain remains block geometry. No filename, coordinate, or
+Golden-specific palette exception was added.
+
+| screen | objects | saves | warps | platforms |
+| --- | ---: | ---: | ---: | ---: |
+| `CN3_Golden1` | 332 | 1 | 0 | 0 |
+| `CN3_Golden2` | 375 | 1 | 0 | 2 |
+| `CN3_Golden3` | 395 | 0 | 0 | 1 |
+| `CN3_Golden4` | 389 | 1 | 0 | 1 |
+| `CN3_Golden5` | 374 | 1 | 0 | 0 |
+| `CN3_Golden6` | 403 | 2 | 0 | 1 |
+| `CN3_Golden7` | 352 | 2 | 0 | 1 |
+
+These screens still lack corrected authoritative giant-review JMaps, so the
+checkpoint establishes classification and no-false-save/no-false-warp
+evidence rather than exact geometry recall. FTFA remains `926/928 exact; 0
+false positives; 2 missed; 0 shifted; 0 wrong direction`; the held-out
+`k3-ex-hades` scan remains at 6/6 saves and 1/2 platforms.
