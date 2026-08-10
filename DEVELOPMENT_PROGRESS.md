@@ -158,3 +158,30 @@ The next review group should compare this arbitration against CN3-25, the
 adjacent CN3-28/29 family, and one connected residual-material room before
 considering any threshold change. No screen name, filename, or absolute
 palette is used by the rule.
+
+## Checkpoint: compact downsampled active-save recovery (2026-08-10)
+
+NANG-128 remained the one tracked compact-room save miss. Its active save is
+partly covered by the player, and the 19x13 source capture is downsampled
+before it is padded into the standard viewport. The generic layout recovery
+therefore measured 19 green / 10 yellow samples, just below its 18/12 yellow
+budgets, even though the same layout and title-band evidence were present.
+
+The recovery now uses a compact-room-only yellow budget of 9 total and 9 in
+the body. The room profile is already identified from the 19x13 aspect ratio;
+full-size and unknown rooms retain the original thresholds. This is a
+relative scale adjustment, not a NANG-specific color or coordinate rule.
+
+Measured results:
+
+| check | result |
+| --- | --- |
+| `nang128` save | 1/1 matched at `(160, 416)` (previously 0/1) |
+| `nang138` save | 1/1 unchanged |
+| all other tracked game fixtures | no new save detections |
+| focused save regressions | pass |
+| FTFA exact benchmark | `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction` |
+
+The complete suite passes at 307 tests in 584.690 seconds (`OK`). The next
+review group remains the connected CN3-28/29/30 residual-material family and
+the compact CN2-5 geometry, not another save-threshold expansion.

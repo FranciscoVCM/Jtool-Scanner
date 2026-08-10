@@ -134,6 +134,13 @@ WEAK_ACTIVE_SAVE_HEADER_MIN_DARK = 10
 WEAK_ACTIVE_SAVE_BODY_MIN_GREEN = 18
 WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 12
 WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
+# Compact 19x13 captures are commonly downsampled before padding to the
+# standard JTool viewport.  A player-occluded save therefore contributes a
+# few fewer yellow samples even though its layout is unchanged.  Relax only
+# the yellow counts on that explicitly recognized compact-room path; retain
+# the generic thresholds for full-size and unknown rooms.
+COMPACT_WEAK_ACTIVE_SAVE_MIN_YELLOW = 9
+COMPACT_WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 9
 MINI_BLOCK_SIZE = 16
 MINI_BLOCK_MIN_EDGE_DENSITY = 0.03
 MINI_BLOCK_SEED_MAX_CENTER_SCORE = 0.20
@@ -6013,7 +6020,14 @@ def _detect_saves(
         detections.append(Detection("save", OBJ_SAVE, map_x, map_y, score, box))
     detections.extend(_detect_fragmented_cross_saves(image, room, grid_step))
     detections.extend(_detect_red_body_header_saves(image, room, grid_step))
-    detections.extend(_detect_weak_active_save_patches(image, room, grid_step))
+    detections.extend(
+        _detect_weak_active_save_patches(
+            image,
+            room,
+            grid_step,
+            compact_room=allow_weak_active,
+        )
+    )
     detections.extend(_detect_outline_saves(image, room, grid_step))
     return _dedupe_detections(detections, min_distance=25)
 
@@ -6313,6 +6327,8 @@ def _detect_weak_active_save_patches(
     image: RGBImage,
     room: Box,
     grid_step: int,
+    *,
+    compact_room: bool = False,
 ) -> list[Detection]:
     """Recover a rare player-occluded active save from its internal layout.
 
@@ -6392,6 +6408,16 @@ def _detect_weak_active_save_patches(
             + prefix[top_left]
         )
 
+    minimum_yellow = (
+        COMPACT_WEAK_ACTIVE_SAVE_MIN_YELLOW
+        if compact_room
+        else WEAK_ACTIVE_SAVE_MIN_YELLOW
+    )
+    body_min_yellow = (
+        COMPACT_WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW
+        if compact_room
+        else WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW
+    )
     base_candidates = 0
     total_windows = 0
     strong_candidates: list[tuple[int, int, float]] = []
@@ -6443,7 +6469,7 @@ def _detect_weak_active_save_patches(
                 header_dark = sum(max(color) < 110 for color in header)
             if green >= 15 and yellow >= 3:
                 base_candidates += 1
-            if green < WEAK_ACTIVE_SAVE_MIN_GREEN or yellow < WEAK_ACTIVE_SAVE_MIN_YELLOW:
+            if green < WEAK_ACTIVE_SAVE_MIN_GREEN or yellow < minimum_yellow:
                 continue
             ratio = yellow / max(1, green)
             if not (
@@ -6456,7 +6482,7 @@ def _detect_weak_active_save_patches(
                 header_bright < WEAK_ACTIVE_SAVE_HEADER_MIN_BRIGHT
                 or header_dark < WEAK_ACTIVE_SAVE_HEADER_MIN_DARK
                 or body_green < WEAK_ACTIVE_SAVE_BODY_MIN_GREEN
-                or body_yellow < WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW
+                or body_yellow < body_min_yellow
             ):
                 continue
             score = min(

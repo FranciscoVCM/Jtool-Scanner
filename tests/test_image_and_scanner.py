@@ -153,6 +153,25 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertEqual(saves[0].kind, "save_active_layout_recovery")
         self.assertEqual((saves[0].x, saves[0].y), (96, 96))
 
+    def test_compact_occluded_save_uses_downsampled_yellow_budget(self) -> None:
+        source = load_png(Path("fixtures/block_spike/nang128-game.png"))
+
+        result = scan_image(
+            source,
+            grid_step=16,
+            source_grid=(19, 13),
+        )
+
+        saves = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        ]
+        self.assertEqual(
+            [(save.x, save.y) for save in saves],
+            [(160, 416)],
+        )
+
     def test_fragmented_red_cross_is_detected_as_save(self) -> None:
         result = scan_image(
             _synthetic_fragmented_cross_save_room(),
