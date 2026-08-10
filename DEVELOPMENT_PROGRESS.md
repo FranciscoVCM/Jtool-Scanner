@@ -398,3 +398,20 @@ needs later review because no corrected authoritative giant-review JMap exists
 for this screen. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0
 shifted; 0 wrong direction`, and the protected water/background fixture scans
 remain unchanged.
+
+## Checkpoint: Dotkid ring state and trigger-safe review (2026-08-10)
+
+CN3-Dotkid1 through CN3-Dotkid5 were reviewed as a stateful family. Each
+source contains the large visibility ring around the dotkid player; all five
+grid-8 projects detect that marker and export `dotkid:1` in the JMap metadata.
+The ring is not emitted as a gameplay object. Trigger-like colour around the
+save in Dotkid2 and the save-edge colours in Dotkid3 likewise remain
+unclassified rather than becoming extra saves, water, or geometry.
+
+The existing application path already carries the metadata through correction
+projects, the web map-settings checkbox, and JMap export. The source/JTool/
+blend review confirms the object scans remain bounded by the visible terrain,
+spikes, and saves; exact geometry still needs corrected authoritative maps for
+these giant-review screens. The dotkid ring tests and full suite remain green,
+and FTFA stays at `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction`.
