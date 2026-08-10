@@ -463,3 +463,25 @@ checkpoint establishes classification and no-false-save/no-false-warp
 evidence rather than exact geometry recall. FTFA remains `926/928 exact; 0
 false positives; 2 missed; 0 shifted; 0 wrong direction`; the held-out
 `k3-ex-hades` scan remains at 6/6 saves and 1/2 platforms.
+
+## Checkpoint: Halls1–3 portal and water audit (2026-08-10)
+
+CN3-Halls1, Halls2, and Halls3 were regenerated and reviewed against their
+sources and blends. Halls1 retains 59 water-2 cells in the visibly cyan
+regions, one save, eight apples, and two portal-like warp silhouettes. Halls2
+retains its left save, one apple, and one portal-like warp without turning the
+dark-purple background into water. Halls3 retains two saves, one portal-like
+warp, and the up/down gravity arrows while its bright starry gradient remains
+background. The current blend does not reproduce the earlier block-versus-
+warp/save failures for this subfamily; no Halls-specific rule was introduced.
+
+| screen | objects | saves | warps | water-2 | apples |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `CN3_Halls1` | 383 | 1 | 2 | 59 | 8 |
+| `CN3_Halls2` | 109 | 1 | 1 | 0 | 1 |
+| `CN3_Halls3` | 177 | 2 | 1 | 0 | 0 |
+
+Exact corrected JMaps are not present for these giant-review screens, so the
+remaining work is geometry fidelity rather than a justified global
+classification change. FTFA and the held-out fixture measurements remain
+unchanged.
