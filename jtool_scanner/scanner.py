@@ -1689,6 +1689,11 @@ def scan_image(
         )
         if bright_outlined_terrain_room:
             detections = _prune_bright_outlined_terrain_decorations(detections)
+        detections = _prune_bright_chromatic_platform_impostors(
+            detections,
+            image,
+            box,
+        )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -2915,6 +2920,109 @@ def _prune_bright_outlined_terrain_decorations(
         for detection in detections
         if detection.type_id not in {*MINI_SPIKE_TYPES, OBJ_MINI_BLOCK}
     ]
+
+
+def _has_bright_room_platform_bar_evidence(horizontal_runs: list[int]) -> bool:
+    """Require more than one room-boundary edge for a bright-room platform.
+
+    In bright chromatic rooms, a single long horizontal terrain edge is a
+    common by-product of a spike or a coloured wall.  A real thin platform
+    has a compact bar enclosure, which produces at least three strong rows;
+    a clipped bar may instead expose both the top and bottom boundary.  This
+    helper deliberately consumes only morphology, not a tileset colour.
+    """
+
+    strong_rows = [
+        index
+        for index, run in enumerate(horizontal_runs)
+        if run >= PLATFORM_SAMPLE_WIDTH * 5 // 8
+    ]
+    if len(strong_rows) >= 3:
+        return True
+    return bool(
+        strong_rows
+        and min(strong_rows) <= 1
+        and max(strong_rows) >= PLATFORM_SAMPLE_HEIGHT - 2
+    )
+
+
+def _platform_horizontal_edge_runs(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> list[int]:
+    """Return per-row horizontal edge runs for one platform-sized patch."""
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    gray: list[list[int]] = []
+    for sample_y in range(PLATFORM_SAMPLE_HEIGHT):
+        row: list[int] = []
+        for sample_x in range(PLATFORM_SAMPLE_WIDTH):
+            pixel_x = int(
+                min(
+                    image.width - 1,
+                    max(0, room.x + (map_x + sample_x + 0.5) * scale_x),
+                )
+            )
+            pixel_y = int(
+                min(
+                    image.height - 1,
+                    max(0, room.y + (map_y + sample_y + 0.5) * scale_y),
+                )
+            )
+            red, green, blue = image.pixel(pixel_x, pixel_y)
+            row.append((red * 30 + green * 59 + blue * 11) // 100)
+        gray.append(row)
+    return [
+        _longest_platform_edge_run(
+            abs(gray[y + 1][x] - gray[y][x]) >= PLATFORM_EDGE_THRESHOLD
+            for x in range(PLATFORM_SAMPLE_WIDTH)
+        )
+        for y in range(PLATFORM_SAMPLE_HEIGHT - 1)
+    ]
+
+
+def _prune_bright_chromatic_platform_impostors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject terrain-edge platform impostors in bright chromatic rooms.
+
+    The platform detector's neutral edge route is intentionally permissive so
+    it can support alternate JTool skins.  On a bright room with substantial
+    room-wide chroma, however, the same edge statistics occur at coloured
+    terrain lips and floor-number glyphs.  Require a compact horizontal bar
+    morphology only in that relative room class.  Dark rooms and bright
+    neutral platform controls retain the legacy route.
+    """
+
+    room_profile = _room_color_profile(image, room)
+    room_luminance = (
+        room_profile.avg_r * 0.30
+        + room_profile.avg_g * 0.59
+        + room_profile.avg_b * 0.11
+    )
+    if room_luminance < 90.0 or room_profile.saturation < 0.08:
+        return detections
+    result: list[Detection] = []
+    for detection in detections:
+        if (
+            detection.type_id == OBJ_PLATFORM
+            and not _has_bright_room_platform_bar_evidence(
+                _platform_horizontal_edge_runs(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                )
+            )
+        ):
+            continue
+        result.append(detection)
+    return result
 
 
 def _replace_outlined_terrain_room_geometry(

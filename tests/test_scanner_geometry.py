@@ -157,6 +157,7 @@ from jtool_scanner.scanner import (
     _is_directly_full_scale_dominant,
     _is_low_contrast_platform_candidate,
     _has_complete_low_contrast_platform_context,
+    _has_bright_room_platform_bar_evidence,
     _platform_conflicts_supported_terrain,
     _looks_miniblock_dominant,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
@@ -1318,6 +1319,26 @@ class ScannerGeometryTests(unittest.TestCase):
             ]
         )
         self.assertEqual([d.type_id for d in kept], [OBJ_BLOCK])
+
+    def test_bright_chromatic_platform_gate_rejects_single_terrain_edge(self) -> None:
+        self.assertFalse(
+            _has_bright_room_platform_bar_evidence([0] * 13 + [30, 30])
+        )
+        self.assertFalse(
+            _has_bright_room_platform_bar_evidence(
+                [24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            )
+        )
+        self.assertTrue(
+            _has_bright_room_platform_bar_evidence(
+                [0] * 11 + [24, 25, 26, 0]
+            )
+        )
+        self.assertTrue(
+            _has_bright_room_platform_bar_evidence(
+                [25, 25] + [0] * 12 + [25]
+            )
+        )
 
     def test_cn3_miniblocks_match_all_truth_inside_excellent_detection_band(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

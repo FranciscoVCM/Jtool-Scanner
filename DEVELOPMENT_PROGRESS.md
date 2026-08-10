@@ -317,3 +317,35 @@ FTFA golden-room benchmark remains `926/928 exact; 0 false positives; 2
 missed; 0 shifted; 0 wrong direction`. Full geometry/material placement in
 these three giant-review screens is still not a corrected-JMap result and
 requires later review.
+
+## Checkpoint: bright chromatic platform arbitration (2026-08-10)
+
+CN3-28, CN3-29, and CN3-30 use a bright teal room with several red, beige,
+and blue solid materials. The permissive neutral-platform edge detector was
+mistaking spike edges, terrain lips, and the floor-number glyphs for JTool
+platforms: the prior project outputs contained 6, 10, and 5 platform objects
+respectively. The source review shows these screens' relevant geometry is
+blocks/miniblocks and spikes; the cherries are ordinary apple detections and
+the visible floor numbers are not objects.
+
+Platform arbitration now uses a room-relative bright/chromatic gate. It
+requires a compact horizontal-bar edge pattern (multiple strong rows or a
+clipped top-and-bottom enclosure) before retaining a platform candidate in
+that room class. Dark rooms and bright neutral platform controls retain the
+existing detector. The rule is based on room luminance/chroma and patch
+morphology, not CN3 names, fixed colors, coordinates, or a platform list.
+
+Measured grid-8 project results after the change:
+
+| screen | objects | platforms | apples |
+| --- | ---: | ---: | ---: |
+| `CN3_28` | 345 | 0 | 3 |
+| `CN3_29` | 345 | 0 | 5 |
+| `CN3_30` | 427 | 0 | 5 |
+
+The multicolour block/miniblock and spike detections remain available in the
+source/JTool/blend review. The morphology regression passes; known platform
+fixtures (`irkara-89`, `k3-ex-hades`, and `irkara-71`) retain their prior
+platform matches. FTFA remains `926/928 exact; 0 false positives; 2 missed;
+0 shifted; 0 wrong direction`. These three giant-review screens still lack
+corrected authoritative JMaps, so exact geometry recall is not claimed.
