@@ -254,3 +254,31 @@ The new threshold regression covers both the five-neighbor veto and the
 four-neighbor keep path. Say-9's false warp is removed while the reviewed
 filled-cloud warp controls remain present; FTFA exactness and all existing
 object-specific guards remain required gates for this batch.
+
+## Checkpoint: neutral-shadow white-player ambiguity (2026-08-10)
+
+The CN3-19 and CN3-21 source screens contain a white player skin whose cloud
+silhouette is visually indistinguishable from the filled-cloud warp sprite.
+The previous shape-only detector emitted false warps at `(672, 288)` and
+`(328, 408)`. Their distinguishing evidence is not a screen name or absolute
+coordinate: the lowest-luminance fifth of each bright component is a bright,
+nearly neutral-gray shadow, unlike the darker or chromatically contrasted
+shadow of the accepted filled-cloud portal controls.
+
+The bright-cloud detector now treats that neutral-bright shadow as an
+ambiguous foreground sprite and declines to emit a warp. Darker and
+chromatic shadows still use the existing topology and enclosure rules. The
+synthetic regression covers neutral, chromatic, and dark shadow paths; the
+CN3-16/CN3-18 true cloud controls and FTFA benchmark remain required gates.
+
+Measured after the change:
+
+- CN3-19: the false filled-cloud warp at `(672, 288)` is absent from the
+  regenerated JMap.
+- CN3-21: the false filled-cloud warp at `(328, 408)` is absent from the
+  regenerated JMap.
+- CN3-16 and CN3-18: their true filled-cloud warp detections remain present.
+- F189 remains `154/154` blocks, `85/85` full spikes, and `8/8` gravity
+  flippers matched; no new color-object detections appeared.
+- FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+  wrong direction`.

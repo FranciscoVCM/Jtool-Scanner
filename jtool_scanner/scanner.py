@@ -6679,6 +6679,9 @@ _FILLED_CLOUD_WARP_TEMPLATE_16 = (
 # never enclosed that densely; the count is deliberately conservative so a
 # portal beside one or two hazards remains valid.
 FILLED_CLOUD_WARP_MAX_STRONG_SPIKE_NEIGHBORS = 4
+FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MAX_SATURATION = 4.5
+FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MIN_LUMINANCE = 110.0
+FILLED_CLOUD_WARP_NEUTRAL_SHADOW_QUANTILE = 0.20
 
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
@@ -6799,6 +6802,11 @@ def _detect_filled_cloud_warps(
             ):
                 continue
             map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            if palette_name == "bright" and _filled_cloud_warp_has_ambiguous_neutral_shadow(
+                image,
+                box,
+            ):
+                continue
             if _filled_cloud_warp_is_dense_spike_enclosure(
                 image,
                 room,
@@ -6818,6 +6826,41 @@ def _detect_filled_cloud_warps(
             )
             seen_components.add(component_key)
     return _dedupe_detections(detections, min_distance=20)
+
+
+def _filled_cloud_warp_has_ambiguous_neutral_shadow(
+    image: RGBImage,
+    box: Box,
+) -> bool:
+    """Identify a bright cloud whose shadow is a neutral player-like halo.
+
+    Filled cloud portals and white player skins share the same normalized
+    silhouette.  The lowest-luminance fifth of the bright component captures
+    its outline/shadow rather than the white core.  A bright, nearly gray
+    shadow has no portal-specific palette contrast, so treating it as unknown
+    is safer than emitting a warp.  Darker or chromatic shadows continue
+    through the ordinary shape and topology gates.
+    """
+
+    colors = [
+        image.pixel(x, y)
+        for y in range(box.y, box.y + box.height)
+        for x in range(box.x, box.x + box.width)
+    ]
+    if not colors:
+        return False
+    colors.sort(key=lambda color: sum(color) / 3.0)
+    shadow_count = max(
+        1,
+        int(len(colors) * FILLED_CLOUD_WARP_NEUTRAL_SHADOW_QUANTILE),
+    )
+    shadow = colors[:shadow_count]
+    luminance = sum(sum(color) / 3.0 for color in shadow) / len(shadow)
+    saturation = sum(max(color) - min(color) for color in shadow) / len(shadow)
+    return (
+        luminance >= FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MIN_LUMINANCE
+        and saturation <= FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MAX_SATURATION
+    )
 
 
 def _filled_cloud_warp_is_dense_spike_enclosure(

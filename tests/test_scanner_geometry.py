@@ -59,6 +59,7 @@ from jtool_scanner.scanner import (
     _detect_mini_blocks,
     _detect_outline_warps,
     _component_silhouette_iou,
+    _filled_cloud_warp_has_ambiguous_neutral_shadow,
     _filled_cloud_warp_is_dense_spike_enclosure,
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
@@ -5960,6 +5961,30 @@ class ScannerGeometryTests(unittest.TestCase):
                     224,
                 )
             )
+
+    def test_filled_cloud_warp_neutral_bright_shadow_is_ambiguous(self) -> None:
+        neutral = RGBImage(23, 25, bytes((118, 118, 118)) * 23 * 25)
+        chromatic = RGBImage(23, 25, bytes((100, 116, 132)) * 23 * 25)
+        dark = RGBImage(23, 25, bytes((88, 88, 88)) * 23 * 25)
+
+        self.assertTrue(
+            _filled_cloud_warp_has_ambiguous_neutral_shadow(
+                neutral,
+                Box(0, 0, 23, 25),
+            )
+        )
+        self.assertFalse(
+            _filled_cloud_warp_has_ambiguous_neutral_shadow(
+                chromatic,
+                Box(0, 0, 23, 25),
+            )
+        )
+        self.assertFalse(
+            _filled_cloud_warp_has_ambiguous_neutral_shadow(
+                dark,
+                Box(0, 0, 23, 25),
+            )
+        )
 
     def test_component_silhouette_iou_distinguishes_cloud_from_rectangle(self) -> None:
         template = (
