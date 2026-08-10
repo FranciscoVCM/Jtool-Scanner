@@ -380,3 +380,21 @@ FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
 direction`. These giant-review screens still lack corrected authoritative
 JMaps, so this is a classification/no-false-positive checkpoint rather than
 an exact geometry claim.
+
+## Checkpoint: Bathhouse background/water separation (2026-08-10)
+
+CN3-Bathhouse1 was reviewed separately because its light-blue room background,
+cyan water regions, and uncommon pink/orange trigger-like square are visually
+close in colour. The current source/JTool/blend workflow keeps the blue room
+background as background, retains the cyan water detections, and deliberately
+does not emit the unusual pink square as water. This follows the safe
+water-negative policy used for similarly ambiguous trigger colours; it is not
+a colour-name or coordinate exception.
+
+The grid-8 project contains 12 water-2 detections in the visible cyan regions,
+two saves, three left-walljumps, and the surrounding blocks/spikes. The pink
+square remains unclassified by design. Full geometry/material placement still
+needs later review because no corrected authoritative giant-review JMap exists
+for this screen. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0
+shifted; 0 wrong direction`, and the protected water/background fixture scans
+remain unchanged.
