@@ -211,3 +211,26 @@ not encode CN2 colors, coordinates, or a fixed tileset. The focused synthetic
 material-cluster regression passes, FTFA exact remains `926/928` with the same
 two protected boundary misses, and the complete suite passes at 308 tests in
 584.785 seconds (`OK`).
+
+## Checkpoint: compact palette-shifted save headers (2026-08-10)
+
+NANG-135 still missed its visible active save after the compact yellow budget
+change. Its green/yellow body survives downsampling, but the pale `SAVE`
+header is tinted enough that the generic bright-neutral header predicate sees
+zero bright samples. On the already recognized 19x13 path, the layout recovery
+now uses the broader pale-header predicate while retaining the same dark-band,
+body-color, ratio, rarity, and clustering gates. Full-size and unknown rooms
+retain the strict header predicate.
+
+Measured compact results:
+
+| fixture | save result |
+| --- | --- |
+| `nang128` | 1/1 at `(160, 416)` |
+| `nang135` | 1/1 at `(160, 448)` (previously 0/1) |
+| `nang138` | 1/1 unchanged |
+| all other tracked game fixtures | no new save detections |
+
+Focused save tests pass, FTFA exact remains `926/928` with the same two
+protected boundary misses, and the complete suite passes at 309 tests in
+591.788 seconds (`OK`).

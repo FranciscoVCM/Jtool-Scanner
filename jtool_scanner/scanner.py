@@ -6486,7 +6486,9 @@ def _detect_weak_active_save_patches(
                     color[0] > 145 and color[1] > 105 and color[2] < 105
                 )
                 bright_row += int(
-                    min(color) > 165 and max(color) - min(color) < 55
+                    _is_save_header_pale(*color)
+                    if compact_room
+                    else min(color) > 165 and max(color) - min(color) < 55
                 )
                 dark_row += int(max(color) < 110)
                 index = current_row + sample_x + 1
@@ -6569,7 +6571,9 @@ def _detect_weak_active_save_patches(
                 body_green = sum(green_flags[header_end:])
                 body_yellow = sum(yellow_flags[header_end:])
                 header_bright = sum(
-                    min(color) > 165 and max(color) - min(color) < 55
+                    _is_save_header_pale(*color)
+                    if compact_room
+                    else min(color) > 165 and max(color) - min(color) < 55
                     for color in header
                 )
                 header_dark = sum(max(color) < 110 for color in header)
