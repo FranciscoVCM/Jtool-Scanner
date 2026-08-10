@@ -249,6 +249,15 @@ MINI_SPIKE_BLOCK_WIN_MIN_MARGIN = 0.30
 MINI_SPIKE_TERRAIN_MOTIF_MIN_CONFLICTS = 20
 MINI_SPIKE_TERRAIN_MOTIF_MIN_ROOM_SHARE = 0.70
 MINI_SPIKE_TERRAIN_MOTIF_MIN_DIRECTION_SHARE = 0.70
+# A bright screenshot can contain a sparse 32px tileset whose outlined
+# interiors produce convincing 16px triangle silhouettes.  Treat that room
+# morphology as an ambiguity class rather than letting the mini-block and
+# mini-spike detectors learn the decorative lattice as gameplay geometry.
+BRIGHT_OUTLINED_TERRAIN_MIN_ROOM_VALUE = 180.0
+BRIGHT_OUTLINED_TERRAIN_MIN_DARK_CONTRAST = 45.0
+BRIGHT_OUTLINED_TERRAIN_MIN_CELLS = 55
+BRIGHT_OUTLINED_TERRAIN_MAX_CELLS = 150
+BRIGHT_OUTLINED_TERRAIN_MAX_ROOM_SHARE = 0.33
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
@@ -1396,6 +1405,14 @@ def scan_image(
         and not warm_tiled_room
         and _looks_like_outlined_terrain_room(image, box)
     )
+    bright_outlined_terrain_room = (
+        include_geometry
+        and not adaptive_compact_room
+        and not dark_brick_room
+        and not warm_tiled_room
+        and not outlined_terrain_room
+        and _looks_like_bright_outlined_terrain_room(image, box)
+    )
     repeated_terrain_room = False
     particle_water_room = False
     mini_blocks: list[Detection] = []
@@ -1429,7 +1446,11 @@ def scan_image(
     elif warm_tiled_room:
         detections = _replace_warm_tiled_room_geometry(detections, image, box)
     elif include_geometry:
-        mini_blocks = _detect_mini_blocks(image, box)
+        mini_blocks = (
+            []
+            if bright_outlined_terrain_room
+            else _detect_mini_blocks(image, box)
+        )
         detections.extend(mini_blocks)
         if mini_blocks:
             detections = _suppress_miniblock_impostors(detections, image, box)
@@ -1623,6 +1644,7 @@ def scan_image(
                 dark_brick_room
                 or warm_tiled_room
                 or outlined_terrain_room
+                or bright_outlined_terrain_room
                 or repeated_terrain_room
             ),
         )
@@ -1665,6 +1687,8 @@ def scan_image(
             image,
             box,
         )
+        if bright_outlined_terrain_room:
+            detections = _prune_bright_outlined_terrain_decorations(detections)
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -2849,6 +2873,48 @@ def _looks_like_outlined_terrain_room(image: RGBImage, room: Box) -> bool:
         and dark_value <= room_value - 35
         and 55 <= len(positions) <= 190
     )
+
+
+def _looks_like_bright_outlined_terrain_room(image: RGBImage, room: Box) -> bool:
+    """Identify sparse outlined terrain on a bright screenshot.
+
+    Unlike the dark CN3 neon rooms, this family has a bright background and
+    red/brown outlined cells.  Their internal diagonals are a recurring source
+    of false 16px spikes and miniblocks.  The gate is deliberately based on
+    room-local brightness contrast and lattice sparsity, not a filename or a
+    fixed tileset colour.
+    """
+
+    room_value, dark_value, _brightness, positions = (
+        _outlined_terrain_cell_stats(image, room)
+    )
+    return (
+        room_value >= BRIGHT_OUTLINED_TERRAIN_MIN_ROOM_VALUE
+        and room_value - dark_value >= BRIGHT_OUTLINED_TERRAIN_MIN_DARK_CONTRAST
+        and BRIGHT_OUTLINED_TERRAIN_MIN_CELLS <= len(positions)
+        <= BRIGHT_OUTLINED_TERRAIN_MAX_CELLS
+        and len(positions) / max(1, 19 * 25 * 1)
+        <= BRIGHT_OUTLINED_TERRAIN_MAX_ROOM_SHARE
+    )
+
+
+def _prune_bright_outlined_terrain_decorations(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Decline ambiguous 16px terrain motifs in the bright outlined family.
+
+    The room gate has established a sparse, repeated 32px material.  Any
+    remaining mini-block or mini-spike in that room is a silhouette-only
+    interpretation of the cell's internal decoration, not an independently
+    supported JTool object.  Full-size spikes and all colour-object detections
+    remain available to the normal arbitration stages.
+    """
+
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in {*MINI_SPIKE_TYPES, OBJ_MINI_BLOCK}
+    ]
 
 
 def _replace_outlined_terrain_room_geometry(

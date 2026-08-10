@@ -282,3 +282,38 @@ Measured after the change:
   flippers matched; no new color-object detections appeared.
 - FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
   wrong direction`.
+
+## Checkpoint: bright outlined-terrain ambiguity gate (2026-08-10)
+
+CN3-25, CN3-26, and CN3-27 are a bright red outlined tileset family whose
+32px cells contain repeated diagonal/triangular decoration. The previous
+generic geometry pass could interpret those interior motifs as playable
+16px mini-spikes or mini-blocks, even though the source screens contain no
+such objects. CN3-26 previously produced 10 mini-spikes and CN3-27 produced
+122 mini-spikes plus 58 mini-blocks; CN3-25 had already reached zero mini
+objects but remained part of the same ambiguity family.
+
+The scanner now learns a room-local bright outlined-terrain profile from
+brightness contrast and lattice sparsity. In that profile, ambiguous
+16px terrain silhouettes are declined while ordinary full-size blocks and
+spikes and all supported colour objects remain available. The rule is
+palette-relative and morphology-based; it does not use a CN3 filename,
+screen coordinate, fixed colour, or one-off object list. Dense mini-spike
+controls such as Partysu3 and Irkara-51/59 do not enter the gate.
+
+Measured grid-8 project results after the change:
+
+| screen | objects | mini-blocks | mini-spikes |
+| --- | ---: | ---: | ---: |
+| `CN3_25` | 279 | 0 | 0 |
+| `CN3_26` | 292 | 0 | 0 |
+| `CN3_27` | 352 | 0 | 0 |
+
+Source/JTool/blend review confirms that saves, apples, water, vines, full
+blocks, and full spikes remain represented. The bright-room focused tests
+pass. Protected fixture scans retain the established CN3-16/CN3-18,
+F189, NANG, CN2-5, Partysu3, Irkara-51, and Irkara-59 behavior, and the
+FTFA golden-room benchmark remains `926/928 exact; 0 false positives; 2
+missed; 0 shifted; 0 wrong direction`. Full geometry/material placement in
+these three giant-review screens is still not a corrected-JMap result and
+requires later review.

@@ -63,6 +63,8 @@ from jtool_scanner.scanner import (
     _filled_cloud_warp_is_dense_spike_enclosure,
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
+    _looks_like_bright_outlined_terrain_room,
+    _prune_bright_outlined_terrain_decorations,
     _expand_supported_cell_terrain_materials,
     _learn_repeated_terrain_profile,
     _learn_supported_cell_terrain_profile,
@@ -1259,6 +1261,63 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertTrue(_looks_miniblock_dominant(thin_rows))
         self.assertFalse(_looks_miniblock_dominant(dense_cells))
+
+    def test_bright_outlined_terrain_gate_uses_sparse_room_local_contrast(self) -> None:
+        width, height = 800, 608
+        data = bytearray(bytes((240, 240, 240)) * width * height)
+
+        def paint_cells(cell_count: int) -> RGBImage:
+            painted = bytearray(data)
+            positions = [
+                (x, y)
+                for y in range(0, height, 32)
+                for x in range(0, width, 32)
+            ][:cell_count]
+            for x, y in positions:
+                for py in range(y, y + 32):
+                    for px in range(x, x + 32):
+                        offset = (py * width + px) * 3
+                        painted[offset : offset + 3] = bytes((120, 80, 90))
+            return RGBImage(width, height, bytes(painted))
+
+        sparse = paint_cells(60)
+        dense = paint_cells(171)
+
+        self.assertTrue(
+            _looks_like_bright_outlined_terrain_room(
+                sparse,
+                Box(0, 0, width, height),
+            )
+        )
+        self.assertFalse(
+            _looks_like_bright_outlined_terrain_room(
+                dense,
+                Box(0, 0, width, height),
+            )
+        )
+
+        kept = _prune_bright_outlined_terrain_decorations(
+            [
+                Detection("block", OBJ_BLOCK, 0, 0, 0.8, Box(0, 0, 32, 32)),
+                Detection(
+                    "mini_block",
+                    OBJ_MINI_BLOCK,
+                    16,
+                    16,
+                    0.8,
+                    Box(16, 16, 16, 16),
+                ),
+                Detection(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    32,
+                    0,
+                    0.8,
+                    Box(32, 0, 16, 16),
+                ),
+            ]
+        )
+        self.assertEqual([d.type_id for d in kept], [OBJ_BLOCK])
 
     def test_cn3_miniblocks_match_all_truth_inside_excellent_detection_band(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
