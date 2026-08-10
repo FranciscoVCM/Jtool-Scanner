@@ -485,3 +485,26 @@ Exact corrected JMaps are not present for these giant-review screens, so the
 remaining work is geometry fidelity rather than a justified global
 classification change. FTFA and the held-out fixture measurements remain
 unchanged.
+
+## Checkpoint: Halls4-7 background, refresher, and vine audit (2026-08-10)
+
+The remaining Halls screens were regenerated as a held-out tileset family.
+Halls4 emits no jump refreshers and does not turn its light-blue background
+into water. Halls5 likewise keeps the cyan sky as background, with one save
+and one portal silhouette. Halls6 separates the muted-green terrain blocks
+from the narrow repeated vine strip (two left-vine objects), and preserves the
+two-cell blue hazard as water-2. Halls7 keeps the starry gradient out of the
+water detector while retaining its save, portal, vine, and panel-like
+platforms. The app already exposes these directional objects as Left Vine and
+Right Vine; no screen-specific rename or palette exception was needed.
+
+| screen | objects | saves | warps | water-2 | vines | refreshers |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `CN3_Halls4` | 235 | 1 | 1 | 0 | 0 | 0 |
+| `CN3_Halls5` | 109 | 1 | 1 | 0 | 0 | 0 |
+| `CN3_Halls6` | 86 | 1 | 1 | 2 | 2 | 0 |
+| `CN3_Halls7` | 110 | 1 | 1 | 0 | 2 | 0 |
+
+These screens still lack corrected authoritative giant-review JMaps, so the
+review records classification evidence and the absence of the reported
+background/refresher false positives without claiming exact geometry recall.
