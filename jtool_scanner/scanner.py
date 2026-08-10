@@ -2579,12 +2579,20 @@ def _detect_compact_room_spikes(
             continue
         if detection.type_id not in MINI_SPIKE_TYPES:
             continue
-        nearby_support = _has_spike_block_support(
+        vertical_support = _has_compact_vertical_mini_support(
             detection,
             block_positions,
-            MINI_BLOCK_SIZE,
-            tolerance=16,
         )
+        if (
+            detection.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN)
+            and not vertical_support
+        ):
+            # Bright seams inside compact-room terrain often form a convincing
+            # neutral triangle without being a playable spike.  Vertical
+            # mini-spikes have a stable supporting-cell phase; require that
+            # phase before accepting the shape, while leaving the separate
+            # occluded horizontal recovery path untouched.
+            continue
         clustered_down = (
             detection.type_id == OBJ_MINI_SPIKE_DOWN
             and any(
@@ -2604,7 +2612,7 @@ def _detect_compact_room_spikes(
             and detection.score >= 0.76
             or detection.type_id == OBJ_MINI_SPIKE_DOWN
             and detection.score >= 0.60
-            and nearby_support
+            and vertical_support
             and has_horizontal_mini_shapes
             or clustered_down
             and has_horizontal_mini_shapes
@@ -2615,6 +2623,25 @@ def _detect_compact_room_spikes(
         *_dedupe_detections(full_spikes, min_distance=12),
         *_dedupe_detections(mini_spikes, min_distance=12),
     ]
+
+
+def _has_compact_vertical_mini_support(
+    detection: Detection,
+    block_positions: set[tuple[int, int]],
+) -> bool:
+    """Require the native support-cell phase for compact vertical minis."""
+
+    if detection.type_id == OBJ_MINI_SPIKE_UP:
+        support_y = detection.y + MINI_BLOCK_SIZE
+    elif detection.type_id == OBJ_MINI_SPIKE_DOWN:
+        support_y = detection.y - GRID_SIZE
+    else:
+        return False
+    return any(
+        abs(block_x - detection.x) <= MINI_BLOCK_SIZE
+        and block_y == support_y
+        for block_x, block_y in block_positions
+    )
 
 
 def _has_spike_block_support(

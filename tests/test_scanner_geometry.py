@@ -179,6 +179,7 @@ from jtool_scanner.scanner import (
     _is_up_spike_full_step_continuation_patch,
     _is_up_spike_half_step_continuation_patch,
     _has_full_spike_perpendicular_neighbor,
+    _has_compact_vertical_mini_support,
     _count_full_spike_perpendicular_neighbors,
     _is_ambiguous_right_full_spike_noise,
     _is_ambiguous_full_spike_noise,
@@ -227,6 +228,7 @@ from jtool_scanner.scanner import (
     _triangle_side_coverage,
     _value_in_range,
     _ColorProfile,
+    scan_png,
 )
 from jtool_scanner.image import load_png
 from jtool_scanner.jmap import JMap
@@ -1260,6 +1262,37 @@ class ScannerGeometryTests(unittest.TestCase):
         detections = _detect_mini_blocks(image, detect_room_box(image))
 
         self.assertEqual(detections, [])
+
+    def test_compact_vertical_minis_use_their_native_support_cell_phase(self) -> None:
+        fixture_dir = (
+            Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        )
+        result = scan_png(
+            fixture_dir / "nang128-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        blocks = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+        vertical_minis = [
+            detection
+            for detection in result.detections
+            if detection.type_id in {OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN}
+        ]
+
+        self.assertTrue(vertical_minis)
+        self.assertTrue(
+            all(
+                _has_compact_vertical_mini_support(detection, blocks)
+                for detection in vertical_minis
+            )
+        )
+        self.assertEqual(len(vertical_minis), 9)
 
     def test_nested_outline_warps_recover_all_tracked_nang_variants(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

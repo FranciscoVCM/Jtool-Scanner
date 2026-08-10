@@ -75,3 +75,25 @@ subsequent change.
 No claim is made here that all 71 screens are complete. Each later checkpoint
 must include the changed rule, the measured before/after result, affected
 fixtures, and any remaining visual uncertainty.
+
+## Checkpoint: compact vertical-spike support (2026-08-10)
+
+The compact-room detector previously accepted bright neutral seams as vertical
+mini-spikes when they had no playable support-cell phase. The shared compact
+rule now requires an up/down mini-spike to align with the corresponding native
+full-tile support edge. Occluded horizontal mini-spike recovery remains a
+separate path because its support geometry is different.
+
+Measured fixture results:
+
+| fixture | before mini result | after mini result | other result |
+| --- | --- | --- | --- |
+| `nang128` | 61 detected, 17 matched, 18 truth | 17 detected, 17 matched, 18 truth | 68/68 blocks, 38/38 full spikes unchanged |
+| `nang138` | 55 detected, 54 matched, 58 truth | 55 detected, 54 matched, 58 truth | 105/105 blocks, 26/26 full spikes unchanged |
+| `nang135` | no mini truth; 76/77 blocks | unchanged | 86/86 killer blocks unchanged |
+| giant `NANG_128r` source | 127 total detections | 127 total detections | adaptive reverse-palette path unchanged |
+
+The FTFA exact benchmark remains 926/928 exact, with zero false positives,
+zero shifted objects, and the same two protected boundary misses. The focused
+compact support regression passes. The full suite also passes after this
+batch: 304 tests in 600.394 seconds, `OK`.
