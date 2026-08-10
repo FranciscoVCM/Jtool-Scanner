@@ -6671,6 +6671,15 @@ _FILLED_CLOUD_WARP_TEMPLATE_16 = (
     0x303C,
 )
 
+# A filled cloud-shaped foreground sprite can be visually indistinguishable
+# from the portal sprite when it is placed in a dense spike pocket.  Keep the
+# portal silhouette rule palette-relative, but reject the exceptional case in
+# which five or more neighboring 32px cells independently read as strong
+# full-spike triangles.  Real filled-cloud portals in the reviewed corpus are
+# never enclosed that densely; the count is deliberately conservative so a
+# portal beside one or two hazards remains valid.
+FILLED_CLOUD_WARP_MAX_STRONG_SPIKE_NEIGHBORS = 4
+
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
     return max(red, green, blue) <= 80 and max(red, green, blue) - min(
@@ -6790,6 +6799,13 @@ def _detect_filled_cloud_warps(
             ):
                 continue
             map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            if _filled_cloud_warp_is_dense_spike_enclosure(
+                image,
+                room,
+                map_x,
+                map_y,
+            ):
+                continue
             detections.append(
                 Detection(
                     f"warp_filled_cloud_{palette_name}",
@@ -6802,6 +6818,46 @@ def _detect_filled_cloud_warps(
             )
             seen_components.add(component_key)
     return _dedupe_detections(detections, min_distance=20)
+
+
+def _filled_cloud_warp_is_dense_spike_enclosure(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> bool:
+    """Reject a cloud silhouette embedded in a dense playable spike pocket.
+
+    The cloud detector runs before the broad geometry pass, so it cannot use
+    the pass's provisional detections.  Instead, inspect the surrounding
+    3x3 full-tile neighborhood directly with the same directional shape and
+    block-vs-spike arbitration used by geometry recovery.  Requiring at
+    least five strong neighbors is intentionally stricter than ordinary
+    spike detection and acts only as a high-confidence impostor veto.
+    """
+
+    strong_neighbors = 0
+    for offset_y in (-GRID_SIZE, 0, GRID_SIZE):
+        for offset_x in (-GRID_SIZE, 0, GRID_SIZE):
+            if offset_x == 0 and offset_y == 0:
+                continue
+            patch = _patch_features(
+                image,
+                room,
+                map_x + offset_x,
+                map_y + offset_y,
+                GRID_SIZE,
+            )
+            spike = _classify_full_spike(patch)
+            if spike is None or not _accept_full_spike(
+                spike,
+                _classify_block(patch),
+            ):
+                continue
+            strong_neighbors += 1
+            if strong_neighbors > FILLED_CLOUD_WARP_MAX_STRONG_SPIKE_NEIGHBORS:
+                return True
+    return False
 
 
 def _detect_outline_cloud_warps(

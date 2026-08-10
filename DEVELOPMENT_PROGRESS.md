@@ -234,3 +234,23 @@ Measured compact results:
 Focused save tests pass, FTFA exact remains `926/928` with the same two
 protected boundary misses, and the complete suite passes at 309 tests in
 591.788 seconds (`OK`).
+
+## Checkpoint: dense spike-pocket cloud-warp veto (2026-08-10)
+
+The Say-9 review source contains a white cloud-shaped foreground sprite at
+`(384, 224)` that is not a warp. Its silhouette is intentionally the same
+shape as the filled cloud portal family, so color and normalized topology
+alone cannot separate the two. The impostor is embedded in a dense five-sided
+spike pocket. Every accepted filled-cloud warp in the reviewed CN3/Halls/
+Redcube corpus has four or fewer strong neighboring 32px spike cells.
+
+The filled-cloud detector now performs a palette-independent local check of
+the surrounding 3x3 full-tile neighborhood and vetoes only candidates with
+more than four independently accepted strong spike triangles. The rule is
+relative to the existing triangle/block arbitration: it does not use Say-9's
+coordinates, filename, tileset colors, or a screen-specific exception.
+
+The new threshold regression covers both the five-neighbor veto and the
+four-neighbor keep path. Say-9's false warp is removed while the reviewed
+filled-cloud warp controls remain present; FTFA exactness and all existing
+object-specific guards remain required gates for this batch.

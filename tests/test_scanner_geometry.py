@@ -59,6 +59,7 @@ from jtool_scanner.scanner import (
     _detect_mini_blocks,
     _detect_outline_warps,
     _component_silhouette_iou,
+    _filled_cloud_warp_is_dense_spike_enclosure,
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
     _expand_supported_cell_terrain_materials,
@@ -5915,6 +5916,50 @@ class ScannerGeometryTests(unittest.TestCase):
                 **{**metrics, "ring_share": 0.30}, silhouette_iou=0.90
             )
         )
+
+    def test_filled_cloud_warp_dense_spike_enclosure_is_a_high_confidence_veto(self) -> None:
+        patch = _PatchFeatures((False,) * 256, 0.4, 0.3, 0.3)
+        strong_spike = _GeometryClass(
+            "spike_up", OBJ_SPIKE_UP, 0.70, 0.30, 0.45
+        )
+        weak_spike = _GeometryClass(
+            "spike_up", OBJ_SPIKE_UP, 0.20, 0.01, 0.02
+        )
+        with mock.patch(
+            "jtool_scanner.scanner._patch_features", return_value=patch
+        ), mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.10),
+        ), mock.patch(
+            "jtool_scanner.scanner._classify_full_spike",
+            side_effect=[strong_spike] * 5 + [weak_spike] * 3,
+        ):
+            self.assertTrue(
+                _filled_cloud_warp_is_dense_spike_enclosure(
+                    RGBImage(1, 1, b"\x00\x00\x00"),
+                    Box(0, 0, 1, 1),
+                    384,
+                    224,
+                )
+            )
+
+        with mock.patch(
+            "jtool_scanner.scanner._patch_features", return_value=patch
+        ), mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.10),
+        ), mock.patch(
+            "jtool_scanner.scanner._classify_full_spike",
+            side_effect=[strong_spike] * 4 + [weak_spike] * 4,
+        ):
+            self.assertFalse(
+                _filled_cloud_warp_is_dense_spike_enclosure(
+                    RGBImage(1, 1, b"\x00\x00\x00"),
+                    Box(0, 0, 1, 1),
+                    384,
+                    224,
+                )
+            )
 
     def test_component_silhouette_iou_distinguishes_cloud_from_rectangle(self) -> None:
         template = (
