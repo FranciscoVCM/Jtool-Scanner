@@ -1689,7 +1689,7 @@ def scan_image(
         )
         if bright_outlined_terrain_room:
             detections = _prune_bright_outlined_terrain_decorations(detections)
-        detections = _prune_bright_chromatic_platform_impostors(
+        detections = _prune_bright_room_platform_impostors(
             detections,
             image,
             box,
@@ -2984,19 +2984,19 @@ def _platform_horizontal_edge_runs(
     ]
 
 
-def _prune_bright_chromatic_platform_impostors(
+def _prune_bright_room_platform_impostors(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
 ) -> list[Detection]:
-    """Reject terrain-edge platform impostors in bright chromatic rooms.
+    """Reject terrain-edge platform impostors in bright rooms.
 
     The platform detector's neutral edge route is intentionally permissive so
-    it can support alternate JTool skins.  On a bright room with substantial
-    room-wide chroma, however, the same edge statistics occur at coloured
-    terrain lips and floor-number glyphs.  Require a compact horizontal bar
-    morphology only in that relative room class.  Dark rooms and bright
-    neutral platform controls retain the legacy route.
+    it can support alternate JTool skins.  On a bright room, the same edge
+    statistics occur at coloured terrain lips, brick boundaries, and
+    floor-number glyphs.  Require a compact horizontal bar morphology only in
+    that relative room class.  Dark rooms retain the legacy route, while
+    bright neutral platform controls pass when their bar enclosure is real.
     """
 
     room_profile = _room_color_profile(image, room)
@@ -3005,7 +3005,7 @@ def _prune_bright_chromatic_platform_impostors(
         + room_profile.avg_g * 0.59
         + room_profile.avg_b * 0.11
     )
-    if room_luminance < 90.0 or room_profile.saturation < 0.08:
+    if room_luminance < 90.0:
         return detections
     result: list[Detection] = []
     for detection in detections:

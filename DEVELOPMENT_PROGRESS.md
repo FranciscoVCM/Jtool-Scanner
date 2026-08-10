@@ -328,7 +328,7 @@ respectively. The source review shows these screens' relevant geometry is
 blocks/miniblocks and spikes; the cherries are ordinary apple detections and
 the visible floor numbers are not objects.
 
-Platform arbitration now uses a room-relative bright/chromatic gate. It
+Platform arbitration now uses a room-relative bright-room gate. It
 requires a compact horizontal-bar edge pattern (multiple strong rows or a
 clipped top-and-bottom enclosure) before retaining a platform candidate in
 that room class. Dark rooms and bright neutral platform controls retain the
@@ -349,3 +349,34 @@ fixtures (`irkara-89`, `k3-ex-hades`, and `irkara-71`) retain their prior
 platform matches. FTFA remains `926/928 exact; 0 false positives; 2 missed;
 0 shifted; 0 wrong direction`. These three giant-review screens still lack
 corrected authoritative JMaps, so exact geometry recall is not claimed.
+
+## Checkpoint: bright-room platform and water-negative review (2026-08-10)
+
+CN3-31, CN3-92, and CN3-93 were reviewed as a connected family. CN3-31's
+bright neutral brick room was producing 33 platform objects from brick/spike
+edges; the room-luminance version of the platform-bar gate removes those
+impostors while preserving the white/black blocks, spikes, vines, and saves.
+The gate remains morphology-based and leaves dark-room platform fixtures
+unchanged.
+
+The water-negative audit also confirms the earlier water failure is no longer
+present in the current workflow: CN3-92's cyan background and CN3-93's purple
+material emit no water objects. Their ordinary blocks, miniblock candidates,
+spikes, saves, warp, and green supports remain available for later exact
+geometry review. In particular, purple material is not routed to water merely
+because its hue is blue/purple; the scanner's water decision remains based on
+room-relative shape and profile evidence.
+
+Measured grid-8 project results:
+
+| screen | objects | platforms | water |
+| --- | ---: | ---: | ---: |
+| `CN3_31` | 292 | 0 | 0 |
+| `CN3_92` | 355 | 0 | 0 |
+| `CN3_93` | 112 | 0 | 0 |
+
+Known bright and dark platform fixtures retain their previous matches, and
+FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`. These giant-review screens still lack corrected authoritative
+JMaps, so this is a classification/no-false-positive checkpoint rather than
+an exact geometry claim.
