@@ -68,6 +68,7 @@ from jtool_scanner.scanner import (
     _prune_supported_terrain_spike_body_cells,
     _prune_supported_terrain_marker_body_cells,
     _prune_supported_terrain_spike_recovery_noise,
+    _is_sparse_supported_terrain_residual_noise,
     _repeated_terrain_paired_seed,
     _repeated_terrain_support_is_decisive,
     _repeated_terrain_seed_candidates,
@@ -467,6 +468,48 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertEqual(
             expanded.mini_blocks,
             frozenset((256, y) for y in range(64, 192, 16)),
+        )
+
+    def test_supported_terrain_rejects_sparse_residual_texture_overrun(self) -> None:
+        profile = _SupportedCellTerrainProfile(
+            blocks=frozenset({(0, 0), (32, 0), (0, 32)}),
+            mini_blocks=frozenset({(96, 0), (144, 0), (192, 32), (240, 64)}),
+            seed_cluster=0,
+            back_votes=8,
+            tip_votes=2,
+            direct_supports=2,
+        )
+        raw_blocks = [
+            Detection("block", OBJ_BLOCK, x, y, 0.8, Box(0, 0, 1, 1))
+            for x, y in (
+                (0, 0),
+                (32, 0),
+                (0, 32),
+                (32, 32),
+                (64, 0),
+                (64, 32),
+            )
+        ]
+        self.assertTrue(
+            _is_sparse_supported_terrain_residual_noise(profile, raw_blocks)
+        )
+        profile_with_connected_residual = _SupportedCellTerrainProfile(
+            blocks=profile.blocks,
+            mini_blocks=frozenset(
+                (x, y)
+                for y in range(0, 48, 16)
+                for x in (96, 112)
+            ),
+            seed_cluster=profile.seed_cluster,
+            back_votes=profile.back_votes,
+            tip_votes=profile.tip_votes,
+            direct_supports=profile.direct_supports,
+        )
+        self.assertFalse(
+            _is_sparse_supported_terrain_residual_noise(
+                profile_with_connected_residual,
+                raw_blocks,
+            )
         )
 
     def test_supported_cell_terrain_does_not_join_disconnected_decoration(self) -> None:

@@ -197,6 +197,14 @@ SUPPORTED_TERRAIN_KEEP_COVERAGE = 0.80
 SUPPORTED_TERRAIN_REPLACE_MAX_COVERAGE = 0.55
 SUPPORTED_TERRAIN_REPLACE_MAX_CURRENT_PRECISION = 0.55
 SUPPORTED_TERRAIN_REPLACE_MIN_CURRENT_OVERRUN = 1.35
+# A learned 32px material can fragment an unfamiliar textured tileset into a
+# handful of residual 16px cells.  When the raw detector already has a much
+# denser 32px lattice, that sparse residual is texture evidence rather than a
+# second playable mini-block material; keep the raw geometry for later hazard
+# arbitration instead of converting the texture into mini-spikes.
+SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MIN_OVERRUN = 2.0
+SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MAX_ADJACENT_SHARE = 0.75
+SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MAX_COMPONENT = 8
 SUPPORTED_TERRAIN_MATERIAL_CLUSTER_COUNT = 10
 SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_BACK_VOTES = 2
 SUPPORTED_TERRAIN_MATERIAL_MIN_DIRECT_POLARITY = 0.67
@@ -9958,6 +9966,54 @@ def _replace_repeated_terrain_geometry(
     return _dedupe_exact_detections(reconciled), True
 
 
+def _is_sparse_supported_terrain_residual_noise(
+    profile: _SupportedCellTerrainProfile,
+    current_blocks: list[Detection],
+) -> bool:
+    """Reject a fragmented material profile that is plainly underfitting.
+
+    A 32px tileset with internal diagonals can seed a material learner from a
+    few colour quadrants.  The learner then emits a small set of residual
+    16px cells even though the generic detector already found a substantially
+    denser 32px lattice.  Those cells are dangerous: later mini-spike passes
+    interpret the same texture seams as playable hazards.  Require both a
+    large raw/profile size mismatch and sparse residual topology before
+    declining the profile, so connected mixed-material mini-block corridors
+    remain eligible for the normal expansion path.
+    """
+
+    if not profile.mini_blocks or not profile.blocks or not current_blocks:
+        return False
+    current_positions = {(detection.x, detection.y) for detection in current_blocks}
+    overrun = len(current_positions) / max(1, len(profile.blocks))
+    if overrun < SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MIN_OVERRUN:
+        return False
+
+    residual = set(profile.mini_blocks)
+    adjacent_share = sum(
+        any(neighbor in residual for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE))
+        for position in residual
+    ) / max(1, len(residual))
+    remaining = set(residual)
+    largest_component = 0
+    while remaining:
+        seed = remaining.pop()
+        component_size = 1
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    queue.append(neighbor)
+                    component_size += 1
+        largest_component = max(largest_component, component_size)
+    return (
+        adjacent_share < SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MAX_ADJACENT_SHARE
+        and largest_component < SUPPORTED_TERRAIN_SPARSE_RESIDUAL_MAX_COMPONENT
+    )
+
+
 def _replace_supported_cell_terrain_geometry(
     detections: list[Detection],
     image: RGBImage,
@@ -9999,6 +10055,8 @@ def _replace_supported_cell_terrain_geometry(
     current_blocks = [
         detection for detection in detections if detection.type_id == OBJ_BLOCK
     ]
+    if _is_sparse_supported_terrain_residual_noise(profile, current_blocks):
+        return detections, False
     matched = sum(
         any(
             distance((x, y), (detection.x, detection.y)) <= 8

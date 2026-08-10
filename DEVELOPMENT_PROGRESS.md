@@ -124,6 +124,37 @@ water, walljump, killer-block and refresher results remain unchanged.
 
 The exact FTFA benchmark remains `926/928 exact; 0 false positives; 2 missed;
 0 shifted; 0 wrong direction`. The new directional gate regression and the
-existing CN3 and compact-room geometry regressions pass. This checkpoint is
-The complete suite passes at 305 tests in 561.600 seconds (`OK`). This
-checkpoint is ready to be committed and pushed as a single coherent batch.
+existing CN3 and compact-room geometry regressions pass. The complete suite
+passes at 305 tests in 561.600 seconds (`OK`). This checkpoint is ready to be
+committed and pushed as a single coherent batch.
+
+## Checkpoint: sparse residual terrain texture arbitration (2026-08-10)
+
+The red textured CN3-26 and CN3-27 rooms exposed a different failure mode:
+the supported-material learner underfit a 32px lattice into a small set of
+residual 16px cells, after which late mini-spike recovery promoted the same
+texture diagonals to hundreds of hazards. The generalized guard compares the
+raw 32px lattice to the learned profile and declines the profile only when its
+residual 16px material is both sparse/disconnected and substantially smaller
+than the raw lattice. Connected mixed-material mini-block corridors remain on
+the existing expansion path.
+
+Measured giant-review outputs after the guard:
+
+| screen | block detections | mini-block detections | mini-spike detections |
+| --- | ---: | ---: | ---: |
+| `CN3_26` | 139 | 0 | 5 |
+| `CN3_27` | 156 | 0 | 5 |
+
+Before the guard, the same scans produced 35/26 blocks and 113 mini-spikes
+for CN3-26, and 42/46 blocks and 655 mini-spikes for CN3-27. Saves, apples,
+water, vines, warps and full-spike candidates remain present in the guarded
+outputs. The focused synthetic sparse-texture regression and the existing CN3
+miniblock, compact-support and directional-gate regressions pass. FTFA exact
+remains `926/928`, and the complete suite passes at 306 tests in 582.168
+seconds (`OK`).
+
+The next review group should compare this arbitration against CN3-25, the
+adjacent CN3-28/29 family, and one connected residual-material room before
+considering any threshold change. No screen name, filename, or absolute
+palette is used by the rule.
