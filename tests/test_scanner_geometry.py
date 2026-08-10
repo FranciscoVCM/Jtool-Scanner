@@ -69,6 +69,7 @@ from jtool_scanner.scanner import (
     _prune_supported_terrain_marker_body_cells,
     _prune_supported_terrain_spike_recovery_noise,
     _is_sparse_supported_terrain_residual_noise,
+    _select_neutral_terrain_cells,
     _repeated_terrain_paired_seed,
     _repeated_terrain_support_is_decisive,
     _repeated_terrain_seed_candidates,
@@ -1333,6 +1334,22 @@ class ScannerGeometryTests(unittest.TestCase):
         detections = _detect_mini_blocks(image, detect_room_box(image))
 
         self.assertEqual(detections, [])
+
+    def test_neutral_terrain_profile_rejects_noisy_background_cluster(self) -> None:
+        terrain = _ColorProfile(70.0, 66.0, 80.0, 0.055)
+        background = _ColorProfile(86.0, 86.0, 87.0, 0.004)
+        cells = [
+            (0, 0, terrain, 0.060, 1.0),
+            (16, 0, terrain, 0.055, 1.0),
+            (0, 16, terrain, 0.058, 1.0),
+            (16, 16, background, 0.012, 1.0),
+            (32, 16, background, 0.010, 1.0),
+        ]
+
+        self.assertEqual(
+            _select_neutral_terrain_cells(cells),
+            {(0, 0), (16, 0), (0, 16)},
+        )
 
     def test_nang_compact_block_room_is_not_misclassified_as_miniblocks(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

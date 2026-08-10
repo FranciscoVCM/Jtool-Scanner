@@ -141,6 +141,9 @@ WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
 # the generic thresholds for full-size and unknown rooms.
 COMPACT_WEAK_ACTIVE_SAVE_MIN_YELLOW = 9
 COMPACT_WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 9
+NEUTRAL_TERRAIN_PROFILE_MIN_DISTANCE = 8.0
+NEUTRAL_TERRAIN_PROFILE_MIN_SCORE_ADVANTAGE = 0.008
+NEUTRAL_TERRAIN_PROFILE_MIN_SELECTED_SHARE = 0.15
 MINI_BLOCK_SIZE = 16
 MINI_BLOCK_MIN_EDGE_DENSITY = 0.03
 MINI_BLOCK_SEED_MAX_CENTER_SCORE = 0.20
@@ -5529,25 +5532,40 @@ def _replace_neutral_terrain_geometry(
         if detection.type_id not in GEOMETRY_TYPES
         and detection.type_id not in (OBJ_WATER_2, OBJ_WATER_3, OBJ_PLATFORM)
     ]
-    blocks: list[Detection] = []
+    neutral_cells: list[tuple[int, int, _ColorProfile, float, float]] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
             colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
             neutral = _neutral_color_ratio(colors)
             if neutral < 0.78:
                 continue
-            blocks.append(
-                _geometry_detection(
-                    "terrain_block",
-                    OBJ_BLOCK,
-                    x,
-                    y,
-                    min(0.97, 0.62 + neutral * 0.30),
-                    image,
-                    room,
-                    GRID_SIZE,
-                )
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            edge_density = _patch_features(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+            ).edge_density
+            neutral_cells.append((x, y, profile, edge_density, neutral))
+
+    selected_cells = _select_neutral_terrain_cells(neutral_cells)
+    blocks: list[Detection] = []
+    for x, y, _profile, _edge_density, neutral in neutral_cells:
+        if (x, y) not in selected_cells:
+            continue
+        blocks.append(
+            _geometry_detection(
+                "terrain_block",
+                OBJ_BLOCK,
+                x,
+                y,
+                min(0.97, 0.62 + neutral * 0.30),
+                image,
+                room,
+                GRID_SIZE,
             )
+        )
     terrain_support_positions = {
         (detection.x, detection.y) for detection in blocks
     }
@@ -5705,6 +5723,94 @@ def _neutral_color_ratio(colors: list[tuple[int, int, int]]) -> float:
         abs(color[1] - color[0]) < 18 and abs(color[2] - color[1]) < 22
         for color in colors
     ) / len(colors)
+
+
+def _select_neutral_terrain_cells(
+    cells: list[tuple[int, int, _ColorProfile, float, float]],
+) -> set[tuple[int, int]]:
+    """Keep the stronger of two room-local neutral material clusters.
+
+    Neutral rooms can contain a textured background whose pixels satisfy the
+    broad neutral-color predicate just as terrain does.  A tiny two-means pass
+    over patch colors separates those materials without naming a palette.  We
+    only apply the separation when the clusters are materially distinct and
+    one has a clear edge/saturation advantage; ambiguous rooms retain every
+    neutral candidate for the existing geometry arbitration.
+    """
+
+    if len(cells) < 2:
+        return {(x, y) for x, y, _profile, _edge_density, _neutral in cells}
+
+    vectors = [
+        (profile.avg_r, profile.avg_g, profile.avg_b)
+        for _x, _y, profile, _edge_density, _neutral in cells
+    ]
+    first = min(vectors, key=lambda vector: sum(vector))
+    second = max(
+        vectors,
+        key=lambda vector: sum(
+            (vector[index] - first[index]) ** 2 for index in range(3)
+        ),
+    )
+    centers = [first, second]
+    groups: list[list[int]] = [[], []]
+    for _ in range(8):
+        groups = [[], []]
+        for index, vector in enumerate(vectors):
+            group = min(
+                range(2),
+                key=lambda candidate: sum(
+                    (vector[channel] - centers[candidate][channel]) ** 2
+                    for channel in range(3)
+                ),
+            )
+            groups[group].append(index)
+        if not all(groups):
+            return {
+                (x, y)
+                for x, y, _profile, _edge_density, _neutral in cells
+            }
+        updated = [
+            tuple(
+                sum(vectors[index][channel] for index in group) / len(group)
+                for channel in range(3)
+            )
+            for group in groups
+        ]
+        if all(
+            sum(
+                (updated[group][channel] - centers[group][channel]) ** 2
+                for channel in range(3)
+            )
+            < 0.01
+            for group in range(2)
+        ):
+            centers = updated
+            break
+        centers = updated
+
+    center_distance = math.sqrt(
+        sum((centers[0][channel] - centers[1][channel]) ** 2 for channel in range(3))
+    )
+    if center_distance < NEUTRAL_TERRAIN_PROFILE_MIN_DISTANCE:
+        return {(x, y) for x, y, _profile, _edge_density, _neutral in cells}
+
+    cluster_scores = []
+    for group in groups:
+        score = sum(
+            cells[index][3] + cells[index][2].saturation for index in group
+        ) / len(group)
+        cluster_scores.append(score)
+    selected = max(range(2), key=cluster_scores.__getitem__)
+    other = 1 - selected
+    selected_share = len(groups[selected]) / len(cells)
+    if (
+        selected_share < NEUTRAL_TERRAIN_PROFILE_MIN_SELECTED_SHARE
+        or cluster_scores[selected] - cluster_scores[other]
+        < NEUTRAL_TERRAIN_PROFILE_MIN_SCORE_ADVANTAGE
+    ):
+        return {(x, y) for x, y, _profile, _edge_density, _neutral in cells}
+    return {(cells[index][0], cells[index][1]) for index in groups[selected]}
 
 
 def _masked_triangle_score(

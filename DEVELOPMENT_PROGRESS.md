@@ -185,3 +185,29 @@ Measured results:
 The complete suite passes at 307 tests in 584.690 seconds (`OK`). The next
 review group remains the connected CN3-28/29/30 residual-material family and
 the compact CN2-5 geometry, not another save-threshold expansion.
+
+## Checkpoint: neutral-room material clustering (2026-08-10)
+
+The compact CN2-5 jump-refresher room has a noisy neutral background whose
+pixels satisfy the broad neutral terrain predicate. The previous fallback
+therefore emitted 428 blocks and 65 full spikes, although the tracked JMap
+contains 323 blocks and 32 full spikes. A room-local two-cluster pass now
+learns patch color profiles from the neutral cells and keeps the cluster with
+the stronger combined edge/saturation evidence only when the cluster centers
+are separated and the score margin is meaningful. Ambiguous rooms retain the
+old candidates rather than guessing a material.
+
+Measured fixture results:
+
+| fixture | before | after |
+| --- | --- | --- |
+| CN2-5 blocks | 428 detected, 318 matched | 391 detected, 318 matched |
+| CN2-5 full spikes | 65 detected, 28 matched | 81 detected, 31 matched |
+| CN2-5 mini spikes | 10 detected, 2 matched | 10 detected, 2 matched |
+| CN2-5 jump refreshers | 6 detected, 6 matched | 6 detected, 6 matched |
+
+The gate is relative to each room's learned color/texture clusters; it does
+not encode CN2 colors, coordinates, or a fixed tileset. The focused synthetic
+material-cluster regression passes, FTFA exact remains `926/928` with the same
+two protected boundary misses, and the complete suite passes at 308 tests in
+584.785 seconds (`OK`).
