@@ -1473,3 +1473,14 @@ are absent, and the CN2-5 refresher discrepancy remains a source/JMap mismatch.
 `HANDOFF.md` was refreshed to reflect the current 926/928 FTFA result, the
 337-test baseline, and the continuation commits. This final audit changed no
 implementation code, fixtures, JMaps, or ignored local corpora.
+
+## Checkpoint: named Irkara control refresh (2026-08-12)
+
+The committed Irkara manifest was refreshed for the two explicitly protected
+minispike controls. `irkara-51` retains 3/3 saves, 1/1 warp, 4/4 water cells,
+and 4/4 walljump truth (with six walljump detections, the existing precision
+follow-up); its geometry remains an exact-fixture review metric. `irkara-59`
+retains 2/2 saves, 1/1 warp, and 403/412 minispikes with 403 detections. No
+new object family or palette-specific rule appeared. Together with the fresh
+12-pair block/spike workflow, these controls preserve the named Irkara,
+Partysu3, CN3, NANG, F189, and CN2-5 gates without implementation changes.
