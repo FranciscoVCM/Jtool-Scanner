@@ -737,3 +737,17 @@ existing shape/relative-palette rules transferring to the reverse family;
 they did not justify a new screen-specific rule. The ignored ledger records
 the source/JMap/reconstruction/blend evidence and the absence of corrected
 authoritative giant-review JMaps.
+
+## Checkpoint: NANG-130/130r/131r refresher and gravity audit (2026-08-11)
+
+NANG_130, NANG_130r, and NANG_131r were regenerated in current27. The
+familiar and reverse metal rooms both keep their blue jump refreshers in the
+jump-refresher class (3, 3, and 2 respectively) rather than gravity flippers;
+their spiral warps remain warps, while triggers, stars, and decorative
+material remain outside gameplay classes. NANG_130 retains its save and
+NANG_130r retains its reverse-palette save.
+
+Current27 totals are 122, 261, and 173. This is a negative-control audit of
+the existing refresher/gravity and spiral-warp rules; no new screen-specific
+rule was justified. The ignored ledger records each source/JMap/reconstruction
+/blend result and the absence of corrected authoritative giant-review JMaps.
