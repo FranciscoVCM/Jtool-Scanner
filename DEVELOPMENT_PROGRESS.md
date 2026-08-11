@@ -601,3 +601,22 @@ The protected four-room scan also retains all high-value object matches:
 flippers. Its geometry totals remain 866/875 mini blocks, 244/244 blocks,
 249/260 full spikes, and 181/184 mini spikes matched; these remain review
 metrics rather than exact golden-room claims.
+
+## Checkpoint: Say-family refresher and warp negative audit (2026-08-11)
+
+Say_1 through Say_9 were regenerated in one current15 batch and compared with
+their preserved source screens and JTool previews. The sources show only the
+listed SAVE sprites, terrain blocks, and spikes; the white cloud in Say_9 is a
+foreground decoration rather than a warp. The current projects emit the
+expected save counts (2, 2, 2, 1, 1, 1, 1, 2, 1), zero type-21 warps on all
+nine screens, and zero type-22 jump refreshers on all nine screens. The prior
+first-pass report's 142 Say refreshers and Say_9 cloud warp are therefore stale
+diagnostic output, not current detections.
+
+No new screen-specific filter was justified: the existing refresher shape and
+cloud/terrain arbitration already reject these negative controls while
+preserving the true refresher and warp fixtures elsewhere. Full terrain
+geometry remains visual-only because these giant-review screens have no
+corrected authoritative JMaps. The current15 JMaps, SVG previews, and blends
+are preserved under ignored `.artifacts/say-review/current15/`, and the local
+review ledger records each screen's evidence and unresolved geometry status.
