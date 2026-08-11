@@ -1362,3 +1362,30 @@ complete unittest suite passes **337 tests in 517.038 seconds**, `OK`. The
 remaining Partysu3 mini-spike misses and false positives are still recorded as
 geometry follow-ups; this checkpoint does not claim exact recovery of the full
 fixture.
+
+## Checkpoint: three giant-review re-audits and Irkara-89 held-out review (2026-08-11)
+
+The current source/JMap/reconstruction/blend artifacts for `Zero_Final`,
+`CN3_Entrance2`, and `NANG_11` were rechecked directly from the preserved
+sources and rasterized embedded blends. `Zero_Final` still retains one save and
+212 cyan lower-region `water_2` cells while treating the deep-blue star/text
+field as background; its eleven structural warnings remain geometry review
+items. `CN3_Entrance2` still retains both visible saves and the three coherent
+water cells; its 109 unsupported-spike warnings and one overlapping-opposite
+spike warning are not evidence for a safe tileset rule without a corrected
+JMap. `NANG_11` still isolates the centered 9x9 room, retains one save and one
+gray spiral warp, and emits fourteen terrain blocks; its remaining terrain
+shape judgment is visual-only.
+
+As a held-out exact check, `irkara-89` was regenerated and reviewed with its
+current source/blend. It remains at **81/98 blocks matched (86 detected)**,
+**112/113 full spikes matched (141 detected)**, and exact save, warp, apple,
+water, and walljump classes. The remaining block misses are predominantly
+clipped, spike-overlapped, or visually blank/ambiguous truth cells; broadening
+outline projection would add unsupported terrain and was not retained.
+
+This batch changed no scanner code or fixtures. The three giant-review rows
+remain `needs-more-work` because corrected authoritative JMaps are absent, and
+the Irkara-89 discrepancies remain an explicit exact-fixture follow-up. The
+existing 71-row ledger still has all source/JMap/preview/blend paths present;
+no new exception or hidden discrepancy was introduced.
