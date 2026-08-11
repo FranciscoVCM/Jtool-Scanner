@@ -6343,6 +6343,7 @@ def _detect_red_body_header_saves(
         )
     )
     seen_boxes: set[tuple[int, int, int, int]] = set()
+    fragmented_detections: list[Detection] = []
     for box, pixels, fragmented in candidates:
         key = (box.x, box.y, box.width, box.height)
         if key in seen_boxes:
@@ -6357,6 +6358,17 @@ def _detect_red_body_header_saves(
                 and 15 <= map_height <= 32
                 and density >= 0.20
                 and len(pixels) >= 120
+            ):
+                continue
+            # A terrain tile can be split into several red components too,
+            # but it normally contains one dominant slab.  A save body that
+            # survives occlusion is distributed across small quadrants.  Use
+            # the candidate's normalized area (rather than raw pixels) so the
+            # gate remains valid for scaled screenshots and unfamiliar
+            # palettes/tilesets.
+            if not _fragmented_save_body_is_distributed(
+                box,
+                red_components,
             ):
                 continue
         elif not (
@@ -6407,17 +6419,85 @@ def _detect_red_body_header_saves(
             )
         else:
             score = min(0.98, 0.90 + density * 0.06 + pale_header_share * 0.12)
-        detections.append(
-            Detection(
-                detection_kind,
-                OBJ_SAVE,
-                map_x,
-                map_y,
-                score,
-                box,
-            )
+        detection = Detection(
+            detection_kind,
+            OBJ_SAVE,
+            map_x,
+            map_y,
+            score,
+            box,
         )
+        detections.append(detection)
+        if fragmented:
+            fragmented_detections.append(detection)
+    if _looks_like_repeated_fragmented_save_field(
+        fragmented_detections,
+        room,
+    ):
+        detections = [
+            detection
+            for detection in detections
+            if detection.kind != "save_red_body_header_fragmented"
+        ]
     return detections
+
+
+def _fragmented_save_body_is_distributed(
+    box: Box,
+    components: list[tuple[Box, list[tuple[int, int]]]],
+) -> bool:
+    """Reject merged red candidates dominated by one terrain component."""
+
+    contained_areas = [
+        len(pixels)
+        for component_box, pixels in components
+        if (
+            component_box.x >= box.x
+            and component_box.y >= box.y
+            and component_box.right <= box.right
+            and component_box.bottom <= box.bottom
+        )
+    ]
+    if len(contained_areas) < 4:
+        return False
+    largest_share = max(contained_areas) / max(1, box.area)
+    return largest_share <= 0.10
+
+
+def _looks_like_repeated_fragmented_save_field(
+    detections: list[Detection],
+    room: Box,
+) -> bool:
+    """Recognize a regular field of red terrain fragments, not saves."""
+
+    if len(detections) < 6:
+        return False
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    normalized_sizes = [
+        (
+            round(detection.image_box.width * scale_x),
+            round(detection.image_box.height * scale_y),
+        )
+        for detection in detections
+    ]
+    if (
+        max(width for width, _height in normalized_sizes)
+        - min(width for width, _height in normalized_sizes)
+        > 8
+        or max(height for _width, height in normalized_sizes)
+        - min(height for _width, height in normalized_sizes)
+        > 8
+    ):
+        return False
+    row_counts: Counter[int] = Counter(
+        round_to_step(detection.y, GRID_SIZE * 2)
+        for detection in detections
+    )
+    return (
+        max(row_counts.values(), default=0) >= 4
+        and sum(count >= 2 for count in row_counts.values()) >= 2
+    )
 
 
 def _merge_fragmented_save_red_components(

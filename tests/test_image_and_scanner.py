@@ -237,6 +237,25 @@ class ImageAndScannerTests(unittest.TestCase):
             )
         )
 
+    def test_fragmented_red_terrain_is_not_a_save_body(self) -> None:
+        fixture_dir = (
+            Path(__file__).resolve().parents[1]
+            / "fixtures"
+            / "regressions"
+            / "unseen-rooms"
+            / "ftfa"
+        )
+        image = load_png(fixture_dir / "screen-1-source.png")
+        saves = _detect_red_body_header_saves(
+            image,
+            Box(0, 0, image.width, image.height),
+            8,
+        )
+
+        self.assertFalse(
+            any(save.kind == "save_red_body_header_fragmented" for save in saves)
+        )
+
     def test_active_save_layout_rejects_floor_number_glyphs(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
         image = load_png(fixture_dir / "f189-game.png")

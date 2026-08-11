@@ -508,3 +508,22 @@ Right Vine; no screen-specific rename or palette exception was needed.
 These screens still lack corrected authoritative giant-review JMaps, so the
 review records classification evidence and the absence of the reported
 background/refresher false positives without claiming exact geometry recall.
+
+## Checkpoint: fragmented-save fallback and FTFA preservation (2026-08-11)
+
+The generalized red-body/header recovery path was exercised against the
+terrain-occluded save in `cn3-18`. It still recovers the left save while the
+existing cross and active-layout paths retain the other two saves. The
+fallback now requires a scale-normalized distributed red-fragment morphology;
+an otherwise similar candidate dominated by one large terrain component is
+not promoted to a save. This is a palette- and resolution-independent shape
+gate, not a filename, room, coordinate, or tileset exception.
+
+The change was checked against the held-out FTFA golden room immediately
+afterward. FTFA returned `926/928 exact; 0 false positives; 2 missed; 0
+shifted; 0 wrong direction`, restoring its prior strict baseline. The focused
+tests cover the CN3-18 recovery, rejection of FTFA terrain, the floor-number
+active-save negative, the muted-header fallback, and save/warp miniblock
+coexistence. The protected four-room scan remains at 10/10 saves, 4/4 warps,
+5/5 water cells, 4/4 walljumps, and 8/8 gravity flippers matched; its known
+geometry over-detection/missed-cell totals are unchanged.
