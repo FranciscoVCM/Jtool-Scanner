@@ -56,11 +56,14 @@ from jtool_scanner.scanner import (
     _dedupe_overlapping_geometry,
     _dedupe_normalized_full_spikes,
     _dense_minispike_lattice_axis,
+    _detect_apples,
     _detect_mini_blocks,
+    _detect_saves,
     _detect_warps,
     _detect_outline_cloud_warps,
     _detect_outline_warps,
     _is_neutral_outline_warp_color,
+    _is_fragmented_outline_apple_patch,
     _component_silhouette_iou,
     _filled_cloud_warp_has_ambiguous_neutral_shadow,
     _filled_cloud_warp_is_dense_spike_enclosure,
@@ -5702,6 +5705,36 @@ class ScannerGeometryTests(unittest.TestCase):
                     center_score=0.46,
                 ),
                 profile,
+            )
+        )
+
+    def test_fragmented_outline_apple_recovers_monochrome_irkara89_sprite(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "irkara-89-game.png")
+        room = detect_room_box(image)
+        anchors = _detect_saves(image, room, 8)
+
+        apples = _detect_apples(image, room, 8, anchors)
+
+        self.assertEqual(
+            {(detection.x, detection.y) for detection in apples},
+            {(128, 368)},
+        )
+
+    def test_fragmented_outline_apple_gate_requires_compact_contour(self) -> None:
+        weak = _PatchFeatures(
+            tuple(True for _ in range(16 * 16)),
+            edge_density=0.80,
+            border_score=0.60,
+            center_score=0.80,
+        )
+        self.assertFalse(
+            _is_fragmented_outline_apple_patch(
+                weak,
+                dark_density=0.10,
+                contour_score=0.95,
+                contour_support=0.95,
+                contour_precision=0.95,
             )
         )
 

@@ -1105,3 +1105,25 @@ Measured results:
 The focused gate/material/miniblock regressions pass. FTFA remains
 `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`,
 and the complete unittest suite passes **331 tests in 628.941 seconds**, `OK`.
+
+## Checkpoint: fragmented neutral apple contour (2026-08-11)
+
+The same pale outlined family also split the monochrome apple at
+`irkara-89` into several disconnected dark strokes, so the existing
+component-sized outline-apple gate could not see it. A fallback now scans
+complete 32px cells only after the pale-room gate, requiring normalized apple
+contour support and precision plus local dark-pixel density, edge, border, and
+center-shape bounds. It is palette-relative and does not depend on a sprite
+filename or coordinate.
+
+Measured results:
+
+| fixture | apple result | controls |
+| --- | --- | --- |
+| `irkara-89` | improved from 0/1 to 1/1 matched, exactly 1 detected at `(128,368)` | miniblocks remain 0; the prior warp/platform/terrain discrepancies remain separately documented |
+| `irkara-nr-flames` | 3/3 matched, 3 detected | colored apple path unchanged; 2/2 warps and 16/16 water remain |
+
+The focused fragmented-outline, compact-contour, and color-object regressions
+pass. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction`, and the complete unittest suite passes **333 tests in
+657.967 seconds**, `OK`.

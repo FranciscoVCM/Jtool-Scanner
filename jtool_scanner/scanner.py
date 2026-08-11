@@ -1246,6 +1246,19 @@ OUTLINE_APPLE_MAX_PATCH_SATURATION = 0.03
 OUTLINE_APPLE_MIN_EDGE_DENSITY = 0.18
 OUTLINE_APPLE_MAX_BORDER_SCORE = 0.35
 OUTLINE_APPLE_MIN_CENTER_SCORE = 0.10
+# Some bright neutral skins split an apple outline into several short strokes,
+# so no single connected component satisfies the compact component gate.  The
+# fallback below evaluates the complete 32px cell with the normalized contour
+# and local dark-pixel density instead of relying on a particular stroke join.
+OUTLINE_APPLE_FRAGMENT_MIN_DARK_DENSITY = 0.05
+OUTLINE_APPLE_FRAGMENT_MAX_DARK_DENSITY = 0.14
+OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_SCORE = 0.60
+OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_SUPPORT = 0.68
+OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_PRECISION = 0.84
+OUTLINE_APPLE_FRAGMENT_MIN_EDGE_DENSITY = 0.20
+OUTLINE_APPLE_FRAGMENT_MAX_EDGE_DENSITY = 0.35
+OUTLINE_APPLE_FRAGMENT_MAX_BORDER_SCORE = 0.18
+OUTLINE_APPLE_FRAGMENT_MIN_CENTER_SCORE = 0.30
 APPLE_ROOM_CORNER_MARGIN = 24
 APPLE_ROOM_CORNER_KEEP_MIN_SCORE = 0.90
 APPLE_DEDUPE_DISTANCE = 12
@@ -9179,6 +9192,69 @@ def _detect_outline_apples(
             continue
         score = min(1.0, 0.45 + density + features.center_score * 0.25)
         detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
+    # A neutral capture can break the apple outline into several disconnected
+    # strokes.  Search complete 32px cells with the normalized contour only in
+    # the already-qualified pale room; dark-pixel density and border/center
+    # balance reject the repeated triangle and block textures in that room.
+    step = max(8, grid_step)
+    for map_y in range(
+        GRID_SIZE // 2,
+        ROOM_HEIGHT - GRID_SIZE // 2 + 1,
+        step,
+    ):
+        for map_x in range(
+            GRID_SIZE // 2,
+            ROOM_WIDTH - GRID_SIZE // 2 + 1,
+            step,
+        ):
+            features = _patch_features(
+                image,
+                room,
+                map_x - GRID_SIZE // 2,
+                map_y - GRID_SIZE // 2,
+                GRID_SIZE,
+            )
+            contour_score, contour_support, contour_precision = (
+                _apple_contour_metrics(features)
+            )
+            dark_stats = _patch_color_stats(
+                image,
+                room,
+                map_x - GRID_SIZE // 2,
+                map_y - GRID_SIZE // 2,
+                GRID_SIZE,
+                _is_outline_apple_dark_neutral,
+            )
+            if not _is_fragmented_outline_apple_patch(
+                features,
+                dark_stats.density,
+                contour_score,
+                contour_support,
+                contour_precision,
+            ):
+                continue
+            if _near_anchor(map_x, map_y, anchors + detections, max_distance=40):
+                continue
+            extent = _geometry_detection(
+                "apple_outline_contour",
+                OBJ_APPLE,
+                map_x - GRID_SIZE // 2,
+                map_y - GRID_SIZE // 2,
+                0.78 + contour_score * 0.20,
+                image,
+                room,
+                GRID_SIZE,
+            )
+            detections.append(
+                Detection(
+                    "apple_outline_contour",
+                    OBJ_APPLE,
+                    map_x,
+                    map_y,
+                    extent.score,
+                    extent.image_box,
+                )
+            )
     return detections
 
 
@@ -24613,6 +24689,30 @@ def _is_outline_apple_component(
         and features.edge_density >= OUTLINE_APPLE_MIN_EDGE_DENSITY
         and features.border_score <= OUTLINE_APPLE_MAX_BORDER_SCORE
         and features.center_score >= OUTLINE_APPLE_MIN_CENTER_SCORE
+    )
+
+
+def _is_fragmented_outline_apple_patch(
+    features: _PatchFeatures,
+    dark_density: float,
+    contour_score: float,
+    contour_support: float,
+    contour_precision: float,
+) -> bool:
+    """Accept a complete neutral apple cell when its outline is fragmented."""
+
+    return (
+        OUTLINE_APPLE_FRAGMENT_MIN_DARK_DENSITY
+        <= dark_density
+        <= OUTLINE_APPLE_FRAGMENT_MAX_DARK_DENSITY
+        and contour_score >= OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_SCORE
+        and contour_support >= OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_SUPPORT
+        and contour_precision >= OUTLINE_APPLE_FRAGMENT_MIN_CONTOUR_PRECISION
+        and OUTLINE_APPLE_FRAGMENT_MIN_EDGE_DENSITY
+        <= features.edge_density
+        <= OUTLINE_APPLE_FRAGMENT_MAX_EDGE_DENSITY
+        and features.border_score <= OUTLINE_APPLE_FRAGMENT_MAX_BORDER_SCORE
+        and features.center_score >= OUTLINE_APPLE_FRAGMENT_MIN_CENTER_SCORE
     )
 
 
