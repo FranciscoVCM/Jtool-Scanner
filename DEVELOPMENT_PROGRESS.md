@@ -561,3 +561,19 @@ FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
 wrong direction`. The protected four-room measurement remains 10/10 saves,
 4/4 warps, 5/5 water, 4/4 walljumps, and 8/8 gravity flippers matched, with
 the prior geometry precision/recall totals unchanged.
+
+## Checkpoint: follow-up-2 Cyan and Lap visual review (2026-08-11)
+
+The preserved follow-up-2 triplets were regenerated through the current
+project-create/source/JTool/blend workflow. Cyan retains its infinite-jump
+message as metadata/background, one save, 224 water-2 cells, and the
+surrounding blocks and spike shapes; its 10 geometry-review warnings remain
+visible for later human correction. Lap retains the two visible saves, 155
+blocks, and 74 full spikes in the dark-brick/white-spike reconstruction; its
+19 unsupported-spike warnings identify review locations rather than silent
+object loss. Neither triplet has a corrected authoritative JMap, and the
+follow-up-2 Lap image still cannot be safely assigned to a Lap Around ordinal.
+
+The blends show no justified new generalized classifier rule in this pass.
+The material is preserved locally under ignored `.artifacts/follow-up-2/` and
+remains part of the visual review corpus, not a strict exact benchmark.
