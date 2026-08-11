@@ -1302,5 +1302,22 @@ candidates exposed additional ambiguous red/brick patches, while preserving
 every emitted killer backing candidate added false blocks. The experiment was
 rejected and all code/test edits were removed. No screen-specific exception or
 permissive threshold was retained; NANG135 remains an explicit follow-up until
- stronger visual evidence can separate real blocks from the same-looking
- texture and hidden overlaps.
+stronger visual evidence can separate real blocks from the same-looking
+texture and hidden overlaps.
+
+## Checkpoint: four visual giant-review screens re-audited (2026-08-11)
+
+The current source/reconstruction/blend triplets for `CN3_Dotkid4`,
+`CN3_Dotkid5`, `CN3_Secret1`, and `CN3_Redcube3` were reviewed directly. The
+Dotkid screens retain their detected dotkid rings and saves but still have
+substantial unfamiliar-tileset geometry differences. `CN3_Secret1` keeps the
+rainbow gradient as background and emits the visible spike field, but its
+bottom-right red geometry remains one full spike rather than two mini-spikes.
+`CN3_Redcube3` retains the three visible saves, red orb/warp candidates, and
+red patterned terrain without promoting the terrain to cherries; one small
+mini-spike remains a visual geometry review item.
+
+All four remain `needs-more-work` in the local ledger because no corrected
+giant-review JMaps exist. This batch produced no safe generalized scanner
+hypothesis and changed no implementation or fixture; these are visual review
+records, not exact-map claims.
