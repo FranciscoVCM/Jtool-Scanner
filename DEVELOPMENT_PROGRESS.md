@@ -689,3 +689,20 @@ JMaps, previews, blends, evidence, and unresolved geometry status.
 The focused cloud regressions passed, the exact FTFA benchmark remains
 `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`,
 and the complete unittest discovery run passed 324 tests in 609.557 seconds.
+
+## Checkpoint: CN3-28 through CN3-30 chromatic cherry review (2026-08-11)
+
+CN3_28, CN3_29, and CN3_30 were regenerated in current24 after the outlined
+cloud batch. Their mixed brown, beige, blue, and gray terrain remains in the
+block/miniblock and spike classes; the bright-room platform gate emits no
+platform impostors; and the visible cherry counts are 3, 5, and 5. The floor
+numbers 28, 29, and 30 and the small white player silhouettes remain
+background/non-gameplay material, with zero warp or refresher detections.
+
+No additional generalized rule was justified by this visual review: the
+current chromatic morphology and platform gates already separate the object
+families without relying on these floor numbers or coordinates. Current24
+object totals are 344, 344, and 426. The local ignored ledger records each
+source/JMap/reconstruction/blend review and the remaining lack of corrected
+authoritative giant-review JMaps, so these are classification/placement
+checkpoints rather than exact geometry claims.
