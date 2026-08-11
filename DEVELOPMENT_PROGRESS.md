@@ -738,6 +738,23 @@ they did not justify a new screen-specific rule. The ignored ledger records
 the source/JMap/reconstruction/blend evidence and the absence of corrected
 authoritative giant-review JMaps.
 
+## Checkpoint: Zero_Final unfamiliar blue/cyan baseline (2026-08-11)
+
+Zero_Final was regenerated in current30 from the preserved source and reviewed
+against the clean JTool reconstruction and source/blend overlay. The current
+scanner retains one outlined SAVE, the cyan lower-region water as 212
+water-2 cells, and the neon blocks/spikes; the deep-blue star field and
+glowing `You can infinity jump` text remain background. No warp or spurious
+color object is emitted. The source/blend review still exposes eleven
+structural geometry warnings (unsupported or overlapping spike candidates),
+and the optional OCR path did not infer `infinitejump` from this glowing text;
+these remain explicit follow-up items rather than silently asserted matches.
+
+Current30 emits 370 objects (`1:97,3:21,4:7,5:3,6:27,7:1,8:1,12:1,15:212`)
+and has no corrected authoritative giant-review JMap. This is a measured
+unfamiliar-tileset baseline and geometry/OCR limitation record, not an exact
+benchmark claim.
+
 ## Checkpoint: NANG-139r/140 decoration and refresher review (2026-08-11)
 
 NANG_139r and NANG_140 were regenerated in current29. NANG_139r retains its
