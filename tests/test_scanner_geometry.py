@@ -1466,6 +1466,22 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertEqual([d.type_id for d in kept], [OBJ_BLOCK])
 
+    def test_bright_neutral_outline_gate_rejects_irkara89_quarter_cells(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "irkara-89-game.png")
+        room = detect_room_box(image)
+
+        self.assertTrue(_looks_like_bright_outlined_terrain_room(image, room))
+        self.assertEqual(_detect_mini_blocks(image, room), [])
+
+        colored = load_png(fixture_dir / "irkara-nr-flames-game.png")
+        self.assertFalse(
+            _looks_like_bright_outlined_terrain_room(
+                colored,
+                detect_room_box(colored),
+            )
+        )
+
     def test_bright_chromatic_platform_gate_rejects_single_terrain_edge(self) -> None:
         self.assertFalse(
             _has_bright_room_platform_bar_evidence([0] * 13 + [30, 30])

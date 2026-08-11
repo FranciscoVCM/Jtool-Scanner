@@ -277,6 +277,15 @@ BRIGHT_OUTLINED_TERRAIN_MIN_DARK_CONTRAST = 45.0
 BRIGHT_OUTLINED_TERRAIN_MIN_CELLS = 55
 BRIGHT_OUTLINED_TERRAIN_MAX_CELLS = 150
 BRIGHT_OUTLINED_TERRAIN_MAX_ROOM_SHARE = 0.33
+# A neutral white/gray outlined tileset can have a much smaller dark-cell
+# population than the chromatic family above.  Its sparse 32px outlines still
+# produce convincing 16px quarter-cell silhouettes, so classify that morphology
+# separately using room-local brightness, saturation, contrast, and sparsity.
+BRIGHT_NEUTRAL_OUTLINED_MIN_ROOM_VALUE = 220.0
+BRIGHT_NEUTRAL_OUTLINED_MIN_DARK_CONTRAST = 20.0
+BRIGHT_NEUTRAL_OUTLINED_MAX_SATURATION = 0.05
+BRIGHT_NEUTRAL_OUTLINED_MIN_CELLS = 20
+BRIGHT_NEUTRAL_OUTLINED_MAX_CELLS = 60
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
@@ -3226,16 +3235,16 @@ def _looks_like_bright_outlined_terrain_room(image: RGBImage, room: Box) -> bool
     """Identify sparse outlined terrain on a bright screenshot.
 
     Unlike the dark CN3 neon rooms, this family has a bright background and
-    red/brown outlined cells.  Their internal diagonals are a recurring source
-    of false 16px spikes and miniblocks.  The gate is deliberately based on
-    room-local brightness contrast and lattice sparsity, not a filename or a
-    fixed tileset colour.
+    red/brown or neutral-gray outlined cells.  Their internal diagonals are a
+    recurring source of false 16px spikes and miniblocks.  The gate is
+    deliberately based on room-local brightness, contrast, saturation, and
+    lattice sparsity, not a filename or a fixed tileset colour.
     """
 
     room_value, dark_value, _brightness, positions = (
         _outlined_terrain_cell_stats(image, room)
     )
-    return (
+    chromatic_sparse = (
         room_value >= BRIGHT_OUTLINED_TERRAIN_MIN_ROOM_VALUE
         and room_value - dark_value >= BRIGHT_OUTLINED_TERRAIN_MIN_DARK_CONTRAST
         and BRIGHT_OUTLINED_TERRAIN_MIN_CELLS <= len(positions)
@@ -3243,6 +3252,15 @@ def _looks_like_bright_outlined_terrain_room(image: RGBImage, room: Box) -> bool
         and len(positions) / max(1, 19 * 25 * 1)
         <= BRIGHT_OUTLINED_TERRAIN_MAX_ROOM_SHARE
     )
+    profile = _room_color_profile(image, room)
+    neutral_sparse = (
+        room_value >= BRIGHT_NEUTRAL_OUTLINED_MIN_ROOM_VALUE
+        and room_value - dark_value >= BRIGHT_NEUTRAL_OUTLINED_MIN_DARK_CONTRAST
+        and profile.saturation <= BRIGHT_NEUTRAL_OUTLINED_MAX_SATURATION
+        and BRIGHT_NEUTRAL_OUTLINED_MIN_CELLS <= len(positions)
+        <= BRIGHT_NEUTRAL_OUTLINED_MAX_CELLS
+    )
+    return chromatic_sparse or neutral_sparse
 
 
 def _prune_bright_outlined_terrain_decorations(

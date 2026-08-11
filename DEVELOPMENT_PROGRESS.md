@@ -1083,3 +1083,25 @@ Measured results:
 The focused colored-warp and filled/elongated-impostor regressions pass. FTFA
 remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
 direction`; the complete suite passes **330 tests in 623.079 seconds**, `OK`.
+
+## Checkpoint: neutral bright outlined-room arbitration (2026-08-11)
+
+The white/gray `irkara-89` tileset exposed a general ambiguity in the
+supported-cell material learner: sparse 32px outlined cells produced 88
+residual 16px `mini_block` detections even though the authoritative map has no
+miniblocks. A new neutral outlined-room gate uses only room-local brightness,
+contrast, saturation, and sparse cell morphology. It shares the existing
+bright outlined decoration veto and does not use a filename, coordinate, or
+screen-specific exception.
+
+Measured results:
+
+| fixture | result | control/remaining issue |
+| --- | --- | --- |
+| `irkara-89` | false miniblocks `88 -> 0`; `0/0` miniblock truth; 11/98 blocks matched; 1/1 platform matched | one apple remains missed, two warp detections and two platform detections remain; these are separate geometry/object follow-ups |
+| `cn3-16` | 501/501 miniblocks matched, 563 detected; 4/4 saves; 1/1 warp | true 16px room remains on the normal miniblock path |
+| `irkara-nr-flames` | 2/2 warps, 3/3 apples, 16/16 water; zero miniblocks | colored held-out control unchanged |
+
+The focused gate/material/miniblock regressions pass. FTFA remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`,
+and the complete unittest suite passes **331 tests in 628.941 seconds**, `OK`.
