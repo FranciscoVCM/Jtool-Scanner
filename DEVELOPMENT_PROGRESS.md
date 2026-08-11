@@ -962,3 +962,28 @@ Validation: the complete unittest suite passed **327 tests in 624.038
 seconds**, the exact FTFA benchmark remains `926/928 exact; 0 false positives;
 2 missed; 0 shifted; 0 wrong direction`, and the restarted app returns HTTP
 200 on the latest source fingerprint.
+
+## Checkpoint: CN3 Halls and Bathhouse material-family review (2026-08-11)
+
+The source/current/blend triplets for `CN3_Halls1` through `CN3_Halls7` and
+`CN3_Bathhouse1` were reviewed after the reconnect from the current ignored
+ledger outputs. These rooms deliberately span several unfamiliar material
+families: white marble, cyan and blue tiled rooms, green tiles, brown brick,
+dark space/metal, and the blue patterned Bathhouse tiles. The existing
+palette-relative terrain learner continues to recover the main solid-cell
+layouts across those changes rather than depending on a fixed tileset color.
+
+The visible color-object families also remain coherent in this batch: labeled
+saves and spiral warps are retained where present; Halls1 retains its water,
+apples, and warp family; Halls6 retains its water, vine/walljump material,
+save, and warp; and the reverse/neutral material paths do not promote the
+backgrounds to gameplay objects. The blend overlays show that the remaining
+differences are primarily dense full/mini-spike placement and local terrain
+edge geometry. Because none of these giant-review screens has a corrected
+authoritative JMap, those differences remain visual review items rather than
+grounds for a screen-specific rule or an exact claim.
+
+This batch therefore produced a measured negative result: no safe new
+cross-corpus threshold was justified. The FTFA exact benchmark, tracked CN3
+geometry regressions, and color-object fixtures remain the gates before any
+future spike/material arbitration change.
