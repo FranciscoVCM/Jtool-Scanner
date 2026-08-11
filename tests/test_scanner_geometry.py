@@ -59,6 +59,7 @@ from jtool_scanner.scanner import (
     _detect_mini_blocks,
     _detect_outline_cloud_warps,
     _detect_outline_warps,
+    _is_neutral_outline_warp_color,
     _component_silhouette_iou,
     _filled_cloud_warp_has_ambiguous_neutral_shadow,
     _filled_cloud_warp_is_dense_spike_enclosure,
@@ -1562,6 +1563,11 @@ class ScannerGeometryTests(unittest.TestCase):
                     },
                     positions,
                 )
+
+    def test_neutral_outline_warp_seed_is_palette_bounded(self) -> None:
+        self.assertTrue(_is_neutral_outline_warp_color(140, 141, 139))
+        self.assertFalse(_is_neutral_outline_warp_color(80, 81, 80))
+        self.assertFalse(_is_neutral_outline_warp_color(140, 124, 118))
 
     def test_irkara_colored_warps_do_not_gain_outline_duplicates(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "irkara"

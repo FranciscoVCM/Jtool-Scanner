@@ -846,3 +846,21 @@ authoritative map.
 Current33 emits 20 objects (`1:17,3:1,12:1,13:1`). The ignored ledger now
 points row 57 at the current33 source/JMap/reconstruction/blend artifacts and
 records the unresolved room-size issue for a future generalized pass.
+
+## Checkpoint: neutral gray outline-warp recovery (2026-08-11)
+
+The outline-warp detector now seeds a second, deliberately narrow palette
+family for middle-luminance low-saturation strokes. This is a topology-first
+generalization: it recovers the gray spiral in NANG_11 without relying on its
+room, game, or background colors, while retaining the existing normalized
+size, nested-run, and background gates. A read-only audit across all 71
+giant-review sources found only the expected NANG_11, NANG_130, and NANG_138
+neutral spiral candidates. No neutral false positives were found in the
+audited FTFA, Lap, Irkara, or CN3-neon material.
+
+NANG_11 current33 now emits one warp (`1:16,3:1,12:1,13:1,21:1`); its compact
+room-size inference and two geometry mismatches remain explicitly unresolved.
+The focused warp regressions pass, the full suite passes **325 tests in
+632.571 seconds**, and the exact FTFA benchmark remains `926/928 exact; 0
+false positives; 2 missed; 0 shifted; 0 wrong direction`. The app was
+restarted on this source and its health endpoint returned HTTP 200.

@@ -7878,11 +7878,26 @@ def _detect_outline_warps(
     room: Box,
     grid_step: int,
 ) -> list[Detection]:
-    components = _connected_components(
-        image,
-        room,
-        lambda r, g, b: min(r, g, b) > 165 and max(r, g, b) - min(r, g, b) < 55,
+    # The original outline pass was limited to bright white strokes.  Some
+    # captures render the same nested spiral in a middle-gray, low-saturation
+    # shade (for example the NANG compact room) while preserving the topology.
+    # Keep the palettes separate instead of OR-ing their predicates: a broad
+    # union could connect neutral background bands into one enormous component.
+    component_by_box: dict[
+        tuple[int, int, int, int], tuple[Box, list[tuple[int, int]]]
+    ] = {}
+    predicates = (
+        lambda r, g, b: min(r, g, b) > 165
+        and max(r, g, b) - min(r, g, b) < 55,
+        _is_neutral_outline_warp_color,
     )
+    for predicate in predicates:
+        for box, pixels in _connected_components(image, room, predicate):
+            key = (box.x, box.y, box.width, box.height)
+            previous = component_by_box.get(key)
+            if previous is None or len(pixels) > len(previous[1]):
+                component_by_box[key] = (box, pixels)
+    components = list(component_by_box.values())
     candidates = [(box, pixels, False) for box, pixels in components]
     merge_gap = max(
         1,
@@ -7932,6 +7947,19 @@ def _detect_outline_warps(
         )
     )
     return _dedupe_detections(detections, min_distance=24)
+
+
+def _is_neutral_outline_warp_color(red: int, green: int, blue: int) -> bool:
+    """Select middle-luminance neutral strokes for the outline-warp pass.
+
+    A gray spiral can be substantially dimmer than the white outline family,
+    but ordinary dark terrain and UI text should not enter this path.  The
+    topology and normalized-size gates remain authoritative after this
+    palette-independent color seed.
+    """
+
+    minimum = min(red, green, blue)
+    return 90 <= minimum < 165 and max(red, green, blue) - minimum <= 18
 
 
 def _is_nested_outline_spiral(
