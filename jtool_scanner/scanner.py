@@ -286,6 +286,15 @@ BRIGHT_NEUTRAL_OUTLINED_MIN_DARK_CONTRAST = 20.0
 BRIGHT_NEUTRAL_OUTLINED_MAX_SATURATION = 0.05
 BRIGHT_NEUTRAL_OUTLINED_MIN_CELLS = 20
 BRIGHT_NEUTRAL_OUTLINED_MAX_CELLS = 60
+# Neutral outlined blocks can retain only a square border and a faint diagonal
+# interior in the source capture.  Measure the four sides relative to the
+# patch instead of depending on a fill colour or a fixed tileset sprite.
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_BORDER = 0.24
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_EDGE = 0.14
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_MAX_CENTER = 0.20
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE = 0.50
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_ANCHOR_DISTANCE = 32.0
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE = 16.0
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
@@ -1759,6 +1768,36 @@ def scan_image(
             image,
             box,
         )
+        if bright_outlined_terrain_room and _looks_like_bright_neutral_outlined_terrain_room(
+            image,
+            box,
+        ):
+            bright_outline_blocks = _recover_bright_neutral_outline_blocks(
+                image,
+                box,
+                [
+                    detection
+                    for detection in detections
+                    if detection.type_id not in GEOMETRY_TYPES
+                ],
+            )
+            if bright_outline_blocks:
+                existing_blocks = [
+                    detection
+                    for detection in detections
+                    if detection.type_id == OBJ_BLOCK
+                ]
+                detections = [
+                    detection
+                    for detection in detections
+                    if detection.type_id != OBJ_BLOCK
+                ]
+                detections.extend(
+                    _dedupe_detections(
+                        [*existing_blocks, *bright_outline_blocks],
+                        min_distance=GRID_SIZE - 8,
+                    )
+                )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -3278,6 +3317,103 @@ def _looks_like_bright_outlined_terrain_room(image: RGBImage, room: Box) -> bool
         <= BRIGHT_NEUTRAL_OUTLINED_MAX_CELLS
     )
     return chromatic_sparse or neutral_sparse
+
+
+def _looks_like_bright_neutral_outlined_terrain_room(
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Return whether a bright outlined room belongs to the neutral family."""
+
+    room_value, dark_value, _brightness, positions = (
+        _outlined_terrain_cell_stats(image, room)
+    )
+    profile = _room_color_profile(image, room)
+    return (
+        room_value >= BRIGHT_NEUTRAL_OUTLINED_MIN_ROOM_VALUE
+        and room_value - dark_value >= BRIGHT_NEUTRAL_OUTLINED_MIN_DARK_CONTRAST
+        and profile.saturation <= BRIGHT_NEUTRAL_OUTLINED_MAX_SATURATION
+        and BRIGHT_NEUTRAL_OUTLINED_MIN_CELLS <= len(positions)
+        <= BRIGHT_NEUTRAL_OUTLINED_MAX_CELLS
+    )
+
+
+def _bright_outline_side_coverages(patch: _PatchFeatures) -> tuple[float, ...]:
+    """Measure the four straight border sides in a normalized patch."""
+
+    edge_mask = patch.edge_mask
+
+    def coverage(positions: list[tuple[int, int]]) -> float:
+        return sum(edge_mask[y * 16 + x] for x, y in positions) / len(positions)
+
+    return (
+        coverage([(x, y) for y in (0, 1) for x in range(16)]),
+        coverage([(x, y) for y in (14, 15) for x in range(16)]),
+        coverage([(x, y) for x in (0, 1) for y in range(16)]),
+        coverage([(x, y) for x in (14, 15) for y in range(16)]),
+    )
+
+
+def _recover_bright_neutral_outline_blocks(
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection] | tuple[Detection, ...] = (),
+) -> list[Detection]:
+    """Recover square outlined blocks from a neutral bright room.
+
+    The ordinary geometry classifier can prefer a triangle whenever a square
+    shares an edge with an outlined spike.  This bounded fallback evaluates
+    only 32px patches on the existing 8px phase, requires both a horizontal
+    and vertical border side, and vetoes reliable non-geometry anchors.  It is
+    intentionally gated by the neutral room profile at the call site.
+    """
+
+    candidates: list[Detection] = []
+    anchor_list = list(anchors)
+    for map_y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+        for map_x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+            patch = _patch_features(image, room, map_x, map_y, GRID_SIZE)
+            if (
+                patch.border_score < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_BORDER
+                or patch.edge_density < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_EDGE
+                or patch.center_score > BRIGHT_NEUTRAL_OUTLINE_BLOCK_MAX_CENTER
+            ):
+                continue
+            sides = _bright_outline_side_coverages(patch)
+            if (
+                max(sides[:2]) < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE
+                or max(sides[2:]) < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE
+                or _near_anchor(
+                    map_x,
+                    map_y,
+                    anchor_list,
+                    BRIGHT_NEUTRAL_OUTLINE_BLOCK_ANCHOR_DISTANCE,
+                )
+            ):
+                continue
+            score = min(
+                0.98,
+                patch.border_score * 0.70
+                + patch.edge_density * 0.30
+                + max(sides[:2]) * 0.10
+                + max(sides[2:]) * 0.10,
+            )
+            candidates.append(
+                _geometry_detection(
+                    "bright_neutral_outline_block",
+                    OBJ_BLOCK,
+                    map_x,
+                    map_y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return _dedupe_detections(
+        candidates,
+        min_distance=BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE,
+    )
 
 
 def _prune_bright_outlined_terrain_decorations(

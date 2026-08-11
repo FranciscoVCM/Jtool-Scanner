@@ -71,6 +71,8 @@ from jtool_scanner.scanner import (
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
     _looks_like_bright_outlined_terrain_room,
+    _looks_like_bright_neutral_outlined_terrain_room,
+    _recover_bright_neutral_outline_blocks,
     _prune_bright_outlined_terrain_decorations,
     _expand_supported_cell_terrain_materials,
     _learn_repeated_terrain_profile,
@@ -1482,6 +1484,54 @@ class ScannerGeometryTests(unittest.TestCase):
             _looks_like_bright_outlined_terrain_room(
                 colored,
                 detect_room_box(colored),
+            )
+        )
+
+    def test_bright_neutral_outline_block_recovery_uses_square_morphology(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "irkara-89-game.png")
+        room = detect_room_box(image)
+        anchors = [
+            *_detect_saves(image, room, 8),
+            *_detect_warps(image, room, 8),
+        ]
+
+        candidates = _recover_bright_neutral_outline_blocks(image, room, anchors)
+        truth = JMap.from_file(fixture_dir / "irkara-89.jmap").objects_of_type(OBJ_BLOCK)
+        matched = sum(
+            any(
+                (candidate.x - expected.x) ** 2
+                + (candidate.y - expected.y) ** 2
+                <= 24**2
+                for candidate in candidates
+            )
+            for expected in truth
+        )
+
+        self.assertTrue(_looks_like_bright_neutral_outlined_terrain_room(image, room))
+        self.assertGreaterEqual(len(candidates), 60)
+        self.assertGreaterEqual(matched, 60)
+        self.assertTrue(
+            all(
+                (candidate.x - warp.x) ** 2 + (candidate.y - warp.y) ** 2 > 32**2
+                for candidate in candidates
+                for warp in anchors
+                if warp.type_id == OBJ_WARP
+            )
+        )
+
+        ftfa = load_png(
+            Path(__file__).resolve().parents[1]
+            / "fixtures"
+            / "regressions"
+            / "unseen-rooms"
+            / "ftfa"
+            / "screen-2-source.png"
+        )
+        self.assertFalse(
+            _looks_like_bright_neutral_outlined_terrain_room(
+                ftfa,
+                detect_room_box(ftfa),
             )
         )
 

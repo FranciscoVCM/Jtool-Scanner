@@ -1176,3 +1176,30 @@ through `CN3_Dotkid5`, `CN3_Entrance2`, `CN3_Redcube3`, `CN3_Secret1`, and
 `NANG_11`. Their existing `remaining_issue` text remains the authoritative
 next-step record. This ledger update is local and ignored; no private corpus or
 generated artifact is staged.
+
+## Checkpoint: neutral outlined-square block recovery (2026-08-11)
+
+The authoritative `irkara-89` fixture exposed a second neutral-tileset gap:
+many 32px square outlines were placed on 8px phases and shared edges with
+triangle outlines, so the generic classifier preferred spikes and returned
+only 11/98 blocks. A neutral-family fallback now measures normalized straight
+border sides on the existing 8px phase, requires both horizontal and vertical
+support, and vetoes saves, warps, water, walljumps, and other reliable anchors.
+It is gated by room-local brightness, saturation, contrast, and sparse-cell
+morphology; no filename, coordinate, sprite color, or tileset name is used.
+Chromatic bright rooms (including FTFA screens 2 and 4) do not enter this
+branch.
+
+Measured results:
+
+| fixture | block result | controls |
+| --- | --- | --- |
+| `irkara-89` | improved from 11/98 matched (14 detected) to 72/98 matched (77 detected; 93.5% precision) | saves 1/1, apples 1/1, warps 1/1, water 14/14, walljumps 9/9; full spikes remain 112/113 |
+| `nang138` | 105/105 blocks, 26/26 full spikes, 12/12 refreshers | saves 1/1, warp 1/1, mini-spikes remain 54/58 |
+| FTFA exact benchmark | unchanged at `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction` | screens 2 and 4 retain their exact block counts |
+
+The focused neutral-square/anchor tests pass. The complete unittest suite passes
+**335 tests in 1391.577 seconds**, `OK`. The remaining Irkara-89 block misses
+are primarily clipped boundary cells and cells whose square outline is heavily
+overlapped by a spike; those remain a separate measured follow-up rather than
+being hidden by a broad permissive threshold.
