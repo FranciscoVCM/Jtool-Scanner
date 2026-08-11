@@ -6550,7 +6550,26 @@ def _is_strong_yellowless_save_lattice(
             total += 1
             if max(image.pixel(x, y)) < 110:
                 dark += 1
-    return total >= 36 and dark / total >= 0.28
+    if total < 36:
+        return False
+    dark_share = dark / total
+    if dark_share >= 0.28:
+        return True
+
+    # Capture grading can shift a few center pixels toward the room palette
+    # while leaving the four red quadrants and the pale SAVE header intact.
+    # Relax the center threshold only when that independent header evidence
+    # is present; red terrain lattices without the label remain rejected.
+    header_height = max(1, round(15 / max(0.1, scale_y)))
+    header_top = max(0, union.y - round(12 / max(0.1, scale_y)))
+    header_bottom = min(image.height, header_top + header_height)
+    header_area = max(1, union.width * (header_bottom - header_top))
+    pale_header_share = sum(
+        _is_save_header_pale(*image.pixel(x, y))
+        for y in range(header_top, header_bottom)
+        for x in range(union.x, union.right)
+    ) / header_area
+    return dark_share >= 0.24 and pale_header_share >= 0.25
 
 
 def _detect_outline_saves(
@@ -23431,6 +23450,12 @@ def _geometry_anchor_conflicts(
 
 
 def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool:
+    if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {OBJ_SAVE, OBJ_WARP}:
+        # A save can share the edge of a 32px backing cell.  Preserve that
+        # partial support instead of suppressing a legitimate neighbouring
+        # miniblock merely because the save/warp is the more reliable marker.
+        overlap = _box_overlap_area(det.x, det.y, anchor.x, anchor.y)
+        return MINI_BLOCK_SIZE * GRID_SIZE <= overlap < GRID_SIZE * GRID_SIZE
     if (
         det.type_id == OBJ_BLOCK
         and anchor.type_id in BLOCK_COLOR_ANCHOR_TYPES

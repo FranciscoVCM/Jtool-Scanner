@@ -749,6 +749,32 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         )
 
+    def test_yellowless_save_accepts_bounded_center_palette_variation(self) -> None:
+        boxes = (
+            Box(16, 24, 10, 6),
+            Box(34, 24, 10, 6),
+            Box(16, 36, 10, 6),
+            Box(34, 36, 10, 6),
+        )
+        union = Box(16, 24, 28, 18)
+        image = _yellowless_save_lattice_test_image(dark_center=True)
+        data = bytearray(image.data)
+        for y in range(29, 36):
+            start = (y * 64 + 27) * 3
+            data[start : start + 7 * 3] = bytes((130, 130, 130) * 7)
+        for y in range(29, 31):
+            start = (y * 64 + 27) * 3
+            data[start : start + 7 * 3] = bytes((86, 86, 86) * 7)
+        self.assertTrue(
+            _is_strong_yellowless_save_lattice(
+                RGBImage(64, 64, bytes(data)),
+                boxes,
+                union,
+                1.0,
+                1.0,
+            )
+        )
+
     def test_repeated_terrain_replaces_only_low_coverage_results(self) -> None:
         image = _repeated_terrain_test_image()
         room = Box(0, 0, 800, 608)
@@ -4861,6 +4887,42 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertEqual([(det.type_id, det.x, det.y) for det in result], [
             (OBJ_SAVE, 224, 40),
         ])
+
+    def test_half_overlapping_miniblock_can_coexist_with_save_anchor(self) -> None:
+        save = Detection("save", OBJ_SAVE, 16, 176, 0.95, Box(16, 176, 32, 32))
+        backing = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            0,
+            176,
+            0.70,
+            Box(0, 176, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([save, backing])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [(OBJ_SAVE, 16, 176), (OBJ_MINI_BLOCK, 0, 176)],
+        )
+
+    def test_half_overlapping_miniblock_can_coexist_with_warp_anchor(self) -> None:
+        warp = Detection("warp", OBJ_WARP, 0, 352, 0.95, Box(0, 352, 32, 32))
+        backing = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            0,
+            336,
+            0.70,
+            Box(0, 336, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([warp, backing])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [(OBJ_WARP, 0, 352), (OBJ_MINI_BLOCK, 0, 336)],
+        )
 
     def test_strong_full_spike_can_coexist_with_water_anchor(self) -> None:
         water = Detection("water_2", OBJ_WATER_2, 720, 96, 0.60, Box(720, 96, 32, 32))
