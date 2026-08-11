@@ -1099,6 +1099,8 @@ FULL_SPIKE_SCALE_DOMINANT_MAX_MINI_RATIO = 0.18
 FULL_SPIKE_SCALE_MIN_SCORE = 0.62
 FULL_SPIKE_SCALE_MIN_DIRECTION_MARGIN = 0.32
 FULL_SPIKE_SCALE_MIN_OUTLINE_DELTA = 0.54
+EXACT_FULL_MINI_DUPLICATE_MIN_FULL_SCORE = 0.80
+EXACT_FULL_MINI_DUPLICATE_MIN_SCORE_GAP = 0.10
 DENSE_MINISPIKE_LATTICE_MIN_RAW_COUNT = 120
 DENSE_MINISPIKE_LATTICE_MIN_AXIS_SHARE = 0.85
 DENSE_MINISPIKE_LATTICE_MIN_RAW_TO_FULL_RATIO = 0.35
@@ -14438,6 +14440,37 @@ def _reconcile_local_spike_scale_conflicts(
     ]
     if not full_spikes or not mini_spikes:
         return detections
+
+    exact_full_by_origin = {
+        (detection.type_id, detection.x, detection.y): detection
+        for detection in full_spikes
+    }
+    exact_duplicate_ids = {
+        id(mini)
+        for mini in mini_spikes
+        if (
+            (full := exact_full_by_origin.get(
+                (mini_to_full[mini.type_id], mini.x, mini.y)
+            ))
+            is not None
+            and full.score >= EXACT_FULL_MINI_DUPLICATE_MIN_FULL_SCORE
+            and full.score - mini.score
+            >= EXACT_FULL_MINI_DUPLICATE_MIN_SCORE_GAP
+        )
+    }
+    if exact_duplicate_ids:
+        detections = [
+            detection
+            for detection in detections
+            if id(detection) not in exact_duplicate_ids
+        ]
+        mini_spikes = [
+            detection
+            for detection in mini_spikes
+            if id(detection) not in exact_duplicate_ids
+        ]
+        if not mini_spikes:
+            return detections
 
     extent_cache: dict[tuple[int, int], float] = {}
     full_class_cache: dict[tuple[int, int], _GeometryClass | None] = {}

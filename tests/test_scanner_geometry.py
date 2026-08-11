@@ -1711,6 +1711,7 @@ class ScannerGeometryTests(unittest.TestCase):
         }
 
         self.assertTrue(expected <= detected)
+        self.assertNotIn((OBJ_MINI_SPIKE_DOWN, 544, 128), detected)
 
     def test_nested_outline_warps_recover_all_tracked_nang_variants(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

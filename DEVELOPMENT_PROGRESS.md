@@ -1256,3 +1256,18 @@ The exact fixture workflow now reports NANG138 mini-spikes at **58/58 matched,
 26/26, saves 1/1, warp 1/1, and jump-refreshers 12/12. One unrelated compact
 mini-spike false positive remains at `(544,128)` and is retained as the next
 measured discrepancy rather than hidden by a room-specific filter.
+
+## Checkpoint: exact full/mini duplicate arbitration (2026-08-11)
+
+The remaining NANG138 mini-spike discrepancy was an exact same-origin,
+same-direction duplicate: a high-confidence full down-spike and a weaker
+16px down-mini were both emitted at `(544,128)`. A confidence-gap rule now
+removes only a weaker mini fully contained at the accepted full-spike origin;
+it is independent of room identity, palette, or tileset and leaves mixed-scale
+neighboring geometry untouched.
+
+NANG138 now reports **58/58 mini-spikes matched with 58 detections (100%
+precision)**, alongside 105/105 blocks, 26/26 full spikes, 1/1 save, 1/1 warp,
+and 12/12 jump-refreshers. The focused compact regressions pass; FTFA remains
+the strict golden-room gate at `926/928 exact` pending the same two known
+screen-1 misses.
