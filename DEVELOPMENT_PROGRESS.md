@@ -1237,3 +1237,22 @@ direction`. The complete unittest suite passes **335 tests in 687.094 seconds**,
 `OK`. This closes the current neutral-outlined-block iteration; the remaining
 17 Irkara-89 misses are overlapping/partial shapes requiring a separate
 evidence pass.
+
+## Checkpoint: jump-refresher/mini-spike coexistence (2026-08-11)
+
+The NANG138 compact-room review exposed a shared arbitration mistake rather
+than a tileset-specific recognition gap. Four genuine 16px upward mini-spikes
+at `(192,432)`, `(288,432)`, `(448,464)`, and `(544,464)` occupy the same 32px
+cells as blue jump-refreshers. The generic anchor pass treated every nearby
+mini-spike as marker noise and removed them after the compact geometry pass.
+
+Geometry arbitration now allows mini-spikes to coexist with jump-refreshers
+as an object-class rule. It does not name a room, palette, coordinate, or
+sprite. The focused NANG138 regression and the existing compact support-phase
+regression pass.
+
+The exact fixture workflow now reports NANG138 mini-spikes at **58/58 matched,
+59 detected (98.3% precision)**, while blocks remain 105/105, full spikes
+26/26, saves 1/1, warp 1/1, and jump-refreshers 12/12. One unrelated compact
+mini-spike false positive remains at `(544,128)` and is retained as the next
+measured discrepancy rather than hidden by a room-specific filter.

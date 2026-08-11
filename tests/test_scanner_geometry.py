@@ -1687,6 +1687,31 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertEqual(len(vertical_minis), 9)
 
+    def test_nang138_minis_can_share_cells_with_jump_refreshers(self) -> None:
+        fixture_dir = (
+            Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        )
+        result = scan_png(
+            fixture_dir / "nang138-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        detected = {
+            (detection.type_id, detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id in {OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN}
+        }
+        expected = {
+            (OBJ_MINI_SPIKE_UP, 192, 432),
+            (OBJ_MINI_SPIKE_UP, 288, 432),
+            (OBJ_MINI_SPIKE_UP, 448, 464),
+            (OBJ_MINI_SPIKE_UP, 544, 464),
+        }
+
+        self.assertTrue(expected <= detected)
+
     def test_nested_outline_warps_recover_all_tracked_nang_variants(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
         expected = {

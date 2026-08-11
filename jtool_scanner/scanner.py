@@ -24705,6 +24705,17 @@ def _geometry_anchor_conflicts(
 
 
 def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool:
+    if (
+        det.type_id in MINI_SPIKE_TYPES
+        and anchor.type_id == OBJ_JUMP_REFRESHER
+    ):
+        # Jump refreshers are playable markers that can share the same 32px
+        # cell as a deliberately half-cell mini-spike.  Their sprites overlap
+        # in the source image, so treating every nearby mini-spike as marker
+        # noise loses valid geometry (especially the common +16px vertical
+        # placement).  Keep this coexistence rule object-class based rather
+        # than tied to a room, palette, or coordinate.
+        return True
     if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {OBJ_SAVE, OBJ_WARP}:
         # A save can share the edge of a 32px backing cell.  Preserve that
         # partial support instead of suppressing a legitimate neighbouring
