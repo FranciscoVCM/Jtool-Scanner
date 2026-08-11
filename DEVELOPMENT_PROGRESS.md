@@ -864,3 +864,15 @@ The focused warp regressions pass, the full suite passes **325 tests in
 632.571 seconds**, and the exact FTFA benchmark remains `926/928 exact; 0
 false positives; 2 missed; 0 shifted; 0 wrong direction`. The app was
 restarted on this source and its health endpoint returned HTTP 200.
+
+## Checkpoint: continuation baseline and 71-row artifact audit (2026-08-11)
+
+The continuation started from clean synchronized commit `a318e5d`. The app
+health endpoint returned HTTP 200. The complete unittest suite passed **325
+tests in 606.099 seconds**, and the exact FTFA benchmark remained
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+The ignored giant-review ledger contains 71 unique source identities and 71
+current source/JMap/reconstruction/blend records. Two stale Dotkid4/5 preview
+paths were corrected to their existing targeted current artifacts; no source,
+fixture, JMap, or implementation file was changed by that bookkeeping.
