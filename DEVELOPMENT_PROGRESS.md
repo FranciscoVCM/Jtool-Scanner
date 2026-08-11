@@ -1203,3 +1203,19 @@ The focused neutral-square/anchor tests pass. The complete unittest suite passes
 are primarily clipped boundary cells and cells whose square outline is heavily
 overlapped by a spike; those remain a separate measured follow-up rather than
 being hidden by a broad permissive threshold.
+
+## Checkpoint: clipped neutral outlined-block recovery (2026-08-11)
+
+The neutral square pass now treats a patch at the room boundary as a clipped
+observation: it requires the visible straight side(s) rather than demanding a
+border that cannot be present outside the capture. Interior patches still
+require both a horizontal and vertical side, so the relaxation is geometric
+clipping tolerance, not a palette or coordinate exception.
+
+The Irkara-89 scan improved to **79/98 blocks matched, 84 detected (94.0%
+precision)**. Saves, apples, warps, water, walljumps, platforms, and full-spike
+measurements remain unchanged (`1/1`, `1/1`, `1/1`, `14/14`, `9/9`, `1/1`, and
+`112/113` respectively). FTFA remains `926/928 exact; 0 false positives; 2
+missed; 0 shifted; 0 wrong direction`, and NANG138 remains exact for blocks,
+full spikes, saves, warps, and refreshers. The complete unittest suite passes
+**335 tests in 675.556 seconds**, `OK`.

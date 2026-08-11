@@ -3364,8 +3364,9 @@ def _recover_bright_neutral_outline_blocks(
     The ordinary geometry classifier can prefer a triangle whenever a square
     shares an edge with an outlined spike.  This bounded fallback evaluates
     only 32px patches on the existing 8px phase, requires both a horizontal
-    and vertical border side, and vetoes reliable non-geometry anchors.  It is
-    intentionally gated by the neutral room profile at the call site.
+    and vertical border side unless the patch is clipped by a room boundary,
+    and vetoes reliable non-geometry anchors.  It is intentionally gated by
+    the neutral room profile at the call site.
     """
 
     candidates: list[Detection] = []
@@ -3380,9 +3381,20 @@ def _recover_bright_neutral_outline_blocks(
             ):
                 continue
             sides = _bright_outline_side_coverages(patch)
+            horizontal_side = max(sides[:2])
+            vertical_side = max(sides[2:])
+            clipped_x = map_x in (0, ROOM_WIDTH - GRID_SIZE)
+            clipped_y = map_y in (0, ROOM_HEIGHT - GRID_SIZE)
+            if clipped_x and clipped_y:
+                square_morphology = max(horizontal_side, vertical_side)
+            elif clipped_x:
+                square_morphology = horizontal_side
+            elif clipped_y:
+                square_morphology = vertical_side
+            else:
+                square_morphology = min(horizontal_side, vertical_side)
             if (
-                max(sides[:2]) < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE
-                or max(sides[2:]) < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE
+                square_morphology < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE
                 or _near_anchor(
                     map_x,
                     map_y,
@@ -3395,8 +3407,8 @@ def _recover_bright_neutral_outline_blocks(
                 0.98,
                 patch.border_score * 0.70
                 + patch.edge_density * 0.30
-                + max(sides[:2]) * 0.10
-                + max(sides[2:]) * 0.10,
+                + horizontal_side * 0.10
+                + vertical_side * 0.10,
             )
             candidates.append(
                 _geometry_detection(
