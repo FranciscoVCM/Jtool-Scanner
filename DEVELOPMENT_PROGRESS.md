@@ -910,3 +910,22 @@ false positives; 2 missed; 0 shifted; 0 wrong direction`, and the restarted
 app returns HTTP 200. Current36 is the persisted NANG_11 source/JMap/
 reconstruction/blend checkpoint; one unsupported full-spike and compact-room
 normalization remain unresolved.
+
+## Checkpoint: NANG_11 isolated support audit and reconnect recovery (2026-08-11)
+
+The reconnect preserved the synchronized `a9258a5` commit, the app source, and
+the 71-row ignored review ledger; no implementation progress was lost. A
+compact diagnostic reproduced NANG_11's remaining full-spike false positive:
+the raw support recovery is `(416,232)` and common-room alignment moves it to
+`(416,224)`. Its 32px patch has edge density `0.309`, block score `0.302`,
+triangle side coverage `0.875`, and triangle base coverage `0.312`; the source
+crop is a red brick terrain tile with no visible spike. The false candidate is
+therefore a compact-room/terrain-texture interaction, not a missing commit.
+
+A read-only audit of preserved current outputs found 220 analogous
+support-shaped rows across 46 source identities. Many legitimate CN3, Golden,
+Halls, Say, and fixture candidates occupy the same block/triangle-score range,
+so a global block-score or side-coverage veto would remove real geometry. No
+screen-specific rule was added. The durable next target is generalized compact
+room localization or a topology-aware texture discriminator, protected by the
+FTFA exact benchmark and the existing CN3-16/CN3-18 geometry regressions.
