@@ -30,6 +30,7 @@ from jtool_scanner.scanner import (
     MINI_SPIKE_TYPES,
     _detect_outlined_terrain_saves,
     _detect_outlined_terrain_spikes,
+    _dark_save_header_is_label_like,
     _align_unsupported_opposite_spike_pairs,
     _choose_component_spike_candidate,
     _image_box_to_jtool_center,
@@ -576,6 +577,28 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             93,
         )
         self.assertEqual(self._terrain_spike_overlaps(detections), 0)
+
+    def test_adaptive_dark_save_header_rejects_warp_body_without_label(self) -> None:
+        save_mask = tuple(
+            int(row.replace(".", "0").replace("#", "1")[::-1], 2)
+            for row in (
+                "................",
+                "..#..#.#.##.....",
+                "..####.#..#.#...",
+                "..##......###...",
+            )
+        ) + (0,) * 12
+        warp_mask = tuple(
+            int(row.replace(".", "0").replace("#", "1")[::-1], 2)
+            for row in (
+                "................",
+                "...##..#........",
+                "..#########.....",
+                ".####....###....",
+            )
+        ) + (0,) * 12
+        self.assertTrue(_dark_save_header_is_label_like(save_mask))
+        self.assertFalse(_dark_save_header_is_label_like(warp_mask))
 
     def test_lit_grayscale_save_is_not_a_warp(self) -> None:
         detections = self.lap_active_save.detections

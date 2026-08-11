@@ -639,3 +639,31 @@ player-like low-contrast case and a high-contrast portal case; the existing
 neutral-shadow, dense-enclosure, CN3-16, and FTFA controls remain required.
 These screens still lack corrected giant-review JMaps, so the checkpoint is a
 source/JTool/blend classification result rather than an exact geometry claim.
+
+## Checkpoint: dark grayscale save recovery and reverse-tileset audit (2026-08-11)
+
+The reconnect resumed from a clean `a68073e` checkout with all 71 ignored
+ledger rows and the prior public checkpoints intact. The next source/JTool/
+blend batch regenerated `LapBackwards_1`, `CN3_19`, and `CN3_21` under ignored
+`.artifacts/reconnect-batch/current20/`.
+
+LapBackwards_1 contains two grayscale SAVE signs and one warp. The original
+dark-brick template found the upper sign but classified the lower sign's cell
+as a block. The scanner now keeps its original binary pass and adds a brighter
+relative-threshold pass gated by a broken, label-like upper band. The gate
+recovers both saves at `(384,64)` and `(64,384)` while rejecting the nearby
+warp silhouette at `(544,224)`. This is a palette/contrast-normalized rule,
+not a coordinate or screen exception.
+
+CN3_19 retains its two saves and emits no warp for the two white player-like
+silhouettes. CN3_21 retains its two saves, all four visible gravity flippers
+(two up and two down), and no warp for its white player-like silhouettes. The
+fresh object counts are 248, 160, and 292 respectively; the local review
+ledger records their current20 JMaps, previews, blends, evidence, and lack of
+corrected giant-review JMaps.
+
+Validation: `tests.test_unseen_regressions` ran 30 tests in 193.736 seconds
+with `OK`; the documented FTFA benchmark remains `926/928 exact; 0 false
+positives; 2 missed; 0 shifted; 0 wrong direction`. The two FTFA misses are
+the established lower-boundary blocks, not save or warp regressions. The
+complete unittest discovery run also passed: 323 tests in 412.983 seconds.

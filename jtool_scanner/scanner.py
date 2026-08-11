@@ -124,6 +124,10 @@ DARK_SAVE_ACTIVE_MASK = (
 )
 DARK_SAVE_INACTIVE_MAX_DISTANCE = 140
 DARK_SAVE_ACTIVE_MAX_DISTANCE = 135
+# Some grayscale save signs use a darker, flatter body than the canonical
+# inactive template.  A second, brighter binary pass recovers that palette
+# variant without changing the original pass used by the exact fixtures.
+DARK_SAVE_ADAPTIVE_THRESHOLD = 70
 WEAK_ACTIVE_SAVE_MAX_WINDOW_SHARE = 0.015
 WEAK_ACTIVE_SAVE_MIN_GREEN = 18
 WEAK_ACTIVE_SAVE_MIN_YELLOW = 12
@@ -4509,43 +4513,53 @@ def _detect_dark_brick_room_saves(
     """Detect grayscale save signs from their label, frame, and core silhouette."""
 
     detections: list[Detection] = []
-    binary_grid = _dark_room_binary_sample_grid(image, room)
-    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
-        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
-            mask = _dark_sign_mask_from_grid(binary_grid, x, y)
-            inactive_distance = _dark_sign_distance(
-                mask,
-                DARK_SAVE_INACTIVE_MASK,
-            )
-            active_distance = _dark_sign_distance(
-                mask,
-                DARK_SAVE_ACTIVE_MASK,
-            )
-            if (
-                inactive_distance > DARK_SAVE_INACTIVE_MAX_DISTANCE
-                and active_distance > DARK_SAVE_ACTIVE_MAX_DISTANCE
-            ):
-                continue
-            best_distance = min(inactive_distance, active_distance)
-            active = active_distance < inactive_distance
-            detections.append(
-                _geometry_detection(
-                    "dark_save_active" if active else "dark_save",
-                    OBJ_SAVE,
-                    x,
-                    y,
-                    0.99 - best_distance / 1000,
-                    image,
-                    room,
-                    GRID_SIZE,
+    for threshold, require_header_shape in (
+        (50, False),
+        (DARK_SAVE_ADAPTIVE_THRESHOLD, True),
+    ):
+        binary_grid = _dark_room_binary_sample_grid(image, room, threshold)
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 8):
+            for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+                mask = _dark_sign_mask_from_grid(binary_grid, x, y)
+                inactive_distance = _dark_sign_distance(
+                    mask,
+                    DARK_SAVE_INACTIVE_MASK,
                 )
-            )
+                active_distance = _dark_sign_distance(
+                    mask,
+                    DARK_SAVE_ACTIVE_MASK,
+                )
+                if (
+                    inactive_distance > DARK_SAVE_INACTIVE_MAX_DISTANCE
+                    and active_distance > DARK_SAVE_ACTIVE_MAX_DISTANCE
+                ):
+                    continue
+                # At the brighter threshold, require a broken, label-like
+                # upper band.  A nearby grayscale warp can otherwise match
+                # the body silhouette while lacking the SAVE lettering.
+                if require_header_shape and not _dark_save_header_is_label_like(mask):
+                    continue
+                best_distance = min(inactive_distance, active_distance)
+                active = active_distance < inactive_distance
+                detections.append(
+                    _geometry_detection(
+                        "dark_save_active" if active else "dark_save",
+                        OBJ_SAVE,
+                        x,
+                        y,
+                        0.99 - best_distance / 1000,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
     return _dedupe_detections(detections, min_distance=20)
 
 
 def _dark_room_binary_sample_grid(
     image: RGBImage,
     room: Box,
+    threshold: int = 50,
 ) -> list[bytearray]:
     """Resample the room once so overlapping sign windows stay inexpensive."""
 
@@ -4571,9 +4585,27 @@ def _dark_room_binary_sample_grid(
                 max(0, min(image.width - 1, image_x)),
                 max(0, min(image.height - 1, image_y)),
             )
-            row[sample_x] = sum(color) // 3 >= 50
+            row[sample_x] = sum(color) // 3 >= threshold
         rows.append(row)
     return rows
+
+
+def _dark_save_header_is_label_like(mask: tuple[int, ...]) -> bool:
+    """Require separated bright strokes in the upper SAVE label band."""
+
+    header = mask[1:4]
+    if len(header) != 3:
+        return False
+    if min(row.bit_count() for row in header) < 3:
+        return False
+    longest_run = 0
+    run_count = 0
+    for row in header:
+        bits = f"{row:016b}"[::-1]
+        runs = [run for run in bits.split("0") if run]
+        run_count = max(run_count, len(runs))
+        longest_run = max(longest_run, max((len(run) for run in runs), default=0))
+    return run_count >= 2 and longest_run <= 7
 
 
 def _dark_sign_mask_from_grid(
