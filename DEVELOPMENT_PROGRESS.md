@@ -738,6 +738,20 @@ they did not justify a new screen-specific rule. The ignored ledger records
 the source/JMap/reconstruction/blend evidence and the absence of corrected
 authoritative giant-review JMaps.
 
+## Checkpoint: CN3 NR1/NR2 and Redcube1 review (2026-08-11)
+
+CN3_NR1, CN3_NR2, and CN3_Redcube1 were regenerated in current31. NR1
+retains both visible saves, cyan water strips, and patterned terrain without
+false cloud/cherry objects. NR2 retains its one labeled save and orange/yellow
+terrain without promoting its player-like cloud or background texture. The
+Redcube1 source retains its labeled save and two visible filled-cloud warp
+silhouettes; the question-mark art remains background and red patterned
+terrain is not routed to cherries.
+
+Current31 totals are 204, 446, and 191. These rooms have no corrected
+authoritative giant-review JMaps, so the ledger records classification and
+negative evidence rather than exact geometry recall.
+
 ## Checkpoint: Zero_Final unfamiliar blue/cyan baseline (2026-08-11)
 
 Zero_Final was regenerated in current30 from the preserved source and reviewed
@@ -795,3 +809,24 @@ trigger-vs-save, reverse-palette, and spiral-warp rules on another family
 without adding a screen-specific exception. The ignored ledger records the
 source/JMap/reconstruction/blend evidence and the absence of corrected
 authoritative giant-review JMaps.
+
+## Checkpoint: CN3 Redcube2/Redcube3 and Secret1 reconnect-safe review (2026-08-11)
+
+CN3_Redcube2, CN3_Redcube3, and CN3_Secret1 were regenerated in current32
+after a client reconnect. Redcube2 retains its visible labeled save and
+bottom-right filled-cloud warp without promoting the red patterned terrain or
+question-mark art. Redcube3 retains all three visible saves, the red-orb and
+bottom-right cloud warp candidates, and the red patterned terrain without
+cherry promotion; one small mini-spike remains a geometry-review item.
+Secret1 does not classify its rainbow gradient as water, and the bottom-right
+red spike is emitted as one full spike rather than two mini-spikes. The
+remaining spike/terrain differences are recorded as review items rather than
+new screen-specific rules.
+
+Current32 totals are 207, 226, and 25. None of these rooms has a corrected
+authoritative giant-review JMap, so this is a source/current/blend
+classification checkpoint and negative-result record, not an exact benchmark
+claim. The ignored review ledger contains the current32 artifact paths and
+object counts. The reconnect did not lose the prior pushed commits or the
+current progress; only this durable log entry and its ignored ledger rows
+were pending publication.
