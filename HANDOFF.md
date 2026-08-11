@@ -29,11 +29,12 @@ gameplay engine.
 - Local repository: `C:\Users\corvo\Documents\Jtool Scanner`
 - GitHub: `https://github.com/FranciscoVCM/Jtool-Scanner`
 - Branch: `main`
-- Implementation baseline documented here:
-  `e73ce972f9c1cc2823dd11e52fd2cd29e7657fc7`
-- Baseline commit: `Recognize outlined terrain across neon rooms`
-- The working tree was clean and the baseline matched live `origin/main`
-  before this handoff was added.
+- Current verified `main` tip: `c49ea71` (`docs: record continuation baseline
+  audit`), with the latest scanner implementation checkpoint at `ac6cc9d`
+  (`scanner: preserve dense adjacent mini-spikes`).
+- The current working tree is clean and local `main` matches live `origin/main`.
+- Earlier implementation history, including `e73ce97` (`Recognize outlined
+  terrain across neon rooms`), remains available in Git history.
 
 The repository has one application package, `jtool_scanner`, plus tracked
 fixtures and tests. There is no packaging metadata or lockfile; run commands
@@ -305,11 +306,13 @@ python -m unittest discover -s tests -v
 ```
 
 The bundled runtime initially lacked `pytest`; installing `pillow pytest`
-completed the documented environment. The latest isolated full run completed
-`308 passed, 46 subtests passed in 562.90s (0:09:22)` with
-`python -m pytest -q -p no:cacheprovider`. The temporary directory override is
-only needed on this Windows host because its default pytest temp root is not
-writable; it is not a scanner workaround.
+completed the documented environment. The current continuation's complete
+`python -m unittest discover -s tests -v` run passed **337 tests in 515.518
+seconds**, `OK`. An earlier pytest collection recorded 308 tests and 46
+subtests; use the unittest command above as the current full-suite baseline.
+The temporary directory override used by that older pytest run is only needed
+on this Windows host because its default pytest temp root is not writable; it
+is not a scanner workaround.
 
 ## 9. Verified FTFA golden corpus
 
@@ -335,10 +338,10 @@ The rooms cover warm brick terrain, full spikes, saves, apples, water,
 boundary crops, phase alignment, and multiple JTool visual skins. FTFA-4 has a
 saved exact run at 249/249 after correcting reference-map inconsistencies.
 
-The current unmodified FTFA gate reports `924/928 exact`, with zero false
-positives, two misses, and two shifted saves. The remaining four mismatches are
-known coordinate/reference issues and are retained as review items rather than
-silently relaxed.
+The current unmodified FTFA gate reports **926/928 exact**, with zero false
+positives, two misses, zero shifted detections, and zero wrong-direction
+detections. The remaining two mismatches are the known screen-1 boundary
+blocks and are retained as review items rather than silently relaxed.
 
 ## 10. Verified Lap Around corpus
 
@@ -655,7 +658,15 @@ clipboard paths as the sole durable home of irreplaceable source material.
 
 ## 18. Recent relevant commits
 
-From newest implementation baseline backward:
+From the current continuation backward:
+
+- `c49ea71` — Record continuation baseline and refreshed fixture audit
+- `5d8348f` — Record CN2-5 and CN3-16 audit
+- `05ea7c5` — Record three-screen re-audit
+- `ac6cc9d` — Preserve dense adjacent mini-spikes through block arbitration
+- `7329455` — Record unfamiliar-tileset visual audits
+- `a0244c0` — Record four visual review checkpoints
+
 
 - `e73ce97` — Recognize outlined terrain across neon rooms
 - `12ac0ac` — Align fruit previews with JTool coordinates

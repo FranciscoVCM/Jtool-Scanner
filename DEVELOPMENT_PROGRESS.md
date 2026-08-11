@@ -1433,3 +1433,43 @@ This continuation produced no safe generalized scanner hypothesis and changed
 no implementation, fixture, or authoritative map. The refreshed reports are
 ignored local evidence; the existing ledger statuses remain authoritative for
 the giant-review corpus.
+
+## Checkpoint: full fixture and 71-screen completion audit (2026-08-11)
+
+The complete 12-pair `fixtures/block_spike/manifest.json` workflow was rerun
+with color objects, geometry, grid step 8, tolerance 24, overlays, and a JSON
+report. Its aggregate exact-fixture measurements are:
+
+| class | matched / truth | detected |
+| --- | ---: | ---: |
+| saves | 22/22 | 24 |
+| warps | 12/12 | 12 |
+| apples | 4/4 | 4 |
+| water | 35/35 | 35 |
+| walljumps | 13/13 | 13 |
+| gravity flippers | 8/8 | 8 |
+| platforms | 2/3 | 4 |
+| miniblocks | 866/875 | 998 |
+| blocks | 1455/1486 | 1587 |
+| full spikes | 709/748 | 885 |
+| minispikes | 273/288 | 342 |
+| killer blocks | 99/99 | 99 |
+| jump refreshers | 18/19 | 18 |
+
+The fresh report is metric-identical to the prior post-change fixture report;
+the remaining geometry discrepancies are unchanged and documented by family.
+NANG128 and NANG138 remain exact across their covered classes, F189 keeps all
+eight gravity flippers, CN3-16/18 retain their exact color/object controls,
+Partysu3 retains its dense mini-spike result, and the FTFA gate remains
+`926/928 exact`.
+
+The 71-row ignored ledger has unique ordinals 1–71, nonempty source/JMap/
+preview/blend/evidence fields, 58 `accepted` rows, 13 `needs-more-work` rows,
+and zero `unresolved` or identity-missing rows. The 13 follow-ups explicitly
+name their remaining geometry/appearance uncertainty; none is silently
+treated as an exact map. Lap Around remains visual-only because corrected JMaps
+are absent, and the CN2-5 refresher discrepancy remains a source/JMap mismatch.
+
+`HANDOFF.md` was refreshed to reflect the current 926/928 FTFA result, the
+337-test baseline, and the continuation commits. This final audit changed no
+implementation code, fixtures, JMaps, or ignored local corpora.
