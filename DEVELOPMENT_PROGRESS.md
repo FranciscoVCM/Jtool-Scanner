@@ -1062,3 +1062,24 @@ complete unittest suite passes **329 tests in 625.292 seconds**, and FTFA
 remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
 direction`. No corrected giant-review JMaps exist, so the giant-room results
 remain visual/classification checkpoints rather than exact-map claims.
+
+## Checkpoint: colored warp center-fill tolerance (2026-08-11)
+
+The colored ring warp detector rejected one genuine portal when capture scaling
+and an adjacent decoration filled just over the old 22% center threshold. The
+center-fill gate now allows up to 24% while retaining the existing square-box,
+dark-core, hollow-center, density, and score checks. This is a small
+palette-independent capture tolerance, not a screen or coordinate exception.
+
+Measured results:
+
+| fixture | warp result | control |
+| --- | --- | --- |
+| `irkara-nr-flames` | 2/2 matched, 2 detected, 100.0% precision | recovered the lower-right ring at `(752,528)` while retaining `(32,24)` |
+| `irkara-53` | 1/1 matched, 1 detected | no duplicate colored/outline warp |
+| `irkara-57` | 1/1 matched, 1 detected | no extra warp despite dense minispike texture |
+| `irkara-59` | 1/1 matched, 1 detected | no extra warp in the minispike-heavy room |
+
+The focused colored-warp and filled/elongated-impostor regressions pass. FTFA
+remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`; the complete suite passes **330 tests in 623.079 seconds**, `OK`.

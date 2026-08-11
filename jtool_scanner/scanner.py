@@ -7520,6 +7520,10 @@ FILLED_CLOUD_WARP_MIN_SHADOW_RING_CONTRAST = 28.0
 # Tracked red-orb truths range from 0.708 to 0.882 (including scaled review
 # blends), so keep a margin below that observed floor.
 HALOED_RED_WARP_MIN_COMPONENT_FILL = 0.60
+# Capture scaling and adjacent decorations can slightly fill the center of a
+# genuine colored ring; retain the hollow-ring gate while allowing that
+# small, palette-independent tolerance.
+COLORED_WARP_MAX_CENTER_FILL = 0.24
 
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
@@ -7575,7 +7579,7 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         # a dark center, but they fill the middle of their component.  Keep
         # this shape gate palette-independent so unfamiliar purple tilesets
         # do not turn those sprites into warps.
-        if _component_center_fill_ratio(box, pixels) > 0.22:
+        if _component_center_fill_ratio(box, pixels) > COLORED_WARP_MAX_CENTER_FILL:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
         score = min(1.0, density * 2.0 + colored / 500)

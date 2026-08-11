@@ -57,6 +57,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _dense_minispike_lattice_axis,
     _detect_mini_blocks,
+    _detect_warps,
     _detect_outline_cloud_warps,
     _detect_outline_warps,
     _is_neutral_outline_warp_color,
@@ -1666,6 +1667,16 @@ class ScannerGeometryTests(unittest.TestCase):
                 room = detect_room_box(image)
 
                 self.assertEqual(_detect_outline_warps(image, room, 8), [])
+
+    def test_colored_warp_ring_tolerates_mild_center_fill(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "irkara-nr-flames-game.png")
+        detections = _detect_warps(image, detect_room_box(image), 8)
+
+        self.assertEqual(
+            {(detection.x, detection.y) for detection in detections},
+            {(32, 24), (752, 528)},
+        )
 
     def test_full_spike_rejects_blocklike_weak_outline_candidate(self) -> None:
         block = _GeometryClass("block", OBJ_BLOCK, 0.50)
