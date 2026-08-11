@@ -1286,3 +1286,21 @@ detected)**. NANG138 remains **58/58 matched (58 detected)**, and its blocks,
 full spikes, saves, warp, and refreshers remain exact. Held-out scans of
 CN2-5, CN3-16, CN3-18, and NANG135 showed no new mini-spike regression; their
 pre-existing geometry totals remain documented. FTFA remains `926/928 exact`.
+
+## Checkpoint: NANG135 compact-block arbitration negative result (2026-08-11)
+
+The fresh baseline remains **336 tests in 474.837 seconds, OK**, with FTFA at
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+NANG135 currently matches 73/77 solid blocks with 76 detections and matches all
+86 killer blocks. The four block misses are a mixture of half-step candidate
+competition and visually ambiguous red/brick patches; two authoritative blocks
+also overlap killer sprites in the map.
+
+A bounded native-phase arbitration experiment was measured against NANG135,
+NANG128, NANG138, and the focused geometry suite. Preferring native 32px
+candidates exposed additional ambiguous red/brick patches, while preserving
+every emitted killer backing candidate added false blocks. The experiment was
+rejected and all code/test edits were removed. No screen-specific exception or
+permissive threshold was retained; NANG135 remains an explicit follow-up until
+ stronger visual evidence can separate real blocks from the same-looking
+ texture and hidden overlaps.
