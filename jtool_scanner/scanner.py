@@ -1370,7 +1370,21 @@ def scan_image(
     _PATCH_FEATURE_CACHE.clear()
     source_image = image
     source_box = room_box or detect_room_box(image)
-    normalized_grid = source_grid or _infer_source_grid(source_box)
+    if room_box is None and source_grid is None:
+        inferred_grid = _infer_source_grid(source_box)
+        # Embedded compact rooms are only ambiguous when the outer screenshot
+        # itself looks like the common 25x19 viewport.  Skip the relatively
+        # expensive activity/grid audit for already recognized profiles.
+        if inferred_grid == (25, 19):
+            embedded_profile = _detect_embedded_room_profile(image, source_box)
+            if embedded_profile is not None:
+                source_box, normalized_grid = embedded_profile
+            else:
+                normalized_grid = inferred_grid
+        else:
+            normalized_grid = inferred_grid
+    else:
+        normalized_grid = source_grid or _infer_source_grid(source_box)
     source_translation: tuple[int, int] | None = None
     compact_room = normalized_grid == (19, 13)
     if normalized_grid is not None and normalized_grid != (25, 19):
@@ -1887,6 +1901,309 @@ def _infer_source_grid(room: Box) -> tuple[int, int] | None:
     )
     relative_error = abs(ratio - columns / rows) / (columns / rows)
     return (columns, rows) if relative_error <= 0.025 else None
+
+
+# Embedded screenshots occasionally contain a centered, smaller gameplay room
+# surrounded by a HUD or narrator panel.  If its outer aspect ratio happens to
+# resemble 25x19, the ordinary room inference consumes the whole screenshot
+# and geometry is sampled against the UI.  Keep the automatic recovery narrow:
+# it needs a large, centered near-square activity island and repeated strong
+# cell boundaries on both axes.  Explicit room boxes/source grids always take
+# precedence in scan_image.
+EMBEDDED_ROOM_ACTIVITY_STEP = 4
+EMBEDDED_ROOM_MIN_COMPONENT_CELLS = 100
+EMBEDDED_ROOM_MIN_WIDTH = 160
+EMBEDDED_ROOM_MIN_HEIGHT = 160
+EMBEDDED_ROOM_MIN_WIDTH_FRACTION = 0.32
+EMBEDDED_ROOM_MIN_HEIGHT_FRACTION = 0.40
+EMBEDDED_ROOM_MAX_FRACTION = 0.80
+EMBEDDED_ROOM_MIN_FILL = 0.20
+EMBEDDED_ROOM_MIN_EDGE_SCORE = 20.0
+EMBEDDED_ROOM_MIN_BOUNDARY_EDGE = 5.0
+EMBEDDED_ROOM_MIN_BOUNDARY_COVERAGE = 0.90
+EMBEDDED_ROOM_MIN_GRID_COLUMNS = 4
+EMBEDDED_ROOM_MAX_GRID_COLUMNS = 25
+EMBEDDED_ROOM_MIN_GRID_ROWS = 4
+EMBEDDED_ROOM_MAX_GRID_ROWS = 19
+EMBEDDED_ROOM_MIN_GRID_MARGIN = 3.0
+
+
+def _detect_embedded_room_profile(
+    image: RGBImage,
+    outer_room: Box,
+) -> tuple[Box, tuple[int, int]] | None:
+    """Find a strongly tiled, centered room embedded in a screenshot.
+
+    This is deliberately a high-precision opt-in.  It is not a generic crop
+    finder: the component must be large, near-square, detached from the
+    screenshot edges, and exhibit a repeated grid on both axes.  That keeps
+    ordinary full-room screenshots and decorative panels on the legacy path.
+    """
+
+    if (
+        outer_room.width < EMBEDDED_ROOM_MIN_WIDTH * 2
+        or outer_room.height < EMBEDDED_ROOM_MIN_HEIGHT * 2
+    ):
+        return None
+    step = EMBEDDED_ROOM_ACTIVITY_STEP
+    columns = (outer_room.width + step - 1) // step
+    rows = (outer_room.height + step - 1) // step
+    means: list[list[float]] = []
+    variation: list[list[float]] = []
+    for cell_y in range(rows):
+        mean_row: list[float] = []
+        variation_row: list[float] = []
+        top = outer_room.y + cell_y * step
+        bottom = min(outer_room.bottom - 1, top + step - 1)
+        for cell_x in range(columns):
+            left = outer_room.x + cell_x * step
+            right = min(outer_room.right - 1, left + step - 1)
+            samples: list[int] = []
+            for sample_x, sample_y in (
+                (left, top),
+                (right, top),
+                (left, bottom),
+                (right, bottom),
+            ):
+                red, green, blue = image.pixel(sample_x, sample_y)
+                samples.append((red * 30 + green * 59 + blue * 11) // 100)
+            mean = sum(samples) / len(samples)
+            mean_row.append(mean)
+            variation_row.append(
+                sum(abs(value - mean) for value in samples) / len(samples)
+            )
+        means.append(mean_row)
+        variation.append(variation_row)
+
+    active: set[tuple[int, int]] = set()
+    for cell_y in range(rows):
+        for cell_x in range(columns):
+            neighbors = [
+                means[neighbor_y][neighbor_x]
+                for neighbor_y, neighbor_x in (
+                    (cell_y - 1, cell_x),
+                    (cell_y + 1, cell_x),
+                    (cell_y, cell_x - 1),
+                    (cell_y, cell_x + 1),
+                )
+                if 0 <= neighbor_y < rows and 0 <= neighbor_x < columns
+            ]
+            contrast = min(
+                (abs(means[cell_y][cell_x] - neighbor) for neighbor in neighbors),
+                default=0.0,
+            )
+            if (
+                variation[cell_y][cell_x] >= 3.0
+                or contrast >= 12.0
+            ):
+                active.add((cell_x, cell_y))
+
+    components: list[tuple[int, Box, float]] = []
+    seen: set[tuple[int, int]] = set()
+    for seed in active:
+        if seed in seen:
+            continue
+        stack = [seed]
+        seen.add(seed)
+        points: list[tuple[int, int]] = []
+        while stack:
+            cell_x, cell_y = stack.pop()
+            points.append((cell_x, cell_y))
+            for delta_x, delta_y in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                neighbor = (cell_x + delta_x, cell_y + delta_y)
+                if neighbor in active and neighbor not in seen:
+                    seen.add(neighbor)
+                    stack.append(neighbor)
+        if len(points) < EMBEDDED_ROOM_MIN_COMPONENT_CELLS:
+            continue
+        min_x = min(point[0] for point in points)
+        min_y = min(point[1] for point in points)
+        max_x = max(point[0] for point in points)
+        max_y = max(point[1] for point in points)
+        box = Box(
+            outer_room.x + min_x * step,
+            outer_room.y + min_y * step,
+            min(outer_room.width - min_x * step, (max_x - min_x + 1) * step),
+            min(outer_room.height - min_y * step, (max_y - min_y + 1) * step),
+        )
+        aspect = box.width / max(1, box.height)
+        fill = len(points) / max(1, (max_x - min_x + 1) * (max_y - min_y + 1))
+        center_x = (box.x + box.right) / 2
+        center_y = (box.y + box.bottom) / 2
+        if not (
+            max(
+                EMBEDDED_ROOM_MIN_WIDTH,
+                outer_room.width * EMBEDDED_ROOM_MIN_WIDTH_FRACTION,
+            )
+            <= box.width
+            <= outer_room.width * EMBEDDED_ROOM_MAX_FRACTION
+            and max(
+                EMBEDDED_ROOM_MIN_HEIGHT,
+                outer_room.height * EMBEDDED_ROOM_MIN_HEIGHT_FRACTION,
+            )
+            <= box.height
+            <= outer_room.height * EMBEDDED_ROOM_MAX_FRACTION
+            and 0.78 <= aspect <= 1.25
+            and fill >= EMBEDDED_ROOM_MIN_FILL
+            and outer_room.x + outer_room.width * 0.30
+            <= center_x
+            <= outer_room.x + outer_room.width * 0.70
+            and outer_room.y + outer_room.height * 0.10
+            <= center_y
+            <= outer_room.y + outer_room.height * 0.85
+        ):
+            continue
+        components.append((len(points), box, fill))
+    if not components:
+        return None
+
+    _, coarse_box, _ = max(components, key=lambda item: item[0])
+    refined_box = _refine_embedded_room_box(image, coarse_box, outer_room)
+    grid = _infer_embedded_room_grid(image, refined_box)
+    if grid is None:
+        return None
+    return refined_box, grid
+
+
+def _refine_embedded_room_box(
+    image: RGBImage,
+    coarse_box: Box,
+    outer_room: Box,
+) -> Box:
+    """Snap an activity component to its strongest visible outer edges."""
+
+    def luminance(x: int, y: int) -> int:
+        red, green, blue = image.pixel(x, y)
+        return (red * 30 + green * 59 + blue * 11) // 100
+
+    def vertical_edge(x: int) -> float:
+        return sum(
+            abs(luminance(x - 1, y) - luminance(x, y))
+            for y in range(coarse_box.y, coarse_box.bottom)
+        ) / max(1, coarse_box.height)
+
+    def horizontal_edge(y: int) -> float:
+        return sum(
+            abs(luminance(x, y - 1) - luminance(x, y))
+            for x in range(coarse_box.x, coarse_box.right)
+        ) / max(1, coarse_box.width)
+
+    start_x = max(outer_room.x + 1, coarse_box.x)
+    end_x = min(outer_room.right, coarse_box.right)
+    left = max(
+        range(start_x, min(end_x, coarse_box.x + 13)),
+        key=vertical_edge,
+    )
+    right_edge = max(
+        range(max(start_x + 1, coarse_box.right - 13),
+              min(outer_room.right, coarse_box.right + 5)),
+        key=vertical_edge,
+    )
+    start_y = max(outer_room.y + 1, coarse_box.y)
+    end_y = min(outer_room.bottom, coarse_box.bottom)
+    top = max(
+        range(start_y, min(end_y, coarse_box.y + 13)),
+        key=horizontal_edge,
+    )
+    bottom_edge = max(
+        range(max(start_y + 1, coarse_box.bottom - 13),
+              min(outer_room.bottom, coarse_box.bottom + 5)),
+        key=horizontal_edge,
+    )
+    return Box(
+        left,
+        top,
+        max(1, right_edge + 1 - left),
+        max(1, bottom_edge - top),
+    )
+
+
+def _infer_embedded_room_grid(
+    image: RGBImage,
+    room: Box,
+) -> tuple[int, int] | None:
+    """Infer a compact grid from repeated luminance boundaries."""
+
+    def luminance(x: int, y: int) -> int:
+        red, green, blue = image.pixel(x, y)
+        return (red * 30 + green * 59 + blue * 11) // 100
+
+    vertical = [
+        sum(
+            abs(luminance(x - 1, y) - luminance(x, y))
+            for y in range(room.y, room.bottom)
+        ) / max(1, room.height)
+        for x in range(room.x + 1, room.right)
+    ]
+    horizontal = [
+        sum(
+            abs(luminance(x, y - 1) - luminance(x, y))
+            for x in range(room.x, room.right)
+        ) / max(1, room.width)
+        for y in range(room.y + 1, room.bottom)
+    ]
+
+    def axis_metrics(
+        profile: list[float],
+        length: int,
+        cells: int,
+    ) -> tuple[float, float, float]:
+        boundaries: list[float] = []
+        for index in range(1, cells):
+            position = round(index * length / cells) - 1
+            low = max(0, position - 2)
+            high = min(len(profile), position + 3)
+            boundaries.append(max(profile[low:high]))
+        return (
+            sum(boundaries) / max(1, len(boundaries)),
+            min(boundaries, default=0.0),
+            sum(
+                boundary >= EMBEDDED_ROOM_MIN_BOUNDARY_EDGE
+                for boundary in boundaries
+            ) / max(1, len(boundaries)),
+        )
+
+    candidates: list[
+        tuple[float, int, int, tuple[float, float, float], tuple[float, float, float]]
+    ] = []
+    for columns in range(
+        EMBEDDED_ROOM_MIN_GRID_COLUMNS,
+        EMBEDDED_ROOM_MAX_GRID_COLUMNS + 1,
+    ):
+        for rows in range(
+            EMBEDDED_ROOM_MIN_GRID_ROWS,
+            EMBEDDED_ROOM_MAX_GRID_ROWS + 1,
+        ):
+            tile_width = room.width / columns
+            tile_height = room.height / rows
+            if not 0.72 <= tile_width / max(0.1, tile_height) <= 1.38:
+                continue
+            vertical_metrics = axis_metrics(vertical, room.width, columns)
+            horizontal_metrics = axis_metrics(horizontal, room.height, rows)
+            score = (vertical_metrics[0] + horizontal_metrics[0]) / 2
+            if (
+                score >= EMBEDDED_ROOM_MIN_EDGE_SCORE
+                and vertical_metrics[1] >= EMBEDDED_ROOM_MIN_BOUNDARY_EDGE
+                and horizontal_metrics[1] >= EMBEDDED_ROOM_MIN_BOUNDARY_EDGE
+                and vertical_metrics[2] >= EMBEDDED_ROOM_MIN_BOUNDARY_COVERAGE
+                and horizontal_metrics[2] >= EMBEDDED_ROOM_MIN_BOUNDARY_COVERAGE
+            ):
+                candidates.append(
+                    (
+                        score,
+                        columns,
+                        rows,
+                        vertical_metrics,
+                        horizontal_metrics,
+                    )
+                )
+    if not candidates:
+        return None
+    candidates.sort(reverse=True)
+    best = candidates[0]
+    if len(candidates) > 1 and best[0] - candidates[1][0] < EMBEDDED_ROOM_MIN_GRID_MARGIN:
+        return None
+    return best[1], best[2]
 
 
 def _normalize_room_to_jtool(

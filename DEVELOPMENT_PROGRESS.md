@@ -941,3 +941,24 @@ patch topology gate. A read-only audit of all tracked red-orb examples found
 floor preserves the corpus; the two compact NANG_11 brick fragments fall
 below it and are removed. The exact FTFA benchmark remains `926/928 exact;
 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+## Checkpoint: conservative embedded-room localization (2026-08-11)
+
+The scanner now has a high-precision automatic profile for a centered,
+near-square gameplay island embedded in a larger screenshot. It requires a
+large detached activity component, repeated strong boundaries on both axes,
+and a decisive grid score; explicit room boxes and source grids still take
+precedence. A tracked FTFA screen that initially triggered the prototype is
+protected by the size/centering gates and continues through the legacy path.
+
+NANG_11 is the only hit across the 71 giant-review sources and all FTFA source
+screens. Its current39 source/JMap/reconstruction/blend workflow now infers
+room `(316,199,356,356)`, grid `9x9`, one save, one gray spiral warp at
+`(432,336)`, and 14 terrain blocks, with no full-spike or red-halo false
+positive. This is a visual checkpoint, not an exact-map claim: the giant
+review still has no corrected NANG_11 JMap.
+
+Validation: the complete unittest suite passed **327 tests in 624.038
+seconds**, the exact FTFA benchmark remains `926/928 exact; 0 false positives;
+2 missed; 0 shifted; 0 wrong direction`, and the restarted app returns HTTP
+200 on the latest source fingerprint.

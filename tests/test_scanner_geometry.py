@@ -169,6 +169,7 @@ from jtool_scanner.scanner import (
     _is_dense_adjacent_up_mini_spike_candidate,
     _is_diagonal_anchor_up_mini_spike_candidate,
     _is_low_contrast_paired_up_mini_spike_candidate,
+    _detect_embedded_room_profile,
     _is_low_border_side_mini_spike_candidate,
     _is_low_border_side_mini_spike_patch,
     _is_mixed_cluster_up_mini_spike_candidate,
@@ -249,6 +250,41 @@ from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_embedded_room_profile_requires_repeated_centered_grid(self) -> None:
+        width, height = 640, 480
+        data = bytearray([40, 40, 40] * width * height)
+        left, top, tile = 140, 60, 40
+        for grid_y in range(9):
+            for grid_x in range(9):
+                color = (120, 120, 120) if (grid_x + grid_y) % 2 else (80, 80, 80)
+                for y in range(top + grid_y * tile + 2, top + (grid_y + 1) * tile - 2):
+                    for x in range(left + grid_x * tile + 2, left + (grid_x + 1) * tile - 2):
+                        offset = (y * width + x) * 3
+                        data[offset : offset + 3] = bytes(color)
+        image = RGBImage(width, height, bytes(data))
+
+        profile = _detect_embedded_room_profile(image, Box(0, 0, width, height))
+
+        self.assertIsNotNone(profile)
+        room, source_grid = profile
+        self.assertEqual(source_grid, (9, 9))
+        self.assertTrue(130 <= room.x <= 150)
+        self.assertTrue(50 <= room.y <= 70)
+        self.assertTrue(340 <= room.width <= 370)
+        self.assertTrue(340 <= room.height <= 370)
+
+        ftfa = load_png(
+            Path(__file__).resolve().parents[1]
+            / "fixtures"
+            / "regressions"
+            / "unseen-rooms"
+            / "ftfa"
+            / "screen-1-source.png"
+        )
+        self.assertIsNone(
+            _detect_embedded_room_profile(ftfa, detect_room_box(ftfa))
+        )
+
     def test_repeated_horizontal_edge_bands_are_texture_not_spike_shape(self) -> None:
         width, height = 800, 608
         data = bytearray([24, 140, 140] * width * height)
