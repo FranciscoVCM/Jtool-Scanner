@@ -1389,3 +1389,25 @@ remain `needs-more-work` because corrected authoritative JMaps are absent, and
 the Irkara-89 discrepancies remain an explicit exact-fixture follow-up. The
 existing 71-row ledger still has all source/JMap/preview/blend paths present;
 no new exception or hidden discrepancy was introduced.
+
+## Checkpoint: CN2-5 and CN3-16 bounded geometry re-audit (2026-08-11)
+
+The current fixture workflow and source/JTool references were rechecked for
+`cn2-5-jumprefresh` and `cn3-16` using their native screenshot scaling. CN2-5
+matches six of seven authoritative jump-refreshers with no unmatched
+detections. The remaining truth entry at `(624,160)` is visibly absent from
+the correctly scaled game screenshot (the corridor is empty) even though the
+JTool reference draws the icon there. This is a source/JMap discrepancy, not
+evidence for a broader refresher detector rule, so no code change was retained.
+Its other geometry totals remain 315/318 blocks, 29/32 full spikes, and 3/3
+mini-spikes.
+
+CN3-16 still has exact saves, warp, miniblocks, and mini-spikes; its remaining
+full-spike result is 27/30 matched with 35 detections. The three misses sit in
+bright, overlapping geometry where the current candidate projections already
+produce extra spikes. Broadening those projections without corrected geometry
+would trade a small recall gain for unsupported objects on this and held-out
+tilesets, so no generalized change was justified.
+
+This was a read-only visual/exact audit. No fixture, scanner, or ledger row was
+altered; the generated reports and crops remain ignored local evidence.
