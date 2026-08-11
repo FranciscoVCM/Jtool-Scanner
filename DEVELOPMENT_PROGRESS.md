@@ -858,7 +858,7 @@ giant-review sources found only the expected NANG_11, NANG_130, and NANG_138
 neutral spiral candidates. No neutral false positives were found in the
 audited FTFA, Lap, Irkara, or CN3-neon material.
 
-NANG_11 current33 now emits one warp (`1:16,3:1,12:1,13:1,21:1`); its compact
+NANG_11 current34 now emits one warp (`1:16,3:1,12:1,13:1,21:1`); its compact
 room-size inference and two geometry mismatches remain explicitly unresolved.
 The focused warp regressions pass, the full suite passes **325 tests in
 632.571 seconds**, and the exact FTFA benchmark remains `926/928 exact; 0
