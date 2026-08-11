@@ -987,3 +987,21 @@ This batch therefore produced a measured negative result: no safe new
 cross-corpus threshold was justified. The FTFA exact benchmark, tracked CN3
 geometry regressions, and color-object fixtures remain the gates before any
 future spike/material arbitration change.
+
+## Checkpoint: Say dual-material tileset review (2026-08-11)
+
+The `Say_1` through `Say_9` source/current/blend triplets were reviewed as a
+second unfamiliar-material family. Their rooms combine a dark blue brick
+material with large smooth purple foreground regions, while the spike sprites
+remain bright and neutral. The current output continues to learn the solid
+layout without a fixed blue/purple color rule; the two labeled saves in Say1,
+the two in Say2, and the visible save variants in the remaining Say rooms are
+retained in the expected locations. The blend views do not show a systematic
+loss of the purple foreground as a separate tileset.
+
+The residual overlay differences are predominantly dense spike orientation and
+partial/full-spike geometry. They recur across the same material family and
+are not isolated to a brightness or reverse-palette branch, but the giant
+review set has no corrected JMaps for measuring them exactly. No new color or
+screen-specific geometry rule was added; the existing FTFA benchmark and CN3/
+NANG fixture gates remain protected.
