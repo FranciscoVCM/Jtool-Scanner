@@ -11250,10 +11250,10 @@ def _is_coherent_water_field_anchor(
     """Keep textured water when adjacent cells agree on a local field.
 
     High-edge water tiles can fail the smooth-anchor test even when both
-    halves are real water.  Require at least two axis-aligned neighboring
-    water candidates, a water-like density in both halves, and matching local
-    profiles.  The half-density guard keeps a repeated narrow stripe from
-    becoming a field merely because it is vertically adjacent to itself.
+    halves are real water.  Require at least two neighboring water candidates,
+    a water-like density in both halves, and matching local profiles.  The
+    half-density guard keeps a repeated narrow stripe from becoming a field
+    merely because it is adjacent to itself.
     """
 
     if detection.type_id not in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
@@ -11266,10 +11266,7 @@ def _is_coherent_water_field_anchor(
             continue
         delta_x = abs(detection.x - other.x)
         delta_y = abs(detection.y - other.y)
-        if (
-            delta_x + delta_y <= SUPPORTED_TERRAIN_WATER_FIELD_NEIGHBOR_RADIUS
-            and (delta_x == 0 or delta_y == 0)
-        ):
+        if delta_x + delta_y <= SUPPORTED_TERRAIN_WATER_FIELD_NEIGHBOR_RADIUS:
             neighbors.append(other)
     if len(neighbors) < SUPPORTED_TERRAIN_WATER_FIELD_MIN_NEIGHBORS:
         return False

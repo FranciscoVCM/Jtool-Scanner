@@ -1040,16 +1040,16 @@ geometry/material coverage, not justification for a coordinate-specific rule.
 The first water-anchor rule preserved smooth full-width cells but still let the
 supported-cell terrain arbitration erase textured water tiles when both halves
 of a cell were high-edge. A second palette-independent path now preserves such
-a cell only when it has at least two axis-aligned neighboring water candidates,
-both 16px halves independently meet the water-density floor, and neighboring
-profiles remain coherent. An isolated or half-width repeated texture does not
-qualify from adjacency alone.
+a cell only when it has at least two neighboring water candidates within the
+local lattice, both 16px halves independently meet the water-density floor,
+and neighboring profiles remain coherent. An isolated or half-width repeated
+texture does not qualify from adjacency alone.
 
 Measured results:
 
 | case | water result | gate result |
 | --- | --- | --- |
-| `irkara-54` | 470/475 matched, 470 detected, 100.0% precision | previous geometry result was 405/475; color-only baseline is 472/475 |
+| `irkara-54` | 472/475 matched, 472 detected, 100.0% precision | previous geometry result was 405/475; color-only baseline is 472/475 |
 | `irkara-51` | 4/4 matched, 4 detected, 100.0% precision | unchanged |
 | `irkara-52` | 4/4 matched, 4 detected, 100.0% precision | unchanged |
 | `irkara-71` | 26/37 matched, 26 detected, 100.0% precision | unchanged |
