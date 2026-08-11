@@ -76,6 +76,7 @@ from jtool_scanner.scanner import (
     _prune_supported_terrain_marker_body_cells,
     _prune_supported_terrain_spike_recovery_noise,
     _is_sparse_supported_terrain_residual_noise,
+    _is_full_width_smooth_water_anchor,
     _select_neutral_terrain_cells,
     _repeated_terrain_paired_seed,
     _repeated_terrain_support_is_decisive,
@@ -678,6 +679,26 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertEqual(expansion.mini_blocks, frozenset())
+
+    def test_supported_cell_terrain_water_anchor_distinguishes_full_width_water(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        narrow = Detection("water_2", OBJ_WATER_2, 288, 64, 0.8, image_box)
+        full_width = Detection("water_2", OBJ_WATER_2, 288, 64, 0.8, image_box)
+
+        self.assertFalse(
+            _is_full_width_smooth_water_anchor(
+                narrow,
+                _water_backed_miniblock_material_test_image(),
+                Box(0, 0, 800, 608),
+            )
+        )
+        self.assertTrue(
+            _is_full_width_smooth_water_anchor(
+                full_width,
+                _water_backed_miniblock_material_test_image(water_width=32),
+                Box(0, 0, 800, 608),
+            )
+        )
 
     def test_supported_cell_terrain_prunes_only_matching_strong_spike_cells(self) -> None:
         image = _up_spike_test_image([(64, 64), (128, 64)])
@@ -6529,6 +6550,7 @@ def _water_backed_miniblock_material_test_image(
     *,
     width: int = 800,
     height: int = 608,
+    water_width: int = 16,
 ) -> RGBImage:
     data = bytearray((132, 166, 174) * (width * height))
     for y in range(64, 192):
@@ -6537,7 +6559,9 @@ def _water_backed_miniblock_material_test_image(
             (76, 45, 48) * 128
         )
         cyan_start = (y * width + 288) * 3
-        data[cyan_start : cyan_start + 16 * 3] = bytes((70, 180, 215) * 16)
+        data[cyan_start : cyan_start + water_width * 3] = bytes(
+            (70, 180, 215) * water_width
+        )
     return RGBImage(width, height, bytes(data))
 
 

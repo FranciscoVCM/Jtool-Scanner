@@ -1005,3 +1005,32 @@ are not isolated to a brightness or reverse-palette branch, but the giant
 review set has no corrected JMaps for measuring them exactly. No new color or
 screen-specific geometry rule was added; the existing FTFA benchmark and CN3/
 NANG fixture gates remain protected.
+
+## Checkpoint: coherent water-anchor preservation (2026-08-11)
+
+The supported-cell terrain fallback could absorb a real water column when its
+room-local material family matched the learned terrain. The fallback now keeps
+only a high-confidence, full-width, internally smooth water cell: both 16px
+halves must have a similar local color profile and the full cell must have low
+edge density. Narrow half-cell texture remains eligible for the existing
+terrain reclassification path. The rule is palette-relative and does not use a
+screen name, absolute color, or coordinate exception.
+
+Measured results:
+
+| case | water result | other gate |
+| --- | --- | --- |
+| `CN3_Entrance2` current regeneration | 3 visible water cells retained (the prior fallback removed all 3) | 353 editable objects; 2 saves; no new object family |
+| `irkara-54` | 405/475 matched, 405 detected, 100.0% precision | prior baseline was 344/475; saves remain 3/3 |
+| `irkara-51` | 4/4 matched, 4 detected, 100.0% precision | unchanged protected water case |
+| `irkara-52` | 4/4 matched, 4 detected, 100.0% precision | unchanged protected water case |
+| `irkara-71` | 26/37 matched, 26 detected, 100.0% precision | unchanged held-out result |
+| `cn3-18` | 5/5 matched, 5 detected, 100.0% precision | saves, warp, walljumps, miniblocks, and mini-spikes remain at prior results |
+
+The focused anchor distinction regression passes. The complete unittest suite
+passes **328 tests in 623.470 seconds**, and the exact FTFA benchmark remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+The giant-review Entrance2 result is still a source/current/blend visual
+checkpoint rather than an exact claim because corrected giant-review JMaps are
+not available. The remaining Irkara54 and Irkara71 misses are unresolved
+geometry/material coverage, not justification for a coordinate-specific rule.

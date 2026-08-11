@@ -234,6 +234,14 @@ SUPPORTED_TERRAIN_MATERIAL_MIN_MINIBLOCK_GAIN = 4
 SUPPORTED_TERRAIN_MATERIAL_MIN_WATER_FAMILY_VOTES = 3
 SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_COMPONENT_CELLS = 64
 SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_NARROW_AXIS = 3
+# A supported-cell material learner can absorb a real, full-width water column
+# when the water is the same room-local hue family as the terrain.  Preserve a
+# high-confidence, smooth water anchor when both 16px halves have the same
+# profile; narrow half-cell texture fragments remain eligible for the existing
+# terrain reclassification path.
+SUPPORTED_TERRAIN_WATER_PRESERVE_MIN_SCORE = 0.80
+SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_HALF_PROFILE_DISTANCE = 45.0
+SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_EDGE_DENSITY = 0.22
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_SCORE = 0.42
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DIRECTION_MARGIN = 0.18
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_OUTLINE_DELTA = 0.35
@@ -11176,6 +11184,56 @@ def _is_sparse_supported_terrain_residual_noise(
     )
 
 
+def _is_full_width_smooth_water_anchor(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Keep a strong water cell when terrain material arbitration is ambiguous.
+
+    The supported-cell terrain fallback deliberately removes narrow water-like
+    texture that is backed by a spike and belongs to a learned material.  A
+    real water column can share that material family, however.  Compare the
+    two 16px halves of the candidate instead of relying on an absolute hue:
+    full-width water is internally coherent, while the preserved synthetic
+    half-cell texture negative has one water half and one non-water half.
+    """
+
+    if detection.type_id not in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+        return False
+    if detection.score < SUPPORTED_TERRAIN_WATER_PRESERVE_MIN_SCORE:
+        return False
+    if not (0 <= detection.x <= ROOM_WIDTH - GRID_SIZE):
+        return False
+    left = _patch_color_profile(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        MINI_BLOCK_SIZE,
+    )
+    right = _patch_color_profile(
+        image,
+        room,
+        detection.x + MINI_BLOCK_SIZE,
+        detection.y,
+        MINI_BLOCK_SIZE,
+    )
+    features = _patch_features(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        GRID_SIZE,
+    )
+    return (
+        _color_profile_distance(left, right)
+        <= SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_HALF_PROFILE_DISTANCE
+        and features.edge_density
+        <= SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_EDGE_DENSITY
+    )
+
+
 def _replace_supported_cell_terrain_geometry(
     detections: list[Detection],
     image: RGBImage,
@@ -11268,6 +11326,7 @@ def _replace_supported_cell_terrain_geometry(
                     profile.mini_blocks,
                 )
             )
+            and not _is_full_width_smooth_water_anchor(detection, image, room)
         )
         and not (
             detection.type_id == OBJ_APPLE
