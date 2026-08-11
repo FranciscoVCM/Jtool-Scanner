@@ -20442,10 +20442,14 @@ def _prune_low_value_full_spike_recoveries(
     }
     kept: list[Detection] = []
     for detection in detections:
-        if detection.kind not in primary_kinds | support_recovery_kinds | {
-            "full_spike_gap",
-            "full_spike_raw_primary_recovery",
-        }:
+        shape_recovery = detection.kind.startswith("full_spike_shape_recovery")
+        if (
+            not shape_recovery
+            and detection.kind not in primary_kinds | support_recovery_kinds | {
+                "full_spike_gap",
+                "full_spike_raw_primary_recovery",
+            }
+        ):
             kept.append(detection)
             continue
         patch = _patch_features(
@@ -20463,17 +20467,31 @@ def _prune_low_value_full_spike_recoveries(
             detection.x + base_dx,
             detection.y + base_dy,
         ) in blocks
-        if detection.kind in support_recovery_kinds:
+        if detection.kind in support_recovery_kinds or shape_recovery:
             direction = directions[detection.type_id]
             min_side_coverage = _triangle_min_side_coverage(patch, direction)
             base_edge_coverage = _triangle_base_edge_coverage(patch, direction)
             low_center_shape = patch.center_score <= 0.16
+            stripe_texture_impostor = (
+                _has_repeated_horizontal_edge_bands(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                )
+                and (
+                    base_edge_coverage >= 0.90
+                    or classifier_failed
+                )
+            )
             coherent_weak_left = (
                 detection.type_id == OBJ_SPIKE_LEFT
                 and min_side_coverage >= 0.875
                 and 0.53 <= detection.score <= 0.54
                 and block.score <= 0.47
             )
+            if stripe_texture_impostor:
+                continue
             if (
                 min_side_coverage >= 1.0
                 or base_edge_coverage <= 0.375
@@ -20555,6 +20573,49 @@ def _prune_low_value_full_spike_recoveries(
         ):
             kept.append(detection)
     return _prune_competing_full_spike_orientations(kept, image, room)
+
+
+def _has_repeated_horizontal_edge_bands(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> bool:
+    """Detect repeated full-width bands around a candidate spike cell.
+
+    Striped platform and wall textures can produce a convincing triangle
+    score at a half-cell boundary.  A real spike has diagonal/isolated edges;
+    repeated horizontal bands instead span most of a surrounding two-cell
+    neighborhood.  Sampling luminance makes this independent of the
+    platform's palette and screenshot brightness.
+    """
+
+    sample_size = 24
+    colors = _sample_map_patch_colors(
+        image,
+        room,
+        map_x - GRID_SIZE // 2,
+        map_y - GRID_SIZE // 2,
+        GRID_SIZE * 2,
+        sample_size=sample_size,
+    )
+    gray = [
+        (red * 30 + green * 59 + blue * 11) // 100
+        for red, green, blue in colors
+    ]
+    horizontal_edge_rows = 0
+    for row in range(sample_size - 1):
+        edge_share = sum(
+            abs(
+                gray[(row + 1) * sample_size + column]
+                - gray[row * sample_size + column]
+            )
+            >= 34
+            for column in range(sample_size)
+        ) / sample_size
+        if edge_share >= 0.75:
+            horizontal_edge_rows += 1
+    return horizontal_edge_rows >= 2
 
 
 def _is_low_value_primary_full_spike_geometry(

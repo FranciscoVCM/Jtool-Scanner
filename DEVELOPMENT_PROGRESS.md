@@ -527,3 +527,37 @@ active-save negative, the muted-header fallback, and save/warp miniblock
 coexistence. The protected four-room scan remains at 10/10 saves, 4/4 warps,
 5/5 water cells, 4/4 walljumps, and 8/8 gravity flippers matched; its known
 geometry over-detection/missed-cell totals are unchanged.
+
+## Checkpoint: NR, Redcube, and Secret texture review (2026-08-11)
+
+The next source/JTool/blend batch was regenerated from the preserved local
+giant-review sources. NR1 visibly contains two saves and the fresh project
+emits two; NR2 contains one labeled save and emits one, without promoting the
+repeated orange/red terrain to save objects. Redcube1 and Redcube2 each retain
+one save, while Redcube3 retains its three saves, one mini-spike-up marker,
+two warps, and no apple detections. The red terrain and the `?`, `??`, and
+`???` artwork remain out of the apple/block object classes where the current
+source/blend review indicates they are not gameplay sprites.
+
+Secret1's gradient remains background and its striped U-shaped material
+remains blocks. Three recovery-only downward spikes that landed inside the
+striped material were removed by a generalized repeated-horizontal-edge-band
+gate; the eight isolated red triangles remain. The gate is palette- and
+scale-normalized and is protected by a synthetic morphology test plus the
+existing NANG and FTFA regressions. These giant-review screens still have no
+corrected authoritative JMaps, so the results establish classification and
+negative evidence rather than exact geometry recall.
+
+| screen | fresh objects | saves | notable retained types |
+| --- | ---: | ---: | --- |
+| `CN3_NR1` | 207 | 2 | blocks, spikes, water, vines, player |
+| `CN3_NR2` | 447 | 1 | blocks, spikes, vines, player |
+| `CN3_Redcube1` | 192 | 1 | blocks, spikes, warp, player |
+| `CN3_Redcube2` | 208 | 1 | blocks, spikes, warp, player |
+| `CN3_Redcube3` | 227 | 3 | blocks, spikes, mini-spike, warps, player |
+| `CN3_Secret1` | 25 | 0 | 17 blocks and 8 full spikes; no water |
+
+FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction`. The protected four-room measurement remains 10/10 saves,
+4/4 warps, 5/5 water, 4/4 walljumps, and 8/8 gravity flippers matched, with
+the prior geometry precision/recall totals unchanged.

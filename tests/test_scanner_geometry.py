@@ -175,6 +175,7 @@ from jtool_scanner.scanner import (
     _looks_like_detached_top_ui_band,
     _is_residual_mini_spike_noise_candidate,
     _is_profiled_full_spike_noise,
+    _has_repeated_horizontal_edge_bands,
     _apple_contour_metrics,
     _detect_apples,
     _is_water_tinted_apple_patch,
@@ -244,6 +245,33 @@ from jtool_scanner.image import RGBImage
 
 
 class ScannerGeometryTests(unittest.TestCase):
+    def test_repeated_horizontal_edge_bands_are_texture_not_spike_shape(self) -> None:
+        width, height = 800, 608
+        data = bytearray([24, 140, 140] * width * height)
+        for y in range(208, 304):
+            color = (220, 100, 100) if (y // 4) % 2 else (120, 70, 70)
+            for x in range(528, 624):
+                offset = (y * width + x) * 3
+                data[offset : offset + 3] = bytes(color)
+        image = RGBImage(width, height, bytes(data))
+
+        self.assertTrue(
+            _has_repeated_horizontal_edge_bands(
+                image,
+                Box(0, 0, width, height),
+                560,
+                224,
+            )
+        )
+        self.assertFalse(
+            _has_repeated_horizontal_edge_bands(
+                image,
+                Box(0, 0, width, height),
+                320,
+                64,
+            )
+        )
+
     def test_repeated_terrain_profile_is_palette_independent(self) -> None:
         expected = {
             (x, y)
