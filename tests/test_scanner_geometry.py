@@ -61,6 +61,7 @@ from jtool_scanner.scanner import (
     _component_silhouette_iou,
     _filled_cloud_warp_has_ambiguous_neutral_shadow,
     _filled_cloud_warp_is_dense_spike_enclosure,
+    _filled_cloud_warp_shadow_is_background_like,
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
     _looks_like_bright_outlined_terrain_room,
@@ -6153,6 +6154,36 @@ class ScannerGeometryTests(unittest.TestCase):
             _filled_cloud_warp_has_ambiguous_neutral_shadow(
                 dark,
                 Box(0, 0, 23, 25),
+            )
+        )
+
+    def test_filled_cloud_warp_low_shadow_background_contrast_is_ambiguous(self) -> None:
+        width, height = 64, 64
+        player_like = bytearray([85, 105, 75] * width * height)
+        portal_like = bytearray([20, 28, 36] * width * height)
+        for data in (player_like, portal_like):
+            for y in range(20, 45):
+                for x in range(20, 43):
+                    offset = (y * width + x) * 3
+                    data[offset : offset + 3] = bytes((255, 255, 255))
+            for y in range(40, 45):
+                for x in range(20, 43):
+                    offset = (y * width + x) * 3
+                    data[offset : offset + 3] = bytes((105, 105, 105))
+
+        box = Box(20, 20, 23, 25)
+        self.assertTrue(
+            _filled_cloud_warp_shadow_is_background_like(
+                RGBImage(width, height, bytes(player_like)),
+                Box(0, 0, width, height),
+                box,
+            )
+        )
+        self.assertFalse(
+            _filled_cloud_warp_shadow_is_background_like(
+                RGBImage(width, height, bytes(portal_like)),
+                Box(0, 0, width, height),
+                box,
             )
         )
 

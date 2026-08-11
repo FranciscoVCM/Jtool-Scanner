@@ -7143,6 +7143,7 @@ FILLED_CLOUD_WARP_MAX_STRONG_SPIKE_NEIGHBORS = 4
 FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MAX_SATURATION = 4.5
 FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MIN_LUMINANCE = 110.0
 FILLED_CLOUD_WARP_NEUTRAL_SHADOW_QUANTILE = 0.20
+FILLED_CLOUD_WARP_MIN_SHADOW_RING_CONTRAST = 28.0
 
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
@@ -7263,11 +7264,15 @@ def _detect_filled_cloud_warps(
             ):
                 continue
             map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
-            if palette_name == "bright" and _filled_cloud_warp_has_ambiguous_neutral_shadow(
-                image,
-                box,
-            ):
-                continue
+            if palette_name == "bright":
+                if _filled_cloud_warp_has_ambiguous_neutral_shadow(image, box):
+                    continue
+                if _filled_cloud_warp_shadow_is_background_like(
+                    image,
+                    room,
+                    box,
+                ):
+                    continue
             if _filled_cloud_warp_is_dense_spike_enclosure(
                 image,
                 room,
@@ -7321,6 +7326,50 @@ def _filled_cloud_warp_has_ambiguous_neutral_shadow(
     return (
         luminance >= FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MIN_LUMINANCE
         and saturation <= FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MAX_SATURATION
+    )
+
+
+def _filled_cloud_warp_shadow_is_background_like(
+    image: RGBImage,
+    room: Box,
+    box: Box,
+) -> bool:
+    """Reject a bright cloud whose shadow barely contrasts with its room.
+
+    White player/foreground sprites can share the normalized filled-cloud
+    silhouette and have a chromatic outline that bypasses the neutral-shadow
+    veto.  A real portal still needs a visible separation between its dark
+    edge/shadow and the immediately surrounding room.  Measuring that
+    difference relative to the local ring keeps the rule independent of the
+    tileset palette and background brightness; low-contrast candidates remain
+    unknown instead of becoming a warp.
+    """
+
+    colors = [
+        image.pixel(x, y)
+        for y in range(box.y, box.y + box.height)
+        for x in range(box.x, box.x + box.width)
+    ]
+    if not colors:
+        return False
+    colors.sort(key=lambda color: sum(color) / 3.0)
+    shadow_count = max(
+        1,
+        int(len(colors) * FILLED_CLOUD_WARP_NEUTRAL_SHADOW_QUANTILE),
+    )
+    shadow = colors[:shadow_count]
+    shadow_luminance = sum(sum(color) / 3.0 for color in shadow) / len(shadow)
+    ring_luminance, _ = _component_ring_luminance(
+        image,
+        room,
+        box,
+        margin=6,
+    )
+    if ring_luminance is None:
+        return False
+    return (
+        abs(shadow_luminance - ring_luminance)
+        < FILLED_CLOUD_WARP_MIN_SHADOW_RING_CONTRAST
     )
 
 

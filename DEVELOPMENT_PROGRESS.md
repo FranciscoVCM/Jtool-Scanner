@@ -620,3 +620,22 @@ geometry remains visual-only because these giant-review screens have no
 corrected authoritative JMaps. The current15 JMaps, SVG previews, and blends
 are preserved under ignored `.artifacts/say-review/current15/`, and the local
 review ledger records each screen's evidence and unresolved geometry status.
+
+## Checkpoint: neon outlined-terrain cloud arbitration (2026-08-11)
+
+CN3_7, CN3_8, and CN3_9 were regenerated as the original unfamiliar green
+outlined-tileset controls. Each source contains a white cloud-shaped
+foreground/player sprite that matched the generic filled-cloud warp silhouette
+under the previous rule. Their lowest-luminance shadow sits only 17–23
+luminance points from the local background ring, unlike the retained portal
+controls in CN3-16/18 (42–53 points). The filled-cloud detector now treats
+low shadow/background contrast as ambiguous, using local ring measurements
+instead of absolute palette or screen coordinates.
+
+The current17 projects remove the false warp from all three screens while
+retaining their visible saves, neon blocks, spikes, and vines. Floor numbers
+7, 8, and 9 remain background text. A synthetic regression covers both the
+player-like low-contrast case and a high-contrast portal case; the existing
+neutral-shadow, dense-enclosure, CN3-16, and FTFA controls remain required.
+These screens still lack corrected giant-review JMaps, so the checkpoint is a
+source/JTool/blend classification result rather than an exact geometry claim.
