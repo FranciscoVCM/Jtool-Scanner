@@ -1127,3 +1127,31 @@ The focused fragmented-outline, compact-contour, and color-object regressions
 pass. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
 wrong direction`, and the complete unittest suite passes **333 tests in
 657.967 seconds**, `OK`.
+
+## Checkpoint: clustered neutral contours and fragmented-warp arbitration (2026-08-11)
+
+The first implementation of the pale-room apple recovery used a complete
+8-pixel room grid. It recovered the target apple, but made the full suite too
+slow. The fallback is now component-clustered: it evaluates only compact groups
+of nearby dark outline fragments after the existing pale-room gate, then applies
+the same normalized contour, density, edge, border, and center-shape tests.
+This keeps the rule palette-relative and general while avoiding a room-wide
+search. The fragmented outline-warp branch also now requires a near-square
+merged box (normalized width/height ratio at most 1.18); the single-component
+route retains its broader aspect-ratio range. This rejects a wide decorative
+label join without using a filename, coordinate, or screen-specific exception.
+
+Measured results:
+
+| fixture | result | control/remaining issue |
+| --- | --- | --- |
+| `irkara-89` | apples 1/1 (1 detected), warps 1/1 (1 detected), miniblocks 0/0 (0 detected) | platforms 1/1 (3 detected), blocks 11/98, full spikes 112/113; these remain geometry follow-ups |
+| `nang138` | blocks 105/105, full spikes 26/26, saves 1/1, warps 1/1, refreshers 12/12 | mini-spikes 54/58 (55 detected), the existing measured discrepancy |
+| `irkara-nr-flames` | colored warp/apple/water controls remain 2/2, 3/3, and 16/16 | no regression from neutral paths |
+| `cn3-16` | 501/501 miniblocks remain matched (563 detected) | normal dense-miniblock path preserved |
+
+The focused apple and warp regressions pass. The complete unittest suite passes
+**334 tests in 1150.026 seconds**, `OK`. The exact FTFA benchmark remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`;
+the misses are still the lower-right/left-edge blocks in FTFA screen 1, not a
+new regression.

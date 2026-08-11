@@ -5738,6 +5738,15 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         )
 
+    def test_fragmented_outline_warp_rejects_wide_neutral_label_join(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "irkara-89-game.png")
+
+        self.assertEqual(
+            _detect_outline_warps(image, detect_room_box(image), 8),
+            [],
+        )
+
     def test_weak_room_corner_apple_requires_strong_positive_evidence(self) -> None:
         self.assertTrue(_is_weak_room_corner_apple(16, 8, 0.76))
         self.assertFalse(_is_weak_room_corner_apple(16, 8, 0.95))

@@ -1259,6 +1259,10 @@ OUTLINE_APPLE_FRAGMENT_MIN_EDGE_DENSITY = 0.20
 OUTLINE_APPLE_FRAGMENT_MAX_EDGE_DENSITY = 0.35
 OUTLINE_APPLE_FRAGMENT_MAX_BORDER_SCORE = 0.18
 OUTLINE_APPLE_FRAGMENT_MIN_CENTER_SCORE = 0.30
+# Fragmented outline warps are assembled from several short strokes, so their
+# merged box should remain close to square.  A broad ratio is retained for the
+# single-component route; the stricter bound rejects wide label/text joins.
+OUTLINE_WARP_FRAGMENTED_MAX_RATIO = 1.18
 APPLE_ROOM_CORNER_MARGIN = 24
 APPLE_ROOM_CORNER_KEEP_MIN_SCORE = 0.90
 APPLE_DEDUPE_DISTANCE = 12
@@ -8356,11 +8360,16 @@ def _is_nested_outline_spiral(
     map_height = box.height * ROOM_HEIGHT / max(1, room.height)
     ratio = map_width / max(0.1, map_height)
     density = len(pixels) / max(1, box.area)
+    max_ratio = (
+        OUTLINE_WARP_FRAGMENTED_MAX_RATIO
+        if fragmented
+        else 1.45
+    )
     minimum_density = 0.10 if fragmented else 0.20
     if not (
         29 <= map_width <= 52
         and 29 <= map_height <= 52
-        and 0.65 <= ratio <= 1.45
+        and 0.65 <= ratio <= max_ratio
         and minimum_density <= density <= 0.68
     ):
         return False
@@ -8567,6 +8576,8 @@ def _merge_nearby_outline_components(
     components: list[tuple[Box, list[tuple[int, int]]]],
     room: Box,
     max_gap: int,
+    *,
+    minimum_components: int = 8,
 ) -> list[tuple[Box, list[tuple[int, int]]]]:
     """Join fragmented strokes before applying the closed-outline warp gates."""
 
@@ -8600,7 +8611,7 @@ def _merge_nearby_outline_components(
     for group in groups:
         # A genuinely fragmented spiral is composed of many short strokes;
         # two or three nearby components are usually separate spike edges.
-        if len(group) < 8:
+        if len(group) < minimum_components:
             continue
         pixels = list(
             {
@@ -9193,68 +9204,78 @@ def _detect_outline_apples(
         score = min(1.0, 0.45 + density + features.center_score * 0.25)
         detections.append(Detection("apple", OBJ_APPLE, map_x, map_y, score, box))
     # A neutral capture can break the apple outline into several disconnected
-    # strokes.  Search complete 32px cells with the normalized contour only in
-    # the already-qualified pale room; dark-pixel density and border/center
-    # balance reject the repeated triangle and block textures in that room.
-    step = max(8, grid_step)
-    for map_y in range(
-        GRID_SIZE // 2,
-        ROOM_HEIGHT - GRID_SIZE // 2 + 1,
-        step,
+    # strokes.  Cluster nearby dark components first, then evaluate only those
+    # compact groups as complete 32px cells; this keeps the fallback cheap on
+    # every other pale-room scan and avoids a room-wide grid search.
+    merge_gap = max(
+        1,
+        round(
+            2
+            * max(
+                room.width / ROOM_WIDTH,
+                room.height / ROOM_HEIGHT,
+            )
+        ),
+    )
+    for box, pixels in _merge_nearby_outline_components(
+        components,
+        room,
+        max_gap=merge_gap,
+        minimum_components=2,
     ):
-        for map_x in range(
-            GRID_SIZE // 2,
-            ROOM_WIDTH - GRID_SIZE // 2 + 1,
-            step,
+        map_width = box.width * ROOM_WIDTH / max(1, room.width)
+        map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+        if not (16 <= map_width <= 40 and 16 <= map_height <= 40):
+            continue
+        map_x, map_y = _image_box_to_jtool_center(box, room, max(8, grid_step))
+        features = _patch_features(
+            image,
+            room,
+            map_x - GRID_SIZE // 2,
+            map_y - GRID_SIZE // 2,
+            GRID_SIZE,
+        )
+        contour_score, contour_support, contour_precision = (
+            _apple_contour_metrics(features)
+        )
+        dark_stats = _patch_color_stats(
+            image,
+            room,
+            map_x - GRID_SIZE // 2,
+            map_y - GRID_SIZE // 2,
+            GRID_SIZE,
+            _is_outline_apple_dark_neutral,
+        )
+        if not _is_fragmented_outline_apple_patch(
+            features,
+            dark_stats.density,
+            contour_score,
+            contour_support,
+            contour_precision,
         ):
-            features = _patch_features(
-                image,
-                room,
-                map_x - GRID_SIZE // 2,
-                map_y - GRID_SIZE // 2,
-                GRID_SIZE,
-            )
-            contour_score, contour_support, contour_precision = (
-                _apple_contour_metrics(features)
-            )
-            dark_stats = _patch_color_stats(
-                image,
-                room,
-                map_x - GRID_SIZE // 2,
-                map_y - GRID_SIZE // 2,
-                GRID_SIZE,
-                _is_outline_apple_dark_neutral,
-            )
-            if not _is_fragmented_outline_apple_patch(
-                features,
-                dark_stats.density,
-                contour_score,
-                contour_support,
-                contour_precision,
-            ):
-                continue
-            if _near_anchor(map_x, map_y, anchors + detections, max_distance=40):
-                continue
-            extent = _geometry_detection(
+            continue
+        if _near_anchor(map_x, map_y, anchors + detections, max_distance=40):
+            continue
+        extent = _geometry_detection(
+            "apple_outline_contour",
+            OBJ_APPLE,
+            map_x - GRID_SIZE // 2,
+            map_y - GRID_SIZE // 2,
+            0.78 + contour_score * 0.20,
+            image,
+            room,
+            GRID_SIZE,
+        )
+        detections.append(
+            Detection(
                 "apple_outline_contour",
                 OBJ_APPLE,
-                map_x - GRID_SIZE // 2,
-                map_y - GRID_SIZE // 2,
-                0.78 + contour_score * 0.20,
-                image,
-                room,
-                GRID_SIZE,
+                map_x,
+                map_y,
+                extent.score,
+                extent.image_box,
             )
-            detections.append(
-                Detection(
-                    "apple_outline_contour",
-                    OBJ_APPLE,
-                    map_x,
-                    map_y,
-                    extent.score,
-                    extent.image_box,
-                )
-            )
+        )
     return detections
 
 
