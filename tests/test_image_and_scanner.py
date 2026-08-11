@@ -20,6 +20,7 @@ from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.render_overlay import render_detection_overlay
 from jtool_scanner.scanner import (
     _detect_bounded_cool_water,
+    _detect_saves,
     _matches_spatial_background_field,
     _patch_color_profile,
     _spatial_background_field,
@@ -222,6 +223,27 @@ class ImageAndScannerTests(unittest.TestCase):
         )
 
         self.assertEqual(saves, [])
+
+    def test_fragmented_red_save_body_recovers_headered_terrain_save(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "cn3-18-game.png")
+        saves = _detect_saves(image, Box(0, 0, image.width, image.height), 8)
+
+        self.assertTrue(
+            any(
+                save.x == 224
+                and save.kind == "save_red_body_header_fragmented"
+                for save in saves
+            )
+        )
+
+    def test_active_save_layout_rejects_floor_number_glyphs(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        image = load_png(fixture_dir / "f189-game.png")
+        saves = _detect_saves(image, Box(0, 0, image.width, image.height), 8)
+
+        self.assertEqual(len(saves), 1)
+        self.assertNotEqual((saves[0].x, saves[0].y), (720, 32))
 
     def test_repeated_yellow_terrain_is_not_a_field_of_saves(self) -> None:
         result = scan_image(

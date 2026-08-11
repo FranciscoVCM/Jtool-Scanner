@@ -6330,11 +6330,36 @@ def _detect_red_body_header_saves(
     scale_x = ROOM_WIDTH / max(1, room.width)
     scale_y = ROOM_HEIGHT / max(1, room.height)
     detections: list[Detection] = []
-    for box, pixels in _connected_components(image, room, _is_save_red):
+    red_components = _connected_components(image, room, _is_save_red)
+    candidates = [
+        (box, pixels, False)
+        for box, pixels in red_components
+    ]
+    candidates.extend(
+        (box, pixels, True)
+        for box, pixels in _merge_fragmented_save_red_components(
+            red_components,
+            room,
+        )
+    )
+    seen_boxes: set[tuple[int, int, int, int]] = set()
+    for box, pixels, fragmented in candidates:
+        key = (box.x, box.y, box.width, box.height)
+        if key in seen_boxes:
+            continue
+        seen_boxes.add(key)
         map_width = box.width * scale_x
         map_height = box.height * scale_y
         density = len(pixels) / max(1, box.area)
-        if not (
+        if fragmented:
+            if not (
+                20 <= map_width <= 40
+                and 15 <= map_height <= 32
+                and density >= 0.20
+                and len(pixels) >= 120
+            ):
+                continue
+        elif not (
             24 <= map_width <= 34
             and 17 <= map_height <= 25
             and density >= 0.55
@@ -6351,8 +6376,21 @@ def _detect_red_body_header_saves(
             for x in range(box.x, box.right)
         )
         pale_header_share = pale_header_pixels / header_area
-        if pale_header_share < 0.12:
+        if pale_header_share < (0.20 if fragmented else 0.12):
             continue
+        if fragmented:
+            dark_header_pixels = sum(
+                max(image.pixel(x, y)) < 110
+                for y in range(header_top, header_bottom)
+                for x in range(box.x, box.right)
+            )
+            if dark_header_pixels / header_area < 0.10:
+                continue
+
+        if fragmented:
+            detection_kind = "save_red_body_header_fragmented"
+        else:
+            detection_kind = "save_red_body_header"
 
         image_scale_x = room.width / ROOM_WIDTH
         image_scale_y = room.height / ROOM_HEIGHT
@@ -6363,7 +6401,7 @@ def _detect_red_body_header_saves(
         score = min(0.98, 0.90 + density * 0.06 + pale_header_share * 0.12)
         detections.append(
             Detection(
-                "save_red_body_header",
+                detection_kind,
                 OBJ_SAVE,
                 map_x,
                 map_y,
@@ -6372,6 +6410,79 @@ def _detect_red_body_header_saves(
             )
         )
     return detections
+
+
+def _merge_fragmented_save_red_components(
+    components: list[tuple[Box, list[tuple[int, int]]]],
+    room: Box,
+) -> list[tuple[Box, list[tuple[int, int]]]]:
+    """Join nearby red body fragments before applying the SAVE header gate.
+
+    Scaled captures can split the four red body quadrants at the white/cyan
+    cross, leaving several small components instead of one body.  Only small
+    components are eligible, and the merged candidate must later satisfy the
+    map-sized body and pale/dark header tests.  This keeps adjacent red terrain
+    or floor glyphs from becoming saves without relying on a tileset palette.
+    """
+
+    scale_x = ROOM_WIDTH / max(1, room.width)
+    scale_y = ROOM_HEIGHT / max(1, room.height)
+    eligible = [
+        component
+        for component in components
+        if component[0].width * scale_x <= 16
+        and component[0].height * scale_y <= 12
+        and component[0].area <= 600
+    ]
+    max_gap = max(
+        2,
+        round(
+            8
+            * max(
+                room.width / ROOM_WIDTH,
+                room.height / ROOM_HEIGHT,
+            )
+        ),
+    )
+    groups: list[set[int]] = []
+    for index, (box, _pixels) in enumerate(eligible):
+        touching = [
+            group_index
+            for group_index, group in enumerate(groups)
+            if any(
+                _boxes_within_gap(box, eligible[member][0], max_gap)
+                for member in group
+            )
+        ]
+        if not touching:
+            groups.append({index})
+            continue
+        merged = {index}
+        for group_index in reversed(touching):
+            merged.update(groups.pop(group_index))
+        groups.append(merged)
+
+    merged_components: list[tuple[Box, list[tuple[int, int]]]] = []
+    for group in groups:
+        if len(group) < 4:
+            continue
+        pixels = list(
+            {
+                pixel
+                for member in group
+                for pixel in eligible[member][1]
+            }
+        )
+        if not pixels:
+            continue
+        min_x = min(pixel[0] for pixel in pixels)
+        min_y = min(pixel[1] for pixel in pixels)
+        max_x = max(pixel[0] for pixel in pixels)
+        max_y = max(pixel[1] for pixel in pixels)
+        box = Box(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+        if box.width * scale_x <= 44 and box.height * scale_y <= 36:
+            merged_components.append((box, pixels))
+    return merged_components
 
 
 def _detect_fragmented_cross_saves(
@@ -6788,6 +6899,16 @@ def _detect_weak_active_save_patches(
                 or body_yellow < body_min_yellow
             ):
                 continue
+            if (
+                not compact_room
+                and not _active_save_body_has_horizontal_run(
+                    image,
+                    room,
+                    x,
+                    y,
+                )
+            ):
+                continue
             score = min(
                 0.93,
                 0.78
@@ -6843,6 +6964,60 @@ def _detect_weak_active_save_patches(
             )
         )
     return detections
+
+
+def _active_save_body_has_horizontal_run(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> bool:
+    """Require a compact colored body rather than a row of UI glyphs.
+
+    The weak active-save path intentionally works from green/yellow counts, but
+    scoreboards and floor-number text can satisfy those counts with thin
+    vertical strokes.  A real body has a short contiguous horizontal run in
+    its lower half.  The test is normalized to the same 16-sample patch used
+    by the detector and does not depend on a particular palette.
+    """
+
+    colors = _sample_map_patch_colors(image, room, map_x, map_y, GRID_SIZE)
+    rows: list[list[bool]] = []
+    for sample_y in range(16):
+        row: list[bool] = []
+        for sample_x in range(16):
+            red, green, blue = colors[sample_y * 16 + sample_x]
+            row.append(
+                green > 85
+                and green > red + 18
+                and green > blue + 15
+                or red > 145
+                and green > 105
+                and blue < 105
+            )
+        rows.append(row)
+    return any(
+        max(
+            (run for run in _true_runs(row)),
+            default=0,
+        )
+        >= 5
+        for row in rows[6:]
+    )
+
+
+def _true_runs(values: list[bool]) -> list[int]:
+    runs: list[int] = []
+    current = 0
+    for value in values:
+        if value:
+            current += 1
+        elif current:
+            runs.append(current)
+            current = 0
+    if current:
+        runs.append(current)
+    return runs
 
 
 _FILLED_CLOUD_WARP_TEMPLATE_16 = (
