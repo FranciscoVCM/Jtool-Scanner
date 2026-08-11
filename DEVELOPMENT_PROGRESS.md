@@ -1336,3 +1336,29 @@ still need review.
 None has a corrected giant-review JMap, so this batch supplies visual evidence
 only. No implementation or fixture change was justified, and all three remain
 `needs-more-work` in the ignored local ledger.
+
+## Checkpoint: preserve dense adjacent-up mini-spikes through block arbitration (2026-08-11)
+
+The Partysu3 fixture supplied a falsifiable regression for the generic
+minispike/block arbitration. Its authoritative map contains adjacent upward
+minispikes at `(640,560)`, `(656,560)`, and `(672,560)`. The existing dense
+adjacent-up recovery already recognized all three from local silhouette,
+block-like backing, and a same-row 16px anchor, but the later block arbitration
+discarded the high-confidence `(672,560)` candidate because its backing block
+scored higher. Arbitration now preserves that object-class/topology pattern
+without naming a screen, palette, coordinate, or tileset. A focused regression
+test protects the precedence rule.
+
+Measured results:
+
+| fixture | mini-spikes | controls |
+| --- | --- | --- |
+| `irkara-nr-partysu3` | improved from 73/76 matched (114 detected) to **74/76 matched (115 detected)** | saves 2/2, warps 2/2, blocks 90/90, full spikes 94/95 |
+| full 12-pair fixture workflow | aggregate improved from 272/288 matched (341 detected) to **273/288 matched (342 detected)** | color classes remain exact; NANG128/NANG138 remain exact |
+| FTFA strict benchmark | unchanged at **926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction** | no benchmark regression |
+
+The focused geometry suite passes **229 tests in 103.226 seconds**, and the
+complete unittest suite passes **337 tests in 517.038 seconds**, `OK`. The
+remaining Partysu3 mini-spike misses and false positives are still recorded as
+geometry follow-ups; this checkpoint does not claim exact recovery of the full
+fixture.

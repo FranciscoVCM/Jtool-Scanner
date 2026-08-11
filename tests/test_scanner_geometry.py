@@ -1189,6 +1189,40 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertEqual(result, [true_mini, outside_block])
 
+    def test_block_overlap_keeps_dense_adjacent_up_mini(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        backing_block = Detection("block", OBJ_BLOCK, 672, 544, 1.0, image_box)
+        left_anchor = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            640,
+            560,
+            0.486,
+            image_box,
+        )
+        adjacent_anchor = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            656,
+            560,
+            0.465,
+            image_box,
+        )
+        dense_mini = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            672,
+            560,
+            0.725,
+            image_box,
+        )
+
+        result = _arbitrate_minispikes_against_blocks(
+            [backing_block, left_anchor, adjacent_anchor, dense_mini]
+        )
+
+        self.assertIn(dense_mini, result)
+
     def test_repeated_terrain_mini_motif_prunes_same_direction_residuals(self) -> None:
         image_box = Box(0, 0, 1, 1)
         blocks = [

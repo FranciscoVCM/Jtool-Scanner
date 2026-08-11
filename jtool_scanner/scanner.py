@@ -13598,6 +13598,22 @@ def _arbitrate_minispikes_against_blocks(
         if not overlapping:
             continue
         strongest_block = max(overlapping, key=lambda detection: detection.score)
+        if (
+            mini_spike.type_id == OBJ_MINI_SPIKE_UP
+            and mini_spike.score >= DENSE_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE
+            and _has_dense_adjacent_up_mini_spike_support(
+                mini_spikes,
+                mini_spike.x,
+                mini_spike.y,
+            )
+        ):
+            # The dense adjacent-up recovery has already required a strong
+            # local silhouette, block-like backing, and an independent
+            # same-row 16px anchor.  Preserve that evidence through this
+            # later block arbitration instead of treating the backing cell
+            # as decorative terrain.  The rule is object- and topology-based
+            # and does not depend on a tileset, palette, or screen identity.
+            continue
         mini_wins = (
             mini_spike.score >= MINI_SPIKE_BLOCK_WIN_MIN_SCORE
             and mini_spike.score - strongest_block.score
