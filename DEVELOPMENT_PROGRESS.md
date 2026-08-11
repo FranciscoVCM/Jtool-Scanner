@@ -738,6 +738,19 @@ they did not justify a new screen-specific rule. The ignored ledger records
 the source/JMap/reconstruction/blend evidence and the absence of corrected
 authoritative giant-review JMaps.
 
+## Checkpoint: NANG-139r/140 decoration and refresher review (2026-08-11)
+
+NANG_139r and NANG_140 were regenerated in current29. NANG_139r retains its
+reverse spiral warp and killer-block field while question-mark art, panels,
+stars, and the player remain outside gameplay classes. NANG_140 retains its
+labeled save, all four blue jump refreshers, and one spiral warp while its
+stars, orange trigger, question-mark art, and player remain non-gameplay.
+
+Current29 totals are 147 and 194. This completes the bounded NANG family
+review without adding another screen-specific exception; the ignored ledger
+records the source/JMap/reconstruction/blend evidence and the lack of
+corrected authoritative giant-review JMaps.
+
 ## Checkpoint: NANG-130/130r/131r refresher and gravity audit (2026-08-11)
 
 NANG_130, NANG_130r, and NANG_131r were regenerated in current27. The
