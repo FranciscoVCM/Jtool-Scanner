@@ -1411,3 +1411,25 @@ tilesets, so no generalized change was justified.
 
 This was a read-only visual/exact audit. No fixture, scanner, or ledger row was
 altered; the generated reports and crops remain ignored local evidence.
+
+## Checkpoint: continuation baseline and refreshed CN2-5/CN3-16 audit (2026-08-11)
+
+The continuation re-read the authoritative 71-screen task and established a
+fresh baseline at `5d8348f`. Local `main` equals `origin/main`, the working
+tree is clean, the application returns HTTP 200, and all 71 ledger rows still
+have source, current-JMap, preview, and blend paths. The complete unittest
+discovery run passed **337 tests in 515.518 seconds**, `OK`. The exact FTFA
+benchmark remains **926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction**; both misses are the established screen-1 boundary blocks.
+
+The two bounded fixture audits were regenerated from the current scanner:
+
+| fixture | result | interpretation |
+| --- | --- | --- |
+| `cn2-5-jumprefresh` | blocks 315/318 (391 detected), full spikes 29/32 (80), mini-spikes 3/3 (11), refreshers 6/7 (6) | the seventh truth refresher at `(624,160)` is absent from the correctly scaled game screenshot but present in the JTool reference; precision is already 100% for the six emitted refreshers, so no detector broadening is justified |
+| `cn3-16` | saves 4/4, warp 1/1, miniblocks 501/501, mini-spikes 54/54, full spikes 27/30 (35) | the remaining full-spike misses coexist with extra bright overlapping candidates; relaxing the existing projection/arbitration would add unsupported geometry |
+
+This continuation produced no safe generalized scanner hypothesis and changed
+no implementation, fixture, or authoritative map. The refreshed reports are
+ignored local evidence; the existing ledger statuses remain authoritative for
+the giant-review corpus.
