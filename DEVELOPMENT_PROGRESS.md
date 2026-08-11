@@ -876,3 +876,18 @@ The ignored giant-review ledger contains 71 unique source identities and 71
 current source/JMap/reconstruction/blend records. Two stale Dotkid4/5 preview
 paths were corrected to their existing targeted current artifacts; no source,
 fixture, JMap, or implementation file was changed by that bookkeeping.
+
+## Checkpoint: neutral-outline held-out NANG validation (2026-08-11)
+
+NANG_11, NANG_130, and NANG_138 were regenerated together in current35 after
+the neutral gray outline-warp change. NANG_11 retains one gray spiral warp,
+one save, and the same documented full-spike/platform geometry issues.
+NANG_130 retains one spiral warp, its save, and three jump refreshers; NANG_138
+retains one spiral warp and all twelve jump refreshers. Their object counts
+and anchor coordinates match the preceding current34/current27/current25
+outputs, so the new palette seed adds the intended neutral recognition without
+changing the held-out NANG object families.
+
+The ignored ledger now points rows 57, 60, and 67 at current35. No corrected
+authoritative giant-review JMaps exist for these rooms, so this is a measured
+held-out classification checkpoint rather than an exact geometry claim.
