@@ -6396,7 +6396,12 @@ def _detect_red_body_header_saves(
                 for y in range(header_top, header_bottom)
                 for x in range(box.x, box.right)
             )
-            if dark_header_pixels / header_area < 0.10:
+            # Fragmented red terrain can accidentally form a pale rectangle
+            # above a red component.  Require a meaningful amount of dark
+            # localized header detail as well as pale background so that a
+            # real SAVE label survives palette shifts without promoting
+            # texture or triangle edges into saves.
+            if dark_header_pixels / header_area < 0.20:
                 continue
 
         if fragmented:

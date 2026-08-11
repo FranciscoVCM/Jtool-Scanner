@@ -224,6 +224,15 @@ class ImageAndScannerTests(unittest.TestCase):
 
         self.assertEqual(saves, [])
 
+    def test_fragmented_red_body_with_weak_header_detail_is_not_a_save(self) -> None:
+        saves = _detect_red_body_header_saves(
+            _synthetic_fragmented_header_save_room(header_dark_width=4),
+            Box(0, 0, 800, 608),
+            8,
+        )
+
+        self.assertEqual(saves, [])
+
     def test_fragmented_red_save_body_recovers_headered_terrain_save(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
         image = load_png(fixture_dir / "cn3-18-game.png")
@@ -589,7 +598,9 @@ def _synthetic_fragmented_cross_save_room() -> RGBImage:
     return RGBImage(width, height, bytes(data))
 
 
-def _synthetic_muted_cross_save_room(*, with_header: bool) -> RGBImage:
+def _synthetic_muted_cross_save_room(
+    *, with_header: bool, header_dark_width: int = 20
+) -> RGBImage:
     width, height = 800, 608
     data = bytearray([80, 65, 55] * width * height)
     _rect(data, width, 96, 104, 30, 20, (175, 60, 45))
@@ -597,7 +608,18 @@ def _synthetic_muted_cross_save_room(*, with_header: bool) -> RGBImage:
     _rect(data, width, 102, 113, 18, 4, (170, 125, 75))
     if with_header:
         _rect(data, width, 96, 96, 30, 8, (205, 190, 170))
-        _rect(data, width, 101, 98, 20, 3, (75, 65, 60))
+        _rect(data, width, 101, 98, header_dark_width, 3, (75, 65, 60))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_fragmented_header_save_room(*, header_dark_width: int) -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([80, 65, 55] * width * height)
+    red = (175, 60, 45)
+    for x, y in ((100, 108), (119, 108), (100, 120), (119, 120)):
+        _rect(data, width, x, y, 10, 7, red)
+    _rect(data, width, 100, 96, 29, 15, (205, 190, 170))
+    _rect(data, width, 104, 98, header_dark_width, 6, (75, 65, 60))
     return RGBImage(width, height, bytes(data))
 
 

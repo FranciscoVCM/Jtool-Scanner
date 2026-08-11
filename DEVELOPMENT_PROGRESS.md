@@ -577,3 +577,27 @@ follow-up-2 Lap image still cannot be safely assigned to a Lap Around ordinal.
 The blends show no justified new generalized classifier rule in this pass.
 The material is preserved locally under ignored `.artifacts/follow-up-2/` and
 remains part of the visual review corpus, not a strict exact benchmark.
+
+## Checkpoint: CN3_26 duplicate red-body arbitration (2026-08-11)
+
+The preserved `CN3_26` source was regenerated after the giant-review save
+audit found three red-body candidates even though the source visibly contains
+only two SAVE sprites. The extra candidate was a red terrain/triangle region
+with a pale-looking area above it but weak localized dark header detail. The
+fragmented red-body fallback now requires at least 20% dark header evidence
+(up from 10%) in addition to its scale-normalized distributed morphology and
+pale header gate. This is a visual-header evidence rule, not a screen,
+coordinate, filename, or tileset exception.
+
+Before the gate, `CN3_26` emitted saves at `(32,96)`, `(464,424)`, and
+`(448,448)`; after it, only `(32,96)` and `(448,448)` remain. The new
+synthetic regression covers a fragmented red body with pale but weak header
+detail, while the existing muted-header and `cn3-18` recovery tests remain
+green. The exact FTFA benchmark is unchanged at `926/928 exact; 0 false
+positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+The protected four-room scan also retains all high-value object matches:
+10/10 saves, 4/4 warps, 5/5 water cells, 4/4 walljumps, and 8/8 gravity
+flippers. Its geometry totals remain 866/875 mini blocks, 244/244 blocks,
+249/260 full spikes, and 181/184 mini spikes matched; these remain review
+metrics rather than exact golden-room claims.
