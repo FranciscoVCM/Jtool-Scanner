@@ -6398,7 +6398,15 @@ def _detect_red_body_header_saves(
         raw_y = (box.y - room.y) / image_scale_y - 8
         map_x = round_to_step(raw_x, grid_step)
         map_y = round_to_step(raw_y, grid_step)
-        score = min(0.98, 0.90 + density * 0.06 + pale_header_share * 0.12)
+        if fragmented:
+            # The normal four-quadrant path is stronger when it is available;
+            # the merged path is a fallback for a terrain-occluded body.
+            score = min(
+                0.92,
+                0.84 + density * 0.05 + pale_header_share * 0.08,
+            )
+        else:
+            score = min(0.98, 0.90 + density * 0.06 + pale_header_share * 0.12)
         detections.append(
             Detection(
                 detection_kind,
