@@ -751,3 +751,17 @@ Current27 totals are 122, 261, and 173. This is a negative-control audit of
 the existing refresher/gravity and spiral-warp rules; no new screen-specific
 rule was justified. The ignored ledger records each source/JMap/reconstruction
 /blend result and the absence of corrected authoritative giant-review JMaps.
+
+## Checkpoint: NANG-137/137r/139 trigger and warp review (2026-08-11)
+
+NANG_137, NANG_137r, and NANG_139 were regenerated in current28. The
+familiar and reverse trigger-like colored squares in 137/137r remain outside
+save/vine gameplay classes, while their spiral warps and killer blocks remain
+detected. NANG_139 retains its labeled save, two-piece spiral warp, and
+killer-block field; its question-mark art and panels remain decorative.
+
+Current28 totals are 114, 114, and 147. This confirms the existing
+trigger-vs-save, reverse-palette, and spiral-warp rules on another family
+without adding a screen-specific exception. The ignored ledger records the
+source/JMap/reconstruction/blend evidence and the absence of corrected
+authoritative giant-review JMaps.
