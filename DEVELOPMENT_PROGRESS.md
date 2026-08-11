@@ -891,3 +891,22 @@ changing the held-out NANG object families.
 The ignored ledger now points rows 57, 60, and 67 at current35. No corrected
 authoritative giant-review JMaps exist for these rooms, so this is a measured
 held-out classification checkpoint rather than an exact geometry claim.
+
+## Checkpoint: low-contrast platform material-support arbitration (2026-08-11)
+
+NANG_11 exposed one remaining low-contrast platform false positive: a neutral
+terrain edge matched the thin-bar morphology but had block-material support
+`0.070`. A read-only audit of all 71 current outputs found no other platform
+detection below that value; all eight tracked authoritative platform truths
+were at least `0.106`. The low-contrast platform path now requires a relative
+block-support score of `0.08`, while bright-outline and textured platform paths
+remain unchanged.
+
+Measured results: NANG_11 drops from 20 to 19 objects and removes its false
+platform; all five Irkara-71 platforms remain; the known K3 and Irkara-89
+geometry differences are unchanged. Focused platform tests pass, the complete
+suite passes **325 tests in 416.991 seconds**, FTFA remains `926/928 exact; 0
+false positives; 2 missed; 0 shifted; 0 wrong direction`, and the restarted
+app returns HTTP 200. Current36 is the persisted NANG_11 source/JMap/
+reconstruction/blend checkpoint; one unsupported full-spike and compact-room
+normalization remain unresolved.

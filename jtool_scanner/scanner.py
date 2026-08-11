@@ -274,6 +274,12 @@ PLATFORM_LOW_CONTRAST_MAX_SATURATION = 0.20
 PLATFORM_LOW_CONTRAST_CONTEXT_MARGIN = 16
 PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_EDGE_ROWS = 2
 PLATFORM_LOW_CONTRAST_MIN_CENTER_SCORE = 0.08
+# A neutral terrain edge can satisfy the thin-bar morphology while having no
+# block-like interior at all.  Keep low-contrast platforms only when their
+# patch retains this small amount of independent material support; the
+# threshold is below every tracked authoritative platform truth (minimum
+# measured support 0.106) and above the NANG_11 false candidate (0.070).
+PLATFORM_LOW_CONTRAST_MIN_BLOCK_SCORE = 0.08
 PLATFORM_BRIGHT_MIN_HORIZONTAL_RUN = 30
 PLATFORM_BRIGHT_MIN_VERTICAL_RUN = 14
 PLATFORM_BRIGHT_MIN_GRAY_RANGE = 180
@@ -9912,20 +9918,23 @@ def _detect_platforms(
                     y + PLATFORM_HEIGHT,
                     PLATFORM_WIDTH,
                 ).edge_density
-            if not (
+            low_contrast_candidate = (
                 _is_low_contrast_platform_candidate(
                     features,
                     profile.saturation,
                     patch.center_score,
+                    block_score=block_score,
                 )
                 and _has_complete_low_contrast_platform_context(x, y)
-                or _is_bright_outline_platform_candidate(
-                    features,
-                    patch,
-                    block_score,
-                    below_edge,
-                )
-                or _is_textured_platform_candidate(
+            )
+            bright_candidate = _is_bright_outline_platform_candidate(
+                features,
+                patch,
+                block_score,
+                below_edge,
+            )
+            textured_candidate = (
+                _is_textured_platform_candidate(
                     features,
                     patch,
                     block_score,
@@ -9937,6 +9946,11 @@ def _detect_platforms(
                     x,
                     y,
                 )
+            )
+            if not (
+                low_contrast_candidate
+                or bright_candidate
+                or textured_candidate
             ):
                 continue
             score = (
@@ -10023,6 +10037,8 @@ def _is_low_contrast_platform_candidate(
     features: _PlatformPatchFeatures,
     saturation: float,
     center_score: float,
+    *,
+    block_score: float | None = None,
 ) -> bool:
     """Recognize a dark/neutral thin bar without confusing colored terrain lips.
 
@@ -10042,6 +10058,10 @@ def _is_low_contrast_platform_candidate(
         and features.horizontal_edge_rows
         >= PLATFORM_LOW_CONTRAST_MIN_HORIZONTAL_EDGE_ROWS
         and center_score >= PLATFORM_LOW_CONTRAST_MIN_CENTER_SCORE
+        and (
+            block_score is None
+            or block_score >= PLATFORM_LOW_CONTRAST_MIN_BLOCK_SCORE
+        )
     )
 
 
@@ -10081,6 +10101,7 @@ def _is_low_contrast_platform_detection(
         features,
         profile.saturation,
         patch.center_score,
+        block_score=_classify_block(patch).score,
     )
 
 

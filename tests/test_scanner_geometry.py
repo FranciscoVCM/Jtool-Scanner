@@ -5831,6 +5831,22 @@ class ScannerGeometryTests(unittest.TestCase):
         )
         self.assertFalse(
             _is_low_contrast_platform_candidate(
+                _PlatformPatchFeatures(32, 15, 127, 2),
+                0.01,
+                0.125,
+                block_score=0.07,
+            )
+        )
+        self.assertTrue(
+            _is_low_contrast_platform_candidate(
+                _PlatformPatchFeatures(32, 15, 127, 2),
+                0.01,
+                0.125,
+                block_score=0.08,
+            )
+        )
+        self.assertFalse(
+            _is_low_contrast_platform_candidate(
                 _PlatformPatchFeatures(23, 14, 85, 2),
                 0.05,
                 0.12,
