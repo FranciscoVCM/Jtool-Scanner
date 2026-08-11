@@ -57,6 +57,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _dense_minispike_lattice_axis,
     _detect_mini_blocks,
+    _detect_outline_cloud_warps,
     _detect_outline_warps,
     _component_silhouette_iou,
     _filled_cloud_warp_has_ambiguous_neutral_shadow,
@@ -6249,6 +6250,42 @@ class ScannerGeometryTests(unittest.TestCase):
                 **{**metrics, "inner_ring_share": 0.60}
             )
         )
+
+    def test_outline_cloud_warp_rejects_neutral_bright_player_shadow(self) -> None:
+        width, height = 64, 64
+        image = RGBImage(width, height, bytes((118, 118, 118)) * width * height)
+        box = Box(20, 20, 23, 25)
+        pixels = [
+            (x, y)
+            for y in range(box.y, box.bottom)
+            for x in range(box.x, box.right)
+        ]
+        metrics = {
+            "map_width": 17.9,
+            "map_height": 21.2,
+            "fill": 0.743,
+            "row_multi": 0.077,
+            "column_multi": 0.136,
+            "run_sum": 2.252,
+            "center_fill": 1.0,
+            "silhouette_iou": 0.816,
+            "inner_ring_share": 0.341,
+            "outer_ring_share": 0.852,
+        }
+        with mock.patch(
+            "jtool_scanner.scanner._connected_components",
+            return_value=[(box, pixels)],
+        ), mock.patch(
+            "jtool_scanner.scanner._cloud_warp_palettes",
+            return_value=(("bright", lambda _r, _g, _b: True),),
+        ), mock.patch(
+            "jtool_scanner.scanner._is_outline_cloud_warp_metrics",
+            return_value=True,
+        ):
+            self.assertEqual(
+                _detect_outline_cloud_warps(image, Box(0, 0, width, height), 8),
+                [],
+            )
 
     def test_bright_platform_candidate_requires_empty_lower_half(self) -> None:
         features = _PlatformPatchFeatures(32, 16, 255)

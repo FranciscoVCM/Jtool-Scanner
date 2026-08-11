@@ -7499,6 +7499,18 @@ def _detect_outline_cloud_warps(
             ):
                 continue
             map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+            if palette_name == "bright" and (
+                _filled_cloud_warp_has_ambiguous_neutral_shadow(image, box)
+                or _filled_cloud_warp_shadow_is_background_like(
+                    image,
+                    room,
+                    box,
+                )
+            ):
+                # White player skins can satisfy the outlined-cloud topology
+                # exactly.  A neutral bright shadow is not portal evidence;
+                # retain only chromatic/darker portal candidates.
+                continue
             detections.append(
                 Detection(
                     f"warp_outline_cloud_{palette_name}",

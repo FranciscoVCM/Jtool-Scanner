@@ -667,3 +667,25 @@ with `OK`; the documented FTFA benchmark remains `926/928 exact; 0 false
 positives; 2 missed; 0 shifted; 0 wrong direction`. The two FTFA misses are
 the established lower-boundary blocks, not save or warp regressions. The
 complete unittest discovery run also passed: 323 tests in 412.983 seconds.
+
+## Checkpoint: outlined-cloud player veto on CN3-25 through CN3-27 (2026-08-11)
+
+CN3_25, CN3_26, and CN3_27 were regenerated as the next unfamiliar red
+outlined-tileset batch. Each source contains a small white player-like cloud
+silhouette that satisfied the outlined-cloud warp topology. The candidate's
+shadow is bright, neutral gray, matching the already-established ambiguous
+player evidence for filled clouds. The outlined-cloud path now applies the
+same palette-relative neutral-shadow and local-background contrast veto; it
+does not use a screen name, coordinate, floor number, or tileset exception.
+
+The current22 projects emit zero warps on all three screens while retaining
+the visible saves (2, 2, and 4), apples (4, 0, and 9), vines, water-2, and
+outlined terrain. Floor numbers 25, 26, and 27 remain background text. The
+true filled-cloud warp controls remain present in current23 CN3_16 and
+CN3_18, one each. These giant-review screens still lack corrected
+authoritative JMaps, so this is a classification/no-false-warp checkpoint,
+not an exact geometry claim. The local ignored ledger records current22
+JMaps, previews, blends, evidence, and unresolved geometry status.
+The focused cloud regressions passed, the exact FTFA benchmark remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`,
+and the complete unittest discovery run passed 324 tests in 609.557 seconds.
