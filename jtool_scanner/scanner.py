@@ -7182,6 +7182,12 @@ FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MAX_SATURATION = 4.5
 FILLED_CLOUD_WARP_NEUTRAL_SHADOW_MIN_LUMINANCE = 110.0
 FILLED_CLOUD_WARP_NEUTRAL_SHADOW_QUANTILE = 0.20
 FILLED_CLOUD_WARP_MIN_SHADOW_RING_CONTRAST = 28.0
+# A real red portal orb is a compact filled component.  Fragmented red
+# terrain textures can satisfy the size and halo-patch tests after a small
+# embedded room is normalized, but their component fill is materially lower.
+# Tracked red-orb truths range from 0.708 to 0.882 (including scaled review
+# blends), so keep a margin below that observed floor.
+HALOED_RED_WARP_MIN_COMPONENT_FILL = 0.60
 
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
@@ -7708,7 +7714,8 @@ def _detect_haloed_red_warps(
         ratio = box.width / max(1, box.height)
         if not (0.65 <= ratio <= 1.45):
             continue
-        if len(pixels) / max(1, box.area) < 0.50:
+        component_fill = len(pixels) / max(1, box.area)
+        if component_fill < HALOED_RED_WARP_MIN_COMPONENT_FILL:
             continue
         center_x, center_y = _image_box_to_jtool_center(box, room, grid_step)
         features = _patch_features(

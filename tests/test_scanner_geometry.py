@@ -121,6 +121,7 @@ from jtool_scanner.scanner import (
     _is_final_miniblock_noise_candidate,
     _is_inverted_boundary_terrain_candidate,
     _is_haloed_red_warp_patch,
+    HALOED_RED_WARP_MIN_COMPONENT_FILL,
     _is_dark_silhouette_warp_metrics,
     _is_distinctive_singleton_gravity_pair,
     _looks_like_block_texture_minispike_lattice,
@@ -440,6 +441,10 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertTrue(_is_haloed_red_warp_patch(halo))
         self.assertFalse(_is_haloed_red_warp_patch(apple))
+
+    def test_haloed_red_warp_component_fill_rejects_terrain_fragments(self) -> None:
+        self.assertGreaterEqual(HALOED_RED_WARP_MIN_COMPONENT_FILL, 0.60)
+        self.assertLess(HALOED_RED_WARP_MIN_COMPONENT_FILL, 0.708)
 
     def test_dark_silhouette_warp_requires_isolated_solid_portal_topology(self) -> None:
         portal_patch = _PatchFeatures((), 0.410, 0.491, 0.047)

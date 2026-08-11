@@ -929,3 +929,15 @@ so a global block-score or side-coverage veto would remove real geometry. No
 screen-specific rule was added. The durable next target is generalized compact
 room localization or a topology-aware texture discriminator, protected by the
 FTFA exact benchmark and the existing CN3-16/CN3-18 geometry regressions.
+
+## Checkpoint: filled red-portal component gate (2026-08-11)
+
+Embedded-room normalization exposed a palette-independent failure mode in the
+haloed-red warp detector: fragmented red brick X-texture could satisfy the
+old `0.50` component-fill floor after rescaling. The detector now requires a
+filled red component of at least `0.60`, while retaining the existing halo
+patch topology gate. A read-only audit of all tracked red-orb examples found
+17 detections with observed fills from `0.708` through `0.882`, so the new
+floor preserves the corpus; the two compact NANG_11 brick fragments fall
+below it and are removed. The exact FTFA benchmark remains `926/928 exact;
+0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
