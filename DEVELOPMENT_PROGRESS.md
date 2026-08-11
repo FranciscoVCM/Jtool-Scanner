@@ -830,3 +830,19 @@ claim. The ignored review ledger contains the current32 artifact paths and
 object counts. The reconnect did not lose the prior pushed commits or the
 current progress; only this durable log entry and its ignored ledger rows
 were pending publication.
+
+## Checkpoint: NANG_11 compact-room negative review (2026-08-11)
+
+NANG_11 was regenerated in current33. The scanner ignores the Floor/TNT/
+narrator interface and retains the central labeled save, but it misses the
+visible white spiral warp and emits one full-spike plus one platform geometry
+false positive. The source is a small centered room inside a screenshot whose
+overall aspect ratio is close enough to be inferred as a 25x19 room; the
+resulting full-frame scaling is the likely cause of the warp miss. This is a
+general compact-room normalization gap, not evidence for a NANG-specific
+object rule, and no speculative code change was made without a tracked
+authoritative map.
+
+Current33 emits 20 objects (`1:17,3:1,12:1,13:1`). The ignored ledger now
+points row 57 at the current33 source/JMap/reconstruction/blend artifacts and
+records the unresolved room-size issue for a future generalized pass.
