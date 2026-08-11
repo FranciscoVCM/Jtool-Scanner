@@ -1219,3 +1219,21 @@ measurements remain unchanged (`1/1`, `1/1`, `1/1`, `14/14`, `9/9`, `1/1`, and
 missed; 0 shifted; 0 wrong direction`, and NANG138 remains exact for blocks,
 full spikes, saves, warps, and refreshers. The complete unittest suite passes
 **335 tests in 675.556 seconds**, `OK`.
+
+## Checkpoint: one-tile boundary contour projection (2026-08-11)
+
+Some clipped neutral squares left their strongest contour one partial tile
+inward. The recovery now projects that already-qualified evidence to the
+nearest room boundary only within one tile, retaining the same anchor veto and
+deduplication rules. This is a capture-clipping generalization and does not
+name a screen or coordinate.
+
+The Irkara-89 scan now reports **81/98 blocks matched, 86 detected (94.2%
+precision)**. Saves, apples, warps, water, walljumps, platforms, and full
+spikes remain `1/1`, `1/1`, `1/1`, `14/14`, `9/9`, `1/1`, and `112/113`.
+NANG138 remains exact for blocks, full spikes, saves, warps, and refreshers;
+FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`. The complete unittest suite passes **335 tests in 687.094 seconds**,
+`OK`. This closes the current neutral-outlined-block iteration; the remaining
+17 Irkara-89 misses are overlapping/partial shapes requiring a separate
+evidence pass.

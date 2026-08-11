@@ -295,6 +295,9 @@ BRIGHT_NEUTRAL_OUTLINE_BLOCK_MAX_CENTER = 0.20
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE = 0.50
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_ANCHOR_DISTANCE = 32.0
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE = 16.0
+# A clipped square can leave its strongest surviving contour one partial cell
+# inward; project that evidence only across this one-tile boundary margin.
+BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN = GRID_SIZE - 8
 PLATFORM_WIDTH = 32
 PLATFORM_HEIGHT = 16
 PLATFORM_SAMPLE_WIDTH = 32
@@ -3422,6 +3425,45 @@ def _recover_bright_neutral_outline_blocks(
                     GRID_SIZE,
                 )
             )
+            boundary_positions: set[tuple[int, int]] = set()
+            if map_y <= BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN:
+                boundary_positions.add((map_x, 0))
+            elif map_y >= (
+                ROOM_HEIGHT
+                - GRID_SIZE
+                - BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN
+            ):
+                boundary_positions.add((map_x, ROOM_HEIGHT - GRID_SIZE))
+            if map_x <= BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN:
+                boundary_positions.add((0, map_y))
+            elif map_x >= (
+                ROOM_WIDTH
+                - GRID_SIZE
+                - BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN
+            ):
+                boundary_positions.add((ROOM_WIDTH - GRID_SIZE, map_y))
+            for boundary_x, boundary_y in boundary_positions:
+                if (boundary_x, boundary_y) == (map_x, map_y):
+                    continue
+                if _near_anchor(
+                    boundary_x,
+                    boundary_y,
+                    anchor_list,
+                    BRIGHT_NEUTRAL_OUTLINE_BLOCK_ANCHOR_DISTANCE,
+                ):
+                    continue
+                candidates.append(
+                    _geometry_detection(
+                        "bright_neutral_outline_block_boundary",
+                        OBJ_BLOCK,
+                        boundary_x,
+                        boundary_y,
+                        max(0.301, score - 0.001),
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
     return _dedupe_detections(
         candidates,
         min_distance=BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE,
