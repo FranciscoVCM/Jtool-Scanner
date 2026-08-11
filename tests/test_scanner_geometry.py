@@ -1685,7 +1685,11 @@ class ScannerGeometryTests(unittest.TestCase):
                 for detection in vertical_minis
             )
         )
-        self.assertEqual(len(vertical_minis), 9)
+        self.assertEqual(len(vertical_minis), 10)
+        self.assertIn(
+            (OBJ_MINI_SPIKE_DOWN, 560, 384),
+            {(detection.type_id, detection.x, detection.y) for detection in vertical_minis},
+        )
 
     def test_nang138_minis_can_share_cells_with_jump_refreshers(self) -> None:
         fixture_dir = (

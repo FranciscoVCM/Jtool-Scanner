@@ -337,6 +337,7 @@ PLATFORM_TEXTURED_MAX_SATURATION = 0.20
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
+COMPACT_MINI_SPIKE_BORDERLINE_SCORE = 0.56
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
 MINI_SPIKE_BLOCKLIKE_SCORE = 0.80
@@ -3004,7 +3005,11 @@ def _detect_compact_room_spikes(
                 colors = _sample_map_patch_colors(image, room, x, y, size)
                 for direction, full_type, mini_type in classes:
                     score, colored = _neutral_triangle_score(colors, direction)
-                    minimum = 0.57 if size == GRID_SIZE else 0.60
+                    minimum = (
+                        0.57
+                        if size == GRID_SIZE
+                        else COMPACT_MINI_SPIKE_BORDERLINE_SCORE
+                    )
                     if score < minimum or not 35 <= colored <= 180:
                         continue
                     type_id = full_type if size == GRID_SIZE else mini_type

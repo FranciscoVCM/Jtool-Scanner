@@ -1271,3 +1271,18 @@ precision)**, alongside 105/105 blocks, 26/26 full spikes, 1/1 save, 1/1 warp,
 and 12/12 jump-refreshers. The focused compact regressions pass; FTFA remains
 the strict golden-room gate at `926/928 exact` pending the same two known
 screen-1 misses.
+
+## Checkpoint: compact borderline mini-spike recovery (2026-08-11)
+
+NANG128 had one authoritative down-mini at `(560,384)` whose neutral-triangle
+score was `0.5698`, just below the compact pass floor, while its supported
+same-direction neighbor at `(544,384)` scored `0.6162`. The compact detector
+now admits a narrow `0.56` borderline band; the existing vertical support,
+cluster, and final arbitration gates still decide whether it survives. Generic
+room thresholds and horizontal recovery are unchanged.
+
+NANG128 improved from **17/18 matched (17 detected)** to **18/18 matched (18
+detected)**. NANG138 remains **58/58 matched (58 detected)**, and its blocks,
+full spikes, saves, warp, and refreshers remain exact. Held-out scans of
+CN2-5, CN3-16, CN3-18, and NANG135 showed no new mini-spike regression; their
+pre-existing geometry totals remain documented. FTFA remains `926/928 exact`.
