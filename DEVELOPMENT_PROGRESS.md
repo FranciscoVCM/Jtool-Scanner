@@ -1321,3 +1321,18 @@ All four remain `needs-more-work` in the local ledger because no corrected
 giant-review JMaps exist. This batch produced no safe generalized scanner
 hypothesis and changed no implementation or fixture; these are visual review
 records, not exact-map claims.
+
+## Checkpoint: three unfamiliar-tileset visual audits (2026-08-11)
+
+Direct source/blend review of `CN3_31`, `CN3_92`, and `CN3_Bathhouse1` confirms
+that their current ledger entries still describe the remaining risk. `CN3_31`
+has bright-neutral white/black terrain whose block-versus-background geometry is
+not yet stable. `CN3_92` retains the cyan field as water/background and the
+brown/green terrain and controls, but the terrain lattice remains visually
+ambiguous. Bathhouse1 retains the blue geometry and cyan background/water
+separation; its pink trigger-like square and several overlapping structures
+still need review.
+
+None has a corrected giant-review JMap, so this batch supplies visual evidence
+only. No implementation or fixture change was justified, and all three remain
+`needs-more-work` in the ignored local ledger.
