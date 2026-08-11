@@ -706,3 +706,19 @@ object totals are 344, 344, and 426. The local ignored ledger records each
 source/JMap/reconstruction/blend review and the remaining lack of corrected
 authoritative giant-review JMaps, so these are classification/placement
 checkpoints rather than exact geometry claims.
+
+## Checkpoint: NANG-128/135/138 compact reverse-palette review (2026-08-11)
+
+NANG_128, NANG_135, and NANG_138 were regenerated in current25 through the
+same source/JMap/reconstruction/blend workflow. The compact/downsampled save
+paths now retain NANG_128's two green saves and NANG_135's tinted-header save;
+the white spiral warp remains a warp and the dense killer-block fields remain
+killer blocks. NANG_138 retains its one spiral warp and all twelve visible
+blue jump refreshers, with no false save promotion.
+
+The measured current25 object totals are 128, 165, and 210. Star, narrator,
+and other decorative material remains outside gameplay classes. This batch
+confirms the existing compact scale/header and refresher-shape rules on a
+reverse palette; it did not justify a new screen-specific rule. The local
+ignored ledger records current25 JMaps, previews, blends, evidence, and the
+absence of corrected authoritative giant-review JMaps.
