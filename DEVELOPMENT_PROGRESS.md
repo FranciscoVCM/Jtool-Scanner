@@ -722,3 +722,18 @@ confirms the existing compact scale/header and refresher-shape rules on a
 reverse palette; it did not justify a new screen-specific rule. The local
 ignored ledger records current25 JMaps, previews, blends, evidence, and the
 absence of corrected authoritative giant-review JMaps.
+
+## Checkpoint: NANG reverse tileset controls (2026-08-11)
+
+NANG_128r, NANG_135r, and NANG_138r were regenerated in current26 as the
+reverse-metal tileset controls. The orange/green trigger squares in NANG_128r
+remain outside save and vine classes; its killer blocks, spikes, and spiral
+warp remain. NANG_135r retains its labeled save, spiral warp, and killer-block
+field while stars remain decorative. NANG_138r retains all three blue jump
+refreshers and its spiral warp, with no false save or vine promotion.
+
+The current26 object totals are 127, 154, and 188. These results show the
+existing shape/relative-palette rules transferring to the reverse family;
+they did not justify a new screen-specific rule. The ignored ledger records
+the source/JMap/reconstruction/blend evidence and the absence of corrected
+authoritative giant-review JMaps.
