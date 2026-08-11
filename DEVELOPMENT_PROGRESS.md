@@ -1155,3 +1155,24 @@ The focused apple and warp regressions pass. The complete unittest suite passes
 `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`;
 the misses are still the lower-right/left-edge blocks in FTFA screen 1, not a
 new regression.
+
+## Checkpoint: normalized 71-screen review status ledger (2026-08-11)
+
+The ignored `.artifacts/giant-review/review-ledger.csv` was re-audited after
+the reconnect. All 71 canonical source records still have their source,
+current JMap, preview, and blend paths; no screen identity or generated output
+was lost. The original thematic `visual_status` labels and evidence are
+preserved, and two explicit columns now provide the required durable review
+vocabulary: `review_status` (`accepted`, `needs-more-work`, or `unresolved`)
+and `status_basis`.
+
+The current ledger contains 58 accepted visual object-class audits, 13 screens
+with documented geometry/appearance follow-ups, and no unresolved artifact or
+identity rows. “Accepted” means the source/current/blend object-class review
+found no unexplained discrepancy; it does not turn a visual-only room into an
+exact benchmark when a corrected giant-review JMap is absent. The 13 follow-up
+rows are `Zero_Final`, `CN3_31`, `CN3_92`, `CN3_Bathhouse1`, `CN3_Dotkid1`
+through `CN3_Dotkid5`, `CN3_Entrance2`, `CN3_Redcube3`, `CN3_Secret1`, and
+`NANG_11`. Their existing `remaining_issue` text remains the authoritative
+next-step record. This ledger update is local and ignored; no private corpus or
+generated artifact is staged.
