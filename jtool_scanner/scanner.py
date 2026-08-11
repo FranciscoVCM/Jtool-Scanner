@@ -242,6 +242,13 @@ SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_NARROW_AXIS = 3
 SUPPORTED_TERRAIN_WATER_PRESERVE_MIN_SCORE = 0.80
 SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_HALF_PROFILE_DISTANCE = 45.0
 SUPPORTED_TERRAIN_WATER_PRESERVE_MAX_EDGE_DENSITY = 0.22
+# Textured fields use adjacency and independent half-cell density because
+# their local edge density is too high for the smooth-anchor path.
+SUPPORTED_TERRAIN_WATER_FIELD_MIN_SCORE = 0.80
+SUPPORTED_TERRAIN_WATER_FIELD_NEIGHBOR_RADIUS = 40.0
+SUPPORTED_TERRAIN_WATER_FIELD_MIN_NEIGHBORS = 2
+SUPPORTED_TERRAIN_WATER_FIELD_MAX_PROFILE_DISTANCE = 75.0
+SUPPORTED_TERRAIN_WATER_FIELD_MIN_HALF_DENSITY = 0.50
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_SCORE = 0.42
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_DIRECTION_MARGIN = 0.18
 SUPPORTED_TERRAIN_SPIKE_CELL_MIN_OUTLINE_DELTA = 0.35
@@ -11234,6 +11241,83 @@ def _is_full_width_smooth_water_anchor(
     )
 
 
+def _is_coherent_water_field_anchor(
+    detection: Detection,
+    water_detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> bool:
+    """Keep textured water when adjacent cells agree on a local field.
+
+    High-edge water tiles can fail the smooth-anchor test even when both
+    halves are real water.  Require at least two axis-aligned neighboring
+    water candidates, a water-like density in both halves, and matching local
+    profiles.  The half-density guard keeps a repeated narrow stripe from
+    becoming a field merely because it is vertically adjacent to itself.
+    """
+
+    if detection.type_id not in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3):
+        return False
+    if detection.score < SUPPORTED_TERRAIN_WATER_FIELD_MIN_SCORE:
+        return False
+    neighbors = []
+    for other in water_detections:
+        if other is detection:
+            continue
+        delta_x = abs(detection.x - other.x)
+        delta_y = abs(detection.y - other.y)
+        if (
+            delta_x + delta_y <= SUPPORTED_TERRAIN_WATER_FIELD_NEIGHBOR_RADIUS
+            and (delta_x == 0 or delta_y == 0)
+        ):
+            neighbors.append(other)
+    if len(neighbors) < SUPPORTED_TERRAIN_WATER_FIELD_MIN_NEIGHBORS:
+        return False
+    left_stats = _patch_color_stats(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        MINI_BLOCK_SIZE,
+        _is_water_blue,
+    )
+    right_stats = _patch_color_stats(
+        image,
+        room,
+        detection.x + MINI_BLOCK_SIZE,
+        detection.y,
+        MINI_BLOCK_SIZE,
+        _is_water_blue,
+    )
+    if (
+        min(left_stats.density, right_stats.density)
+        < SUPPORTED_TERRAIN_WATER_FIELD_MIN_HALF_DENSITY
+    ):
+        return False
+    profile = _patch_color_profile(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        GRID_SIZE,
+    )
+    coherent_neighbors = 0
+    for neighbor in neighbors:
+        neighbor_profile = _patch_color_profile(
+            image,
+            room,
+            neighbor.x,
+            neighbor.y,
+            GRID_SIZE,
+        )
+        if (
+            _color_profile_distance(profile, neighbor_profile)
+            <= SUPPORTED_TERRAIN_WATER_FIELD_MAX_PROFILE_DISTANCE
+        ):
+            coherent_neighbors += 1
+    return coherent_neighbors >= SUPPORTED_TERRAIN_WATER_FIELD_MIN_NEIGHBORS
+
+
 def _replace_supported_cell_terrain_geometry(
     detections: list[Detection],
     image: RGBImage,
@@ -11297,6 +11381,11 @@ def _replace_supported_cell_terrain_geometry(
         if not material_overrun:
             return detections, False
 
+    water_detections = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+    ]
     reconciled = [
         detection
         for detection in detections
@@ -11327,6 +11416,12 @@ def _replace_supported_cell_terrain_geometry(
                 )
             )
             and not _is_full_width_smooth_water_anchor(detection, image, room)
+            and not _is_coherent_water_field_anchor(
+                detection,
+                water_detections,
+                image,
+                room,
+            )
         )
         and not (
             detection.type_id == OBJ_APPLE

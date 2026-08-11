@@ -77,6 +77,7 @@ from jtool_scanner.scanner import (
     _prune_supported_terrain_spike_recovery_noise,
     _is_sparse_supported_terrain_residual_noise,
     _is_full_width_smooth_water_anchor,
+    _is_coherent_water_field_anchor,
     _select_neutral_terrain_cells,
     _repeated_terrain_paired_seed,
     _repeated_terrain_support_is_decisive,
@@ -696,6 +697,31 @@ class ScannerGeometryTests(unittest.TestCase):
             _is_full_width_smooth_water_anchor(
                 full_width,
                 _water_backed_miniblock_material_test_image(water_width=32),
+                Box(0, 0, 800, 608),
+            )
+        )
+
+    def test_supported_cell_terrain_water_field_anchor_requires_two_full_halves(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        isolated = Detection("water_2", OBJ_WATER_2, 288, 64, 0.8, image_box)
+        neighbors = [
+            Detection("water_2", OBJ_WATER_2, 288, y, 0.8, image_box)
+            for y in (64, 96, 128)
+        ]
+
+        self.assertFalse(
+            _is_coherent_water_field_anchor(
+                isolated,
+                [isolated],
+                _water_backed_miniblock_material_test_image(water_width=16),
+                Box(0, 0, 800, 608),
+            )
+        )
+        self.assertTrue(
+            _is_coherent_water_field_anchor(
+                neighbors[1],
+                neighbors,
+                _coherent_water_field_material_test_image(),
                 Box(0, 0, 800, 608),
             )
         )
@@ -6562,6 +6588,17 @@ def _water_backed_miniblock_material_test_image(
         data[cyan_start : cyan_start + water_width * 3] = bytes(
             (70, 180, 215) * water_width
         )
+    return RGBImage(width, height, bytes(data))
+
+
+def _coherent_water_field_material_test_image() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray((132, 166, 174) * (width * height))
+    for y in range(64, 192):
+        for x in range(288, 320):
+            color = (70, 180, 215) if (x + y) % 4 < 2 else (40, 145, 180)
+            start = (y * width + x) * 3
+            data[start : start + 3] = bytes(color)
     return RGBImage(width, height, bytes(data))
 
 

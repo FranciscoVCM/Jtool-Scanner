@@ -1034,3 +1034,31 @@ The giant-review Entrance2 result is still a source/current/blend visual
 checkpoint rather than an exact claim because corrected giant-review JMaps are
 not available. The remaining Irkara54 and Irkara71 misses are unresolved
 geometry/material coverage, not justification for a coordinate-specific rule.
+
+## Checkpoint: coherent textured-water field preservation (2026-08-11)
+
+The first water-anchor rule preserved smooth full-width cells but still let the
+supported-cell terrain arbitration erase textured water tiles when both halves
+of a cell were high-edge. A second palette-independent path now preserves such
+a cell only when it has at least two axis-aligned neighboring water candidates,
+both 16px halves independently meet the water-density floor, and neighboring
+profiles remain coherent. An isolated or half-width repeated texture does not
+qualify from adjacency alone.
+
+Measured results:
+
+| case | water result | gate result |
+| --- | --- | --- |
+| `irkara-54` | 470/475 matched, 470 detected, 100.0% precision | previous geometry result was 405/475; color-only baseline is 472/475 |
+| `irkara-51` | 4/4 matched, 4 detected, 100.0% precision | unchanged |
+| `irkara-52` | 4/4 matched, 4 detected, 100.0% precision | unchanged |
+| `irkara-71` | 26/37 matched, 26 detected, 100.0% precision | unchanged |
+| `cn3-18` | 5/5 matched, 5 detected, 100.0% precision | unchanged |
+
+The read-only giant-corpus audit also leaves `CN3_Entrance2` at three water
+cells, `Zero_Final` at 212, and the cyan-background negatives `CN3_92` and
+`CN3_93` at zero. The focused field/half-density regression passes. The
+complete unittest suite passes **329 tests in 625.292 seconds**, and FTFA
+remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`. No corrected giant-review JMaps exist, so the giant-room results
+remain visual/classification checkpoints rather than exact-map claims.
