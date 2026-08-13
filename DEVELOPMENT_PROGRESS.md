@@ -1484,3 +1484,33 @@ retains 2/2 saves, 1/1 warp, and 403/412 minispikes with 403 detections. No
 new object family or palette-specific rule appeared. Together with the fresh
 12-pair block/spike workflow, these controls preserve the named Irkara,
 Partysu3, CN3, NANG, F189, and CN2-5 gates without implementation changes.
+
+## Checkpoint: profiled-room save anchor arbitration (2026-08-13)
+
+The profiled terrain paths had a recurring point-object phase error: saves in
+scaled outlined rooms could remain eight pixels below or beside the native
+JTool origin because the final support-cell lattice was added after the first
+marker reconciliation. The scanner now reruns the existing
+support-cell/terrain arbitration after the profile's final terrain cells are
+available. This is a palette-relative support rule, not a global coordinate
+shift and not a screen-specific exception.
+
+Measured save origins after the change are canonical for the profiled Irkara
+controls: `irkara-51`, `irkara-52`, `irkara-59`, `irkara-71`, and `irkara-89`
+now match their authoritative JMaps at the previously observed +8 phase
+positions. FTFA remains unchanged at `926/928 exact; 0 false positives; 2
+missed; 0 shifted; 0 wrong direction`; CN3-18's non-profile residual phase is
+unchanged and remains a separate follow-up rather than evidence for a global
+shift.
+
+The complete 12-pair block/spike workflow remains metric-identical: saves
+`22/22` matched with `24` detections, and all color classes retain 100% recall
+and their previous precision. The focused unseen-regression module passes 31
+tests, the correction/image suite passes 57 tests, and both pass with the new
+bright-outlined-room regression. The generated report is preserved locally at
+`.artifacts/goal-continuation/block-spike-save-anchor/report.json`.
+
+The next bounded review should target platform precision/recall on the
+unrelated bright/outlined families (especially `irkara-89`, `irkara-71`,
+`k3-ex-hades`, and CN3 panel-like rooms) without weakening the FTFA gate or
+the exact Irkara-71 platform result.

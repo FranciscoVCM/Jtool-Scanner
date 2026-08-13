@@ -1804,6 +1804,15 @@ def scan_image(
                         min_distance=GRID_SIZE - 8,
                     )
                 )
+            # Bright outlined rooms add their final terrain cells after the
+            # common profile reconciliation.  Re-run the same marker/support
+            # arbitration once those cells exist so a scaled save is not left
+            # on the raw component's half-cell phase.
+            detections = _reconcile_profiled_marker_anchors(
+                detections,
+                image,
+                box,
+            )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -23777,6 +23786,40 @@ def _reconcile_common_room_geometry(
 
     reconciled = _separate_overlapping_opposite_spikes(reconciled)
     if profile_reconciled:
+        marker_types = (OBJ_SAVE, OBJ_WARP, OBJ_APPLE)
+        markers = [
+            detection
+            for detection in reconciled
+            if detection.type_id in marker_types
+        ]
+        terrain_blocks = [
+            detection
+            for detection in reconciled
+            if detection.type_id == OBJ_BLOCK
+        ]
+        block_positions = {
+            (detection.x, detection.y)
+            for detection in terrain_blocks
+        }
+        if any(
+            marker.type_id == OBJ_SAVE
+            and _total_block_overlap(marker.x, marker.y, block_positions) > 0
+            for marker in markers
+        ):
+            markers, terrain_blocks = _reconcile_terrain_markers(
+                markers,
+                terrain_blocks,
+                image,
+                room,
+            )
+            reconciled = [
+                detection
+                for detection in reconciled
+                if detection.type_id not in marker_types
+                and detection.type_id != OBJ_BLOCK
+            ]
+            reconciled.extend(terrain_blocks)
+            reconciled.extend(markers)
         return _dedupe_exact_detections(reconciled)
 
     marker_types = (OBJ_SAVE, OBJ_WARP, OBJ_APPLE)
@@ -23806,6 +23849,50 @@ def _reconcile_common_room_geometry(
     return _dedupe_exact_detections(
         _dedupe_overlapping_geometry([*other, *terrain_blocks, *markers])
     )
+
+
+def _reconcile_profiled_marker_anchors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Apply support-cell marker anchoring after a profile adds terrain.
+
+    The bright outlined-room route appends its final block lattice late in the
+    scan pipeline.  Marker detection therefore cannot always see the support
+    cells during the earlier profile replacement.  Reusing the same
+    palette-independent support arbitration here keeps point-object origins
+    canonical without altering the global image-to-map conversion.
+    """
+
+    blocks = [
+        detection for detection in detections if detection.type_id == OBJ_BLOCK
+    ]
+    if not blocks:
+        return detections
+    markers = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_SAVE, OBJ_WARP, OBJ_APPLE)
+    ]
+    block_positions = {(detection.x, detection.y) for detection in blocks}
+    if not any(
+        marker.type_id == OBJ_SAVE
+        and _total_block_overlap(marker.x, marker.y, block_positions) > 0
+        for marker in markers
+    ):
+        return detections
+    markers, blocks = _reconcile_terrain_markers(
+        markers,
+        blocks,
+        image,
+        room,
+    )
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in (OBJ_SAVE, OBJ_WARP, OBJ_APPLE, OBJ_BLOCK)
+    ] + blocks + markers
 
 
 def _has_upper_particle_field(

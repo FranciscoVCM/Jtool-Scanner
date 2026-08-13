@@ -221,6 +221,21 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         saves = [detection for detection in reconciled if detection.type_id == OBJ_SAVE]
         self.assertEqual([(detection.x, detection.y) for detection in saves], [(128, 544)])
 
+    def test_bright_outlined_room_reanchors_save_after_late_terrain_cells(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "irkara-89-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        saves = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        ]
+        self.assertEqual([(save.x, save.y) for save in saves], [(352, 544)])
+
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [
             detection
