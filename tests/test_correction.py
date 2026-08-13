@@ -29,6 +29,7 @@ from jtool_scanner.correction import (
 from jtool_scanner.geometry import Box
 from jtool_scanner.jmap import JMap, JMapObject
 from jtool_scanner.scanner import Detection, ScanResult
+from jtool_scanner.render_svg import _JTOOL_SPRITES
 
 
 class CorrectionProjectTests(unittest.TestCase):
@@ -71,6 +72,11 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertEqual(svg.count('href="data:image/png;base64,'), 2)
         self.assertIn('x="64" y="96" width="32" height="32" image-rendering="pixelated"', svg)
         self.assertIn('x="128" y="96" width="32" height="32" image-rendering="pixelated"', svg)
+
+    def test_vine_ids_keep_upstream_jtool_sprite_pairing(self) -> None:
+        # JTool's save IDs are facing directions, not visual-side labels.
+        self.assertEqual(_JTOOL_SPRITES[OBJ_WALLJUMP_LEFT][0], "walljumpL.png")
+        self.assertEqual(_JTOOL_SPRITES[OBJ_WALLJUMP_RIGHT][0], "walljumpR.png")
 
     def test_preview_embeds_exact_jtool_sprites_for_all_supported_non_placeholder_types(self) -> None:
         project = CorrectionProject.from_jmap(

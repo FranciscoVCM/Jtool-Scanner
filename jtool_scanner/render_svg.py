@@ -61,10 +61,12 @@ _JTOOL_SPRITES: dict[int, tuple[str, int, int, int, int, bool]] = {
     OBJ_PLATFORM: ("platform.png", 32, 16, 0, 0, False),
     OBJ_WATER: ("water1.png", 32, 32, 0, 0, False),
     OBJ_WATER_2: ("water2.png", 32, 32, 0, 0, False),
-    # Upstream names describe the facing wall, while the app's names describe
-    # the visible half of the grid cell.
-    OBJ_WALLJUMP_LEFT: ("walljumpR.png", 32, 32, 0, 0, False),
-    OBJ_WALLJUMP_RIGHT: ("walljumpL.png", 32, 32, 0, 0, False),
+    # These IDs are the upstream JTool save IDs, not visual-side labels:
+    # 16 is oWalljumpL/sWalljumpL (the sprite occupies the right half of its
+    # cell), and 17 is oWalljumpR/sWalljumpR (the left half).  Keeping the
+    # upstream pairing is essential when a scanned map is opened in JTool.
+    OBJ_WALLJUMP_LEFT: ("walljumpL.png", 32, 32, 0, 0, False),
+    OBJ_WALLJUMP_RIGHT: ("walljumpR.png", 32, 32, 0, 0, False),
     OBJ_KILLER_BLOCK: ("killerblock.png", 32, 32, 0, 0, True),
     OBJ_BULLET_BLOCKER: ("bulletblocker.png", 32, 32, 0, 0, False),
     OBJ_PLAYER_START: ("playerstart.png", 32, 32, 0, 0, False),

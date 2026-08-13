@@ -5,10 +5,12 @@ skin or from its matching default GameMaker sprite frames. The app uses the
 original sprite dimensions and origins; it also reproduces the skin's
 `killer_idle_color` value for spikes, fruit and killer blocks.
 
-`walljumpR.png` and `walljumpL.png` have a counterintuitive mapping: JTool
-places `walljumpR.png` on the left side of a grid cell and `walljumpL.png` on
-the right. JTool Scanner therefore maps them to its user-facing Left Vine and
-Right Vine names by visible position.
+`walljumpR.png` and `walljumpL.png` occupy opposite halves of a grid cell.
+The upstream save IDs are counterintuitive: ID 16 is `oWalljumpL` with
+`walljumpL.png` on the right half, while ID 17 is `oWalljumpR` with
+`walljumpR.png` on the left half. The scanner keeps those IDs and sprites
+together so exported maps match JTool; the UI presents them as Left Vine and
+Right Vine according to the upstream facing direction.
 
 `apple-frame0.png`, `save-frame0.png`, `gravity-up.png`, `gravity-down.png`,
 and `save-flip.png` are the corresponding single default frames from
