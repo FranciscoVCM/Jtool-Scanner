@@ -1618,3 +1618,17 @@ unseen module passes **33 tests in 331.102 seconds**, and the correction/image
 suite passes **57 tests in 181.994 seconds**. The lower CN3-18 save `(768,376)`
 remains an explicit source/JMap phase review item because no full mini-cell
 support row justifies moving it.
+
+## Checkpoint: preserve bright-platform morphology contracts (2026-08-14)
+
+The first complete post-checkpoint unittest run exposed one compatibility
+regression in the bright-platform helper: the production six-row span rule had
+also changed the helper's established synthetic three-row contract. The
+helper now keeps that general morphology contract by default, while the final
+bright-room impostor prune opts into `require_span=True`. This preserves the
+Irkara terrain-edge rejection without weakening the platform detector's
+palette-independent production gate.
+
+Validation after the split: **341 tests in 613.688 seconds, OK**. The focused
+bright-room and dark-platform regression pair also passes (**2 tests in
+273.348 seconds**). No fixture, JMap, or generated artifact was changed.

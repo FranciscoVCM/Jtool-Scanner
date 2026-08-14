@@ -3522,14 +3522,21 @@ def _prune_bright_outlined_terrain_decorations(
     ]
 
 
-def _has_bright_room_platform_bar_evidence(horizontal_runs: list[int]) -> bool:
+def _has_bright_room_platform_bar_evidence(
+    horizontal_runs: list[int],
+    *,
+    require_span: bool = False,
+) -> bool:
     """Require more than one room-boundary edge for a bright-room platform.
 
     In bright chromatic rooms, a single long horizontal terrain edge is a
     common by-product of a spike or a coloured wall.  A real thin platform
     has a compact bar enclosure, which produces at least three strong rows;
     a clipped bar may instead expose both the top and bottom boundary.  This
-    helper deliberately consumes only morphology, not a tileset colour.
+    helper deliberately consumes only morphology, not a tileset colour.  The
+    production bright-room prune can additionally require the strong rows to
+    span the patch; the default keeps the small morphology helper's original
+    three-row contract for callers and synthetic controls.
     """
 
     strong_rows = [
@@ -3537,12 +3544,11 @@ def _has_bright_room_platform_bar_evidence(horizontal_runs: list[int]) -> bool:
         for index, run in enumerate(horizontal_runs)
         if run >= PLATFORM_SAMPLE_WIDTH * 5 // 8
     ]
-    if (
-        len(strong_rows) >= 3
-        and max(strong_rows) - min(strong_rows)
-        >= PLATFORM_BRIGHT_MIN_EDGE_SPAN
-    ):
-        return True
+    if len(strong_rows) >= 3:
+        if not require_span:
+            return True
+        if max(strong_rows) - min(strong_rows) >= PLATFORM_BRIGHT_MIN_EDGE_SPAN:
+            return True
     return bool(
         strong_rows
         and min(strong_rows) <= 1
@@ -3621,7 +3627,8 @@ def _prune_bright_room_platform_impostors(
                     room,
                     detection.x,
                     detection.y,
-                )
+                ),
+                require_span=True,
             )
         ):
             continue
