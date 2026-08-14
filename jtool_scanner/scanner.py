@@ -335,6 +335,14 @@ PLATFORM_TEXTURED_BLOCK_RANGE = (0.28, 0.40)
 PLATFORM_TEXTURED_MAX_BELOW_EDGE = 0.18
 PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE = 8.0
 PLATFORM_TEXTURED_MAX_SATURATION = 0.20
+PLATFORM_DARK_MIN_HORIZONTAL_RUN = 25
+PLATFORM_DARK_MIN_VERTICAL_RUN = 14
+PLATFORM_DARK_MAX_GRAY_RANGE = 100
+PLATFORM_DARK_MAX_SATURATION = 0.16
+PLATFORM_DARK_CENTER_RANGE = (0.08, 0.22)
+PLATFORM_DARK_MAX_BLOCK_SCORE = 0.15
+PLATFORM_DARK_MAX_BELOW_EDGE = 0.12
+PLATFORM_DARK_MAX_ROOM_LUMINANCE_DELTA = 8.0
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
@@ -10570,6 +10578,12 @@ def _detect_platforms(
     anchors: list[Detection],
 ) -> list[Detection]:
     candidates: list[Detection] = []
+    room_profile = _room_color_profile(image, room)
+    room_luminance = (
+        room_profile.avg_r * 0.30
+        + room_profile.avg_g * 0.59
+        + room_profile.avg_b * 0.11
+    )
     for y in range(0, ROOM_HEIGHT - PLATFORM_HEIGHT + 1, PLATFORM_HEIGHT):
         for x in range(0, ROOM_WIDTH - PLATFORM_WIDTH + 1, PLATFORM_HEIGHT):
             if _near_anchor(x, y, anchors, PLATFORM_ANCHOR_DISTANCE):
@@ -10616,10 +10630,19 @@ def _detect_platforms(
                     y,
                 )
             )
+            dark_relative_candidate = _is_dark_relative_platform_candidate(
+                features,
+                patch,
+                profile,
+                block_score,
+                below_edge,
+                room_luminance,
+            )
             if not (
                 low_contrast_candidate
                 or bright_candidate
                 or textured_candidate
+                or dark_relative_candidate
             ):
                 continue
             score = (
@@ -10879,6 +10902,44 @@ def _is_textured_platform_horizontally_isolated(
     ]
     return not neighbor_distances or min(neighbor_distances) >= (
         PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE
+    )
+
+
+def _is_dark_relative_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    profile: _ColorProfile,
+    block_score: float,
+    below_edge: float,
+    room_luminance: float,
+) -> bool:
+    """Recover a dark enclosed platform whose lower edge is partly lost.
+
+    Textured platform sprites can share a luminance range with the room and
+    expose only one long horizontal edge after screenshot scaling. This route
+    relies on relative evidence instead of a fixed palette: a tall vertical
+    edge, low block occupancy, an untextured lower neighbor, and a patch that
+    is not brighter than the surrounding room. Bright-room terrain candidates
+    still pass through the later enclosure gate.
+    """
+
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    return (
+        features.horizontal_run >= PLATFORM_DARK_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_DARK_MIN_VERTICAL_RUN
+        and features.gray_range <= PLATFORM_DARK_MAX_GRAY_RANGE
+        and profile.saturation <= PLATFORM_DARK_MAX_SATURATION
+        and PLATFORM_DARK_CENTER_RANGE[0]
+        <= patch.center_score
+        <= PLATFORM_DARK_CENTER_RANGE[1]
+        and block_score <= PLATFORM_DARK_MAX_BLOCK_SCORE
+        and below_edge <= PLATFORM_DARK_MAX_BELOW_EDGE
+        and patch_luminance - room_luminance
+        <= PLATFORM_DARK_MAX_ROOM_LUMINANCE_DELTA
     )
 
 

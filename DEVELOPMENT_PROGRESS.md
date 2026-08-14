@@ -1547,3 +1547,30 @@ remaining authoritative platform miss is the dark textured Hades platform at
 threshold change without introducing terrain-edge candidates. CN3 platform
 outputs remain visual-review evidence where corrected maps are absent; the
 bright CN3-28 through CN3-31 impostor family remains fully gated.
+
+## Checkpoint: dark relative platform recovery (2026-08-14)
+
+The remaining Hades platform miss was caused by screenshot scaling: the brown
+platform at `(144,448)` exposes a strong vertical enclosure and one long
+horizontal edge, so it falls just below the generic two-edge-row threshold.
+The detector now has a separate relative route for dark enclosed bars. It
+requires a tall vertical edge, low block occupancy, a low-texture lower
+neighbor, low saturation, and a patch luminance no more than eight levels
+above the room average. This keeps the route palette-independent and rejects
+the brighter continuous gray terrain edge found in NANG-11 and the Irkara
+controls.
+
+Measured result:
+
+| check | result |
+| --- | --- |
+| `k3-ex-hades` platforms | **2/2 matched, 2 detected** (including `(144,448)`) |
+| full 12-pair workflow | **3/3 matched, 3 detected**; all color classes unchanged |
+| FTFA exact benchmark | **926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction** |
+| full unseen regressions | **32 tests in 425.773 seconds, OK** |
+| correction/image suite | **57 tests in 287.368 seconds, OK** |
+
+The 71-source morphology audit found no additional dark-relative candidates
+outside the already gated CN3 terrain-edge family. The remaining fixture
+platform classes are now exact; giant-review platform rows without corrected
+JMaps remain visual evidence rather than new truth labels.

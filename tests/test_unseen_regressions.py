@@ -245,6 +245,24 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(704, 288)],
         )
 
+    def test_dark_relative_platform_recovers_partially_scaled_bar(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "k3-ex-hades-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        platforms = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_PLATFORM
+        ]
+        self.assertEqual(
+            sorted((platform.x, platform.y) for platform in platforms),
+            [(144, 448), (512, 336)],
+        )
+
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [
             detection
