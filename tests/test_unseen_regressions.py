@@ -282,6 +282,22 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(144, 448), (512, 336)],
         )
 
+    def test_terrain_vine_phase_aligns_irkara51_supported_column(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-51-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        walljumps = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in (16, 17)
+        }
+        self.assertIn((224, 128, 17), walljumps)
+        self.assertIn((672, 400, 16), walljumps)
+
     def test_clipped_walljump_phase_aliases_use_jtool_edge_origin(self) -> None:
         result = scan_png(
             Path("fixtures") / "block_spike" / "cn3-18-game.png",

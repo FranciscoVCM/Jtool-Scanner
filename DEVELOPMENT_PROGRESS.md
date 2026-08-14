@@ -1656,3 +1656,18 @@ Validation: the unseen-regression module passes **33 tests in 942.384
 seconds**, and the strict FTFA benchmark remains **926/928 exact; 0 false
 positives; 2 missed; 0 shifted; 0 wrong direction**. The two FTFA misses are
 the established screen-1 edge blocks.
+
+## Checkpoint: wider terrain-supported vine phase window (2026-08-14)
+
+The same support rule exposed one Irkara-51 candidate 24px from its canonical
+column, caused by a combined half-cell and screenshot sampling phase. The
+terrain arbitration window now considers ±8, ±16, and ±24px candidates, still
+requiring an unsupported current column and at least one nearby detected
+terrain cell. The 24px case flips the upstream JTool vine ID; no coordinate or
+screen name is used.
+
+Irkara-51 now emits the supported right-vine `(224,128,right)` and left-vine
+`(672,400,left)` origins. Its unsupported extra vine candidates remain
+visible for a separate precision review rather than being silently deleted.
+The new regression passes **1 test in 320.626 seconds**; the prior strict
+FTFA and 12-pair measurements are unchanged.
