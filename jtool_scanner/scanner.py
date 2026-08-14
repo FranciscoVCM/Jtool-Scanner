@@ -1211,6 +1211,9 @@ WALLJUMP_STRIP_PATCH_MAX_CENTER_Y = 0.72
 WALLJUMP_STRIP_MIN_CELLS = 2
 WALLJUMP_SINGLE_SPARSE_MIN_LIGHT_RATIO = 0.50
 WALLJUMP_SINGLE_SPARSE_MIN_SCORE = 0.68
+WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA = 16
+WALLJUMP_TERRAIN_ANCHOR_MAX_VERTICAL_DISTANCE = GRID_SIZE * 2
+WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT = 1
 WATER_MIN_BLUE_LIFT = 10.0
 WATER_MAX_BLUE_LIFT = 55.0
 WATER_PALE_MAX_BLUE_LIFT = 50.0
@@ -1825,6 +1828,11 @@ def scan_image(
                 image,
                 box,
             )
+        detections = _reconcile_walljump_terrain_anchors(
+            detections,
+            image,
+            box,
+        )
     detections = _reconcile_mini_terrain_marker_anchors(
         detections,
         image,
@@ -9796,10 +9804,121 @@ def _reconcile_walljump_phase_aliases(
             and abs(candidate.y - detection.y) <= MINI_BLOCK_SIZE // 2
         ]
         if aliases:
-            result.append(max(aliases, key=lambda candidate: candidate.score))
+            same_phase = [
+                candidate
+                for candidate in repeated
+                if candidate.type_id == detection.type_id
+                and candidate.x == detection.x
+                and abs(candidate.y - detection.y) <= MINI_BLOCK_SIZE // 2
+            ]
+            best_alias = max(aliases, key=lambda candidate: candidate.score)
+            best_same_phase = max(
+                same_phase,
+                key=lambda candidate: candidate.score,
+                default=None,
+            )
+            if best_alias.x == 0 and detection.x == MINI_BLOCK_SIZE:
+                # A visible half-cell at the image edge is the clipped alias
+                # of the x=0 left-vine origin; preserve that edge convention
+                # even when the same-side repeated score is brighter.
+                result.append(best_alias)
+            elif (
+                best_same_phase is not None
+                and best_same_phase.score >= best_alias.score
+            ):
+                result.append(best_same_phase)
+            else:
+                result.append(best_alias)
         else:
             result.append(detection)
     return result
+
+
+def _reconcile_walljump_terrain_anchors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Use local terrain columns to resolve an interior 8/16px vine phase.
+
+    A screenshot can expose the same half-cell vine at a neighboring phase,
+    especially when the sprite is drawn over a repeated block wall.  The
+    color pass cannot tell those origins apart, but a geometry-enabled scan
+    can: the canonical origin shares its x-column with nearby terrain cells.
+    Shift only an unsupported interior candidate to a supported neighboring
+    column.  Edge and open-background vines remain unchanged.
+    """
+
+    terrain = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_BLOCK, OBJ_MINI_BLOCK)
+    ]
+    walljumps = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+        and detection.x > 0
+    ]
+    if not terrain or not walljumps:
+        return detections
+
+    def support_count(x: int, y: int) -> int:
+        return sum(
+            abs(cell.y - y) <= WALLJUMP_TERRAIN_ANCHOR_MAX_VERTICAL_DISTANCE
+            for cell in terrain
+            if cell.x == x
+        )
+
+    replacements: dict[int, Detection] = {}
+    for walljump in walljumps:
+        current_support = support_count(walljump.x, walljump.y)
+        if current_support:
+            continue
+        candidates = []
+        for delta in (
+            -WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA,
+            -8,
+            8,
+            WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA,
+        ):
+            candidate_x = walljump.x + delta
+            if candidate_x <= 0:
+                continue
+            support = support_count(candidate_x, walljump.y)
+            if support < WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT:
+                continue
+            candidates.append((support, -abs(delta), candidate_x, delta))
+        if not candidates:
+            continue
+        support, _distance, candidate_x, delta = max(candidates)
+        if support <= current_support:
+            continue
+        type_id = walljump.type_id
+        if abs(delta) % GRID_SIZE >= MINI_BLOCK_SIZE:
+            type_id = (
+                OBJ_WALLJUMP_LEFT
+                if type_id == OBJ_WALLJUMP_RIGHT
+                else OBJ_WALLJUMP_RIGHT
+            )
+        kind = (
+            "walljump_left_terrain_aligned"
+            if type_id == OBJ_WALLJUMP_LEFT
+            else "walljump_right_terrain_aligned"
+        )
+        replacements[id(walljump)] = _geometry_detection(
+            kind,
+            type_id,
+            candidate_x,
+            walljump.y,
+            walljump.score,
+            image,
+            room,
+            GRID_SIZE,
+        )
+    if not replacements:
+        return detections
+    return [replacements.get(id(detection), detection) for detection in detections]
 
 
 def _detect_water(

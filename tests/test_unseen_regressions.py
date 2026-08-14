@@ -244,6 +244,25 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(platform.x, platform.y) for platform in platforms],
             [(704, 288)],
         )
+        walljumps = [
+            detection
+            for detection in result.detections
+            if detection.type_id in (16, 17)
+        ]
+        self.assertEqual(
+            sorted((detection.x, detection.y, detection.type_id) for detection in walljumps),
+            [
+                (0, 112, 16),
+                (0, 144, 16),
+                (256, 512, 17),
+                (336, 272, 17),
+                (336, 304, 17),
+                (416, 128, 16),
+                (416, 544, 16),
+                (416, 576, 16),
+                (640, 376, 16),
+            ],
+        )
 
     def test_dark_relative_platform_recovers_partially_scaled_bar(self) -> None:
         result = scan_png(

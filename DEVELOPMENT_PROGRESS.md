@@ -1632,3 +1632,27 @@ palette-independent production gate.
 Validation after the split: **341 tests in 613.688 seconds, OK**. The focused
 bright-room and dark-platform regression pair also passes (**2 tests in
 273.348 seconds**). No fixture, JMap, or generated artifact was changed.
+
+## Checkpoint: terrain-backed vine phase arbitration (2026-08-14)
+
+The recurring vine error was not a tileset color failure alone: repeated
+green strips could be sampled at an adjacent 8/16px phase while a geometry
+scan already contained the canonical terrain column. Geometry-enabled scans
+now use that local evidence only when the current interior x-column has no
+nearby block or miniblock support and a neighboring phase does. Eight-pixel
+shifts preserve the facing; sixteen-pixel shifts flip the upstream JTool vine
+ID. Clipped edge origins and open-background vines remain unchanged.
+
+The same-side repeated-strip candidate now wins over a weaker opposite-side
+alias before terrain arbitration, preventing a y-phase regression in the
+Irkara-89 lower vine. Irkara-89 now matches all nine walljumps exactly,
+including `(416,128,left)`, `(256,512,right)`, `(416,544,left)`,
+`(416,576,left)`, and `(640,376,left)`. CN3-18 remains exact at all four
+off-screen left origins, and the Irkara-51 right vine at `(224,128)` is
+recovered from its prior `(208,128)` phase. The unresolved Irkara-51 extras
+remain a separate visual/geometry review item.
+
+Validation: the unseen-regression module passes **33 tests in 942.384
+seconds**, and the strict FTFA benchmark remains **926/928 exact; 0 false
+positives; 2 missed; 0 shifted; 0 wrong direction**. The two FTFA misses are
+the established screen-1 edge blocks.
