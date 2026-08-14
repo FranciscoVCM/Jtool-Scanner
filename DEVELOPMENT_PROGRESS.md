@@ -1599,3 +1599,22 @@ passes **33 tests in 474.237 seconds**, and the correction/image suite passes
 **57 tests in 184.936 seconds**. The two additional low-confidence Irkara-89
 full-spike candidates introduced by the corrected backing phase are retained
 as an explicit geometry review item; no truth spike was lost.
+
+## Checkpoint: mini-cell save phase arbitration (2026-08-14)
+
+The 16px terrain path exposed one remaining save phase drift in CN3-18. A
+high-confidence fragmented save at `(224,88)` overlapped the first mini-cell
+row, while `(224,80)` had a complete 32px support row with no terrain overlap.
+The final pipeline now applies a palette-independent mini-cell support check
+to saves at most one 8px phase away. It requires two full supporting 16px
+cells and never shifts a marker without that evidence.
+
+CN3-18 now emits `(224,80)` with kind
+`save_red_body_header_fragmented_mini_terrain_aligned`; its other saves and
+all exact CN3-16/Irkara saves remain unchanged. The full 12-pair workflow is
+metric-identical to the preceding vine checkpoint; FTFA remains `926/928
+exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`. The full
+unseen module passes **33 tests in 331.102 seconds**, and the correction/image
+suite passes **57 tests in 181.994 seconds**. The lower CN3-18 save `(768,376)`
+remains an explicit source/JMap phase review item because no full mini-cell
+support row justifies moving it.

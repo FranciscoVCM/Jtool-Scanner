@@ -280,6 +280,15 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             sorted((detection.x, detection.y, detection.type_id) for detection in walljumps),
             [(-16, 336, 16), (-16, 368, 16), (-16, 416, 16), (-16, 448, 16)],
         )
+        saves = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        ]
+        self.assertEqual(
+            sorted((save.x, save.y) for save in saves),
+            [(224, 80), (384, 256), (768, 376)],
+        )
 
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [

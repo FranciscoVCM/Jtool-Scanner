@@ -262,6 +262,9 @@ SUPPORTED_TERRAIN_RECOVERY_OVERLAP_SCORE_MARGIN = 0.12
 SUPPORTED_TERRAIN_MARKER_MIN_SAVE_SCORE = 0.85
 SUPPORTED_TERRAIN_MARKER_MIN_SAVE_OVERLAP = GRID_SIZE * MINI_BLOCK_SIZE
 SUPPORTED_TERRAIN_MARKER_MIN_PLATFORM_OVERLAP = GRID_SIZE * MINI_BLOCK_SIZE // 2
+MINI_TERRAIN_MARKER_MIN_SUPPORT = GRID_SIZE
+MINI_TERRAIN_MARKER_MAX_SHIFT = MINI_BLOCK_SIZE // 2
+MINI_TERRAIN_MARKER_MIN_CELL_SCORE = 0.55
 MINI_SPIKE_BLOCK_MIN_OVERLAP_COVERAGE = 0.75
 MINI_SPIKE_BLOCK_WIN_MIN_SCORE = 0.72
 MINI_SPIKE_BLOCK_WIN_MIN_MARGIN = 0.30
@@ -1822,6 +1825,11 @@ def scan_image(
                 image,
                 box,
             )
+    detections = _reconcile_mini_terrain_marker_anchors(
+        detections,
+        image,
+        box,
+    )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -24027,6 +24035,136 @@ def _reconcile_profiled_marker_anchors(
         for detection in detections
         if detection.type_id not in (OBJ_SAVE, OBJ_WARP, OBJ_APPLE, OBJ_BLOCK)
     ] + blocks + markers
+
+
+def _mini_terrain_overlap(
+    x: int,
+    y: int,
+    cell_x: int,
+    cell_y: int,
+) -> int:
+    width = max(
+        0,
+        min(x + GRID_SIZE, cell_x + MINI_BLOCK_SIZE)
+        - max(x, cell_x),
+    )
+    height = max(
+        0,
+        min(y + GRID_SIZE, cell_y + MINI_BLOCK_SIZE)
+        - max(y, cell_y),
+    )
+    return width * height
+
+
+def _reconcile_mini_terrain_marker_anchors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Snap high-confidence saves to an unoccupied full mini-cell support row.
+
+    A 16px terrain learner can leave a save body on the neighboring 8px
+    phase even when the next row contains two complete mini cells.  This
+    arbitration uses occupancy and support geometry only; it does not infer a
+    tileset color or shift a marker farther than one 8px phase.
+    """
+
+    mini_cells = [
+        detection
+        for detection in detections
+        if (
+            detection.type_id == OBJ_MINI_BLOCK
+            and detection.score >= MINI_TERRAIN_MARKER_MIN_CELL_SCORE
+        )
+    ]
+    if not mini_cells:
+        return detections
+    saves = [
+        detection
+        for detection in detections
+        if (
+            detection.type_id == OBJ_SAVE
+            and detection.score >= SUPPORTED_TERRAIN_MARKER_MIN_SAVE_SCORE
+        )
+    ]
+    if not saves:
+        return detections
+    replacements: dict[int, Detection] = {}
+    for save in saves:
+        candidates = []
+        for y in range(
+            max(0, save.y - MINI_BLOCK_SIZE),
+            min(ROOM_HEIGHT - GRID_SIZE, save.y + MINI_BLOCK_SIZE) + 1,
+            8,
+        ):
+            for x in range(
+                max(0, save.x - MINI_BLOCK_SIZE),
+                min(ROOM_WIDTH - GRID_SIZE, save.x + MINI_BLOCK_SIZE) + 1,
+                8,
+            ):
+                overlap = sum(
+                    _mini_terrain_overlap(x, y, cell.x, cell.y)
+                    for cell in mini_cells
+                )
+                support = sum(
+                    max(
+                        0,
+                        min(x + GRID_SIZE, cell.x + MINI_BLOCK_SIZE)
+                        - max(x, cell.x),
+                    )
+                    for cell in mini_cells
+                    if cell.y == y + GRID_SIZE
+                )
+                exact_support = sum(
+                    min(GRID_SIZE, MINI_BLOCK_SIZE)
+                    for cell in mini_cells
+                    if cell.x == x and cell.y == y + GRID_SIZE
+                )
+                side_support = sum(
+                    max(
+                        0,
+                        min(y + GRID_SIZE, cell.y + MINI_BLOCK_SIZE)
+                        - max(y, cell.y),
+                    )
+                    for cell in mini_cells
+                    if cell.x in (x - GRID_SIZE, x + GRID_SIZE)
+                )
+                movement = abs(x - save.x) + abs(y - save.y)
+                candidates.append(
+                    (
+                        overlap > 0,
+                        -min(GRID_SIZE, exact_support),
+                        -min(GRID_SIZE, support),
+                        -min(GRID_SIZE, side_support),
+                        movement,
+                        y,
+                        x,
+                        support,
+                    )
+                )
+        if not candidates:
+            continue
+        best = min(candidates)
+        _overlap, _exact, _support, _side, movement, y, x, support = best
+        if (
+            support < MINI_TERRAIN_MARKER_MIN_SUPPORT
+            or movement > MINI_TERRAIN_MARKER_MAX_SHIFT
+            or (x, y) == (save.x, save.y)
+        ):
+            continue
+        replacements[id(save)] = _geometry_detection(
+            f"{save.kind}_mini_terrain_aligned",
+            save.type_id,
+            x,
+            y,
+            save.score,
+            image,
+            room,
+            GRID_SIZE,
+        )
+    if not replacements:
+        return detections
+    return [replacements.get(id(detection), detection) for detection in detections]
 
 
 def _has_upper_particle_field(
