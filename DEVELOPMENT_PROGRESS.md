@@ -1514,3 +1514,36 @@ The next bounded review should target platform precision/recall on the
 unrelated bright/outlined families (especially `irkara-89`, `irkara-71`,
 `k3-ex-hades`, and CN3 panel-like rooms) without weakening the FTFA gate or
 the exact Irkara-71 platform result.
+
+## Checkpoint: bright-room platform edge-span arbitration (2026-08-14)
+
+Bright outlined rooms exposed a platform-specific false-positive shape that
+was not addressed by the earlier bar-presence gate. In `irkara-89`, two
+terrain lips produced three adjacent strong horizontal edge rows at the
+bottom of a platform-sized patch, while the true platform exposed an enclosed
+top/bottom edge pattern. The bright-room morphology gate now requires strong
+rows to span the patch, or to touch both patch boundaries; a short cluster at
+one boundary is rejected. The rule uses only relative edge morphology and is
+not keyed to the Irkara palette or coordinates.
+
+The authoritative platform controls now measure:
+
+| fixture | before | after |
+| --- | --- | --- |
+| `irkara-89` | 1/1 matched, 3 detected | **1/1 matched, 1 detected** |
+| `irkara-71` | 5/5 matched, 5 detected | **5/5 matched, 5 detected** |
+| `k3-ex-hades` | 1/2 matched, 1 detected | **1/2 matched, 1 detected** |
+
+The complete 12-pair workflow improves the aggregate platform precision from
+`2/4` to **`2/2` detections matched (100%)**, with recall unchanged at `2/3`.
+All color classes remain exact; the two removed Irkara-89 platform impostors
+also release two previously suppressed terrain cells, improving that pair's
+block result from `81/98` to `83/98` matched. The FTFA exact benchmark remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+The full unseen-regression module passes **31 tests in 712.517 seconds**. The
+remaining authoritative platform miss is the dark textured Hades platform at
+`(144,448)`; its screenshot/JMap evidence is insufficient for a permissive
+threshold change without introducing terrain-edge candidates. CN3 platform
+outputs remain visual-review evidence where corrected maps are absent; the
+bright CN3-28 through CN3-31 impostor family remains fully gated.

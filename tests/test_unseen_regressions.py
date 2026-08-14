@@ -235,6 +235,15 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             if detection.type_id == OBJ_SAVE
         ]
         self.assertEqual([(save.x, save.y) for save in saves], [(352, 544)])
+        platforms = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_PLATFORM
+        ]
+        self.assertEqual(
+            [(platform.x, platform.y) for platform in platforms],
+            [(704, 288)],
+        )
 
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [

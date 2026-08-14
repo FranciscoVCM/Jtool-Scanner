@@ -324,6 +324,7 @@ PLATFORM_BRIGHT_BORDER_RANGE = (0.20, 0.32)
 PLATFORM_BRIGHT_MAX_CENTER_SCORE = 0.02
 PLATFORM_BRIGHT_MAX_BLOCK_SCORE = 0.25
 PLATFORM_BRIGHT_MAX_BELOW_EDGE = 0.02
+PLATFORM_BRIGHT_MIN_EDGE_SPAN = 6
 PLATFORM_TEXTURED_MIN_HORIZONTAL_RUN = 30
 PLATFORM_TEXTURED_MIN_VERTICAL_RUN = 3
 PLATFORM_TEXTURED_GRAY_RANGE = (110, 180)
@@ -3520,7 +3521,11 @@ def _has_bright_room_platform_bar_evidence(horizontal_runs: list[int]) -> bool:
         for index, run in enumerate(horizontal_runs)
         if run >= PLATFORM_SAMPLE_WIDTH * 5 // 8
     ]
-    if len(strong_rows) >= 3:
+    if (
+        len(strong_rows) >= 3
+        and max(strong_rows) - min(strong_rows)
+        >= PLATFORM_BRIGHT_MIN_EDGE_SPAN
+    ):
         return True
     return bool(
         strong_rows
