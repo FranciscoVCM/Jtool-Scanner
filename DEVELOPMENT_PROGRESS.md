@@ -1574,3 +1574,28 @@ The 71-source morphology audit found no additional dark-relative candidates
 outside the already gated CN3 terrain-edge family. The remaining fixture
 platform classes are now exact; giant-review platform rows without corrected
 JMaps remain visual evidence rather than new truth labels.
+
+## Checkpoint: explicit clipped-vine phase aliases (2026-08-14)
+
+Repeated sparse-vine strips can expose the same sprite at two adjacent 16px
+phases. The scanner now deduplicates the primary walljump route before using
+that repeated evidence, then reconciles only an explicit opposite-side alias
+within the 8px screenshot phase tolerance. A repeated right-facing strip at
+the image's left boundary is normalized to the observed off-screen
+`(-16,left)` JTool origin only when it belongs to a vertical repeated group.
+Unpaired interior vines are deliberately left unchanged.
+
+The authoritative clipped controls now report exact walljump origins and
+directions for CN3-18: `(-16,336)`, `(-16,368)`, `(-16,416)`, and
+`(-16,448)`, all type `walljump_left`. Irkara-89's paired left-edge aliases
+also normalize to `(0,112,left)` and `(0,144,left)`; its unpaired interior
+phase ambiguity remains visible for review. The full fixture workflow retains
+walljump `13/13` recall and `13` detections, while CN3-18 mini-block recall
+improves by three matched cells through the corrected backing origin.
+
+Protected measurements remain green: FTFA is `926/928 exact; 0 false
+positives; 2 missed; 0 shifted; 0 wrong direction`; the full unseen module
+passes **33 tests in 474.237 seconds**, and the correction/image suite passes
+**57 tests in 184.936 seconds**. The two additional low-confidence Irkara-89
+full-spike candidates introduced by the corrected backing phase are retained
+as an explicit geometry review item; no truth spike was lost.

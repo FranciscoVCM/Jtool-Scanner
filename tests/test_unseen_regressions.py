@@ -263,6 +263,24 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(144, 448), (512, 336)],
         )
 
+    def test_clipped_walljump_phase_aliases_use_jtool_edge_origin(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "cn3-18-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        walljumps = [
+            detection
+            for detection in result.detections
+            if detection.type_id in (16, 17)
+        ]
+        self.assertEqual(
+            sorted((detection.x, detection.y, detection.type_id) for detection in walljumps),
+            [(-16, 336, 16), (-16, 368, 16), (-16, 416, 16), (-16, 448, 16)],
+        )
+
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [
             detection

@@ -9555,13 +9555,21 @@ def _detect_walljumps(
     # green marks.  A single patch is ambiguous on dark or green terrain, but
     # the repeated 32-pixel vertical cadence is highly characteristic and is
     # independent of room brightness or the surrounding tileset.
-    if not detections:
-        detections.extend(
-            _detect_repeated_sparse_walljump_strips(
-                image,
-                room,
-                anchors,
-            )
+    primary = _dedupe_walljumps(detections, min_distance=32)
+    repeated = _detect_repeated_sparse_walljump_strips(
+        image,
+        room,
+        anchors,
+    )
+    if not primary:
+        detections = _reconcile_walljump_phase_aliases(
+            repeated,
+            repeated,
+        )
+    else:
+        detections = _reconcile_walljump_phase_aliases(
+            primary,
+            repeated,
         )
     return _dedupe_walljumps(detections, min_distance=32)
 
@@ -9717,6 +9725,66 @@ def _detect_repeated_sparse_walljump_strips(
                     )
                 )
     return detections
+
+
+def _reconcile_walljump_phase_aliases(
+    detections: list[Detection],
+    repeated: list[Detection],
+) -> list[Detection]:
+    """Resolve explicit 16px aliases without moving unpaired vines.
+
+    A clipped sprite can be sampled once from each half of its 32px cell. If
+    the repeated-strip route supplies the opposite-side candidate at the same
+    phase (within the screenshot's 8px vertical sampling tolerance), both
+    detections describe one sprite. Prefer that repeated candidate because it
+    preserves the paired JTool origin and direction. A repeated right-facing
+    strip at the image's left edge is the corresponding alias of a left-facing
+    object whose origin is one half-cell off-screen; this is the only boundary
+    correction retained here, and it requires a vertical repeated group.
+    """
+
+    left_edge_repeated = [
+        detection
+        for detection in repeated
+        if detection.x == 0 and detection.type_id == OBJ_WALLJUMP_RIGHT
+    ]
+    result: list[Detection] = []
+    for detection in detections:
+        if (
+            detection.type_id == OBJ_WALLJUMP_RIGHT
+            and detection.x == 0
+            and sum(
+                abs(candidate.y - detection.y) <= GRID_SIZE
+                for candidate in left_edge_repeated
+            )
+            >= 2
+        ):
+            result.append(
+                Detection(
+                    "walljump_left_edge_clipped",
+                    OBJ_WALLJUMP_LEFT,
+                    -MINI_BLOCK_SIZE,
+                    detection.y,
+                    detection.score,
+                    detection.image_box,
+                )
+            )
+            continue
+        if detection.type_id != OBJ_WALLJUMP_RIGHT:
+            result.append(detection)
+            continue
+        aliases = [
+            candidate
+            for candidate in repeated
+            if candidate.type_id == OBJ_WALLJUMP_LEFT
+            and candidate.x == detection.x - MINI_BLOCK_SIZE
+            and abs(candidate.y - detection.y) <= MINI_BLOCK_SIZE // 2
+        ]
+        if aliases:
+            result.append(max(aliases, key=lambda candidate: candidate.score))
+        else:
+            result.append(detection)
+    return result
 
 
 def _detect_water(
