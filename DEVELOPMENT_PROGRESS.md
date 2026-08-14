@@ -1671,3 +1671,5 @@ Irkara-51 now emits the supported right-vine `(224,128,right)` and left-vine
 visible for a separate precision review rather than being silently deleted.
 The new regression passes **1 test in 320.626 seconds**; the prior strict
 FTFA and 12-pair measurements are unchanged.
+The complete post-change suite is green when run by module: **342 tests**
+(`34 + 286 + 22`), with no fixture or JMap modifications.
