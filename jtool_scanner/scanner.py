@@ -803,6 +803,17 @@ FULL_SPIKE_RUN_NEIGHBOR_MAX_DISTANCE = 64
 FULL_SPIKE_POST_NORMALIZE_DEDUPE_DISTANCE = 24.0
 FULL_SPIKE_FINAL_MIN_SCORE = 0.241
 FULL_SPIKE_FINAL_DEDUPE_DISTANCE = 12.0
+# A scaled or low-contrast screenshot can expose a full spike as two adjacent
+# 16px silhouettes before the 32px classifier has enough local support.  This
+# recovery is deliberately shape-only: it requires a coherent pair, a strong
+# 32px directional reading, and no block-dominant center.  It does not depend
+# on a particular tileset or RGB palette.
+FULL_SPIKE_MINI_PAIR_MIN_SCORE = 0.64
+FULL_SPIKE_MINI_PAIR_MIN_DIRECTION_MARGIN = 0.35
+FULL_SPIKE_MINI_PAIR_MIN_OUTLINE_DELTA = 0.45
+FULL_SPIKE_MINI_PAIR_MIN_SIDE_COVERAGE = 0.90
+FULL_SPIKE_MINI_PAIR_MIN_EDGE_DENSITY = 0.25
+FULL_SPIKE_MINI_PAIR_MAX_BLOCK_SCORE = 0.52
 FULL_SPIKE_RUN_GAP_DISTANCE = 64
 FULL_SPIKE_RUN_GAP_SCORE = 0.241
 FULL_SPIKE_RUN_GAP_MIN_EDGE_DENSITY = 0.35
@@ -1555,7 +1566,13 @@ def scan_image(
                 if detection.type_id not in (OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN)
             ]
         detections.extend(_detect_platforms(image, box, detections))
-        detections.extend(_detect_geometry(image, box, grid_step))
+        geometry_detections = _detect_geometry(image, box, grid_step)
+        geometry_detections = _recover_full_spike_mini_pairs(
+            geometry_detections,
+            image,
+            box,
+        )
+        detections.extend(geometry_detections)
         raw_full_spike_support = [
             detection
             for detection in detections
@@ -11348,6 +11365,93 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     recovered = _recover_supported_block_cells(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
+
+
+def _recover_full_spike_mini_pairs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover a 32px spike exposed as two adjacent 16px silhouettes.
+
+    Screenshot scaling and pale/outlined tilesets can make the 32px patch
+    classifier lose a spike during later profile pruning even though both
+    half-cell patches retain the same directional triangle.  Pairing those
+    halves is useful evidence only when the full patch independently agrees
+    with the same direction.  The thresholds are based on edge geometry and
+    side coverage, so this remains usable across palettes and tilesets.
+    """
+
+    mini_pairs = {
+        OBJ_MINI_SPIKE_UP: (OBJ_SPIKE_UP, MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_RIGHT: (OBJ_SPIKE_RIGHT, 0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_LEFT: (OBJ_SPIKE_LEFT, 0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_DOWN: (OBJ_SPIKE_DOWN, MINI_BLOCK_SIZE, 0),
+    }
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    mini_positions = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    }
+    recovery_keys: set[tuple[int, int, int]] = set()
+    recovered_candidates: list[Detection] = []
+    for mini_type, (full_type, dx, dy) in mini_pairs.items():
+        candidates = [
+            detection
+            for detection in detections
+            if detection.type_id == mini_type
+        ]
+        direction = directions[full_type]
+        for detection in candidates:
+            x, y = detection.x, detection.y
+            if (mini_type, x + dx, y + dy) not in mini_positions:
+                continue
+            if (full_type, x, y) in recovery_keys:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None or spike.type_id != full_type:
+                continue
+            side_coverage = _triangle_side_coverage(patch, direction)
+            block = _classify_block(patch)
+            if not (
+                spike.score >= FULL_SPIKE_MINI_PAIR_MIN_SCORE
+                and spike.direction_margin
+                >= FULL_SPIKE_MINI_PAIR_MIN_DIRECTION_MARGIN
+                and spike.outline_delta >= FULL_SPIKE_MINI_PAIR_MIN_OUTLINE_DELTA
+                and side_coverage >= FULL_SPIKE_MINI_PAIR_MIN_SIDE_COVERAGE
+                and patch.edge_density >= FULL_SPIKE_MINI_PAIR_MIN_EDGE_DENSITY
+                and block.score <= FULL_SPIKE_MINI_PAIR_MAX_BLOCK_SCORE
+            ):
+                continue
+            recovered_candidates.append(
+                _geometry_detection(
+                    "full_spike_mini_pair_recovery",
+                    full_type,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            recovery_keys.add((full_type, x, y))
+    if not recovery_keys:
+        return detections
+    # Replace a same-cell primary candidate with the explicitly paired kind so
+    # later profile pruning cannot discard the stronger two-half evidence.
+    return [
+        detection
+        for detection in detections
+        if (detection.type_id, detection.x, detection.y) not in recovery_keys
+    ] + recovered_candidates
 
 
 @dataclass(frozen=True, slots=True)

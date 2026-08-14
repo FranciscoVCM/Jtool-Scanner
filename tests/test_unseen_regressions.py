@@ -9,6 +9,8 @@ from jtool_scanner.constants import (
     OBJ_BLOCK,
     OBJ_JUMP_REFRESHER,
     OBJ_MINI_BLOCK,
+    OBJ_MINI_SPIKE_DOWN,
+    OBJ_MINI_SPIKE_RIGHT,
     OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
@@ -297,6 +299,29 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
         self.assertIn((224, 128, 17), walljumps)
         self.assertIn((672, 400, 16), walljumps)
+        full_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+        # In this green/white tileset, several 32px spikes are exposed as two
+        # coherent 16px halves.  The paired-silhouette recovery must retain
+        # those full objects while leaving genuine mini-spikes alone.
+        self.assertTrue(
+            {
+                (608, 96, OBJ_SPIKE_RIGHT),
+                (336, 112, OBJ_SPIKE_RIGHT),
+                (64, 32, OBJ_SPIKE_DOWN),
+                (576, 192, OBJ_SPIKE_DOWN),
+            }.issubset(full_spikes)
+        )
+        mini_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in MINI_SPIKE_TYPES
+        }
+        self.assertIn((544, 32, OBJ_MINI_SPIKE_DOWN), mini_spikes)
+        self.assertNotIn((608, 96, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
 
     def test_clipped_walljump_phase_aliases_use_jtool_edge_origin(self) -> None:
         result = scan_png(

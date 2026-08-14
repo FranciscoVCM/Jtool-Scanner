@@ -1673,3 +1673,27 @@ The new regression passes **1 test in 320.626 seconds**; the prior strict
 FTFA and 12-pair measurements are unchanged.
 The complete post-change suite is green when run by module: **342 tests**
 (`34 + 286 + 22`), with no fixture or JMap modifications.
+
+## Checkpoint: paired mini-silhouette full-spike recovery (2026-08-14)
+
+The green/white Irkara-51 room exposed a generalized scale failure: many real
+32px spikes survived only as two adjacent 16px directional silhouettes. The
+later mini-dense profile cleanup then removed the full spike and left false
+mini-spike objects. Geometry scanning now pairs adjacent same-direction
+half-cell silhouettes and promotes them only when the independent 32px patch
+has a strong matching direction, outline, side coverage, edge density, and a
+non-block-dominant center. The recovery is palette- and tileset-independent;
+it does not use fixture names or JMap coordinates.
+
+On Irkara-51 this raises full-spike matches from `29/63` to `46/63` and reduces
+mini-spike output from `43` detections (32.6% precision) to `15` (14/15 matched,
+93.3% precision), while saves, warps, water, and walljumps remain unchanged.
+The full 12-pair block/spike workflow is unchanged in its protected aggregate
+totals (`709/748` full spikes, `273/288` mini spikes, `22/22` saves,
+`13/13` walljumps, `8/8` gravity, `18/19` refreshers, and exact color-object
+recall). FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted;
+0 wrong direction`.
+
+The Irkara-51 regression now protects both recovered full-spike examples and
+the preservation of a genuine mini-spike. The complete module suite still
+needs to be rerun after this checkpoint before it is considered final.
