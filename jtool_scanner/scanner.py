@@ -1238,6 +1238,14 @@ WALLJUMP_SINGLE_SPARSE_MIN_SCORE = 0.68
 WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA = 24
 WALLJUMP_TERRAIN_ANCHOR_MAX_VERTICAL_DISTANCE = GRID_SIZE * 2
 WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT = 1
+# A scaled or green-backed vine can be split into two disconnected component
+# fragments one 32px cell apart.  Search only the three intervening 8px
+# phases, and require an object-like edge/side profile at the recovered phase;
+# this avoids treating an arbitrary green terrain run as a vine.
+WALLJUMP_SPLIT_PAIR_MIN_EDGE_DENSITY = 0.34
+WALLJUMP_SPLIT_PAIR_MIN_SCORE = 0.58
+WALLJUMP_SPLIT_PAIR_MIN_SIDE_BIAS = 0.22
+WALLJUMP_SPLIT_PAIR_MAX_SCORE = 0.96
 WATER_MIN_BLUE_LIFT = 10.0
 WATER_MAX_BLUE_LIFT = 55.0
 WATER_PALE_MAX_BLUE_LIFT = 50.0
@@ -9630,7 +9638,219 @@ def _detect_walljumps(
             primary,
             repeated,
         )
+    detections.extend(
+        _recover_split_walljump_component_pairs(
+            detections,
+            image,
+            room,
+            anchors,
+            repeated,
+        )
+    )
+    detections.extend(
+        _recover_cross_phase_walljump_pairs(
+            detections,
+            image,
+            room,
+            anchors,
+        )
+    )
     return _dedupe_walljumps(detections, min_distance=32)
+
+
+def _recover_split_walljump_component_pairs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection],
+    repeated: list[Detection],
+) -> list[Detection]:
+    """Recover the canonical phase between two split vine components.
+
+    Unknown green tilesets sometimes break one 32px vine sprite into two
+    ordinary component detections exactly one cell apart.  The two fragments
+    are individually plausible but their rounded origins straddle the real
+    8px sampling phase.  Probe the intervening phases and keep a synthetic
+    center only when the larger patch has both a strong edge profile and the
+    expected side-biased vine mask.  Repeated-strip and clipped-edge kinds are
+    deliberately excluded because their dedicated phase rules are stronger.
+    """
+
+    ordinary = [
+        detection
+        for detection in detections
+        if detection.kind in {"walljump_left", "walljump_right"}
+    ]
+    recovered: list[Detection] = []
+    for index, first in enumerate(ordinary):
+        for second in ordinary[index + 1 :]:
+            if first.type_id != second.type_id or first.x != second.x:
+                continue
+            if abs(first.y - second.y) != GRID_SIZE:
+                continue
+            # A repeated-strip candidate at this same phase means the two
+            # ordinary detections are already two real vines, not fragments
+            # of one sprite.  Do not collapse an established vertical strip.
+            if any(
+                candidate.type_id == first.type_id
+                and candidate.x == first.x
+                and min(abs(candidate.y - first.y), abs(candidate.y - second.y))
+                <= MINI_BLOCK_SIZE
+                for candidate in repeated
+            ):
+                continue
+            low_y = min(first.y, second.y)
+            best: tuple[float, int, _ColorStats] | None = None
+            for candidate_y in range(
+                low_y + MINI_BLOCK_SIZE // 2,
+                low_y + GRID_SIZE,
+                MINI_BLOCK_SIZE // 2,
+            ):
+                stats = _patch_color_stats(
+                    image,
+                    room,
+                    first.x,
+                    candidate_y,
+                    GRID_SIZE,
+                    _is_sparse_walljump_green,
+                )
+                features = _patch_features(
+                    image,
+                    room,
+                    first.x,
+                    candidate_y,
+                    GRID_SIZE,
+                )
+                side_bias = abs(stats.center_x_ratio - 0.5)
+                orientation_ok = (
+                    stats.center_x_ratio >= 0.5
+                    if first.type_id == OBJ_WALLJUMP_LEFT
+                    else stats.center_x_ratio <= 0.5
+                )
+                if not orientation_ok:
+                    continue
+                if features.edge_density < WALLJUMP_SPLIT_PAIR_MIN_EDGE_DENSITY:
+                    continue
+                if side_bias < WALLJUMP_SPLIT_PAIR_MIN_SIDE_BIAS:
+                    continue
+                score = min(
+                    WALLJUMP_SPLIT_PAIR_MAX_SCORE,
+                    features.edge_density
+                    + min(0.24, stats.density)
+                    + side_bias * 0.25
+                    + min(0.10, features.center_score * 0.12),
+                )
+                if score < WALLJUMP_SPLIT_PAIR_MIN_SCORE:
+                    continue
+                if best is None or score > best[0]:
+                    best = (score, candidate_y, stats)
+            if best is None:
+                continue
+            score, candidate_y, _stats = best
+            if _near_anchor(first.x, candidate_y, anchors, max_distance=32):
+                continue
+            kind = (
+                "walljump_left_split_pair"
+                if first.type_id == OBJ_WALLJUMP_LEFT
+                else "walljump_right_split_pair"
+            )
+            recovered.append(
+                _grid_detection(
+                    kind,
+                    first.type_id,
+                    first.x,
+                    candidate_y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
+
+
+def _recover_cross_phase_walljump_pairs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    anchors: list[Detection],
+) -> list[Detection]:
+    """Resolve two opposite half-cell aliases around one vine silhouette."""
+
+    ordinary = [
+        detection
+        for detection in detections
+        if detection.kind in {"walljump_left", "walljump_right"}
+    ]
+    recovered: list[Detection] = []
+    for index, first in enumerate(ordinary):
+        for second in ordinary[index + 1 :]:
+            if first.type_id == second.type_id or first.y != second.y:
+                continue
+            if abs(first.x - second.x) != GRID_SIZE:
+                continue
+            weaker = min(first, second, key=lambda detection: detection.score)
+            stronger = second if weaker is first else first
+            candidate_x = weaker.x + (
+                MINI_BLOCK_SIZE // 2
+                if weaker.x < stronger.x
+                else -MINI_BLOCK_SIZE // 2
+            )
+            stats = _patch_color_stats(
+                image,
+                room,
+                candidate_x,
+                first.y,
+                GRID_SIZE,
+                _is_sparse_walljump_green,
+            )
+            features = _patch_features(
+                image,
+                room,
+                candidate_x,
+                first.y,
+                GRID_SIZE,
+            )
+            side_bias = abs(stats.center_x_ratio - 0.5)
+            if (
+                features.edge_density < WALLJUMP_SPLIT_PAIR_MIN_EDGE_DENSITY
+                or side_bias < WALLJUMP_SPLIT_PAIR_MIN_SIDE_BIAS
+            ):
+                continue
+            score = min(
+                WALLJUMP_SPLIT_PAIR_MAX_SCORE,
+                features.edge_density
+                + min(0.24, stats.density)
+                + side_bias * 0.25
+                + min(0.10, features.center_score * 0.12),
+            )
+            if score < WALLJUMP_SPLIT_PAIR_MIN_SCORE:
+                continue
+            candidate_type_id = (
+                OBJ_WALLJUMP_LEFT
+                if stats.center_x_ratio >= 0.5
+                else OBJ_WALLJUMP_RIGHT
+            )
+            if _near_anchor(candidate_x, first.y, anchors, max_distance=32):
+                continue
+            kind = (
+                "walljump_left_phase_pair"
+                if candidate_type_id == OBJ_WALLJUMP_LEFT
+                else "walljump_right_phase_pair"
+            )
+            recovered.append(
+                _grid_detection(
+                    kind,
+                    candidate_type_id,
+                    candidate_x,
+                    first.y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
 
 
 def _detect_sparse_walljump_patches(
@@ -9908,6 +10128,11 @@ def _reconcile_walljump_terrain_anchors(
 
     replacements: dict[int, Detection] = {}
     for walljump in walljumps:
+        if walljump.kind.endswith(("_split_pair", "_phase_pair")):
+            # The shape-centered phase is stronger than a terrain-column
+            # alias: the pair was recovered from the sprite silhouette itself,
+            # so a later green terrain profile must not move it.
+            continue
         current_support = support_count(walljump.x, walljump.y)
         if current_support:
             continue

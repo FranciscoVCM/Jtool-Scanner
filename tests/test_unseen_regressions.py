@@ -20,6 +20,8 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_UP,
     OBJ_WARP,
     OBJ_WATER_2,
+    OBJ_WALLJUMP_LEFT,
+    OBJ_WALLJUMP_RIGHT,
     ROOM_HEIGHT,
 )
 from jtool_scanner.geometry import Box
@@ -352,6 +354,28 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertNotIn((336, 448, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((624, 480, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((640, 480, OBJ_MINI_SPIKE_DOWN), mini_spikes)
+
+    def test_walljump_phase_recovery_centers_split_unknown_tileset_vines(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-52-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        walljumps = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+        }
+        self.assertEqual(
+            walljumps,
+            {
+                (112, 528, OBJ_WALLJUMP_RIGHT),
+                (16, 416, OBJ_WALLJUMP_RIGHT),
+                (272, 320, OBJ_WALLJUMP_LEFT),
+            },
+        )
 
     def test_clipped_walljump_phase_aliases_use_jtool_edge_origin(self) -> None:
         result = scan_png(

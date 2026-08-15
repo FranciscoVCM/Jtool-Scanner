@@ -1724,3 +1724,29 @@ false positives; 2 missed; 0 shifted; 0 wrong direction`.
 The new Irkara-52 regression and the existing Irkara-51 paired-spike
 regression pass together. The complete post-change module suite passes **343
 tests** (`35 + 286 + 22`), with no fixture or JMap modifications.
+
+## Checkpoint: silhouette-centered vine phase recovery (2026-08-15)
+
+The green/white Irkara-52 room exposed a second generalized vine failure. A
+single sprite can be split into two ordinary green components one 32px cell
+apart, or two opposite half-cell aliases can straddle the true 8px phase. The
+scanner now probes the three intervening phases only when the candidate patch
+has a palette-relative edge profile and the expected side bias. Existing
+repeated-strip candidates veto the split recovery, and recovered phases are
+protected from later terrain-column arbitration. No fixture name, palette, or
+coordinate is used by the rule.
+
+Irkara-52 now matches all three authoritative walljumps exactly: `(16,416,
+right)`, `(112,528,right)`, and `(272,320,left)`, improving the prior `2/3`
+walljump match to `3/3` with no extra vine. Irkara-51 keeps its supported
+`(224,128,right)` and `(672,400,left)` phases; Irkara-89 remains exact at
+`9/9`, and CN3-18 remains exact at `4/4`. The complete ten-pair Irkara
+workflow now reports `7/7` walljump recall with the existing 15 detections;
+precision remains an explicitly tracked follow-up because the corpus contains
+known extra visual candidates.
+
+The protected twelve-pair block/spike workflow is unchanged (`13/13`
+walljumps, `22/22` saves, `35/35` water, `8/8` gravity, `3/3` platforms), and
+the strict FTFA gate remains `926/928 exact; 0 false positives; 2 missed; 0
+shifted; 0 wrong direction`. The complete selected module suite passes **344
+tests in 670.562 seconds**, with no fixture or JMap modifications.
