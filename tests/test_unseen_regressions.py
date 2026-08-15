@@ -287,6 +287,37 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(144, 448), (512, 336)],
         )
 
+    def test_dark_sparse_outline_rooms_reject_platform_edge_impostors(self) -> None:
+        options = {
+            "grid_step": 8,
+            "include_color_objects": True,
+            "include_geometry": True,
+            "enable_ocr": False,
+        }
+        for name in ("irkara-49-game.png", "irkara-49-warp-game.png"):
+            with self.subTest(name=name):
+                result = scan_png(Path("fixtures") / "irkara" / name, **options)
+                self.assertEqual(
+                    [
+                        detection
+                        for detection in result.detections
+                        if detection.type_id == OBJ_PLATFORM
+                    ],
+                    [],
+                )
+        control = scan_png(
+            Path("fixtures") / "irkara" / "irkara-71-game.png",
+            **options,
+        )
+        self.assertEqual(
+            sorted(
+                (detection.x, detection.y)
+                for detection in control.detections
+                if detection.type_id == OBJ_PLATFORM
+            ),
+            [(32, 480), (64, 128), (384, 288), (544, 128), (736, 352)],
+        )
+
     def test_terrain_vine_phase_aligns_irkara51_supported_column(self) -> None:
         result = scan_png(
             Path("fixtures") / "irkara" / "irkara-51-game.png",

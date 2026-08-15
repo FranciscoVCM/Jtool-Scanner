@@ -346,6 +346,18 @@ PLATFORM_DARK_CENTER_RANGE = (0.08, 0.22)
 PLATFORM_DARK_MAX_BLOCK_SCORE = 0.15
 PLATFORM_DARK_MAX_BELOW_EDGE = 0.12
 PLATFORM_DARK_MAX_ROOM_LUMINANCE_DELTA = 8.0
+# Dark outlined rooms can expose long purple terrain edges that satisfy the
+# permissive platform routes without containing a filled platform sprite.  A
+# room-relative sparse gate is applied only to that low-fill family; filled
+# dark rooms (including the Irkara-71 platform control) retain their normal
+# palette-independent routes.
+PLATFORM_DARK_SPARSE_MAX_BRIGHTNESS = 45.0
+PLATFORM_DARK_SPARSE_MAX_FILLED_SHARE = 0.14
+PLATFORM_DARK_SPARSE_MIN_HORIZONTAL_RUN = 24
+PLATFORM_DARK_SPARSE_MIN_VERTICAL_RUN = 3
+PLATFORM_DARK_SPARSE_MAX_CENTER_SCORE = 0.20
+PLATFORM_DARK_SPARSE_MAX_BLOCK_SCORE = 0.23
+PLATFORM_DARK_SPARSE_MAX_BELOW_EDGE = 0.12
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
@@ -1823,6 +1835,11 @@ def scan_image(
         if bright_outlined_terrain_room:
             detections = _prune_bright_outlined_terrain_decorations(detections)
         detections = _prune_bright_room_platform_impostors(
+            detections,
+            image,
+            box,
+        )
+        detections = _prune_dark_sparse_platform_impostors(
             detections,
             image,
             box,
@@ -3682,6 +3699,66 @@ def _prune_bright_room_platform_impostors(
                 ),
                 require_span=True,
             )
+        ):
+            continue
+        result.append(detection)
+    return result
+
+
+def _prune_dark_sparse_platform_impostors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject platform-shaped edges in dark, mostly empty outlined rooms.
+
+    The generic platform routes intentionally tolerate unfamiliar palettes,
+    but a dark outlined tileset can make every long terrain lip look like a
+    thin platform.  Require a room with enough non-dark filled material before
+    keeping a candidate; in the sparse family, retain only the compact,
+    low-center-occupancy bar morphology used by the filled-room controls.
+    """
+
+    room_profile = _room_color_profile(image, room)
+    room_luminance = _profile_brightness(room_profile)
+    if room_luminance > PLATFORM_DARK_SPARSE_MAX_BRIGHTNESS:
+        return detections
+    sample_step_x = max(4, room.width // 160)
+    sample_step_y = max(4, room.height // 120)
+    samples = 0
+    filled = 0
+    for y in range(room.y, room.bottom, sample_step_y):
+        for x in range(room.x, room.right, sample_step_x):
+            red, green, blue = image.pixel(x, y)
+            luminance = (red * 30 + green * 59 + blue * 11) / 100
+            samples += 1
+            filled += luminance > 50
+    if filled / max(1, samples) > PLATFORM_DARK_SPARSE_MAX_FILLED_SHARE:
+        return detections
+
+    result: list[Detection] = []
+    for detection in detections:
+        if detection.type_id != OBJ_PLATFORM:
+            result.append(detection)
+            continue
+        features = _platform_patch_features(image, room, detection.x, detection.y)
+        patch = _patch_features(image, room, detection.x, detection.y, PLATFORM_WIDTH)
+        block_score = _classify_block(patch).score
+        below_edge = 1.0
+        if detection.y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+            below_edge = _patch_features(
+                image,
+                room,
+                detection.x,
+                detection.y + PLATFORM_HEIGHT,
+                PLATFORM_WIDTH,
+            ).edge_density
+        if not (
+            features.horizontal_run >= PLATFORM_DARK_SPARSE_MIN_HORIZONTAL_RUN
+            and features.vertical_run >= PLATFORM_DARK_SPARSE_MIN_VERTICAL_RUN
+            and patch.center_score <= PLATFORM_DARK_SPARSE_MAX_CENTER_SCORE
+            and block_score <= PLATFORM_DARK_SPARSE_MAX_BLOCK_SCORE
+            and below_edge <= PLATFORM_DARK_SPARSE_MAX_BELOW_EDGE
         ):
             continue
         result.append(detection)

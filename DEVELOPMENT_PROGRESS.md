@@ -1750,3 +1750,28 @@ walljumps, `22/22` saves, `35/35` water, `8/8` gravity, `3/3` platforms), and
 the strict FTFA gate remains `926/928 exact; 0 false positives; 2 missed; 0
 shifted; 0 wrong direction`. The complete selected module suite passes **344
 tests in 670.562 seconds**, with no fixture or JMap modifications.
+
+## Checkpoint: dark sparse outlined-room platform gate (2026-08-15)
+
+The dark purple outlined Irkara-49 and Irkara-49-warp rooms exposed a broad
+platform failure: the generic low-contrast and textured routes interpreted
+terrain lips as 57 platform objects (28 and 29 respectively), even though
+those rooms contain no platform sprites. Irkara-71 and K3-EX-Hades provide
+filled/darker controls with real platforms, so the correction is deliberately
+room-relative rather than a fixture or coordinate exception.
+
+The scanner now applies a dark-sparse gate only when the room luminance is at
+most 45 and the room's filled bright share is at most 0.14. A candidate must
+then retain a 24-pixel horizontal run, a three-pixel vertical run, a low
+center and block occupancy, and a low below-edge score. The gate preserves all
+non-platform detections and leaves filled dark controls on the existing route.
+
+On the ten-pair Irkara manifest this reduces platform detections from `62` to
+`5`, while the five true Irkara-71 platforms remain exact: aggregate platform
+precision and recall are now both `100%` (`5/5` matched). K3-EX-Hades remains
+exact at `2/2`; the targeted block/spike controls remain exact at `3/3`
+platforms and `9/9` walljumps. All other Irkara aggregate object totals are
+unchanged. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0
+ shifted; 0 wrong direction`. The new regression test passes, and the complete
+ selected module suite passes **345 tests in 790.763 seconds**, with no fixture
+ or JMap modifications.
