@@ -435,6 +435,27 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(224, 80), (384, 256), (768, 376)],
         )
 
+    def test_short_edge_walljump_uses_component_top_origin(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-51-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        walljumps = [
+            detection
+            for detection in result.detections
+            if detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+        ]
+        self.assertIn(
+            (0, 240, OBJ_WALLJUMP_LEFT),
+            {
+                (detection.x, detection.y, detection.type_id)
+                for detection in walljumps
+            },
+        )
+
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [
             detection

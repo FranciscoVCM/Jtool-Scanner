@@ -1775,3 +1775,28 @@ unchanged. FTFA remains `926/928 exact; 0 false positives; 2 missed; 0
  shifted; 0 wrong direction`. The new regression test passes, and the complete
  selected module suite passes **345 tests in 790.763 seconds**, with no fixture
  or JMap modifications.
+
+## Checkpoint: clipped edge-vine origin recovery (2026-08-15)
+
+An edge-clipped walljump component can contain only a short vertical column.
+Centering that shortened box assumes a full 32px sprite and moved the
+Irkara-51 left-edge vine from its JTool origin `(0,240)` to `(0,232)`. The
+scanner now uses the component top only when the candidate is at the left edge,
+is at most 8 map pixels wide, and is shorter than 28 map pixels. Complete
+sprites and repeated-strip/clipped aliases retain their existing center or
+phase rules; the logic does not use a fixture name or coordinate.
+
+Irkara-51's edge vine now lands at `(0,240,left)`; the existing Irkara-52
+split/phase recoveries, Irkara-89 repeated strips, and CN3-18 edge-clipped
+aliases remain unchanged. The two focused regressions pass. The complete
+selected module suite passes **346 tests in 824.307 seconds**, with no fixture
+or JMap modifications.
+
+The accompanying save-phase audit remains a negative result rather than a
+global shift: the existing support/profile paths correct the known FTFA,
+Irkara-51/52/71/89, and upper CN3-18 phases, while unprofiled Irkara-49/54
+and the lower CN3-18 save still show isolated +8 origins. K3-EX-Hades also
+contains intentional 8px-phase saves where blindly preferring a full support
+cell would move the marker in the wrong direction. A future save change must
+therefore use sprite/layout evidence and preserve these phase-sensitive
+controls; no blanket `y -= 8` rule was added.

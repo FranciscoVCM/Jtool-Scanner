@@ -1250,6 +1250,14 @@ WALLJUMP_SINGLE_SPARSE_MIN_SCORE = 0.68
 WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA = 24
 WALLJUMP_TERRAIN_ANCHOR_MAX_VERTICAL_DISTANCE = GRID_SIZE * 2
 WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT = 1
+# A walljump sprite is vertically opaque from its JTool origin.  When an
+# edge-clipped component contains only a short visible column, centering that
+# shortened box moves the origin down by one 8px phase.  Use the component top
+# only for this narrow edge/short-width morphology; complete sprites retain the
+# ordinary center-based origin and repeated-strip edge aliases keep their
+# dedicated route.
+WALLJUMP_EDGE_ORIGIN_MAX_MAP_WIDTH = 8.0
+WALLJUMP_EDGE_ORIGIN_MAX_MAP_HEIGHT = 28.0
 # A scaled or green-backed vine can be split into two disconnected component
 # fragments one 32px cell apart.  Search only the three intervening 8px
 # phases, and require an object-like edge/side profile at the recovered phase;
@@ -9667,10 +9675,27 @@ def _detect_walljumps(
         if avg_b < WALLJUMP_COMPONENT_MIN_AVG_BLUE:
             continue
         map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        map_width = box.width * ROOM_WIDTH / max(1, room.width)
+        map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+        edge_origin = (
+            map_x <= 0
+            and map_width <= WALLJUMP_EDGE_ORIGIN_MAX_MAP_WIDTH
+            and map_height < WALLJUMP_EDGE_ORIGIN_MAX_MAP_HEIGHT
+        )
+        if edge_origin:
+            # The visible edge column starts at the sprite origin.  Centering
+            # a clipped component assumes a full 32px height and produces a
+            # false lower phase (for example 232 instead of 240).
+            map_y = round_to_step(
+                (box.y - room.y) * ROOM_HEIGHT / max(1, room.height),
+                grid_step,
+            )
         if _near_anchor(map_x, map_y, anchors, max_distance=32):
             continue
         type_id = OBJ_WALLJUMP_LEFT if map_x % GRID_SIZE < GRID_SIZE / 2 else OBJ_WALLJUMP_RIGHT
         kind = "walljump_left" if type_id == OBJ_WALLJUMP_LEFT else "walljump_right"
+        if edge_origin:
+            kind = f"{kind}_edge_origin"
         score = min(1.0, density * 1.6)
         detections.append(Detection(kind, type_id, map_x, map_y, score, box))
     light_ratio = _light_sample_ratio(image, room)
