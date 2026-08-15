@@ -434,6 +434,23 @@ ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.42
 ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.25
 ADJACENT_UP_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.55
 ADJACENT_UP_MINI_RECOVERY_PAIR_DISTANCE = 16
+# Some dark, neutral textured tilesets render upward mini-spikes as a soft
+# silhouette rather than a high-contrast edge.  Learn the local background from
+# the patch border and require a centered, rising foreground profile in two
+# adjacent cells; this keeps terrain seams out without naming a tileset.
+DARK_TEXTURED_MINI_ROOM_MIN_BRIGHTNESS = 45.0
+DARK_TEXTURED_MINI_ROOM_MAX_BRIGHTNESS = 70.0
+DARK_TEXTURED_MINI_ROOM_MAX_SATURATION = 0.12
+DARK_TEXTURED_MINI_ROOM_MAX_CHROMA_DELTA = 12.0
+DARK_TEXTURED_MINI_BORDER_THRESHOLD = 12.0
+DARK_TEXTURED_MINI_BORDER_SCALE = 1.5
+DARK_TEXTURED_MINI_MAX_TOP_SHARE = 0.40
+DARK_TEXTURED_MINI_MIN_BOTTOM_SHARE = 0.55
+DARK_TEXTURED_MINI_MIN_RISE = 0.25
+DARK_TEXTURED_MINI_MAX_QUARTILE_DROP = 0.16
+DARK_TEXTURED_MINI_MIN_CENTER = 5.0
+DARK_TEXTURED_MINI_MAX_CENTER = 11.0
+DARK_TEXTURED_MINI_PAIR_DISTANCE = 16
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.23
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.40
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.40
@@ -1937,6 +1954,11 @@ def scan_image(
     detections = _recover_late_mini_spike_silhouettes(
         detections,
         raw_primary_mini_spikes,
+        image,
+        box,
+    )
+    detections = _recover_dark_textured_adjacent_up_mini_spikes(
+        detections,
         image,
         box,
     )
@@ -25046,6 +25068,176 @@ def _recover_late_mini_spike_silhouettes(
             recovered.append(candidate)
             existing_minis.append(candidate)
     return recovered
+
+
+def _recover_dark_textured_adjacent_up_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover paired upward minis in dark, neutral textured rooms.
+
+    In this room family the spike material can have almost the same luminance
+    as the surrounding texture, so the ordinary edge classifier sees only
+    noise.  The patch border still provides a palette-relative background
+    estimate: a real upward triangle grows from a centered narrow top toward a
+    filled lower edge.  Requiring that profile in two adjacent cells prevents
+    isolated texture seams from becoming gameplay objects.
+    """
+
+    profile = _room_color_profile(image, room)
+    brightness = _profile_brightness(profile)
+    if not (
+        DARK_TEXTURED_MINI_ROOM_MIN_BRIGHTNESS
+        <= brightness
+        <= DARK_TEXTURED_MINI_ROOM_MAX_BRIGHTNESS
+        and profile.saturation <= DARK_TEXTURED_MINI_ROOM_MAX_SATURATION
+        and abs(profile.avg_b - profile.avg_r)
+        <= DARK_TEXTURED_MINI_ROOM_MAX_CHROMA_DELTA
+    ):
+        return detections
+
+    candidates: dict[tuple[int, int], float] = {}
+    for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            score = _dark_textured_up_mini_shape_score(image, room, x, y)
+            if score is not None:
+                candidates[(x, y)] = score
+    if not candidates:
+        return detections
+
+    existing = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_MINI_SPIKE_UP
+    ]
+    added: list[Detection] = []
+    for (x, y), score in sorted(
+        candidates.items(),
+        key=lambda item: (item[0][1], item[0][0]),
+    ):
+        if not (
+            (x - DARK_TEXTURED_MINI_PAIR_DISTANCE, y) in candidates
+            or (x + DARK_TEXTURED_MINI_PAIR_DISTANCE, y) in candidates
+        ):
+            continue
+        if any(
+            abs(detection.x - x) <= 8 and abs(detection.y - y) <= 8
+            for detection in (*existing, *added)
+        ):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_up_dark_textured_pair",
+                OBJ_MINI_SPIKE_UP,
+                x,
+                y,
+                score,
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+    return [*detections, *added] if added else detections
+
+
+def _dark_textured_up_mini_shape_score(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> float | None:
+    colors = _sample_map_patch_colors(
+        image,
+        room,
+        x,
+        y,
+        MINI_BLOCK_SIZE,
+    )
+    border_positions = [
+        index
+        for index in range(16 * 16)
+        if index // 16 < 2
+        or index // 16 >= 14
+        or index % 16 < 2
+        or index % 16 >= 14
+    ]
+    background = tuple(
+        median(colors[index][channel] for index in border_positions)
+        for channel in range(3)
+    )
+    border_distances = sorted(
+        math.sqrt(
+            sum((colors[index][channel] - background[channel]) ** 2 for channel in range(3))
+        )
+        for index in border_positions
+    )
+    threshold = max(
+        DARK_TEXTURED_MINI_BORDER_THRESHOLD,
+        median(border_distances) * DARK_TEXTURED_MINI_BORDER_SCALE,
+    )
+    row_counts: list[float] = []
+    row_centers: list[float | None] = []
+    for row in range(16):
+        positions = [
+            column
+            for column in range(16)
+            if math.sqrt(
+                sum(
+                    (
+                        colors[row * 16 + column][channel]
+                        - background[channel]
+                    )
+                    ** 2
+                    for channel in range(3)
+                )
+            )
+            > threshold
+        ]
+        row_counts.append(len(positions) / 16)
+        row_centers.append(
+            sum(positions) / len(positions) if len(positions) >= 2 else None
+        )
+
+    quartiles = tuple(
+        sum(row_counts[start : start + 4]) / 4
+        for start in (0, 4, 8, 12)
+    )
+    top, second, third, bottom = quartiles
+    if not (
+        top <= DARK_TEXTURED_MINI_MAX_TOP_SHARE
+        and bottom >= DARK_TEXTURED_MINI_MIN_BOTTOM_SHARE
+        and bottom - top >= DARK_TEXTURED_MINI_MIN_RISE
+        and min(
+            second - top,
+            third - second,
+            bottom - third,
+        )
+        >= -DARK_TEXTURED_MINI_MAX_QUARTILE_DROP
+    ):
+        return None
+
+    early_centers = [
+        center
+        for center, count in zip(row_centers[:10], row_counts[:10])
+        if center is not None and count >= 2 / 16
+    ]
+    if not early_centers:
+        return None
+    center = median(early_centers[:4])
+    if not (
+        DARK_TEXTURED_MINI_MIN_CENTER
+        <= center
+        <= DARK_TEXTURED_MINI_MAX_CENTER
+    ):
+        return None
+    return min(
+        0.96,
+        0.56
+        + (bottom - top) * 0.30
+        + (bottom - second) * 0.10
+        + (1.0 - top) * 0.04,
+    )
 
 
 def _has_upper_particle_field(

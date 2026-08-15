@@ -287,6 +287,33 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(144, 448), (512, 336)],
         )
 
+    def test_dark_textured_room_recovers_paired_up_minispikes(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "k3-ex-hades-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        upward_minis = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_MINI_SPIKE_UP
+        }
+        self.assertEqual(
+            upward_minis,
+            {
+                (544, 112),
+                (560, 112),
+                (480, 16),
+                (464, 16),
+                (416, 16),
+                (400, 16),
+                (240, 496),
+                (224, 496),
+            },
+        )
+
     def test_dark_sparse_outline_rooms_reject_platform_edge_impostors(self) -> None:
         options = {
             "grid_step": 8,

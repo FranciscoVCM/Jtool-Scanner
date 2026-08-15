@@ -1860,3 +1860,28 @@ walljumps, and `5/5` matched platforms; no fixture or JMap was modified.
 This is header-evidence phase recovery, not a general vertical offset: terrain,
 fragmented, active-layout, and intentionally phase-sensitive K3 save paths
 remain protected and are not rewritten by the ordinary rule.
+
+## Checkpoint: dark textured paired upward mini-spike recovery (2026-08-15)
+
+The dark textured `k3-ex-hades` room exposed eight authoritative upward
+mini-spikes that the ordinary luminance-edge classifier could not retain.  A
+new palette-relative fallback learns each 16px patch's background from its
+border, requires a centered foreground silhouette that grows toward the lower
+edge, and accepts it only when the same-row silhouette appears in an adjacent
+cell.  The room gate is based on local brightness, saturation, and neutral
+chroma rather than a fixture name; bright/neon, compact, cyan, and warm rooms
+do not enter this route.
+
+The K3 result improves from `0/8` matched upward mini-spikes to `8/8` with
+exact coordinates `(400,16)`, `(416,16)`, `(464,16)`, `(480,16)`,
+`(544,112)`, `(560,112)`, `(224,496)`, and `(240,496)`, with no other mini
+spike output in that room.  The complete 12-pair block/spike workflow improves
+aggregate mini-spikes from `273/288` matched (`343` detected) to `281/288`
+matched (`351` detected); all eight added detections match truth and every
+other aggregate object total is unchanged.  The exact FTFA gate remains
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+The CN2-5 refresher discrepancy remains a deliberate negative result: its
+JMap-only `(624,160)` entry is absent from the source screenshot, while all
+six visible refreshers remain exact.  No fixture, JMap, or ignored corpus
+artifact was modified.
