@@ -451,6 +451,11 @@ DARK_TEXTURED_MINI_MAX_QUARTILE_DROP = 0.16
 DARK_TEXTURED_MINI_MIN_CENTER = 5.0
 DARK_TEXTURED_MINI_MAX_CENTER = 11.0
 DARK_TEXTURED_MINI_PAIR_DISTANCE = 16
+# The fallback is intentionally restricted to rooms that already have a
+# substantial hazard field. Besides providing useful context for this
+# ambiguous low-contrast silhouette, this cheap precondition keeps the
+# 1185-cell shape probe off ordinary color-only and synthetic scans.
+DARK_TEXTURED_MINI_MIN_FULL_SPIKE_COUNT = 12
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_SCORE = 0.23
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_EDGE_DENSITY = 0.40
 AMBIGUOUS_ADJACENT_UP_MINI_RECOVERY_MIN_CENTER_SCORE = 0.40
@@ -25084,6 +25089,12 @@ def _recover_dark_textured_adjacent_up_mini_spikes(
     filled lower edge.  Requiring that profile in two adjacent cells prevents
     isolated texture seams from becoming gameplay objects.
     """
+
+    if sum(
+        detection.type_id in FULL_SPIKE_TYPES
+        for detection in detections
+    ) < DARK_TEXTURED_MINI_MIN_FULL_SPIKE_COUNT:
+        return detections
 
     profile = _room_color_profile(image, room)
     brightness = _profile_brightness(profile)

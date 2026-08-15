@@ -1885,3 +1885,22 @@ The CN2-5 refresher discrepancy remains a deliberate negative result: its
 JMap-only `(624,160)` entry is absent from the source screenshot, while all
 six visible refreshers remain exact.  No fixture, JMap, or ignored corpus
 artifact was modified.
+
+## Checkpoint: bound dark-textured mini-spike recovery (2026-08-15)
+
+The paired low-contrast mini-spike fallback now has a cheap structural
+precondition: it runs only when the scan already contains at least twelve
+full-spike detections.  This is the hazard-field context that motivated the
+K3 rule, and it prevents the 1185-cell palette-relative probe from running on
+ordinary color-only and synthetic scans.  The K3 screen still recovers all
+eight authoritative upward mini-spikes at exact coordinates.
+
+The complete unittest discovery run passes **349 tests in 1650.616 seconds**,
+`OK`.  The strict FTFA gate remains **926/928 exact; 0 false positives; 2
+missed edge blocks; 0 shifted; 0 wrong direction**.  The documented
+12-pair block/spike workflow remains unchanged for every category except the
+intended K3 mini-spike recovery: saves 22/22, warps 12/12, apples 4/4,
+water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
+mini-blocks 869/875, blocks 1457/1486, full spikes 709/748, mini-spikes
+281/288, killers 99/99, and refreshers 18/19.  No fixture or JMap was
+modified.
