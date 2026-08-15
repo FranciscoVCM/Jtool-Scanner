@@ -1368,6 +1368,15 @@ WATER_TINTED_APPLE_MAX_BORDER_SCORE = 0.20
 WATER_TINTED_APPLE_MIN_CENTER_SCORE = 0.18
 WATER_TINTED_APPLE_MAX_CENTER_SCORE = 0.58
 WATER_TINTED_APPLE_ALIGNMENT_STEP = 8
+# Dark, mostly empty outlined rooms can preserve the SAVE header while the
+# warm body component is centered eight map pixels low.  Apply this only to a
+# room-relative sparse profile and require independent header evidence; normal
+# filled rooms and terrain-backed saves retain their existing arbitration.
+SAVE_DARK_SPARSE_MAX_BRIGHTNESS = 45.0
+SAVE_DARK_SPARSE_MAX_FILLED_SHARE = 0.14
+SAVE_DARK_SPARSE_MIN_HEADER_SHARE = 0.10
+SAVE_DARK_SPARSE_MAX_PHASE_SHIFT = 8
+SAVE_HEADER_PALE_TOP = 2.0
 APPLE_CONTOUR_TEMPLATE_ROWS = (
     "................",
     "................",
@@ -1573,6 +1582,12 @@ def scan_image(
             grid_step,
             allow_weak_active=compact_room,
         )
+    )
+    detections = _reanchor_dark_sparse_save_headers(
+        detections,
+        image,
+        box,
+        grid_step,
     )
     detections.extend(_detect_warps(image, box, grid_step))
     if include_color_objects:
@@ -7086,6 +7101,97 @@ def _detect_saves(
     )
     detections.extend(_detect_outline_saves(image, room, grid_step))
     return _dedupe_detections(detections, min_distance=25)
+
+
+def _reanchor_dark_sparse_save_headers(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Use a preserved SAVE label to correct a sparse-room body centroid.
+
+    In a very dark, low-fill room the red/yellow body can be the only part
+    seen by the absolute palette mask.  Its center then rounds one 8px phase
+    below the 32px JTool origin even though the pale ``SAVE`` label remains
+    visible above it.  The room-relative fill gate keeps this out of normal
+    terrain and bright/compact rooms; the header share and one-phase limit keep
+    unrelated pale details from becoming a coordinate correction.
+    """
+
+    profile = _room_color_profile(image, room)
+    if _profile_brightness(profile) > SAVE_DARK_SPARSE_MAX_BRIGHTNESS:
+        return detections
+    sample_step_x = max(4, room.width // 160)
+    sample_step_y = max(4, room.height // 120)
+    samples = 0
+    filled = 0
+    for y in range(room.y, room.bottom, sample_step_y):
+        for x in range(room.x, room.right, sample_step_x):
+            red, green, blue = image.pixel(x, y)
+            luminance = (red * 30 + green * 59 + blue * 11) / 100
+            samples += 1
+            filled += luminance > 50
+    if filled / max(1, samples) > SAVE_DARK_SPARSE_MAX_FILLED_SHARE:
+        return detections
+
+    scale_y = room.height / max(1, ROOM_HEIGHT)
+    replacements: dict[int, Detection] = {}
+    for detection in detections:
+        if detection.type_id != OBJ_SAVE or detection.kind != "save":
+            continue
+        box = detection.image_box
+        header_top = max(room.y, box.y - round(20 / max(0.1, scale_y)))
+        pale_rows = [
+            y
+            for y in range(header_top, box.y)
+            if any(
+                _is_save_header_pale(*image.pixel(x, y))
+                for x in range(
+                    max(room.x, box.x - 8),
+                    min(room.right, box.right + 8),
+                )
+            )
+        ]
+        if not pale_rows:
+            continue
+        band_top = max(room.y, box.y - round(12 / max(0.1, scale_y)))
+        band_bottom = min(
+            room.bottom,
+            band_top + max(1, round(15 / max(0.1, scale_y))),
+        )
+        band_area = max(1, box.width * (band_bottom - band_top))
+        pale_share = sum(
+            _is_save_header_pale(*image.pixel(x, y))
+            for y in range(band_top, band_bottom)
+            for x in range(box.x, box.right)
+        ) / band_area
+        if pale_share < SAVE_DARK_SPARSE_MIN_HEADER_SHARE:
+            continue
+        candidate_y = round_to_step(
+            (min(pale_rows) - room.y) / max(0.1, scale_y)
+            - SAVE_HEADER_PALE_TOP,
+            grid_step,
+        )
+        if (
+            candidate_y == detection.y
+            or abs(candidate_y - detection.y) > SAVE_DARK_SPARSE_MAX_PHASE_SHIFT
+            or not 0 <= candidate_y <= ROOM_HEIGHT - GRID_SIZE
+        ):
+            continue
+        replacements[id(detection)] = _geometry_detection(
+            "save_dark_header_aligned",
+            detection.type_id,
+            detection.x,
+            candidate_y,
+            detection.score,
+            image,
+            room,
+            GRID_SIZE,
+        )
+    if not replacements:
+        return detections
+    return [replacements.get(id(detection), detection) for detection in detections]
 
 
 def _detect_red_body_header_saves(

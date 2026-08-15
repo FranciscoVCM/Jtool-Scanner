@@ -318,6 +318,41 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(32, 480), (64, 128), (384, 288), (544, 128), (736, 352)],
         )
 
+    def test_dark_sparse_save_headers_recover_body_centroid_phase(self) -> None:
+        expected = {
+            "irkara-49-game.png": [(256, 64), (384, 544)],
+            "irkara-49-warp-game.png": [(256, 64), (384, 544)],
+        }
+        options = {
+            "grid_step": 8,
+            "include_color_objects": True,
+            "include_geometry": True,
+            "enable_ocr": False,
+        }
+        for name, coordinates in expected.items():
+            with self.subTest(name=name):
+                result = scan_png(Path("fixtures") / "irkara" / name, **options)
+                self.assertEqual(
+                    sorted(
+                        (detection.x, detection.y)
+                        for detection in result.detections
+                        if detection.type_id == OBJ_SAVE
+                    ),
+                    coordinates,
+                )
+        control = scan_png(
+            Path("fixtures") / "irkara" / "irkara-71-game.png",
+            **options,
+        )
+        self.assertEqual(
+            sorted(
+                (detection.x, detection.y)
+                for detection in control.detections
+                if detection.type_id == OBJ_SAVE
+            ),
+            [(384, 96), (544, 544)],
+        )
+
     def test_terrain_vine_phase_aligns_irkara51_supported_column(self) -> None:
         result = scan_png(
             Path("fixtures") / "irkara" / "irkara-51-game.png",

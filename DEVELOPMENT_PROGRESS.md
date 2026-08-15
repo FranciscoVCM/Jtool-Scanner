@@ -1800,3 +1800,32 @@ contains intentional 8px-phase saves where blindly preferring a full support
 cell would move the marker in the wrong direction. A future save change must
 therefore use sprite/layout evidence and preserve these phase-sensitive
 controls; no blanket `y -= 8` rule was added.
+
+## Checkpoint: dark sparse SAVE-header phase recovery (2026-08-15)
+
+The dark, mostly empty Irkara-49 and Irkara-49-warp rooms exposed a bounded
+SAVE-origin error: the warm body component rounded eight map pixels below the
+JTool origin even though the pale `SAVE` header was still visible above it.
+The scanner now performs a room-relative correction only when the sampled room
+is very dark (brightness at most 45) and sparse (filled share at most 0.14), a
+pale header occupies enough of the expected header band, and the proposed
+change is no more than one 8-pixel phase. The correction is represented as
+`save_dark_header_aligned`; normal saves, terrain-supported saves, FTFA, and
+phase-sensitive K3 layouts do not take this path.
+
+Both Irkara-49 and Irkara-49-warp now have their two SAVE markers at the exact
+authoritative coordinates `(256,64)` and `(384,544)`. The Irkara-71 control
+remains exact at `(384,96)` and `(544,544)`, and the existing dark-sparse
+platform gate remains exact at five platforms with no platform detections in
+the two outlined rooms. The full ten-pair Irkara scan remains `23/23` matched
+saves, `7/7` matched walljumps, and `5/5` matched platforms; no fixture or JMap
+was changed.
+
+Validation is green: the focused SAVE/platform pair passes 2 tests in
+401.067 seconds; the complete unittest discovery run passes **347 tests in
+931.515 seconds**, `OK`; and the strict FTFA benchmark remains **926/928
+exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0 wrong
+direction**, with every FTFA save still exact. The rule is intentionally
+limited to independent header evidence in dark sparse rooms; residual +8
+phase cases in Irkara-54 and lower CN3-18 remain measured follow-up work
+rather than justification for a global vertical shift.
