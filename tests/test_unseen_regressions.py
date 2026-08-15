@@ -11,6 +11,7 @@ from jtool_scanner.constants import (
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
     OBJ_MINI_SPIKE_RIGHT,
+    OBJ_MINI_SPIKE_UP,
     OBJ_PLATFORM,
     OBJ_SAVE,
     OBJ_SPIKE_DOWN,
@@ -322,6 +323,35 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
         self.assertIn((544, 32, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((608, 96, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
+
+    def test_late_mini_spike_recovery_handles_split_palette_silhouettes(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-52-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        mini_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in MINI_SPIKE_TYPES
+        }
+        self.assertTrue(
+            {
+                (80, 80, OBJ_MINI_SPIKE_DOWN),
+                (144, 80, OBJ_MINI_SPIKE_DOWN),
+                (480, 192, OBJ_MINI_SPIKE_RIGHT),
+                (736, 256, OBJ_MINI_SPIKE_RIGHT),
+                (736, 432, OBJ_MINI_SPIKE_RIGHT),
+                (80, 64, OBJ_MINI_SPIKE_UP),
+                (240, 528, OBJ_MINI_SPIKE_UP),
+            }.issubset(mini_spikes)
+        )
+        self.assertNotIn((320, 448, OBJ_MINI_SPIKE_DOWN), mini_spikes)
+        self.assertNotIn((336, 448, OBJ_MINI_SPIKE_DOWN), mini_spikes)
+        self.assertNotIn((624, 480, OBJ_MINI_SPIKE_DOWN), mini_spikes)
+        self.assertNotIn((640, 480, OBJ_MINI_SPIKE_DOWN), mini_spikes)
 
     def test_clipped_walljump_phase_aliases_use_jtool_edge_origin(self) -> None:
         result = scan_png(

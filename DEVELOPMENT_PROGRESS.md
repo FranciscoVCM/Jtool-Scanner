@@ -1697,3 +1697,30 @@ recall). FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted;
 The Irkara-51 regression now protects both recovered full-spike examples and
 the preservation of a genuine mini-spike. The complete module suite still
 needs to be rerun after this checkpoint before it is considered final.
+
+## Checkpoint: late recovery of unfamiliar mini-spike silhouettes (2026-08-15)
+
+Several green/white and reverse-palette rooms expose genuine 16px spikes to
+the primary shape classifier, but later room-scale cleanup removes them when
+there is no matching terrain anchor. The final pipeline now performs one
+late, palette-independent reconsideration of those raw candidates. It keeps
+only strong down, right, and up silhouettes whose independent 32px footprint
+does not look like a full spike. A separate low-score paired-down veto removes
+two 16px halves when their 32px footprint has a strong full-down shape,
+without touching high-confidence mini pairs such as Partysu3 and Irkara-51.
+
+The generalized rule raises the actual ten-pair Irkara manifest from the
+previous `425/460` matched mini spikes (`436` detections) to `434/460`
+matched (`444` detections), improving precision slightly from 97.5% to 97.7%.
+Irkara-52 specifically improves from `8/21` matched (`12` detections) to
+`16/21` matched (`16` detections) with no false mini-spike output in its
+recovered group. Full-spike totals remain `529/796` matched (`717`
+detections), unchanged by the late placement. The protected twelve-pair
+block/spike workflow remains `273/288` matched mini spikes and all prior
+object-family totals; it emits one additional unmatched CN3-18 mini candidate
+(`343` detections versus `342` previously). FTFA remains `926/928 exact; 0
+false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+The new Irkara-52 regression and the existing Irkara-51 paired-spike
+regression pass together. The complete post-change module suite passes **343
+tests** (`35 + 286 + 22`), with no fixture or JMap modifications.

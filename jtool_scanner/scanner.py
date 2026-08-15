@@ -859,6 +859,19 @@ AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_OUTLINE_DELTA = 0.18
 AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SCORE = 0.86
 AGGRESSIVE_LEFT_MINI_RECOVERY_MAX_BLOCK_SUPPORTS = 2
 AGGRESSIVE_LEFT_MINI_RECOVERY_MIN_NEIGHBORS = 8
+LATE_MINI_SPIKE_RECOVERY_MAX_FULL_SHAPE_SCORE = 0.55
+LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_SCORE = 0.76
+LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_DIRECTION_MARGIN = 0.30
+LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_OUTLINE_DELTA = 0.40
+LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_SCORE = 0.68
+LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_DIRECTION_MARGIN = 0.20
+LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_OUTLINE_DELTA = 0.40
+LATE_MINI_SPIKE_RECOVERY_UP_MIN_SCORE = 0.58
+LATE_MINI_SPIKE_RECOVERY_UP_MIN_DIRECTION_MARGIN = 0.22
+LATE_MINI_SPIKE_RECOVERY_UP_MIN_OUTLINE_DELTA = 0.45
+FULL_SHAPED_DOWN_MINI_PAIR_MAX_SCORE = 0.75
+FULL_SHAPED_DOWN_MINI_PAIR_MIN_FULL_SCORE = 0.55
+FULL_SHAPED_DOWN_MINI_PAIR_MIN_DIRECTION_MARGIN = 0.26
 RESIDUAL_DOWN_MINI_NOISE_MIN_BLOCK_SCORE = 0.90
 RESIDUAL_DOWN_MINI_NOISE_MAX_OUTLINE_DELTA = 0.28
 RESIDUAL_UP_CLUSTER_NOISE_MIN_SAME_TYPE_NEIGHBORS = 2
@@ -1852,6 +1865,12 @@ def scan_image(
         )
     detections = _reconcile_mini_terrain_marker_anchors(
         detections,
+        image,
+        box,
+    )
+    detections = _recover_late_mini_spike_silhouettes(
+        detections,
+        raw_primary_mini_spikes,
         image,
         box,
     )
@@ -24397,6 +24416,120 @@ def _reconcile_mini_terrain_marker_anchors(
     if not replacements:
         return detections
     return [replacements.get(id(detection), detection) for detection in detections]
+
+
+def _recover_late_mini_spike_silhouettes(
+    detections: list[Detection],
+    raw_primary_mini_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover strong mini silhouettes after room-scale geometry arbitration.
+
+    Some unfamiliar tilesets expose a real 16px spike clearly enough for the
+    primary classifier, but later cleanup removes it because the neighboring
+    32px terrain profile has no matching anchor.  Reconsider only the raw
+    mini candidate's local shape here, after all full-spike reconciliation is
+    complete.  The independent 32px footprint veto keeps a full spike that
+    was split into two 16px halves from being emitted as minis.  All decisions
+    are shape- and topology-based; no palette or fixture coordinate is used.
+    """
+    if not raw_primary_mini_spikes:
+        return detections
+
+    def full_shape(detection: Detection) -> _GeometryClass | None:
+        return _classify_full_spike(
+            _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        )
+
+    mini_detections = [
+        detection
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    remove_ids: set[int] = set()
+    for detection in mini_detections:
+        if (
+            detection.type_id != OBJ_MINI_SPIKE_DOWN
+            or detection.score >= FULL_SHAPED_DOWN_MINI_PAIR_MAX_SCORE
+        ):
+            continue
+        shape = full_shape(detection)
+        if not (
+            shape is not None
+            and shape.type_id == OBJ_SPIKE_DOWN
+            and shape.score >= FULL_SHAPED_DOWN_MINI_PAIR_MIN_FULL_SCORE
+            and shape.direction_margin
+            >= FULL_SHAPED_DOWN_MINI_PAIR_MIN_DIRECTION_MARGIN
+        ):
+            continue
+        neighbors = [
+            other
+            for other in mini_detections
+            if (
+                other is not detection
+                and other.type_id == OBJ_MINI_SPIKE_DOWN
+                and abs(other.x - detection.x) <= MINI_BLOCK_SIZE
+                and abs(other.y - detection.y) <= MINI_BLOCK_SIZE
+            )
+        ]
+        if neighbors:
+            remove_ids.add(id(detection))
+            remove_ids.update(id(other) for other in neighbors)
+
+    recovered = [
+        detection
+        for detection in detections
+        if id(detection) not in remove_ids
+    ]
+    existing_minis = [
+        detection
+        for detection in recovered
+        if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    for candidate in raw_primary_mini_spikes:
+        if candidate.type_id not in MINI_SPIKE_TYPES:
+            continue
+        if any(
+            existing.type_id == candidate.type_id
+            and abs(existing.x - candidate.x) <= 8
+            and abs(existing.y - candidate.y) <= 8
+            for existing in existing_minis
+        ):
+            continue
+        patch = _patch_features(image, room, candidate.x, candidate.y, MINI_BLOCK_SIZE)
+        mini = _mini_spike_class_for_detection(candidate, patch)
+        if mini is None:
+            continue
+        shape = full_shape(candidate)
+        if (
+            shape is not None
+            and shape.score >= LATE_MINI_SPIKE_RECOVERY_MAX_FULL_SHAPE_SCORE
+        ):
+            continue
+        keep = (
+            candidate.type_id == OBJ_MINI_SPIKE_DOWN
+            and candidate.score >= LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_SCORE
+            and mini.direction_margin
+            >= LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_DIRECTION_MARGIN
+            and mini.outline_delta >= LATE_MINI_SPIKE_RECOVERY_DOWN_MIN_OUTLINE_DELTA
+        ) or (
+            candidate.type_id == OBJ_MINI_SPIKE_RIGHT
+            and candidate.score >= LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_SCORE
+            and mini.direction_margin
+            >= LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_DIRECTION_MARGIN
+            and mini.outline_delta >= LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_OUTLINE_DELTA
+        ) or (
+            candidate.type_id == OBJ_MINI_SPIKE_UP
+            and candidate.score >= LATE_MINI_SPIKE_RECOVERY_UP_MIN_SCORE
+            and mini.direction_margin
+            >= LATE_MINI_SPIKE_RECOVERY_UP_MIN_DIRECTION_MARGIN
+            and mini.outline_delta >= LATE_MINI_SPIKE_RECOVERY_UP_MIN_OUTLINE_DELTA
+        )
+        if keep:
+            recovered.append(candidate)
+            existing_minis.append(candidate)
+    return recovered
 
 
 def _has_upper_particle_field(
