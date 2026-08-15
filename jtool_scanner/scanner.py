@@ -1377,6 +1377,10 @@ SAVE_DARK_SPARSE_MAX_FILLED_SHARE = 0.14
 SAVE_DARK_SPARSE_MIN_HEADER_SHARE = 0.10
 SAVE_DARK_SPARSE_MAX_PHASE_SHIFT = 8
 SAVE_HEADER_PALE_TOP = 2.0
+SAVE_GENERAL_HEADER_MIN_ROWS = 3
+SAVE_GENERAL_HEADER_MIN_SIGNAL_SHARE = 0.08
+SAVE_GENERAL_HEADER_MIN_CONTRAST = 24.0
+SAVE_GENERAL_HEADER_MIN_LUMINANCE = 80.0
 APPLE_CONTOUR_TEMPLATE_ROWS = (
     "................",
     "................",
@@ -1583,11 +1587,14 @@ def scan_image(
             allow_weak_active=compact_room,
         )
     )
-    detections = _reanchor_dark_sparse_save_headers(
+    # Dark sparse rooms need their preserved-label correction before terrain
+    # arbitration can attach a supported-marker suffix to the raw body.
+    detections = _reanchor_save_headers(
         detections,
         image,
         box,
         grid_step,
+        dark_only=True,
     )
     detections.extend(_detect_warps(image, box, grid_step))
     if include_color_objects:
@@ -1911,6 +1918,17 @@ def scan_image(
             image,
             box,
         )
+    # Apply SAVE-header phase evidence after terrain/profile arbitration so a
+    # structural marker that already has a supported anchor retains its
+    # established kind and provenance.  Ordinary palette-body candidates that
+    # remain unanchored can still use the local header geometry.
+    detections = _reanchor_save_headers(
+        detections,
+        image,
+        box,
+        grid_step,
+        dark_only=False,
+    )
     detections = _reconcile_mini_terrain_marker_anchors(
         detections,
         image,
@@ -7103,36 +7121,41 @@ def _detect_saves(
     return _dedupe_detections(detections, min_distance=25)
 
 
-def _reanchor_dark_sparse_save_headers(
+def _reanchor_save_headers(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
     grid_step: int,
+    *,
+    dark_only: bool = False,
 ) -> list[Detection]:
-    """Use a preserved SAVE label to correct a sparse-room body centroid.
+    """Use a preserved SAVE label to correct a palette-body centroid.
 
     In a very dark, low-fill room the red/yellow body can be the only part
     seen by the absolute palette mask.  Its center then rounds one 8px phase
     below the 32px JTool origin even though the pale ``SAVE`` label remains
-    visible above it.  The room-relative fill gate keeps this out of normal
-    terrain and bright/compact rooms; the header share and one-phase limit keep
-    unrelated pale details from becoming a coordinate correction.
+    visible above it.  Other palettes can tint that label, so ordinary
+    palette-body candidates also use a local-contrast header run.  Terrain,
+    fragmented, and active-layout paths retain their own geometry arbitration;
+    the header evidence and one-phase limit keep unrelated details out.
     """
 
     profile = _room_color_profile(image, room)
-    if _profile_brightness(profile) > SAVE_DARK_SPARSE_MAX_BRIGHTNESS:
-        return detections
-    sample_step_x = max(4, room.width // 160)
-    sample_step_y = max(4, room.height // 120)
-    samples = 0
-    filled = 0
-    for y in range(room.y, room.bottom, sample_step_y):
-        for x in range(room.x, room.right, sample_step_x):
-            red, green, blue = image.pixel(x, y)
-            luminance = (red * 30 + green * 59 + blue * 11) / 100
-            samples += 1
-            filled += luminance > 50
-    if filled / max(1, samples) > SAVE_DARK_SPARSE_MAX_FILLED_SHARE:
+    dark_sparse = _profile_brightness(profile) <= SAVE_DARK_SPARSE_MAX_BRIGHTNESS
+    if dark_sparse:
+        sample_step_x = max(4, room.width // 160)
+        sample_step_y = max(4, room.height // 120)
+        samples = 0
+        filled = 0
+        for y in range(room.y, room.bottom, sample_step_y):
+            for x in range(room.x, room.right, sample_step_x):
+                red, green, blue = image.pixel(x, y)
+                luminance = (red * 30 + green * 59 + blue * 11) / 100
+                samples += 1
+                filled += luminance > 50
+        if filled / max(1, samples) > SAVE_DARK_SPARSE_MAX_FILLED_SHARE:
+            dark_sparse = False
+    if dark_only and not dark_sparse:
         return detections
 
     scale_y = room.height / max(1, ROOM_HEIGHT)
@@ -7141,35 +7164,43 @@ def _reanchor_dark_sparse_save_headers(
         if detection.type_id != OBJ_SAVE or detection.kind != "save":
             continue
         box = detection.image_box
-        header_top = max(room.y, box.y - round(20 / max(0.1, scale_y)))
-        pale_rows = [
-            y
-            for y in range(header_top, box.y)
-            if any(
-                _is_save_header_pale(*image.pixel(x, y))
-                for x in range(
-                    max(room.x, box.x - 8),
-                    min(room.right, box.right + 8),
+        if dark_sparse:
+            header_top = max(room.y, box.y - round(20 / max(0.1, scale_y)))
+            pale_rows = [
+                y
+                for y in range(header_top, box.y)
+                if any(
+                    _is_save_header_pale(*image.pixel(x, y))
+                    for x in range(
+                        max(room.x, box.x - 8),
+                        min(room.right, box.right + 8),
+                    )
                 )
+            ]
+            if not pale_rows:
+                continue
+            band_top = max(room.y, box.y - round(12 / max(0.1, scale_y)))
+            band_bottom = min(
+                room.bottom,
+                band_top + max(1, round(15 / max(0.1, scale_y))),
             )
-        ]
-        if not pale_rows:
-            continue
-        band_top = max(room.y, box.y - round(12 / max(0.1, scale_y)))
-        band_bottom = min(
-            room.bottom,
-            band_top + max(1, round(15 / max(0.1, scale_y))),
-        )
-        band_area = max(1, box.width * (band_bottom - band_top))
-        pale_share = sum(
-            _is_save_header_pale(*image.pixel(x, y))
-            for y in range(band_top, band_bottom)
-            for x in range(box.x, box.right)
-        ) / band_area
-        if pale_share < SAVE_DARK_SPARSE_MIN_HEADER_SHARE:
-            continue
+            band_area = max(1, box.width * (band_bottom - band_top))
+            pale_share = sum(
+                _is_save_header_pale(*image.pixel(x, y))
+                for y in range(band_top, band_bottom)
+                for x in range(box.x, box.right)
+            ) / band_area
+            if pale_share < SAVE_DARK_SPARSE_MIN_HEADER_SHARE:
+                continue
+            header_origin_y = min(pale_rows)
+            replacement_kind = "save_dark_header_aligned"
+        else:
+            header_origin_y = _relative_save_header_top(image, room, box)
+            if header_origin_y is None:
+                continue
+            replacement_kind = "save_header_aligned"
         candidate_y = round_to_step(
-            (min(pale_rows) - room.y) / max(0.1, scale_y)
+            (header_origin_y - room.y) / max(0.1, scale_y)
             - SAVE_HEADER_PALE_TOP,
             grid_step,
         )
@@ -7180,7 +7211,7 @@ def _reanchor_dark_sparse_save_headers(
         ):
             continue
         replacements[id(detection)] = _geometry_detection(
-            "save_dark_header_aligned",
+            replacement_kind,
             detection.type_id,
             detection.x,
             candidate_y,
@@ -7192,6 +7223,58 @@ def _reanchor_dark_sparse_save_headers(
     if not replacements:
         return detections
     return [replacements.get(id(detection), detection) for detection in detections]
+
+
+def _relative_save_header_top(
+    image: RGBImage,
+    room: Box,
+    body: Box,
+) -> int | None:
+    """Find a local-contrast SAVE title above an ordinary palette body.
+
+    Some tilesets tint the white SAVE panel with the room palette, so an
+    absolute pale-color predicate misses it.  Scan only the short band above
+    the already-recognized warm body, use each row's local luminance median as
+    its background, and choose the nearest contiguous text-like run.  This is
+    deliberately limited to ordinary ``save`` candidates; fragmented,
+    terrain-aligned, and active-layout paths have their own geometry rules.
+    """
+
+    scale_x = room.width / max(1, ROOM_WIDTH)
+    scale_y = room.height / max(1, ROOM_HEIGHT)
+    padding = max(4, round(8 * scale_x))
+    left = max(room.x, body.x - padding)
+    right = min(room.right, body.right + padding)
+    if right <= left:
+        return None
+    scan_top = max(room.y, body.y - round(24 / max(0.1, scale_y)))
+    width = right - left
+    row_signals: list[tuple[int, int]] = []
+    for y in range(scan_top, body.y):
+        luminances = []
+        for x in range(left, right):
+            red, green, blue = image.pixel(x, y)
+            luminances.append((red * 30 + green * 59 + blue * 11) / 100)
+        baseline = median(luminances) if luminances else 0.0
+        signal = sum(
+            value >= SAVE_GENERAL_HEADER_MIN_LUMINANCE
+            and value >= baseline + SAVE_GENERAL_HEADER_MIN_CONTRAST
+            for value in luminances
+        )
+        if signal >= max(3, round(width * SAVE_GENERAL_HEADER_MIN_SIGNAL_SHARE)):
+            row_signals.append((y, signal))
+
+    runs: list[list[tuple[int, int]]] = []
+    for row in row_signals:
+        if not runs or row[0] != runs[-1][-1][0] + 1:
+            runs.append([row])
+        else:
+            runs[-1].append(row)
+    viable = [run for run in runs if len(run) >= SAVE_GENERAL_HEADER_MIN_ROWS]
+    if not viable:
+        return None
+    nearest = max(viable, key=lambda run: run[-1][0])
+    return nearest[0][0]
 
 
 def _detect_red_body_header_saves(

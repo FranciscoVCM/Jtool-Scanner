@@ -353,6 +353,40 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(384, 96), (544, 544)],
         )
 
+    def test_relative_save_headers_recover_cyan_and_lower_cn3_phase(self) -> None:
+        expected = {
+            "irkara-54-game.png": [(32, 64), (192, 544), (576, 544)],
+        }
+        options = {
+            "grid_step": 8,
+            "include_color_objects": True,
+            "include_geometry": True,
+            "enable_ocr": False,
+        }
+        for name, coordinates in expected.items():
+            with self.subTest(name=name):
+                result = scan_png(Path("fixtures") / "irkara" / name, **options)
+                self.assertEqual(
+                    sorted(
+                        (detection.x, detection.y)
+                        for detection in result.detections
+                        if detection.type_id == OBJ_SAVE
+                    ),
+                    coordinates,
+                )
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "cn3-18-game.png",
+            **options,
+        )
+        self.assertEqual(
+            sorted(
+                (detection.x, detection.y)
+                for detection in result.detections
+                if detection.type_id == OBJ_SAVE
+            ),
+            [(224, 80), (384, 256), (768, 368)],
+        )
+
     def test_terrain_vine_phase_aligns_irkara51_supported_column(self) -> None:
         result = scan_png(
             Path("fixtures") / "irkara" / "irkara-51-game.png",
@@ -467,7 +501,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         ]
         self.assertEqual(
             sorted((save.x, save.y) for save in saves),
-            [(224, 80), (384, 256), (768, 376)],
+            [(224, 80), (384, 256), (768, 368)],
         )
 
     def test_short_edge_walljump_uses_component_top_origin(self) -> None:

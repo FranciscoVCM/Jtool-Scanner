@@ -1829,3 +1829,34 @@ direction**, with every FTFA save still exact. The rule is intentionally
 limited to independent header evidence in dark sparse rooms; residual +8
 phase cases in Irkara-54 and lower CN3-18 remain measured follow-up work
 rather than justification for a global vertical shift.
+
+## Checkpoint: palette-relative SAVE-header phase recovery (2026-08-15)
+
+The previous dark-sparse correction isolated the recurring eight-pixel SAVE
+phase error but did not generalize to bright cyan or photographic backgrounds.
+The raw palette detector centers the colored body, while some tilesets tint the
+white `SAVE` title so strongly that an absolute pale-color test cannot see it.
+The scanner now finds a short, contiguous local-luminance-contrast run above
+an ordinary palette-body candidate and uses that run as the sprite-origin
+anchor. It requires at least three text-like rows, a minimum local signal
+share, and a one-phase (8 map pixel) limit. The correction runs after terrain
+arbitration for ordinary candidates, so supported terrain markers retain their
+existing provenance; the dark-sparse absolute-header path still runs before
+terrain arbitration.
+
+This recovers all three Irkara-54 saves exactly at `(32,64)`, `(192,544)`,
+and `(576,544)`, including the cyan-tinted right-hand header that is not
+recognized by the old absolute-pale predicate. It also corrects the lower
+CN3-18 save from `(768,376)` to its authoritative `(768,368)` without moving
+the upper `(224,80)` or center `(384,256)` saves. Dark Irkara-49/49-warp
+remain exact, and the rescaled brick control retains its original
+`save_terrain_aligned` provenance at `(480,544)`.
+
+The complete unittest discovery run passes **348 tests in 1005.062 seconds**,
+`OK`. The strict FTFA gate remains **926/928 exact; 0 false positives; 2
+missed edge blocks; 0 shifted; 0 wrong direction**, with every FTFA save exact.
+The ten-pair Irkara workflow remains `23/23` matched saves, `7/7` matched
+walljumps, and `5/5` matched platforms; no fixture or JMap was modified.
+This is header-evidence phase recovery, not a general vertical offset: terrain,
+fragmented, active-layout, and intentionally phase-sensitive K3 save paths
+remain protected and are not rewritten by the ordinary rule.
