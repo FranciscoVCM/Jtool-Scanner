@@ -2300,3 +2300,22 @@ held-out confirmation that the palette-relative material and cloud/number
 arbitration generalizes from neon green to cyan cave imagery without a
 screen-specific rule.  No corrected giant-review JMaps exist for exact dense
 geometry, so the remaining mismatch is explicitly visual-only.
+
+## Checkpoint: Say1-Say4 purple material regeneration (2026-08-16)
+
+Say_1 through Say_4 were regenerated together at grid step 8 under
+`.artifacts/goal-continuation/say-purple-review/`; ledger rows 2-5 now point
+to current JMaps, reconstructions, and source/blend SVGs.  Direct source review
+shows the expected purple terrain, dense white spikes, and two/two/two/one
+SAVE markers with no warp or refresher sprites.
+
+Say_1 is byte-for-class stable.  Say_2 keeps both saves and rejects the old
+mini-spike at `(384,192)`; current terrain arbitration places the SAVE/start
+origins at `(320,224)` and `(704,416)`.  Say_3 keeps both saves while moving
+both origins eight pixels up/right from the older visual artifact.  Say_4
+keeps its single SAVE and rejects the old `(416,256)` mini-spike, placing the
+SAVE/start at `(32,64)`.  These phase differences are recorded as visual-only
+uncertainty because no corrected giant-review JMaps exist; they do not justify
+a global save shift, and the K3/Irkara controls continue to demonstrate why a
+blanket correction would be unsafe.  No generalized implementation change was
+made.
