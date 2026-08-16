@@ -2223,3 +2223,32 @@ detected), warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
 full spikes 710/748, mini-spikes 281/288, killers 99/99, and refreshers
 18/19.  No implementation files changed in this checkpoint; the last complete
 unittest result remains 356 tests in 1560.826 seconds, `OK`.
+
+## Checkpoint: CN3 Redcube1-3 and Secret1 material audit (2026-08-16)
+
+Redcube1, Redcube2, Redcube3, and Secret1 were regenerated as one red/
+rainbow-material batch under `.artifacts/goal-continuation/
+redcube-material-review/` (Redcube1-2) and the existing
+`marker-mini-spike-review/` directories (Redcube3/Secret1).  Ledger rows
+53-56 now reference current JMaps, SVG reconstructions, and SVG source/blend
+outputs; all 71 ledger rows continue to have valid paths.
+
+The source review confirms a stable shared negative result.  Redcube1 keeps
+one labeled SAVE, two bright filled-cloud warps, and red patterned terrain;
+Redcube2 keeps one SAVE and one warp; Redcube3 keeps three labeled SAVEs,
+the red haloed orb and the bright cloud warp.  Question-mark art and the red
+terrain are not promoted to cherry, water, or other color-object classes.
+Redcube2's current SAVE origin is `(32,96)` instead of the older visual
+artifact's `(32,104)`, but no corrected JMap exists to choose between those
+phases.  Secret1 remains a useful held-out negative control: its rainbow
+gradient, pink striped U-shaped terrain, red directional spikes, and white
+cloud-like decoration produce no water or mini-spike promotion.  The weak
+Redcube3 candidate beside the right SAVE remains suppressed, while genuine
+nearby mini-spikes in Irkara59 and NANG138 remain retained.
+
+No shared invariant failed in a way that justifies another threshold change:
+the red patterned terrain, marker labels, clouds, and rainbow background are
+already separated by the existing local-shape/material arbitration.  Dense
+geometry remains visual-only without corrected giant-review JMaps, so no
+screen-specific geometry correction was added.  The prior FTFA, 12-pair
+fixture, and full-suite gates remain the protected controls.
