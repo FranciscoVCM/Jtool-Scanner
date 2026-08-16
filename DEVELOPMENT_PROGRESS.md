@@ -1982,6 +1982,6 @@ platforms **3/3 matched and 3 detected**, saves 22/22, warps 12/12, apples
 4/4, water 35/35, walljumps 13/13, gravity 8/8, killers 99/99, mini-blocks
 869/875, blocks 1457/1486, full spikes 710/748, mini-spikes 281/288, and
 refreshers 18/19.  FTFA remains **926/928 exact; 0 false positives; 2 missed
-edge blocks; 0 shifted; 0 wrong direction**.  Full unittest discovery after
-this change is the required final gate.  No fixture, JMap, or ignored corpus
+edge blocks; 0 shifted; 0 wrong direction**.  Full unittest discovery passes
+**352 tests in 1666.249 seconds**, `OK`.  No fixture, JMap, or ignored corpus
 artifact was modified.
