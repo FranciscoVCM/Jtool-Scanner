@@ -2085,3 +2085,36 @@ now point to those outputs.  No implementation change was justified by this
 cross-family audit; promoting any of the ambiguous terrain edges would risk
 the strict FTFA gate and the exact platform/water controls.  This is an
 explicit negative result, not an assertion that the three screens are exact.
+
+## Checkpoint: weak marker-adjacent mini-spike arbitration (2026-08-16)
+
+`CN3_Redcube3` provided a bounded false-positive case rather than evidence
+for a new tileset rule.  Its source crop shows a real right-side SAVE at
+`(736,224)` and no playable mini-spike at the diagonal `(752,240)` position;
+the old scan nevertheless emitted `mini_spike_up` there with score `0.337`.
+The generalized arbitration now suppresses only mini-spike candidates at
+most 24 map pixels from a save/warp marker when their confidence is at most
+`0.40`.  It is applied during geometry-anchor conflict resolution and does
+not mention Redcube3, a palette, or a screen coordinate.
+
+Two pure tests protect both sides of the boundary: the weak diagonal edge
+loses to the save marker, while a strong candidate at the same position
+(score `0.78`) remains coexistent.  Held-out scans retain the genuine nearby
+mini-spike group in NANG138, including the authoritative down spike at
+`(176,224)`, and the many genuine Irkara59 mini-spikes near saves/warps.
+`CN3_Secret1` remains a negative control with no mini-spike promotion; its
+bottom-right red geometry and gradient remain visually unresolved.
+
+The regenerated Redcube3 project drops from 226 to 225 objects (three saves,
+two warps, and no weak marker-adjacent mini-spike); its source/JMap/preview/
+blend outputs are preserved under
+`.artifacts/goal-continuation/marker-mini-spike-review/`.  The complete
+12-pair workflow remains unchanged: saves 22/22 matched (24 detected), warps
+12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms
+3/3, mini-blocks 869/875, blocks 1457/1486, full spikes 710/748,
+mini-spikes 281/288, killers 99/99, and refreshers 18/19.  FTFA remains
+**926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0
+wrong direction**.  No fixture or JMap was modified; the giant-review rows
+for Redcube3 and Secret1 now point to the regenerated ignored artifacts.
+The complete unittest discovery run passes **356 tests in 1560.826 seconds**,
+`OK`.

@@ -410,6 +410,11 @@ FULL_SPIKE_PLATFORM_EDGE_TOUCH_MAX_SCORE = 0.65
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
+# A weak half-cell silhouette can be the diagonal edge of a save/warp sprite
+# rather than a playable mini-spike.  Keep this arbitration confidence-gated:
+# genuine adjacent mini-spikes in the fixture corpus score materially higher.
+MINI_SPIKE_MARKER_NOISE_MAX_SCORE = 0.40
+MINI_SPIKE_MARKER_NOISE_MAX_DISTANCE = 24.0
 COMPACT_MINI_SPIKE_BORDERLINE_SCORE = 0.56
 MINI_SPIKE_MIN_SCORE = 0.44
 MINI_SPIKE_MIN_DIRECTION_MARGIN = 0.04
@@ -26603,6 +26608,13 @@ def _geometry_anchor_conflicts(
 ) -> bool:
     delta_x = abs(det.x - anchor.x)
     delta_y = abs(det.y - anchor.y)
+    if (
+        det.type_id in MINI_SPIKE_TYPES
+        and anchor.type_id in {OBJ_SAVE, OBJ_WARP}
+        and max(delta_x, delta_y) <= MINI_SPIKE_MARKER_NOISE_MAX_DISTANCE
+        and det.score <= MINI_SPIKE_MARKER_NOISE_MAX_SCORE
+    ):
+        return True
     if include_diagonal_overlap:
         overlaps = max(delta_x, delta_y) < 20
     else:

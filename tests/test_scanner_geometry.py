@@ -5383,6 +5383,42 @@ class ScannerGeometryTests(unittest.TestCase):
             (OBJ_SAVE, 720, 96),
         ])
 
+    def test_weak_diagonal_mini_spike_loses_to_save_marker(self) -> None:
+        save = Detection("save", OBJ_SAVE, 736, 224, 0.95, Box(736, 224, 32, 32))
+        marker_edge = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            752,
+            240,
+            0.337,
+            Box(752, 240, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([save, marker_edge])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [(OBJ_SAVE, 736, 224)],
+        )
+
+    def test_strong_diagonal_mini_spike_can_coexist_with_save_marker(self) -> None:
+        save = Detection("save", OBJ_SAVE, 736, 224, 0.95, Box(736, 224, 32, 32))
+        playable_spike = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            752,
+            240,
+            0.78,
+            Box(752, 240, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([save, playable_spike])
+
+        self.assertEqual(
+            {(det.type_id, det.x, det.y) for det in result},
+            {(OBJ_SAVE, 736, 224), (OBJ_MINI_SPIKE_UP, 752, 240)},
+        )
+
     def test_blocklike_spike_candidate_accepts_hollow_aligned_outline(self) -> None:
         candidate = _GeometryPatchCandidate(
             96,
