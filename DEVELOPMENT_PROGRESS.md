@@ -2399,7 +2399,38 @@ refreshers `18/19` matched; FTFA remains `926/928 exact` with zero false
 positives, shifts, or wrong directions and the same two boundary misses.  The
 full unittest discovery run passes **359 tests in 1879.360 seconds**, `OK`.
 
-Remaining uncertainty is visual-only: CN3-21 has an additional dark strip that
-is not in its prior review JMap, and Golden1/NR2 contain similar source-visible
-dark strips without corrected JMaps.  They are not promoted to exact truth or
-screen-specific exceptions; they remain follow-up review candidates.
+At this checkpoint the CN3-21, Golden1, and NR2 strips were still source-visible
+follow-up candidates rather than exact truth; the next checkpoint records their
+current regenerated outputs.  Corrected giant-review JMaps remain absent, so
+the follow-up detections are never treated as exact truth or screen-specific
+exceptions.
+
+## Checkpoint: dark-vine follow-up screens (2026-08-16)
+
+The three follow-up candidates from the prior checkpoint were regenerated and
+reviewed from current source/JMap/blend outputs.  The same palette-relative
+component route, with no new screen-specific rule, now records the following
+source-supported cells:
+
+- CN3_21 adds the dark strip in the center-right block cavity as left-facing
+  cells `(480,64)` and `(480,96)`, while retaining its eleven established
+  right-facing vine cells, two saves, and four gravity flippers.
+- CN3_Golden1 adds the green strip at the left of the middle cavity as
+  right-facing cells `(96,256)` and `(96,288)`, while retaining its single SAVE
+  and rejecting warp/cloud promotions.
+- CN3_NR2 adds the lower-center strip as left-facing cells `(352,480)` and
+  `(352,512)`, while retaining its SAVE and orange/yellow structural terrain.
+
+Source-versus-blend crops show the sprite side and terrain adjacency agree for
+all three orientations.  None of these screens has a corrected authoritative
+giant-review JMap, so the cells are visual evidence rather than exact truth.
+The ignored ledger now points to the regenerated projects and records the
+confidence and limitation explicitly.
+
+Held-out controls remain clean: the selected FTFA screen is `233/235 exact`
+with zero false positives, shifts, or wrong directions and the same two
+boundary-block misses; the two-pair CN3-18/Irkara-89 control scan retains
+walljumps `13/13`, saves `4/4`, apples `1/1`, water `19/19`, and platforms
+`1/1` matched.  No implementation change was required after the published
+dark-vine route; this was a source/current-output completion and evidence
+checkpoint.
