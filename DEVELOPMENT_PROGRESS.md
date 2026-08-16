@@ -2279,3 +2279,24 @@ The new mini-spike recoveries are treated as evidence of the existing compact
 shape route, not as a NANG-specific rule.  NANG138, Irkara59, CN2-5, and the
 strict FTFA benchmark remain held-out controls; no protected regression or
 shared false-positive signature justified another implementation change.
+
+## Checkpoint: CN3 neon and cyan unrecognized-material regeneration (2026-08-16)
+
+CN3_7, CN3_8, CN3_9, CN3_16, and CN3_18 were regenerated together at grid
+step 8 under `.artifacts/goal-continuation/cn3-unrecognized-review/`.
+Ledger rows 12-16 now reference the current JMaps, reconstructions, and
+source/blend SVGs.  The source review covered the neon floor-number screens,
+the cave/cyan tileset, bright cloud silhouettes, repeated vines, water-3, and
+the dense stacked mini-spike geometry.
+
+The three neon screens retain their four/three/three labeled SAVE objects and
+the observed left-vine strips while keeping floor numbers, clouds, and glow
+background out of gameplay classes.  CN3_16 remains stable except for one
+older mini-spike at `(768,288)` that is no longer emitted beside a SAVE/right
+wall edge; a source crop shows no canonical spike there.  CN3_18 is unchanged:
+three saves, the bright cloud warp, four right-vine strips, and five water-3
+cells remain, with stretched spikes represented as stacked minis.  This is a
+held-out confirmation that the palette-relative material and cloud/number
+arbitration generalizes from neon green to cyan cave imagery without a
+screen-specific rule.  No corrected giant-review JMaps exist for exact dense
+geometry, so the remaining mismatch is explicitly visual-only.
