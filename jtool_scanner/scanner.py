@@ -403,6 +403,12 @@ PLATFORM_DARK_SPARSE_MIN_VERTICAL_RUN = 3
 PLATFORM_DARK_SPARSE_MAX_CENTER_SCORE = 0.20
 PLATFORM_DARK_SPARSE_MAX_BLOCK_SCORE = 0.23
 PLATFORM_DARK_SPARSE_MAX_BELOW_EDGE = 0.12
+# A sparse night room can still contain a pale, custom platform sprite.  Keep
+# that exception relative to the room and require horizontal material
+# isolation; ordinary dark terrain lips have only a small luminance lift and
+# continue through their neighboring profiles.
+PLATFORM_DARK_SPARSE_MIN_RELATIVE_LUMINANCE_LIFT = 32.0
+PLATFORM_DARK_SPARSE_MIN_RELATIVE_PROFILE_DISTANCE = 24.0
 # A low-confidence full spike can be a real hazard immediately adjacent to a
 # platform.  Keep the coexistence exception limited to that edge-touching
 # relation; a triangle that occupies the platform's 16px band remains an
@@ -4029,6 +4035,14 @@ def _prune_dark_sparse_platform_impostors(
         if detection.type_id != OBJ_PLATFORM:
             result.append(detection)
             continue
+        if _is_dark_sparse_relative_platform_candidate(
+            detection,
+            image,
+            room,
+            room_luminance,
+        ):
+            result.append(detection)
+            continue
         features = _platform_patch_features(image, room, detection.x, detection.y)
         patch = _patch_features(image, room, detection.x, detection.y, PLATFORM_WIDTH)
         block_score = _classify_block(patch).score
@@ -4051,6 +4065,53 @@ def _prune_dark_sparse_platform_impostors(
             continue
         result.append(detection)
     return result
+
+
+def _is_dark_sparse_relative_platform_candidate(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    room_luminance: float,
+) -> bool:
+    """Keep an isolated pale textured bar in an otherwise sparse dark room.
+
+    The normal sparse-room route intentionally rejects low-contrast terrain
+    lips.  A custom platform can instead be substantially brighter than the
+    room, while retaining the textured-platform silhouette and a material
+    boundary on at least one horizontal neighbor.  Both relative checks are
+    required so a bright wall edge or a continuous terrain row is not promoted.
+    """
+
+    if detection.type_id != OBJ_PLATFORM:
+        return False
+    if not _is_textured_platform_detection(detection, image, room):
+        return False
+    profile = _patch_color_profile(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    if (
+        patch_luminance - room_luminance
+        < PLATFORM_DARK_SPARSE_MIN_RELATIVE_LUMINANCE_LIFT
+    ):
+        return False
+    horizontal_distance, vertical_distance = _platform_neighbor_profile_distances(
+        image,
+        room,
+        detection.x,
+        detection.y,
+    )
+    return max(horizontal_distance, vertical_distance) >= (
+        PLATFORM_DARK_SPARSE_MIN_RELATIVE_PROFILE_DISTANCE
+    )
 
 
 def _replace_outlined_terrain_room_geometry(

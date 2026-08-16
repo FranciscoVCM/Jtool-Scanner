@@ -2645,3 +2645,34 @@ The complete 12-pair block/spike workflow is unchanged at saves `22/22`, warps
 platforms `3/3`, killer blocks `99/99`, and matched refreshers `18/19`; the
 broader geometry totals remain the established stress baseline.  Full unittest
 discovery now passes **361 tests in 1999.791 seconds**, `OK`.
+
+## Checkpoint: dark-sparse textured platform recovery (2026-08-16)
+
+The Halls7 source/current/blend review exposed a genuine platform-recall failure
+that the existing dark-room veto hid.  The source contains two pale, enclosed
+platform bars at `(320,256)` and `(416,480)`.  The raw platform detector found
+both, but `_prune_dark_sparse_platform_impostors` removed them because their
+bright material had high block occupancy relative to the starry room.  The
+same dark-room family also contains long low-contrast terrain lips, so simply
+disabling the veto would reintroduce the Irkara-49 false positives.
+
+The generalized exception now keeps a candidate in a sparse dark room only
+when it passes the existing textured-platform silhouette and horizontal
+isolation tests, lifts local luminance at least 32 levels above the room, and
+has a material boundary of at least 24 profile-distance units in either the
+horizontal or vertical neighborhood.  It uses no screen name, palette, or
+coordinate.  A synthetic regression covers both the isolated pale bar and a
+continuous-material impostor.
+
+Measured source/current/blend review: Halls7 changed from zero final platforms
+to both source-supported bars; its regenerated project is under
+`.artifacts/goal-continuation/platform-dark-room-review/CN3_Halls7/`, and row 50
+of the ignored giant-review ledger now points there.  Halls2 remains at its
+four existing platform bars; Lap Around screen 12 remains platform-free;
+Irkara-49 and Irkara-49-warp remain platform-free; Irkara-71 remains exact at
+five platforms; and K3 Ex-Hades remains exact at two platforms.  The strict
+FTFA gate remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction`.  The complete 12-pair workflow remains unchanged at saves
+`22/22`, warps `12/12`, apples `4/4`, water `35/35`, walljumps `13/13`,
+gravity `8/8`, platforms `3/3`, killers `99/99`, and matched refreshers
+`18/19`; full unittest discovery passes **362 tests in 1882.760 seconds**, `OK`.

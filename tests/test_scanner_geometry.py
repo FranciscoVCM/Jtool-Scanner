@@ -76,6 +76,7 @@ from jtool_scanner.scanner import (
     _recover_bright_neutral_outline_blocks,
     _prune_bright_outlined_terrain_decorations,
     _prune_bright_room_platform_impostors,
+    _prune_dark_sparse_platform_impostors,
     _expand_supported_cell_terrain_materials,
     _learn_repeated_terrain_profile,
     _learn_supported_cell_terrain_profile,
@@ -99,6 +100,7 @@ from jtool_scanner.scanner import (
     _is_block_run_gap,
     _is_bright_outline_platform_candidate,
     _is_bright_relative_platform_impostor,
+    _is_dark_sparse_relative_platform_candidate,
     _is_bright_filled_full_spike_component,
     _should_reconcile_bright_filled_full_spikes,
     _bright_neutral_triangle_direction,
@@ -177,6 +179,7 @@ from jtool_scanner.scanner import (
     _has_complete_low_contrast_platform_context,
     _has_bright_room_platform_bar_evidence,
     _platform_conflicts_supported_terrain,
+    _room_color_profile,
     _looks_miniblock_dominant,
     _is_ambiguous_adjacent_up_mini_spike_candidate,
     _is_border_supported_up_mini_spike_candidate,
@@ -6933,6 +6936,47 @@ class ScannerGeometryTests(unittest.TestCase):
                 below_edge=0.012,
             )
         )
+
+    def test_dark_sparse_gate_keeps_isolated_pale_textured_platform(self) -> None:
+        detection = Detection(
+            "platform",
+            OBJ_PLATFORM,
+            320,
+            256,
+            0.8,
+            Box(320, 256, 32, 16),
+        )
+        room = Box(0, 0, 800, 608)
+        isolated = _textured_platform_isolation_test_image(continuous=False)
+        continuous = _textured_platform_isolation_test_image(continuous=True)
+
+        for image, expected in ((isolated, True), (continuous, False)):
+            profile = _room_color_profile(image, room)
+            room_luminance = (
+                profile.avg_r * 0.30
+                + profile.avg_g * 0.59
+                + profile.avg_b * 0.11
+            )
+            with self.subTest(expected=expected):
+                with mock.patch(
+                    "jtool_scanner.scanner._is_textured_platform_candidate",
+                    return_value=True,
+                ):
+                    self.assertEqual(
+                        _is_dark_sparse_relative_platform_candidate(
+                            detection,
+                            image,
+                            room,
+                            room_luminance,
+                        ),
+                        expected,
+                    )
+                    kept = _prune_dark_sparse_platform_impostors(
+                        [detection],
+                        image,
+                        room,
+                    )
+                    self.assertEqual(bool(kept), expected)
 
     def test_textured_platform_requires_horizontal_material_isolation(self) -> None:
         self.assertTrue(
