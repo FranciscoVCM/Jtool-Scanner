@@ -144,7 +144,7 @@ def load_manifest(path: str | Path) -> tuple[Path, dict]:
 def evaluate_manifest(
     manifest_path: str | Path,
     room_box: Box | None = None,
-    grid_step: int = 16,
+    grid_step: int = 8,
     tolerance: float = 64,
     include_color_objects: bool = False,
     include_geometry: bool = False,

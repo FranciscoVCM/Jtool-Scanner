@@ -67,6 +67,7 @@ MINI_SPIKE_TYPES = frozenset(
         OBJ_MINI_SPIKE_DOWN,
     }
 )
+DEFAULT_SCAN_GRID_STEP = 8
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -1572,7 +1573,7 @@ class ScanResult:
 def scan_png(
     path: str | Path,
     room_box: Box | None = None,
-    grid_step: int = GRID_SIZE,
+    grid_step: int = DEFAULT_SCAN_GRID_STEP,
     include_color_objects: bool = False,
     include_geometry: bool = False,
     source_grid: tuple[int, int] | None = None,
@@ -1596,7 +1597,7 @@ def scan_png(
 def scan_image(
     image: RGBImage,
     room_box: Box | None = None,
-    grid_step: int = GRID_SIZE,
+    grid_step: int = DEFAULT_SCAN_GRID_STEP,
     include_color_objects: bool = False,
     include_geometry: bool = False,
     source_grid: tuple[int, int] | None = None,

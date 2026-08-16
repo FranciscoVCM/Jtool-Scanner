@@ -361,7 +361,6 @@ class ImageAndScannerTests(unittest.TestCase):
         result = scan_image(
             image,
             room_box=Box(0, 0, 800, 608),
-            grid_step=8,
             include_color_objects=True,
         )
         walljumps = [det for det in result.detections if det.type_id == OBJ_WALLJUMP_LEFT]

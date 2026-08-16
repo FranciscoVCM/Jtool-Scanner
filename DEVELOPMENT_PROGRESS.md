@@ -2584,3 +2584,20 @@ justified.  A default grid-step-32 smoke scan can under-sample the first Halls1
 apple, which is a workflow-setting error rather than a palette-generalization
 failure.  The exact fixture and giant-review workflows therefore continue to
 require grid step 8 for color-object review.
+
+## Checkpoint: make the benchmark grid phase the public default (2026-08-16)
+
+The coarse sampling defaults were a generalized source of missed phase-sensitive
+objects.  Before this change, direct `scan_png`/`scan_image` calls used a
+32-pixel step and the three basic CLI scan commands used 16; a default color
+scan of Halls1 found only one of its two water-tinted apples, and a default
+color scan of Irkara-89 found only seven of the nine tracked vine positions.
+The documented benchmark and the graphical app already used grid step 8.
+
+The public scanner and evaluation defaults now use `8`, and `inspect-image`,
+`scan-image`, and `scan-fixtures` default to the same phase.  Coarser sampling
+remains available explicitly for speed.  This is a phase/workflow correction,
+not a tileset-specific rule or coordinate shift.  The sparse-walljump test now
+exercises the default path; its focused test and the two OCR tests pass.  With
+the new defaults, Halls1 recovers both tinted apples and a full default scan of
+Irkara-89 recovers the exact 9/9 vines, 1/1 platform, and 1/1 apple controls.

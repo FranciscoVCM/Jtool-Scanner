@@ -24,6 +24,12 @@ Tesseract OCR is optional; when it is on `PATH`, PNG scans can use it for
 infinite-jump text. Use `--no-ocr` or explicit `--ocr-text` for deterministic
 scans.
 
+Color-object and geometry scans default to an 8-pixel sampling phase. This is
+the project benchmark setting and preserves half-cell objects such as vines,
+water-tinted apples, and jump refreshers. A coarser `--grid-step 16` or `32`
+can be requested explicitly when speed matters, but it may under-sample those
+objects.
+
 From the repository root, common commands include:
 
 ```powershell
