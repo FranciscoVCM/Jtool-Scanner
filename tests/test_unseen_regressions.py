@@ -45,6 +45,7 @@ from jtool_scanner.scanner import (
     _reorient_unsupported_spikes,
     _realign_warm_component_spike_phase,
     _reconcile_terrain_markers,
+    _reconcile_walljump_terrain_anchors,
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     detect_room_box,
@@ -452,6 +453,28 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
         self.assertIn((544, 32, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((608, 96, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
+
+    def test_repeated_vine_phase_beats_same_column_terrain_alias(self) -> None:
+        """A cadence-confirmed vine keeps its shape-derived half-cell origin."""
+
+        room = Box(0, 0, 800, 608)
+        image = RGBImage(room.width, room.height, b"\x00" * (room.width * room.height * 3))
+        terrain = Detection("supported_terrain_block", OBJ_BLOCK, 416, 288, 0.8, Box(416, 288, 32, 32))
+        vine = Detection(
+            "walljump_left_repeated_strip",
+            OBJ_WALLJUMP_LEFT,
+            400,
+            288,
+            0.77,
+            Box(400, 288, 32, 32),
+        )
+
+        result = _reconcile_walljump_terrain_anchors([terrain, vine], image, room)
+
+        self.assertIn(
+            (400, 288, OBJ_WALLJUMP_LEFT, "walljump_left_repeated_strip"),
+            {(detection.x, detection.y, detection.type_id, detection.kind) for detection in result},
+        )
 
     def test_late_mini_spike_recovery_handles_split_palette_silhouettes(self) -> None:
         result = scan_png(

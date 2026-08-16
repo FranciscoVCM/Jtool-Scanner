@@ -10608,10 +10608,14 @@ def _reconcile_walljump_terrain_anchors(
 
     replacements: dict[int, Detection] = {}
     for walljump in walljumps:
-        if walljump.kind.endswith(("_split_pair", "_phase_pair")):
+        if walljump.kind.endswith(("_split_pair", "_phase_pair", "_repeated_strip")):
             # The shape-centered phase is stronger than a terrain-column
-            # alias: the pair was recovered from the sprite silhouette itself,
-            # so a later green terrain profile must not move it.
+            # alias: split/phase recoveries and repeated cadence strips were
+            # recovered from the sprite silhouette itself, so a later green
+            # terrain profile must not move them by a half-cell.  This is
+            # especially important when a walljump is adjacent to a terrain
+            # column: both x phases render the same visible green pixels, but
+            # only the shape phase preserves the JTool origin and direction.
             continue
         current_support = support_count(walljump.x, walljump.y)
         if current_support:

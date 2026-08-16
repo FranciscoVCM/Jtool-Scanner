@@ -1985,3 +1985,35 @@ refreshers 18/19.  FTFA remains **926/928 exact; 0 false positives; 2 missed
 edge blocks; 0 shifted; 0 wrong direction**.  Full unittest discovery passes
 **352 tests in 1666.249 seconds**, `OK`.  No fixture, JMap, or ignored corpus
 artifact was modified.
+
+## Checkpoint: preserve repeated-strip vine origins (2026-08-16)
+
+The Halls7 source/current/blend review isolated a recurring 16px horizontal
+alias.  The visible green strip at source pixels approximately `x=512..529`
+can be represented by either a left vine at map `(400,y)` or a right vine at
+`(416,y)`.  The repeated-cadence silhouette consistently scored the left
+shape phase slightly higher, but the later terrain-column reconciler moved it
+to the same-column `(416,right)` alias.  That made the JTool origin and
+direction wrong even though the rendered green pixels looked similar.
+
+Terrain-column alignment now leaves high-confidence `*_repeated_strip`
+detections on their shape-derived phase, alongside the existing split/phase
+exceptions.  Ordinary clipped or isolated vines still use the terrain support
+reconciler.  This is a morphology/provenance rule, not a screen coordinate or
+palette rule: repeated vertical cadence is stronger evidence of the sprite's
+JTool origin than a neighboring terrain column.
+
+The current Halls7 scan changes from `(416,288,right),(416,320,right)` to the
+source-supported `(400,288,left),(400,320,left)`.  Halls6 remains the ordinary
+terrain-aligned `(224,160,left),(224,192,left)` result.  Protected Irkara51,
+Irkara52, and CN3-18 vine coordinates remain unchanged.  The complete tracked
+12-pair block/spike workflow is unchanged: saves 22/22, warps 12/12, apples
+4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, mini-blocks
+869/875, blocks 1457/1486, full spikes 710/748, mini-spikes 281/288, killers
+99/99, and refreshers 18/19.  FTFA remains **926/928 exact; 0 false
+positives; 2 missed edge blocks; 0 shifted; 0 wrong direction**.
+
+The regression suite now includes a pure terrain-alias test proving that a
+repeated-strip vine at `(400,288)` is not moved to `(416,288)` merely because
+the neighboring terrain column is populated.  No fixture or JMap was
+modified; Halls7 remains visual evidence rather than exact benchmark truth.
