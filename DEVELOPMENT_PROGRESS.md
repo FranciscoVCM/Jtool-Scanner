@@ -1721,23 +1721,6 @@ object-family totals; it emits one additional unmatched CN3-18 mini candidate
 (`343` detections versus `342` previously). FTFA remains `926/928 exact; 0
 false positives; 2 missed; 0 shifted; 0 wrong direction`.
 
-## Checkpoint: CN2-5 refresher truth/source discrepancy (2026-08-16)
-
-The exact tracked `CN2-5` jump-refresher control was inspected after the fresh
-fixture run.  Six visible refresher silhouettes are detected at their expected
-positions.  The only missed truth object is `(624,160)`, but the corresponding
-source crop is a uniform green/gray terrain strip: it contains no visible disc,
-no neutral bright component, and no blue component for the current normalized
-shape/color detector to recover.  The source/JTool pair therefore does not
-support a generalized threshold relaxation for this one invisible marker.
-
-The existing synthetic blue-disc versus square-texture regression remains the
-appropriate protection, and NANG-138 still matches all `12/12` refreshers while
-sharing cells with mini-spikes.  The missing CN2-5 marker is recorded as an
-evidence-limited fixture discrepancy, not silently fabricated in the scanner.
-The ignored crop used for review is
-`.artifacts/goal-continuation/reconnect-zero-nang-block-spike/cn2-5-missing-refresher-crop.png`.
-
 The new Irkara-52 regression and the existing Irkara-51 paired-spike
 regression pass together. The complete post-change module suite passes **343
 tests** (`35 + 286 + 22`), with no fixture or JMap modifications.
@@ -2589,3 +2572,15 @@ stress-corpus baseline: mini blocks `869/875`, blocks `1457/1486`, full spikes
 The complete unittest discovery run against this checkpoint passed **360 tests
 in 1863.540 seconds**, `OK`.  The exact FTFA rerun remains `926/928 exact; 0
 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+
+## Checkpoint: water-tinted apple grid-phase audit (2026-08-16)
+
+The preserved Halls and CN3 apple-family triplets were checked against the
+current benchmark configuration.  At the documented grid step 8,
+`CN3_Halls1` retains both water-tinted apples at `(64,248)` and `(48,464)` plus
+six normal apples, and `CN3_27` retains all nine visible apples.  The source,
+current JMap, and blend agree visually on these classes; no new apple rule is
+justified.  A default grid-step-32 smoke scan can under-sample the first Halls1
+apple, which is a workflow-setting error rather than a palette-generalization
+failure.  The exact fixture and giant-review workflows therefore continue to
+require grid step 8 for color-object review.
