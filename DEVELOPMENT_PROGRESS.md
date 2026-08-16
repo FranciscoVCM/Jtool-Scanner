@@ -1905,6 +1905,36 @@ mini-blocks 869/875, blocks 1457/1486, full spikes 709/748, mini-spikes
 281/288, killers 99/99, and refreshers 18/19.  No fixture or JMap was
 modified.
 
+## Checkpoint: compact relative platform recovery (2026-08-16)
+
+The preserved `CN3_Entrance2` source/blend review shows a real small brown
+platform at map approximately `(80,464)`, while the current regeneration had
+only seven striped-terrain platform impostors and omitted that sprite.  Its
+signature is not a useful absolute color rule: after screenshot scaling it is
+a 24px-plus horizontal / 12px-plus vertical enclosure with one strong edge
+row, low chroma, low block occupancy, and luminance at least ten units below
+the room.  Its neighboring 16px-shifted material profile is also separated by
+at least ten normalized profile units.  The scanner now has a dedicated
+compact-relative route with these palette-relative constraints, deferring
+neighbor profiling until the cheap shape gates pass.
+
+`CN3_Entrance2` now emits the recovered platform at `(80,464)` (score about
+`.753`) in addition to the seven pre-existing candidates; no fixture source or
+JMap was changed.  The same route produces no candidates in the tracked
+`*-game.png` fixture corpus, including the similarly shaped F189 terrain edge,
+because its neighboring material is continuous.  The sampled giant-review
+controls `CN3_Entrance1`, `CN3_Entrance3`, `CN3_Halls6`, `CN3_Halls7`,
+`CN3_19`, `CN3_25`, `CN3_28`, `CN3_29`, `CN3_30`, `CN3_31`, and `NANG_11`
+also produce no compact-relative candidates.  Existing exact platform controls
+remain unchanged: K3 `(512,336),(144,448)`, Irkara-71's five platforms,
+Irkara-89 `(704,288)`, and no platform in F189.
+
+The new pure-route regression test passes, and the strict FTFA benchmark remains
+**926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0 wrong
+direction**.  Full unittest discovery and the complete 12-pair fixture
+workflow remain the next validation gate before this checkpoint is considered
+complete.  No fixture, JMap, or ignored corpus artifact was modified.
+
 ## Checkpoint: platform-edge full-spike coexistence (2026-08-16)
 
 K3-EX-Hades exposed a late arbitration error in a mixed platform/hazard

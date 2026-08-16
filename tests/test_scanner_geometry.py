@@ -168,6 +168,7 @@ from jtool_scanner.scanner import (
     _is_low_contrast_mini_up_candidate,
     _is_directly_full_scale_dominant,
     _is_low_contrast_platform_candidate,
+    _is_compact_relative_platform_candidate,
     _has_complete_low_contrast_platform_context,
     _has_bright_room_platform_bar_evidence,
     _platform_conflicts_supported_terrain,
@@ -6175,6 +6176,36 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(_has_complete_low_contrast_platform_context(32, 480))
         self.assertFalse(_has_complete_low_contrast_platform_context(16, 0))
         self.assertFalse(_has_complete_low_contrast_platform_context(0, 592))
+
+    def test_compact_relative_platform_requires_material_isolation(self) -> None:
+        target_features = _PlatformPatchFeatures(25, 14, 154, 1)
+        target_patch = _PatchFeatures((), 0.133, 0.107, 0.188)
+        target_profile = _ColorProfile(36.5, 35.2, 25.8, 0.084)
+        self.assertTrue(
+            _is_compact_relative_platform_candidate(
+                target_features,
+                target_patch,
+                target_profile,
+                0.154,
+                0.059,
+                67.3,
+                neighbor_profile_distance=15.0,
+            )
+        )
+        # A similarly shaped room edge must not pass merely because its gray
+        # range and relative luminance look plausible; its material continues
+        # into the neighboring terrain profile.
+        self.assertFalse(
+            _is_compact_relative_platform_candidate(
+                _PlatformPatchFeatures(30, 16, 151, 1),
+                _PatchFeatures((), 0.137, 0.107, 0.172),
+                _ColorProfile(133.5, 160.6, 171.0, 0.150),
+                0.152,
+                0.011,
+                168.2,
+                neighbor_profile_distance=2.1,
+            )
+        )
 
     def test_full_spike_scale_arbitration_removes_contained_mini_fragments(self) -> None:
         full_spikes = [

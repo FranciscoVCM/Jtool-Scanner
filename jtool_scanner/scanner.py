@@ -346,6 +346,22 @@ PLATFORM_DARK_CENTER_RANGE = (0.08, 0.22)
 PLATFORM_DARK_MAX_BLOCK_SCORE = 0.15
 PLATFORM_DARK_MAX_BELOW_EDGE = 0.12
 PLATFORM_DARK_MAX_ROOM_LUMINANCE_DELTA = 8.0
+# Some custom tilesets render the platform as a compact, dark bar whose
+# screenshot scaling leaves only one strong horizontal edge row.  Keep this
+# as a relative-material route instead of relaxing the neutral terrain route:
+# the bar must be darker than its room, locally isolated, and low in block
+# occupancy.  These normalized constraints are palette-independent and also
+# reject the long striped terrain edges that motivated the older platform
+# gates.
+PLATFORM_COMPACT_RELATIVE_MIN_HORIZONTAL_RUN = 24
+PLATFORM_COMPACT_RELATIVE_MIN_VERTICAL_RUN = 12
+PLATFORM_COMPACT_RELATIVE_GRAY_RANGE = (110, 190)
+PLATFORM_COMPACT_RELATIVE_MAX_SATURATION = 0.18
+PLATFORM_COMPACT_RELATIVE_CENTER_RANGE = (0.13, 0.26)
+PLATFORM_COMPACT_RELATIVE_MAX_BLOCK_SCORE = 0.20
+PLATFORM_COMPACT_RELATIVE_MAX_BELOW_EDGE = 0.14
+PLATFORM_COMPACT_RELATIVE_MAX_ROOM_LUMINANCE_DELTA = -10.0
+PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE = 10.0
 # Dark outlined rooms can expose long purple terrain edges that satisfy the
 # permissive platform routes without containing a filled platform sprite.  A
 # room-relative sparse gate is applied only to that low-fill family; filled
@@ -11426,11 +11442,35 @@ def _detect_platforms(
                 below_edge,
                 room_luminance,
             )
+            compact_relative_candidate = _is_compact_relative_platform_candidate(
+                features,
+                patch,
+                profile,
+                block_score,
+                below_edge,
+                room_luminance,
+                # Defer the two neighboring 16-sample profiles until the
+                # inexpensive shape/material gates pass.  This route runs
+                # over every 16px cell, so doing the profile comparison for
+                # every cell would make ordinary scans needlessly expensive.
+                neighbor_profile_distance=float("inf"),
+            )
+            if compact_relative_candidate:
+                compact_relative_candidate = (
+                    _minimum_platform_neighbor_profile_distance(
+                        image,
+                        room,
+                        x,
+                        y,
+                    )
+                    >= PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE
+                )
             if not (
                 low_contrast_candidate
                 or bright_candidate
                 or textured_candidate
                 or dark_relative_candidate
+                or compact_relative_candidate
             ):
                 continue
             score = (
@@ -11674,6 +11714,18 @@ def _is_textured_platform_horizontally_isolated(
     profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
     if profile.saturation > PLATFORM_TEXTURED_MAX_SATURATION:
         return False
+    return _minimum_platform_neighbor_profile_distance(image, room, x, y) >= (
+        PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE
+    )
+
+
+def _minimum_platform_neighbor_profile_distance(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> float:
+    profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
     neighbor_distances = [
         _color_profile_distance(
             profile,
@@ -11688,8 +11740,50 @@ def _is_textured_platform_horizontally_isolated(
         for offset in (-PLATFORM_WIDTH // 2, PLATFORM_WIDTH // 2)
         if 0 <= x + offset <= ROOM_WIDTH - PLATFORM_WIDTH
     ]
-    return not neighbor_distances or min(neighbor_distances) >= (
-        PLATFORM_TEXTURED_MIN_HORIZONTAL_PROFILE_DISTANCE
+    return min(neighbor_distances, default=float("inf"))
+
+
+def _is_compact_relative_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    profile: _ColorProfile,
+    block_score: float,
+    below_edge: float,
+    room_luminance: float,
+    *,
+    neighbor_profile_distance: float,
+) -> bool:
+    """Recognize an isolated dark platform with a clipped single edge row.
+
+    This route is intentionally separate from the low-contrast terrain route.
+    A platform can be dark relative to an unfamiliar room while still having a
+    broad internal luminance range; the room-relative luminance and neighboring
+    profile distance provide the material evidence that a fixed gray threshold
+    cannot.  Requiring the compact center/block silhouette keeps long striped
+    terrain boundaries out of this recovery path.
+    """
+
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    return (
+        features.horizontal_run >= PLATFORM_COMPACT_RELATIVE_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_COMPACT_RELATIVE_MIN_VERTICAL_RUN
+        and PLATFORM_COMPACT_RELATIVE_GRAY_RANGE[0]
+        <= features.gray_range
+        <= PLATFORM_COMPACT_RELATIVE_GRAY_RANGE[1]
+        and profile.saturation <= PLATFORM_COMPACT_RELATIVE_MAX_SATURATION
+        and PLATFORM_COMPACT_RELATIVE_CENTER_RANGE[0]
+        <= patch.center_score
+        <= PLATFORM_COMPACT_RELATIVE_CENTER_RANGE[1]
+        and block_score <= PLATFORM_COMPACT_RELATIVE_MAX_BLOCK_SCORE
+        and below_edge <= PLATFORM_COMPACT_RELATIVE_MAX_BELOW_EDGE
+        and patch_luminance - room_luminance
+        <= PLATFORM_COMPACT_RELATIVE_MAX_ROOM_LUMINANCE_DELTA
+        and neighbor_profile_distance
+        >= PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE
     )
 
 
