@@ -5146,6 +5146,32 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertEqual(len(result), 2)
 
+    def test_low_confidence_spike_can_touch_platform_edge(self) -> None:
+        platform = Detection(
+            "platform", OBJ_PLATFORM, 512, 336, 0.70, Box(512, 336, 32, 16)
+        )
+        edge_spike = Detection(
+            "spike_left", OBJ_SPIKE_LEFT, 512, 352, 0.61, Box(512, 352, 32, 32)
+        )
+        embedded_spike = Detection(
+            "spike_right", OBJ_SPIKE_RIGHT, 512, 320, 0.70, Box(512, 320, 32, 32)
+        )
+
+        kept = _dedupe_overlapping_geometry([platform, edge_spike])
+        self.assertEqual(
+            {(d.type_id, d.x, d.y) for d in kept},
+            {
+                (OBJ_PLATFORM, 512, 336),
+                (OBJ_SPIKE_LEFT, 512, 352),
+            },
+        )
+
+        rejected = _dedupe_overlapping_geometry([platform, embedded_spike])
+        self.assertEqual(
+            [(d.type_id, d.x, d.y) for d in rejected],
+            [(OBJ_PLATFORM, 512, 336)],
+        )
+
     def test_block_still_loses_to_save_anchor(self) -> None:
         save = Detection("save", OBJ_SAVE, 224, 40, 0.95, Box(224, 40, 32, 32))
         strong_block = Detection("block", OBJ_BLOCK, 224, 32, 0.80, Box(224, 32, 32, 32))

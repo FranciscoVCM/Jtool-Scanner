@@ -1904,3 +1904,22 @@ water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
 mini-blocks 869/875, blocks 1457/1486, full spikes 709/748, mini-spikes
 281/288, killers 99/99, and refreshers 18/19.  No fixture or JMap was
 modified.
+
+## Checkpoint: platform-edge full-spike coexistence (2026-08-16)
+
+K3-EX-Hades exposed a late arbitration error in a mixed platform/hazard
+layout.  A low-confidence full spike immediately touching a platform edge was
+being discarded as platform overlap, while a stronger triangle whose body
+actually occupied the platform's 16px band was correctly rejected.  The
+coexistence rule now uses only normalized map geometry: horizontal edge
+contact, no body overlap, and a full-spike confidence ceiling.  It does not
+change platform detection or permit embedded triangles.
+
+The K3 full-spike result improves from **108/113 matched with 132 detections**
+to **109/113 with 133 detections**.  Across the complete 12-pair workflow,
+full spikes improve from **709/748 to 710/748** and **887 to 888 detections**;
+all other category totals remain unchanged, including platforms at **3/3
+matched and 3 detected**.  The complete unittest discovery run passes
+**350 tests in 1676.974 seconds**, OK.  The strict FTFA gate remains
+**926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0 wrong
+direction**.  No fixture or JMap was modified.

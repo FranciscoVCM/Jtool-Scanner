@@ -358,6 +358,11 @@ PLATFORM_DARK_SPARSE_MIN_VERTICAL_RUN = 3
 PLATFORM_DARK_SPARSE_MAX_CENTER_SCORE = 0.20
 PLATFORM_DARK_SPARSE_MAX_BLOCK_SCORE = 0.23
 PLATFORM_DARK_SPARSE_MAX_BELOW_EDGE = 0.12
+# A low-confidence full spike can be a real hazard immediately adjacent to a
+# platform.  Keep the coexistence exception limited to that edge-touching
+# relation; a triangle that occupies the platform's 16px band remains an
+# overlapping platform impostor.
+FULL_SPIKE_PLATFORM_EDGE_TOUCH_MAX_SCORE = 0.65
 PLATFORM_ANCHOR_DISTANCE = 20.0
 PLATFORM_DEDUPE_DISTANCE = 24.0
 MINI_SPIKE_COEXIST_SCORE = 0.60
@@ -26202,6 +26207,24 @@ def _geometry_anchor_conflicts(
 
 
 def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool:
+    if (
+        det.type_id in FULL_SPIKE_TYPES
+        and anchor.type_id == OBJ_PLATFORM
+        and det.score <= FULL_SPIKE_PLATFORM_EDGE_TOUCH_MAX_SCORE
+    ):
+        horizontal_overlap = (
+            min(det.x + GRID_SIZE, anchor.x + PLATFORM_WIDTH)
+            > max(det.x, anchor.x)
+        )
+        edge_touch = (
+            anchor.y + PLATFORM_HEIGHT == det.y
+            or det.y + GRID_SIZE == anchor.y
+        )
+        # A platform and a hazard may share a boundary, but a spike whose
+        # 32px body actually contains the platform is still competing
+        # geometry and must lose to the reliable platform anchor.
+        if horizontal_overlap and edge_touch:
+            return True
     if (
         det.type_id in MINI_SPIKE_TYPES
         and anchor.type_id == OBJ_JUMP_REFRESHER
