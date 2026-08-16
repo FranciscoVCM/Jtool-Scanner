@@ -2434,3 +2434,38 @@ walljumps `13/13`, saves `4/4`, apples `1/1`, water `19/19`, and platforms
 `1/1` matched.  No implementation change was required after the published
 dark-vine route; this was a source/current-output completion and evidence
 checkpoint.
+
+## Checkpoint: platform and water arbitration across three materials (2026-08-16)
+
+The pending source/JTool/blend review was completed from freshly regenerated
+grid-step-8 projects under the ignored
+`.artifacts/goal-continuation/platform-water-review/` directory.  This batch
+does not add a scanner rule; it records measured evidence across unrelated
+white-brick, striped-cave, and cyan-room materials and keeps visual uncertainty
+separate from exact truth because these giant-review screens still lack
+corrected authoritative JMaps.
+
+- `CN3_31` retains three source-visible SAVE sprites and three green vines, and
+  emits zero independent platforms.  The earlier bright-room gate's
+  33-impostor-to-zero result is consistent with the current white/black terrain;
+  no platform is promoted merely from a bright horizontal edge.
+- `CN3_Entrance2` retains two saves, one source-supported brown platform at
+  `(80,464)`, three coherent `water_2` cells, and its established vines.  The
+  partial platform survives because local support and enclosure agree rather
+  than because of the room name or palette.
+- `CN3_Bathhouse1` retains two saves, three vines, and thirteen bounded
+  `water_2` cells.  The broad cyan room background and pink decorative/
+  trigger-like region remain background, and no platform is emitted.
+
+The regenerated counts are respectively `293`, `347`, and `145` objects.  The
+ignored review ledger now points at these current JMaps, reconstructions, and
+PNG blends and records all three as `needs-more-work` for remaining visual
+geometry only; no screen-specific correction was introduced.
+
+Held-out platform controls were rerun with the documented bundled Python
+runtime, grid step 8, and tolerance 24: Irkara-71 remains platforms `5/5`
+matched with saves `2/2`, while K3 Ex-Hades remains platforms `2/2` and saves
+`6/6`.  Irkara-71's existing water limitation (`26/37`) and extra warp
+detections are unchanged and unrelated to this platform arbitration audit.
+The live application remains healthy at HTTP 200.  No implementation code or
+tracked fixture changed in this checkpoint.
