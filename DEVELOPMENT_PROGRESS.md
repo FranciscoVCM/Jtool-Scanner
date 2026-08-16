@@ -2252,3 +2252,30 @@ already separated by the existing local-shape/material arbitration.  Dense
 geometry remains visual-only without corrected giant-review JMaps, so no
 screen-specific geometry correction was added.  The prior FTFA, 12-pair
 fixture, and full-suite gates remain the protected controls.
+
+## Checkpoint: NANG compact/reverse corpus regeneration (2026-08-16)
+
+NANG_128, NANG_128r, NANG_130, NANG_130r, NANG_131r, and NANG_135 were
+regenerated together at grid step 8 with current source/JMap/reconstruction/
+blend outputs under `.artifacts/goal-continuation/nang-reverse-review/`.
+Ledger rows 58-63 now point to those triplets and retain explicit visual-only
+status where corrected giant-review JMaps are unavailable.
+
+The batch confirms the shared palette-relative arbitration across normal and
+reverse rooms.  NANG_128 retains both compact green saves, the white spiral
+warp, and eight killer blocks, and additionally recovers two visible right
+mini-spikes at `(320,288)` and `(320,304)`.  NANG_128r continues to reject the
+orange/green trigger squares while retaining its reverse terrain, 13 killer
+blocks, and spiral warp.  NANG_130 retains its SAVE, neutral-outline warp,
+three blue refreshers, and trigger/star rejection while recovering ten compact
+down-spikes and three compact up-spikes from visible runs.  NANG_130r and
+NANG_131r retain their reverse SAVE/warp/refresher classes without promoting
+triggers, stars, or gravity flippers.  NANG_135 retains its compact SAVE,
+spiral warp, and 86 killer blocks; its current save origin is `(160,440)`
+instead of the older visual artifact's `(160,448)`, with no corrected JMap to
+choose the phase.
+
+The new mini-spike recoveries are treated as evidence of the existing compact
+shape route, not as a NANG-specific rule.  NANG138, Irkara59, CN2-5, and the
+strict FTFA benchmark remain held-out controls; no protected regression or
+shared false-positive signature justified another implementation change.
