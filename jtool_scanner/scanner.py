@@ -5465,15 +5465,23 @@ def _reconcile_terrain_markers(
                     for block_x, block_y in block_positions
                     if block_x in (x - GRID_SIZE, x + GRID_SIZE)
                 )
+                horizontal_alias = abs(x - detection.x) >= MINI_BLOCK_SIZE
                 movement = abs(x - detection.x) + abs(y - detection.y)
                 candidates.append(
                     (
                         terrain_overlap > 0,
+                        # Preserve the established support arbitration for
+                        # ordinary 8px phase corrections.  Only a full
+                        # half-cell (16px) horizontal jump is treated as a
+                        # terrain alias: the marker's visual phase is then
+                        # stronger than a neighboring support column.
+                        horizontal_alias,
+                        abs(x - detection.x) if horizontal_alias else 0,
                         # A marker can straddle two neighboring support cells
                         # and otherwise tie the correctly anchored cell.  A
                         # full-width support at the candidate origin is the
-                        # stronger coordinate signal and avoids an 8px phase
-                        # drift in scaled room captures.
+                        # stronger vertical coordinate signal and avoids an
+                        # 8px phase drift in scaled room captures.
                         -min(GRID_SIZE, exact_support),
                         -min(GRID_SIZE, support),
                         -min(GRID_SIZE, side_support),
@@ -5484,6 +5492,8 @@ def _reconcile_terrain_markers(
                 )
         (
             _overlaps,
+            _horizontal_alias,
+            _horizontal_alias_distance,
             _exact_support,
             _support,
             _side_support,

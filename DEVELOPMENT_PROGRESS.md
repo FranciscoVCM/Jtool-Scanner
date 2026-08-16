@@ -2613,3 +2613,35 @@ direction`, with the same two edge-block misses on FTFA screen 1.  The live app
 returned HTTP 200 at `http://127.0.0.1:8765/`.  No tracked partial write was left
 by the reconnect; the prior endpoint and its ignored review artifacts remain
 available locally.
+
+## Checkpoint: preserve visual save phase against 16px terrain aliases (2026-08-16)
+
+The exact fixture report exposed a recurring point-object ambiguity that the
+tolerance score hid.  In the red Partysu3 tileset, the raw save body/header
+evidence began at `(112,328)` and `(544,424)`, while terrain support arbitration
+moved the final origins to `(128,320)` and `(544,416)`.  The first save was
+therefore a full 16-pixel horizontal alias even though the pair still counted
+as matched within 24 pixels.  The same arbitration must remain conservative on
+FTFA, where ordinary 8-pixel scaled-room corrections are authoritative.
+
+The generalized marker candidate ordering now preserves the existing support
+ordering for ordinary phase adjustments, but treats a candidate that requires a
+full 16-pixel horizontal jump as a terrain alias and prefers the nearest visual
+phase.  This is based on marker-vs-support geometry, not a screen or coordinate
+exception.  The new regression test
+`test_save_marker_keeps_visual_horizontal_phase_against_support_alias` protects
+that invariant.  The resulting Partysu3 scan is exact for both saves at
+`(112,320)` and `(544,416)`.  Irkara-89 remains exact for its save and all nine
+walljumps; F189 remains exact for its save and eight gravity flippers; CN3-18
+remains exact for all three saves and four walljumps.  K3 Ex-Hades remains the
+known tolerance-matched visual case with unresolved 8-pixel reference-phase
+differences; no unsupported correction was added for it.
+
+The first broad version of this change shifted two FTFA saves and was rejected.
+The final half-cell-only version restores the strict FTFA result to
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`.
+The complete 12-pair block/spike workflow is unchanged at saves `22/22`, warps
+`12/12`, apples `4/4`, water `35/35`, walljumps `13/13`, gravity `8/8`,
+platforms `3/3`, killer blocks `99/99`, and matched refreshers `18/19`; the
+broader geometry totals remain the established stress baseline.  Full unittest
+discovery now passes **361 tests in 1999.791 seconds**, `OK`.

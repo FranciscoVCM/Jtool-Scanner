@@ -492,6 +492,47 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             {(detection.x, detection.y, detection.type_id, detection.kind) for detection in result},
         )
 
+    def test_save_marker_keeps_visual_horizontal_phase_against_support_alias(self) -> None:
+        """Terrain support must not move a marker to a neighboring half-cell."""
+
+        room = Box(0, 0, 800, 608)
+        image = RGBImage(room.width, room.height, b"\x00" * (room.width * room.height * 3))
+        save = Detection(
+            "save",
+            OBJ_SAVE,
+            112,
+            328,
+            1.0,
+            Box(112, 328, 32, 32),
+        )
+        supports = [
+            Detection(
+                "block_left",
+                OBJ_BLOCK,
+                96,
+                352,
+                0.8,
+                Box(96, 352, 32, 32),
+            ),
+            Detection(
+                "block_right",
+                OBJ_BLOCK,
+                128,
+                352,
+                0.8,
+                Box(128, 352, 32, 32),
+            ),
+        ]
+
+        result, _ = _reconcile_terrain_markers(
+            [save],
+            supports,
+            image,
+            room,
+        )
+        marker = next(detection for detection in result if detection.type_id == OBJ_SAVE)
+        self.assertEqual((marker.x, marker.y), (112, 320))
+
     def test_late_mini_spike_recovery_handles_split_palette_silhouettes(self) -> None:
         result = scan_png(
             Path("fixtures") / "irkara" / "irkara-52-game.png",
