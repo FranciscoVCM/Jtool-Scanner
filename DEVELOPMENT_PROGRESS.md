@@ -2147,3 +2147,24 @@ is no shared, falsifiable missing-object signature, and inventing one would
 risk the FTFA vine/platform gates.  The existing 12-pair fixture totals and
 the strict FTFA result remain the protected controls from the preceding
 checkpoint.
+
+## Checkpoint: flag and embedded-room audit (2026-08-16)
+
+The latest grid-8 source/JMap/blend regeneration of `Zero_Final`, `NANG_11`,
+and `CN3_Entrance2` is behaviorally unchanged from their previous review
+checkpoint.  Zero_Final still yields one outlined SAVE, 212 water-2 cells,
+the same block/spike geometry, and no warp or false color object.  An
+OCR-enabled retry still returned empty recognized text, so the visible
+“You can infinity jump” banner remains an unresolved flag-detection case
+rather than justification for a phrase-specific detector.  NANG_11 still
+localizes the centered 9x9 island, keeps one save and the gray spiral warp at
+`(432,336)`, and rejects the surrounding Floor/TNT/narrator UI.  Entrance2
+still keeps two saves, three water-2 cells, and only the supported partial
+platform at `(80,464)`.
+
+The regenerated triplets are preserved under
+`.artifacts/goal-continuation/flag-room-review/`, and ledger rows 1, 35, and
+57 point to those outputs.  This batch supplies a negative result across
+three different room/profile paths: no shared missing-object signature was
+found, and no implementation change was made.  Zero_Final’s flag remains a
+candidate for a future general text/flag subsystem, not a tileset rule.
