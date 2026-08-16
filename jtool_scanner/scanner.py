@@ -1473,6 +1473,13 @@ SAVE_GENERAL_HEADER_MIN_ROWS = 3
 SAVE_GENERAL_HEADER_MIN_SIGNAL_SHARE = 0.08
 SAVE_GENERAL_HEADER_MIN_CONTRAST = 24.0
 SAVE_GENERAL_HEADER_MIN_LUMINANCE = 80.0
+SAVE_HEADER_REANCHOR_KINDS = frozenset(
+    {
+        "save",
+        "save_red_body_header",
+        "save_red_body_header_terrain_aligned",
+    }
+)
 APPLE_CONTOUR_TEMPLATE_ROWS = (
     "................",
     "................",
@@ -7400,7 +7407,10 @@ def _reanchor_save_headers(
     scale_y = room.height / max(1, ROOM_HEIGHT)
     replacements: dict[int, Detection] = {}
     for detection in detections:
-        if detection.type_id != OBJ_SAVE or detection.kind != "save":
+        if (
+            detection.type_id != OBJ_SAVE
+            or detection.kind not in SAVE_HEADER_REANCHOR_KINDS
+        ):
             continue
         box = detection.image_box
         if dark_sparse:

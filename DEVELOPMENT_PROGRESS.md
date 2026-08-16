@@ -2469,3 +2469,35 @@ matched with saves `2/2`, while K3 Ex-Hades remains platforms `2/2` and saves
 detections are unchanged and unrelated to this platform arbitration audit.
 The live application remains healthy at HTTP 200.  No implementation code or
 tracked fixture changed in this checkpoint.
+
+## Checkpoint: generalized red-body SAVE header phase recovery (2026-08-16)
+
+The five CN3-Dotkid screens were regenerated after extending the late,
+palette-relative SAVE-header reanchor to the unanchored
+`save_red_body_header` family and its terrain-aligned form.  The rule still
+requires an already recognized SAVE body, an independent local-contrast header
+run, and a movement of at most one 8-pixel phase.  It does not use a screen
+name, room palette, absolute coordinate, or blanket vertical shift.
+
+- `CN3_Dotkid1`: `(360,568)` -> `(360,560)` and provenance becomes
+  `save_header_aligned`.
+- `CN3_Dotkid2`: `(48,408)` -> `(48,400)` and provenance becomes
+  `save_header_aligned`.
+- `CN3_Dotkid3`, `CN3_Dotkid4`, and `CN3_Dotkid5` remain unchanged at
+  `(704,96)`, `(96,512)`, and `(544,384)` respectively because their existing
+  terrain support already agrees with the header phase.
+
+The source/current/blend triplets are under the ignored
+`.artifacts/goal-continuation/dotkid-header-phase-review/` directory and the
+ignored ledger now points to them.  Dotkid rings remain `dotkid:1`, trigger-like
+colours stay out of the SAVE class, and broad filled green terrain is not
+promoted to walljumps.  Corrected giant-review JMaps are still unavailable, so
+these are visual improvements rather than exact giant-review claims.
+
+Validation: the new synthetic header-phase regression and the existing muted
+and fragmented SAVE tests pass; current exact scans retain CN3-18 saves at
+`(224,80)`, `(384,256)`, `(768,368)` and Irkara-89 at `(352,544)`.  The FTFA
+benchmark remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction`, and the complete unittest discovery run passes **360 tests
+in 1979.562 seconds**, `OK`.  No protected fixture or implementation behavior
+outside this header-evidence family regressed.

@@ -215,6 +215,23 @@ class ImageAndScannerTests(unittest.TestCase):
             [("save_red_body_header", 96, 96)],
         )
 
+    def test_scan_reanchors_unanchored_red_body_header_phase(self) -> None:
+        result = scan_image(
+            _synthetic_low_body_header_save_room(),
+            room_box=Box(0, 0, 800, 608),
+            grid_step=8,
+        )
+
+        saves = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        ]
+        self.assertEqual(
+            [(save.kind, save.x, save.y) for save in saves],
+            [("save_header_aligned", 96, 96)],
+        )
+
     def test_red_body_without_pale_header_is_not_a_save(self) -> None:
         saves = _detect_red_body_header_saves(
             _synthetic_muted_cross_save_room(with_header=False),
@@ -609,6 +626,17 @@ def _synthetic_muted_cross_save_room(
     if with_header:
         _rect(data, width, 96, 96, 30, 8, (205, 190, 170))
         _rect(data, width, 101, 98, header_dark_width, 3, (75, 65, 60))
+    return RGBImage(width, height, bytes(data))
+
+
+def _synthetic_low_body_header_save_room() -> RGBImage:
+    width, height = 800, 608
+    data = bytearray([80, 65, 55] * width * height)
+    _rect(data, width, 96, 112, 30, 20, (175, 60, 45))
+    _rect(data, width, 109, 116, 4, 13, (170, 125, 75))
+    _rect(data, width, 102, 121, 18, 4, (170, 125, 75))
+    _rect(data, width, 96, 96, 30, 8, (205, 190, 170))
+    _rect(data, width, 101, 98, 20, 3, (75, 65, 60))
     return RGBImage(width, height, bytes(data))
 
 
