@@ -2020,3 +2020,9 @@ The regression suite now includes a pure terrain-alias test proving that a
 repeated-strip vine at `(400,288)` is not moved to `(416,288)` merely because
 the neighboring terrain column is populated.  No fixture or JMap was
 modified; Halls7 remains visual evidence rather than exact benchmark truth.
+
+The first full-suite run intentionally caught one collateral Irkara89
+direction/phase regression in this rule; the right-facing terrain-alias path
+was restored and the pure test was expanded to cover both directions.  The
+corrected complete discovery run passes **353 tests in 1572.166 seconds**,
+`OK`.
