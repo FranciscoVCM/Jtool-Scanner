@@ -1721,6 +1721,23 @@ object-family totals; it emits one additional unmatched CN3-18 mini candidate
 (`343` detections versus `342` previously). FTFA remains `926/928 exact; 0
 false positives; 2 missed; 0 shifted; 0 wrong direction`.
 
+## Checkpoint: CN2-5 refresher truth/source discrepancy (2026-08-16)
+
+The exact tracked `CN2-5` jump-refresher control was inspected after the fresh
+fixture run.  Six visible refresher silhouettes are detected at their expected
+positions.  The only missed truth object is `(624,160)`, but the corresponding
+source crop is a uniform green/gray terrain strip: it contains no visible disc,
+no neutral bright component, and no blue component for the current normalized
+shape/color detector to recover.  The source/JTool pair therefore does not
+support a generalized threshold relaxation for this one invisible marker.
+
+The existing synthetic blue-disc versus square-texture regression remains the
+appropriate protection, and NANG-138 still matches all `12/12` refreshers while
+sharing cells with mini-spikes.  The missing CN2-5 marker is recorded as an
+evidence-limited fixture discrepancy, not silently fabricated in the scanner.
+The ignored crop used for review is
+`.artifacts/goal-continuation/reconnect-zero-nang-block-spike/cn2-5-missing-refresher-crop.png`.
+
 The new Irkara-52 regression and the existing Irkara-51 paired-spike
 regression pass together. The complete post-change module suite passes **343
 tests** (`35 + 286 + 22`), with no fixture or JMap modifications.
