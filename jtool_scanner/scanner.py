@@ -362,6 +362,25 @@ PLATFORM_COMPACT_RELATIVE_MAX_BLOCK_SCORE = 0.20
 PLATFORM_COMPACT_RELATIVE_MAX_BELOW_EDGE = 0.14
 PLATFORM_COMPACT_RELATIVE_MAX_ROOM_LUMINANCE_DELTA = -10.0
 PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE = 10.0
+# A partially occluded platform can retain only a short horizontal contour,
+# but its material still differs chromatically from the room.  Use the local
+# chroma direction (rather than an absolute brown/gray threshold) to recover
+# that case without relaxing the complete-bar routes.  The room gate is a
+# low-saturation morphology gate; the candidate must be darker, compact, and
+# separated from both vertical and horizontal neighbors.
+PLATFORM_PARTIAL_RELATIVE_MAX_ROOM_SATURATION = 0.10
+PLATFORM_PARTIAL_RELATIVE_MIN_HORIZONTAL_RUN = 4
+PLATFORM_PARTIAL_RELATIVE_MIN_VERTICAL_RUN = 12
+PLATFORM_PARTIAL_RELATIVE_GRAY_RANGE = (70, 240)
+PLATFORM_PARTIAL_RELATIVE_MAX_SATURATION = 0.20
+PLATFORM_PARTIAL_RELATIVE_CENTER_RANGE = (0.08, 0.22)
+PLATFORM_PARTIAL_RELATIVE_MAX_BLOCK_SCORE = 0.24
+PLATFORM_PARTIAL_RELATIVE_MAX_BELOW_EDGE = 0.30
+PLATFORM_PARTIAL_RELATIVE_MAX_ROOM_LUMINANCE_DELTA = -8.0
+PLATFORM_PARTIAL_RELATIVE_MIN_CHROMA_MAGNITUDE = 8.0
+PLATFORM_PARTIAL_RELATIVE_MAX_CHROMA_COSINE = -0.10
+PLATFORM_PARTIAL_RELATIVE_MIN_HORIZONTAL_PROFILE_DISTANCE = 10.0
+PLATFORM_PARTIAL_RELATIVE_MIN_VERTICAL_PROFILE_DISTANCE = 40.0
 # In a dark room, a pale striped terrain lip can satisfy the permissive
 # low-contrast route while filling most of the 32x16 patch.  Keep the late
 # veto relative to the room and require several horizontal edge rows plus a
@@ -11537,6 +11556,9 @@ def _detect_platforms(
         + room_profile.avg_g * 0.59
         + room_profile.avg_b * 0.11
     )
+    partial_relative_room = room_profile.saturation <= (
+        PLATFORM_PARTIAL_RELATIVE_MAX_ROOM_SATURATION
+    )
     for y in range(0, ROOM_HEIGHT - PLATFORM_HEIGHT + 1, PLATFORM_HEIGHT):
         for x in range(0, ROOM_WIDTH - PLATFORM_WIDTH + 1, PLATFORM_HEIGHT):
             if _near_anchor(x, y, anchors, PLATFORM_ANCHOR_DISTANCE):
@@ -11591,6 +11613,34 @@ def _detect_platforms(
                 below_edge,
                 room_luminance,
             )
+            partial_relative_candidate = False
+            if partial_relative_room:
+                partial_relative_candidate = _is_partial_relative_platform_candidate(
+                    features,
+                    patch,
+                    profile,
+                    block_score,
+                    below_edge,
+                    room_profile,
+                    room_luminance,
+                    neighbor_horizontal_distance=float("inf"),
+                    neighbor_vertical_distance=float("inf"),
+                )
+                if partial_relative_candidate:
+                    horizontal_distance, vertical_distance = (
+                        _platform_neighbor_profile_distances(
+                            image,
+                            room,
+                            x,
+                            y,
+                        )
+                    )
+                    partial_relative_candidate = (
+                        horizontal_distance
+                        >= PLATFORM_PARTIAL_RELATIVE_MIN_HORIZONTAL_PROFILE_DISTANCE
+                        and vertical_distance
+                        >= PLATFORM_PARTIAL_RELATIVE_MIN_VERTICAL_PROFILE_DISTANCE
+                    )
             compact_relative_candidate = _is_compact_relative_platform_candidate(
                 features,
                 patch,
@@ -11619,6 +11669,7 @@ def _detect_platforms(
                 or bright_candidate
                 or textured_candidate
                 or dark_relative_candidate
+                or partial_relative_candidate
                 or compact_relative_candidate
             ):
                 continue
@@ -11890,6 +11941,118 @@ def _minimum_platform_neighbor_profile_distance(
         if 0 <= x + offset <= ROOM_WIDTH - PLATFORM_WIDTH
     ]
     return min(neighbor_distances, default=float("inf"))
+
+
+def _platform_neighbor_profile_distances(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> tuple[float, float]:
+    """Return the strongest horizontal and vertical material boundaries."""
+
+    profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
+    horizontal: list[float] = []
+    vertical: list[float] = []
+    for offset in (-PLATFORM_WIDTH // 2, PLATFORM_WIDTH // 2):
+        if 0 <= x + offset <= ROOM_WIDTH - PLATFORM_WIDTH:
+            horizontal.append(
+                _color_profile_distance(
+                    profile,
+                    _patch_color_profile(
+                        image,
+                        room,
+                        x + offset,
+                        y,
+                        PLATFORM_WIDTH,
+                    ),
+                )
+            )
+        if 0 <= y + offset <= ROOM_HEIGHT - PLATFORM_HEIGHT:
+            vertical.append(
+                _color_profile_distance(
+                    profile,
+                    _patch_color_profile(
+                        image,
+                        room,
+                        x,
+                        y + offset,
+                        PLATFORM_WIDTH,
+                    ),
+                )
+            )
+    return max(horizontal, default=0.0), max(vertical, default=0.0)
+
+
+def _is_partial_relative_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    profile: _ColorProfile,
+    block_score: float,
+    below_edge: float,
+    room_profile: _ColorProfile,
+    room_luminance: float,
+    *,
+    neighbor_horizontal_distance: float,
+    neighbor_vertical_distance: float,
+) -> bool:
+    """Recognize a compact platform fragment beside unlike room material.
+
+    Partial bars are too occluded for the complete 32x16 platform contour.
+    Their most transferable evidence is a short vertical/horizontal remnant,
+    a compact low-fill center, and a material whose chroma points away from
+    the room's dominant chroma.  The two neighbor distances are intentionally
+    explicit so callers can defer the more expensive profile samples until
+    the cheap shape/material gates have passed.
+    """
+
+    room_chroma = (
+        room_profile.avg_r - room_profile.avg_b,
+        room_profile.avg_g - room_profile.avg_b,
+    )
+    candidate_chroma = (
+        profile.avg_r - profile.avg_b,
+        profile.avg_g - profile.avg_b,
+    )
+    room_magnitude = math.hypot(*room_chroma)
+    candidate_magnitude = math.hypot(*candidate_chroma)
+    chroma_cosine = 1.0
+    if room_magnitude >= PLATFORM_PARTIAL_RELATIVE_MIN_CHROMA_MAGNITUDE and (
+        candidate_magnitude >= PLATFORM_PARTIAL_RELATIVE_MIN_CHROMA_MAGNITUDE
+    ):
+        chroma_cosine = (
+            room_chroma[0] * candidate_chroma[0]
+            + room_chroma[1] * candidate_chroma[1]
+        ) / (room_magnitude * candidate_magnitude)
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    return (
+        features.horizontal_run >= PLATFORM_PARTIAL_RELATIVE_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= PLATFORM_PARTIAL_RELATIVE_MIN_VERTICAL_RUN
+        and PLATFORM_PARTIAL_RELATIVE_GRAY_RANGE[0]
+        <= features.gray_range
+        <= PLATFORM_PARTIAL_RELATIVE_GRAY_RANGE[1]
+        and profile.saturation <= PLATFORM_PARTIAL_RELATIVE_MAX_SATURATION
+        and PLATFORM_PARTIAL_RELATIVE_CENTER_RANGE[0]
+        <= patch.center_score
+        <= PLATFORM_PARTIAL_RELATIVE_CENTER_RANGE[1]
+        and block_score <= PLATFORM_PARTIAL_RELATIVE_MAX_BLOCK_SCORE
+        and below_edge <= PLATFORM_PARTIAL_RELATIVE_MAX_BELOW_EDGE
+        and patch_luminance - room_luminance
+        <= PLATFORM_PARTIAL_RELATIVE_MAX_ROOM_LUMINANCE_DELTA
+        and room_profile.saturation
+        <= PLATFORM_PARTIAL_RELATIVE_MAX_ROOM_SATURATION
+        and room_magnitude >= PLATFORM_PARTIAL_RELATIVE_MIN_CHROMA_MAGNITUDE
+        and candidate_magnitude >= PLATFORM_PARTIAL_RELATIVE_MIN_CHROMA_MAGNITUDE
+        and chroma_cosine <= PLATFORM_PARTIAL_RELATIVE_MAX_CHROMA_COSINE
+        and neighbor_horizontal_distance
+        >= PLATFORM_PARTIAL_RELATIVE_MIN_HORIZONTAL_PROFILE_DISTANCE
+        and neighbor_vertical_distance
+        >= PLATFORM_PARTIAL_RELATIVE_MIN_VERTICAL_PROFILE_DISTANCE
+    )
 
 
 def _is_compact_relative_platform_candidate(

@@ -169,6 +169,7 @@ from jtool_scanner.scanner import (
     _is_low_contrast_mini_up_candidate,
     _is_directly_full_scale_dominant,
     _is_low_contrast_platform_candidate,
+    _is_partial_relative_platform_candidate,
     _is_compact_relative_platform_candidate,
     _has_complete_low_contrast_platform_context,
     _has_bright_room_platform_bar_evidence,
@@ -1588,6 +1589,40 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(
             _has_bright_room_platform_bar_evidence(
                 [25, 25] + [0] * 12 + [25]
+            )
+        )
+
+    def test_partial_relative_platform_requires_opposite_room_chroma(self) -> None:
+        features = _PlatformPatchFeatures(5, 13, 85, 0)
+        patch = _PatchFeatures((), 0.12, 0.10, 0.14)
+        room = _ColorProfile(55.0, 65.0, 73.0, 0.078)
+        brown_fragment = _ColorProfile(35.0, 33.0, 24.0, 0.08)
+        blue_terrain = _ColorProfile(28.0, 55.0, 69.0, 0.16)
+
+        self.assertTrue(
+            _is_partial_relative_platform_candidate(
+                features,
+                patch,
+                brown_fragment,
+                0.12,
+                0.05,
+                room,
+                62.9,
+                neighbor_horizontal_distance=20.0,
+                neighbor_vertical_distance=50.0,
+            )
+        )
+        self.assertFalse(
+            _is_partial_relative_platform_candidate(
+                features,
+                patch,
+                blue_terrain,
+                0.12,
+                0.05,
+                room,
+                62.9,
+                neighbor_horizontal_distance=20.0,
+                neighbor_vertical_distance=50.0,
             )
         )
 

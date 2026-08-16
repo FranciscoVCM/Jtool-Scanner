@@ -2032,3 +2032,35 @@ Post-correction exact gates were rerun at `grid_step=8`: the selected
 walljump totals and all matched color/geometry totals, and the strict FTFA
 benchmark remains **926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
 wrong direction**.
+
+## Checkpoint: palette-relative partial platform recovery (2026-08-16)
+
+The Entrance1 source/blend review exposed a second form of unknown-tileset
+platform failure: several brown platform sprites retain only a short
+horizontal contour and a vertical edge, so the complete-bar routes cannot
+classify them.  A new partial-relative route uses only transferable evidence:
+low-saturation room material, a compact low-fill patch, short horizontal and
+vertical remnants, a candidate darker than the room, opposing candidate/room
+chroma direction, and distinct neighboring material profiles.  It does not
+name a tileset or use a screen coordinate.  The expensive neighbor-profile
+sample is deferred until the cheap shape and palette-relative gates pass.
+
+On the preserved giant-review source, Entrance1 retains its two previously
+recognized bars `(192,16)` and `(256,336)` and now adds the visually supported
+partial bars `(160,96)`, `(48,480)`, and `(288,528)`.  The lower gray partial
+bar near `(144,464)` remains unresolved because it has no reliable opposing
+chroma signal; the possible `(416,400)` fragment remains uncertain without a
+corrected JMap.  Entrance2 remains the single supported `(80,464)` bar after
+the bright-striped-terrain veto, and Entrance3 remains platform-free.
+
+Held-out controls remain clean after late pruning: F189 and CN3-18 emit no
+platforms; K3 emits exactly `(512,336),(144,448)`; Irkara-71 emits its five
+authoritative platforms; and Irkara-89 emits only `(704,288)`.  The complete
+12-pair fixture workflow remains unchanged: platforms **3/3 matched and 3
+detected**, saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps
+13/13, gravity 8/8, mini-blocks 869/875, blocks 1457/1486, full spikes
+710/748, mini-spikes 281/288, killers 99/99, and refreshers 18/19.  The
+strict FTFA gate remains **926/928 exact; 0 false positives; 2 missed; 0
+shifted; 0 wrong direction**.  The pure regression test requires opposing
+room/candidate chroma and rejects an otherwise similar blue terrain patch.
+No fixture, JMap, or ignored corpus artifact was modified.
