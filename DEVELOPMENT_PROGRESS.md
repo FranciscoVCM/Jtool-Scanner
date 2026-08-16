@@ -2358,3 +2358,48 @@ killers `99/99`, and refreshers `18/19`.  No protected fixture regression was
 observed.  The remaining giant-review geometry is still visual-only where
 corrected JMaps are absent.  The complete unittest suite then passed **357
 tests in 1811.266 seconds**, `OK`.
+
+## Checkpoint: palette-relative dark-vine recovery (2026-08-16)
+
+The next unrecognized-material batch adds a generalized dark-vine morphology
+route.  It does not learn screen names, fixed room colours, or coordinates.  A
+candidate must be a narrow vertical connected component with a 32-pixel-scale
+height, green opponent-space dominance over its local ring, and sufficient
+relative contrast.  The component is snapped to the 16-pixel sprite phase;
+terrain support is then aggregated across the whole component so intermittent
+occlusion cannot move individual cells by 16 pixels or flip their orientation.
+Existing bright, repeated, split, and clipped-edge vine detections are passed
+as anchors, so the adaptive route fills a genuinely missing dark strip instead
+of displacing an established exact edge phase.
+
+The source/JTool/blend review and regenerated projects are under the ignored
+`.artifacts/goal-continuation/cn3-platform-vine-review/` batch directory:
+
+- `CN3_28` changed from zero detected vines to two source-supported right-vine
+  cells at `(512,368)` and `(512,400)`.
+- `CN3_29` changed from zero detected vines to two cells for each of the two
+  visible dark strips: left-facing `(480,128)`/`(480,160)` and right-facing
+  `(768,128)`/`(768,160)`.
+- `CN3_30` changed from zero detected vines to three left-facing cells at
+  `(64,144)`, `(64,176)`, and `(64,208)`.
+
+These three screens have no corrected authoritative giant-review JMaps, so the
+new detections are source-supported visual improvements rather than exact
+benchmark claims.  CN3-18 remains an exact protected control after the route's
+edge-anchor guard: the full scan emits its four left-edge vines at
+`(-16,336)`, `(-16,368)`, `(-16,416)`, and `(-16,448)`.  Halls7 retains its
+stronger repeated-strip detections, and the neon CN3-8/CN3-9 material does not
+produce dark-vine candidates.  The synthetic geometry tests cover shared
+terrain phase and yielding to an existing clipped edge vine.
+
+Measured gates after this change are unchanged: the complete block/spike
+workflow reports saves `22/22`, warps `12/12`, apples `4/4`, water `35/35`,
+walljumps `13/13`, gravity `8/8`, platforms `3/3`, killer blocks `99/99`, and
+refreshers `18/19` matched; FTFA remains `926/928 exact` with zero false
+positives, shifts, or wrong directions and the same two boundary misses.  The
+full unittest discovery run passes **359 tests in 1879.360 seconds**, `OK`.
+
+Remaining uncertainty is visual-only: CN3-21 has an additional dark strip that
+is not in its prior review JMap, and Golden1/NR2 contain similar source-visible
+dark strips without corrected JMaps.  They are not promoted to exact truth or
+screen-specific exceptions; they remain follow-up review candidates.

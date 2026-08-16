@@ -1323,6 +1323,22 @@ WALLJUMP_STRIP_PATCH_MAX_CENTER_Y = 0.72
 WALLJUMP_STRIP_MIN_CELLS = 2
 WALLJUMP_SINGLE_SPARSE_MIN_LIGHT_RATIO = 0.50
 WALLJUMP_SINGLE_SPARSE_MIN_SCORE = 0.68
+# Unknown dark/brown tilesets can render the vine sprite as a dense, nearly
+# black-green strip.  These components do not satisfy the older bright-green
+# or sparse-mark predicates, so keep a separate morphology route.  The colour
+# tests are opponent-space (green dominance and local contrast), rather than
+# absolute palette values, so the route remains useful across brightness and
+# background changes.
+DARK_WALLJUMP_COMPONENT_MIN_MAP_WIDTH = 9.0
+DARK_WALLJUMP_COMPONENT_MAX_MAP_WIDTH = 20.0
+DARK_WALLJUMP_COMPONENT_MIN_MAP_HEIGHT = 40.0
+DARK_WALLJUMP_COMPONENT_MAX_MAP_HEIGHT = 112.0
+DARK_WALLJUMP_COMPONENT_MIN_DENSITY = 0.28
+DARK_WALLJUMP_COMPONENT_MAX_DENSITY = 0.90
+DARK_WALLJUMP_COMPONENT_MIN_DOMINANCE = 22.0
+DARK_WALLJUMP_COMPONENT_MIN_RING_CONTRAST = 20.0
+DARK_WALLJUMP_COMPONENT_MIN_PATCH_COUNT = 12
+DARK_WALLJUMP_COMPONENT_BOTTOM_MARGIN = 8.0
 WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA = 24
 WALLJUMP_TERRAIN_ANCHOR_MAX_VERTICAL_DISTANCE = GRID_SIZE * 2
 WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT = 1
@@ -10169,7 +10185,172 @@ def _detect_walljumps(
             anchors,
         )
     )
+    # Add the dense dark-strip route after the established bright/repeated
+    # routes have chosen their phase.  A stronger known vine therefore remains
+    # authoritative on held-out rooms such as Halls7; the adaptive route only
+    # fills a genuinely missing component or a lower-confidence alias.
+    detections.extend(
+        _detect_dark_walljump_components(
+            image,
+            room,
+            grid_step,
+            # Existing bright/repeated/split detections are authoritative.
+            # Treat them as anchors here so the adaptive route fills a dark
+            # gap instead of replacing an already-correct edge phase.
+            anchors + detections,
+        )
+    )
     return _dedupe_walljumps(detections, min_distance=32)
+
+
+def _is_relative_walljump_green(red: int, green: int, blue: int) -> bool:
+    """Return whether a pixel is green-dominant without a fixed brightness.
+
+    The normal vine route deliberately uses a stricter palette because it is
+    fast and precise on bright rooms.  Dark unknown tilesets often push every
+    channel below those thresholds, while preserving the green-vs-red/blue
+    relationship.  A small opponent-space margin keeps neutral anti-aliasing
+    out of the component mask; component-level contrast below supplies the
+    stronger object gate.
+    """
+
+    return green > red + 10 and green > blue + 5
+
+
+def _detect_dark_walljump_components(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    anchors: list[Detection],
+) -> list[Detection]:
+    """Recover dense dark vine strips from palette-relative morphology.
+
+    Several unknown CN3/G​olden rooms render a full vine as a narrow, dense
+    strip whose green pixels are dark enough to miss ``_is_walljump_green``.
+    This route learns no screen colours: it requires a narrow vertical
+    component, green dominance over a local ring, and a 32px vertical span.
+    The component top is snapped to the 16px sprite phase; terrain
+    reconciliation later chooses the supported half-cell and orientation.
+    """
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    components = _connected_components(
+        image,
+        room,
+        _is_relative_walljump_green,
+    )
+    detections: list[Detection] = []
+    for box, pixels in components:
+        map_width = box.width / max(1.0, scale_x)
+        map_height = box.height / max(1.0, scale_y)
+        density = len(pixels) / max(1, box.area)
+        if not (
+            DARK_WALLJUMP_COMPONENT_MIN_MAP_WIDTH
+            <= map_width
+            <= DARK_WALLJUMP_COMPONENT_MAX_MAP_WIDTH
+            and DARK_WALLJUMP_COMPONENT_MIN_MAP_HEIGHT
+            <= map_height
+            <= DARK_WALLJUMP_COMPONENT_MAX_MAP_HEIGHT
+            and DARK_WALLJUMP_COMPONENT_MIN_DENSITY
+            <= density
+            <= DARK_WALLJUMP_COMPONENT_MAX_DENSITY
+        ):
+            continue
+
+        dominance = [
+            image.pixel(x, y)[1]
+            - max(image.pixel(x, y)[0], image.pixel(x, y)[2])
+            for x, y in pixels
+        ]
+        component_dominance = median(dominance)
+        pad = max(8, int(round(12 * scale_x)))
+        ring_dominance: list[int] = []
+        for y in range(
+            max(room.y, box.y - pad),
+            min(room.bottom, box.bottom + pad),
+        ):
+            for x in range(
+                max(room.x, box.x - pad),
+                min(room.right, box.right + pad),
+            ):
+                if box.contains(x, y):
+                    continue
+                red, green, blue = image.pixel(x, y)
+                ring_dominance.append(green - max(red, blue))
+        ring_median = median(ring_dominance) if ring_dominance else 0.0
+        if (
+            component_dominance < DARK_WALLJUMP_COMPONENT_MIN_DOMINANCE
+            or component_dominance - ring_median
+            < DARK_WALLJUMP_COMPONENT_MIN_RING_CONTRAST
+        ):
+            continue
+
+        # The visible strip may be on either side of its 32px JTool cell.
+        # Start at the component-centred 16px phase; terrain reconciliation
+        # will move this phase to the supported column and infer the side from
+        # the same adaptive mask when geometry is available.
+        raw_x = (box.center_x - room.x) / max(1.0, scale_x) - GRID_SIZE / 2
+        map_x = round_to_step(raw_x, MINI_BLOCK_SIZE)
+        map_y = round_to_step(
+            (box.y - room.y) / max(1.0, scale_y),
+            MINI_BLOCK_SIZE,
+        )
+        # A clipped edge strip can be split into dark and bright portions.
+        # When the established edge route already owns a nearby portion,
+        # leave phase completion to that route's clipped-edge reconciliation;
+        # otherwise this partial component can claim the opposite half-cell.
+        if box.x <= room.x + 4 and any(
+            detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+            and detection.x <= 0
+            and abs(detection.y - map_y)
+            <= DARK_WALLJUMP_COMPONENT_MAX_MAP_HEIGHT
+            for detection in anchors
+        ):
+            continue
+        bottom = (box.bottom - room.y) / max(1.0, scale_y)
+        span = max(32.0, bottom - map_y - DARK_WALLJUMP_COMPONENT_BOTTOM_MARGIN)
+        cell_count = max(1, math.ceil(span / GRID_SIZE))
+        type_id = (
+            OBJ_WALLJUMP_LEFT
+            if map_x % GRID_SIZE >= GRID_SIZE / 2
+            else OBJ_WALLJUMP_RIGHT
+        )
+        score = min(
+            0.96,
+            0.56 + min(0.25, component_dominance / 160),
+        )
+        component_kind = (
+            f"walljump_dark_component:{box.x}:{box.y}:"
+            f"{box.width}:{box.height}"
+        )
+        for offset in range(cell_count):
+            candidate_y = map_y + offset * GRID_SIZE
+            patch = _patch_color_stats(
+                image,
+                room,
+                map_x,
+                candidate_y,
+                GRID_SIZE,
+                _is_relative_walljump_green,
+            )
+            if patch.count < DARK_WALLJUMP_COMPONENT_MIN_PATCH_COUNT:
+                continue
+            if _near_anchor(map_x, candidate_y, anchors, max_distance=32):
+                continue
+            detections.append(
+                _grid_detection(
+                    component_kind,
+                    type_id,
+                    map_x,
+                    candidate_y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return detections
 
 
 def _recover_split_walljump_component_pairs(
@@ -10619,6 +10800,9 @@ def _reconcile_walljump_terrain_anchors(
     column.  Edge and open-background vines remain unchanged.
     """
 
+    def is_dark_component(detection: Detection) -> bool:
+        return detection.kind.startswith("walljump_dark_component")
+
     terrain = [
         detection
         for detection in detections
@@ -10640,8 +10824,107 @@ def _reconcile_walljump_terrain_anchors(
             if cell.x == x
         )
 
+    def relative_type_at(x: int, y: int, fallback: int) -> int:
+        stats = _patch_color_stats(
+            image,
+            room,
+            x,
+            y,
+            GRID_SIZE,
+            _is_relative_walljump_green,
+        )
+        if stats.count < DARK_WALLJUMP_COMPONENT_MIN_PATCH_COUNT:
+            return fallback
+        if abs(stats.center_x_ratio - 0.5) < WALLJUMP_PATCH_MIN_SIDE_BIAS / 2:
+            return fallback
+        return (
+            OBJ_WALLJUMP_LEFT
+            if stats.center_x_ratio >= 0.5
+            else OBJ_WALLJUMP_RIGHT
+        )
+
     replacements: dict[int, Detection] = {}
+
+    # Keep all cells from one dense component on one canonical x phase.  A
+    # cell-by-cell anchor choice can otherwise move the first cell to a
+    # supported column while leaving later cells 16px away when a terrain
+    # column is intermittently occluded.
+    dark_groups: defaultdict[str, list[Detection]] = defaultdict(list)
     for walljump in walljumps:
+        if is_dark_component(walljump):
+            dark_groups[walljump.kind].append(walljump)
+
+    for group in dark_groups.values():
+        current_x = group[0].x
+        current_support = sum(
+            support_count(current_x, walljump.y)
+            for walljump in group
+        )
+        candidates = []
+        for delta in (
+            -WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA,
+            -MINI_BLOCK_SIZE,
+            -8,
+            8,
+            MINI_BLOCK_SIZE,
+            WALLJUMP_TERRAIN_ANCHOR_MAX_DELTA,
+        ):
+            candidate_x = current_x + delta
+            if candidate_x <= 0:
+                continue
+            support = sum(
+                support_count(candidate_x, walljump.y)
+                for walljump in group
+            )
+            if support < WALLJUMP_TERRAIN_ANCHOR_MIN_SUPPORT:
+                continue
+            candidates.append((support, -abs(delta), candidate_x))
+        target_x = current_x
+        if candidates:
+            support, _distance, candidate_x = max(candidates)
+            if support > current_support:
+                target_x = candidate_x
+
+        total_count = 0
+        weighted_center = 0.0
+        for walljump in group:
+            stats = _patch_color_stats(
+                image,
+                room,
+                target_x,
+                walljump.y,
+                GRID_SIZE,
+                _is_relative_walljump_green,
+            )
+            if stats.count < DARK_WALLJUMP_COMPONENT_MIN_PATCH_COUNT:
+                continue
+            total_count += stats.count
+            weighted_center += stats.center_x_ratio * stats.count
+        type_id = group[0].type_id
+        if total_count:
+            center = weighted_center / total_count
+            if abs(center - 0.5) >= WALLJUMP_PATCH_MIN_SIDE_BIAS / 2:
+                type_id = (
+                    OBJ_WALLJUMP_LEFT
+                    if center >= 0.5
+                    else OBJ_WALLJUMP_RIGHT
+                )
+        if target_x != current_x or type_id != group[0].type_id:
+            for walljump in group:
+                replacements[id(walljump)] = _geometry_detection(
+                    walljump.kind,
+                    type_id,
+                    target_x,
+                    walljump.y,
+                    walljump.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+
+    for walljump in walljumps:
+        if is_dark_component(walljump):
+            continue
         if walljump.kind.endswith(("_split_pair", "_phase_pair")) or (
             walljump.kind.endswith("_repeated_strip")
             and walljump.type_id == OBJ_WALLJUMP_LEFT
@@ -10680,14 +10963,22 @@ def _reconcile_walljump_terrain_anchors(
         if support <= current_support:
             continue
         type_id = walljump.type_id
-        if abs(delta) % GRID_SIZE >= MINI_BLOCK_SIZE:
+        if is_dark_component(walljump):
+            type_id = relative_type_at(
+                candidate_x,
+                walljump.y,
+                walljump.type_id,
+            )
+        elif abs(delta) % GRID_SIZE >= MINI_BLOCK_SIZE:
             type_id = (
                 OBJ_WALLJUMP_LEFT
                 if type_id == OBJ_WALLJUMP_RIGHT
                 else OBJ_WALLJUMP_RIGHT
             )
         kind = (
-            "walljump_left_terrain_aligned"
+            walljump.kind
+            if is_dark_component(walljump)
+            else "walljump_left_terrain_aligned"
             if type_id == OBJ_WALLJUMP_LEFT
             else "walljump_right_terrain_aligned"
         )

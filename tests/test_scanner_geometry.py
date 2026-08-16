@@ -57,6 +57,7 @@ from jtool_scanner.scanner import (
     _dedupe_normalized_full_spikes,
     _dense_minispike_lattice_axis,
     _detect_apples,
+    _detect_dark_walljump_components,
     _detect_mini_blocks,
     _detect_saves,
     _detect_warps,
@@ -139,6 +140,7 @@ from jtool_scanner.scanner import (
     _is_miniblock_room_mini_spike_candidate,
     _dense_axis_component_overlap_ids,
     _prune_final_walljump_noise,
+    _reconcile_walljump_terrain_anchors,
     _prune_orphan_gravity_flippers,
     _is_edge_full_spike_continuation_anchor,
     _is_edge_full_spike_continuation_patch,
@@ -449,6 +451,73 @@ class ScannerGeometryTests(unittest.TestCase):
     def test_muted_green_fill_is_not_sparse_vine_palette(self) -> None:
         self.assertTrue(_is_pastel_walljump_impostor_color(103, 131, 76))
         self.assertFalse(_is_pastel_walljump_impostor_color(15, 170, 35))
+
+    def test_dark_relative_vine_component_uses_shared_terrain_phase(self) -> None:
+        width, height = 800, 608
+        data = bytearray([80, 50, 40] * width * height)
+        for y in range(144, 240):
+            for x in range(96, 111):
+                if not (x % 3 == 0 and y % 3 == 0):
+                    offset = (y * width + x) * 3
+                    data[offset : offset + 3] = bytes((8, 62, 10))
+        image = RGBImage(width, height, bytes(data))
+        room = Box(0, 0, width, height)
+
+        dark = _detect_dark_walljump_components(image, room, 8, [])
+        self.assertEqual(
+            [(d.x, d.y, d.type_id) for d in dark],
+            [
+                (80, 144, OBJ_WALLJUMP_LEFT),
+                (80, 176, OBJ_WALLJUMP_LEFT),
+                (80, 208, OBJ_WALLJUMP_LEFT),
+            ],
+        )
+
+        terrain = [
+            Detection("block", OBJ_BLOCK, 64, y, 0.8, Box(64, y, 32, 32))
+            for y in (144, 176, 208)
+        ]
+        aligned = _reconcile_walljump_terrain_anchors(
+            [*dark, *terrain],
+            image,
+            room,
+        )
+        self.assertEqual(
+            sorted(
+                (d.x, d.y, d.type_id)
+                for d in aligned
+                if d.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+            ),
+            [
+                (64, 144, OBJ_WALLJUMP_LEFT),
+                (64, 176, OBJ_WALLJUMP_LEFT),
+                (64, 208, OBJ_WALLJUMP_LEFT),
+            ],
+        )
+
+    def test_dark_edge_component_yields_to_existing_clipped_vine(self) -> None:
+        width, height = 800, 608
+        data = bytearray([80, 50, 40] * width * height)
+        for y in range(336, 432):
+            for x in range(1, 16):
+                if not (x % 3 == 0 and y % 3 == 0):
+                    offset = (y * width + x) * 3
+                    data[offset : offset + 3] = bytes((8, 62, 10))
+        image = RGBImage(width, height, bytes(data))
+        room = Box(0, 0, width, height)
+        existing = Detection(
+            "walljump_left_edge_clipped",
+            OBJ_WALLJUMP_LEFT,
+            -16,
+            416,
+            0.8,
+            Box(0, 416, 16, 32),
+        )
+
+        self.assertEqual(
+            _detect_dark_walljump_components(image, room, 8, [existing]),
+            [],
+        )
 
     def test_horizontal_minis_embedded_in_block_lattice_are_tile_texture(self) -> None:
         blocks = [
