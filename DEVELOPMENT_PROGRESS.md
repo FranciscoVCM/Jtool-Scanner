@@ -2026,3 +2026,9 @@ direction/phase regression in this rule; the right-facing terrain-alias path
 was restored and the pure test was expanded to cover both directions.  The
 corrected complete discovery run passes **353 tests in 1572.166 seconds**,
 `OK`.
+
+Post-correction exact gates were rerun at `grid_step=8`: the selected
+`irkara-89`, `cn3-18`, and `irkara-nr-partysu3` controls retain their prior
+walljump totals and all matched color/geometry totals, and the strict FTFA
+benchmark remains **926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
+wrong direction**.
