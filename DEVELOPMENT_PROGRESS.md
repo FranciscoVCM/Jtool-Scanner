@@ -2064,3 +2064,24 @@ strict FTFA gate remains **926/928 exact; 0 false positives; 2 missed; 0
 shifted; 0 wrong direction**.  The pure regression test requires opposing
 room/candidate chroma and rejects an otherwise similar blue terrain patch.
 No fixture, JMap, or ignored corpus artifact was modified.
+
+## Checkpoint: unknown material-family negative audit (2026-08-16)
+
+The current source/current/blend triplets for `CN3_31`, `CN3_92`, and
+`CN3_Bathhouse1` were regenerated after the partial-platform checkpoint.
+These three screens cover bright neutral brick, cyan-background brown/green
+terrain, and blue patterned terrain with cyan water.  They do not share a
+falsifiable missing-object signature that can safely justify another global
+threshold: `CN3_31` emits three labeled saves, three vines, and zero platform
+impostors; `CN3_92` keeps its cyan field as background and emits one warp; and
+`CN3_Bathhouse1` retains two saves, thirteen water-2 cells, and three vines
+while rejecting the pink trigger-like decoration as water.
+
+The remaining differences are dense block/spike placement and material-edge
+geometry without corrected giant-review JMaps.  The three current projects,
+JMaps, previews, and blends are preserved under
+`.artifacts/goal-continuation/material-family-review/`, and their ledger rows
+now point to those outputs.  No implementation change was justified by this
+cross-family audit; promoting any of the ambiguous terrain edges would risk
+the strict FTFA gate and the exact platform/water controls.  This is an
+explicit negative result, not an assertion that the three screens are exact.
