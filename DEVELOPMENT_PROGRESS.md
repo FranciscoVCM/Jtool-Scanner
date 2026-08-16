@@ -2118,3 +2118,32 @@ wrong direction**.  No fixture or JMap was modified; the giant-review rows
 for Redcube3 and Secret1 now point to the regenerated ignored artifacts.
 The complete unittest discovery run passes **356 tests in 1560.826 seconds**,
 `OK`.
+
+## Checkpoint: CN3 Dotkid material-family phase audit (2026-08-16)
+
+The five CN3-Dotkid screens were regenerated together as a held-out material
+family: green/brown terrain, pale spike edges, dark paths, a dotkid ring,
+and one or more SAVE markers.  All five current projects export `dotkid:1`
+and preserve the visible save class without promoting the trigger-like save
+colour as a second object.  Their dense block/spike geometry remains visual
+review material because no corrected giant-review JMaps exist.
+
+The latest vine-origin work also provides a useful negative control.  The
+source shapes in Dotkid4 and Dotkid5 are broad filled green terrain, not a
+confirmed sequence of the narrow canonical walljump sprites; the current
+scan therefore emits no walljump strips, whereas an older targeted artifact
+had many such candidates.  This avoids carrying a green-material impostor
+forward as a generalized vine rule.  Dotkid3's prior edge-warp candidate at
+`(0,192)` is not reproduced and is now explicitly uncertain; the source does
+not provide a corrected map to decide whether it was a warp or a player-like
+decoration.  The current save origins are `(704,96)`, `(96,512)`, and
+`(544,384)` for Dotkid3–5 respectively, each eight pixels above the older
+review artifact's phase.
+
+The five source/JMap/preview/blend triplets are preserved under
+`.artifacts/goal-continuation/dotkid-phase-review/`, and ledger rows 29–33
+point to them.  No implementation change was justified by this audit: there
+is no shared, falsifiable missing-object signature, and inventing one would
+risk the FTFA vine/platform gates.  The existing 12-pair fixture totals and
+the strict FTFA result remain the protected controls from the preceding
+checkpoint.
