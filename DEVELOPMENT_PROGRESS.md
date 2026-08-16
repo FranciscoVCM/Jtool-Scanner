@@ -2601,3 +2601,15 @@ not a tileset-specific rule or coordinate shift.  The sparse-walljump test now
 exercises the default path; its focused test and the two OCR tests pass.  With
 the new defaults, Halls1 recovers both tinted apples and a full default scan of
 Irkara-89 recovers the exact 9/9 vines, 1/1 platform, and 1/1 apple controls.
+
+## Checkpoint: post-reconnect verification (2026-08-16)
+
+The long-running verification resumed from the published `b49dc37` checkpoint;
+it did not restart from an uncommitted or reconstructed state after the earlier
+transport `{"detail":"Bad Request"}`.  The complete unittest discovery run
+finished with **360 tests in 1907.666 seconds**, `OK`.  The exact FTFA benchmark
+again reports `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`, with the same two edge-block misses on FTFA screen 1.  The live app
+returned HTTP 200 at `http://127.0.0.1:8765/`.  No tracked partial write was left
+by the reconnect; the prior endpoint and its ignored review artifacts remain
+available locally.
