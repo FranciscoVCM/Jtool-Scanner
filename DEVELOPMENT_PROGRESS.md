@@ -2186,3 +2186,40 @@ and 44 now point to them.  This is a held-out confirmation of the existing
 relative-color/contour rule across cyan water, red outlined terrain, and
 bright mixed rooms; no new threshold or screen-specific exception was
 needed.  The 12-pair fixture and FTFA gates remain the protected controls.
+
+## Checkpoint: CN3 Halls2-Halls7 visual corpus regeneration (2026-08-16)
+
+The six Halls screens were regenerated together at the documented grid step
+of 8 with color objects, geometry, source/JMap previews, and source/output
+blends.  The six current triplets are preserved under
+`.artifacts/goal-continuation/halls-review/`, and ledger rows 45-50 now point
+to those current artifacts.  All 71 ledger rows still have existing source,
+JMap, preview, blend, evidence, and explicit review-status paths; the status
+distribution remains 58 accepted and 13 needs-more-work.
+
+This batch did not justify a new scanner rule.  Halls2 changed from the older
+artifact by recovering five material-relative partial-block candidates and a
+weak right mini-spike on visible edge/partial-tile motifs, while retaining its
+SAVE, warp, and background rejection.  Source crops support those candidates
+as plausible edge geometry, but there is no corrected giant-review JMap to
+call them exact, so the ledger records them as visual-only/uncertain rather
+than adding a screen-specific exception.  Halls3 retained two saves, one
+warp, and directional gravity objects; its save origins remain phase-shifted
+from the older visual artifact.  Halls4 and Halls5 retained their SAVE/warp
+classes and rejected background water/refresher impostors.  Halls6 retained
+the two terrain-aligned left vines and two-cell water hazard, and Halls7
+retained the SAVE, warp, two panel-like platforms, and two source-supported
+left vines from the preceding vine-phase checkpoint.  No corrected JMaps
+exist for these visual-only screens, so dense spike/block geometry remains
+explicitly unresolved rather than being overfit.
+
+The strict FTFA rerun remains **926/928 exact; 0 false positives; 2 missed
+edge blocks; 0 shifted; 0 wrong direction**.  The complete tracked fixture
+workflow was then completed with the exact grid-8 settings (the first overlay
+run exceeded the command timeout; the authoritative retry omitted only
+optional overlays).  The current aggregate is saves 22/22 matched (24
+detected), warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
+8/8, platforms 3/3, mini-blocks 869/875 (1001 detected), blocks 1457/1486,
+full spikes 710/748, mini-spikes 281/288, killers 99/99, and refreshers
+18/19.  No implementation files changed in this checkpoint; the last complete
+unittest result remains 356 tests in 1560.826 seconds, `OK`.
