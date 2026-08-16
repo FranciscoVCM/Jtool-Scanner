@@ -2319,3 +2319,42 @@ uncertainty because no corrected giant-review JMaps exist; they do not justify
 a global save shift, and the K3/Irkara controls continue to demonstrate why a
 blanket correction would be unsafe.  No generalized implementation change was
 made.
+
+## Checkpoint: CN3 platform/vine material batch (2026-08-16)
+
+CN3_19, CN3_21, CN3_25, CN3_26, and CN3_28 were regenerated together at grid
+step 8 under `.artifacts/goal-continuation/cn3-platform-vine-review/`; ledger
+rows 17-20 and 22 now point to the current JMaps, reconstructions, and
+source/blend SVGs.  The source crops and regenerated blend show that CN3_19
+contains one real dark horizontal platform bar at `(128,96)`, beneath the
+terrain/spike enclosure.  The prior bright-room veto removed it because its
+three strong horizontal edge rows were internally bounded but did not span six
+sample rows.  The other four screens retain their source-supported saves,
+apples, vines, gravity objects, and compact geometry without platform
+promotion; CN3_28 remains at zero platforms but has one visible green
+right-vine strip that the current scan still misses and is now explicitly
+marked needs-more-work in the ledger.
+
+The generalized platform change adds an optional enclosure morphology gate:
+bright-room candidates must have either a broad top/bottom span or three strong
+rows bounded away from the lower terrain edge.  A lower-edge run alone remains
+an impostor.  The synthetic regression covers the CN3_19-shaped internal bar
+and rejects a lower-edge-only run.  This is deliberately palette-independent
+and uses no screen name or coordinate.
+
+Measured controls after the final rule: CN3_19 platform recall changed from
+`0` to `1` source-supported platform; CN3_28, CN3_29, CN3_30, and CN3_31 remain
+at zero platform detections.  Irkara-89 retains exactly its one matched
+platform (and its prior block result), K3 retains both platform matches, and
+FTFA remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong
+direction`.
+
+The complete 12-pair fixture workflow was rerun with grid step 8 and tolerance
+24.  Its final aggregate is saves `22/22` matched (24 detected), warps
+`12/12`, apples `4/4`, water `35/35`, walljumps `13/13`, gravity `8/8`,
+platforms `3/3` (3 detected), mini-blocks `869/875` (1001 detected), blocks
+`1457/1486` (1590 detected), full spikes `710/748`, mini-spikes `281/288`,
+killers `99/99`, and refreshers `18/19`.  No protected fixture regression was
+observed.  The remaining giant-review geometry is still visual-only where
+corrected JMaps are absent.  The complete unittest suite then passed **357
+tests in 1811.266 seconds**, `OK`.

@@ -74,6 +74,7 @@ from jtool_scanner.scanner import (
     _looks_like_bright_neutral_outlined_terrain_room,
     _recover_bright_neutral_outline_blocks,
     _prune_bright_outlined_terrain_decorations,
+    _prune_bright_room_platform_impostors,
     _expand_supported_cell_terrain_materials,
     _learn_repeated_terrain_profile,
     _learn_supported_cell_terrain_profile,
@@ -1589,6 +1590,44 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertTrue(
             _has_bright_room_platform_bar_evidence(
                 [25, 25] + [0] * 12 + [25]
+            )
+        )
+
+    def test_bright_chromatic_platform_gate_keeps_compact_interior_bar(self) -> None:
+        detection = Detection(
+            "platform",
+            OBJ_PLATFORM,
+            128,
+            96,
+            0.78,
+            Box(128, 96, 32, 16),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._room_color_profile",
+                return_value=_ColorProfile(120.0, 120.0, 120.0, 0.02),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._platform_horizontal_edge_runs",
+                return_value=[2, 28, 2, 10, 22, 23, 2, 18, 2, 0, 2, 1, 0, 0, 0],
+            ),
+        ):
+            kept = _prune_bright_room_platform_impostors(
+                [detection],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 800, 608),
+            )
+        self.assertEqual(kept, [detection])
+        self.assertTrue(
+            _has_bright_room_platform_bar_evidence(
+                [2, 28, 2, 10, 22, 23, 2, 18, 2, 0, 2, 1, 0, 0, 0],
+                require_enclosure=True,
+            )
+        )
+        self.assertFalse(
+            _has_bright_room_platform_bar_evidence(
+                [0] * 11 + [24, 25, 26, 0],
+                require_enclosure=True,
             )
         )
 

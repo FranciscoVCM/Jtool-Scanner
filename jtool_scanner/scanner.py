@@ -3722,6 +3722,7 @@ def _has_bright_room_platform_bar_evidence(
     horizontal_runs: list[int],
     *,
     require_span: bool = False,
+    require_enclosure: bool = False,
 ) -> bool:
     """Require more than one room-boundary edge for a bright-room platform.
 
@@ -3730,8 +3731,11 @@ def _has_bright_room_platform_bar_evidence(
     has a compact bar enclosure, which produces at least three strong rows;
     a clipped bar may instead expose both the top and bottom boundary.  This
     helper deliberately consumes only morphology, not a tileset colour.  The
-    production bright-room prune can additionally require the strong rows to
-    span the patch; the default keeps the small morphology helper's original
+    production bright-room prune can additionally require either a broad
+    top/bottom span or an internally bounded bar.  The internal form matters
+    for scaled platforms whose three strong rows occupy the middle of the
+    16-sample patch; a run that is only the lower terrain boundary remains an
+    impostor.  The default keeps the small morphology helper's original
     three-row contract for callers and synthetic controls.
     """
 
@@ -3741,9 +3745,15 @@ def _has_bright_room_platform_bar_evidence(
         if run >= PLATFORM_SAMPLE_WIDTH * 5 // 8
     ]
     if len(strong_rows) >= 3:
-        if not require_span:
+        if not require_span and not require_enclosure:
             return True
         if max(strong_rows) - min(strong_rows) >= PLATFORM_BRIGHT_MIN_EDGE_SPAN:
+            return True
+        if (
+            require_enclosure
+            and min(strong_rows) > 0
+            and max(strong_rows) < PLATFORM_SAMPLE_HEIGHT - 3
+        ):
             return True
     return bool(
         strong_rows
@@ -3824,7 +3834,7 @@ def _prune_bright_room_platform_impostors(
                     detection.x,
                     detection.y,
                 ),
-                require_span=True,
+                require_enclosure=True,
             )
         ):
             continue
