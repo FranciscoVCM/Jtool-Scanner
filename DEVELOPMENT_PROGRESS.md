@@ -1929,11 +1929,14 @@ also produce no compact-relative candidates.  Existing exact platform controls
 remain unchanged: K3 `(512,336),(144,448)`, Irkara-71's five platforms,
 Irkara-89 `(704,288)`, and no platform in F189.
 
-The new pure-route regression test passes, and the strict FTFA benchmark remains
-**926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0 wrong
-direction**.  Full unittest discovery and the complete 12-pair fixture
-workflow remain the next validation gate before this checkpoint is considered
-complete.  No fixture, JMap, or ignored corpus artifact was modified.
+The new pure-route regression test passes.  The complete 12-pair fixture
+workflow remains unchanged at platforms **3/3 matched and 3 detected**, with
+saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
+8/8, killers 99/99, mini-blocks 869/875, blocks 1457/1486, full spikes
+710/748, mini-spikes 281/288, and refreshers 18/19.  The strict FTFA benchmark
+remains **926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted;
+0 wrong direction**.  Full unittest discovery passes **351 tests in 1748.175
+seconds**, `OK`.  No fixture, JMap, or ignored corpus artifact was modified.
 
 ## Checkpoint: platform-edge full-spike coexistence (2026-08-16)
 
