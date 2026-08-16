@@ -2568,3 +2568,7 @@ refreshers `18/19` (18 matched).  The broader geometry totals remain the known
 stress-corpus baseline: mini blocks `869/875`, blocks `1457/1486`, full spikes
 `710/748`, and mini spikes `281/288` matched.  The report is preserved under
 `.artifacts/goal-continuation/reconnect-zero-nang-block-spike/`.
+
+The complete unittest discovery run against this checkpoint passed **360 tests
+in 1863.540 seconds**, `OK`.  The exact FTFA rerun remains `926/928 exact; 0
+false positives; 2 missed; 0 shifted; 0 wrong direction`.
