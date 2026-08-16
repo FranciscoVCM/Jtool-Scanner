@@ -2168,3 +2168,21 @@ The regenerated triplets are preserved under
 three different room/profile paths: no shared missing-object signature was
 found, and no implementation change was made.  Zero_Final’s flag remains a
 candidate for a future general text/flag subsystem, not a tileset rule.
+
+## Checkpoint: water-tinted apple corpus audit (2026-08-16)
+
+The current scanner was rechecked against the three preserved apple-heavy
+screens after an older report appeared to show a missing Halls1 apple.  That
+report was stale: the current palette-relative water route detects both
+Halls1 water-tinted apples at `(64,248)` and `(48,464)` with the
+`apple_water_tinted` kind, alongside the six ordinary apples.  It also keeps
+all nine visible apples in CN3_27 and all four in CN3_25, while the existing
+neutral-cloud and terrain arbitration continues to reject player-like cloud
+silhouettes and background material.
+
+The regenerated source/JMap/preview/blend triplets are preserved under
+`.artifacts/goal-continuation/apple-family-review/`, and ledger rows 19, 21,
+and 44 now point to them.  This is a held-out confirmation of the existing
+relative-color/contour rule across cyan water, red outlined terrain, and
+bright mixed rooms; no new threshold or screen-specific exception was
+needed.  The 12-pair fixture and FTFA gates remain the protected controls.
