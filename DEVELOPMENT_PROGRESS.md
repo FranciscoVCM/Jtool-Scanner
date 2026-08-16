@@ -2527,3 +2527,44 @@ The regenerated object totals are `351`, `225`, and `25` respectively.  All
 three remain `needs-more-work` because corrected giant-review JMaps are absent;
 their ignored ledger rows now point to the current PNG blends and record the
 negative evidence.  No implementation code changed in this checkpoint.
+
+## Checkpoint: reconnect-safe Zero_Final and NANG_11 held-out review (2026-08-16)
+
+The first post-reconnect held-out batch was rechecked from the preserved source
+screens and the current grid-step-8 source/JMap/reconstruction/blend outputs.
+The earlier `{"detail":"Bad Request"}` transport error left no tracked partial
+write; the repository checkpoint and these ignored artifacts are intact.
+
+- `Zero_Final` remains a deliberately conservative blue/cyan result: one
+  outlined SAVE, 212 coherent `water_2` cells in the lower cyan field, the
+  established spike/block geometry, and no warp or false color-object promotion.
+  The deep-blue particles and glowing instructional text remain background. No
+  OCR text was available in this environment (`tesseract` is not installed), so
+  `infinitejump` remains `0`; this is an optional OCR limitation, not evidence
+  for a phrase-specific detector. Eleven structural warnings and the absence of
+  a corrected giant-review JMap remain explicitly unresolved.
+- `NANG_11` remains a successful embedded-room localization: the centered 9x9
+  island produces 14 terrain blocks, one labeled SAVE at `(320,384)`, and one
+  gray-outline warp at `(432,336)`, while Floor/TNT/narrator UI and red-brick
+  halos stay outside object classes. The 14 terrain cells remain visual-review
+  material because no corrected giant-review JMap exists.
+
+The original blend-preview files in this local batch are SVG markup stored with
+`.png` names. They were rasterized to explicit `*-blend-raster.png` review
+copies, and the ignored ledger rows for Zero_Final and NANG_11 now point to
+those actual raster files. No implementation code or tracked fixture changed.
+
+As held-out platform controls, the current post-arbitration scan emits zero
+platforms for Irkara-49, Irkara-49-warp, and Irkara-58; it preserves Irkara-71
+at 5/5, Irkara-89 at 1/1, and K3 Ex-Hades at 2/2. This confirms that no new
+platform threshold is justified by the Zero/NANG visual uncertainty. The live
+application remains HTTP 200.
+
+The complete tracked 12-pair block/spike fixture workflow was also rerun with
+grid step 8, color objects, geometry, tolerance 24, and overlays.  It matched
+all saves `22/22`, warps `12/12`, apples `4/4`, water `35/35`, walljumps `13/13`,
+platforms `3/3`, gravity flippers `8/8`, killer blocks `99/99`, and matched
+refreshers `18/19` (18 matched).  The broader geometry totals remain the known
+stress-corpus baseline: mini blocks `869/875`, blocks `1457/1486`, full spikes
+`710/748`, and mini spikes `281/288` matched.  The report is preserved under
+`.artifacts/goal-continuation/reconnect-zero-nang-block-spike/`.
