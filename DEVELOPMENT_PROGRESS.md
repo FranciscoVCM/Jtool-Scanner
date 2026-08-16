@@ -2501,3 +2501,29 @@ benchmark remains `926/928 exact; 0 false positives; 2 missed; 0 shifted; 0
 wrong direction`, and the complete unittest discovery run passes **360 tests
 in 1979.562 seconds**, `OK`.  No protected fixture or implementation behavior
 outside this header-evidence family regressed.
+
+## Checkpoint: neutral-material water and mini-spike negative controls (2026-08-16)
+
+`CN3_92`, `CN3_Redcube3`, and `CN3_Secret1` were regenerated and reviewed from
+current source/JMap/reconstruction/blend outputs under the ignored
+`.artifacts/goal-continuation/neutral-material-review/` directory.  This is a
+measured negative-result batch across a cyan field, dark red patterned terrain,
+and a rainbow-gradient room; no palette-only detector rule was justified.
+
+- `CN3_92` retains one bounded filled-cloud warp, the brown/green terrain and
+  spikes, and zero water cells.  The large cyan corridors are spatially a
+  continuous background field, not bounded water evidence, so broad color
+  promotion would be unsafe.
+- `CN3_Redcube3` retains three source-visible saves, two bounded warp
+  candidates, and the dark red terrain/spikes.  The weak mini-spike candidate
+  adjacent to the right SAVE remains suppressed by terrain support; genuine
+  nearby mini-spike fixture controls remain protected.
+- `CN3_Secret1` retains its striped enclosure and eight directional spikes but
+  emits no water or mini-spikes.  The gradient and cropped red geometry are
+  explicitly unresolved visual material rather than evidence for a new
+  palette-specific rule.
+
+The regenerated object totals are `351`, `225`, and `25` respectively.  All
+three remain `needs-more-work` because corrected giant-review JMaps are absent;
+their ignored ledger rows now point to the current PNG blends and record the
+negative evidence.  No implementation code changed in this checkpoint.
