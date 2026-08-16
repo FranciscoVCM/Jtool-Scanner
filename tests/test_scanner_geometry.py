@@ -96,6 +96,7 @@ from jtool_scanner.scanner import (
     _can_recover_nearby_hollow_block,
     _is_block_run_gap,
     _is_bright_outline_platform_candidate,
+    _is_bright_relative_platform_impostor,
     _is_bright_filled_full_spike_component,
     _should_reconcile_bright_filled_full_spikes,
     _bright_neutral_triangle_direction,
@@ -1589,6 +1590,82 @@ class ScannerGeometryTests(unittest.TestCase):
                 [25, 25] + [0] * 12 + [25]
             )
         )
+
+    def test_bright_relative_platform_veto_requires_filled_room_edge(self) -> None:
+        detection = Detection(
+            "platform",
+            OBJ_PLATFORM,
+            464,
+            16,
+            0.62,
+            Box(0, 0, 32, 16),
+        )
+        patch = _PatchFeatures((), 0.527, 0.589, 0.375)
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._platform_patch_features",
+                return_value=_PlatformPatchFeatures(32, 6, 123, 7),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                side_effect=[patch, patch],
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_color_profile",
+                return_value=_ColorProfile(132.1, 144.3, 177.0, 0.176),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.643),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._is_bright_outline_platform_candidate",
+                return_value=False,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._is_textured_platform_candidate",
+                return_value=False,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._is_dark_relative_platform_candidate",
+                return_value=False,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._is_compact_relative_platform_candidate",
+                return_value=False,
+            ),
+        ):
+            self.assertTrue(
+                _is_bright_relative_platform_impostor(
+                    detection,
+                    RGBImage(1, 1, b"\x00\x00\x00"),
+                    Box(0, 0, 800, 608),
+                    67.3,
+                )
+            )
+
+        compact = _PatchFeatures((), 0.133, 0.107, 0.188)
+        with mock.patch(
+            "jtool_scanner.scanner._platform_patch_features",
+            return_value=_PlatformPatchFeatures(25, 14, 154, 1),
+        ), mock.patch(
+            "jtool_scanner.scanner._patch_features",
+            return_value=compact,
+        ), mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            return_value=_ColorProfile(36.5, 35.2, 25.8, 0.084),
+        ), mock.patch(
+            "jtool_scanner.scanner._classify_block",
+            return_value=_GeometryClass("block", OBJ_BLOCK, 0.154),
+        ):
+            self.assertFalse(
+                _is_bright_relative_platform_impostor(
+                    detection,
+                    RGBImage(1, 1, b"\x00\x00\x00"),
+                    Box(0, 0, 800, 608),
+                    67.3,
+                )
+            )
 
     def test_cn3_miniblocks_match_all_truth_inside_excellent_detection_band(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

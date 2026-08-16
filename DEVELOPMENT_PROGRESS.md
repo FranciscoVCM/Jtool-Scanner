@@ -1956,3 +1956,32 @@ matched and 3 detected**.  The complete unittest discovery run passes
 **350 tests in 1676.974 seconds**, OK.  The strict FTFA gate remains
 **926/928 exact; 0 false positives; 2 missed edge blocks; 0 shifted; 0 wrong
 direction**.  No fixture or JMap was modified.
+
+## Checkpoint: bright relative platform-impostor arbitration (2026-08-16)
+
+The compact-platform recovery exposed a complementary failure mode in the
+same unknown dark tileset: white striped terrain edges were emitted as seven
+platforms in `CN3_Entrance2`, even though the source contains one small brown
+platform.  A late arbitration pass now removes only platform detections whose
+32x16 patch is simultaneously much brighter than the room, densely filled,
+center-heavy, and supported by at least three long horizontal edge rows.  It
+does not weaken candidate generation and explicitly preserves the bright
+outline, textured, dark-relative, and compact-relative bar routes.
+
+In the source/current review, `CN3_Entrance2` changes from seven platform
+impostors to the single visually supported `(80,464)` platform.  The sampled
+giant controls retain or remove only visually consistent material: Entrance1
+retains two bars, Entrance3/Halls6/Halls7/CN3-19/NANG-11 retain none,
+CN3-25 retains three, and CN3-28 through CN3-31 remain at zero.  The source
+review also records that Entrance1 contains additional partially occluded
+brown bars not yet recovered; those remain visual follow-up work rather than
+being promoted to exact truth without a corrected JMap.
+
+The complete 12-pair fixture workflow is unchanged from the prior checkpoint:
+platforms **3/3 matched and 3 detected**, saves 22/22, warps 12/12, apples
+4/4, water 35/35, walljumps 13/13, gravity 8/8, killers 99/99, mini-blocks
+869/875, blocks 1457/1486, full spikes 710/748, mini-spikes 281/288, and
+refreshers 18/19.  FTFA remains **926/928 exact; 0 false positives; 2 missed
+edge blocks; 0 shifted; 0 wrong direction**.  Full unittest discovery after
+this change is the required final gate.  No fixture, JMap, or ignored corpus
+artifact was modified.

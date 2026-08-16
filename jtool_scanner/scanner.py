@@ -362,6 +362,15 @@ PLATFORM_COMPACT_RELATIVE_MAX_BLOCK_SCORE = 0.20
 PLATFORM_COMPACT_RELATIVE_MAX_BELOW_EDGE = 0.14
 PLATFORM_COMPACT_RELATIVE_MAX_ROOM_LUMINANCE_DELTA = -10.0
 PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE = 10.0
+# In a dark room, a pale striped terrain lip can satisfy the permissive
+# low-contrast route while filling most of the 32x16 patch.  Keep the late
+# veto relative to the room and require several horizontal edge rows plus a
+# high block/center score; real compact bars and the dark/textured routes do
+# not meet this combination.
+PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_EDGE_ROWS = 3
+PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_BLOCK_SCORE = 0.45
+PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_CENTER_SCORE = 0.30
+PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_ROOM_LUMINANCE_DELTA = 40.0
 # Dark outlined rooms can expose long purple terrain edges that satisfy the
 # permissive platform routes without containing a filled platform sprite.  A
 # room-relative sparse gate is applied only to that low-fill family; filled
@@ -1913,6 +1922,11 @@ def scan_image(
             box,
         )
         detections = _prune_dark_sparse_platform_impostors(
+            detections,
+            image,
+            box,
+        )
+        detections = _prune_bright_relative_platform_impostors(
             detections,
             image,
             box,
@@ -3792,6 +3806,133 @@ def _prune_bright_room_platform_impostors(
             continue
         result.append(detection)
     return result
+
+
+def _is_bright_relative_platform_impostor(
+    detection: Detection,
+    image: RGBImage,
+    room: Box,
+    room_luminance: float,
+) -> bool:
+    """Identify a pale, filled terrain lip in an otherwise dark room.
+
+    The ordinary low-contrast platform route is intentionally permissive for
+    unfamiliar skins.  A long striped wall/floor boundary can therefore look
+    like a platform even when its patch is mostly filled.  This late check
+    combines the relative room luminance with the patch morphology and leaves
+    the dedicated bright-outline, textured, dark-relative, and compact-
+    relative routes available for genuine bars.
+    """
+
+    if detection.type_id != OBJ_PLATFORM:
+        return False
+    features = _platform_patch_features(image, room, detection.x, detection.y)
+    patch = _patch_features(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    profile = _patch_color_profile(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        PLATFORM_WIDTH,
+    )
+    block_score = _classify_block(patch).score
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    if not (
+        features.horizontal_edge_rows
+        >= PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_EDGE_ROWS
+        and block_score >= PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_BLOCK_SCORE
+        and patch.center_score
+        >= PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_CENTER_SCORE
+        and patch_luminance - room_luminance
+        >= PLATFORM_BRIGHT_RELATIVE_IMPOSTOR_MIN_ROOM_LUMINANCE_DELTA
+    ):
+        return False
+    below_edge = 1.0
+    if detection.y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+        below_edge = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y + PLATFORM_HEIGHT,
+            PLATFORM_WIDTH,
+        ).edge_density
+    if _is_bright_outline_platform_candidate(
+        features,
+        patch,
+        block_score,
+        below_edge,
+    ):
+        return False
+    if _is_textured_platform_candidate(
+        features,
+        patch,
+        block_score,
+        below_edge,
+    ) and _is_textured_platform_horizontally_isolated(
+        image,
+        room,
+        detection.x,
+        detection.y,
+    ):
+        return False
+    if _is_dark_relative_platform_candidate(
+        features,
+        patch,
+        profile,
+        block_score,
+        below_edge,
+        room_luminance,
+    ):
+        return False
+    if _is_compact_relative_platform_candidate(
+        features,
+        patch,
+        profile,
+        block_score,
+        below_edge,
+        room_luminance,
+        neighbor_profile_distance=_minimum_platform_neighbor_profile_distance(
+            image,
+            room,
+            detection.x,
+            detection.y,
+        ),
+    ):
+        return False
+    return True
+
+
+def _prune_bright_relative_platform_impostors(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    room_profile = _room_color_profile(image, room)
+    room_luminance = (
+        room_profile.avg_r * 0.30
+        + room_profile.avg_g * 0.59
+        + room_profile.avg_b * 0.11
+    )
+    return [
+        detection
+        for detection in detections
+        if not _is_bright_relative_platform_impostor(
+            detection,
+            image,
+            room,
+            room_luminance,
+        )
+    ]
 
 
 def _prune_dark_sparse_platform_impostors(
