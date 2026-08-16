@@ -468,11 +468,27 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             0.77,
             Box(400, 288, 32, 32),
         )
+        right_alias = Detection(
+            "walljump_right_repeated_strip",
+            OBJ_WALLJUMP_RIGHT,
+            432,
+            288,
+            0.88,
+            Box(432, 288, 32, 32),
+        )
 
-        result = _reconcile_walljump_terrain_anchors([terrain, vine], image, room)
+        result = _reconcile_walljump_terrain_anchors(
+            [terrain, vine, right_alias],
+            image,
+            room,
+        )
 
         self.assertIn(
             (400, 288, OBJ_WALLJUMP_LEFT, "walljump_left_repeated_strip"),
+            {(detection.x, detection.y, detection.type_id, detection.kind) for detection in result},
+        )
+        self.assertIn(
+            (416, 288, OBJ_WALLJUMP_LEFT, "walljump_left_terrain_aligned"),
             {(detection.x, detection.y, detection.type_id, detection.kind) for detection in result},
         )
 

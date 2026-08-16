@@ -1996,12 +1996,15 @@ shape phase slightly higher, but the later terrain-column reconciler moved it
 to the same-column `(416,right)` alias.  That made the JTool origin and
 direction wrong even though the rendered green pixels looked similar.
 
-Terrain-column alignment now leaves high-confidence `*_repeated_strip`
-detections on their shape-derived phase, alongside the existing split/phase
-exceptions.  Ordinary clipped or isolated vines still use the terrain support
-reconciler.  This is a morphology/provenance rule, not a screen coordinate or
-palette rule: repeated vertical cadence is stronger evidence of the sprite's
-JTool origin than a neighboring terrain column.
+Terrain-column alignment now leaves high-confidence left-facing
+`*_repeated_strip` detections on their shape-derived phase, alongside the
+existing split/phase exceptions.  Right-facing repeated strips remain eligible
+for terrain support because the authoritative Irkara89 control contains a
+stronger same-column right/left alias at one phase.  Ordinary clipped or
+isolated vines still use the terrain support reconciler.  This is a
+morphology/provenance rule, not a screen coordinate or palette rule: the
+repeated cadence and the established terrain alias together choose the JTool
+origin.
 
 The current Halls7 scan changes from `(416,288,right),(416,320,right)` to the
 source-supported `(400,288,left),(400,320,left)`.  Halls6 remains the ordinary
