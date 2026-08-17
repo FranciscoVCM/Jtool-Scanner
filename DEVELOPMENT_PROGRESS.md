@@ -56,9 +56,9 @@ Measured before/after at the documented `grid_step=8` workflow:
 | full 12-pair totals | 1457/1486 blocks matched, 1590 detected | 1459/1486 matched, 1592 detected | +2 matched blocks, no other class changed |
 
 The focused NANG-128/NANG-135/NANG-138 regression tests pass (3 tests in
-105.332 seconds).  The complete suite baseline immediately before this batch
-was 364 tests, `OK`; it remains a required post-commit gate.  Reports are
-preserved under `.artifacts/goal-continuation/phase-alias-ftfa-20260817/` and
+105.332 seconds).  The complete post-commit suite passes **365 tests in
+1168.731 seconds, `OK`**.  Reports are preserved under
+`.artifacts/goal-continuation/phase-alias-ftfa-20260817/` and
 `.artifacts/goal-continuation/phase-alias-full-20260817/`.
 
 ## Checkpoint: active-save header morphology gate (2026-08-17)
