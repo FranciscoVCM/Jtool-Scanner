@@ -33,6 +33,21 @@ The focused boundary regression passes.  The 24px diagnostic workflow already
 matched the cell before this change; this checkpoint closes the exact phase
 gap without broadening ordinary compact-room texture recovery.
 
+## Checkpoint: compact killer-overlap backing negative control (2026-08-18)
+
+NANG-135 was traced to a late arbitration ambiguity rather than a missing
+classifier: the scanner already generated `compact_killer_backing_block`
+candidates for two normal blocks that the authoritative map overlays beneath
+crossed killer sprites, but the shared anchor pass removed them.  A measured
+object-provenance coexistence trial recovered both misses (`75/77` to `77/77`
+matched) but also retained five visually indistinguishable boundary
+candidates (`78` to `85` detections).  NANG-128 and NANG-138 stayed exact, but
+the NANG-135 precision regression is not justified by source evidence: the
+red/brick sprite pixels and three-neighbour topology are shared by the false
+candidates.  The trial was therefore rejected and no scanner rule or test was
+kept.  The two overlapping JMap entries remain an explicitly documented exact
+limitation rather than a screen-specific exception.
+
 ## Checkpoint: zero-overlap water/mini-block boundary arbitration (2026-08-17)
 
 The remaining CN3-18 miniblock miss was already a strong raw candidate at
