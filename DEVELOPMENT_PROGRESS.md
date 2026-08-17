@@ -41,6 +41,28 @@ in 1177.212 seconds (`OK`).  Reports are preserved under
 `.artifacts/goal-continuation/active-save-header-gate-full-20260817/`, and
 `.artifacts/goal-continuation/active-save-header-gate-20260817/`.
 
+## Checkpoint: current CN3 material review batch (2026-08-17)
+
+The current scanner was regenerated against four connected giant-review
+sources, without opening the full archive or treating missing corrected JMaps
+as exact truth:
+
+| source | current object evidence |
+| --- | --- |
+| `CN3_28` | two saves, two source-visible dark right-vine cells at `(512,368)` and `(512,400)`, three apples, zero platform/warp promotions |
+| `CN3_31` | three saves and three source-visible vines, zero bright-neutral platform impostors |
+| `CN3_Bathhouse1` | two saves, thirteen bounded water-2 cells, three left-vine cells at `(448,432)`, `(448,464)`, `(448,496)` |
+| `CN3_Entrance2` | two saves, one supported brown platform at `(80,464)`, three water-2 cells, and the established left/right vine set |
+
+Each source/JTool/diagnostic/blend project is preserved under the ignored
+`.artifacts/goal-continuation/visual-batch-c3-20260817/` directory.  The
+source review agrees with the current object classes in all four cases.  The
+remaining dense block/spike geometry is visual-only because these screens lack
+corrected authoritative giant-review JMaps, so this batch justifies no new
+classifier or coordinate exception.  The two-vine CN3_28 result confirms that
+the generalized dark-component vine route is active in the previously flagged
+unrecognized material family.
+
 ## Checkpoint: 2026-08-10
 
 ### Repository and runtime baseline at review start
