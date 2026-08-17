@@ -2737,3 +2737,21 @@ The exact Irkara-51 correction and the held-out family checks therefore add
 no FTFA or fixture regressions. The 71-screen giant-review ledger remains
 visual bookkeeping where corrected JMaps are unavailable; its four updated
 rows continue to point at the ignored post-change projects.
+
+## Checkpoint: rejected warm-room off-screen block continuation (2026-08-17)
+
+The two remaining FTFA errors were isolated before changing the scanner.  The
+left miss, `(-32,512)`, is an out-of-frame JMap cell adjacent to a visible
+warm-terrain edge run; the lower-right miss, `(768,480)`, is the weak sliver
+protected by `test_ftfa_room_01_rejects_weak_lower_right_boundary_sliver`.
+
+As a measured experiment, the warm-room branch was temporarily given the same
+one-cell edge continuation used by the generic geometry branch, requiring two
+visible vertical edge neighbors and an inward geometry marker.  It recovered
+the left FTFA cell, but produced **15 false-positive off-screen blocks** across
+the four FTFA screens (`927/928 exact; 15 false positives; 1 missed`).  The
+experiment was removed immediately.  This negative result shows that visible
+edge continuity alone is not enough to infer an unseen JMap cell across warm
+tilesets; the strict FTFA baseline remains **926/928 exact; 0 false positives;
+2 missed; 0 shifted; 0 wrong direction**.  No screen-specific exception or
+palette threshold was retained.
