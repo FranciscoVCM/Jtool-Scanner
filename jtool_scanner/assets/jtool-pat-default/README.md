@@ -5,7 +5,10 @@ skin or from its matching default GameMaker sprite frames. The app uses the
 original sprite dimensions and origins; it also reproduces the skin's
 `killer_idle_color` value for spikes, fruit and killer blocks.
 
-`walljumpR.png` and `walljumpL.png` occupy opposite halves of a grid cell.
+`walljumpR.png` and `walljumpL.png` are the matching default GameMaker
+frames from `source.gmx/sprites/images` and occupy opposite halves of a grid
+cell.  Keeping those source frames (rather than a recoloured skin substitute)
+preserves the green vine artwork shown by JTool's default object palette.
 The upstream save IDs are counterintuitive: ID 16 is `oWalljumpL` with
 `walljumpL.png` on the right half, while ID 17 is `oWalljumpR` with
 `walljumpR.png` on the left half. The scanner keeps those IDs and sprites

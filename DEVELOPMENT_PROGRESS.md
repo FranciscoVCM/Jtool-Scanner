@@ -2755,3 +2755,20 @@ edge continuity alone is not enough to infer an unseen JMap cell across warm
 tilesets; the strict FTFA baseline remains **926/928 exact; 0 false positives;
 2 missed; 0 shifted; 0 wrong direction**.  No screen-specific exception or
 palette threshold was retained.
+
+## Checkpoint: restore the default JTool vine palette frames (2026-08-17)
+
+The correction UI and SVG renderer already mapped object IDs 16/17 to the
+correct left/right vine files, but the tracked PNGs were dark skin variants,
+not the vivid green default GameMaker frames visible in JTool's object palette.
+The preserved local `.research/jtool/source.gmx/sprites/images` frames were
+verified at 32x32 and copied unchanged into the tracked asset paths
+`walljumpL.png` and `walljumpR.png`.  The opposite-half layout and ID mapping
+remain unchanged.
+
+This is an asset/provenance correction, not a scanner threshold or screen
+exception.  `tests/test_correction.py` now protects the two exact frame hashes
+as well as the existing visible-side SVG and ID-pairing tests.  The focused
+three-test render check passes.  Scanner measurements and all source/JMap
+fixtures are unchanged; the full suite is rerun after this checkpoint before
+publication.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -77,6 +78,18 @@ class CorrectionProjectTests(unittest.TestCase):
         # JTool's save IDs are facing directions, not visual-side labels.
         self.assertEqual(_JTOOL_SPRITES[OBJ_WALLJUMP_LEFT][0], "walljumpL.png")
         self.assertEqual(_JTOOL_SPRITES[OBJ_WALLJUMP_RIGHT][0], "walljumpR.png")
+
+    def test_vine_assets_are_the_default_jtool_palette_frames(self) -> None:
+        asset_root = Path(__file__).parents[1] / "jtool_scanner" / "assets" / "jtool-pat-default"
+        expected_sha256 = {
+            "walljumpL.png": "594de6ad2345795d84bf58d8071e75a7b6d75d9de06508569d0df687f4fa76e6",
+            "walljumpR.png": "dc774a966c01e13995601c7d0e6c54a9610df851d7581138318dda5d354f6106",
+        }
+        for filename, digest in expected_sha256.items():
+            self.assertEqual(
+                hashlib.sha256((asset_root / filename).read_bytes()).hexdigest(),
+                digest,
+            )
 
     def test_preview_embeds_exact_jtool_sprites_for_all_supported_non_placeholder_types(self) -> None:
         project = CorrectionProject.from_jmap(
