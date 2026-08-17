@@ -29,8 +29,8 @@ gameplay engine.
 - Local repository: `C:\Users\corvo\Documents\Jtool Scanner`
 - GitHub: `https://github.com/FranciscoVCM/Jtool-Scanner`
 - Branch: `main`
-- Current verified `main` tip: `b298bb6` (`scanner: reject sparse vine terrain
-  bands`), with local `main` equal to live `origin/main`.
+- Current verified `main` tip: `5795f7c` (`assets: restore default JTool vine
+  frames`), with local `main` equal to live `origin/main`.
 - The immediately preceding scanner checkpoints are `4fcd472` (`scanner:
   recover pale platforms in dark rooms`) and `e33ea64` (`scanner: preserve
   visual save phase aliases`).
@@ -309,7 +309,7 @@ python -m unittest discover -s tests -v
 
 The bundled runtime initially lacked `pytest`; installing `pillow pytest`
 completed the documented environment. The current continuation's complete
-`python -m unittest discover -s tests -v` run passed **362 tests in 1180.422
+`python -m unittest discover -s tests -v` run passed **363 tests in 1172.097
 seconds**, `OK`. An earlier pytest collection recorded 308 tests and 46
 subtests; use the unittest command above as the current full-suite baseline.
 The temporary directory override used by that older pytest run is only needed
@@ -660,8 +660,10 @@ clipboard paths as the sole durable home of irreplaceable source material.
 
 ## 18. Recent relevant commits
 
-The current published continuation tip is `b298bb6` (`scanner: reject sparse
-vine terrain bands`). Its immediately preceding scanner checkpoints are
+The current published continuation tip is `5795f7c` (`assets: restore default
+JTool vine frames`). Its immediately preceding scanner checkpoint is
+`b298bb6` (`scanner: reject sparse vine terrain bands`); the next earlier
+scanner checkpoints are
 `4fcd472` (`scanner: recover pale platforms in dark rooms`) and `e33ea64`
 (`scanner: preserve visual save phase aliases`). The older entries below are
 historical context from before this continuation.
