@@ -5485,6 +5485,42 @@ class ScannerGeometryTests(unittest.TestCase):
             [(OBJ_WARP, 0, 352), (OBJ_MINI_BLOCK, 0, 336)],
         )
 
+    def test_walljump_backing_miniblock_can_coexist_with_vine_anchor(self) -> None:
+        vine = Detection(
+            "walljump_left",
+            OBJ_WALLJUMP_LEFT,
+            -16,
+            336,
+            0.75,
+            Box(0, 336, 32, 32),
+        )
+        backing = Detection(
+            "mini_block_walljump_backing",
+            OBJ_MINI_BLOCK,
+            0,
+            336,
+            0.70,
+            Box(0, 336, 16, 16),
+        )
+        wrong_side = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            -16,
+            336,
+            0.70,
+            Box(-16, 336, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([vine, backing, wrong_side])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [
+                (OBJ_WALLJUMP_LEFT, -16, 336),
+                (OBJ_MINI_BLOCK, 0, 336),
+            ],
+        )
+
     def test_strong_full_spike_can_coexist_with_water_anchor(self) -> None:
         water = Detection("water_2", OBJ_WATER_2, 720, 96, 0.60, Box(720, 96, 32, 32))
         strong_spike = Detection(

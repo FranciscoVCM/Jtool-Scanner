@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: walljump backing-cell coexistence (2026-08-17)
+
+The CN3-18 compact-room review exposed a late arbitration bug rather than a
+missing vine detector.  `_recover_miniblock_backing_cells` correctly added the
+16px terrain column adjacent to the four clipped left vines, but the shared
+geometry-anchor pass treated every nearby walljump as an incompatible geometry
+anchor and removed those legitimate support cells.  The generalized
+coexistence rule now preserves a miniblock only on the canonical adjacent side
+(left vine: `x + 16`; right vine: the same `x`) and within the neighboring
+vertical phase.  It uses object topology, not a screen name, absolute
+coordinate, palette, or brightness.
+
+Measured at the documented grid-step-8 workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-18 miniblocks | 438 detected / 368 matched out of 374 | 442 detected / 370 matched out of 374 |
+| CN3-18 clipped vine cells | 4/4 exact | 4/4 exact; all four backing cells survive arbitration |
+| CN3-16 miniblocks | 563 detected / 501 matched out of 501 | unchanged |
+| Irkara-89 vines | 9/9 matched | unchanged; no miniblocks introduced |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged |
+| full 12-pair totals | 1001/875/869 miniblocks (detected/truth/matched) | 1005/875/871; all other class totals unchanged |
+
+The focused geometry regressions pass four tests, including the new
+walljump-backing coexistence case.  The remaining CN3-18 misses are the two
+right-edge cells at `(768,400)`/`(784,400)` and two unrelated compact phase
+cases; they do not justify widening the walljump rule.  The complete unittest
+discovery run passes **367 tests in 1751.682 seconds, `OK`**.
+
 ## Checkpoint: active-save body-centroid phase reconciliation (2026-08-17)
 
 The compact active-save recovery path could identify the player-occluded

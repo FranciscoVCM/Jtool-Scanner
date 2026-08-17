@@ -27470,6 +27470,22 @@ def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool
         # miniblock merely because the save/warp is the more reliable marker.
         overlap = _box_overlap_area(det.x, det.y, anchor.x, anchor.y)
         return MINI_BLOCK_SIZE * GRID_SIZE <= overlap < GRID_SIZE * GRID_SIZE
+    if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {
+        OBJ_WALLJUMP_LEFT,
+        OBJ_WALLJUMP_RIGHT,
+    }:
+        # Walljump sprites can share their cell boundary with the 16px
+        # terrain column that supports the vine.  The miniblock-room recovery
+        # adds this support explicitly, but late anchor arbitration used to
+        # discard it as an incompatible geometry overlap.  Keep only the
+        # canonical side: a left vine's backing cell is one half-cell to its
+        # right, while a right vine's backing cell starts at the same x.
+        expected_x = (
+            anchor.x + MINI_BLOCK_SIZE
+            if anchor.type_id == OBJ_WALLJUMP_LEFT
+            else anchor.x
+        )
+        return det.x == expected_x and abs(det.y - anchor.y) <= MINI_BLOCK_SIZE
     if (
         det.type_id == OBJ_BLOCK
         and anchor.type_id in BLOCK_COLOR_ANCHOR_TYPES
