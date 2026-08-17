@@ -29,9 +29,11 @@ gameplay engine.
 - Local repository: `C:\Users\corvo\Documents\Jtool Scanner`
 - GitHub: `https://github.com/FranciscoVCM/Jtool-Scanner`
 - Branch: `main`
-- Current verified `main` tip: `c49ea71` (`docs: record continuation baseline
-  audit`), with the latest scanner implementation checkpoint at `ac6cc9d`
-  (`scanner: preserve dense adjacent mini-spikes`).
+- Current verified `main` tip: `b298bb6` (`scanner: reject sparse vine terrain
+  bands`), with local `main` equal to live `origin/main`.
+- The immediately preceding scanner checkpoints are `4fcd472` (`scanner:
+  recover pale platforms in dark rooms`) and `e33ea64` (`scanner: preserve
+  visual save phase aliases`).
 - The current working tree is clean and local `main` matches live `origin/main`.
 - Earlier implementation history, including `e73ce97` (`Recognize outlined
   terrain across neon rooms`), remains available in Git history.
@@ -307,7 +309,7 @@ python -m unittest discover -s tests -v
 
 The bundled runtime initially lacked `pytest`; installing `pillow pytest`
 completed the documented environment. The current continuation's complete
-`python -m unittest discover -s tests -v` run passed **337 tests in 515.518
+`python -m unittest discover -s tests -v` run passed **362 tests in 1180.422
 seconds**, `OK`. An earlier pytest collection recorded 308 tests and 46
 subtests; use the unittest command above as the current full-suite baseline.
 The temporary directory override used by that older pytest run is only needed
@@ -657,6 +659,12 @@ Do not use `.artifacts`, `out`, a private Codex transcript, or temporary
 clipboard paths as the sole durable home of irreplaceable source material.
 
 ## 18. Recent relevant commits
+
+The current published continuation tip is `b298bb6` (`scanner: reject sparse
+vine terrain bands`). Its immediately preceding scanner checkpoints are
+`4fcd472` (`scanner: recover pale platforms in dark rooms`) and `e33ea64`
+(`scanner: preserve visual save phase aliases`). The older entries below are
+historical context from before this continuation.
 
 From the current continuation backward:
 
