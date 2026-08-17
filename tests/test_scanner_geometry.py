@@ -1949,6 +1949,41 @@ class ScannerGeometryTests(unittest.TestCase):
             {(detection.type_id, detection.x, detection.y) for detection in vertical_minis},
         )
 
+    def test_compact_diagonal_block_aliases_split_only_with_killer_checkerboard(
+        self,
+    ) -> None:
+        fixture_dir = (
+            Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        )
+        result = scan_png(
+            fixture_dir / "nang135-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        blocks = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+
+        # The half-phase patch at (560, 432) straddles a complete diagonal
+        # block/killer checkerboard.  It must become the three native blocks
+        # represented by the surrounding aliases, not remain a misplaced
+        # single object.
+        self.assertTrue(
+            {(512, 416), (544, 448), (576, 416)} <= blocks
+        )
+        self.assertNotIn((560, 432), blocks)
+
+        # Brown background corridors can satisfy foreground/edge morphology,
+        # but they are not block cells.  These cells must not be synthesized
+        # merely because a nearby half-phase patch was strong.
+        self.assertNotIn((224, 320), blocks)
+        self.assertNotIn((576, 224), blocks)
+        self.assertNotIn((576, 288), blocks)
+
     def test_nang138_minis_can_share_cells_with_jump_refreshers(self) -> None:
         fixture_dir = (
             Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
@@ -1974,6 +2009,14 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertTrue(expected <= detected)
         self.assertNotIn((OBJ_MINI_SPIKE_DOWN, 544, 128), detected)
+
+        blocks = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+        self.assertIn((320, 128), blocks)
+        self.assertNotIn((320, 144), blocks)
 
     def test_nested_outline_warps_recover_all_tracked_nang_variants(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"

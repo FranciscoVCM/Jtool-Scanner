@@ -150,6 +150,14 @@ WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
 # the generic thresholds for full-size and unknown rooms.
 COMPACT_WEAK_ACTIVE_SAVE_MIN_YELLOW = 9
 COMPACT_WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 9
+# Compact rooms can expose a full block at a half-cell screenshot phase even
+# though the JTool origin is on the native 32px lattice.  Only reanchor when a
+# nearby native patch is solid, low-edge, and not already a killer cell; this
+# keeps genuinely 16px-offset compact blocks intact.
+COMPACT_BLOCK_PHASE_MIN_FOREGROUND = 0.85
+COMPACT_BLOCK_PHASE_MIN_RED_RATIO = 0.60
+COMPACT_BLOCK_PHASE_MAX_EDGE_DENSITY = 0.13
+COMPACT_BLOCK_PHASE_MAX_CENTER_SCORE = 0.16
 NEUTRAL_TERRAIN_PROFILE_MIN_DISTANCE = 8.0
 NEUTRAL_TERRAIN_PROFILE_MIN_SCORE_ADVANTAGE = 0.008
 NEUTRAL_TERRAIN_PROFILE_MIN_SELECTED_SHARE = 0.15
@@ -2859,6 +2867,18 @@ def _replace_compact_room_geometry(
             killers,
             background,
         )
+    # A downsampled compact sprite can make a single half-phase patch look
+    # stronger than the native JTool cells it straddles.  Resolve that alias
+    # before the final phase/distance dedupe so a diagonal pair is not reduced
+    # to one misplaced block.  The same helper is applied to pre-existing
+    # geometry candidates retained in ``result`` below.
+    blocks = _reconcile_compact_block_phase_aliases(
+        blocks,
+        killers,
+        image,
+        room,
+        background,
+    )
     result_blocks = [
         detection
         for detection in result
@@ -2866,6 +2886,18 @@ def _replace_compact_room_geometry(
         and detection.x % GRID_SIZE == 0
         and detection.y % GRID_SIZE == MINI_BLOCK_SIZE
     ]
+    result_blocks = _reconcile_compact_block_phase_aliases(
+        result_blocks,
+        killers,
+        image,
+        room,
+        background,
+        context_blocks=[
+            detection
+            for detection in [*result, *blocks]
+            if detection.type_id == OBJ_BLOCK
+        ],
+    )
     result = [
         detection for detection in result if detection.type_id != OBJ_BLOCK
     ]
@@ -2887,6 +2919,180 @@ def _replace_compact_room_geometry(
         }
         result.extend(_detect_compact_room_spikes(image, room, block_positions))
     return _dedupe_exact_detections(result)
+
+
+def _reconcile_compact_block_phase_aliases(
+    blocks: list[Detection],
+    killers: list[Detection],
+    image: RGBImage,
+    room: Box,
+    background: tuple[int, int, int],
+    *,
+    context_blocks: list[Detection] | None = None,
+) -> list[Detection]:
+    """Reanchor strong half-phase compact blocks to native JTool cells.
+
+    Compact screenshots are often scaled from a 16px capture lattice.  A
+    32px block that straddles two native cells can therefore produce a
+    convincing candidate at ``(x+16, y-16)`` while the hand-authored JMap
+    contains two diagonal 32px objects.  Use only local morphology here: a
+    native alternative must be foreground-dominant, low-edge, and low-center,
+    and a killer object at that native cell vetoes it.  If two diagonal native
+    cells survive, retain both; if one survives, move the alias to that cell.
+    Legitimate half-phase blocks with no such alternatives remain unchanged.
+    """
+
+    killer_positions = {(detection.x, detection.y) for detection in killers}
+    native_context = context_blocks if context_blocks is not None else blocks
+    native_block_positions = {
+        (detection.x, detection.y)
+        for detection in native_context
+        if detection.type_id == OBJ_BLOCK
+        and detection.x % GRID_SIZE == 0
+        and detection.y % GRID_SIZE == 0
+    }
+    result: list[Detection] = []
+    for detection in blocks:
+        if detection.x % GRID_SIZE == 0 and detection.y % GRID_SIZE == 0:
+            result.append(detection)
+            continue
+
+        # Half-phase cells from the compact 16px pass are the only candidates
+        # that may represent a diagonal split.  Other half-phase detections
+        # are already established native objects (for example isolated blocks
+        # in NANG-128) and must not be reinterpreted from morphology alone.
+        is_offset_candidate = detection.kind == "compact_offset_block"
+
+        x_phases = {
+            detection.x - (detection.x % GRID_SIZE),
+            detection.x - (detection.x % GRID_SIZE) + GRID_SIZE,
+        }
+        y_phases = {
+            detection.y - (detection.y % GRID_SIZE),
+            detection.y - (detection.y % GRID_SIZE) + GRID_SIZE,
+        }
+        native: list[tuple[int, int, float]] = []
+        for x in sorted(x_phases):
+            for y in sorted(y_phases):
+                if (
+                    (x, y) == (detection.x, detection.y)
+                    or not 0 <= x <= ROOM_WIDTH - GRID_SIZE
+                    or not 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+                    or (x, y) in killer_positions
+                ):
+                    continue
+                colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+                foreground = _compact_foreground_ratio(colors, background)
+                red_ratio = _compact_red_ratio(colors)
+                features = _patch_features(image, room, x, y, GRID_SIZE)
+                if not (
+                    foreground >= COMPACT_BLOCK_PHASE_MIN_FOREGROUND
+                    and red_ratio >= COMPACT_BLOCK_PHASE_MIN_RED_RATIO
+                    and features.edge_density
+                    <= COMPACT_BLOCK_PHASE_MAX_EDGE_DENSITY
+                    and features.center_score
+                    <= COMPACT_BLOCK_PHASE_MAX_CENTER_SCORE
+                ):
+                    continue
+                # Confidence follows the native patch rather than the alias's
+                # phase-sensitive score, but stays below a decisive marker.
+                score = min(
+                    0.94,
+                    max(
+                        detection.score,
+                        0.78
+                        + foreground * 0.12
+                        - features.edge_density * 0.08,
+                    ),
+                )
+                native.append((x, y, score))
+        native_positions = {(x, y) for x, y, _ in native}
+        checkerboard = False
+        if is_offset_candidate:
+            base_x = detection.x - (detection.x % GRID_SIZE)
+            base_y = detection.y - (detection.y % GRID_SIZE)
+            corners = (
+                (base_x, base_y),
+                (base_x + GRID_SIZE, base_y),
+                (base_x, base_y + GRID_SIZE),
+                (base_x + GRID_SIZE, base_y + GRID_SIZE),
+            )
+            corner_is_killer = tuple(
+                corner in killer_positions for corner in corners
+            )
+            # A half-phase patch is a trustworthy split only when the two
+            # surviving native cells are opposite corners of a complete
+            # block/killer checkerboard.  This rejects long solid corridors
+            # whose every native sample is foreground-dominant.
+            checkerboard = (
+                all(
+                    0 <= x <= ROOM_WIDTH - GRID_SIZE
+                    and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+                    for x, y in corners
+                )
+                and corner_is_killer[0] == corner_is_killer[3]
+                and corner_is_killer[1] == corner_is_killer[2]
+                and corner_is_killer[0] != corner_is_killer[1]
+                and len(native_positions) == 2
+                and native_positions == {
+                    corner
+                    for corner, is_killer in zip(corners, corner_is_killer)
+                    if not is_killer
+                }
+            )
+
+        if not native:
+            result.append(detection)
+            continue
+
+        if checkerboard:
+            result.extend(
+                _geometry_detection(
+                    "compact_block_phase_aligned",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+                for x, y, score in native
+            )
+            continue
+
+        # A non-offset half-phase block may be a one-cell alias when its
+        # unique native alternative is anchored by at least two existing
+        # axis-neighbour blocks.  This handles a dense compact lattice while
+        # preserving isolated, intentionally offset blocks.
+        if not is_offset_candidate and len(native) == 1:
+            x, y, score = native[0]
+            axis_support = sum(
+                (x + dx, y + dy) in native_block_positions
+                for dx, dy in (
+                    (-GRID_SIZE, 0),
+                    (GRID_SIZE, 0),
+                    (0, -GRID_SIZE),
+                    (0, GRID_SIZE),
+                )
+            )
+            if axis_support >= 2:
+                result.append(
+                    _geometry_detection(
+                        "compact_block_phase_aligned",
+                        OBJ_BLOCK,
+                        x,
+                        y,
+                        score,
+                        image,
+                        room,
+                        GRID_SIZE,
+                    )
+                )
+                continue
+
+        result.append(detection)
+    return result
 
 
 def _detect_adaptive_compact_room_blocks(

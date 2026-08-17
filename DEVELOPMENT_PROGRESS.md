@@ -31,6 +31,36 @@ the documented/app/benchmark grid step 8 preserves the reviewed cells.  The
 next vine change must therefore be driven by a source/JMap-backed discrepancy,
 not by a coarser-sampling count.
 
+## Checkpoint: compact block phase-alias reconciliation (2026-08-17)
+
+The compact NANG-135 control exposed a reproducible geometry-phase failure:
+the 16px sampling pass could win a downsampled patch at `(560,432)` even
+though the source/JMap geometry is a diagonal pair of native 32px blocks
+around crossed killer cells.  A broad reanchor was rejected because brown
+background corridors also passed foreground and edge tests.  The generalized
+rule now requires a complete local block/killer checkerboard, validates both
+surviving native cells against foreground, block-material, edge, and center
+features, and preserves isolated half-phase cells.  A separate native-cell
+alias path requires two existing axis-neighbour blocks, which covers the
+dense-lattice NANG-138 alias without touching NANG-128's intentional offsets.
+No screen name, coordinate exception, or fixed brightness is used.
+
+Measured before/after at the documented `grid_step=8` workflow:
+
+| control | before blocks | after blocks | result |
+| --- | --- | --- | --- |
+| NANG-128 | 68/68 matched, 68 detected | 68/68 matched, 68 detected | unchanged; all three intentional off-phase cells preserved |
+| NANG-135 | 73/77 matched, 76 detected | 75/77 matched, 78 detected | three diagonal phase misses recovered; two killer-overlap misses and three pre-existing texture extras remain |
+| NANG-138 | 105/105 matched, 105 detected | 105/105 matched, 105 detected | dense-lattice alias reanchored to `(320,128)` |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | 926/928 exact, 0 FP, 2 missed | unchanged |
+| full 12-pair totals | 1457/1486 blocks matched, 1590 detected | 1459/1486 matched, 1592 detected | +2 matched blocks, no other class changed |
+
+The focused NANG-128/NANG-135/NANG-138 regression tests pass (3 tests in
+105.332 seconds).  The complete suite baseline immediately before this batch
+was 364 tests, `OK`; it remains a required post-commit gate.  Reports are
+preserved under `.artifacts/goal-continuation/phase-alias-ftfa-20260817/` and
+`.artifacts/goal-continuation/phase-alias-full-20260817/`.
+
 ## Checkpoint: active-save header morphology gate (2026-08-17)
 
 The full block/spike baseline had two unmatched save detections in
