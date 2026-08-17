@@ -30,8 +30,45 @@ Measured at the documented grid-step-8 workflow:
 The focused geometry regressions pass four tests, including the new
 walljump-backing coexistence case.  The remaining CN3-18 misses are the two
 right-edge cells at `(768,400)`/`(784,400)` and two unrelated compact phase
-cases; they do not justify widening the walljump rule.  The complete unittest
-discovery run passes **367 tests in 1751.682 seconds, `OK`**.
+cases; they do not justify widening the walljump rule.  The earlier detached
+test log was started before the walljump commit and is retained as historical
+evidence; the authoritative post-change suite is recorded above.
+
+## Checkpoint: save-adjacent miniblock coexistence and nearest phase arbitration (2026-08-17)
+
+The CN3-18 compact-room review exposed two connected late-arbitration errors.
+First, the shared geometry pass discarded legitimate 16px terrain cells next to
+reliable save/warp anchors when an 8px capture phase made their boxes only
+cardinally adjacent.  The coexistence rule now preserves only the object-topology
+relations that can be a real half-cell backing cell: partial 16px/32px overlap or
+one cardinal half-cell away, while rejecting diagonal and distant proximity.  It
+is independent of screen name, coordinate, palette, and brightness.  Second,
+those newly preserved cells exposed a tie-breaker in
+`_reconcile_mini_terrain_marker_anchors`: side support could pull a marker toward
+a neighboring phase even when an equally strong exact/direct support cell was
+closer.  Nearest movement now wins after exact/direct support, with side support
+remaining only a tie-breaker.
+
+Measured at the documented grid-step-8 workflow:
+
+| control | before this checkpoint | after |
+| --- | --- | --- |
+| CN3-18 miniblocks | 442 detected / 370 matched out of 374 after walljump backing | 444 detected / 371 matched; exact `(208,80)` and `(208,96)` cells retained; remaining misses `(768,400)`, `(784,400)`, `(256,320)` |
+| CN3-18 save | `(224,88)` under the new backing cells | `(224,80)` exact; the relative-save and clipped-vine phase regressions pass |
+| CN3-16 miniblocks | 563 detected / 501 matched | unchanged |
+| Irkara-89 vines and save | 9/9 vines, save exact | unchanged |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 FP, 0 shifted, 0 wrong direction |
+| full 12-pair totals | 1005/875/871 miniblocks after walljump backing | 1007/875/872; saves 22/22/22, warps 12/12/12, apples 4/4/4, water 35/35/35, walljumps 13/13/13, platforms 3/3/3, gravity 8/8/8, killer blocks 99/99/99 |
+
+The focused geometry set passes five tests, including both coexistence and
+nearest-support regressions.  The persistent complete unittest discovery run
+passes **369 tests in 1474.465 seconds, `OK`**.  The complete fixture report is
+`.artifacts/goal-continuation/save-phase-full-final-20260817/report.json`; the
+FTFA report is
+`.artifacts/goal-continuation/save-phase-ftfa-final-20260817/report.json`.
+The broad water-adjacency alternative was measured separately and rejected: it
+added six true-looking cells but also six false cells, so it was removed and is
+not part of this checkpoint.
 
 ## Checkpoint: active-save body-centroid phase reconciliation (2026-08-17)
 

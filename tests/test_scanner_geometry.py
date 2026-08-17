@@ -47,6 +47,7 @@ from jtool_scanner.scanner import (
     _arbitrate_minispikes_against_blocks,
     _arbitrate_full_spike_scale_duplicates,
     _reconcile_local_spike_scale_conflicts,
+    _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
     _can_recover_extended_left_mini_spike,
     _is_adjacent_up_mini_spike_candidate,
@@ -5484,6 +5485,65 @@ class ScannerGeometryTests(unittest.TestCase):
             [(det.type_id, det.x, det.y) for det in result],
             [(OBJ_WARP, 0, 352), (OBJ_MINI_BLOCK, 0, 336)],
         )
+
+    def test_cardinal_save_backing_miniblock_survives_phase_offset(self) -> None:
+        save = Detection("save", OBJ_SAVE, 224, 80, 0.95, Box(224, 80, 32, 32))
+        backing = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            208,
+            80,
+            0.70,
+            Box(208, 80, 16, 16),
+        )
+        diagonal = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            224,
+            80,
+            0.70,
+            Box(224, 80, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry([save, backing, diagonal])
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [(OBJ_SAVE, 224, 80), (OBJ_MINI_BLOCK, 208, 80)],
+        )
+
+    def test_mini_terrain_save_prefers_nearest_exact_support_over_side_support(
+        self,
+    ) -> None:
+        image = RGBImage(800, 608, b"\x00" * (800 * 608 * 3))
+        save = Detection(
+            "save_red_body_header_fragmented",
+            OBJ_SAVE,
+            224,
+            88,
+            0.90,
+            Box(224, 88, 32, 32),
+        )
+        mini_cells = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                112,
+                0.70,
+                Box(x, 112, 16, 16),
+            )
+            for x in (208, 224, 240, 272)
+        ]
+
+        result = _reconcile_mini_terrain_marker_anchors(
+            [save, *mini_cells],
+            image,
+            Box(0, 0, 800, 608),
+        )
+
+        marker = next(det for det in result if det.type_id == OBJ_SAVE)
+        self.assertEqual((marker.x, marker.y), (224, 80))
 
     def test_walljump_backing_miniblock_can_coexist_with_vine_anchor(self) -> None:
         vine = Detection(

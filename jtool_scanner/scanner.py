@@ -26155,8 +26155,8 @@ def _reconcile_mini_terrain_marker_anchors(
                         overlap > 0,
                         -min(GRID_SIZE, exact_support),
                         -min(GRID_SIZE, support),
-                        -min(GRID_SIZE, side_support),
                         movement,
+                        -min(GRID_SIZE, side_support),
                         y,
                         x,
                         support,
@@ -26165,7 +26165,7 @@ def _reconcile_mini_terrain_marker_anchors(
         if not candidates:
             continue
         best = min(candidates)
-        _overlap, _exact, _support, _side, movement, y, x, support = best
+        _overlap, _exact, _support, movement, _side, y, x, support = best
         if (
             support < MINI_TERRAIN_MARKER_MIN_SUPPORT
             or movement > MINI_TERRAIN_MARKER_MAX_SHIFT
@@ -27469,7 +27469,21 @@ def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool
         # partial support instead of suppressing a legitimate neighbouring
         # miniblock merely because the save/warp is the more reliable marker.
         overlap = _box_overlap_area(det.x, det.y, anchor.x, anchor.y)
-        return MINI_BLOCK_SIZE * GRID_SIZE <= overlap < GRID_SIZE * GRID_SIZE
+        if MINI_BLOCK_SIZE * GRID_SIZE <= overlap < GRID_SIZE * GRID_SIZE:
+            return True
+        # A scaled or 8px-phase capture can leave the two boxes touching only
+        # at a cardinal half-cell boundary.  Keep that topology, but reject
+        # diagonal proximity and cells more than one half-cell away.
+        return (
+            (
+                abs(det.x - anchor.x) == MINI_BLOCK_SIZE
+                and abs(det.y - anchor.y) <= MINI_BLOCK_SIZE // 2
+            )
+            or (
+                abs(det.y - anchor.y) == MINI_BLOCK_SIZE
+                and abs(det.x - anchor.x) <= MINI_BLOCK_SIZE // 2
+            )
+        )
     if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {
         OBJ_WALLJUMP_LEFT,
         OBJ_WALLJUMP_RIGHT,
