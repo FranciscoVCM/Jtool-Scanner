@@ -136,6 +136,10 @@ WEAK_ACTIVE_SAVE_YELLOW_GREEN_RATIO = (0.50, 2.20)
 WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS = 6
 WEAK_ACTIVE_SAVE_HEADER_MIN_BRIGHT = 5
 WEAK_ACTIVE_SAVE_HEADER_MIN_DARK = 10
+# A recovered active save must retain a contiguous dark header/frame edge.  A
+# count-only header gate is too permissive for decorative illustrations whose
+# scattered dark pixels happen to resemble the SAVE label budget.
+WEAK_ACTIVE_SAVE_HEADER_MIN_DARK_RUN = 8
 WEAK_ACTIVE_SAVE_BODY_MIN_GREEN = 18
 WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 12
 WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
@@ -8286,6 +8290,13 @@ def _detect_weak_active_save_patches(
                 or body_yellow < body_min_yellow
             ):
                 continue
+            if not _active_save_header_has_dark_frame_run(
+                image,
+                room,
+                x,
+                y,
+            ):
+                continue
             if (
                 not compact_room
                 and not _active_save_body_has_horizontal_run(
@@ -8391,6 +8402,35 @@ def _active_save_body_has_horizontal_run(
         >= 5
         for row in rows[6:]
     )
+
+
+def _active_save_header_has_dark_frame_run(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> bool:
+    """Require one intact dark horizontal edge in the six-row header band.
+
+    The weak recovery path is deliberately tolerant of player occlusion, but
+    a count of dark samples alone also occurs inside screenshots or artwork.
+    A real save header/frame keeps a short contiguous edge even when its label
+    is fragmented.  The test uses the detector's existing palette-relative
+    dark predicate and the normalized 16-sample patch, so it is independent of
+    screen coordinates and tileset names.
+    """
+
+    colors = _sample_map_patch_colors(image, room, map_x, map_y, GRID_SIZE)
+    for sample_y in range(WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS):
+        dark_row = [
+            max(colors[sample_y * 16 + sample_x]) < 110
+            for sample_x in range(16)
+        ]
+        if max(_true_runs(dark_row), default=0) >= (
+            WEAK_ACTIVE_SAVE_HEADER_MIN_DARK_RUN
+        ):
+            return True
+    return False
 
 
 def _true_runs(values: list[bool]) -> list[int]:

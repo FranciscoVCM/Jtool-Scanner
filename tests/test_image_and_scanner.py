@@ -154,6 +154,19 @@ class ImageAndScannerTests(unittest.TestCase):
         self.assertEqual(saves[0].kind, "save_active_layout_recovery")
         self.assertEqual((saves[0].x, saves[0].y), (96, 96))
 
+    def test_layout_recovery_rejects_decorative_picture_colors(self) -> None:
+        image = load_png(
+            Path("fixtures/block_spike/irkara-nr-flames-game.png")
+        )
+        room = Box(0, 0, image.width, image.height)
+
+        saves = _detect_saves(image, room, 8)
+
+        self.assertEqual(
+            [(save.x, save.y) for save in saves],
+            [(64, 128)],
+        )
+
     def test_compact_occluded_save_uses_downsampled_yellow_budget(self) -> None:
         source = load_png(Path("fixtures/block_spike/nang128-game.png"))
 

@@ -4,6 +4,43 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: active-save header morphology gate (2026-08-17)
+
+The full block/spike baseline had two unmatched save detections in
+`irkara-nr-flames`: the weak active-save recovery path interpreted two regions
+inside the large decorative anime panel as saves.  The same path is needed for
+the genuinely player-occluded active saves in Say_3, Say_9, NANG-128, and
+NANG-138, so disabling recovery globally would be an unsafe screen-family
+exception rather than a fix.
+
+The generalized change adds a palette-relative morphology requirement to
+`_detect_weak_active_save_patches`: within the six-row header band, at least one
+contiguous dark horizontal run must survive.  This complements the existing
+green/yellow balance, pale-label count, dark-pixel count, body-color count, and
+body horizontal-run gates.  It expresses the retained frame/title topology,
+not a screen name, coordinate, or fixed tileset color.  A synthetic regression
+also confirms the player-occluded layout remains recoverable, while a tracked
+Flames fixture regression confirms decorative-picture colors are rejected.
+
+Measured results:
+
+| workflow | before | after |
+| --- | --- | --- |
+| FTFA exact benchmark | 926/928 exact, 0 FP, 2 missed | 926/928 exact, 0 FP, 2 missed |
+| full 12-pair saves | 24 detected / 22 truth / 22 matched | 22 / 22 / 22 |
+| full 12-pair walljumps | 13 / 13 / 13 | 13 / 13 / 13 |
+| full 12-pair apples, water, gravity, platforms | all truth counts matched | unchanged |
+| full 12-pair mini-spikes | 351 / 288 / 281 | 355 / 288 / 281 |
+
+The four extra mini-spike candidates occur in Flames after the false save
+markers stop suppressing nearby geometry; matched mini-spikes are unchanged.
+The targeted controls retain `irkara-89` walljumps 9/9, `cn3-18` walljumps
+4/4, and compact NANG saves exact.  The complete suite passes with 364 tests
+in 1177.212 seconds (`OK`).  Reports are preserved under
+`.artifacts/goal-continuation/active-save-header-gate-ftfa-20260817/`,
+`.artifacts/goal-continuation/active-save-header-gate-full-20260817/`, and
+`.artifacts/goal-continuation/active-save-header-gate-20260817/`.
+
 ## Checkpoint: 2026-08-10
 
 ### Repository and runtime baseline at review start
