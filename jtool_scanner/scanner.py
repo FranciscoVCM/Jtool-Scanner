@@ -143,6 +143,13 @@ WEAK_ACTIVE_SAVE_HEADER_MIN_DARK_RUN = 8
 WEAK_ACTIVE_SAVE_BODY_MIN_GREEN = 18
 WEAK_ACTIVE_SAVE_BODY_MIN_YELLOW = 12
 WEAK_ACTIVE_SAVE_CLUSTER_DISTANCE = 33.0
+# The colored body of the 16x16 normalized save patch occupies the lower
+# ten sample rows.  A candidate whose body centroid is materially below that
+# band is normally one 8px phase too high; use this sprite-topology invariant
+# only when an adjacent candidate already passes every save gate.
+WEAK_ACTIVE_SAVE_BODY_TARGET_CENTROID = (
+    WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS + 3.5
+)
 # Compact 19x13 captures are commonly downsampled before padding to the
 # standard JTool viewport.  A player-occluded save therefore contributes a
 # few fewer yellow samples even though its layout is unchanged.  Relax only
@@ -8360,6 +8367,8 @@ def _detect_weak_active_save_patches(
     yellow_prefix = [0] * prefix_size
     bright_prefix = [0] * prefix_size
     dark_prefix = [0] * prefix_size
+    body_prefix = [0] * prefix_size
+    body_weight_prefix = [0] * prefix_size
 
     if grid_step % 2 == 0:
         for sample_y in range(sample_height):
@@ -8369,6 +8378,7 @@ def _detect_weak_active_save_patches(
             )
             image_y = max(0, min(image.height - 1, image_y))
             green_row = yellow_row = bright_row = dark_row = 0
+            body_row = body_weight_row = 0
             previous_row = sample_y * prefix_stride
             current_row = (sample_y + 1) * prefix_stride
             for sample_x in range(sample_width):
@@ -8386,6 +8396,20 @@ def _detect_weak_active_save_patches(
                 yellow_row += int(
                     color[0] > 145 and color[1] > 105 and color[2] < 105
                 )
+                body = int(
+                    (
+                        color[1] > 85
+                        and color[1] > color[0] + 18
+                        and color[1] > color[2] + 15
+                    )
+                    or (
+                        color[0] > 145
+                        and color[1] > 105
+                        and color[2] < 105
+                    )
+                )
+                body_row += body
+                body_weight_row += body * sample_y
                 bright_row += int(
                     _is_save_header_pale(*color)
                     if compact_room
@@ -8398,6 +8422,10 @@ def _detect_weak_active_save_patches(
                 yellow_prefix[index] = yellow_prefix[previous] + yellow_row
                 bright_prefix[index] = bright_prefix[previous] + bright_row
                 dark_prefix[index] = dark_prefix[previous] + dark_row
+                body_prefix[index] = body_prefix[previous] + body_row
+                body_weight_prefix[index] = (
+                    body_weight_prefix[previous] + body_weight_row
+                )
 
     def prefix_count(
         prefix: list[int],
@@ -8429,7 +8457,7 @@ def _detect_weak_active_save_patches(
     )
     base_candidates = 0
     total_windows = 0
-    strong_candidates: list[tuple[int, int, float]] = []
+    strong_candidates: list[tuple[int, int, float, float]] = []
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, grid_step):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, grid_step):
             total_windows += 1
@@ -8447,6 +8475,13 @@ def _detect_weak_active_save_patches(
                 body_yellow = prefix_count(
                     yellow_prefix, left, header_bottom, right, bottom
                 )
+                body_count = prefix_count(
+                    body_prefix, left, header_bottom, right, bottom
+                )
+                body_weight = prefix_count(
+                    body_weight_prefix, left, header_bottom, right, bottom
+                )
+                body_weight -= top * body_count
                 header_bright = prefix_count(
                     bright_prefix, left, top, right, header_bottom
                 )
@@ -8471,6 +8506,15 @@ def _detect_weak_active_save_patches(
                 header = colors[:header_end]
                 body_green = sum(green_flags[header_end:])
                 body_yellow = sum(yellow_flags[header_end:])
+                body_count = 0
+                body_weight = 0
+                for sample_y, row_start in enumerate(
+                    range(header_end, len(colors)),
+                    start=WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS,
+                ):
+                    if green_flags[row_start] or yellow_flags[row_start]:
+                        body_count += 1
+                        body_weight += sample_y
                 header_bright = sum(
                     _is_save_header_pale(*color)
                     if compact_room
@@ -8519,7 +8563,16 @@ def _detect_weak_active_save_patches(
                 + header_bright / 200
                 + min(body_green, body_yellow) / 180,
             )
-            strong_candidates.append((x, y, score))
+            # Keep the phase evidence separate from the palette thresholds.
+            # The candidate has already passed the green/yellow body gates;
+            # its normalized vertical centroid is therefore a stable way to
+            # distinguish two adjacent 8px windows of the same sprite.
+            body_centroid = (
+                body_weight / body_count
+                if body_count
+                else float(WEAK_ACTIVE_SAVE_HEADER_SAMPLE_ROWS)
+            )
+            strong_candidates.append((x, y, score, body_centroid))
 
     if (
         not strong_candidates
@@ -8529,14 +8582,14 @@ def _detect_weak_active_save_patches(
         return []
 
     remaining = set(range(len(strong_candidates)))
-    clusters: list[list[tuple[int, int, float]]] = []
+    clusters: list[list[tuple[int, int, float, float]]] = []
     while remaining:
         start = remaining.pop()
         component = [start]
         queue = [start]
         while queue:
             current = queue.pop()
-            current_x, current_y, _ = strong_candidates[current]
+            current_x, current_y, _, _ = strong_candidates[current]
             neighbors = {
                 index
                 for index in remaining
@@ -8554,7 +8607,22 @@ def _detect_weak_active_save_patches(
     detections: list[Detection] = []
     for cluster in clusters:
         map_x = round_to_step(int(round(median(item[0] for item in cluster))), grid_step)
-        map_y = round_to_step(int(round(median(item[1] for item in cluster))), grid_step)
+        median_y = int(round(median(item[1] for item in cluster)))
+        # If an adjacent candidate already passed all morphology gates, use
+        # the body centroid to resolve its vertical phase.  Keep x anchored
+        # to the cluster median: horizontal aliases have separate provenance
+        # and must not be changed by this vertical-only rule.
+        phase_candidate = min(
+            cluster,
+            key=lambda item: (
+                abs(item[3] - WEAK_ACTIVE_SAVE_BODY_TARGET_CENTROID),
+                abs(item[1] - median_y),
+                -item[2],
+            ),
+        )
+        if abs(phase_candidate[1] - median_y) <= 8:
+            median_y = phase_candidate[1]
+        map_y = round_to_step(median_y, grid_step)
         detections.append(
             _geometry_detection(
                 "save_active_layout_recovery",

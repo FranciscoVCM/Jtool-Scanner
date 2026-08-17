@@ -205,6 +205,25 @@ class ImageAndScannerTests(unittest.TestCase):
             [(160, 448)],
         )
 
+    def test_compact_active_save_uses_body_centroid_phase(self) -> None:
+        source = load_png(Path("fixtures/block_spike/nang138-game.png"))
+
+        result = scan_image(
+            source,
+            grid_step=8,
+            source_grid=(19, 13),
+        )
+
+        saves = [
+            detection
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        ]
+        self.assertEqual(
+            [(save.x, save.y) for save in saves],
+            [(144, 144)],
+        )
+
     def test_fragmented_red_cross_is_detected_as_save(self) -> None:
         result = scan_image(
             _synthetic_fragmented_cross_save_room(),

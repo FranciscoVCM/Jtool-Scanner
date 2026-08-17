@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: active-save body-centroid phase reconciliation (2026-08-17)
+
+The compact active-save recovery path could identify the player-occluded
+NANG-138 save but chose the upper of two otherwise valid 8px vertical phase
+windows, emitting `(144,136)` instead of the authoritative JMap position
+`(144,144)`.  The generalized rule now measures the normalized green/yellow
+body centroid inside each candidate's 16x16 save patch.  After all existing
+palette, header, body, frame, and clustering gates have passed, it chooses the
+adjacent phase whose centroid is closest to the fixed save-body topology
+target, while retaining the cluster's median x and limiting the adjustment to
+one 8px phase.  It uses no screen name, coordinate, tileset color, or
+brightness exception.
+
+Measured results at the documented grid-step-8 workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| NANG-128 active save | `(160,416)` exact | unchanged, exact |
+| NANG-135 active save | `(160,448)` exact | unchanged, exact |
+| NANG-138 active save | `(144,136)` (8px high) | `(144,144)` exact |
+| Irkara Flames active save | `(64,120)` vs JMap `(64,128)` | unchanged; requires separate phase evidence |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged |
+| full 12-pair totals | saves 22/22/22; all other class totals unchanged | identical totals |
+
+The focused active-save regression set passes 5 tests in 20.890 seconds.  The
+complete unittest suite passes **366 tests in 1670.432 seconds, `OK`**.  The
+full fixture report remains 22/22/22 saves, 12/12/12 warps, 4/4/4 apples,
+35/35/35 water cells, 13/13/13 walljumps, 3/3/3 platforms, 8/8/8 gravity
+flippers, 99/99/99 killer blocks, 18/19/18 jump refreshers, and the same
+block/spike totals as the preceding checkpoint.  This is a narrow morphology
+and phase correction; it does not claim that the 71-screen visual ledger is
+exact truth, and no giant-review JMaps were changed.
+
 ## Checkpoint: 71-screen vine phase audit after reconnect (2026-08-17)
 
 The post-reconnect walljump audit reran the current detector directly against
