@@ -63,6 +63,17 @@ classifier or coordinate exception.  The two-vine CN3_28 result confirms that
 the generalized dark-component vine route is active in the previously flagged
 unrecognized material family.
 
+The compact NANG control audit also ran at grid step 8 with color and geometry
+enabled.  NANG-128 is exact across its block, killer, spike, mini-spike, save,
+and warp classes.  NANG-138 is exact for the evaluated object classes and
+retains its active save/warp and refresher families.  NANG-135 retains its
+single save, warp, and all 86 killer blocks; the remaining normal-block count
+is 76 detected against 77 JMap entries.  The four missed JMap block positions
+are red-cross/terrain-overlap or half-cell compact cases, while three offset
+compact detections are also present.  Because the source/JMap phase and block
+versus-killer assignments are not independently corrected for this room, no
+threshold or coordinate shift is justified from NANG-135 alone.
+
 ## Checkpoint: 2026-08-10
 
 ### Repository and runtime baseline at review start
