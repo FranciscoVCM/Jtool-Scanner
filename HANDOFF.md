@@ -29,11 +29,13 @@ gameplay engine.
 - Local repository: `C:\Users\corvo\Documents\Jtool Scanner`
 - GitHub: `https://github.com/FranciscoVCM/Jtool-Scanner`
 - Branch: `main`
-- Current verified `main` tip: `5795f7c` (`assets: restore default JTool vine
-  frames`), with local `main` equal to live `origin/main`.
-- The immediately preceding scanner checkpoints are `4fcd472` (`scanner:
-  recover pale platforms in dark rooms`) and `e33ea64` (`scanner: preserve
-  visual save phase aliases`).
+- Latest verified implementation checkpoint: `450de97` (`scanner: gate active
+  saves by header morphology`). This handoff refresh is a documentation-only
+  follow-up; local `main` and live `origin/main` remain equal.
+- The immediately preceding published checkpoints are `5795f7c` (`assets:
+  restore default JTool vine frames`), `ff84176` (`docs: record rejected warm
+  edge recovery`), `4fcd472` (`scanner: recover pale platforms in dark rooms`),
+  and `e33ea64` (`scanner: preserve visual save phase aliases`).
 - The current working tree is clean and local `main` matches live `origin/main`.
 - Earlier implementation history, including `e73ce97` (`Recognize outlined
   terrain across neon rooms`), remains available in Git history.
@@ -108,6 +110,12 @@ implemented detection includes:
 - room crop/grid inference and normalization;
 - optional Tesseract OCR for infinite-jump text;
 - structural warnings that do not require a reference JMap.
+
+The weak active-save recovery path also requires a contiguous dark horizontal
+header/frame run in addition to its palette-count and body-shape evidence.
+This rejects decorative-picture false positives while preserving player-
+occluded Say and compact NANG saves; the regression and measured before/after
+results are recorded in `DEVELOPMENT_PROGRESS.md`.
 
 Unknown game-specific gimmicks are intentionally excluded. Objects supported
 by the correction model but not reliably detected can be added manually.
@@ -309,7 +317,7 @@ python -m unittest discover -s tests -v
 
 The bundled runtime initially lacked `pytest`; installing `pillow pytest`
 completed the documented environment. The current continuation's complete
-`python -m unittest discover -s tests -v` run passed **363 tests in 1172.097
+`python -m unittest discover -s tests -v` run passed **364 tests in 1177.212
 seconds**, `OK`. An earlier pytest collection recorded 308 tests and 46
 subtests; use the unittest command above as the current full-suite baseline.
 The temporary directory override used by that older pytest run is only needed
@@ -660,12 +668,11 @@ clipboard paths as the sole durable home of irreplaceable source material.
 
 ## 18. Recent relevant commits
 
-The current published continuation tip is `5795f7c` (`assets: restore default
-JTool vine frames`). Its immediately preceding scanner checkpoint is
-`b298bb6` (`scanner: reject sparse vine terrain bands`); the next earlier
-scanner checkpoints are
-`4fcd472` (`scanner: recover pale platforms in dark rooms`) and `e33ea64`
-(`scanner: preserve visual save phase aliases`). The older entries below are
+The current published scanner continuation checkpoint is `450de97` (`scanner:
+gate active saves by header morphology`). Its immediately preceding asset checkpoint is
+`5795f7c` (`assets: restore default JTool vine frames`), followed by
+`ff84176` (`docs: record rejected warm edge recovery`) and `b298bb6`
+(`scanner: reject sparse vine terrain bands`). The older entries below are
 historical context from before this continuation.
 
 From the current continuation backward:
