@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: zero-overlap water/mini-block boundary arbitration (2026-08-17)
+
+The remaining CN3-18 miniblock miss was already a strong raw candidate at
+`(256,320)` but final anchor arbitration treated the adjacent `water_3` at
+`(256,336)` as an incompatible marker.  A first broad water-cardinal rule was
+measured and rejected: it retained ten candidates, six of which were water
+interior texture.  The retained rule is narrower and palette-independent: a
+16px mini-block may coexist with a 32px water anchor only when the two cells
+touch at a cardinal boundary with zero-area overlap.  Any partial/interior or
+diagonal contact remains suppressed.  This uses object topology and native
+cell extents, not a screen name, coordinate, color, or brightness threshold.
+
+Measured at the documented grid-step-8 workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-18 miniblocks | 446 detected / 373 matched out of 374 | 450 detected / 374 matched; four water-boundary cells recovered |
+| CN3-18 water | 5/5 exact | unchanged at 5/5 |
+| CN3-16 miniblocks | 563 detected / 501 matched | unchanged |
+| NANG, Irkara, gravity, platform and refresher controls | unchanged | unchanged |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 FP, 0 shifted, 0 wrong direction |
+| full 12-pair totals | 1009/875/874 miniblocks | 1013/875/875; all other class totals unchanged |
+
+The complete fixture report is
+`.artifacts/goal-continuation/water-boundary-20260817/report.json`; all 12
+pairs retain exact saves `22/22`, warps `12/12`, apples `4/4`, water `35/35`,
+walljumps `13/13`, gravity flippers `8/8`, platforms `3/3`, and killer blocks
+`99/99`.  The one remaining exact-coordinate compact terrain discrepancy is
+the phase-shifted `(688,592)` truth cell, which is matched at the documented
+24px diagnostic tolerance by `(672,592)`; it is separate from water
+arbitration and remains unresolved.
+The post-change complete unittest discovery run passes **371 tests in
+3341.992 seconds, `OK`**.
+
 ## Checkpoint: anchored right-edge save backing and 16px phase normalization (2026-08-17)
 
 The CN3-18 compact-room control exposed a recovery path that was already

@@ -24,6 +24,7 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_UP,
     OBJ_WARP,
     OBJ_WATER_2,
+    OBJ_WATER_3,
     OBJ_WALLJUMP_LEFT,
     OBJ_WALLJUMP_RIGHT,
 )
@@ -5558,6 +5559,52 @@ class ScannerGeometryTests(unittest.TestCase):
                 (768, 400),
                 (784, 400),
             },
+        )
+
+    def test_cardinal_miniblock_can_coexist_with_water_anchor(self) -> None:
+        water = Detection(
+            "water_3",
+            OBJ_WATER_3,
+            256,
+            336,
+            1.0,
+            Box(256, 336, 32, 32),
+        )
+        backing = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            256,
+            320,
+            0.74,
+            Box(256, 320, 16, 16),
+        )
+        diagonal = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            248,
+            328,
+            0.74,
+            Box(248, 328, 16, 16),
+        )
+        overlapping = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            256,
+            352,
+            0.74,
+            Box(256, 352, 16, 16),
+        )
+
+        result = _dedupe_overlapping_geometry(
+            [water, backing, diagonal, overlapping]
+        )
+
+        self.assertEqual(
+            [(det.type_id, det.x, det.y) for det in result],
+            [
+                (OBJ_WATER_3, 256, 336),
+                (OBJ_MINI_BLOCK, 256, 320),
+            ],
         )
 
     def test_mini_terrain_save_prefers_nearest_exact_support_over_side_support(

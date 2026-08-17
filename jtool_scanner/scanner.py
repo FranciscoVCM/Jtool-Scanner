@@ -27496,6 +27496,37 @@ def _can_geometry_coexist_with_anchor(det: Detection, anchor: Detection) -> bool
             )
         )
     if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {
+        OBJ_WATER,
+        OBJ_WATER_2,
+        OBJ_WATER_3,
+    }:
+        # A compact terrain cell can share a cardinal half-cell boundary with
+        # a water sprite.  Keep that local support relationship, but do not
+        # make arbitrary diagonal or nearby water texture an excuse to retain
+        # every weak mini-block candidate.
+        if (
+            _sized_box_overlap_area(
+                det.x,
+                det.y,
+                MINI_BLOCK_SIZE,
+                anchor.x,
+                anchor.y,
+                GRID_SIZE,
+            )
+            != 0
+        ):
+            return False
+        return (
+            (
+                abs(det.x - anchor.x) == MINI_BLOCK_SIZE
+                and abs(det.y - anchor.y) <= MINI_BLOCK_SIZE // 2
+            )
+            or (
+                abs(det.y - anchor.y) == MINI_BLOCK_SIZE
+                and abs(det.x - anchor.x) <= MINI_BLOCK_SIZE // 2
+            )
+        )
+    if det.type_id == OBJ_MINI_BLOCK and anchor.type_id in {
         OBJ_WALLJUMP_LEFT,
         OBJ_WALLJUMP_RIGHT,
     }:
