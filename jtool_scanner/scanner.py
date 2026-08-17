@@ -16025,10 +16025,15 @@ def _recover_miniblock_room_objects(
     recovered.extend(warps)
     recovered.extend(walljumps)
     recovered.extend(_detect_miniblock_room_water(image, room))
+    save_backing_anchors = [
+        detection
+        for detection in recovered
+        if detection.type_id == OBJ_SAVE
+    ]
     recovered = _recover_miniblock_backing_cells(
         recovered,
         mini_blocks,
-        saves,
+        save_backing_anchors,
         walljumps,
         image,
         room,
@@ -16107,8 +16112,14 @@ def _recover_miniblock_backing_cells(
     for save in saves:
         if save.x < ROOM_WIDTH - GRID_SIZE:
             continue
-        add_cell(save.x, save.y + GRID_SIZE, "mini_block_save_backing")
-        add_cell(save.x + MINI_BLOCK_SIZE, save.y + GRID_SIZE, "mini_block_save_backing")
+        # Compact-room save candidates can still be on the intermediate 8px
+        # phase when this recovery runs.  Backing cells live on the 16px
+        # terrain lattice, so normalize the row before adding them; otherwise
+        # the late marker arbitration can follow the newly added half-phase
+        # row and move the save away from its canonical support.
+        support_y = ((save.y + GRID_SIZE) // MINI_BLOCK_SIZE) * MINI_BLOCK_SIZE
+        add_cell(save.x, support_y, "mini_block_save_backing")
+        add_cell(save.x + MINI_BLOCK_SIZE, support_y, "mini_block_save_backing")
 
     bottom_y = ROOM_HEIGHT - GRID_SIZE
     lower_y = ROOM_HEIGHT - MINI_BLOCK_SIZE

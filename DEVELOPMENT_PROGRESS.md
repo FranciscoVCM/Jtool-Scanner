@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: anchored right-edge save backing and 16px phase normalization (2026-08-17)
+
+The CN3-18 compact-room control exposed a recovery path that was already
+structurally justified but never received high-confidence saves: the caller
+passed only fallback red-cross saves to `_recover_miniblock_backing_cells`, so
+an anchored right-edge SAVE could not recover the two 16px cells directly
+below it.  The caller now passes all recovered SAVE anchors.  Because compact
+room marker candidates can still be on an 8px intermediate phase at that
+point, the backing row is normalized to the lower 16px terrain lattice before
+the cells are added.  This is based on save/support topology and lattice
+phase, not a screen name, fixed coordinate, palette, or brightness.
+
+Measured at the documented grid-step-8 workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-18 miniblocks | 444 detected / 371 matched out of 374 | 446 detected / 373 matched; `(768,400)` and `(784,400)` recovered |
+| CN3-18 save | `(224,80)`, `(384,256)`, `(768,368)` | unchanged; no phase regression |
+| CN3-16 miniblocks | 563 detected / 501 matched | unchanged |
+| Irkara/NANG/FTFA object controls | unchanged | unchanged |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 FP, 0 shifted, 0 wrong direction |
+| full 12-pair totals | 1007/875/872 miniblocks | 1009/875/874; all other class totals unchanged |
+
+The focused geometry tests pass, including the new anchored right-edge
+phase-offset case.  The complete fixture report is
+`.artifacts/goal-continuation/save-phase-right-edge-20260817/report.json`; it
+retains exact saves `22/22`, warps `12/12`, apples `4/4`, water `35/35`,
+walljumps `13/13`, gravity flippers `8/8`, platforms `3/3`, and killer blocks
+`99/99`.  The held-out fixture families therefore show no regression.  The
+remaining CN3-18 miniblock miss is `(256,320)` plus the known excess compact
+terrain candidates; those are separate shape/arbitration work, not evidence
+for a broader save-support rule.  The post-change complete unittest discovery
+run passes **370 tests in 1534.741 seconds, `OK`**.
+
 ## Checkpoint: walljump backing-cell coexistence (2026-08-17)
 
 The CN3-18 compact-room review exposed a late arbitration bug rather than a

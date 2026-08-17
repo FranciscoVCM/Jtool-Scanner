@@ -255,6 +255,7 @@ from jtool_scanner.scanner import (
     _recover_axis_supported_mini_spikes,
     _recover_supported_block_cells,
     _recover_up_spike_lateral_continuations,
+    _recover_miniblock_backing_cells,
     _prune_miniblock_room_primary_full_spike_noise,
     _triangle_masks,
     _triangle_side_coverage,
@@ -5510,6 +5511,53 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertEqual(
             [(det.type_id, det.x, det.y) for det in result],
             [(OBJ_SAVE, 224, 80), (OBJ_MINI_BLOCK, 208, 80)],
+        )
+
+    def test_anchored_right_edge_save_recovers_both_support_cells(self) -> None:
+        image = RGBImage(800, 608, b"\x00" * (800 * 608 * 3))
+        room = Box(0, 0, 800, 608)
+        save = Detection(
+            "save_terrain_aligned",
+            OBJ_SAVE,
+            768,
+            376,
+            0.96,
+            Box(768, 376, 32, 32),
+        )
+        existing = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                y,
+                0.70,
+                Box(x, y, 16, 16),
+            )
+            for x, y in ((768, 336), (768, 352), (784, 352))
+        ]
+
+        result = _recover_miniblock_backing_cells(
+            [*existing, save],
+            existing,
+            [save],
+            [],
+            image,
+            room,
+        )
+
+        self.assertEqual(
+            {
+                (detection.x, detection.y)
+                for detection in result
+                if detection.type_id == OBJ_MINI_BLOCK
+            },
+            {
+                (768, 336),
+                (768, 352),
+                (784, 352),
+                (768, 400),
+                (784, 400),
+            },
         )
 
     def test_mini_terrain_save_prefers_nearest_exact_support_over_side_support(
