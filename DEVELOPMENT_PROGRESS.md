@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: symmetric clipped bottom miniblock continuation (2026-08-17)
+
+The compact CN3-18 room still had one exact-coordinate miniblock phase
+discrepancy at `(688,592)`.  The existing bottom-boundary recovery correctly
+used a recognized lower-row neighbour to infer the 16px cell above it, but did
+not recheck the inverse case when that inferred upper cell was itself the
+stronger visible boundary evidence.  A single bounded second pass now tests
+the final 16px row with the same relative edge-density and saturation gates.
+It uses no room name, coordinate exception, absolute palette, or brightness
+threshold, and it is limited to cells whose upper companion was just
+supported by the existing boundary topology.
+
+Measured at the documented grid-step-8 workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-18 miniblocks | 450 detected / 374 matched; one exact phase miss at `(688,592)` | 451 detected / 374 exact; all 374 JMap positions present |
+| CN3-16 miniblocks | 563 detected / 501 matched | unchanged |
+| NANG-128/135/138 and Irkara compact controls | unchanged | unchanged |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 shifted, 0 wrong direction |
+| full 12-pair totals | 1013/875/875 miniblocks | 1014/875/875; every other class total unchanged |
+
+The complete fixture report is
+`.artifacts/goal-continuation/bottom-boundary-20260817/report.json`; the FTFA
+report is under `.artifacts/goal-continuation/bottom-boundary-ftfa-20260817/`.
+The focused boundary regression passes.  The 24px diagnostic workflow already
+matched the cell before this change; this checkpoint closes the exact phase
+gap without broadening ordinary compact-room texture recovery.
+
 ## Checkpoint: zero-overlap water/mini-block boundary arbitration (2026-08-17)
 
 The remaining CN3-18 miniblock miss was already a strong raw candidate at

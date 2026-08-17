@@ -16133,6 +16133,23 @@ def _recover_miniblock_backing_cells(
             and 0.25 <= profile.saturation <= 0.50
         ):
             add_cell(x, bottom_y, "mini_block_bottom_continuation")
+
+    # A clipped bottom row can provide the inverse evidence as well: the
+    # first pass may infer the 16px cell immediately above the boundary from
+    # an already recognized lower neighbour, while the lower cell itself is
+    # only partially visible.  Recheck that newly completed pair once, using
+    # the same relative edge/saturation gate.  This is deliberately bounded
+    # to the final 16px row and does not promote arbitrary isolated texture.
+    for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        if (x, bottom_y) not in positions or (x, lower_y) in positions:
+            continue
+        patch = _patch_features(image, room, x, lower_y, MINI_BLOCK_SIZE)
+        profile = _patch_color_profile(image, room, x, lower_y, MINI_BLOCK_SIZE)
+        if (
+            0.10 <= patch.edge_density <= 0.30
+            and 0.25 <= profile.saturation <= 0.50
+        ):
+            add_cell(x, lower_y, "mini_block_bottom_boundary_continuation")
     return result
 
 

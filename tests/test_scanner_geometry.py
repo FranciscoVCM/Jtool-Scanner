@@ -5561,6 +5561,51 @@ class ScannerGeometryTests(unittest.TestCase):
             },
         )
 
+    def test_bottom_boundary_continuation_rechecks_inferred_upper_cell(self) -> None:
+        image = RGBImage(800, 608, b"\x00" * (800 * 608 * 3))
+        room = Box(0, 0, 800, 608)
+        existing = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                672,
+                592,
+                0.70,
+                Box(672, 592, 16, 16),
+            )
+        ]
+
+        def patch_features(_image, _room, x, y, _size):
+            if (x, y) in {(688, 576), (688, 592)}:
+                return _PatchFeatures((), 0.16, 0.20, 0.20)
+            return _PatchFeatures((), 0.0, 0.0, 0.0)
+
+        with mock.patch(
+            "jtool_scanner.scanner._patch_features",
+            side_effect=patch_features,
+        ), mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            return_value=_ColorProfile(50.0, 80.0, 110.0, 0.36),
+        ):
+            result = _recover_miniblock_backing_cells(
+                existing,
+                existing,
+                [],
+                [],
+                image,
+                room,
+            )
+
+        positions = {
+            (detection.x, detection.y)
+            for detection in result
+            if detection.type_id == OBJ_MINI_BLOCK
+        }
+        self.assertIn((688, 576), positions)
+        self.assertIn((688, 592), positions)
+        self.assertNotIn((656, 576), positions)
+        self.assertNotIn((656, 592), positions)
+
     def test_cardinal_miniblock_can_coexist_with_water_anchor(self) -> None:
         water = Detection(
             "water_3",
