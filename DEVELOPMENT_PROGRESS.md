@@ -4,6 +4,33 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: 71-screen vine phase audit after reconnect (2026-08-17)
+
+The post-reconnect walljump audit reran the current detector directly against
+all 71 preserved giant-review source PNGs at the public grid-step-8 setting.
+Twenty-seven screens contain walljump candidates, for 145 total cells.  The
+current detector preserves the protected clipped/reverse controls (CN3-18:
+four left edge cells at `(-16,336)`, `(-16,368)`, `(-16,416)`, and
+`(-16,448)`; Irkara-89: nine fixture vines; NANG-128r: no final vines in the
+full scan) and the previously reviewed dark/repeated material (CN3-21: 13,
+CN3-28: 2, CN3-29: 4, CN3-30: 3, Bathhouse1: 3, Halls6: 2, Halls7: 2).
+
+The full list is deliberately recorded as detector evidence rather than as
+new exact truth: the giant-review screens do not have corrected authoritative
+JMaps.  The results do not show a common universal 16-pixel horizontal error.
+The direction and origin choices vary with clipped edges, repeated-strip
+shape phase, local terrain support, and dark-component morphology.  In
+particular, Halls7 remains on its shape-derived left-vine phase while the
+Irkara-89 control retains its independently proven terrain-supported aliases.
+No additional shift, orientation flip, or palette threshold is justified by
+this audit, so no scanner code was changed.
+
+The audit also confirms the workflow-setting invariant: invoking the direct
+detector at the coarser 32-pixel default under-samples repeated vines, while
+the documented/app/benchmark grid step 8 preserves the reviewed cells.  The
+next vine change must therefore be driven by a source/JMap-backed discrepancy,
+not by a coarser-sampling count.
+
 ## Checkpoint: active-save header morphology gate (2026-08-17)
 
 The full block/spike baseline had two unmatched save detections in
