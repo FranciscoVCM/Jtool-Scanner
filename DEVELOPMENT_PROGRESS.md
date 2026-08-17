@@ -2676,3 +2676,64 @@ wrong direction`.  The complete 12-pair workflow remains unchanged at saves
 `22/22`, warps `12/12`, apples `4/4`, water `35/35`, walljumps `13/13`,
 gravity `8/8`, platforms `3/3`, killers `99/99`, and matched refreshers
 `18/19`; full unittest discovery passes **362 tests in 1882.760 seconds**, `OK`.
+
+## Checkpoint: sparse-vine terrain-band false-positive recovery (2026-08-17)
+
+The held-out Irkara-51 control exposed a concrete failure in the ordinary
+sparse-vine route. Before this change, all four authoritative vines matched,
+but two additional `walljump_left` detections were emitted at `(720,352)` and
+`(744,384)`. Their green masks were broad terrain boundaries rather than
+sprites: at half-cell sampling they contained five-row horizontal bands, and
+the latter contained two full-height green columns. The feared universal
+16-pixel origin error was not present in the four truth cells.
+
+The generalized sparse-patch route now rejects only that palette-independent
+morphology after split-pair recovery has consumed the raw candidates: a
+non-left-edge 32px sample with at least five consecutive rows of four or more
+green samples, a short four-row band, or multiple full-height green columns.
+This ordering preserves the independent split-vine evidence used by
+Irkara-52; a recovered right-edge split alias is still rejected when it has
+multiple full-height columns. Clipped left-edge cells remain on the dedicated
+edge-origin route; repeated cadence strips and dense dark components do not
+pass through the gate. No room name, absolute coordinate, palette, filename,
+or manual correction is used.
+
+The formal Irkara-51 regression now requires the exact four-cell set
+`(0,240,left)`, `(128,320,right)`, `(224,128,right)`, and `(672,400,left)`;
+it passes. The Irkara-52 split-vine regression and the two existing synthetic
+sparse-vine tests also pass. Held-out post-change scans preserve Irkara-89 at
+9/9 vines, CN3-18 at 4/4 clipped edge vines, CN3-21 at 13 dark/repeated
+cells, Bathhouse1 at 3 repeated cells, Halls6 at 2 component cells, and Halls7
+at 2 repeated cells; reverse NANG-128r remains free of final vine detections.
+
+The source/JTool/blend batch was regenerated under the ignored
+`.artifacts/goal-continuation/vine-band-review-20260817/` directory. CN3-28
+retains two dark right-vine cells, Bathhouse1 three left-vine cells and its
+bounded water, Halls6 two left-vine cells and its water hazard, and Halls7 two
+left-vine cells plus both previously recovered pale platforms. These giant
+review screens still lack corrected authoritative JMaps, so their remaining
+dense geometry is visual-only evidence rather than exact truth. The ignored
+ledger rows 22, 28, 49, and 50 now point to the post-change projects.
+
+The first implementation applied this gate before split-pair recovery. The
+protected Irkara-52 regression caught that ordering mistake (its split vine at
+`(272,320)` disappeared), so that iteration was not accepted. The final
+implementation applies the gate after split recovery and passes the complete
+unittest suite: **362 tests in 1180.422 seconds, `OK`**.
+
+Post-change FTFA remains the strict golden-room baseline at
+`926/928 exact; 0 false positives; 2 missed; 0 shifted; 0 wrong direction`
+(`.artifacts/goal-continuation/vine-band-ftfa-20260817b/report.json`), with
+the same two boundary block misses and no vine-related regression. The
+post-change complete block/spike report
+(`.artifacts/goal-continuation/vine-band-block-spike-20260817c/report.json`)
+is unchanged from the preserved baseline: saves `24/22/22`, warps `12/12/12`,
+apples `4/4/4`, water `35/35/35`, walljumps `13/13/13`, gravity `8/8/8`,
+platforms `3/3/3`, killers `99/99/99`, refreshers `18/19/18`, mini blocks
+`1001/875/869`, blocks `1590/1486/1457`, full spikes `888/748/710`, and mini
+spikes `351/288/281` (detected/truth/matched where three values are shown).
+
+The exact Irkara-51 correction and the held-out family checks therefore add
+no FTFA or fixture regressions. The 71-screen giant-review ledger remains
+visual bookkeeping where corrected JMaps are unavailable; its four updated
+rows continue to point at the ignored post-change projects.

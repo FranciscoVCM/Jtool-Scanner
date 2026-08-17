@@ -1318,6 +1318,14 @@ WALLJUMP_PATCH_MAX_COUNT = 24
 WALLJUMP_PATCH_MIN_DENSITY = 0.035
 WALLJUMP_PATCH_MAX_DENSITY = 0.095
 WALLJUMP_PATCH_MIN_SIDE_BIAS = 0.28
+# Broad green terrain can leave a side-biased 32px sample that passes the
+# sparse-vine colour budget.  A real vine is vertically patterned rather than
+# a long horizontal band; keep this morphology gate separate from the
+# palette-relative tests so it remains useful across bright and muted rooms.
+WALLJUMP_PATCH_TERRAIN_BAND_MIN_ROWS = 5
+WALLJUMP_PATCH_TERRAIN_BAND_MIN_ROW_FILL = 4
+WALLJUMP_PATCH_TERRAIN_BAND_MIN_FULL_COLUMNS = 2
+WALLJUMP_PATCH_TERRAIN_BAND_FULL_COLUMN_FILL = 15
 WALLJUMP_SPARSE_MIN_LIGHT_RATIO = 0.45
 WALLJUMP_SPARSE_BROAD_LIGHT_RATIO = 0.85
 WALLJUMP_STRIP_PATCH_MIN_COUNT = 5
@@ -10259,6 +10267,11 @@ def _detect_walljumps(
             repeated,
         )
     )
+    detections = _prune_sparse_walljump_terrain_bands(
+        detections,
+        image,
+        room,
+    )
     detections.extend(
         _recover_cross_phase_walljump_pairs(
             detections,
@@ -10628,6 +10641,106 @@ def _recover_cross_phase_walljump_pairs(
                 )
             )
     return recovered
+
+
+def _is_sparse_walljump_terrain_band(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> bool:
+    """Reject a sparse-vine sample that is really a broad terrain edge.
+
+    The sparse route intentionally tolerates disconnected green marks, but a
+    bright tileset can make a continuous terrain boundary look side-biased in
+    one 32px cell.  Sample the same normalized patch at half-cell resolution
+    and reject only the unmistakable band morphology.  Edge-clipped cells are
+    left to the dedicated edge-origin route, and repeated-strip/dark-component
+    detections never pass through this helper.
+    """
+
+    if map_x <= 0 or map_x > ROOM_WIDTH - GRID_SIZE:
+        return False
+    colors = _sample_map_patch_colors(
+        image,
+        room,
+        map_x,
+        map_y,
+        GRID_SIZE,
+        sample_size=16,
+    )
+    mask = [
+        [
+            _is_sparse_walljump_green(*colors[row * 16 + column])
+            for column in range(16)
+        ]
+        for row in range(16)
+    ]
+    row_fill = [sum(row) for row in mask]
+    longest_band = 0
+    current_band = 0
+    for fill in row_fill:
+        if fill >= WALLJUMP_PATCH_TERRAIN_BAND_MIN_ROW_FILL:
+            current_band += 1
+            longest_band = max(longest_band, current_band)
+        else:
+            current_band = 0
+    occupied_rows = [index for index, fill in enumerate(row_fill) if fill]
+    occupied_span = (
+        occupied_rows[-1] - occupied_rows[0] + 1 if occupied_rows else 0
+    )
+    if longest_band >= WALLJUMP_PATCH_TERRAIN_BAND_MIN_ROWS:
+        return True
+    if longest_band >= WALLJUMP_PATCH_TERRAIN_BAND_MIN_ROWS - 1 and occupied_span <= 5:
+        return True
+    full_columns = sum(
+        sum(mask[row][column] for row in range(16))
+        >= WALLJUMP_PATCH_TERRAIN_BAND_FULL_COLUMN_FILL
+        for column in range(16)
+    )
+    return full_columns >= WALLJUMP_PATCH_TERRAIN_BAND_MIN_FULL_COLUMNS
+
+
+def _prune_sparse_walljump_terrain_bands(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Remove ordinary terrain bands after split-pair recovery has run.
+
+    Split-vine recovery needs the raw ordinary candidates one cell apart, so
+    applying the morphology gate in the initial sparse scan would erase the
+    evidence needed for a true unknown-tileset phase.  Recovered split pairs
+    are retained; only an unmistakable right-edge full-column alias is pruned
+    from that recovered family.
+    """
+
+    kept: list[Detection] = []
+    for detection in detections:
+        if detection.kind in {"walljump_left", "walljump_right"}:
+            if _is_sparse_walljump_terrain_band(
+                image,
+                room,
+                detection.x,
+                detection.y,
+            ):
+                continue
+        elif detection.kind in {
+            "walljump_left_split_pair",
+            "walljump_right_split_pair",
+        }:
+            if (
+                detection.x == ROOM_WIDTH - GRID_SIZE
+                and _is_sparse_walljump_terrain_band(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                )
+            ):
+                continue
+        kept.append(detection)
+    return kept
 
 
 def _detect_sparse_walljump_patches(

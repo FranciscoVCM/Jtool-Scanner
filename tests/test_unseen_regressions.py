@@ -430,6 +430,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
         self.assertIn((224, 128, 17), walljumps)
         self.assertIn((672, 400, 16), walljumps)
+        # Green terrain edges at the far right previously produced two
+        # sparse-patch walljump impostors.  The morphology gate must remove
+        # those bands without changing the four authoritative vine cells.
+        self.assertEqual(
+            sorted(walljumps),
+            [
+                (0, 240, 16),
+                (128, 320, 17),
+                (224, 128, 17),
+                (672, 400, 16),
+            ],
+        )
         full_spikes = {
             (detection.x, detection.y, detection.type_id)
             for detection in result.detections
