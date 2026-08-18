@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: SAVE phase audit separates header and terrain ambiguities (2026-08-18)
+
+The next exact-fixture audit targeted the recurring eight-pixel SAVE/start
+phase reports after the bright-filled spike correction.  The grid-step-8
+workflow was rerun from the current scanner and the raw SAVE candidates were
+compared with the final terrain/header-arbitrated candidates.  This is a
+negative-result checkpoint: the measured phase differences do not support a
+single vertical shift or a threshold-only change.
+
+| control | raw candidate evidence | final/current result | authoritative comparison |
+| --- | --- | --- | --- |
+| Irkara Flames | body path `(64,128)`; late local-header path proposes `(64,120)` | `(64,120)` `save_header_aligned` | truth `(64,128)`; header evidence is not reliable for this textured gray room |
+| K3 Ex-Hades | `(576,64)`, `(40,160)`, `(416,160)`, `(256,352)`, `(432,392)`, `(480,520)` | `(576,64)`, `(32,160)`, `(416,160)`, `(256,352)`, `(432,384)`, `(480,512)` | all six match within tolerance, but the JMap preserves two 8-pixel vertical phases plus one 8-pixel and one 16-pixel horizontal phase; support-cell snapping cannot be generalized safely |
+| Partysu3 | raw body/header candidates are one 8-pixel phase low | `(112,320)` and `(544,416)` after support arbitration | both exact; this is the opposite outcome from the K3 support topology |
+| Irkara-89 | raw body candidate is `(352,552)` | `(352,544)` after header/terrain phase recovery | exact; existing regression remains protected |
+| CN3-16 / CN3-18 | fragmented/terrain-backed paths retain their own origins | all 4 and all 3 saves exact | exact; no regression |
+
+The late header detector is therefore useful only when its independent label
+geometry agrees with the room's object-origin convention; a local pale/text
+run alone is insufficient.  Terrain support also cannot be treated as a
+universal anchor: the same 8-pixel overlap pattern is correct for Partysu3 but
+would erase K3's authoritative off-phase placements.  No code change was
+accepted in this audit, no screen-specific exception was added, and the next
+SAVE iteration must use a stronger invariant (sprite-origin/room-phase
+evidence) or stop rather than repeating the same threshold experiment.
+
+The authoritative post-change fixture report remains
+`.artifacts/goal-continuation/bright-filled-recovery-fixtures-20260818/report.json`;
+the strict FTFA report remains
+`.artifacts/goal-continuation/bright-filled-recovery-ftfa-20260818/report.json`.
+The FTFA gate is unchanged at **926/928 exact, 0 false positives, 2 missed,
+0 shifted, 0 wrong direction**.  This audit changed documentation only; the
+71-screen ignored ledger and generated source/JTool/blend artifacts remain
+unchanged.
+
 ## Checkpoint: bright-filled spike reconciliation preserves recovery provenance (2026-08-18)
 
 The bright-filled full-spike profile rebuilt its final field from raw geometry
