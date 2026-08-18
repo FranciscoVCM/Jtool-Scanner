@@ -347,6 +347,34 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(32, 480), (64, 128), (384, 288), (544, 128), (736, 352)],
         )
 
+    def test_catharsis_water_tail_recovery_keeps_irkara71_column_phase(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-71-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        detected = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_WATER_2
+        }
+        truth = {
+            (item.x, item.y)
+            for item in JMap.from_file(
+                Path("fixtures") / "irkara" / "irkara-71.jmap"
+            ).objects
+            if item.type_id == OBJ_WATER_2
+        }
+
+        # The two lower cells are the weak tail immediately after the seeded
+        # catharsis-water column.  They must retain their native 32px phase,
+        # and no palette-relative tail recovery may invent water elsewhere.
+        self.assertIn((352, 544), detected)
+        self.assertIn((352, 576), detected)
+        self.assertTrue(detected <= truth)
+
     def test_dark_sparse_save_headers_recover_body_centroid_phase(self) -> None:
         expected = {
             "irkara-49-game.png": [(256, 64), (384, 544)],

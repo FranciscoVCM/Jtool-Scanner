@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: seeded catharsis-water tail continuity (2026-08-18)
+
+The exact Irkara-71 control exposed a narrow continuity failure in the
+palette-relative catharsis-water route.  A column with two independent bright
+seed cells already had a valid water tail, but the first lower tail cell was
+just outside the weaker output-cell predicate.  Because the old continuation
+loop required both predicates, it stopped before the next valid tail cell.
+
+The detector now lets only an already seeded two-cell column extend through up
+to two cells that satisfy the existing `_is_catharsis_tail` silhouette test.
+The change does not lower room activation, learn a room colour, use a screen
+name or coordinate, or permit a smooth background to seed water.  The new
+regression loads the authoritative Irkara-71 JMap and requires the recovered
+native-phase cells `(352,544)` and `(352,576)` while asserting that no detected
+water falls outside that JMap.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-71 water | 26 detected / 37 truth / 26 matched | 28 / 37 / 28; 100% precision |
+| Irkara-54 warm/cyan water | 472 / 475 / 472 | unchanged; 472 / 475 / 472 |
+| catharsis synthetic room and cyan/dark-background vetoes | 3 focused tests | 3 focused tests, `OK` |
+| complete 12-pair block/spike color gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 missed, 0 shifted, 0 wrong direction | unchanged |
+
+The source/JTool/blend review project and exact Irkara-71 report are preserved
+under the ignored
+`.artifacts/goal-continuation/catharsis-tail-review-20260818/` directory.
+The current project summary contains 28 `water_2` objects and four geometry
+reviews; the remaining nine Irkara-71 water misses are not claimed solved by
+this narrow continuity rule.  The focused real-image regression passed in
+312.562 seconds, the strict FTFA and complete block/spike workflows remained
+green, and full unittest discovery passes **376 tests in 1785.919 seconds,
+`OK`**.
+
 ## Checkpoint: recover low-contrast vertical full-spike pairs (2026-08-18)
 
 CN3-18 contained two adjacent up/down spike pairs whose shared bright seam

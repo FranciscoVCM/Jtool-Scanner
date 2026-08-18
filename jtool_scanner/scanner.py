@@ -12219,8 +12219,14 @@ def _detect_catharsis_water(
             y = start_y + direction * GRID_SIZE
             for _ in range(2):
                 cell = (x, y)
-                if cell not in weak_cells or not _is_catharsis_tail(
-                    cell_info[cell],
+                # Once a column has two independent seed cells, its short
+                # continuation is allowed to cross the weaker output gate.
+                # Keep the stricter palette-relative tail silhouette check so
+                # a smooth dark background cannot become water merely by
+                # being adjacent to a seed column.
+                tail_info = cell_info.get(cell)
+                if tail_info is None or not _is_catharsis_tail(
+                    tail_info,
                     allow_dark=False,
                 ):
                     break
