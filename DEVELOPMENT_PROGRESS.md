@@ -4,6 +4,46 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: bright-filled spike reconciliation preserves recovery provenance (2026-08-18)
+
+The bright-filled full-spike profile rebuilt its final field from raw geometry
+silhouettes only.  In bright textured rooms, earlier support and occlusion
+passes had already recovered valid full spikes, but the room-scale rebuild
+discarded them because they were not present in `raw_full_spikes`.  This was a
+provenance loss, not evidence that the later candidates were color impostors.
+
+The correction keeps the existing raw-silhouette activation gate.  Only when
+that gate is already active does it augment the selected field with current
+full-spike candidates whose normalized triangle fill independently satisfies
+the same density-contrast and luma-contrast test.  Recovered candidates cannot
+activate the profile on their own, so sparse controls such as F189 remain on
+the ordinary arbitration path.  The rule uses no screen name, filename,
+coordinate, palette, or fixed brightness.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara Flames full spikes | 79 detected / 82 truth / 65 matched | 90 / 82 / 69; recovered truth positions `(352,192,up)`, `(96,192,left)`, `(576,160,left)`, and `(576,240,left)` |
+| CN3-16 full spikes | 35 / 30 / 27 | 37 / 30 / 28 |
+| CN3-18 full spikes | 53 / 50 / 43 | 54 / 50 / 44 |
+| F189 full spikes | 89 / 85 / 85 | unchanged at 89 / 85 / 85 |
+| complete 12-pair fixture full spikes | 888 / 748 / 710 | 902 / 748 / 716 |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged: 926/928 exact, 0 shifted, 0 wrong direction |
+
+All color-object classes and the platform, gravity-flipper, walljump,
+miniblock, killer-block, and refresher aggregate controls remain unchanged in
+the complete fixture report.  Fresh correction projects and Source/JTool/
+Blend previews for `irkara-nr-flames`, `k3-ex-hades`, `cn3-16`, and `cn3-18`
+are preserved under
+`.artifacts/goal-continuation/bright-filled-recovery-review-20260818/`;
+the exact FTFA report is under
+`.artifacts/goal-continuation/bright-filled-recovery-ftfa-20260818/`, and the
+complete fixture report is under
+`.artifacts/goal-continuation/bright-filled-recovery-fixtures-20260818/`.
+The focused recovery regression and the complete unittest suite pass: **373
+tests in 1583.025 seconds, `OK`**.
+
 ## Checkpoint: paired upward mini-spike arbitration across unknown palettes (2026-08-18)
 
 The previous block-edge recovery restored seven Irkara-51 mini-spikes but left

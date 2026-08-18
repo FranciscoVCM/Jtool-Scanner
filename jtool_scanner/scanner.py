@@ -16978,10 +16978,31 @@ def _reconcile_bright_filled_full_spikes(
     current_full_spikes = [
         detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
     ]
+    # Raw source silhouettes must activate this room-scale profile.  Once it
+    # is active, however, retain earlier topology/occlusion recoveries that
+    # independently show the same normalized filled-triangle evidence.  The
+    # old raw-only rebuild discarded those valid candidates simply because
+    # their provenance was a later recovery stage.  Do not let recovered
+    # candidates activate the profile on their own: sparse rooms such as F189
+    # rely on the ordinary arbitration and must remain unchanged.
     if not _should_reconcile_bright_filled_full_spikes(
         len(selected), len(current_full_spikes)
     ):
         return detections
+    for detection in current_full_spikes:
+        key = (detection.type_id, detection.x, detection.y)
+        if key in selected:
+            continue
+        fill = _triangle_fill_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+            directions[detection.type_id],
+        )
+        if _is_bright_filled_full_spike_component(fill):
+            selected[key] = detection
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
             patch = _patch_features(image, room, x, y, GRID_SIZE)

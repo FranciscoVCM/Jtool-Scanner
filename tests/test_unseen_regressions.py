@@ -467,6 +467,30 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((544, 32, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((608, 96, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
 
+    def test_bright_filled_reconcile_keeps_recovered_full_spikes(self) -> None:
+        """Room-scale bright fill must not discard topology recoveries."""
+
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "irkara-nr-flames-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        full_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+        self.assertTrue(
+            {
+                (352, 192, OBJ_SPIKE_UP),
+                (96, 192, OBJ_SPIKE_LEFT),
+                (576, 160, OBJ_SPIKE_LEFT),
+                (576, 240, OBJ_SPIKE_LEFT),
+            }.issubset(full_spikes)
+        )
+
     def test_repeated_vine_phase_beats_same_column_terrain_alias(self) -> None:
         """A cadence-confirmed vine keeps its shape-derived half-cell origin."""
 
