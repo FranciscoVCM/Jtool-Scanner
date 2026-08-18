@@ -20,7 +20,9 @@ from jtool_scanner.constants import (
     OBJ_SPIKE_RIGHT,
     OBJ_SPIKE_UP,
     OBJ_WARP,
+    OBJ_WATER,
     OBJ_WATER_2,
+    OBJ_WATER_3,
     OBJ_WALLJUMP_LEFT,
     OBJ_WALLJUMP_RIGHT,
     ROOM_HEIGHT,
@@ -374,6 +376,43 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((352, 544), detected)
         self.assertIn((352, 576), detected)
         self.assertTrue(detected <= truth)
+
+    def test_boundary_water_recovery_keeps_irkara54_edge_cells(self) -> None:
+        result = scan_png(
+            Path("fixtures") / "irkara" / "irkara-54-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        detected = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_WATER_2
+        }
+        truth = {
+            (item.x, item.y)
+            for item in JMap.from_file(
+                Path("fixtures") / "irkara" / "irkara-54.jmap"
+            ).objects
+            if item.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+        }
+
+        # These two clipped cells are between exact water neighbors at the
+        # same room edge; no other edge candidate may be invented.
+        self.assertIn((0, 512), detected)
+        self.assertIn((768, 512), detected)
+        boundary_detected = {
+            position
+            for position in detected
+            if position[0] in (0, 768)
+        }
+        boundary_truth = {
+            position
+            for position in truth
+            if position[0] in (0, 768)
+        }
+        self.assertTrue(boundary_detected <= boundary_truth)
 
     def test_dark_sparse_save_headers_recover_body_centroid_phase(self) -> None:
         expected = {

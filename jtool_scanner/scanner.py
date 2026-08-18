@@ -1476,6 +1476,13 @@ WATER_DENSE_MIN_QUADRANT = 0.08
 WATER_MAX_EDGE_DENSITY = 0.38
 WATER_PALE_MAX_EDGE_DENSITY = 0.42
 WATER_DEDUPE_DISTANCE = 24.0
+# A room-edge water tile can contain a clipped spike/terrain seam and exceed
+# the ordinary interior edge gate.  Only recover it when both same-column
+# neighbors are already water, so edge texture alone cannot seed a cell.
+WATER_BOUNDARY_MIN_DENSITY = 0.72
+WATER_BOUNDARY_MIN_QUADRANT_DENSITY = 0.60
+WATER_BOUNDARY_MAX_EDGE_DENSITY = 0.62
+WATER_BOUNDARY_NEIGHBOR_PROFILE_DISTANCE = 90.0
 SPATIAL_BACKGROUND_STEP = 16
 SPATIAL_BACKGROUND_MAX_EDGE_DENSITY = 0.24
 SPATIAL_BACKGROUND_MAX_NEIGHBOR_DISTANCE = 30.0
@@ -11667,7 +11674,120 @@ def _detect_water(
         detections.extend(_detect_balanced_cyan_half_width_water(image, room))
     if background_water_profile is not None:
         detections.extend(_detect_bounded_cool_water(image, room))
+    detections.extend(
+        _recover_boundary_water_cells(
+            image,
+            room,
+            detections,
+            room_profile,
+            allow_balanced_cyan=allow_balanced_cyan,
+        )
+    )
     return _dedupe_water(detections, min_distance=WATER_DEDUPE_DISTANCE)
+
+
+def _recover_boundary_water_cells(
+    image: RGBImage,
+    room: Box,
+    detections: list[Detection],
+    room_profile: _ColorProfile,
+    *,
+    allow_balanced_cyan: bool,
+) -> list[Detection]:
+    """Recover clipped water only between two established edge neighbors.
+
+    A 32px water sprite at the horizontal room boundary can be visibly
+    crossed by a diagonal seam, raising its local edge density above the
+    ordinary water gate.  The candidate still has to be water-profile
+    compatible, dense in every quadrant, and similar to both same-column
+    neighbors already emitted by the detector.  This makes the recovery a
+    topology/shape continuation rather than a border-colour exception.
+    """
+
+    water = _dedupe_water(
+        [
+            detection
+            for detection in detections
+            if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+        ],
+        min_distance=WATER_DEDUPE_DISTANCE,
+    )
+    if not water:
+        return []
+    water_positions = {(detection.x, detection.y) for detection in water}
+    recovered: list[Detection] = []
+    boundary_xs = (0, ROOM_WIDTH - GRID_SIZE)
+    for x in boundary_xs:
+        for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+            if (x, y) in water_positions:
+                continue
+            if any(
+                distance((x, y), (detection.x, detection.y))
+                <= WATER_DEDUPE_DISTANCE
+                for detection in water
+            ):
+                # Preserve an existing phase alias when it is already close
+                # enough for the evaluator; adding a canonical edge cell in
+                # that neighborhood would steal its one-to-one match.
+                continue
+            neighbors = [
+                detection
+                for detection in water
+                if abs(detection.x - x) <= MINI_BLOCK_SIZE
+                and abs(detection.y - y) == GRID_SIZE
+            ]
+            if len(neighbors) < 2:
+                continue
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            if not _is_water_profile_candidate(
+                profile,
+                room_profile,
+                allow_balanced_cyan=allow_balanced_cyan,
+            ):
+                continue
+            stats = _patch_color_stats(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                _is_water_blue,
+            )
+            features = _patch_features(image, room, x, y, GRID_SIZE)
+            if (
+                stats.density < WATER_BOUNDARY_MIN_DENSITY
+                or stats.min_quadrant_density
+                < WATER_BOUNDARY_MIN_QUADRANT_DENSITY
+                or features.edge_density > WATER_BOUNDARY_MAX_EDGE_DENSITY
+                or any(
+                    _color_profile_distance(
+                        profile,
+                        _patch_color_profile(
+                            image,
+                            room,
+                            neighbor.x,
+                            neighbor.y,
+                            GRID_SIZE,
+                        ),
+                    )
+                    > WATER_BOUNDARY_NEIGHBOR_PROFILE_DISTANCE
+                    for neighbor in neighbors
+                )
+            ):
+                continue
+            recovered.append(
+                _grid_detection(
+                    "water_2_boundary_continuation",
+                    OBJ_WATER_2,
+                    x,
+                    y,
+                    min(0.96, max(0.70, stats.density)),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    return recovered
 
 
 def _background_water_field_profile(

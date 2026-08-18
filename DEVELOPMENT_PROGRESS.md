@@ -4,6 +4,36 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: boundary-supported water continuation (2026-08-18)
+
+The exact Irkara-54 room exposed two water cells at the horizontal room edges
+that were visually part of a continuous water column but were rejected by the
+ordinary cell gate because the clipped edge seam raised their edge density.
+The detector now considers only an unoccupied room-edge cell that is bracketed
+by two already detected same-edge water neighbors one cell above and below.
+The candidate must still pass the existing palette-relative water silhouette,
+density, quadrant-coverage, edge, and local-profile-consistency checks.  Raw
+8px candidates are deduplicated before the neighbor test, and a 24px phase
+guard prevents the recovery from stealing an already represented detection.
+This is a topology/evidence rule: it uses no screen name, absolute coordinate,
+fixed RGB value, or unconditional edge exception.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-54 water | 472 detected / 475 truth / 472 matched | 474 / 475 / 474; 100% detection precision |
+| recovered edge cells | `(0,512)` and `(768,512)` absent | both present as `water_2_boundary_continuation` |
+| unresolved Irkara-54 water | `(32,64)` | still unresolved; no broad edge relaxation added |
+| Irkara-71, Irkara-49, Irkara-89 boundary additions | none | none |
+| complete 12-pair block/spike color gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 missed, 0 shifted, 0 wrong direction | unchanged |
+
+The source/JTool/blend review project and v3 fixture report are preserved under
+the ignored `.artifacts/goal-continuation/boundary-water-review-20260818/`
+directory.  The focused Irkara-54 regression passed in 314.413 seconds.  The
+full unittest discovery run passes **377 tests in 1830.017 seconds, `OK`**.
+
 ## Checkpoint: seeded catharsis-water tail continuity (2026-08-18)
 
 The exact Irkara-71 control exposed a narrow continuity failure in the
