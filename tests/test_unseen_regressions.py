@@ -529,7 +529,12 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             for detection in result.detections
             if detection.type_id in FULL_SPIKE_TYPES
         }
-        self.assertIn((96, 400, OBJ_SPIKE_LEFT), full_spikes)
+        self.assertTrue(
+            {
+                (96, 400, OBJ_SPIKE_LEFT),
+                (240, 576, OBJ_SPIKE_LEFT),
+            }.issubset(full_spikes)
+        )
 
     def test_repeated_vine_phase_beats_same_column_terrain_alias(self) -> None:
         """A cadence-confirmed vine keeps its shape-derived half-cell origin."""

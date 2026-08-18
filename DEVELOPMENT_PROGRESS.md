@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: preserve boundary-clipped full spikes in miniblock rooms (2026-08-18)
+
+CN3-16 still missed the authoritative left spike at `(240,576)`.  The raw
+32px classifier saw a strong left silhouette there (`score=0.654`, direction
+margin `0.247`, outline delta `0.409`), but the 16px-room recovery discarded
+all raw full-spike hypotheses before reconstructing miniblock topology and
+replaced this bottom-edge object with a weaker shifted phase.  The correction
+retains only raw full spikes that reach a normalized room boundary, have the
+same independent directional shape evidence, and touch or sit beside a
+miniblock anchor.  It does not use a screen name, absolute coordinate, or
+palette, and it does not change ordinary interior 16px-room arbitration.
+
+Measured grid-step-8 results against the preceding checkpoint:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-16 full spikes | 38 detected / 30 truth / 29 matched | 39 / 30 / 30; `(240,576,left)` retained |
+| CN3-18 full spikes | 57 / 50 / 47 | unchanged |
+| complete 12-pair block/spike full spikes | 906 / 748 / 720 | 907 / 748 / 721 |
+| held-out Irkara full spikes | 720 / 796 / 529 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged |
+
+The existing CN3-18 and Flames recovery regressions remain protected; the
+CN3-16 regression now covers both strong near-threshold and boundary-clipped
+left spikes.  The complete unittest discovery run passes **375 tests in
+1715.078 seconds, `OK`**.  Fresh pair, complete fixture, held-out Irkara, and
+FTFA reports are under
+`.artifacts/goal-continuation/boundary-clipped-20260818/`.
+
 ## Checkpoint: retain near-threshold strong miniblock spike recovery (2026-08-18)
 
 The clipped-fill correction exposed one related CN3-16 case: a genuine left

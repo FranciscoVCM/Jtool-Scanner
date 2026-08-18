@@ -1346,6 +1346,14 @@ MINIBLOCK_ROOM_PRIMARY_SPIKE_UP_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_RIGHT_MIN_SIDE_COVERAGE = 0.875
 MINIBLOCK_ROOM_PRIMARY_SPIKE_LEFT_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_DOWN_MIN_SIDE_COVERAGE = 0.75
+# A genuine full spike can be clipped at the 32px room boundary before the
+# 16px-room recovery rebuilds its topology.  Preserve only raw hypotheses
+# with an independently strong direction and a neighboring miniblock anchor.
+MINIBLOCK_EDGE_FULL_SPIKE_MIN_SCORE = 0.58
+MINIBLOCK_EDGE_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.12
+MINIBLOCK_EDGE_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.20
+MINIBLOCK_EDGE_FULL_SPIKE_MIN_SIDE_COVERAGE = 0.75
+MINIBLOCK_EDGE_FULL_SPIKE_MIN_EDGE_DENSITY = 0.20
 SUPPORTED_FULL_SPIKE_MIN_SCORE = 0.22
 SUPPORTED_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.10
 SUPPORTED_FULL_SPIKE_MIN_DIRECTION_MARGIN = 0.05
@@ -16074,6 +16082,9 @@ def _recover_miniblock_room_objects(
 ) -> list[Detection]:
     """Recover objects whose source sprite is scaled to a 16px tileset."""
 
+    raw_full_spikes = [
+        detection for detection in detections if detection.type_id in FULL_SPIKE_TYPES
+    ]
     recovered = _recover_miniblock_room_mini_spikes(
         [
             detection
@@ -16088,6 +16099,13 @@ def _recover_miniblock_room_objects(
     )
     recovered = _recover_miniblock_room_full_spikes(
         recovered,
+        mini_blocks,
+        image,
+        room,
+    )
+    recovered = _recover_miniblock_room_boundary_full_spikes(
+        recovered,
+        raw_full_spikes,
         mini_blocks,
         image,
         room,
@@ -16131,6 +16149,104 @@ def _recover_miniblock_room_objects(
         _dedupe_exact_detections(recovered),
         min_distance=16,
     )
+
+
+def _recover_miniblock_room_boundary_full_spikes(
+    detections: list[Detection],
+    raw_full_spikes: list[Detection],
+    mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Retain strong raw full spikes clipped by a miniblock-room boundary.
+
+    The ordinary 16px-room recovery intentionally starts from non-full
+    hypotheses so that a 32px silhouette cannot overwhelm the miniblock
+    topology.  That filter is too aggressive for a real triangle whose
+    footprint reaches the normalized viewport edge: its raw shape is strong,
+    but the replacement 16px phase can be weaker or displaced.  Boundary
+    retention is therefore limited to a room-edge candidate with independent
+    directional shape evidence and at least one adjacent miniblock anchor.
+    """
+
+    mini_block_positions = {(detection.x, detection.y) for detection in mini_blocks}
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    result = list(detections)
+    for detection in raw_full_spikes:
+        if not (
+            detection.x <= 0
+            or detection.x >= ROOM_WIDTH - GRID_SIZE
+            or detection.y <= 0
+            or detection.y >= ROOM_HEIGHT - GRID_SIZE
+        ):
+            continue
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        spike = _classify_full_spike(patch)
+        if spike is None or spike.type_id != detection.type_id:
+            continue
+        direction = directions[detection.type_id]
+        body_overlap = _full_spike_body_miniblock_overlap(
+            detection.type_id,
+            detection.x,
+            detection.y,
+            mini_block_positions,
+        )
+        axis_supported = any(
+            (detection.x + dx, detection.y + dy) in mini_block_positions
+            for dx, dy in (
+                (32, 0),
+                (-32, 0),
+                (0, 32),
+                (0, -32),
+                (16, 0),
+                (-16, 0),
+                (0, 16),
+                (0, -16),
+            )
+        )
+        if not (
+            detection.score >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SCORE
+            and spike.score >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SCORE
+            and spike.direction_margin
+            >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_DIRECTION_MARGIN
+            and spike.outline_delta >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_OUTLINE_DELTA
+            and _triangle_side_coverage(patch, direction)
+            >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SIDE_COVERAGE
+            and patch.edge_density >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_EDGE_DENSITY
+            and (body_overlap >= 1 or axis_supported)
+        ):
+            continue
+        if any(
+            existing.type_id == detection.type_id
+            and existing.x == detection.x
+            and existing.y == detection.y
+            for existing in result
+        ):
+            continue
+        result.append(
+            _geometry_detection(
+                "miniblock_room_full_spike_edge_raw",
+                detection.type_id,
+                detection.x,
+                detection.y,
+                detection.score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return result
 
 
 def _suppress_weaker_miniblock_room_opposites(
@@ -17160,6 +17276,15 @@ def _is_bright_filled_recovery_candidate(
             <= fill.density_contrast
             < BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
             and fill.luma_contrast >= BRIGHT_FILLED_STRONG_MIN_LUMA_CONTRAST
+        )
+    if detection.kind == "miniblock_room_full_spike_edge_raw":
+        return bool(
+            detection.score >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SCORE
+            and spike.score >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SCORE
+            and spike.direction_margin >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_DIRECTION_MARGIN
+            and spike.outline_delta >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_OUTLINE_DELTA
+            and side_coverage >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SIDE_COVERAGE
+            and patch.edge_density >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_EDGE_DENSITY
         )
     return bool(
         detection.kind == "miniblock_room_full_spike_base_anchored"
