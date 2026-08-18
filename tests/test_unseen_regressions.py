@@ -663,6 +663,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 (640, 480, OBJ_MINI_SPIKE_DOWN),
                 (384, 512, OBJ_MINI_SPIKE_DOWN),
                 (656, 560, OBJ_MINI_SPIKE_UP),
+                (576, 176, OBJ_MINI_SPIKE_UP),
             }.issubset(mini_spikes)
         )
         self.assertNotIn((320, 32, OBJ_MINI_SPIKE_RIGHT), mini_spikes)

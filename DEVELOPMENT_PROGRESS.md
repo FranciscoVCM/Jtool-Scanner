@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: paired upward mini-spike arbitration across unknown palettes (2026-08-18)
+
+The previous block-edge recovery restored seven Irkara-51 mini-spikes but left
+the first cell of a strong adjacent upward pair at `(576,176)` suppressed by
+the generic residual-sparse-up noise rule.  The raw geometry pass already
+classified both cells; the loss occurred only during final arbitration.
+
+The retained correction preserves a residual upward mini-spike only when it
+has a same-type neighboring mini-spike on the local axis, a strong normalized
+score/direction/outline profile, and a non-dominant 16px block patch.  It does
+not use a screen name, filename, absolute coordinate, fixed palette, or
+tileset identity.
+
+Measured post-change results are:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-51 mini-spikes | 26 detected / 23 truth / 22 matched | 27 / 23 / 23; `(576,176)` recovered, four pre-existing extras remain |
+| Irkara-52, Irkara-59, Partysu3, Flames, CN3-16/CN3-18, K3, NANG-128, NANG-138 | unchanged in the in-memory held-out run | unchanged |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 shifted, 0 wrong direction |
+| full 12-pair workflow | mini-spikes 281/288 matched, 355 detected | unchanged; all color/object totals remain exact |
+
+The focused regression passes, the complete suite passes **372 tests in
+1523.938 seconds, `OK`**, and the direct post-change Irkara-51 scan reports
+23/23 exact truth matches.  Reports are preserved under
+`.artifacts/goal-continuation/paired-up-ftfa-20260818/` and
+`.artifacts/goal-continuation/paired-up-fixtures-20260818/`.
+
 ## Checkpoint: block-edge mini-spike recovery across split unknown tilesets (2026-08-18)
 
 The Irkara-52 green/white tileset exposed a late geometry failure: five

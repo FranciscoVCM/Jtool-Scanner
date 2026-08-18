@@ -1012,6 +1012,15 @@ RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_BLOCK_SCORE = 0.85
 RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_OUTLINE_DELTA = 0.02
 RESIDUAL_SUPPORTED_UP_MINI_KEEP_MAX_DIRECTION_MARGIN = 0.02
 RESIDUAL_SUPPORTED_UP_MINI_KEEP_MIN_SAME_TYPE_NEIGHBORS = 2
+# A strong upward mini-spike can be incorrectly classified as sparse residual
+# noise when it is the first half of an adjacent same-direction pair.  Keep
+# the pair only with normalized shape evidence and a non-dominant block patch;
+# this is deliberately independent of room identity, palette, and coordinates.
+RESIDUAL_PAIRED_UP_KEEP_MIN_SAME_TYPE_NEIGHBORS = 1
+RESIDUAL_PAIRED_UP_KEEP_MIN_SCORE = 0.70
+RESIDUAL_PAIRED_UP_KEEP_MIN_DIRECTION_MARGIN = 0.20
+RESIDUAL_PAIRED_UP_KEEP_MIN_OUTLINE_DELTA = 0.40
+RESIDUAL_PAIRED_UP_KEEP_MAX_BLOCK_SCORE = 0.70
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MIN_SCORE = 0.50
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_NEIGHBORS = 2
 RESIDUAL_RIGHT_SPARSE_MINI_NOISE_MAX_OUTLINE_DELTA = 0.36
@@ -27189,6 +27198,16 @@ def _is_residual_mini_spike_noise_candidate(
         direction_margin,
         outline_delta,
         same_type_axis,
+    ):
+        return False
+    if (
+        type_id == OBJ_MINI_SPIKE_UP
+        and same_type_close >= RESIDUAL_PAIRED_UP_KEEP_MIN_SAME_TYPE_NEIGHBORS
+        and same_type_axis >= RESIDUAL_PAIRED_UP_KEEP_MIN_SAME_TYPE_NEIGHBORS
+        and mini_score >= RESIDUAL_PAIRED_UP_KEEP_MIN_SCORE
+        and direction_margin >= RESIDUAL_PAIRED_UP_KEEP_MIN_DIRECTION_MARGIN
+        and outline_delta >= RESIDUAL_PAIRED_UP_KEEP_MIN_OUTLINE_DELTA
+        and block_score < RESIDUAL_PAIRED_UP_KEEP_MAX_BLOCK_SCORE
     ):
         return False
     return (
