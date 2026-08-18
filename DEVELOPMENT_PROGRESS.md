@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: block-edge mini-spike recovery across split unknown tilesets (2026-08-18)
+
+The Irkara-52 green/white tileset exposed a late geometry failure: five
+source/JMap mini-spikes were visually complete but were either rejected by the
+first block overlap arbitration or converted into a full-spike pair before
+late cleanup.  Irkara-51 showed the same split-cell pattern in seven additional
+truth positions.  A first all-cell late rescan recovered the targets but was
+rejected as too expensive (one focused scan took 336 seconds).  The retained
+implementation instead records the already classified primary and rejected
+16px candidates during the normal geometry pass, then revisits only those
+candidates after room terrain reconciliation.
+
+The recovery requires all of the following normalized evidence: directional
+score/margin and outline, edge density, both triangle-side coverages, an exact
+cardinal edge adjacency to an accepted 32px block, and no decisive independent
+32px full-spike silhouette.  Rooms whose existing mini-spike population is
+dense relative to their accepted block/full-spike terrain remain on their
+dedicated lattice route.  The rule uses no screen name, filename, absolute
+coordinate, palette, or manual correction.
+
+Measured grid-step-8 exact fixture results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-52 mini-spikes | 16 detected / 21 truth / 16 matched | 21 / 21 / 21; all five missing cells recovered |
+| Irkara-51 mini-spikes | 19 detected / 23 truth / 15 matched | 26 / 23 / 22; seven truth cells recovered, one truth cell remains unresolved, and the known full-spike impostor remains absent |
+| Irkara-59 mini-spikes | 404 detected / 412 truth / 403 matched | unchanged |
+| Partysu3 and Flames controls | 115/76/74 and 10/11/6 | unchanged; the first broad gate's nine false additions are removed |
+| CN3-16/CN3-18 | 54/54 and 51/54 mini-spike matches | unchanged at 54/54 and 54/54 under the 12-pair workflow |
+| FTFA strict gate | 926/928 exact, 0 FP, 2 missed | unchanged: 926/928 exact, 0 shifted, 0 wrong direction |
+| full 12-pair totals | 355/288/281 mini-spikes | unchanged; saves 22/22/22, warps 12/12/12, apples 4/4/4, water 35/35/35, walljumps 13/13/13, gravity 8/8/8, platforms 3/3/3, killers 99/99, refreshers 18/19/18 |
+
+The final fixture report is
+`.artifacts/goal-continuation/full-fixtures-mini-spike-final-20260818/report.json`;
+the exact FTFA report is under
+`.artifacts/goal-continuation/mini-spike-ftfa-final-20260818/`.  The complete
+unittest suite passes **372 tests in 1523.952 seconds**, `OK`.  The ignored
+71-row giant-review ledger was revalidated: CN3-16 and CN3-18 retain their
+source/current/reconstruction/blend records and no visual-row identity or
+artifact path changed; the new held-out evidence is recorded here rather than
+mislabelled as an exact giant-review benchmark.
+
 ## Checkpoint: symmetric clipped bottom miniblock continuation (2026-08-17)
 
 The compact CN3-18 room still had one exact-coordinate miniblock phase

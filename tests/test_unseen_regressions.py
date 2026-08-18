@@ -10,6 +10,7 @@ from jtool_scanner.constants import (
     OBJ_JUMP_REFRESHER,
     OBJ_MINI_BLOCK,
     OBJ_MINI_SPIKE_DOWN,
+    OBJ_MINI_SPIKE_LEFT,
     OBJ_MINI_SPIKE_RIGHT,
     OBJ_MINI_SPIKE_UP,
     OBJ_PLATFORM,
@@ -567,6 +568,11 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 (736, 432, OBJ_MINI_SPIKE_RIGHT),
                 (80, 64, OBJ_MINI_SPIKE_UP),
                 (240, 528, OBJ_MINI_SPIKE_UP),
+                (112, 32, OBJ_MINI_SPIKE_DOWN),
+                (544, 96, OBJ_MINI_SPIKE_RIGHT),
+                (560, 144, OBJ_MINI_SPIKE_LEFT),
+                (304, 176, OBJ_MINI_SPIKE_UP),
+                (752, 352, OBJ_MINI_SPIKE_LEFT),
             }.issubset(mini_spikes)
         )
         self.assertNotIn((320, 448, OBJ_MINI_SPIKE_DOWN), mini_spikes)
@@ -643,6 +649,23 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 for detection in walljumps
             },
         )
+        mini_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in MINI_SPIKE_TYPES
+        }
+        self.assertTrue(
+            {
+                (720, 160, OBJ_MINI_SPIKE_LEFT),
+                (720, 256, OBJ_MINI_SPIKE_LEFT),
+                (416, 288, OBJ_MINI_SPIKE_DOWN),
+                (624, 480, OBJ_MINI_SPIKE_DOWN),
+                (640, 480, OBJ_MINI_SPIKE_DOWN),
+                (384, 512, OBJ_MINI_SPIKE_DOWN),
+                (656, 560, OBJ_MINI_SPIKE_UP),
+            }.issubset(mini_spikes)
+        )
+        self.assertNotIn((320, 32, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
 
     def test_brick_tiles_do_not_become_miniblock_room_saves(self) -> None:
         saves = [

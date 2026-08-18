@@ -983,6 +983,19 @@ LATE_MINI_SPIKE_RECOVERY_RIGHT_MIN_OUTLINE_DELTA = 0.40
 LATE_MINI_SPIKE_RECOVERY_UP_MIN_SCORE = 0.58
 LATE_MINI_SPIKE_RECOVERY_UP_MIN_DIRECTION_MARGIN = 0.22
 LATE_MINI_SPIKE_RECOVERY_UP_MIN_OUTLINE_DELTA = 0.45
+# A low-contrast mini-spike can be absent from the primary candidate list when
+# its 16px silhouette is split across a 32px terrain edge.  Recover only a
+# complete, directionally supported triangle next to an accepted block.  The
+# independent 32px shape veto prevents a half-cell decorative/full spike edge
+# from being reintroduced as a mini-spike.
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SCORE = 0.47
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.10
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.18
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_EDGE_DENSITY = 0.30
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SIDE_COVERAGE = 0.80
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SIDE_MIN_COVERAGE = 0.75
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MAX_FULL_SHAPE_SCORE = 0.60
+BLOCK_EDGE_MINI_SPIKE_RECOVERY_MAX_MINI_TERRAIN_RATIO = 0.25
 FULL_SHAPED_DOWN_MINI_PAIR_MAX_SCORE = 0.75
 FULL_SHAPED_DOWN_MINI_PAIR_MIN_FULL_SCORE = 0.55
 FULL_SHAPED_DOWN_MINI_PAIR_MIN_DIRECTION_MARGIN = 0.26
@@ -1711,6 +1724,8 @@ def scan_image(
     mini_blocks: list[Detection] = []
     raw_full_spikes: list[Detection] = []
     raw_primary_mini_spikes: list[Detection] = []
+    raw_detected_mini_spikes: list[Detection] = []
+    raw_rejected_mini_spikes: list[Detection] = []
     detections: list[Detection] = []
     detections.extend(
         _detect_saves(
@@ -1762,7 +1777,13 @@ def scan_image(
                 if detection.type_id not in (OBJ_GRAVITY_UP, OBJ_GRAVITY_DOWN)
             ]
         detections.extend(_detect_platforms(image, box, detections))
-        geometry_detections = _detect_geometry(image, box, grid_step)
+        geometry_detections = _detect_geometry(
+            image,
+            box,
+            grid_step,
+            primary_mini_spikes=raw_detected_mini_spikes,
+            rejected_mini_spikes=raw_rejected_mini_spikes,
+        )
         geometry_detections = _recover_full_spike_mini_pairs(
             geometry_detections,
             image,
@@ -2075,6 +2096,16 @@ def scan_image(
     detections = _recover_late_mini_spike_silhouettes(
         detections,
         raw_primary_mini_spikes,
+        image,
+        box,
+    )
+    detections = _recover_block_edge_mini_spikes(
+        detections,
+        [
+            *raw_detected_mini_spikes,
+            *raw_primary_mini_spikes,
+            *raw_rejected_mini_spikes,
+        ],
         image,
         box,
     )
@@ -12976,7 +13007,14 @@ def _platform_detection(
     )
 
 
-def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
+def _detect_geometry(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+    *,
+    primary_mini_spikes: list[Detection] | None = None,
+    rejected_mini_spikes: list[Detection] | None = None,
+) -> list[Detection]:
     step = max(8, grid_step)
     full_spike_step = max(FULL_SPIKE_PRIMARY_GRID_STEP, step)
     detections: list[Detection] = []
@@ -13101,7 +13139,21 @@ def _detect_geometry(image: RGBImage, room: Box, grid_step: int) -> list[Detecti
             mini = _classify_mini_spike(patch)
             block = _classify_block(patch)
             if mini and _accept_mini_spike(mini, block):
-                detections.append(
+                detected_mini = _geometry_detection(
+                    mini.kind,
+                    mini.type_id,
+                    x,
+                    y,
+                    mini.score,
+                    image,
+                    room,
+                    16,
+                )
+                detections.append(detected_mini)
+                if primary_mini_spikes is not None:
+                    primary_mini_spikes.append(detected_mini)
+            elif mini and rejected_mini_spikes is not None:
+                rejected_mini_spikes.append(
                     _geometry_detection(
                         mini.kind,
                         mini.type_id,
@@ -26327,6 +26379,142 @@ def _recover_late_mini_spike_silhouettes(
             recovered.append(candidate)
             existing_minis.append(candidate)
     return recovered
+
+
+def _recover_block_edge_mini_spikes(
+    detections: list[Detection],
+    candidate_mini_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover half-cell spikes split across a recognized terrain edge.
+
+    A mini-spike can be visually complete in its 16px cell while the ordinary
+    16px pass rejects it because the neighboring 32px terrain cell wins the
+    local overlap arbitration.  Revisit every normalized half-cell only after
+    room-scale terrain reconciliation has produced accepted blocks.  The
+    candidate must have a strong direction/outline/side profile, share an
+    actual edge with a block on the appropriate side, and fail to look like an
+    independent 32px spike.  Miniblock rooms are deliberately left to their
+    dedicated topology-aware route.
+
+    The candidate list is the union of primary mini candidates and candidates
+    rejected by the first overlap pass, so late room arbitration can be
+    reconsidered without rescanning every half-cell.  These are palette- and
+    tileset-relative geometry tests; no fixture or coordinate identity is used.
+    """
+    if any(detection.type_id == OBJ_MINI_BLOCK for detection in detections):
+        return detections
+
+    blocks = [
+        detection for detection in detections if detection.type_id == OBJ_BLOCK
+    ]
+    if not blocks:
+        return detections
+
+    directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    existing = [
+        detection
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    full_spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    terrain_count = len(blocks) + len(full_spikes)
+    if existing and len(existing) / max(1, terrain_count) > (
+        BLOCK_EDGE_MINI_SPIKE_RECOVERY_MAX_MINI_TERRAIN_RATIO
+    ):
+        # Dense mini-spike rooms have their own lattice/profile arbitration;
+        # isolated block-edge recovery would only promote texture seams there.
+        return detections
+    added: list[Detection] = []
+
+    def has_adjacent_block_edge(type_id: int, x: int, y: int) -> bool:
+        direction = directions[type_id]
+        for block in blocks:
+            horizontal_overlap = min(x + MINI_BLOCK_SIZE, block.x + GRID_SIZE) > max(
+                x,
+                block.x,
+            )
+            vertical_overlap = min(y + MINI_BLOCK_SIZE, block.y + GRID_SIZE) > max(
+                y,
+                block.y,
+            )
+            if direction == "up" and block.y == y + MINI_BLOCK_SIZE:
+                if horizontal_overlap:
+                    return True
+            elif direction == "down" and block.y + GRID_SIZE == y:
+                if horizontal_overlap:
+                    return True
+            elif direction == "right" and block.x + GRID_SIZE == x:
+                if vertical_overlap:
+                    return True
+            elif direction == "left" and block.x == x + MINI_BLOCK_SIZE:
+                if vertical_overlap:
+                    return True
+        return False
+
+    for candidate in candidate_mini_spikes:
+        if candidate.type_id not in MINI_SPIKE_TYPES:
+            continue
+        x, y = candidate.x, candidate.y
+        if any(
+            abs(detection.x - x) <= 8
+            and abs(detection.y - y) <= 8
+            for detection in [*existing, *added]
+        ):
+            continue
+        patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+        mini = _mini_spike_class_for_detection(candidate, patch)
+        if mini is None:
+            continue
+        direction = directions[mini.type_id]
+        if not (
+            mini.score >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SCORE
+            and mini.direction_margin
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN
+            and mini.outline_delta
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_OUTLINE_DELTA
+            and patch.edge_density
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_EDGE_DENSITY
+            and _triangle_side_coverage(patch, direction)
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SIDE_COVERAGE
+            and _triangle_min_side_coverage(patch, direction)
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MIN_SIDE_MIN_COVERAGE
+            and has_adjacent_block_edge(mini.type_id, x, y)
+        ):
+            continue
+        full_shape = _classify_full_spike(
+            _patch_features(image, room, x, y, GRID_SIZE)
+        )
+        if (
+            full_shape is not None
+            and full_shape.score
+            >= BLOCK_EDGE_MINI_SPIKE_RECOVERY_MAX_FULL_SHAPE_SCORE
+        ):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_block_edge_recovery",
+                mini.type_id,
+                x,
+                y,
+                mini.score,
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+
+    return [*detections, *added] if added else detections
 
 
 def _recover_dark_textured_adjacent_up_mini_spikes(
