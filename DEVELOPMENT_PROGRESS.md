@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: recover low-contrast vertical full-spike pairs (2026-08-18)
+
+CN3-18 contained two adjacent up/down spike pairs whose shared bright seam
+confused the ordinary 32px classifier.  One pair was emitted at an 8px phase
+and the other lost its lower triangle entirely; the exact source/JMap positions
+were `(448,288,up)`, `(448,320,down)`, and `(496,352,down)`.  The bright-filled
+room reconciler now searches only around an already-established full-spike
+field, evaluates directional fill relative to all four orientations, requires
+the native 16px phase and direction-specific miniblock-body clearance, and
+recovers vertical opposite pairs or an exact missing partner.  Neighboring
+same-direction seam aliases are replaced so the later geometry dedupe cannot
+reintroduce the 8px phase.  The rule uses no screen name, coordinate, or fixed
+RGB palette and is intentionally limited to the already-activated bright-fill
+profile; a nearby horizontal terrain-impostor pair remains rejected.
+
+Measured grid-step-8 results against the anchored-fill checkpoint:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-16 full spikes | 39 detected / 30 truth / 30 matched | unchanged |
+| CN3-18 full spikes | 58 / 50 / 48 | 60 / 50 / 50; all three exact pair cells present |
+| complete 12-pair block/spike full spikes | 908 / 748 / 722 | 910 / 748 / 724 |
+| held-out Irkara full spikes | 720 / 796 / 529 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged |
+
+All color-object groups, saves, warps, vines, platforms, gravity flippers,
+water, miniblocks, minispikes, killers, and refreshers remained at their prior
+matched totals.  The complete unittest discovery run passes **375 tests in
+1731.731 seconds, `OK`**.  Fresh pair, complete fixture, held-out Irkara, and
+FTFA reports are under
+`.artifacts/goal-continuation/vertical-pair-recovery-20260818/`.
+
 ## Checkpoint: preserve high-fill topology recoveries through bright reconciliation (2026-08-18)
 
 The bright-filled spike reconciler rebuilt its output from raw candidates and

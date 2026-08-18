@@ -1323,6 +1323,19 @@ BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SIDE_COVERAGE = 0.75
 BRIGHT_FILLED_ANCHORED_SHAPE_MIN_EDGE_DENSITY = 0.40
 BRIGHT_FILLED_ANCHORED_SHAPE_MIN_DENSITY_CONTRAST = 0.28
 BRIGHT_FILLED_ANCHORED_SHAPE_MIN_LUMA_CONTRAST = 40.0
+# When two opposite full spikes touch, their shared bright seam can make the
+# ordinary 32px shape classifier choose the wrong direction or half-cell.  A
+# bright-filled room can recover the vertical pair from directional fill only,
+# but only on the native 16px phase, with a clear edge and no miniblock in the
+# direction-specific body.  These are relative measures, not palette values.
+BRIGHT_FILLED_VERTICAL_PAIR_MIN_EDGE_DENSITY = 0.30
+BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_CONTRAST = 0.28
+BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_CONTRAST = 35.0
+BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_MARGIN = 0.05
+BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_MARGIN = 15.0
+BRIGHT_FILLED_VERTICAL_PAIR_EXACT_DENSITY_MARGIN = 0.10
+BRIGHT_FILLED_VERTICAL_PAIR_EXACT_LUMA_MARGIN = 20.0
+BRIGHT_FILLED_VERTICAL_PAIR_NEARBY_PHASE = 24.0
 # A strong topology candidate can sit just below the room-scale fill gate
 # when the local triangle is clipped or partly masked by its backing cell.
 # Keep this branch narrower than the anchored fallback: it is only for the
@@ -17208,11 +17221,191 @@ def _reconcile_bright_filled_full_spikes(
                 GRID_SIZE,
             )
 
+    _recover_bright_filled_vertical_pairs(
+        selected,
+        current_full_spikes,
+        detections,
+        image,
+        room,
+    )
+
     return [
         detection
         for detection in detections
         if detection.type_id not in FULL_SPIKE_TYPES
     ] + list(selected.values())
+
+
+def _recover_bright_filled_vertical_pairs(
+    selected: dict[tuple[int, int, int], Detection],
+    current_full_spikes: list[Detection],
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> None:
+    """Recover a low-contrast vertical full-spike pair in a bright field.
+
+    Two opposite triangles share a bright horizontal seam.  In scaled or
+    unfamiliar tilesets that seam can dominate the 32px classifier, leaving
+    one triangle shifted by 8/16px or assigning it a lateral direction.  The
+    filled-room profile already proves that this is a coherent bright field;
+    here we require two directional fill votes on the native 16px phase and
+    use existing full-spike hypotheses only to bound the search.  A second
+    branch adds one missing partner when its opposite is already present at the
+    exact JTool cell.  Miniblock-backed bodies are excluded by their
+    direction-specific two-half support check.
+
+    The function mutates ``selected`` so the caller's existing room-scale
+    replacement keeps all recovered candidates together with raw silhouettes.
+    """
+
+    if not current_full_spikes:
+        return
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    opposite_type = {
+        OBJ_SPIKE_UP: OBJ_SPIKE_DOWN,
+        OBJ_SPIKE_DOWN: OBJ_SPIKE_UP,
+    }
+    current_keys = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in current_full_spikes
+    }
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in (OBJ_BLOCK, OBJ_MINI_BLOCK)
+    }
+    candidate_positions: set[tuple[int, int]] = set()
+    for detection in current_full_spikes:
+        for delta_x in range(-24, 25, 8):
+            for delta_y in range(-24, 25, 8):
+                x = detection.x + delta_x
+                y = detection.y + delta_y
+                if (
+                    x % MINI_BLOCK_SIZE == 0
+                    and y % MINI_BLOCK_SIZE == 0
+                    and 0 <= x <= ROOM_WIDTH - GRID_SIZE
+                    and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+                ):
+                    candidate_positions.add((x, y))
+
+    candidates: dict[
+        tuple[int, int, int],
+        tuple[_TriangleFillFeatures, float, float],
+    ] = {}
+    all_directions = ("up", "right", "left", "down")
+    for x, y in candidate_positions:
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        if patch.edge_density < BRIGHT_FILLED_VERTICAL_PAIR_MIN_EDGE_DENSITY:
+            continue
+        fills = {
+            direction: _triangle_fill_features(
+                image,
+                room,
+                x,
+                y,
+                GRID_SIZE,
+                direction,
+            )
+            for direction in all_directions
+        }
+        for type_id, direction in direction_by_type.items():
+            if _full_spike_body_miniblock_overlap(
+                type_id,
+                x,
+                y,
+                block_positions,
+            ):
+                continue
+            fill = fills[direction]
+            density_margin = fill.density_contrast - max(
+                fills[other].density_contrast
+                for other in all_directions
+                if other != direction
+            )
+            luma_margin = fill.luma_contrast - max(
+                fills[other].luma_contrast
+                for other in all_directions
+                if other != direction
+            )
+            if (
+                fill.density_contrast
+                < BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_CONTRAST
+                or fill.luma_contrast < BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_CONTRAST
+                or density_margin < BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_MARGIN
+                or luma_margin < BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_MARGIN
+            ):
+                continue
+            candidates[(type_id, x, y)] = (fill, density_margin, luma_margin)
+
+    pair_keys: set[tuple[int, int, int]] = set()
+    exact_partner_keys: set[tuple[int, int, int]] = set()
+    for type_id, x, y in candidates:
+        opposite = opposite_type[type_id]
+        for partner_y in (y - GRID_SIZE, y + GRID_SIZE):
+            partner_key = (opposite, x, partner_y)
+            if partner_key not in candidates:
+                continue
+            _fill, density_margin, luma_margin = candidates[(type_id, x, y)]
+            (
+                _partner_fill,
+                partner_density_margin,
+                partner_luma_margin,
+            ) = candidates[partner_key]
+            if (
+                density_margin >= BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_MARGIN
+                and luma_margin >= BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_MARGIN
+                and partner_density_margin
+                >= BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_MARGIN
+                and partner_luma_margin
+                >= BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_MARGIN
+            ):
+                pair_keys.update(((type_id, x, y), partner_key))
+
+        for partner_y in (y - GRID_SIZE, y + GRID_SIZE):
+            if (opposite, x, partner_y) not in current_keys:
+                continue
+            _fill, density_margin, luma_margin = candidates[(type_id, x, y)]
+            if (
+                density_margin >= BRIGHT_FILLED_VERTICAL_PAIR_EXACT_DENSITY_MARGIN
+                and luma_margin >= BRIGHT_FILLED_VERTICAL_PAIR_EXACT_LUMA_MARGIN
+            ):
+                exact_partner_keys.add((type_id, x, y))
+
+    for type_id, x, y in pair_keys | exact_partner_keys:
+        key = (type_id, x, y)
+        if key in selected:
+            continue
+        # A strong seam candidate can already have been retained at the
+        # neighboring 8px phase.  Replace that same-direction alias so the
+        # later geometry dedupe cannot prefer the seam's higher raw score over
+        # the paired native-cell evidence.
+        for existing_key in tuple(selected):
+            if (
+                existing_key[0] == type_id
+                and existing_key[1] == x
+                and abs(existing_key[2] - y)
+                <= BRIGHT_FILLED_VERTICAL_PAIR_NEARBY_PHASE
+            ):
+                selected.pop(existing_key, None)
+        fill, _density_margin, _luma_margin = candidates[key]
+        score = max(
+            BRIGHT_FILLED_VERTICAL_PAIR_MIN_DENSITY_CONTRAST,
+            min(1.0, fill.density_contrast),
+        )
+        selected[key] = _geometry_detection(
+            "full_spike_bright_fill_vertical_pair",
+            type_id,
+            x,
+            y,
+            score,
+            image,
+            room,
+            GRID_SIZE,
+        )
 
 
 def _is_bright_filled_full_spike_component(

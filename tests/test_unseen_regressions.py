@@ -509,11 +509,16 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertTrue(
             {
                 (304, 144, OBJ_SPIKE_UP),
+                (448, 288, OBJ_SPIKE_UP),
+                (448, 320, OBJ_SPIKE_DOWN),
+                (496, 352, OBJ_SPIKE_DOWN),
                 (176, 336, OBJ_SPIKE_RIGHT),
                 (192, 576, OBJ_SPIKE_UP),
                 (224, 576, OBJ_SPIKE_UP),
             }.issubset(full_spikes)
         )
+        self.assertNotIn((288, 144, OBJ_SPIKE_LEFT), full_spikes)
+        self.assertNotIn((320, 144, OBJ_SPIKE_RIGHT), full_spikes)
 
     def test_bright_filled_reconcile_keeps_near_threshold_strong_spike(self) -> None:
         """A strong topology spike survives a narrowly clipped fill profile."""
