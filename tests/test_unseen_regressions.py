@@ -595,6 +595,50 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 self.assertTrue(expected.issubset(blocks))
                 self.assertTrue(unsupported.isdisjoint(blocks))
 
+    def test_embedded_compact_room_recovers_irkara58_block_lattice(self) -> None:
+        """A centered unfamiliar 9x9 room must not become outer-background terrain."""
+
+        source = Path("fixtures") / "irkara" / "irkara-58-game.png"
+        result = scan_png(
+            source,
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        self.assertEqual(result.source_grid, (9, 9))
+        self.assertEqual(result.room_box, Box(307, 216, 342, 324))
+        expected = {
+            (object_.x, object_.y)
+            for object_ in JMap.from_file(
+                Path("fixtures") / "irkara" / "irkara-58.jmap"
+            ).objects_of_type(OBJ_BLOCK)
+        }
+        blocks = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+        self.assertEqual(blocks, expected)
+        self.assertTrue(
+            all(
+                detection.kind == "embedded_compact_relative_block"
+                for detection in result.detections
+                if detection.type_id == OBJ_BLOCK
+            )
+        )
+
+        # A full green room with no detached compact island stays on the
+        # ordinary terrain path; the embedded rule must not relabel it.
+        held_out = scan_png(
+            Path("fixtures") / "irkara" / "irkara-57-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        self.assertIsNone(held_out.source_grid)
+
     def test_bright_filled_reconcile_keeps_recovered_full_spikes(self) -> None:
         """Room-scale bright fill must not discard topology recoveries."""
 

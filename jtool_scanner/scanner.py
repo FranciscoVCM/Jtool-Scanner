@@ -165,6 +165,15 @@ COMPACT_BLOCK_PHASE_MIN_FOREGROUND = 0.85
 COMPACT_BLOCK_PHASE_MIN_RED_RATIO = 0.60
 COMPACT_BLOCK_PHASE_MAX_EDGE_DENSITY = 0.13
 COMPACT_BLOCK_PHASE_MAX_CENTER_SCORE = 0.16
+# Embedded rooms can use a smaller native grid than the established 19x13
+# profile.  Their block material must be learned from normalized local shape,
+# not from a fixed palette or from the outer screenshot background.  These
+# gates retain the high-fill/low-centre silhouette while rejecting the sparse
+# triangle silhouettes that share the same material.
+EMBEDDED_COMPACT_BLOCK_MIN_FOREGROUND = 0.62
+EMBEDDED_COMPACT_BLOCK_MAX_CENTER_SCORE = 0.12
+EMBEDDED_COMPACT_BLOCK_MAX_EDGE_DENSITY = 0.28
+EMBEDDED_COMPACT_BLOCK_WARP_DISTANCE = GRID_SIZE // 2
 NEUTRAL_TERRAIN_PROFILE_MIN_DISTANCE = 8.0
 NEUTRAL_TERRAIN_PROFILE_MIN_SCORE_ADVANTAGE = 0.008
 NEUTRAL_TERRAIN_PROFILE_MIN_SELECTED_SHARE = 0.15
@@ -1735,15 +1744,20 @@ def scan_image(
     _PATCH_FEATURE_CACHE.clear()
     source_image = image
     source_box = room_box or detect_room_box(image)
+    embedded_compact_room = False
     if room_box is None and source_grid is None:
         inferred_grid = _infer_source_grid(source_box)
         # Embedded compact rooms are only ambiguous when the outer screenshot
-        # itself looks like the common 25x19 viewport.  Skip the relatively
-        # expensive activity/grid audit for already recognized profiles.
-        if inferred_grid == (25, 19):
+        # itself looks like the common 25x19 viewport.  The activity/grid audit
+        # is also needed when a HUD or border makes the outer aspect ratio fall
+        # just outside every supported profile (for example a centred 9x9
+        # room inside a 956x718 capture).  The audit itself remains narrow and
+        # rejects ordinary full-room and decorative-panel screenshots.
+        if inferred_grid in ((25, 19), None):
             embedded_profile = _detect_embedded_room_profile(image, source_box)
             if embedded_profile is not None:
                 source_box, normalized_grid = embedded_profile
+                embedded_compact_room = True
             else:
                 normalized_grid = inferred_grid
         else:
@@ -2203,6 +2217,18 @@ def scan_image(
         box,
         include_geometry=include_geometry,
     )
+    if include_geometry and embedded_compact_room:
+        # Generic full-room geometry sees the outer screenshot background as a
+        # repeated terrain material.  Replace those block candidates only
+        # after the normal object arbitration has finished; the embedded-room
+        # silhouette route is independent of the old candidates and keeps the
+        # useful spike/color detections already established above.
+        detections = _replace_embedded_compact_room_blocks(
+            detections,
+            image,
+            box,
+            normalized_grid,
+        )
     # Add the narrow walljump/outlined-block coexistence objects only after
     # every spike and marker reconciler has finished.  The underlying square
     # must not become an input that causes an otherwise valid spike to lose an
@@ -3049,6 +3075,97 @@ def _replace_compact_room_geometry(
         }
         result.extend(_detect_compact_room_spikes(image, room, block_positions))
     return _dedupe_exact_detections(result)
+
+
+def _replace_embedded_compact_room_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    source_grid: tuple[int, int] | None,
+) -> list[Detection]:
+    """Replace outer-background blocks with cells from an embedded room.
+
+    A compact room can be much smaller than the established 19x13 NANG
+    profile.  The generic full-room detector then learns the screenshot's
+    surrounding background as a repeated terrain field.  Once the high
+    precision embedded-room locator has established the source grid, inspect
+    only the normalized native cells inside that room.  A block is accepted
+    from local foreground, centre, and edge morphology; no RGB palette or
+    screen identity is used.  A coincident warp is the one known object whose
+    filled silhouette can satisfy the block gate, so that exact cell is
+    excluded while saves remain allowed to coexist with terrain.
+    """
+
+    if source_grid is None:
+        return detections
+    columns, rows = source_grid
+    if not (
+        4 <= columns < ROOM_WIDTH // GRID_SIZE
+        and 4 <= rows < ROOM_HEIGHT // GRID_SIZE
+    ):
+        return detections
+    left = ((ROOM_WIDTH // GRID_SIZE - columns) // 2) * GRID_SIZE
+    top = ((ROOM_HEIGHT // GRID_SIZE - rows + 1) // 2) * GRID_SIZE
+    right = left + (columns - 1) * GRID_SIZE
+    bottom = top + (rows - 1) * GRID_SIZE
+    if right >= room.width or bottom >= room.height:
+        return detections
+
+    background = image.pixel(room.x, room.y)
+    warps = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_WARP
+    ]
+    recovered: list[Detection] = []
+    for y in range(top, bottom + 1, GRID_SIZE):
+        for x in range(left, right + 1, GRID_SIZE):
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            foreground = _compact_foreground_ratio(colors, background)
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            if (
+                foreground < EMBEDDED_COMPACT_BLOCK_MIN_FOREGROUND
+                or patch.center_score > EMBEDDED_COMPACT_BLOCK_MAX_CENTER_SCORE
+                or patch.edge_density > EMBEDDED_COMPACT_BLOCK_MAX_EDGE_DENSITY
+            ):
+                continue
+            if any(
+                abs(warp.x - x) <= EMBEDDED_COMPACT_BLOCK_WARP_DISTANCE
+                and abs(warp.y - y) <= EMBEDDED_COMPACT_BLOCK_WARP_DISTANCE
+                for warp in warps
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "embedded_compact_relative_block",
+                    OBJ_BLOCK,
+                    x,
+                    y,
+                    min(
+                        0.96,
+                        max(
+                            0.50,
+                            0.56
+                            + foreground * 0.34
+                            - patch.edge_density * 0.08,
+                        ),
+                    ),
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+    if not recovered:
+        return detections
+    # The broad candidates are not trustworthy once an embedded room has
+    # been localized: they were sampled from the surrounding screenshot.
+    # Keep all other object classes and replace only blocks.
+    result = [
+        detection
+        for detection in detections
+        if detection.type_id != OBJ_BLOCK
+    ]
+    return _dedupe_exact_detections([*result, *recovered])
 
 
 def _reconcile_compact_block_phase_aliases(

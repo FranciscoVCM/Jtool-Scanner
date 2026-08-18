@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: recover an embedded compact-room block lattice (2026-08-18)
+
+The held-out `Irkara-58` fixture exposed a localization/material failure that
+was broader than a palette threshold.  Its centered 9x9 room occupies a small
+island inside a HUD and gray outer field.  The old full-room path treated that
+outer field as repeated terrain: it produced 223 block candidates and matched
+none of the 43 authoritative blocks.  The existing embedded-room audit was
+only reached after an outer 25x19 grid inference, while this capture's HUD
+made the outer aspect ratio fall just outside every supported profile.
+
+The scanner now also runs the same narrow embedded-room audit when the outer
+grid is unresolved.  Once a compact source grid is localized, a final,
+palette-relative pass samples only its normalized native cells.  It uses local
+foreground fill, centre uniformity, and edge density, and excludes only a
+coincident warp cell; it replaces the untrustworthy outer-background block
+candidates while preserving the existing spike, save, and other object routes.
+The rule contains no filename, screen name, coordinate list, or fixed RGB
+palette.  A full green Irkara room (`Irkara-57`) remains on the ordinary path
+as a held-out negative control.
+
+Measured with grid step 8:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-58 blocks | 0/43 matched, 223 detected | 43/43 matched, 43 detected |
+| Irkara-58 full spikes | 4/10 matched, 18 detected | 8/10 matched, 21 detected |
+| Irkara aggregate blocks | 927/1278 matched, 1571 detected | 970/1278 matched, 1391 detected |
+| Irkara aggregate saves/warps/platforms | 23/23, 10/11, 5/5 matched | unchanged |
+| complete block/spike color-object controls | prior totals | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses | unchanged |
+
+The focused real-image regression passes, and the generated Irkara-58
+source/JMap/reconstruction/blend review is preserved under the ignored
+`.artifacts/goal-continuation/embedded-room-review-20260818/` directory.  The
+supplemental review row is in that directory's ignored `review-ledger.csv`;
+the 71-screen visual ledger is unchanged because this is an authoritative
+fixture correction rather than invented giant-review truth.  Remaining
+Irkara-58 uncertainty is limited to legacy full-spike geometry and six
+low-confidence mini-block candidates around the embedded room; the one false
+save remains explicitly reviewable in the generated project.
+
 ## Checkpoint: support-preserving SAVE header reanchor (2026-08-18)
 
 The exact Irkara Flames control exposed a false late phase correction.  The
