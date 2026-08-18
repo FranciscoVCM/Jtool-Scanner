@@ -558,6 +558,43 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertIn((544, 32, OBJ_MINI_SPIKE_DOWN), mini_spikes)
         self.assertNotIn((608, 96, OBJ_MINI_SPIKE_RIGHT), mini_spikes)
 
+    def test_neutral_blocks_can_coexist_with_supported_walljumps(self) -> None:
+        """A vine overlay must not erase an independently supported square."""
+
+        controls = (
+            (
+                Path("fixtures") / "block_spike" / "irkara-89-game.png",
+                {
+                    (0, 112),
+                    (0, 144),
+                    (416, 128),
+                    (256, 512),
+                },
+                {(336, 272), (336, 304), (640, 376)},
+            ),
+            (
+                Path("fixtures") / "irkara" / "irkara-51-game.png",
+                {(224, 128), (128, 320)},
+                {(0, 240), (672, 400)},
+            ),
+        )
+        for path, expected, unsupported in controls:
+            with self.subTest(path=path.name):
+                result = scan_png(
+                    path,
+                    grid_step=8,
+                    include_color_objects=True,
+                    include_geometry=True,
+                    enable_ocr=False,
+                )
+                blocks = {
+                    (detection.x, detection.y)
+                    for detection in result.detections
+                    if detection.type_id == OBJ_BLOCK
+                }
+                self.assertTrue(expected.issubset(blocks))
+                self.assertTrue(unsupported.isdisjoint(blocks))
+
     def test_bright_filled_reconcile_keeps_recovered_full_spikes(self) -> None:
         """Room-scale bright fill must not discard topology recoveries."""
 

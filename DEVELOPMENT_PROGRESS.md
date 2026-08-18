@@ -40,6 +40,46 @@ fixture rather than inventing a new giant-review truth row; its 58 accepted /
 13 needs-more-work statuses and all source/JMap/preview/blend paths remain
 current.
 
+## Checkpoint: walljump-backed outlined-block coexistence (2026-08-18)
+
+The bright outlined geometry controls exposed a real object-coexistence gap.
+The walljump detector correctly recognized a vine, but the ordinary square
+outline fallback rejected the underlying block because the vine's colourful
+centre raised the patch's fill score.  The authoritative Irkara-89 and
+Irkara-51 maps contain both objects at those cells; this was not a universal
+vine-origin shift.
+
+The scanner now performs one final, palette-relative coexistence pass after
+all spike, marker, and background arbitration has finished.  It considers only
+native 16px-phase walljump origins whose square border and edge evidence are
+still visible and whose surrounding block topology independently supports the
+cell with two axis neighbours.  At a clipped room edge, two adjacent
+walljumps plus a nearby same-edge block run may provide the equivalent support.
+The pass appends only new block objects at exact walljump origins; it does not
+run cross-type deduplication, so a nearby full spike remains intact.  No room
+name, filename, coordinate list, fixed colour, or global phase shift is used.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-89 blocks | 83/98 matched, 89 detected | 87/98 matched, 93 detected; four new blocks at `(0,112)`, `(0,144)`, `(416,128)`, `(256,512)` are source/JMap-supported |
+| Irkara-89 walljumps | 9/9 matched | unchanged, 9/9 matched |
+| Irkara-51 walljumps | 4/4 matched | unchanged, exact four-cell set; two backed blocks now coexist at `(224,128)` and `(128,320)` |
+| 12-pair color/object classes | all prior exact totals | unchanged: saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 |
+| 12-pair blocks | 1459/1486 matched, 1592 detected | 1463/1486 matched, 1596 detected |
+| 12-pair full spikes | 724/748 matched, 910 detected | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 missed | unchanged; 0 shifted and 0 wrong direction |
+
+The final source/JMap/reconstruction/blend projects, fixture report, and FTFA
+dashboard are preserved under the ignored
+`.artifacts/goal-continuation/walljump-backed-block-20260818/` directory.
+The focused Irkara-89/Irkara-51 regression and the complete unittest suite
+pass (**379 tests in 1980.205 seconds, `OK`**).  The 71-screen visual ledger
+is unchanged because this correction is backed by exact fixture JMaps rather
+than inventing giant-review truth; all 71 existing source/current/blend paths
+remain present.
+
 ## Checkpoint: boundary-supported water continuation (2026-08-18)
 
 The exact Irkara-54 room exposed two water cells at the horizontal room edges

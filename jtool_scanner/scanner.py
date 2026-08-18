@@ -318,6 +318,14 @@ BRIGHT_NEUTRAL_OUTLINE_BLOCK_MAX_CENTER = 0.20
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_SIDE = 0.50
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_ANCHOR_DISTANCE = 32.0
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE = 16.0
+# A walljump sprite can be drawn over a square terrain cell.  Its saturated
+# centre makes the ordinary neutral-outline gate decline the underlying block,
+# even when the surrounding block run remains visible.  This narrower route
+# accepts only strong side/border evidence and independent block topology.
+WALLJUMP_BACKED_OUTLINE_BLOCK_MIN_SIDE = 0.42
+WALLJUMP_BACKED_OUTLINE_BLOCK_MAX_CENTER = 0.86
+WALLJUMP_BACKED_OUTLINE_BLOCK_MIN_AXIS_SUPPORT = 2
+WALLJUMP_BACKED_OUTLINE_BLOCK_EDGE_SUPPORT_DISTANCE = GRID_SIZE * 2
 # A clipped square can leave its strongest surviving contour one partial cell
 # inward; project that evidence only across this one-tile boundary margin.
 BRIGHT_NEUTRAL_OUTLINE_BLOCK_BOUNDARY_MARGIN = GRID_SIZE - 8
@@ -2195,6 +2203,15 @@ def scan_image(
         box,
         include_geometry=include_geometry,
     )
+    # Add the narrow walljump/outlined-block coexistence objects only after
+    # every spike and marker reconciler has finished.  The underlying square
+    # must not become an input that causes an otherwise valid spike to lose an
+    # arbitration pass.
+    detections = _recover_walljump_backed_outline_blocks(
+        detections,
+        image,
+        box,
+    )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -4058,6 +4075,125 @@ def _recover_bright_neutral_outline_blocks(
         candidates,
         min_distance=BRIGHT_NEUTRAL_OUTLINE_BLOCK_DEDUPE_DISTANCE,
     )
+
+
+def _recover_walljump_backed_outline_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover an outlined block that independently coexists with a vine.
+
+    In sparse outlined rooms the green walljump sprite can cover the centre of
+    a square terrain cell.  The ordinary outline fallback correctly avoids
+    treating that colourful centre as a square, but the JTool map may still
+    contain both objects.  Recover only a native 16px-phase walljump cell
+    whose border survives and which has at least two existing axis-neighbour
+    blocks.  A clipped edge pair may use one outside support cell when two
+    adjacent walljumps establish the same vertical run.  Unsupported interior
+    vines are deliberately left alone.
+    """
+
+    walljumps = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
+    ]
+    if not walljumps:
+        return detections
+    blocks = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+
+    def axis_support(x: int, y: int) -> int:
+        return sum(
+            position in blocks
+            for position in (
+                (x - GRID_SIZE, y),
+                (x + GRID_SIZE, y),
+                (x, y - GRID_SIZE),
+                (x, y + GRID_SIZE),
+            )
+        )
+
+    def candidate_score(x: int, y: int) -> float | None:
+        if not (
+            0 <= x <= ROOM_WIDTH - GRID_SIZE
+            and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+            and x % MINI_BLOCK_SIZE == 0
+            and y % MINI_BLOCK_SIZE == 0
+        ):
+            return None
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        if (
+            patch.border_score < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_BORDER
+            or patch.edge_density < BRIGHT_NEUTRAL_OUTLINE_BLOCK_MIN_EDGE
+            or patch.center_score > WALLJUMP_BACKED_OUTLINE_BLOCK_MAX_CENTER
+        ):
+            return None
+        sides = _bright_outline_side_coverages(patch)
+        if max(sides[:2], default=0.0) < WALLJUMP_BACKED_OUTLINE_BLOCK_MIN_SIDE and (
+            max(sides[2:], default=0.0) < WALLJUMP_BACKED_OUTLINE_BLOCK_MIN_SIDE
+        ):
+            return None
+        return min(
+            0.94,
+            max(
+                0.34,
+                patch.border_score * 0.65
+                + patch.edge_density * 0.35
+                + max(sides) * 0.10,
+            ),
+        )
+
+    recovered = list(detections)
+    added: list[Detection] = []
+    walljump_positions = {(detection.x, detection.y) for detection in walljumps}
+    for walljump in walljumps:
+        position = (walljump.x, walljump.y)
+        if position in blocks:
+            continue
+        score = candidate_score(*position)
+        if score is None:
+            continue
+        supported = axis_support(*position) >= WALLJUMP_BACKED_OUTLINE_BLOCK_MIN_AXIS_SUPPORT
+        if not supported and walljump.x in (0, ROOM_WIDTH - GRID_SIZE):
+            adjacent_edge_vines = any(
+                other_x == walljump.x
+                and abs(other_y - walljump.y) == GRID_SIZE
+                for other_x, other_y in walljump_positions
+            )
+            edge_support = any(
+                block_x == walljump.x
+                and abs(block_y - walljump.y)
+                <= WALLJUMP_BACKED_OUTLINE_BLOCK_EDGE_SUPPORT_DISTANCE
+                for block_x, block_y in blocks
+            )
+            supported = adjacent_edge_vines and edge_support
+        if not supported:
+            continue
+        added.append(
+            _geometry_detection(
+                "walljump_backed_outline_block",
+                OBJ_BLOCK,
+                walljump.x,
+                walljump.y,
+                score,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        blocks.add(position)
+    if not added:
+        return recovered
+    # Do not run the generic cross-type dedupe here: a square under a vine
+    # may be adjacent to a legitimate full spike, and object coexistence is
+    # precisely what this late recovery is preserving.  Exact-position block
+    # membership was checked above, so appending is sufficient.
+    return [*recovered, *added]
 
 
 def _prune_bright_outlined_terrain_decorations(
