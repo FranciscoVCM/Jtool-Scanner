@@ -1312,6 +1312,17 @@ BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA = 0.20
 BRIGHT_FILLED_ANCHORED_MIN_SCORE = 0.55
 BRIGHT_FILLED_ANCHORED_MIN_DENSITY_CONTRAST = 0.35
 BRIGHT_FILLED_ANCHORED_MIN_LUMA_CONTRAST = 60.0
+# A dense 16px tileset can leave a topology-anchored full spike with an
+# ambiguous directional margin even though the normalized filled triangle is
+# still clear.  Keep this fallback narrower than the ordinary anchored route:
+# it requires strong local shape, side coverage, and both relative fill
+# measures, so block seams and bright texture do not activate it by color alone.
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SCORE = 0.50
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_OUTLINE_DELTA = 0.12
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SIDE_COVERAGE = 0.75
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_EDGE_DENSITY = 0.40
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_DENSITY_CONTRAST = 0.28
+BRIGHT_FILLED_ANCHORED_SHAPE_MIN_LUMA_CONTRAST = 40.0
 # A strong topology candidate can sit just below the room-scale fill gate
 # when the local triangle is clipped or partly masked by its backing cell.
 # Keep this branch narrower than the anchored fallback: it is only for the
@@ -17286,9 +17297,10 @@ def _is_bright_filled_recovery_candidate(
             and side_coverage >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_SIDE_COVERAGE
             and patch.edge_density >= MINIBLOCK_EDGE_FULL_SPIKE_MIN_EDGE_DENSITY
         )
-    return bool(
-        detection.kind == "miniblock_room_full_spike_base_anchored"
-        and detection.score >= BRIGHT_FILLED_ANCHORED_MIN_SCORE
+    if detection.kind != "miniblock_room_full_spike_base_anchored":
+        return False
+    if (
+        detection.score >= BRIGHT_FILLED_ANCHORED_MIN_SCORE
         and BRIGHT_FILLED_ANCHORED_MIN_DENSITY_CONTRAST
         <= fill.density_contrast
         < BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
@@ -17296,6 +17308,18 @@ def _is_bright_filled_recovery_candidate(
         and spike.direction_margin >= FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN
         and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
         and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
+    ):
+        return True
+    return bool(
+        detection.score >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SCORE
+        and spike.score >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SCORE
+        and spike.outline_delta >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_OUTLINE_DELTA
+        and side_coverage >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_SIDE_COVERAGE
+        and patch.edge_density >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_EDGE_DENSITY
+        and BRIGHT_FILLED_ANCHORED_SHAPE_MIN_DENSITY_CONTRAST
+        <= fill.density_contrast
+        < BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
+        and fill.luma_contrast >= BRIGHT_FILLED_ANCHORED_SHAPE_MIN_LUMA_CONTRAST
     )
 
 

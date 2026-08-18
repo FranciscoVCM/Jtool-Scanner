@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: preserve high-fill topology recoveries through bright reconciliation (2026-08-18)
+
+The bright-filled spike reconciler rebuilt its output from raw candidates and
+could discard a true 16px-room recovery when the exact full-spike direction was
+ambiguous.  The affected CN3-18 object at `(304,144)` was a genuine upward
+spike: its `miniblock_room_full_spike_base_anchored` provenance, local outline,
+side coverage, edge density, and relative fill/luminance contrast all agreed,
+even though the direction margin was just below the strict gate.  The
+reconciler now retains this provenance only when those independent shape and
+palette-relative measures pass a narrow high-fill band.  The rule is shared by
+any matching unknown tileset; it uses no screen name, absolute coordinate, or
+fixed RGB value.  The precise-occluded candidates whose local direction and
+side evidence disagree remain rejected rather than being forced into a
+canonical cell.
+
+Measured grid-step-8 results against the preceding boundary-clipped checkpoint:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-16 full spikes | 39 detected / 30 truth / 30 matched | unchanged |
+| CN3-18 full spikes | 57 / 50 / 47 | 58 / 50 / 48; `(304,144,up)` retained |
+| complete 12-pair block/spike full spikes | 907 / 748 / 721 | 908 / 748 / 722 |
+| held-out Irkara full spikes | 720 / 796 / 529 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged |
+
+The remaining CN3-18 misses at `(448,288,up)`, `(448,320,down)`, and
+`(496,352,down)` are recorded as phase/shape-discordant cases; no coordinate
+or screen-specific patch was added.  All color-object controls and the
+existing CN3-16/CN3-18, Flames, FTFA, and held-out Irkara regressions remain
+protected.  Complete unittest discovery passes **375 tests in 1729.727
+seconds, `OK`**.  Fresh source/JTool/blend outputs and benchmark reports are
+under `.artifacts/goal-continuation/anchored-fill-recovery-20260818/`.
+
 ## Checkpoint: preserve boundary-clipped full spikes in miniblock rooms (2026-08-18)
 
 CN3-16 still missed the authoritative left spike at `(240,576)`.  The raw

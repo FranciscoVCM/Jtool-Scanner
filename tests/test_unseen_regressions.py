@@ -508,6 +508,7 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
         self.assertTrue(
             {
+                (304, 144, OBJ_SPIKE_UP),
                 (176, 336, OBJ_SPIKE_RIGHT),
                 (192, 576, OBJ_SPIKE_UP),
                 (224, 576, OBJ_SPIKE_UP),
