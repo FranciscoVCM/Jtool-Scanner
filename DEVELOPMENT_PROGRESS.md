@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: retain near-threshold strong miniblock spike recovery (2026-08-18)
+
+The clipped-fill correction exposed one related CN3-16 case: a genuine left
+spike at `(96,400)` was already recovered by the independent miniblock-room
+topology pass with a strong directional shape, but its normalized triangle had
+`density_contrast=0.398` and `luma_contrast=48.1`, just below the room-scale
+bright-fill gate.  The previous anchored fallback intentionally did not apply
+because this candidate is classified as a strong, rather than base-anchored,
+topology recovery.
+
+The generalized rule now retains only a `miniblock_room_full_spike_strong`
+candidate in a narrow near-threshold density band, with independent local
+direction, outline, side-coverage, edge-density, score, and luminance checks.
+It is evaluated after the existing bright-room activation gate and cannot
+activate that gate by itself.  No screen name or coordinate is used.
+
+Measured grid-step-8 results against the immediately preceding checkpoint:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-16 full spikes | 37 detected / 30 truth / 28 matched | 38 / 30 / 29; `(96,400,left)` retained |
+| CN3-18 full spikes | 57 / 50 / 47 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged |
+
+The focused CN3-16 regression, prior clipped CN3-18 regression, Flames
+recovery regression, and the held-out FTFA screen checks remain protected.  The
+complete unittest discovery run passes **375 tests in 1721.735 seconds, `OK`**.
+The fresh pair, complete block/spike, held-out Irkara, and FTFA reports are
+under
+`.artifacts/goal-continuation/strong-near-threshold-20260818/`.
+
 ## Checkpoint: preserve clipped topology recoveries in bright spike fields (2026-08-18)
 
 The bright-filled room reconciler had a second, narrower provenance loss after

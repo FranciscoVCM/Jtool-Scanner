@@ -514,6 +514,23 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             }.issubset(full_spikes)
         )
 
+    def test_bright_filled_reconcile_keeps_near_threshold_strong_spike(self) -> None:
+        """A strong topology spike survives a narrowly clipped fill profile."""
+
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "cn3-16-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        full_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+        self.assertIn((96, 400, OBJ_SPIKE_LEFT), full_spikes)
+
     def test_repeated_vine_phase_beats_same_column_terrain_alias(self) -> None:
         """A cadence-confirmed vine keeps its shape-derived half-cell origin."""
 

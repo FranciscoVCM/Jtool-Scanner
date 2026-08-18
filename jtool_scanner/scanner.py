@@ -1312,6 +1312,14 @@ BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA = 0.20
 BRIGHT_FILLED_ANCHORED_MIN_SCORE = 0.55
 BRIGHT_FILLED_ANCHORED_MIN_DENSITY_CONTRAST = 0.35
 BRIGHT_FILLED_ANCHORED_MIN_LUMA_CONTRAST = 60.0
+# A strong topology candidate can sit just below the room-scale fill gate
+# when the local triangle is clipped or partly masked by its backing cell.
+# Keep this branch narrower than the anchored fallback: it is only for the
+# independent strong-shape recovery and still requires the local directional
+# evidence used by the boundary rule.
+BRIGHT_FILLED_STRONG_MIN_SCORE = 0.58
+BRIGHT_FILLED_STRONG_MIN_DENSITY_CONTRAST = 0.35
+BRIGHT_FILLED_STRONG_MIN_LUMA_CONTRAST = 40.0
 BRIGHT_NEUTRAL_SPIKE_MIN_COMPONENT_COUNT = 20
 BRIGHT_NEUTRAL_SPIKE_MIN_MAP_AREA = 240.0
 BRIGHT_NEUTRAL_SPIKE_MIN_MAP_WIDTH = 22.0
@@ -17137,6 +17145,21 @@ def _is_bright_filled_recovery_candidate(
             >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA
             and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
             and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
+        )
+    if detection.kind == "miniblock_room_full_spike_strong":
+        return bool(
+            detection.score >= BRIGHT_FILLED_STRONG_MIN_SCORE
+            and spike.score >= BRIGHT_FILLED_STRONG_MIN_SCORE
+            and spike.direction_margin
+            >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_DIRECTION_MARGIN
+            and spike.outline_delta
+            >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA
+            and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
+            and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
+            and BRIGHT_FILLED_STRONG_MIN_DENSITY_CONTRAST
+            <= fill.density_contrast
+            < BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
+            and fill.luma_contrast >= BRIGHT_FILLED_STRONG_MIN_LUMA_CONTRAST
         )
     return bool(
         detection.kind == "miniblock_room_full_spike_base_anchored"
