@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: support-preserving SAVE header reanchor (2026-08-18)
+
+The exact Irkara Flames control exposed a false late phase correction.  The
+body detector placed the save at `(64,128)`, directly above a complete terrain
+support row, but a nearby pale/text run was interpreted as a SAVE header and
+reanchored it to `(64,120)`.  The shared header pass now inspects the already
+known full-block topology: when the body-origin candidate is clear, has at
+least 24px of support immediately below, and the proposed header phase loses
+that support, the header is rejected.  Overlapped or unsupported body phases
+remain eligible for the existing terrain/header arbitration, so this is not a
+global `-8` correction and does not depend on a screen name, filename,
+coordinate, or palette.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara Flames save | `(64,120)`, `save_header_aligned` | `(64,128)`, raw `save` origin; exact JMap match |
+| K3 Ex-Hades saves | `(576,64)`, `(32,160)`, `(416,160)`, `(256,352)`, `(432,384)`, `(480,512)` | unchanged; six detections and known off-phase visual/JMap differences preserved |
+| Partysu3 saves | `(112,320)`, `(544,416)` | unchanged; both exact |
+| CN3-18 saves | `(224,80)`, `(384,256)`, `(768,368)` | unchanged; all exact |
+| Irkara-54/71/89 saves | exact current coordinates | unchanged; exact current coordinates |
+| complete 12-pair color/object gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 missed, 0 shifted, 0 wrong direction | unchanged |
+
+The corrected Irkara Flames source/JTool/blend project, exact control report,
+and review overlays are preserved under the ignored
+`.artifacts/goal-continuation/save-phase-review-20260818/` directory.  The
+focused real-image regression passes in 324.716 seconds; the complete fixture
+workflow remains at 100% for every color/object class; and full unittest
+discovery passes **378 tests in 1863.393 seconds, `OK`**.  The 71-screen
+ledger remains unchanged because this checkpoint corrected a held-out exact
+fixture rather than inventing a new giant-review truth row; its 58 accepted /
+13 needs-more-work statuses and all source/JMap/preview/blend paths remain
+current.
+
 ## Checkpoint: boundary-supported water continuation (2026-08-18)
 
 The exact Irkara-54 room exposed two water cells at the horizontal room edges

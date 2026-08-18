@@ -483,6 +483,30 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             [(224, 80), (384, 256), (768, 368)],
         )
 
+    def test_supported_save_body_keeps_flames_origin(self) -> None:
+        """A pale terrain seam must not move a supported body one phase up."""
+
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "irkara-nr-flames-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        detected = sorted(
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_SAVE
+        )
+        truth = sorted(
+            (item.x, item.y)
+            for item in JMap.from_file(
+                Path("fixtures") / "block_spike" / "irkara-nr-flames.jmap"
+            ).objects
+            if item.type_id == OBJ_SAVE
+        )
+        self.assertEqual(detected, truth)
+
     def test_terrain_vine_phase_aligns_irkara51_supported_column(self) -> None:
         result = scan_png(
             Path("fixtures") / "irkara" / "irkara-51-game.png",

@@ -1590,6 +1590,11 @@ SAVE_GENERAL_HEADER_MIN_ROWS = 3
 SAVE_GENERAL_HEADER_MIN_SIGNAL_SHARE = 0.08
 SAVE_GENERAL_HEADER_MIN_CONTRAST = 24.0
 SAVE_GENERAL_HEADER_MIN_LUMINANCE = 80.0
+# A late header phase must not discard a full terrain support row that already
+# agrees with the body-origin candidate.  This is a topology guard, not a
+# universal save shift; overlapped/unsupported bodies remain eligible for the
+# existing header evidence (for example the profiled Irkara controls).
+SAVE_HEADER_SUPPORT_GUARD_MIN_WIDTH = GRID_SIZE * 3 // 4
 SAVE_HEADER_REANCHOR_KINDS = frozenset(
     {
         "save",
@@ -7803,6 +7808,11 @@ def _reanchor_save_headers(
         return detections
 
     scale_y = room.height / max(1, ROOM_HEIGHT)
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
     replacements: dict[int, Detection] = {}
     for detection in detections:
         if (
@@ -7857,6 +7867,47 @@ def _reanchor_save_headers(
             or not 0 <= candidate_y <= ROOM_HEIGHT - GRID_SIZE
         ):
             continue
+        if block_positions:
+            original_overlap = _total_block_overlap(
+                detection.x,
+                detection.y,
+                block_positions,
+            )
+            candidate_overlap = _total_block_overlap(
+                detection.x,
+                candidate_y,
+                block_positions,
+            )
+            original_support = sum(
+                max(
+                    0,
+                    min(detection.x + GRID_SIZE, block_x + GRID_SIZE)
+                    - max(detection.x, block_x),
+                )
+                for block_x, block_y in block_positions
+                if block_y == detection.y + GRID_SIZE
+            )
+            candidate_support = sum(
+                max(
+                    0,
+                    min(detection.x + GRID_SIZE, block_x + GRID_SIZE)
+                    - max(detection.x, block_x),
+                )
+                for block_x, block_y in block_positions
+                if block_y == candidate_y + GRID_SIZE
+            )
+            if (
+                original_overlap == 0
+                and original_support >= SAVE_HEADER_SUPPORT_GUARD_MIN_WIDTH
+                and candidate_overlap == 0
+                and candidate_support < original_support
+            ):
+                # The body origin already sits above a complete terrain row;
+                # a nearby pale/text run is not independent enough to erase
+                # that support topology.  Keep the body candidate and let the
+                # normal terrain arbitration handle overlapped/unsupported
+                # phases in other room families.
+                continue
         replacements[id(detection)] = _geometry_detection(
             replacement_kind,
             detection.type_id,
