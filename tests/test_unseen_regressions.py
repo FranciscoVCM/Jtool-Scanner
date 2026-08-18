@@ -491,6 +491,29 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             }.issubset(full_spikes)
         )
 
+    def test_bright_filled_reconcile_keeps_clipped_miniblock_room_spikes(self) -> None:
+        """Clipped CN3 triangles survive the bright-field rebuild."""
+
+        result = scan_png(
+            Path("fixtures") / "block_spike" / "cn3-18-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        full_spikes = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+        self.assertTrue(
+            {
+                (176, 336, OBJ_SPIKE_RIGHT),
+                (192, 576, OBJ_SPIKE_UP),
+                (224, 576, OBJ_SPIKE_UP),
+            }.issubset(full_spikes)
+        )
+
     def test_repeated_vine_phase_beats_same_column_terrain_alias(self) -> None:
         """A cadence-confirmed vine keeps its shape-derived half-cell origin."""
 

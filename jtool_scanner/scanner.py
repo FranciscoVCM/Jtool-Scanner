@@ -1298,6 +1298,20 @@ BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_SCORE = 0.32
 BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_DIRECTION_MARGIN = 0.12
 BRIGHT_FILLED_FULL_SPIKE_RECOVERY_MIN_OUTLINE_DELTA = 0.15
 BRIGHT_FILLED_FULL_SPIKE_RECOVERY_NEARBY_DISTANCE = 24.0
+# A filled-triangle room profile can clip a genuine spike at the normalized
+# room boundary, leaving too little interior fill for the room-scale test.
+# Keep this fallback tied to the independent miniblock-room topology recovery
+# and a strong local shape, rather than lowering the profile threshold for
+# every candidate in an unknown tileset.
+BRIGHT_FILLED_EDGE_RECOVERY_MIN_SCORE = 0.58
+BRIGHT_FILLED_EDGE_RECOVERY_MIN_DIRECTION_MARGIN = 0.12
+BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA = 0.20
+# A topology-anchored candidate can also sit just below the filled-density
+# threshold when a neighboring block masks part of its triangle.  Require a
+# high local luminance contrast and a narrower density band for this fallback.
+BRIGHT_FILLED_ANCHORED_MIN_SCORE = 0.55
+BRIGHT_FILLED_ANCHORED_MIN_DENSITY_CONTRAST = 0.35
+BRIGHT_FILLED_ANCHORED_MIN_LUMA_CONTRAST = 60.0
 BRIGHT_NEUTRAL_SPIKE_MIN_COMPONENT_COUNT = 20
 BRIGHT_NEUTRAL_SPIKE_MIN_MAP_AREA = 240.0
 BRIGHT_NEUTRAL_SPIKE_MIN_MAP_WIDTH = 22.0
@@ -17001,7 +17015,13 @@ def _reconcile_bright_filled_full_spikes(
             GRID_SIZE,
             directions[detection.type_id],
         )
-        if _is_bright_filled_full_spike_component(fill):
+        if _is_bright_filled_full_spike_component(fill) or _is_bright_filled_recovery_candidate(
+            detection,
+            fill,
+            image,
+            room,
+            directions[detection.type_id],
+        ):
             selected[key] = detection
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, FULL_SPIKE_PRIMARY_GRID_STEP):
@@ -17067,6 +17087,67 @@ def _is_bright_filled_full_spike_component(
         fill.density_contrast
         >= BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
         and fill.luma_contrast >= BRIGHT_FILLED_FULL_SPIKE_MIN_LUMA_CONTRAST
+    )
+
+
+def _is_bright_filled_recovery_candidate(
+    detection: Detection,
+    fill: _TriangleFillFeatures,
+    image: RGBImage,
+    room: Box,
+    direction: str,
+) -> bool:
+    """Keep a topology recovery that the room-scale fill profile clips.
+
+    The room-scale bright-fill reconciler intentionally rebuilds a coherent
+    spike field from source silhouettes.  At a viewport boundary, however, a
+    real triangle can lose the interior pixels that establish its density and
+    luminance contrast.  A candidate already recovered from an independent
+    miniblock-room topology is safe to retain only when its local classifier
+    still agrees on direction and shape.  A second narrow branch covers a
+    block-masked triangle that is just below the density threshold.
+    """
+
+    if not detection.kind.startswith("miniblock_room_full_spike"):
+        return False
+    patch = _patch_features(
+        image,
+        room,
+        detection.x,
+        detection.y,
+        GRID_SIZE,
+    )
+    spike = _classify_full_spike(patch)
+    if spike is None or spike.type_id != detection.type_id:
+        return False
+    side_coverage = _triangle_side_coverage(patch, direction)
+    at_facing_boundary = (
+        (direction == "up" and detection.y >= ROOM_HEIGHT - GRID_SIZE)
+        or (direction == "down" and detection.y <= 0)
+        or (direction == "left" and detection.x <= 0)
+        or (direction == "right" and detection.x >= ROOM_WIDTH - GRID_SIZE)
+    )
+    if at_facing_boundary:
+        return bool(
+            detection.score >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_SCORE
+            and spike.score >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_SCORE
+            and spike.direction_margin
+            >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_DIRECTION_MARGIN
+            and spike.outline_delta
+            >= BRIGHT_FILLED_EDGE_RECOVERY_MIN_OUTLINE_DELTA
+            and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
+            and patch.edge_density >= FULL_SPIKE_RECALL_RECOVERY_MIN_EDGE_DENSITY
+        )
+    return bool(
+        detection.kind == "miniblock_room_full_spike_base_anchored"
+        and detection.score >= BRIGHT_FILLED_ANCHORED_MIN_SCORE
+        and BRIGHT_FILLED_ANCHORED_MIN_DENSITY_CONTRAST
+        <= fill.density_contrast
+        < BRIGHT_FILLED_FULL_SPIKE_MIN_DENSITY_CONTRAST
+        and fill.luma_contrast >= BRIGHT_FILLED_ANCHORED_MIN_LUMA_CONTRAST
+        and spike.direction_margin >= FULL_SPIKE_RECALL_RECOVERY_MIN_DIRECTION_MARGIN
+        and spike.outline_delta >= FULL_SPIKE_RECALL_RECOVERY_MIN_OUTLINE_DELTA
+        and side_coverage >= FULL_SPIKE_RECALL_RECOVERY_MIN_SIDE_COVERAGE
     )
 
 

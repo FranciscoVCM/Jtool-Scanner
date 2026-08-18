@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: preserve clipped topology recoveries in bright spike fields (2026-08-18)
+
+The bright-filled room reconciler had a second, narrower provenance loss after
+the raw-recovery fix: in the unknown CN3-18 tileset, two true upward spikes at
+the bottom room boundary and one anchored side spike were already present in
+the miniblock-room topology result, but the room-scale fill test discarded
+them.  Boundary clipping removes the interior triangle pixels; a neighboring
+block can likewise mask just enough fill to fall below the normal density
+threshold.
+
+The generalized correction retains those candidates only after the existing
+bright-room activation gate is already satisfied.  It requires the
+`miniblock_room_full_spike_*` provenance, a matching local directional
+classifier, strong side/outline evidence for a facing-boundary candidate, or
+a narrow high-luminance near-threshold branch for a block-masked anchored
+candidate.  It does not lower the room-scale gate, use a screen name or
+coordinate, or allow recovered candidates to activate the profile.
+
+Measured grid-step-8 results against the fresh pre-change baseline:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-18 full spikes | 54 detected / 50 truth / 44 matched | 57 / 50 / 47; the retained truth positions are `(176,336,right)`, `(192,576,up)`, and `(224,576,up)` |
+| CN3-16 full spikes | 37 / 30 / 28 | unchanged |
+| complete 12-pair block/spike full spikes | 902 / 748 / 716 | 905 / 748 / 719 |
+| Irkara held-out full spikes | 720 / 796 / 529 | unchanged |
+| FTFA strict gate | 926/928 exact, 0 false positives, 2 misses | unchanged: 926/928 exact, 0 shifted, 0 wrong direction |
+
+All color-object totals, platforms, miniblocks, blocks, mini-spikes,
+killers, refreshers, saves, warps, water, walljumps, and gravity flippers
+remain unchanged in the complete block/spike report.  The focused real-image
+regression now protects the three clipped CN3-18 positions, and the existing
+Flames recovery regression remains green.  Fresh pair, full-fixture, and FTFA
+reports are preserved under
+`.artifacts/goal-continuation/bright-filled-edge-recovery-20260818/`.
+
 ## Checkpoint: SAVE phase audit separates header and terrain ambiguities (2026-08-18)
 
 The next exact-fixture audit targeted the recurring eight-pixel SAVE/start
