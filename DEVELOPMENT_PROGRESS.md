@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: dark catharsis water-column recovery (2026-08-19)
+
+The authoritative Irkara-71 JMap contains a four-cell water column at
+`(576,96)`, `(576,128)`, `(576,160)`, and `(576,192)`.  In the source capture
+those cells are almost black, so the existing catharsis-water detector had no
+bright seed and missed the entire column.  The JTool reconstruction confirms
+that the same cells are water rather than empty background.
+
+The scanner now has a conservative, palette-relative recovery for this case.
+It requires a complete three-cell dark vertical run with a measurable blue
+lift, very low edge density, and a fourth structured neutral transition cell
+that passes the existing catharsis weak-material gate.  The transition must
+retain local border and center support while remaining low-blue.  This is a
+shape/material/topology rule: it uses no room name, coordinate, filename,
+fixed palette, or manual object list, and it does not lower the global water
+seed threshold.  Cyan-background, dark-purple-background, saturated-blue,
+and synthetic catharsis controls remain explicit vetoes.
+
+Measured with the exact grid-step-8 workflows:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-71 water | `28 detected / 37 truth / 28 matched` | `32 / 37 / 32 matched`, including all four `(576,*)` cells; no false water |
+| Irkara aggregate water | `510 / 520 / 510` | `514 / 520 / 514` |
+| complete block/spike water | `35 / 35 / 35` | unchanged |
+| complete block/spike color/object gates | saves `22/22`, warps `12/12`, apples `4/4`, walljumps `13/13`, gravity `8/8`, platforms `3/3`, killers `99/99`, refreshers `18/19` | unchanged |
+| FTFA strict gate | `926/928 exact; 0 false positives; 2 misses; 0 shifted; 0 wrong direction` | unchanged |
+
+The Irkara-71 source/JTool/current-project/blend review and the regenerated
+pair, full-Irkara, block/spike, and FTFA reports are preserved under the
+ignored `.artifacts/goal-continuation/dark-water-review-20260819/` directory.
+The focused five-test water regression set passes.  The remaining five
+Irkara-71 water misses (the obscured horizontal pair, one adjacent cell, and
+the bottom pair) remain unresolved and are not covered by this rule.  The
+complete unittest discovery run passes **385 tests in 2308.859 seconds, `OK`**.
+
 ## Checkpoint: green tileset outline-save terrain arbitration (2026-08-19)
 
 The Irkara-57 and Irkara-58 source/JTool pairs exposed bright green terrain

@@ -371,10 +371,22 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         }
 
         # The two lower cells are the weak tail immediately after the seeded
-        # catharsis-water column.  They must retain their native 32px phase,
-        # and no palette-relative tail recovery may invent water elsewhere.
+        # catharsis-water column.  They must retain their native 32px phase.
         self.assertIn((352, 544), detected)
         self.assertIn((352, 576), detected)
+        # This separate column is almost black from top to bottom.  Its three
+        # dark cells and structured neutral transition must still be recovered
+        # without allowing smooth background columns to become water.
+        self.assertTrue(
+            {
+                (576, 96),
+                (576, 128),
+                (576, 160),
+                (576, 192),
+            }
+            <= detected
+        )
+        # No palette-relative tail recovery may invent water elsewhere.
         self.assertTrue(detected <= truth)
 
     def test_boundary_water_recovery_keeps_irkara54_edge_cells(self) -> None:

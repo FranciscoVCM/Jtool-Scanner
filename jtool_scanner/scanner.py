@@ -1568,6 +1568,22 @@ CATHARSIS_TAIL_MIN_BLUE_LIFT = 2.5
 CATHARSIS_DARK_TAIL_MAX_BRIGHTNESS = 45.0
 CATHARSIS_DARK_TAIL_MIN_BLUE_LIFT = 8.0
 CATHARSIS_DARK_TAIL_MAX_EDGE_DENSITY = 0.04
+# A capture can render an entire water column nearly black when it is crossed
+# by the dark-room background.  A smooth background also produces long dark
+# runs, so only complete three-cell runs with a structured, neutral transition
+# at one end may seed this recovery.  The transition's lower blue lift keeps
+# ordinary blue-black background fields out of the route.
+CATHARSIS_DARK_COLUMN_MIN_CELLS = 3
+CATHARSIS_DARK_COLUMN_MAX_BRIGHTNESS = 12.0
+CATHARSIS_DARK_COLUMN_MIN_BLUE_LIFT = 3.5
+CATHARSIS_DARK_COLUMN_MAX_EDGE_DENSITY = 0.02
+CATHARSIS_DARK_COLUMN_TRANSITION_MIN_BRIGHTNESS = 60.0
+CATHARSIS_DARK_COLUMN_TRANSITION_MAX_BRIGHTNESS = 150.0
+CATHARSIS_DARK_COLUMN_TRANSITION_MAX_BLUE_LIFT = 2.5
+CATHARSIS_DARK_COLUMN_TRANSITION_MIN_EDGE_DENSITY = 0.12
+CATHARSIS_DARK_COLUMN_TRANSITION_MAX_EDGE_DENSITY = 0.24
+CATHARSIS_DARK_COLUMN_TRANSITION_MIN_BORDER = 0.08
+CATHARSIS_DARK_COLUMN_TRANSITION_MIN_CENTER = 0.08
 OUTLINE_APPLE_ROOM_MIN_BRIGHTNESS = 205.0
 OUTLINE_APPLE_ROOM_MAX_SATURATION = 0.05
 OUTLINE_APPLE_MIN_WIDTH = 6
@@ -12942,6 +12958,69 @@ def _detect_catharsis_water(
                     break
                 output_cells.add(cell)
                 y += direction * GRID_SIZE
+
+    # A very dark water column may have no bright seed at all.  Do not lower
+    # the seed threshold globally: that would turn the smooth black/blue room
+    # background into water.  Instead, accept a complete dark run only when
+    # it terminates in the structured neutral transition that water sprites
+    # retain when they meet a foreground face.  The rule is palette-relative
+    # and column-topology based, with no room name or coordinate exception.
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+        for start_y in range(
+            0,
+            ROOM_HEIGHT
+            - GRID_SIZE * (CATHARSIS_DARK_COLUMN_MIN_CELLS + 1)
+            + 1,
+            GRID_SIZE,
+        ):
+            run_cells = [
+                (x, start_y + index * GRID_SIZE)
+                for index in range(CATHARSIS_DARK_COLUMN_MIN_CELLS)
+            ]
+            run_info = [cell_info.get(cell) for cell in run_cells]
+            if any(info is None for info in run_info):
+                continue
+            if not all(
+                metrics[1] <= CATHARSIS_DARK_COLUMN_MAX_BRIGHTNESS
+                and metrics[0] >= CATHARSIS_DARK_COLUMN_MIN_BLUE_LIFT
+                and features.edge_density
+                <= CATHARSIS_DARK_COLUMN_MAX_EDGE_DENSITY
+                for _profile, features, metrics in run_info
+            ):
+                continue
+            transition_cell = (
+                x,
+                start_y + CATHARSIS_DARK_COLUMN_MIN_CELLS * GRID_SIZE,
+            )
+            transition_info = cell_info.get(transition_cell)
+            if transition_info is None:
+                continue
+            transition_profile, transition_features, transition_metrics = (
+                transition_info
+            )
+            if not _is_catharsis_weak(
+                transition_profile,
+                transition_features,
+                transition_metrics,
+            ):
+                continue
+            if not (
+                CATHARSIS_DARK_COLUMN_TRANSITION_MIN_BRIGHTNESS
+                <= transition_metrics[1]
+                <= CATHARSIS_DARK_COLUMN_TRANSITION_MAX_BRIGHTNESS
+                and transition_metrics[0]
+                <= CATHARSIS_DARK_COLUMN_TRANSITION_MAX_BLUE_LIFT
+                and CATHARSIS_DARK_COLUMN_TRANSITION_MIN_EDGE_DENSITY
+                <= transition_features.edge_density
+                <= CATHARSIS_DARK_COLUMN_TRANSITION_MAX_EDGE_DENSITY
+                and transition_features.border_score
+                >= CATHARSIS_DARK_COLUMN_TRANSITION_MIN_BORDER
+                and transition_features.center_score
+                >= CATHARSIS_DARK_COLUMN_TRANSITION_MIN_CENTER
+            ):
+                continue
+            output_cells.update(run_cells)
+            output_cells.add(transition_cell)
 
     for x, y in seed_cells:
         if seed_component_sizes.get((x, y), 1) != 1:
