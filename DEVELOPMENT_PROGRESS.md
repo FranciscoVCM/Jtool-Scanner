@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: green tileset outline-save terrain arbitration (2026-08-19)
+
+The Irkara-57 and Irkara-58 source/JTool pairs exposed bright green terrain
+and spike edges that were being promoted as `save_outline` objects.  Their
+components were dense enough for the older palette gates, but their pixels
+formed a one-dimensional silhouette: scanlines contributed only one run in
+one or both axes.  The real outlined SAVE signs, including the particle-field
+control in `infinite-jump-particle-water.png` and `Zero_Final`, retain repeated
+strokes in both axes.
+
+The outline-save classifier now requires normalized repeated-run topology in
+both axes and a minimum combined run score after the existing density and
+center gates.  This is a material/shape invariant rather than a palette,
+screen, coordinate, filename, or manual-object rule.  It rejects the green
+terrain impostors while preserving fragmented, bright, and particle-field
+outlined saves.
+
+Measured with grid step 8:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-57 saves | `8 detected / 2 truth / 2 matched` | `2 / 2 / 2`, both exact |
+| Irkara-58 saves | `2 detected / 1 truth / 1 matched` | `1 / 1 / 1`, exact |
+| Irkara aggregate saves | `30 detected / 23 truth / 23 matched` | `23 / 23 / 23 matched` |
+| complete block/spike color/object gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses | unchanged |
+| outlined-save controls | particle-field and Zero outlined saves retained | unchanged; focused tests pass |
+
+The Irkara-57 and Irkara-58 source/JTool/current-project/blend reviews are
+preserved under `.artifacts/goal-continuation/save-outline-review-20260819/`.
+The complete block/spike, Irkara, and FTFA reports are in the same ignored
+review directory.  The focused topology, neutral-warp, NANG, colored-warp,
+and particle-field regression set passes.  The complete unittest discovery
+run passes **385 tests in 2328.107 seconds, `OK`**.
+
 ## Checkpoint: neutral outline-warp terrain arbitration (2026-08-19)
 
 The Irkara-71 source/JTool pair exposed two false `warp_outline` promotions:

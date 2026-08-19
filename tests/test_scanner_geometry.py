@@ -2093,6 +2093,31 @@ class ScannerGeometryTests(unittest.TestCase):
             {(144, 32)},
         )
 
+    def test_green_terrain_edges_do_not_become_outline_saves(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "irkara"
+        expected = {
+            "57": {(64, 96), (464, 256)},
+            "58": {(288, 384)},
+        }
+
+        for floor, positions in expected.items():
+            with self.subTest(floor=floor):
+                result = scan_png(
+                    fixture_dir / f"irkara-{floor}-game.png",
+                    grid_step=8,
+                    include_color_objects=True,
+                    include_geometry=True,
+                    enable_ocr=False,
+                )
+                self.assertEqual(
+                    {
+                        (detection.x, detection.y)
+                        for detection in result.detections
+                        if detection.type_id == OBJ_SAVE
+                    },
+                    positions,
+                )
+
     def test_colored_warp_ring_tolerates_mild_center_fill(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
         image = load_png(fixture_dir / "irkara-nr-flames-game.png")

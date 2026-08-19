@@ -10437,6 +10437,13 @@ def _looks_like_outline_save(image: RGBImage, box: Box) -> bool:
         or _component_center_fill_ratio(box, pixels) > 0.50
     ):
         return False
+    # A real outlined SAVE sign contains repeated strokes in both axes.  A
+    # bright triangular terrain edge can satisfy the older density/row/column
+    # count gates while contributing only one run per scanline; reject that
+    # one-dimensional silhouette without changing the palette route.
+    row_multi, column_multi, run_sum = _component_run_topology(box, pixels)
+    if row_multi < 0.20 or column_multi < 0.20 or run_sum < 4.0:
+        return False
     full_rows = sum(count >= box.width * 0.80 for count in rows)
     full_columns = sum(count >= box.height * 0.80 for count in columns)
     return (
