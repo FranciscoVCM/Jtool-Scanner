@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: cyan-room scaled filled-blue warp recovery (2026-08-19)
+
+The Irkara-54 source/JTool pair exposed one remaining color-object miss in the
+water-filled cyan family: the authoritative warp at `(720,48)` was a compact
+blue filled-cloud component, but capture scaling reduced its normalized
+silhouette IoU to `0.676` and its center fill to `0.803`, below the ordinary
+filled-cloud route.  The existing hollow-ring route correctly rejected it,
+so this was a shape-normalization gap rather than evidence for a broad blue
+threshold.
+
+The scanner now has a narrow cyan-calibrated fallback for an isolated blue
+component.  It requires a near-square normalized 20–36px component, moderate
+fill, retained center/silhouette, and a blue-palette ring share of at most
+`0.05`; it is also subject to the existing dense-spike enclosure veto.  It
+uses no filename, screen name, coordinate, fixed RGB value, or manual object
+list.  A candidate audit found exactly the Irkara-54 truth component in the
+tracked fixture images and no candidate in any of the 71 preserved
+giant-review source images.
+
+Measured grid-step-8 results:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-54 warp | `0 detected / 1 truth / 0 matched` | `1 / 1 / 1`, exact `(720,48)` |
+| Irkara aggregate warps | `12 detected / 11 truth / 10 matched` | `13 / 11 / 11 matched` |
+| complete block/spike color/object gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses | unchanged |
+
+The Irkara-54 source/JTool/current-project/blend review is preserved under
+`.artifacts/goal-continuation/warp-recovery-review-20260819/irkara-54/`.
+The complete FTFA, block/spike, and Irkara reports are in the same ignored
+review directory.  The focused warp and Irkara-54 collateral tests pass.  The
+complete unittest discovery run passes **383 tests in 2059.242 seconds, `OK`**.
+
 ## Checkpoint: embedded-room supported full-spike recovery (2026-08-19)
 
 The embedded Irkara-58 source/JTool pair exposed the remaining compact-room

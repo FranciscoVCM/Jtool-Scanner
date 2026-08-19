@@ -2081,6 +2081,20 @@ class ScannerGeometryTests(unittest.TestCase):
             {(32, 24), (752, 528)},
         )
 
+    def test_cyan_room_recovers_scaled_filled_blue_warp(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "irkara"
+        image = load_png(fixture_dir / "irkara-54-game.png")
+        detections = _detect_warps(image, detect_room_box(image), 8)
+
+        self.assertEqual(
+            {
+                (detection.x, detection.y)
+                for detection in detections
+                if detection.type_id == OBJ_WARP
+            },
+            {(720, 48)},
+        )
+
     def test_full_spike_rejects_blocklike_weak_outline_candidate(self) -> None:
         block = _GeometryClass("block", OBJ_BLOCK, 0.50)
         spike = _GeometryClass(

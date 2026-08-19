@@ -9343,6 +9343,20 @@ HALOED_RED_WARP_MIN_COMPONENT_FILL = 0.60
 # small, palette-independent tolerance.
 COLORED_WARP_MAX_CENTER_FILL = 0.24
 
+# Cyan-room captures can soften a filled blue warp into a smaller, lower-IoU
+# component than the native filled-cloud template.  Keep this fallback much
+# narrower than the ordinary cloud route: it requires an isolated, compact,
+# near-square blue component in a cyan-calibrated room, with enough retained
+# cloud silhouette to distinguish it from continuous water or terrain.
+TINTED_FILLED_WARP_MIN_MAP_SIZE = 20.0
+TINTED_FILLED_WARP_MAX_MAP_SIZE = 36.0
+TINTED_FILLED_WARP_MIN_FILL = 0.60
+TINTED_FILLED_WARP_MAX_FILL = 0.80
+TINTED_FILLED_WARP_MIN_CENTER_FILL = 0.70
+TINTED_FILLED_WARP_MAX_CENTER_FILL = 0.90
+TINTED_FILLED_WARP_MIN_SILHOUETTE_IOU = 0.55
+TINTED_FILLED_WARP_MAX_RING_SHARE = 0.05
+
 
 def _is_dark_cloud_candidate(red: int, green: int, blue: int) -> bool:
     return max(red, green, blue) <= 80 and max(red, green, blue) - min(
@@ -9406,6 +9420,7 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
         detections.append(Detection("warp", OBJ_WARP, map_x, map_y, score, box))
     detections.extend(_detect_haloed_red_warps(image, room, grid_step))
     detections.extend(_detect_filled_cloud_warps(image, room, grid_step))
+    detections.extend(_detect_tinted_filled_warps(image, room, grid_step))
     detections.extend(_detect_outline_cloud_warps(image, room, grid_step))
     detections.extend(_detect_dark_silhouette_warps(image, room, grid_step))
     detections.extend(_detect_outline_warps(image, room, grid_step))
@@ -9489,6 +9504,80 @@ def _detect_filled_cloud_warps(
                 )
             )
             seen_components.add(component_key)
+    return _dedupe_detections(detections, min_distance=20)
+
+
+def _detect_tinted_filled_warps(
+    image: RGBImage,
+    room: Box,
+    grid_step: int,
+) -> list[Detection]:
+    """Recover softened blue filled warps in cyan-calibrated rooms.
+
+    A scaled capture can preserve the filled blue cloud but lose enough of
+    its native contour that the ordinary filled-cloud template rejects it.
+    This route is deliberately limited to a cyan room and an isolated blue
+    component with compact normalized dimensions, moderate fill, and a
+    retained silhouette.  The surrounding blue-palette ring check prevents
+    continuous water fields from becoming portals.
+    """
+
+    if not _looks_cyan_tinted(image, room):
+        return []
+    detections: list[Detection] = []
+    for box, pixels in _connected_components(image, room, _is_warp_blue):
+        map_width = box.width * ROOM_WIDTH / max(1, room.width)
+        map_height = box.height * ROOM_HEIGHT / max(1, room.height)
+        aspect = map_width / max(0.1, map_height)
+        fill = len(pixels) / max(1, box.area)
+        if not (
+            TINTED_FILLED_WARP_MIN_MAP_SIZE <= map_width <= TINTED_FILLED_WARP_MAX_MAP_SIZE
+            and TINTED_FILLED_WARP_MIN_MAP_SIZE <= map_height <= TINTED_FILLED_WARP_MAX_MAP_SIZE
+            and 0.80 <= aspect <= 1.20
+            and TINTED_FILLED_WARP_MIN_FILL <= fill <= TINTED_FILLED_WARP_MAX_FILL
+        ):
+            continue
+        center_fill = _component_center_fill_ratio(box, pixels)
+        if not (
+            TINTED_FILLED_WARP_MIN_CENTER_FILL
+            <= center_fill
+            <= TINTED_FILLED_WARP_MAX_CENTER_FILL
+        ):
+            continue
+        silhouette_iou = _component_silhouette_iou(
+            box,
+            pixels,
+            _FILLED_CLOUD_WARP_TEMPLATE_16,
+        )
+        if silhouette_iou < TINTED_FILLED_WARP_MIN_SILHOUETTE_IOU:
+            continue
+        ring_share = _component_ring_predicate_share(
+            image,
+            room,
+            box,
+            _is_warp_blue,
+            margin=5,
+        )
+        if ring_share > TINTED_FILLED_WARP_MAX_RING_SHARE:
+            continue
+        map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
+        if _filled_cloud_warp_is_dense_spike_enclosure(
+            image,
+            room,
+            map_x,
+            map_y,
+        ):
+            continue
+        detections.append(
+            Detection(
+                "warp_tinted_filled_blue",
+                OBJ_WARP,
+                map_x,
+                map_y,
+                min(0.90, 0.62 + silhouette_iou * 0.20),
+                box,
+            )
+        )
     return _dedupe_detections(detections, min_distance=20)
 
 
