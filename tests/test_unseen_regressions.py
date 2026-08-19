@@ -639,6 +639,38 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         )
         self.assertIsNone(held_out.source_grid)
 
+    def test_embedded_compact_room_recovers_supported_full_spikes(self) -> None:
+        """The embedded block lattice supplies independent spike support."""
+
+        source = Path("fixtures") / "irkara" / "irkara-58-game.png"
+        result = scan_png(
+            source,
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        expected = {
+            (object_.x, object_.y, object_.type_id)
+            for object_ in JMap.from_file(
+                Path("fixtures") / "irkara" / "irkara-58.jmap"
+            ).objects
+            if object_.type_id in FULL_SPIKE_TYPES
+        }
+        actual = {
+            (detection.x, detection.y, detection.type_id)
+            for detection in result.detections
+            if detection.type_id in FULL_SPIKE_TYPES
+        }
+        self.assertEqual(actual, expected)
+        self.assertEqual(
+            sum(
+                detection.kind == "embedded_compact_supported_full_spike"
+                for detection in result.detections
+            ),
+            2,
+        )
+
     def test_bright_filled_reconcile_keeps_recovered_full_spikes(self) -> None:
         """Room-scale bright fill must not discard topology recoveries."""
 

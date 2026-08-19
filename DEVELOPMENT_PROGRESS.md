@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: embedded-room supported full-spike recovery (2026-08-19)
+
+The embedded Irkara-58 source/JTool pair exposed the remaining compact-room
+geometry failure after its block lattice had been localized.  The ordinary
+32px classifier rejected the right spike at `(416,288)` because its softened
+outline fell just below the generic gate, while a separate pass retained
+thirteen horizontal edge impostors with no terrain backing.  The authoritative
+JMap contains ten full spikes.
+
+The embedded-room reconciliation now uses the localized block lattice as
+topology evidence.  It removes an unsupported horizontal full-spike candidate,
+keeps a strong central vertical silhouette when its normalized shape is
+independently clear, and searches the adjacent 16px phase for a same-direction
+triangle whose direction margin, outline, side coverage, low block score, and
+backing-cell/axis-neighbour evidence all pass.  It adds no screen name,
+coordinate list, palette, or filename rule; ordinary full-room and compact
+19x13 paths are not routed through it.
+
+Measured with grid step 8:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-58 full spikes | 21 detected / 8 of 10 matched | 10 detected / 10 exact |
+| Irkara-58 blocks | 43/43 matched | unchanged, 43/43 |
+| Irkara aggregate full spikes | 722 detected / 532 of 796 matched | 711 detected / 534 matched |
+| Irkara-57 held-out ordinary room | 71 full spikes; `source_grid=None` | unchanged; no embedded recovery |
+| NANG-11 held-out 9x9 island | 0 full spikes, 23 blocks, 1 save, 1 warp | unchanged; no additions |
+| complete block/spike gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses; 0 shifted; 0 wrong direction | unchanged |
+
+The focused Irkara-58 regression passes in 316.205 seconds, and the complete
+unittest suite passes **382 tests in 2320.325 seconds, `OK`**.  The complete
+block/spike, FTFA, and Irkara reports plus the current Irkara-58 source/JMap/
+reconstruction/blend project are preserved under the ignored
+`.artifacts/goal-continuation/embedded-spike-review-20260819/` directory;
+its supplemental ledger records the exact and held-out evidence.  The 71-row
+visual ledger remains unchanged by this exact-fixture correction; its current
+local status distribution is 57 accepted and 14 needs-more-work, with all
+rows still carrying source, current JMap, preview, blend, evidence, and an
+explicit status.  Lap Around remains visual-only without corrected JMaps.
+
 ## Checkpoint: phase/topology arbitration for weak miniblock-room spikes (2026-08-19)
 
 The exact CN3-16 and CN3-18 rooms are useful unknown-palette controls: their

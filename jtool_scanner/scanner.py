@@ -174,6 +174,16 @@ EMBEDDED_COMPACT_BLOCK_MIN_FOREGROUND = 0.62
 EMBEDDED_COMPACT_BLOCK_MAX_CENTER_SCORE = 0.12
 EMBEDDED_COMPACT_BLOCK_MAX_EDGE_DENSITY = 0.28
 EMBEDDED_COMPACT_BLOCK_WARP_DISTANCE = GRID_SIZE // 2
+# A compact embedded room can lose a full spike when its triangle shares a
+# native cell with the recovered block lattice.  Recover only a same-direction
+# silhouette with independent backing-cell topology; the gates are relative
+# shape measures and apply across embedded palettes and brightness levels.
+EMBEDDED_COMPACT_SPIKE_MIN_SCORE = 0.24
+EMBEDDED_COMPACT_SPIKE_MIN_DIRECTION_MARGIN = 0.08
+EMBEDDED_COMPACT_SPIKE_MIN_OUTLINE_DELTA = 0.12
+EMBEDDED_COMPACT_SPIKE_MIN_SIDE_COVERAGE = 0.50
+EMBEDDED_COMPACT_SPIKE_MAX_BLOCK_SCORE = 0.35
+EMBEDDED_COMPACT_SPIKE_MIN_AXIS_SUPPORT = 1
 NEUTRAL_TERRAIN_PROFILE_MIN_DISTANCE = 8.0
 NEUTRAL_TERRAIN_PROFILE_MIN_SCORE_ADVANTAGE = 0.008
 NEUTRAL_TERRAIN_PROFILE_MIN_SELECTED_SHARE = 0.15
@@ -2251,6 +2261,11 @@ def scan_image(
             box,
             normalized_grid,
         )
+        detections = _recover_embedded_compact_room_full_spikes(
+            detections,
+            image,
+            box,
+        )
     # Add the narrow walljump/outlined-block coexistence objects only after
     # every spike and marker reconciler has finished.  The underlying square
     # must not become an input that causes an otherwise valid spike to lose an
@@ -3188,6 +3203,144 @@ def _replace_embedded_compact_room_blocks(
         if detection.type_id != OBJ_BLOCK
     ]
     return _dedupe_exact_detections([*result, *recovered])
+
+
+def _recover_embedded_compact_room_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover compact-room spikes backed by the localized block lattice.
+
+    The ordinary 32px geometry pass can reject a genuine triangle when its
+    edge is softened by screenshot scaling or overlaps the edge of a recovered
+    block.  In an embedded room, a native block at the direction-specific
+    backing origin is independent topology evidence.  The same evidence also
+    rejects unsupported horizontal edge impostors, while a strong central
+    vertical silhouette may stand without a backing cell.  Search the nearby
+    16px phase, require a directional silhouette and at least one axis
+    neighbour, and add only an otherwise unoccupied geometry cell.  This
+    deliberately does not relax the ordinary full-room detector or use a
+    palette, filename, screen identity, or coordinate list.
+    """
+
+    blocks = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    if not blocks:
+        return detections
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+
+    def has_backing_block(detection: Detection) -> bool:
+        expected_x, expected_y = _full_spike_expected_block_origin(detection)
+        return (expected_x, expected_y) in blocks
+
+    def is_strong_unbacked_vertical(detection: Detection) -> bool:
+        if detection.type_id not in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+            return False
+        patch = _patch_features(image, room, detection.x, detection.y, GRID_SIZE)
+        spike = _classify_full_spike(patch)
+        if spike is None or spike.type_id != detection.type_id:
+            return False
+        return (
+            spike.score >= EMBEDDED_COMPACT_SPIKE_MIN_SCORE + 0.04
+            and spike.direction_margin
+            >= EMBEDDED_COMPACT_SPIKE_MIN_DIRECTION_MARGIN + 0.04
+            and spike.outline_delta
+            >= EMBEDDED_COMPACT_SPIKE_MIN_OUTLINE_DELTA + 0.06
+            and _triangle_side_coverage(patch, directions[spike.type_id])
+            >= 0.80
+            and _classify_block(patch).score
+            <= EMBEDDED_COMPACT_SPIKE_MAX_BLOCK_SCORE - 0.10
+        )
+
+    # Once the compact room's native block lattice is known, an unsupported
+    # horizontal triangle is more often a textured wall edge than a playable
+    # spike.  Keep the independent vertical centre silhouettes only when their
+    # normalized shape is strong enough to stand without a backing cell.
+    filtered: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in FULL_SPIKE_TYPES:
+            filtered.append(detection)
+            continue
+        if has_backing_block(detection) or is_strong_unbacked_vertical(detection):
+            filtered.append(detection)
+    detections = filtered
+    occupied = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in GEOMETRY_TYPES
+    }
+    recovered: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE // 2):
+        for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE // 2):
+            if (x, y) in occupied:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            spike = _classify_full_spike(patch)
+            if spike is None:
+                continue
+            direction = directions[spike.type_id]
+            side_coverage = _triangle_side_coverage(patch, direction)
+            if not (
+                spike.score >= EMBEDDED_COMPACT_SPIKE_MIN_SCORE
+                and spike.direction_margin
+                >= EMBEDDED_COMPACT_SPIKE_MIN_DIRECTION_MARGIN
+                and spike.outline_delta >= EMBEDDED_COMPACT_SPIKE_MIN_OUTLINE_DELTA
+                and side_coverage >= EMBEDDED_COMPACT_SPIKE_MIN_SIDE_COVERAGE
+            ):
+                continue
+            expected_x, expected_y = _full_spike_expected_block_origin(
+                Detection(
+                    "embedded_compact_spike_probe",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    Box(0, 0, 1, 1),
+                )
+            )
+            if (expected_x, expected_y) not in blocks:
+                continue
+            axis_support = sum(
+                (expected_x + dx, expected_y + dy) in blocks
+                for dx, dy in (
+                    (-GRID_SIZE, 0),
+                    (GRID_SIZE, 0),
+                    (0, -GRID_SIZE),
+                    (0, GRID_SIZE),
+                )
+            )
+            if axis_support < EMBEDDED_COMPACT_SPIKE_MIN_AXIS_SUPPORT:
+                continue
+            if (
+                _classify_block(patch).score
+                > EMBEDDED_COMPACT_SPIKE_MAX_BLOCK_SCORE
+            ):
+                continue
+            recovered.append(
+                _geometry_detection(
+                    "embedded_compact_supported_full_spike",
+                    spike.type_id,
+                    x,
+                    y,
+                    spike.score,
+                    image,
+                    room,
+                    GRID_SIZE,
+                )
+            )
+            occupied.add((x, y))
+    if not recovered:
+        return detections
+    return _dedupe_exact_detections([*detections, *recovered])
 
 
 def _reconcile_compact_block_phase_aliases(
