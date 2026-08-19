@@ -692,6 +692,32 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         self.assertNotIn((288, 144, OBJ_SPIKE_LEFT), full_spikes)
         self.assertNotIn((320, 144, OBJ_SPIKE_RIGHT), full_spikes)
 
+    def test_miniblock_weak_spike_phases_match_both_cn3_maps(self) -> None:
+        """Weak support seams must not add spikes outside either CN3 JMap."""
+
+        fixture_dir = Path("fixtures") / "block_spike"
+        for pair_id in ("cn3-16", "cn3-18"):
+            with self.subTest(pair_id=pair_id):
+                result = scan_png(
+                    fixture_dir / f"{pair_id}-game.png",
+                    grid_step=8,
+                    include_color_objects=True,
+                    include_geometry=True,
+                    enable_ocr=False,
+                )
+                truth = JMap.from_file(fixture_dir / f"{pair_id}.jmap")
+                expected = {
+                    (object_.x, object_.y, object_.type_id)
+                    for type_id in FULL_SPIKE_TYPES
+                    for object_ in truth.objects_of_type(type_id)
+                }
+                actual = {
+                    (detection.x, detection.y, detection.type_id)
+                    for detection in result.detections
+                    if detection.type_id in FULL_SPIKE_TYPES
+                }
+                self.assertEqual(actual, expected)
+
     def test_bright_filled_reconcile_keeps_near_threshold_strong_spike(self) -> None:
         """A strong topology spike survives a narrowly clipped fill profile."""
 

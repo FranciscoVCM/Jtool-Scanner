@@ -1387,6 +1387,23 @@ MINIBLOCK_ROOM_PRIMARY_SPIKE_UP_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_RIGHT_MIN_SIDE_COVERAGE = 0.875
 MINIBLOCK_ROOM_PRIMARY_SPIKE_LEFT_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_DOWN_MIN_SIDE_COVERAGE = 0.75
+# Late support/shape recoveries in a dense 16px room can be sampled at an
+# 8px phase from a seam or texture. Keep them only when a nearby phase has a
+# strong same-direction triangle and two independent native backing cells.
+# The phase is learned from local shape/topology; no room palette or name is
+# involved.
+MINIBLOCK_PHASE_WEAK_FULL_SPIKE_KINDS = frozenset(
+    {
+        "full_spike_support",
+        "full_spike_supported",
+        "full_spike_shape_recovery",
+    }
+)
+MINIBLOCK_PHASE_FULL_SPIKE_MIN_DIRECT_SCORE = 0.45
+MINIBLOCK_PHASE_FULL_SPIKE_MIN_SIDE_COVERAGE = 0.75
+MINIBLOCK_PHASE_FULL_SPIKE_MIN_OUTLINE_DELTA = 0.15
+MINIBLOCK_PHASE_FULL_SPIKE_MIN_EDGE_DENSITY = 0.28
+MINIBLOCK_PHASE_FULL_SPIKE_MIN_AXIS_SUPPORT = 2
 # A genuine full spike can be clipped at the 32px room boundary before the
 # 16px-room recovery rebuilds its topology.  Preserve only raw hypotheses
 # with an independently strong direction and a neighboring miniblock anchor.
@@ -2109,6 +2126,11 @@ def scan_image(
         )
         detections = _prune_detached_top_ui_band(detections, image, box)
         detections = _prune_miniblock_room_primary_full_spike_noise(
+            detections,
+            image,
+            box,
+        )
+        detections = _reconcile_miniblock_weak_full_spike_phases(
             detections,
             image,
             box,
@@ -19968,6 +19990,127 @@ def _prune_miniblock_room_primary_full_spike_noise(
             continue
         kept.append(detection)
     return kept
+
+
+def _reconcile_miniblock_weak_full_spike_phases(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reanchor or reject weak late spikes in a dense 16px room.
+
+    The ordinary geometry pass can leave a support/shape recovery eight pixels
+    away from the actual triangle when the triangle is split by a 16px terrain
+    seam. Those same recovery kinds also arise from low-texture background
+    edges. A proposed nearby phase must therefore satisfy the same-direction
+    triangle score, side coverage, outline, and edge gates, and its expected
+    backing origin must have two axis-separated miniblock neighbours. The
+    latter is topology evidence rather than a palette or screen exception.
+    """
+
+    miniblock_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+    }
+    if not miniblock_positions or not _looks_miniblock_dominant(miniblock_positions):
+        return detections
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    result: list[Detection] = []
+    for detection in detections:
+        if (
+            detection.type_id not in FULL_SPIKE_TYPES
+            or detection.kind not in MINIBLOCK_PHASE_WEAK_FULL_SPIKE_KINDS
+        ):
+            result.append(detection)
+            continue
+        direction = directions[detection.type_id]
+        candidates: list[tuple[float, float, float, float, int, int, int]] = []
+        for offset_x in (-8, 0, 8):
+            for offset_y in (-8, 0, 8):
+                x = detection.x + offset_x
+                y = detection.y + offset_y
+                if not (
+                    0 <= x <= ROOM_WIDTH - GRID_SIZE
+                    and 0 <= y <= ROOM_HEIGHT - GRID_SIZE
+                ):
+                    continue
+                patch = _patch_features(image, room, x, y, GRID_SIZE)
+                classified = _classify_full_spike(patch)
+                if classified is None or classified.type_id != detection.type_id:
+                    continue
+                direct_score, outline_delta = _triangle_direction_score(
+                    patch,
+                    direction,
+                )
+                side_coverage = _triangle_side_coverage(patch, direction)
+                expected_x, expected_y = _full_spike_expected_block_origin(
+                    Detection(
+                        detection.kind,
+                        detection.type_id,
+                        x,
+                        y,
+                        detection.score,
+                        detection.image_box,
+                    )
+                )
+                axis_support = sum(
+                    (expected_x + dx, expected_y + dy) in miniblock_positions
+                    for dx, dy in (
+                        (-GRID_SIZE, 0),
+                        (GRID_SIZE, 0),
+                        (0, -GRID_SIZE),
+                        (0, GRID_SIZE),
+                    )
+                )
+                candidates.append(
+                    (
+                        direct_score,
+                        side_coverage,
+                        outline_delta,
+                        patch.edge_density,
+                        x,
+                        y,
+                        axis_support,
+                    )
+                )
+        if not candidates:
+            continue
+        (
+            direct_score,
+            side_coverage,
+            outline_delta,
+            edge_density,
+            x,
+            y,
+            axis_support,
+        ) = max(candidates, key=lambda candidate: candidate[:3])
+        if not (
+            direct_score >= MINIBLOCK_PHASE_FULL_SPIKE_MIN_DIRECT_SCORE
+            and side_coverage >= MINIBLOCK_PHASE_FULL_SPIKE_MIN_SIDE_COVERAGE
+            and outline_delta >= MINIBLOCK_PHASE_FULL_SPIKE_MIN_OUTLINE_DELTA
+            and edge_density >= MINIBLOCK_PHASE_FULL_SPIKE_MIN_EDGE_DENSITY
+            and axis_support >= MINIBLOCK_PHASE_FULL_SPIKE_MIN_AXIS_SUPPORT
+        ):
+            continue
+        result.append(
+            _geometry_detection(
+                f"{detection.kind}_phase_reanchored",
+                detection.type_id,
+                x,
+                y,
+                min(0.96, max(detection.score, direct_score)),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return _dedupe_exact_detections(result)
 
 
 def _full_spike_noise_profile(

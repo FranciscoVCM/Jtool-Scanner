@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: phase/topology arbitration for weak miniblock-room spikes (2026-08-19)
+
+The exact CN3-16 and CN3-18 rooms are useful unknown-palette controls: their
+terrain is a dense 16px miniblock lattice, and the ordinary geometry pass can
+leave a weak `full_spike_support`, `full_spike_supported`, or
+`full_spike_shape_recovery` candidate eight pixels away from the actual
+triangle at a seam.  The same weak routes also produce background/texture
+impostors, so an unconditional phase shift would be unsafe.
+
+The scanner now evaluates only those weak recovery kinds in a miniblock-
+dominant room.  For each candidate it samples the nearby native 8px phases,
+requires a same-direction triangle score, side coverage, outline contrast,
+and edge density, and then requires two axis-separated native miniblock
+neighbours at the proposed backing origin.  Accepted detections are
+re-anchored to the strongest phase; candidates without that independent
+terrain topology are removed.  The rule is palette-relative and learned from
+local shape/topology: it contains no screen name, filename, coordinate list,
+or fixed colour.  Common-alignment and non-miniblock routes are untouched.
+
+Measured with the exact grid-step-8 fixture workflow:
+
+| control | before | after |
+| --- | --- | --- |
+| CN3-16 full spikes | 39 detected / 30 matched | 30 / 30 exact |
+| CN3-18 full spikes | 60 detected / 50 matched | 50 / 50 exact |
+| complete block/spike full spikes | 910 detected / 724 matched | 891 / 724 matched; precision improved, recall unchanged |
+| complete block/spike colour/object classes | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses | unchanged |
+| Irkara aggregate | blocks 970/1278, full spikes 532/796, all other prior totals | unchanged |
+| NANG-128/135/138 exact controls | prior results | unchanged |
+
+The focused two-map real-image regression passes in 408.037 seconds.  The
+complete block/spike, FTFA, and Irkara reports plus generated CN3-16/CN3-18
+source/JMap/reconstruction/blend projects are preserved under the ignored
+`.artifacts/goal-continuation/miniblock-phase-review-20260819/` directory;
+its supplemental review ledger records the before/after evidence.  The
+71-screen visual ledger is unchanged because these are authoritative fixture
+JMaps rather than invented giant-review truth.  Remaining work includes
+miniblock/minispike precision outside these two exact rooms and visual-only
+NANG/giant-review rows without corrected JMaps.
+
 ## Checkpoint: recover an embedded compact-room block lattice (2026-08-18)
 
 The held-out `Irkara-58` fixture exposed a localization/material failure that
