@@ -438,6 +438,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             if position[0] in (0, 768)
         }
         self.assertTrue(boundary_detected <= boundary_truth)
+        save_overlay = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.kind == "water_2_save_overlay"
+        }
+        self.assertEqual(save_overlay, {(32, 64)})
+        self.assertFalse(
+            any(
+                detection.kind == "water_2_save_overlay"
+                for detection in self.particle_room.detections
+            )
+        )
 
     def test_dark_sparse_save_headers_recover_body_centroid_phase(self) -> None:
         expected = {

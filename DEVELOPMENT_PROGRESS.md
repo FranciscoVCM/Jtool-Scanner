@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: water hidden beneath SAVE in full-water fields (2026-08-19)
+
+The Irkara-54 source/JMap pair is a nearly full native water field.  Its only
+unmatched water cell was `(32,64)`, where the SAVE marker occludes enough of the
+underlying tile for the ordinary patch classifier to reject it.  The scanner
+now performs a late, generalized recovery for this situation.  It requires at
+least 75% native water coverage in the room, water support at three of the
+SAVE's four cardinal neighbors, and no existing water candidate within the
+24px water-deduplication radius.  It uses no room name, coordinate, filename,
+fixed palette, or manual object list, and it does not promote isolated SAVE
+markers in ordinary rooms.
+
+Measured with the exact grid-step-8 workflows:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-54 water | `474 detected / 475 truth / 474 matched` | `475 / 475 / 475`, exact |
+| Irkara aggregate water | `519 / 520 / 519` | `520 / 520 / 520`, exact |
+| complete block/spike water | `35 / 35 / 35` | unchanged |
+| complete block/spike saves, warps, apples, walljumps, gravity, platforms, killers, refreshers | previous exact counts | unchanged |
+| FTFA strict gate | `926/928 exact; 0 false positives; 2 misses; 0 shifted; 0 wrong direction` | unchanged |
+
+An audit of all current giant-review JMaps found no trigger outside
+Irkara-54.  The focused boundary-water regression passes, and the complete
+Irkara and block/spike reports are preserved under the ignored
+`.artifacts/goal-continuation/save-water-overlay-review-20260819/` directory.
+The complete unittest discovery run passes **385 tests in 1893.998 seconds,
+`OK`**.
+
 ## Checkpoint: geometry-aware catharsis water under full-spike overlays (2026-08-19)
 
 The authoritative Irkara-71 JMap contains five additional water cells at

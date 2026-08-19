@@ -1527,6 +1527,12 @@ WATER_BOUNDARY_MIN_DENSITY = 0.72
 WATER_BOUNDARY_MIN_QUADRANT_DENSITY = 0.60
 WATER_BOUNDARY_MAX_EDGE_DENSITY = 0.62
 WATER_BOUNDARY_NEIGHBOR_PROFILE_DISTANCE = 90.0
+# A SAVE sprite can occlude the water cell beneath it in a room whose entire
+# native field is water.  Recover that hidden cell only from room-wide water
+# coverage and cardinal water topology; never infer it from a SAVE colour or a
+# particular screen coordinate.
+WATER_SAVE_OVERLAY_MIN_ROOM_SHARE = 0.75
+WATER_SAVE_OVERLAY_MIN_CARDINAL_NEIGHBORS = 3
 SPATIAL_BACKGROUND_STEP = 16
 SPATIAL_BACKGROUND_MAX_EDGE_DENSITY = 0.24
 SPATIAL_BACKGROUND_MAX_NEIGHBOR_DISTANCE = 30.0
@@ -2310,6 +2316,12 @@ def scan_image(
             image,
             box,
         )
+    if include_color_objects:
+        detections = _recover_water_behind_save_markers(
+            detections,
+            image,
+            box,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -2416,6 +2428,76 @@ def _recover_catharsis_spike_overlay_water(
                 GRID_SIZE,
             )
         )
+    return [*detections, *recovered]
+
+
+def _recover_water_behind_save_markers(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover a water cell hidden by a SAVE in a full-water room.
+
+    A SAVE can cover enough of the underlying 32px water tile to make the
+    ordinary patch classifier fail.  This late recovery is deliberately
+    topological: it requires a room-wide water field, three of the four
+    cardinal neighboring cells to already be water, and no existing water
+    candidate in the SAVE's own 24px phase neighborhood.  A mostly empty or
+    partially flooded room therefore cannot promote an arbitrary SAVE.
+    """
+
+    water = [
+        detection
+        for detection in detections
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+    ]
+    saves = [detection for detection in detections if detection.type_id == OBJ_SAVE]
+    if not water or not saves:
+        return detections
+    unique_water = {(detection.x, detection.y) for detection in water}
+    native_cell_count = (ROOM_WIDTH // GRID_SIZE) * (ROOM_HEIGHT // GRID_SIZE)
+    if len(unique_water) < native_cell_count * WATER_SAVE_OVERLAY_MIN_ROOM_SHARE:
+        return detections
+
+    recovered: list[Detection] = []
+    existing_positions = {(detection.x, detection.y) for detection in water}
+    for save in saves:
+        position = (save.x, save.y)
+        if any(
+            distance(position, water_position) < WATER_DEDUPE_DISTANCE
+            for water_position in unique_water
+        ):
+            continue
+        cardinal = (
+            (save.x - GRID_SIZE, save.y),
+            (save.x + GRID_SIZE, save.y),
+            (save.x, save.y - GRID_SIZE),
+            (save.x, save.y + GRID_SIZE),
+        )
+        cardinal_neighbors = sum(
+            any(
+                distance(neighbor, water_position) <= WATER_DEDUPE_DISTANCE
+                for water_position in unique_water
+            )
+            for neighbor in cardinal
+        )
+        if cardinal_neighbors < WATER_SAVE_OVERLAY_MIN_CARDINAL_NEIGHBORS:
+            continue
+        if position in existing_positions:
+            continue
+        recovered.append(
+            _grid_detection(
+                "water_2_save_overlay",
+                OBJ_WATER_2,
+                save.x,
+                save.y,
+                0.98,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        existing_positions.add(position)
     return [*detections, *recovered]
 
 
