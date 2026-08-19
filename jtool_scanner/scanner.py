@@ -10175,6 +10175,21 @@ def _detect_outline_warps(
     )
     detections: list[Detection] = []
     for box, pixels, merged in candidates:
+        # Middle-gray terrain/spike surfaces can form a single compact square
+        # with the same run topology as an outlined spiral.  The neutral
+        # palette is retained for genuinely fragmented outlines (the NANG
+        # compact-room family), but an unfragmented neutral component has no
+        # positive nested-stroke evidence and is therefore withheld.  Bright
+        # white outline spirals continue through the original shape gates.
+        if (
+            not merged
+            and pixels
+            and all(
+                _is_neutral_outline_warp_color(*image.pixel(x, y))
+                for x, y in pixels
+            )
+        ):
+            continue
         if not _is_nested_outline_spiral(
             image,
             room,

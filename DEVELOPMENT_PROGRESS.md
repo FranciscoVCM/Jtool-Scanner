@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: neutral outline-warp terrain arbitration (2026-08-19)
+
+The Irkara-71 source/JTool pair exposed two false `warp_outline` promotions:
+gray spike/terrain clusters at `(480,352)` and `(704,512)` matched the old
+neutral-outline topology even though the authoritative JMap contains only the
+colored warp at `(144,32)`.  The false components were single unfragmented
+middle-gray regions.  Tracked neutral spiral controls in the NANG family are
+fragmented after capture normalization, while bright-white spiral controls use
+the original bright palette route.
+
+The neutral outline-warp pass now withholds an unfragmented component whose
+entire seed is the middle-gray palette.  Fragmented neutral outlines and
+bright-white outlines still use the existing normalized nested-stroke gates.
+This is a palette/arbitration rule based on fragmentation and local material,
+not a screen name, coordinate, filename, or fixed object list.
+
+Measured with grid step 8:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-71 warps | `3 detected / 1 truth / 1 matched` (two false positives) | `1 / 1 / 1`, exact `(144,32)` |
+| Irkara aggregate warps | `13 detected / 11 truth / 11 matched` | `11 / 11 / 11 matched` |
+| Irkara saves/water/walljumps/platforms | `23/23`, `510/520`, `7/7`, `5/5` matched | unchanged |
+| complete block/spike color/object gates | saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, killers 99/99, refreshers 18/19 | unchanged |
+| FTFA strict gate | 926/928 exact; 0 false positives; 2 misses | unchanged |
+| tracked NANG outline-warp controls | NANG-128, NANG-135, NANG-138 exact | unchanged; focused tests pass |
+
+The Irkara-71 source/JTool/current-project/blend review is preserved under
+`.artifacts/goal-continuation/warp-outline-review-20260819/irkara-71-project/`.
+The complete block/spike, Irkara, and FTFA reports are in the same ignored
+review directory.  The new focused regression covers both the outline pass
+and the full Irkara-71 scan.  The complete unittest discovery run passes
+**384 tests in 2238.714 seconds, `OK`**.
+
 ## Checkpoint: cyan-room scaled filled-blue warp recovery (2026-08-19)
 
 The Irkara-54 source/JTool pair exposed one remaining color-object miss in the

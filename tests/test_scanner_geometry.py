@@ -2071,6 +2071,28 @@ class ScannerGeometryTests(unittest.TestCase):
 
                 self.assertEqual(_detect_outline_warps(image, room, 8), [])
 
+    def test_irkara71_gray_spikes_do_not_become_outline_warps(self) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "irkara"
+        image = load_png(fixture_dir / "irkara-71-game.png")
+
+        self.assertEqual(_detect_outline_warps(image, detect_room_box(image), 8), [])
+
+        result = scan_png(
+            fixture_dir / "irkara-71-game.png",
+            grid_step=8,
+            include_color_objects=True,
+            include_geometry=True,
+            enable_ocr=False,
+        )
+        self.assertEqual(
+            {
+                (detection.x, detection.y)
+                for detection in result.detections
+                if detection.type_id == OBJ_WARP
+            },
+            {(144, 32)},
+        )
+
     def test_colored_warp_ring_tolerates_mild_center_fill(self) -> None:
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
         image = load_png(fixture_dir / "irkara-nr-flames-game.png")
