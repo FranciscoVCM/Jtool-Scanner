@@ -386,6 +386,19 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             }
             <= detected
         )
+        # The remaining water cells are hidden under full-spike silhouettes;
+        # geometry-aware composite recovery must preserve both opposing pairs
+        # and the isolated same-cell overlay without adding any other water.
+        self.assertTrue(
+            {
+                (256, 288),
+                (288, 288),
+                (384, 416),
+                (160, 576),
+                (192, 576),
+            }
+            <= detected
+        )
         # No palette-relative tail recovery may invent water elsewhere.
         self.assertTrue(detected <= truth)
 

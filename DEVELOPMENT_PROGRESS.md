@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Checkpoint: geometry-aware catharsis water under full-spike overlays (2026-08-19)
+
+The authoritative Irkara-71 JMap contains five additional water cells at
+`(256,288)`, `(288,288)`, `(384,416)`, `(160,576)`, and `(192,576)`.  Each is
+co-located with a full-spike silhouette in the source capture.  The ordinary
+water detector correctly rejected these high-edge composite cells, so the
+previous catharsis recovery could not see them.
+
+The scanner now performs a late, geometry-aware recovery after full-spike
+geometry exists.  It requires a catharsis room profile, a full-spike overlap,
+room-relative brightness, bounded blue lift, edge density, border and center
+support, and the existing catharsis-tail silhouette.  The recovered object is
+kept as `water_2_spike_overlay` alongside the spike.  The rule uses no room
+name, coordinate, filename, fixed palette, or manual object list.  An audit of
+all 71 giant-review rows found no catharsis row, so this route does not alter
+those visual records.
+
+Measured with the exact grid-step-8 workflows:
+
+| control | before | after |
+| --- | --- | --- |
+| Irkara-71 water | `32 detected / 37 truth / 32 matched` | `37 / 37 / 37`, exact |
+| Irkara aggregate water | `514 / 520 / 514` | `519 / 520 / 519` |
+| complete block/spike water | `35 / 35 / 35` | unchanged |
+| complete block/spike saves, warps, apples, walljumps, gravity, platforms, killers, refreshers | previous exact counts | unchanged |
+| FTFA strict gate | `926/928 exact; 0 false positives; 2 misses; 0 shifted; 0 wrong direction` | unchanged |
+
+The Irkara-71 source/JTool/current-project/blend review, pair and aggregate
+reports, complete block/spike report, and FTFA report are preserved under the
+ignored `.artifacts/goal-continuation/spike-overlay-water-review-20260819/`
+directory.  The focused six-test regression set passes.  The complete
+unittest discovery run passes **385 tests in 2347.153 seconds, `OK`**.  One
+Irkara-54 water cell remains unresolved; no giant-review screen was changed
+by this rule.
+
 ## Checkpoint: dark catharsis water-column recovery (2026-08-19)
 
 The authoritative Irkara-71 JMap contains a four-cell water column at

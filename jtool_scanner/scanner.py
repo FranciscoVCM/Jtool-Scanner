@@ -1584,6 +1584,19 @@ CATHARSIS_DARK_COLUMN_TRANSITION_MIN_EDGE_DENSITY = 0.12
 CATHARSIS_DARK_COLUMN_TRANSITION_MAX_EDGE_DENSITY = 0.24
 CATHARSIS_DARK_COLUMN_TRANSITION_MIN_BORDER = 0.08
 CATHARSIS_DARK_COLUMN_TRANSITION_MIN_CENTER = 0.08
+# A water sprite can remain behind a full spike in the source capture.  In a
+# dark catharsis room the white spike raises the composite cell's brightness,
+# while the water keeps a small blue lift and the sprite's bounded edge
+# profile.  Recover only that relative composite after geometry exists; do not
+# turn every bright spike into water or relax the ordinary water detector.
+CATHARSIS_SPIKE_OVERLAY_MIN_BRIGHTNESS = 100.0
+CATHARSIS_SPIKE_OVERLAY_MIN_ROOM_BRIGHTNESS_DELTA = 65.0
+CATHARSIS_SPIKE_OVERLAY_MIN_BLUE_LIFT = 3.5
+CATHARSIS_SPIKE_OVERLAY_MAX_BLUE_LIFT = 12.0
+CATHARSIS_SPIKE_OVERLAY_MIN_EDGE_DENSITY = 0.16
+CATHARSIS_SPIKE_OVERLAY_MAX_EDGE_DENSITY = 0.24
+CATHARSIS_SPIKE_OVERLAY_MIN_BORDER = 0.10
+CATHARSIS_SPIKE_OVERLAY_MIN_CENTER = 0.10
 OUTLINE_APPLE_ROOM_MIN_BRIGHTNESS = 205.0
 OUTLINE_APPLE_ROOM_MAX_SATURATION = 0.05
 OUTLINE_APPLE_MIN_WIDTH = 6
@@ -2291,6 +2304,12 @@ def scan_image(
         image,
         box,
     )
+    if include_geometry:
+        detections = _recover_catharsis_spike_overlay_water(
+            detections,
+            image,
+            box,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -2323,6 +2342,81 @@ def scan_image(
     )
     _PATCH_FEATURE_CACHE.clear()
     return result
+
+
+def _recover_catharsis_spike_overlay_water(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover water hidden beneath a full spike in a dark room.
+
+    Catharsis-style captures can composite the blue/black water sprite and a
+    white full spike into one cell.  The ordinary water pass correctly avoids
+    that high-edge patch, but the geometry pass has already identified the
+    spike.  Keep the second object only when room-relative brightness, blue
+    lift, edge density, and the existing catharsis-tail silhouette agree.
+    """
+
+    room_profile = _room_color_profile(image, room)
+    if not _is_catharsis_room(room_profile):
+        return detections
+    water_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in (OBJ_WATER, OBJ_WATER_2, OBJ_WATER_3)
+    }
+    spike_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+        and 0 <= detection.x <= ROOM_WIDTH - GRID_SIZE
+        and 0 <= detection.y <= ROOM_HEIGHT - GRID_SIZE
+    }
+    if not spike_positions:
+        return detections
+    room_brightness = _profile_brightness(room_profile)
+    minimum_brightness = max(
+        CATHARSIS_SPIKE_OVERLAY_MIN_BRIGHTNESS,
+        room_brightness + CATHARSIS_SPIKE_OVERLAY_MIN_ROOM_BRIGHTNESS_DELTA,
+    )
+    recovered: list[Detection] = []
+    for x, y in sorted(spike_positions):
+        if (x, y) in water_positions:
+            continue
+        profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+        features = _patch_features(image, room, x, y, GRID_SIZE)
+        metrics = _color_profile_metrics(profile)
+        if not _is_catharsis_tail(
+            (profile, features, metrics),
+            allow_dark=False,
+        ):
+            continue
+        if not (
+            metrics[1] >= minimum_brightness
+            and CATHARSIS_SPIKE_OVERLAY_MIN_BLUE_LIFT
+            <= metrics[0]
+            <= CATHARSIS_SPIKE_OVERLAY_MAX_BLUE_LIFT
+            and CATHARSIS_SPIKE_OVERLAY_MIN_EDGE_DENSITY
+            <= features.edge_density
+            <= CATHARSIS_SPIKE_OVERLAY_MAX_EDGE_DENSITY
+            and features.border_score >= CATHARSIS_SPIKE_OVERLAY_MIN_BORDER
+            and features.center_score >= CATHARSIS_SPIKE_OVERLAY_MIN_CENTER
+        ):
+            continue
+        recovered.append(
+            _grid_detection(
+                "water_2_spike_overlay",
+                OBJ_WATER_2,
+                x,
+                y,
+                0.68,
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return [*detections, *recovered]
 
 
 def _prune_detached_top_ui_band(
