@@ -46,6 +46,7 @@ from jtool_scanner.scanner import (
     _accept_mini_spike,
     _accept_repeated_terrain_partner,
     _arbitrate_minispikes_against_blocks,
+    _arbitrate_full_spikes_against_blocks,
     _arbitrate_full_spike_scale_duplicates,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
@@ -6805,6 +6806,121 @@ class ScannerGeometryTests(unittest.TestCase):
                 neighbor_profile_distance=2.1,
             )
         )
+
+    def test_late_full_spike_block_arbitration_prefers_coherent_material(self) -> None:
+        block = Detection("block", OBJ_BLOCK, 64, 64, 0.40, Box(64, 64, 32, 32))
+        neighbor = Detection("block", OBJ_BLOCK, 96, 64, 0.40, Box(96, 64, 32, 32))
+        spike = Detection(
+            "full_spike_support",
+            OBJ_SPIKE_RIGHT,
+            64,
+            64,
+            0.80,
+            Box(64, 64, 32, 32),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._patch_color_profile",
+                return_value=_ColorProfile(90.0, 120.0, 150.0, 0.20),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((False,) * 256, 0.30, 0.30, 0.30),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_right", OBJ_SPIKE_RIGHT, 0.80, 0.20, 0.30
+                ),
+            ),
+            mock.patch("jtool_scanner.scanner._triangle_side_coverage", return_value=0.90),
+        ):
+            result = _arbitrate_full_spikes_against_blocks(
+                [block, neighbor, spike],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, [block, neighbor])
+
+    def test_late_full_spike_block_arbitration_keeps_decisive_isolated_spike(self) -> None:
+        block = Detection("block", OBJ_BLOCK, 64, 64, 0.40, Box(64, 64, 32, 32))
+        spike = Detection(
+            "full_spike_shape_recovery",
+            OBJ_SPIKE_LEFT,
+            64,
+            64,
+            0.76,
+            Box(64, 64, 32, 32),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._patch_color_profile",
+                return_value=_ColorProfile(90.0, 120.0, 150.0, 0.20),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((False,) * 256, 0.30, 0.30, 0.30),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_left", OBJ_SPIKE_LEFT, 0.76, 0.20, 0.30
+                ),
+            ),
+            mock.patch("jtool_scanner.scanner._triangle_side_coverage", return_value=0.90),
+        ):
+            result = _arbitrate_full_spikes_against_blocks(
+                [block, spike],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, [spike])
+
+    def test_late_full_spike_block_arbitration_keeps_ambiguous_terrain(self) -> None:
+        block = Detection("block", OBJ_BLOCK, 64, 64, 0.32, Box(64, 64, 32, 32))
+        spike = Detection(
+            "full_spike_support", OBJ_SPIKE_UP, 64, 64, 0.36, Box(64, 64, 32, 32)
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._patch_color_profile",
+                return_value=_ColorProfile(90.0, 120.0, 150.0, 0.20),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((False,) * 256, 0.20, 0.20, 0.20),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_up", OBJ_SPIKE_UP, 0.36, 0.03, 0.08
+                ),
+            ),
+            mock.patch("jtool_scanner.scanner._triangle_side_coverage", return_value=0.50),
+        ):
+            result = _arbitrate_full_spikes_against_blocks(
+                [block, spike],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, [block])
+
+    def test_late_full_spike_block_arbitration_preserves_primary_evidence(self) -> None:
+        block = Detection("block", OBJ_BLOCK, 64, 64, 0.80, Box(64, 64, 32, 32))
+        spike = Detection(
+            "spike_up", OBJ_SPIKE_UP, 64, 64, 0.32, Box(64, 64, 32, 32)
+        )
+
+        result = _arbitrate_full_spikes_against_blocks(
+            [block, spike],
+            RGBImage(1, 1, b"\x00\x00\x00"),
+            Box(0, 0, 1, 1),
+        )
+
+        self.assertEqual(result, [block, spike])
 
     def test_full_spike_scale_arbitration_removes_contained_mini_fragments(self) -> None:
         full_spikes = [

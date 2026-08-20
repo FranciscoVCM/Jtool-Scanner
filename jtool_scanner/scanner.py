@@ -1393,6 +1393,11 @@ FULL_SPIKE_PROFILE_SOLID_UP_MIN_SCORE = 0.45
 FULL_SPIKE_PROFILE_RAW_LEFT_MIN_SIDE_COVERAGE = 0.625
 FULL_SPIKE_PROFILE_RAW_RIGHT_MIN_EDGE_DENSITY = 0.30
 FULL_SPIKE_PROFILE_RAW_DOWN_MIN_OUTLINE_DELTA = 0.30
+LATE_FULL_SPIKE_BLOCK_MIN_COHERENT_SCORE = 0.50
+LATE_FULL_SPIKE_BLOCK_MAX_NEIGHBOR_PROFILE_DISTANCE = 60.0
+LATE_FULL_SPIKE_BLOCK_MIN_DIRECTION_MARGIN = 0.10
+LATE_FULL_SPIKE_BLOCK_MIN_OUTLINE_DELTA = 0.20
+LATE_FULL_SPIKE_BLOCK_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_UP_MIN_SIDE_COVERAGE = 0.75
 MINIBLOCK_ROOM_PRIMARY_SPIKE_RIGHT_MIN_SIDE_COVERAGE = 0.875
 MINIBLOCK_ROOM_PRIMARY_SPIKE_LEFT_MIN_SIDE_COVERAGE = 0.75
@@ -2297,6 +2302,18 @@ def scan_image(
             normalized_grid,
         )
         detections = _recover_embedded_compact_room_full_spikes(
+            detections,
+            image,
+            box,
+        )
+    if include_geometry:
+        # Several room profiles add terrain cells or recover spikes after the
+        # common geometry pass. Resolve exact same-origin block/spike
+        # hypotheses once all of those paths have finished. This uses local
+        # material continuity and triangle shape rather than a room identity
+        # or palette, and deliberately runs before walljump-backed blocks are
+        # appended below.
+        detections = _arbitrate_full_spikes_against_blocks(
             detections,
             image,
             box,
@@ -7308,6 +7325,147 @@ def _align_unsupported_opposite_spike_pairs(
         adjusted[index], adjusted[partner_index] = moved
         used.update((index, partner_index))
     return adjusted
+
+
+def _arbitrate_full_spikes_against_blocks(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Choose one source-supported hypothesis at an exact terrain conflict.
+
+    A textured 32px terrain cell can satisfy both the block classifier and a
+    directional triangle mask. Conversely, a clear spike can create a weak
+    center-heavy block candidate at the same origin. Exact block/full-spike
+    coexistence is absent from the authoritative fixture JMaps, so arbitrate
+    the competing hypotheses here instead of exporting both.
+
+    A block is coherent when it is independently strong or agrees in colour
+    profile with an axis-adjacent block. An isolated block loses only to a
+    decisive local triangle of the same direction. Ambiguous conflicts keep
+    terrain, which avoids turning texture into a lethal object while leaving
+    genuinely adjacent spikes untouched. Primary ``spike_<direction>``
+    detections are intentionally left unresolved: the held-out Irkara corpus
+    proves that a phase-shifted true spike can also produce a strong exact block
+    hypothesis. This late gate is therefore limited to derived support and
+    recovery hypotheses.
+    """
+
+    blocks_by_position: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    spikes_by_position: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for detection in detections:
+        if detection.type_id == OBJ_BLOCK:
+            blocks_by_position[(detection.x, detection.y)].append(detection)
+        elif detection.type_id in FULL_SPIKE_TYPES:
+            spikes_by_position[(detection.x, detection.y)].append(detection)
+
+    conflict_positions = blocks_by_position.keys() & spikes_by_position.keys()
+    if not conflict_positions:
+        return detections
+
+    decisions: dict[tuple[int, int], int | None] = {}
+    profile_cache: dict[tuple[int, int], _ColorProfile] = {}
+    primary_kind_by_type = {
+        OBJ_SPIKE_UP: "spike_up",
+        OBJ_SPIKE_RIGHT: "spike_right",
+        OBJ_SPIKE_LEFT: "spike_left",
+        OBJ_SPIKE_DOWN: "spike_down",
+    }
+
+    def profile(position: tuple[int, int]) -> _ColorProfile:
+        cached = profile_cache.get(position)
+        if cached is None:
+            cached = _patch_color_profile(
+                image,
+                room,
+                position[0],
+                position[1],
+                GRID_SIZE,
+            )
+            profile_cache[position] = cached
+        return cached
+
+    for position in conflict_positions:
+        blocks = blocks_by_position[position]
+        if any(
+            spike.kind == primary_kind_by_type[spike.type_id]
+            for spike in spikes_by_position[position]
+        ):
+            continue
+        coherent_block = any(
+            block.score >= LATE_FULL_SPIKE_BLOCK_MIN_COHERENT_SCORE
+            for block in blocks
+        )
+        if not coherent_block:
+            current_profile = profile(position)
+            x, y = position
+            coherent_block = any(
+                neighbor in blocks_by_position
+                and _color_profile_distance(current_profile, profile(neighbor))
+                <= LATE_FULL_SPIKE_BLOCK_MAX_NEIGHBOR_PROFILE_DISTANCE
+                for neighbor in (
+                    (x - GRID_SIZE, y),
+                    (x + GRID_SIZE, y),
+                    (x, y - GRID_SIZE),
+                    (x, y + GRID_SIZE),
+                )
+            )
+
+        patch = _patch_features(
+            image,
+            room,
+            position[0],
+            position[1],
+            GRID_SIZE,
+        )
+        classified = _classify_full_spike(patch)
+        decisive_type: int | None = None
+        if classified is not None:
+            direction = {
+                OBJ_SPIKE_UP: "up",
+                OBJ_SPIKE_RIGHT: "right",
+                OBJ_SPIKE_LEFT: "left",
+                OBJ_SPIKE_DOWN: "down",
+            }[classified.type_id]
+            if (
+                any(
+                    spike.type_id == classified.type_id
+                    for spike in spikes_by_position[position]
+                )
+                and classified.direction_margin
+                >= LATE_FULL_SPIKE_BLOCK_MIN_DIRECTION_MARGIN
+                and classified.outline_delta
+                >= LATE_FULL_SPIKE_BLOCK_MIN_OUTLINE_DELTA
+                and _triangle_side_coverage(patch, direction)
+                >= LATE_FULL_SPIKE_BLOCK_MIN_SIDE_COVERAGE
+            ):
+                decisive_type = classified.type_id
+
+        # ``None`` means terrain wins. A type ID means the isolated triangle
+        # wins and only that orientation survives at this origin.
+        decisions[position] = (
+            decisive_type
+            if decisive_type is not None and not coherent_block
+            else None
+        )
+
+    reconciled: list[Detection] = []
+    for detection in detections:
+        position = (detection.x, detection.y)
+        if position not in decisions:
+            reconciled.append(detection)
+            continue
+        winning_spike_type = decisions[position]
+        if detection.type_id == OBJ_BLOCK:
+            if winning_spike_type is None:
+                reconciled.append(detection)
+            continue
+        if detection.type_id in FULL_SPIKE_TYPES:
+            if detection.type_id == winning_spike_type:
+                reconciled.append(detection)
+            continue
+        reconciled.append(detection)
+    return _dedupe_exact_detections(reconciled)
 
 
 def structural_scan_warnings(

@@ -3884,3 +3884,114 @@ as well as the existing visible-side SVG and ID-pairing tests.  The focused
 three-test render check passes.  Scanner measurements and all source/JMap
 fixtures are unchanged; the full suite is rerun after this checkpoint before
 publication.
+
+## Checkpoint: late full-spike/block arbitration (2026-08-19)
+
+The refreshed 71-screen audit showed that an `accepted` row can still contain
+dense-geometry errors: acceptance records an object-class visual review, not
+exact geometry when a corrected JMap is unavailable.  Across the preserved
+current projects, 316 full spikes shared their exact origin with a block on 19
+screens, including 165 conflicts on CN3-25, CN3-26, CN3-27, CN3-31, Golden2,
+and Bathhouse1.  None of the 26 authoritative fixture JMaps contains an exact
+block/full-spike pair.  Source crops also showed the converse ambiguity: two
+isolated top spikes on CN3-25 were real spikes with false block hypotheses, so
+an unconditional "block wins" rule was rejected.
+
+The scanner now performs one late, exact-origin arbitration after all terrain
+and embedded-geometry recovery paths.  It keeps independently strong terrain
+or terrain whose palette-relative colour profile agrees with an axis-adjacent
+block.  An isolated weak block loses only when the local 32px patch has a
+decisive triangle of the same detected direction, sufficient direction margin,
+outline contrast, and side coverage.  Ambiguous isolated conflicts keep the
+safer terrain hypothesis.  Primary `spike_<direction>` evidence is deliberately
+left unresolved at an exact conflict; only derived support/recovery hypotheses
+are arbitrated.  The rule uses no room name, filename, coordinate, tileset
+colour, or background threshold; it does not remove adjacent spikes or run a
+second image scan.  Four focused unit tests protect coherent terrain, decisive
+isolated spikes, the ambiguous-terrain fallback, and primary evidence.  The
+Irkara-89 fixture regression forbids derived exact block/full-spike pairs while
+allowing primary evidence to survive for a later, better-supported decision.
+
+The first broad iteration removed all 165 exact conflicts from the six visual
+rooms and passed FTFA plus the 12-pair block/spike workflow, but the wider
+Irkara held-out corpus rejected it: detected full spikes changed `711 -> 645`
+and matched full spikes changed **`534 -> 484`**.  All 50 lost matches were
+primary directional detections sharing an origin with a phase-shifted false
+block hypothesis.  That iteration was not accepted.  Its ignored artifacts
+remain under `.artifacts/goal-continuation/full-block-spike-arbitration-20260819/`
+as negative evidence.
+
+The safer six source/JTool/blend projects were regenerated under
+`.artifacts/goal-continuation/full-block-spike-arbitration-safe-20260819/`.
+Compared with their pre-batch ledger projects, exact block/full-spike conflicts
+fell from **165 to 49**, `spike_inside_terrain` warnings fell from **268 to
+151**, and overlapping-opposite warnings fell from **49 to 42**.  Full-spike
+detections fell from 712 to 595 while blocks remained exactly 911; the safer
+rule never deletes a block under unresolved primary evidence.  Saves remain 14,
+platforms 5, vines 34, and water cells 36.  Per-screen exact conflicts change
+as follows: CN3-25 `36 -> 14`, CN3-26 `39 -> 17`, CN3-27 `29 -> 13`, CN3-31
+`21 -> 5`, Golden2 `38 -> 0`, and Bathhouse1 `2 -> 0`.  The regenerated blends
+are materially cleaner, but the remaining 49 exact conflicts, 151 overlap
+warnings, and other phase/direction errors remain visual review work; these
+rooms still have no corrected authoritative JMaps.
+
+The strict FTFA benchmark is unchanged at **926/928 exact, 0 false positives,
+2 missed, 0 shifted, 0 wrong direction**.  On the complete 12-pair block/spike
+workflow the only aggregate metric change is detected full spikes `891 -> 890`:
+Irkara-89 loses one derived exact block-overlap impostor (`143 -> 142`) while
+its matched full spikes remain `112/113`; the three unresolved primary
+conflicts remain for later review.  Every other matched total is unchanged.
+Irkara-89 also retains all nine walljumps, its save, apple, water, and platform.
+CN3-16, CN3-18, F189, NANG, K3 Ex-Hades, and the remaining authoritative
+controls retain their established matched results.
+
+The broader ten-room Irkara held-out workflow improves from `711` to `700`
+detected full spikes while retaining all **534 matched full spikes**.  Its
+saves remain `23/23`, warps `11/11`, water `520/520`, walljumps `7/7` matched,
+and platforms `5/5`.  This held-out zero-recall-loss result is the acceptance
+criterion that the rejected broad iteration failed.  The ignored reports and
+blend PNGs remain in the safe checkpoint directory; no giant-review image,
+JMap, blend, report, or ledger file is tracked.
+
+The complete post-change unittest discovery run passes **389 tests in
+2360.552 seconds, `OK`**.
+
+## Rejected experiment: room-wide anisotropic terrain rewrite (2026-08-20)
+
+The next visual batch investigated the horizontally striped material in
+CN3-Entrance1 and CN3-Entrance2.  A prototype learned the dominant 32-pixel
+block phase and luminance/edge profile from each room, replaced the dense
+`supported_terrain_miniblock` field with recovered full blocks, and split the
+large full-spike family by room-relative triangle saturation.  The experiment
+was deliberately evaluated outside the tracked fixtures because neither
+Entrance screen has a corrected authoritative JMap.
+
+The resulting blends were substantially less cluttered.  Entrance1 changed
+from 272 to 234 objects, with blocks `50 -> 104`, miniblocks `56 -> 0`, full
+spikes `130 -> 93`, and structural warnings `103 -> 58`.  Entrance2 changed
+from 347 to 175 objects, with blocks `76 -> 118`, miniblocks `131 -> 0`, full
+spikes `118 -> 35`, and warnings `110 -> 24`.  FTFA remained `926/928` exact;
+the complete 12-pair report and the ten-room Irkara report were unchanged.
+Those protected results were not sufficient acceptance evidence, however:
+the prototype activated only on the two visual-only Entrance rooms.
+
+Independent review found that the implementation could delete all supported
+miniblocks and low-saturation full spikes, including primary spike evidence,
+after its room gate activated.  Its full-grid recovery also lacked a local
+connectivity requirement, so a bright anisotropic background could reinforce
+false blocks.  Entrance1's `spike_inside_terrain` warnings increased from 1 to
+10 and its opposite-spike conflicts from 3 to 4; all ten new terrain overlaps
+involved recovered blocks.  Entrance2 gained a marker-inside-terrain warning
+around a visually correct save.  Mixed genuine neutral/coloured spikes,
+genuine miniblocks among aliases, bright striped backgrounds, and secondary
+terrain phases were not protected.
+
+The prototype was therefore removed before publication.  Its source/JTool/
+blend outputs and analysis remain as ignored negative evidence under
+`.artifacts/goal-continuation/entrance2-dense-geometry-20260819/`; the active
+scanner retains only the separately verified late exact-origin block/spike
+arbitration above.  A future striped-material rule must separate recovery from
+destructive pruning, require connected local terrain support and marker/spike
+exclusions for recovered blocks, preserve primary spike evidence unless an
+independent geometry test rejects it, and add the missing mixed-family and
+background controls before it can be accepted.

@@ -272,6 +272,25 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 (640, 376, 16),
             ],
         )
+        block_positions = {
+            (detection.x, detection.y)
+            for detection in result.detections
+            if detection.type_id == OBJ_BLOCK
+        }
+        primary_kind_by_type = {
+            OBJ_SPIKE_UP: "spike_up",
+            OBJ_SPIKE_RIGHT: "spike_right",
+            OBJ_SPIKE_LEFT: "spike_left",
+            OBJ_SPIKE_DOWN: "spike_down",
+        }
+        self.assertFalse(
+            any(
+                (detection.x, detection.y) in block_positions
+                and detection.kind != primary_kind_by_type[detection.type_id]
+                for detection in result.detections
+                if detection.type_id in FULL_SPIKE_TYPES
+            )
+        )
 
     def test_dark_relative_platform_recovers_partially_scaled_bar(self) -> None:
         result = scan_png(
