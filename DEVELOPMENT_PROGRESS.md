@@ -3995,3 +3995,57 @@ destructive pruning, require connected local terrain support and marker/spike
 exclusions for recovered blocks, preserve primary spike evidence unless an
 independent geometry test rejects it, and add the missing mixed-family and
 background controls before it can be accepted.
+
+## Checkpoint: immutable current-HEAD 71-screen audit (2026-08-20)
+
+The mixed-revision giant-review ledger could not answer how all 71 rooms behave
+under one scanner version.  Its `accepted` label meant that an object-class
+spot check had no unexplained color-object discrepancy; it was never an exact
+geometry result.  A new manifest-driven run therefore regenerated every room
+from the clean commit `556c772294a8d47ac97c837b6596713d4d1e3cf2`, with
+grid step 8, color objects and geometry enabled, and OCR disabled.  The run
+validated all 71 source hashes before scanning, recorded the commit, dirty
+state, manifest hash, scanner/web/asset hashes and settings, and verified that
+the scanner code did not change during generation.  All 71 projects, JMaps,
+clean SVGs, blend SVGs, clean PNGs and blend PNGs were produced and validated.
+
+Every source/JTool/blend trio was then reviewed at full resolution without
+inheriting an old status.  The current distribution is **11 close, 8 minor, 9
+moderate, 18 substantial and 25 major**.  In particular, the old object-class
+label understated geometry failures: CN3 neon floors 7--9, CN3-18/19/21/25--27,
+Entrance1/2, Golden1--7, Halls4/5, Bathhouse1, Dotkid1/3, NR1 and NANG-11 are
+now classified major.  The Say1--9 family and LapBackwards1 are close; NANG-135
+is also close but remains six ordinary-block cells away from exact.  Warning
+counts were used only for triage because a warning can describe either a false
+spike or missing support terrain, and zero warnings can coexist with severe
+false negatives (for example NANG-11 and NANG-130).
+
+Five giant-review captures were safely cross-walked to corrected tracked JMaps.
+Their exact current results are:
+
+| screen | expected | detected | exact | false positives | missed | shifted | wrong direction |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| CN3-16 | 590 | 693 | 585 | 108 | 5 | 0 | 0 |
+| CN3-18 | 492 | 557 | 440 | 107 | 42 | 8 | 2 |
+| NANG-128 (state-masked) | 138 | 131 | 124 | 7 | 14 | 0 | 0 |
+| NANG-135 | 165 | 165 | 162 | 3 | 3 | 0 | 0 |
+| NANG-138 (state-masked) | 205 | 214 | 199 | 15 | 6 | 0 | 0 |
+
+The state mask excludes SAVE objects that are not visible in the NANG-128 and
+NANG-138 gameplay captures.  The ordinary NANG-128 scan still emits two false
+saves on visible trigger-like squares, so the masked exact comparison is not an
+acceptance shortcut.  The remaining 66 rooms are visual evidence, not exact
+benchmarks; four have tracked source captures and 62 are local-corpus-only.
+
+The immutable run is preserved locally under
+`.artifacts/goal-continuation/corpus-audit-20260820-556c772294a8/`.  Its reviewed
+CSV and Markdown report are also published to the ignored stable snapshot under
+`.artifacts/giant-review/current-audit/latest/`, with an append-only 71-row
+history under `.artifacts/giant-review/current-audit/screen-audit-history.csv`.
+Generated audit outputs, local corpus files and private source images remain
+ignored and untracked.  This checkpoint changes the evidence and prioritization,
+not scanner behavior: the next bounded implementation must be measured against
+the exact CN3-16/CN3-18 false mini-terrain and spike-scale errors, with
+NANG-128/135/138, FTFA, Irkara and the complete 12-pair workflow as independent
+controls.  Primary real spike evidence must not be removed merely because a
+room-relative palette or striped-material heuristic activates.
