@@ -31,9 +31,11 @@ from jtool_scanner.constants import (
 from jtool_scanner.geometry import Box
 from jtool_scanner.scanner import (
     Detection,
+    DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY,
     _GeometryClass,
     _GeometryPatchCandidate,
     _ColorProfile,
+    _NormalizedLumaPatch,
     _PatchFeatures,
     _PlatformPatchFeatures,
     _TriangleFillFeatures,
@@ -48,6 +50,10 @@ from jtool_scanner.scanner import (
     _arbitrate_minispikes_against_blocks,
     _arbitrate_full_spikes_against_blocks,
     _arbitrate_full_spike_scale_duplicates,
+    _arbitrate_dense_miniblock_geometry,
+    _is_dense_miniblock_run_supported,
+    _normalized_luma_descriptor_distance,
+    _normalized_miniblock_luma_patch,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
@@ -7131,6 +7137,716 @@ class ScannerGeometryTests(unittest.TestCase):
             )
 
         self.assertEqual(result, [full, mini])
+
+    def test_dense_miniblock_material_uses_surviving_raw_profile(self) -> None:
+        """Activation seeds cannot bias the final learned material median."""
+
+        raw_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (0, 16, 32, 48, 64, 80, 96, 112)
+        ]
+        structural = Detection(
+            "mini_block_save_backing",
+            OBJ_MINI_BLOCK,
+            128,
+            0,
+            0.70,
+            Box(128, 0, 16, 16),
+        )
+        activation_seed = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            144,
+            0,
+            0.70,
+            Box(144, 0, 16, 16),
+        )
+
+        def features(_image, _room, x, _y):
+            first = (
+                1.0
+                if x == 80
+                else 1.04
+                if x == 96
+                else 1.96
+                if x == 112
+                else 0.0
+            )
+            return _NormalizedLumaPatch(
+                (first, *(0.0 for _ in range(15))),
+                0.0 if x == 112 else 0.10,
+                1.0 if x == 112 else 0.12,
+            )
+
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                side_effect=features,
+            ),
+        ):
+            result = _arbitrate_dense_miniblock_geometry(
+                [*raw_blocks, structural],
+                [activation_seed],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertIn(raw_blocks[-3], result)
+        self.assertNotIn(raw_blocks[-2], result)
+        self.assertIn(raw_blocks[-1], result)
+        self.assertIn(structural, result)
+
+    def test_dense_miniblock_luma_profile_is_affine_palette_relative(self) -> None:
+        def make_patch(*, altered: bool, transform: str) -> RGBImage:
+            data = bytearray(800 * 600 * 3)
+            for y in range(16):
+                for x in range(16):
+                    value = 40 + (x * 9 + y * 5) % 120
+                    if altered and 5 <= x < 11 and 5 <= y < 11:
+                        value += 20
+                    if transform == "brighter":
+                        value += 30
+                    elif transform == "lower_contrast":
+                        value = round(128 + (value - 128) * 0.70)
+                    elif transform == "inverted":
+                        value = 255 - value
+                    offset = (y * 800 + x) * 3
+                    data[offset : offset + 3] = bytes((value, value, value))
+            return RGBImage(800, 600, bytes(data))
+
+        room = Box(0, 0, 800, 600)
+        distances: list[float] = []
+        feature_pairs: list[tuple[_NormalizedLumaPatch, _NormalizedLumaPatch]] = []
+        for transform in ("identity", "brighter", "lower_contrast", "inverted"):
+            first = _normalized_miniblock_luma_patch(
+                make_patch(altered=False, transform=transform),
+                room,
+                0,
+                0,
+            )
+            second = _normalized_miniblock_luma_patch(
+                make_patch(altered=True, transform=transform),
+                room,
+                0,
+                0,
+            )
+            feature_pairs.append((first, second))
+            distances.append(
+                _normalized_luma_descriptor_distance(
+                    first.descriptor,
+                    second.descriptor,
+                )
+            )
+
+        for distance in distances[1:]:
+            self.assertAlmostEqual(distance, distances[0], delta=0.001)
+        reference_first, reference_second = feature_pairs[0]
+        for first, second in feature_pairs[1:]:
+            self.assertAlmostEqual(
+                first.edge_density,
+                reference_first.edge_density,
+                delta=1 / 256,
+            )
+            self.assertAlmostEqual(
+                second.edge_density,
+                reference_second.edge_density,
+                delta=1 / 256,
+            )
+            self.assertAlmostEqual(
+                first.center_gradient,
+                reference_first.center_gradient,
+                delta=0.01,
+            )
+            self.assertAlmostEqual(
+                second.center_gradient,
+                reference_second.center_gradient,
+                delta=0.01,
+            )
+
+    def test_dense_miniblock_run_support_requires_independent_topology(
+        self,
+    ) -> None:
+        patch = _PatchFeatures((False,) * 256, 0.28, 0.20, 0.20)
+        weak_shape = _GeometryClass(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            0.35,
+            0.05,
+            0.05,
+        )
+        weak_fill = _TriangleFillFeatures(60.0, 0.60, 0.40, 0.20, 20.0)
+        normalized = _NormalizedLumaPatch((0.0,) * 16, 0.11, 0.0)
+
+        self.assertTrue(
+            _is_dense_miniblock_run_supported(
+                weak_shape,
+                patch,
+                weak_fill,
+                normalized,
+                2,
+                False,
+                dense_miniblock_room=True,
+            )
+        )
+        self.assertFalse(
+            _is_dense_miniblock_run_supported(
+                weak_shape,
+                patch,
+                weak_fill,
+                normalized,
+                1,
+                True,
+                dense_miniblock_room=True,
+            )
+        )
+
+        strong_shape = _GeometryClass(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            0.40,
+            0.10,
+            0.18,
+        )
+        strong_patch = _PatchFeatures((False,) * 256, 0.30, 0.20, 0.20)
+        strong_fill = _TriangleFillFeatures(60.0, 0.70, 0.30, 0.40, -50.0)
+        self.assertTrue(
+            _is_dense_miniblock_run_supported(
+                strong_shape,
+                strong_patch,
+                strong_fill,
+                normalized,
+                1,
+                True,
+                dense_miniblock_room=True,
+            )
+        )
+        self.assertFalse(
+            _is_dense_miniblock_run_supported(
+                strong_shape,
+                strong_patch,
+                strong_fill,
+                normalized,
+                1,
+                False,
+                dense_miniblock_room=True,
+            )
+        )
+        self.assertFalse(
+            _is_dense_miniblock_run_supported(
+                strong_shape,
+                strong_patch,
+                strong_fill,
+                _NormalizedLumaPatch((0.0,) * 16, 0.109, 0.0),
+                1,
+                True,
+                dense_miniblock_room=True,
+            )
+        )
+        self.assertFalse(
+            _is_dense_miniblock_run_supported(
+                strong_shape,
+                strong_patch,
+                strong_fill,
+                normalized,
+                2,
+                True,
+                dense_miniblock_room=False,
+            )
+        )
+
+    def test_dense_miniblock_based_run_requires_raw_base_provenance(self) -> None:
+        block = Detection(
+            "mini_block_save_backing",
+            OBJ_MINI_BLOCK,
+            320,
+            256,
+            0.70,
+            Box(320, 256, 16, 16),
+        )
+        raw_base = Detection(
+            "mini_block",
+            OBJ_MINI_BLOCK,
+            320,
+            240,
+            0.70,
+            Box(320, 240, 16, 16),
+        )
+        mini = Detection(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            320,
+            256,
+            0.40,
+            Box(320, 256, 16, 16),
+        )
+        neighbor = Detection(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            320,
+            272,
+            0.40,
+            Box(320, 272, 16, 16),
+        )
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 1, 1)
+
+        def arbitrate(seeds: list[Detection]) -> list[Detection]:
+            with (
+                mock.patch(
+                    "jtool_scanner.scanner._looks_miniblock_dominant",
+                    return_value=True,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._patch_features",
+                    return_value=_PatchFeatures(
+                        (False,) * 256,
+                        0.30,
+                        0.20,
+                        0.20,
+                    ),
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._mini_spike_class_for_detection",
+                    return_value=_GeometryClass(
+                        "mini_spike_down",
+                        OBJ_MINI_SPIKE_DOWN,
+                        0.40,
+                        0.10,
+                        0.18,
+                    ),
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._triangle_fill_features",
+                    return_value=_TriangleFillFeatures(
+                        60.0,
+                        0.70,
+                        0.30,
+                        0.40,
+                        -50.0,
+                    ),
+                ) as fill_mock,
+                mock.patch(
+                    "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                    return_value=_NormalizedLumaPatch(
+                        (0.0,) * 16,
+                        0.11,
+                        0.0,
+                    ),
+                ),
+            ):
+                return _arbitrate_dense_miniblock_geometry(
+                    [block, raw_base, mini, neighbor],
+                    seeds,
+                    image,
+                    room,
+                )
+
+        without_raw_provenance = arbitrate([])
+        with_raw_provenance = arbitrate([raw_base])
+
+        self.assertNotIn(mini, without_raw_provenance)
+        self.assertIn(block, without_raw_provenance)
+        self.assertIn(mini, with_raw_provenance)
+        self.assertIn(block, with_raw_provenance)
+
+    def test_dense_miniblock_triangle_owns_exact_conflict_only_when_decisive(
+        self,
+    ) -> None:
+        block = Detection(
+            "mini_block_save_backing",
+            OBJ_MINI_BLOCK,
+            320,
+            256,
+            0.70,
+            Box(320, 256, 16, 16),
+        )
+        mini = Detection(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            320,
+            256,
+            0.70,
+            Box(320, 256, 16, 16),
+        )
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 1, 1)
+        patch = _PatchFeatures((False,) * 256, 0.30, 0.20, 0.20)
+        shape = _GeometryClass(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            0.60,
+            0.20,
+            0.25,
+        )
+
+        def arbitrate(
+            fill: _TriangleFillFeatures,
+            normalized_edge: float = 0.0,
+        ) -> list[Detection]:
+            with (
+                mock.patch(
+                    "jtool_scanner.scanner._looks_miniblock_dominant",
+                    return_value=True,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._patch_features",
+                    return_value=patch,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._mini_spike_class_for_detection",
+                    return_value=shape,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._triangle_fill_features",
+                    return_value=fill,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                    return_value=_NormalizedLumaPatch(
+                        (0.0,) * 16,
+                        normalized_edge,
+                        0.0,
+                    ),
+                ),
+            ):
+                return _arbitrate_dense_miniblock_geometry(
+                    [block, mini],
+                    [],
+                    image,
+                    room,
+                )
+
+        decisive = arbitrate(
+            _TriangleFillFeatures(100.0, 0.95, 0.05, 0.90, 60.0)
+        )
+
+        self.assertEqual(decisive, [mini])
+
+        ambiguous = arbitrate(
+            _TriangleFillFeatures(100.0, 0.89, 0.10, 0.79, 60.0)
+        )
+        self.assertEqual(ambiguous, [block])
+
+        inverted = arbitrate(
+            _TriangleFillFeatures(100.0, 0.05, 0.95, -0.90, -60.0)
+        )
+        self.assertEqual(inverted, [mini])
+
+        edge_rescue = arbitrate(
+            _TriangleFillFeatures(100.0, 0.70, 0.30, 0.40, 60.0),
+            normalized_edge=29 / 256,
+        )
+        self.assertEqual(edge_rescue, [mini])
+
+        plausible_but_not_decisive = arbitrate(
+            _TriangleFillFeatures(100.0, 0.70, 0.30, 0.40, 60.0),
+            normalized_edge=28 / 256,
+        )
+        self.assertEqual(plausible_but_not_decisive, [block, mini])
+
+        below_plausible_edge = arbitrate(
+            _TriangleFillFeatures(100.0, 0.70, 0.30, 0.40, 60.0),
+            normalized_edge=27 / 256,
+        )
+        self.assertEqual(below_plausible_edge, [block])
+
+        plausible_boundary = arbitrate(
+            _TriangleFillFeatures(68.0, 0.70, 0.30, 0.40, 34.0),
+            normalized_edge=28 / 256,
+        )
+        self.assertEqual(plausible_boundary, [block, mini])
+
+        below_gap = arbitrate(
+            _TriangleFillFeatures(67.999, 0.70, 0.30, 0.40, 34.0),
+            normalized_edge=28 / 256,
+        )
+        self.assertEqual(below_gap, [block])
+
+        below_normalized_luma = arbitrate(
+            _TriangleFillFeatures(68.0, 0.70, 0.30, 0.40, 33.932),
+            normalized_edge=28 / 256,
+        )
+        self.assertEqual(below_normalized_luma, [block])
+
+    def test_dense_miniblock_plausible_conflict_preserves_possible_directions(
+        self,
+    ) -> None:
+        block = Detection(
+            "mini_block_save_backing",
+            OBJ_MINI_BLOCK,
+            320,
+            256,
+            0.70,
+            Box(320, 256, 16, 16),
+        )
+        primary = Detection(
+            "mini_spike_right",
+            OBJ_MINI_SPIKE_RIGHT,
+            320,
+            256,
+            0.30,
+            Box(320, 256, 16, 16),
+        )
+        opposing = Detection(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            320,
+            256,
+            0.30,
+            Box(320, 256, 16, 16),
+        )
+        image = RGBImage(1, 1, b"\x00\x00\x00")
+        room = Box(0, 0, 1, 1)
+
+        def arbitrate(
+            items: list[Detection],
+            fill: _TriangleFillFeatures | None = None,
+        ) -> list[Detection]:
+            fill = fill or _TriangleFillFeatures(
+                68.0,
+                0.70,
+                0.30,
+                0.40,
+                34.0,
+            )
+            with (
+                mock.patch(
+                    "jtool_scanner.scanner._looks_miniblock_dominant",
+                    return_value=True,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._patch_features",
+                    return_value=_PatchFeatures(
+                        (False,) * 256,
+                        0.30,
+                        0.20,
+                        0.20,
+                    ),
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._mini_spike_class_for_detection",
+                    return_value=_GeometryClass(
+                        "mini_spike_right",
+                        OBJ_MINI_SPIKE_RIGHT,
+                        0.30,
+                        0.20,
+                        0.20,
+                    ),
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._triangle_fill_features",
+                    return_value=fill,
+                ),
+                mock.patch(
+                    "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                    return_value=_NormalizedLumaPatch(
+                        (0.0,) * 16,
+                        28 / 256,
+                        0.0,
+                    ),
+                ),
+            ):
+                return _arbitrate_dense_miniblock_geometry(
+                    items,
+                    [],
+                    image,
+                    room,
+                )
+
+        forward = arbitrate([block, opposing, primary])
+        reverse = arbitrate([primary, opposing, block])
+        decisive = arbitrate(
+            [block, opposing, primary],
+            _TriangleFillFeatures(
+                100.0,
+                0.95,
+                0.05,
+                0.90,
+                60.0,
+            ),
+        )
+        expected = {id(block), id(primary), id(opposing)}
+        self.assertEqual({id(item) for item in forward}, expected)
+        self.assertEqual({id(item) for item in reverse}, expected)
+        self.assertEqual(
+            {id(item) for item in decisive},
+            {id(primary), id(opposing)},
+        )
+
+    def test_dense_miniblock_full_absorbs_weak_mini_but_keeps_visible_composite(
+        self,
+    ) -> None:
+        full = Detection(
+            "spike_left",
+            OBJ_SPIKE_LEFT,
+            320,
+            256,
+            0.72,
+            Box(320, 256, 32, 32),
+        )
+        mini = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            336,
+            272,
+            0.72,
+            Box(336, 272, 16, 16),
+        )
+        block = Detection(
+            "mini_block_save_backing",
+            OBJ_MINI_BLOCK,
+            336,
+            272,
+            0.70,
+            Box(336, 272, 16, 16),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((False,) * 1024, 0.30, 0.20, 0.20),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_left", OBJ_SPIKE_LEFT, 0.30, 0.20, 0.15
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._native_edge_component_extent",
+                return_value=26.0,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_side_coverage",
+                return_value=0.75,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_min_side_coverage",
+                return_value=0.75,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._mini_spike_class_for_detection",
+                return_value=_GeometryClass(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    0.30,
+                    0.20,
+                    0.20,
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_fill_features",
+                return_value=_TriangleFillFeatures(
+                    68.0,
+                    0.70,
+                    0.30,
+                    0.40,
+                    34.0,
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                return_value=_NormalizedLumaPatch(
+                    (0.0,) * 16,
+                    28 / 256,
+                    0.0,
+                ),
+            ) as normalized_mock,
+        ):
+            result = _arbitrate_dense_miniblock_geometry(
+                [full, block, mini],
+                [],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+            normalized_mock.return_value = _NormalizedLumaPatch(
+                (0.0,) * 16,
+                0.25,
+                0.0,
+            )
+            visible_composite = _arbitrate_dense_miniblock_geometry(
+                [full, block, mini],
+                [],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, [full, block])
+        self.assertEqual(visible_composite, [full, block, mini])
+
+        derived = Detection(
+            "full_spike_support_common_aligned",
+            OBJ_SPIKE_LEFT,
+            320,
+            256,
+            0.72,
+            Box(320, 256, 32, 32),
+        )
+        with mock.patch(
+            "jtool_scanner.scanner._looks_miniblock_dominant",
+            return_value=True,
+        ):
+            preserved = _arbitrate_dense_miniblock_geometry(
+                [derived, mini],
+                [],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(preserved, [derived, mini])
+
+    def test_dense_miniblock_composite_edge_gate_protects_partysu_truth(
+        self,
+    ) -> None:
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "block_spike"
+        partysu = load_png(fixture_dir / "irkara-nr-partysu3-game.png")
+        partysu_room = Box(0, 0, partysu.width, partysu.height)
+        legitimate = _normalized_miniblock_luma_patch(
+            partysu,
+            partysu_room,
+            304,
+            400,
+        )
+        self.assertGreaterEqual(
+            legitimate.edge_density,
+            DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY,
+        )
+
+        cn3 = load_png(fixture_dir / "cn3-18-game.png")
+        cn3_room = Box(0, 0, cn3.width, cn3.height)
+        false_fragments = (
+            (128, 352),
+            (160, 224),
+            (176, 320),
+            (224, 496),
+            (240, 128),
+            (448, 96),
+            (480, 384),
+            (576, 176),
+            (704, 128),
+            (704, 320),
+        )
+        self.assertTrue(
+            all(
+                _normalized_miniblock_luma_patch(cn3, cn3_room, x, y).edge_density
+                < DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY
+                for x, y in false_fragments
+            )
+        )
 
     def test_filled_cloud_warp_metrics_accept_compressed_shape_not_terrain(self) -> None:
         metrics = {

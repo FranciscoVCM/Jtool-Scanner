@@ -4049,3 +4049,117 @@ the exact CN3-16/CN3-18 false mini-terrain and spike-scale errors, with
 NANG-128/135/138, FTFA, Irkara and the complete 12-pair workflow as independent
 controls.  Primary real spike evidence must not be removed merely because a
 room-relative palette or striped-material heuristic activates.
+
+## Checkpoint: palette-relative dense-miniblock material, scale and run arbitration (2026-08-25)
+
+The immutable audit's next bounded batch used CN3-16 and CN3-18 because both
+have authoritative corrected JMaps, dense 16px terrain, mixed full/minispikes,
+and duplicate captures at different native resolutions.  The baseline scanner
+reconstructed every exact CN3-16 object but emitted 70 false positives on its
+tracked capture; CN3-18 retained 488 exact objects while emitting 92 false
+positives and one shifted object.  Source crops showed three recurring alias families: textured
+terrain cells emitted as extra miniblocks, block/minispike hypotheses at one
+origin, and 16px fragments emitted inside real 32px spikes.
+
+The accepted late pass activates only when immutable raw detector output proves
+a dense miniblock lattice: at least 400 raw 16px cells and a square-cell ratio
+no greater than 0.50.  It does not use a room name, filename, coordinate,
+palette, background colour, or manually corrected object list.  Within that
+scope it learns a room-relative terrain descriptor from the surviving raw
+miniblocks.  Each 16px patch is converted to weighted luminance, normalized by
+its own robust 90th--10th percentile range, and represented by sixteen 4x4
+cell means.  Only raw `mini_block` candidates sufficiently far from the
+coordinate-wise median are pruned, with independent normalized edge and centre
+gradient checks.  Structural recovery provenance is never removed by this
+material model.
+
+Exact block/minispike conflicts now have three outcomes.  Every independently
+decisive direction owns its cell, removing the block and weaker hypotheses but
+preserving legal same-origin multi-direction compositions.  A
+palette-relative plausible triangle preserves both the block and every
+plausible direction, because FTFA-4's corrected JMap proves that opposing
+minispikes can legitimately share an origin.  A candidate without either level
+of evidence loses to terrain.  A later scale pass removes contained 16px
+fragments only under an independently classified primary 32px spike with
+sufficient native edge extent, silhouette score, outline and side coverage.
+A contained minispike with independently strong normalized internal edge
+structure remains as a visible composite; derived full-spike recoveries cannot
+trigger destructive containment.
+
+The first safe material/scale implementation reached 1,078/1,082 exact across
+the two tracked CN3 fixtures, with 80 false positives and four misses.  The
+three remaining CN3-18 minispikes were present in the miniblock-room recovery
+pool but rejected by its selector.  The final generalized recovery therefore
+shares one recomputable topology predicate between that selector and the late
+conflict pass.  Both call sites require the same proven dense raw lattice.  The
+predicate accepts either a two-sided immediate same-direction run with moderate
+shape, normalized-edge and local fill evidence, or a one-sided run with
+stronger evidence and a direction-relative base from the immutable raw
+miniblock detector.  Its fill-density and absolute-luminance gates are not
+claimed to be affine-invariant.  Recovered geometry cannot manufacture its own
+base support.  This
+recovers exact `up(720,208)`, `down(720,160)` and `down(416,320)` without adding
+an unmatched detection.
+
+Boundary and provenance tests protect both run branches and reject a one-sided
+candidate whose base is only a structural recovery.  The palette-relative
+ambiguity boundary is also explicit: normalized edge density 27/256 rejects,
+28/256 preserves block plus triangle, and stronger evidence at 29/256 can own
+the cell.  A simpler 0.10 edge threshold was rejected because it admitted a
+known block-only CN3-16 alias at `(528,144)`.  Fixed-candidate brightness,
+contrast, inversion and channel-permutation replays recover nine additional
+true hypotheses with no identity-case regression at the accepted 28/256
+boundary.  Those replays support, but do not claim to prove, universal
+whole-image transform invariance.
+
+The final tracked exact result is **1,081/1,082 exact, 80 false positives, one
+missed, zero shifted and zero wrong direction**.  CN3-16 changes from
+`660 detected / 590 exact / 70 FP` to `626 / 590 / 36`; all 590 truth objects
+remain exact and its 54 minispikes have zero false positives.  CN3-18 changes
+from `581 detected / 488 exact / 92 FP / 1 shifted` to
+`535 / 491 / 44 / 0`; all **54/54 minispikes are exact**
+with two false positives, and the only remaining miss is the known right-edge
+`water_3` at `(800,240)`.  Compared with the accepted intermediate pass, the
+topology rule adds exactly the three missing truth objects and no false
+positive.
+
+The complete 12-pair tolerance workflow preserves every pre-batch matched
+count.  Miniblocks improve from `1014/875/875` to `953/875/875`
+(detected/truth/matched), removing 61 unmatched hypotheses.  Minispikes improve
+from `355/288/281` to `336/288/281`, removing a net 19 unmatched hypotheses
+while retaining all matched truth.  Saves remain `22/22/22`, warps `12/12/12`,
+apples `4/4/4`, water `35/35/35`, walljumps `13/13/13`, platforms `3/3/3`,
+gravity flippers `8/8/8`, killers `99/99/99`, refreshers `18/19/18`, blocks
+`1596/1486/1463`, and full spikes `890/748/724`.  An intermediate apparent
+mini match drop from 281 to 278 was greedy 24px tolerance-accounting noise:
+removed false aliases had formerly consumed nearby truth.  Exact comparison
+identified the same three real misses, and their topology recovery returns the
+tolerance count to 281.
+
+The ten-room Irkara held-out workflow is unchanged in every metric: saves
+`23/23`, warps `11/11`, water `520/520`, walljumps `7/7` matched, platforms
+`5/5`, blocks `1329 detected / 976 matched`, full spikes `700/534`, and
+minispikes `458/447`.  FTFA remains the strict gate at **926/928 exact, zero
+false positives, two missed, zero shifted and zero wrong direction**.  The
+NANG-128/135/138 exact controls remain **503/510 exact, three false positives,
+five missed, two shifted and zero wrong direction**.  Fresh ignored reports are
+under `.artifacts/goal-continuation/dense-miniblock-arbitration-20260825/`.
+
+The corresponding full-resolution CN3-16 and CN3-18 captures from the
+71-screen corpus were regenerated and reviewed separately.  CN3-16 improves
+from `585 exact / 108 FP / 5 missed` to
+`585 / 28 / 5`, reducing exact errors from 113 to 33.  CN3-18 improves only
+from `440 exact / 107 FP / 42 missed / 8 shifted / 2 wrong` to
+`442 / 107 / 40 / 8 / 2`; its 157 remaining errors keep it in the `major`
+bucket.  The ignored ledger now correctly marks both screens
+`needs-more-work` and points to the new source/JMap/reconstruction/blend
+projects.  The much larger difference between two captures of the same CN3-18
+room at 975x749 and 1075x820 is strong evidence that native-scale/resampling
+stability, rather than another CN3 palette exception, is the next generalized
+root cause to test.
+
+The complete final suite passes **396 tests in 2431.110 seconds, `OK`**.  The
+ignored measured delta is recorded at
+`.artifacts/goal-continuation/dense-miniblock-arbitration-20260825/dense-miniblock-delta.md`;
+generated projects, dashboards, crops, reports and audit files remain local and
+untracked.

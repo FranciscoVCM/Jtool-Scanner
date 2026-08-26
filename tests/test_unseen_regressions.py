@@ -30,6 +30,7 @@ from jtool_scanner.constants import (
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.image import load_png
+from jtool_scanner.benchmark import compare_jmaps
 from jtool_scanner.evaluation import evaluate_scan
 from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import (
@@ -784,6 +785,18 @@ class UnseenScreenRegressionTests(unittest.TestCase):
         """Weak support seams must not add spikes outside either CN3 JMap."""
 
         fixture_dir = Path("fixtures") / "block_spike"
+        minimum_exact = {"cn3-16": 590, "cn3-18": 491}
+        maximum_false_positives = {"cn3-16": 36, "cn3-18": 44}
+        geometry_group_limits = {
+            "cn3-16": {
+                "mini_block": (501, 36, 0),
+                "mini_spikes": (54, 0, 0),
+            },
+            "cn3-18": {
+                "mini_block": (374, 42, 0),
+                "mini_spikes": (54, 2, 0),
+            },
+        }
         for pair_id in ("cn3-16", "cn3-18"):
             with self.subTest(pair_id=pair_id):
                 result = scan_png(
@@ -805,6 +818,23 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                     if detection.type_id in FULL_SPIKE_TYPES
                 }
                 self.assertEqual(actual, expected)
+                comparison = compare_jmaps(result.to_jmap(), truth)
+                summary = comparison["summary"]
+                self.assertGreaterEqual(summary["exact"], minimum_exact[pair_id])
+                self.assertLessEqual(
+                    summary["false_positive"],
+                    maximum_false_positives[pair_id],
+                )
+                self.assertEqual(summary["shifted"], 0)
+                self.assertEqual(summary["wrong_orientation"], 0)
+                for group_name, limits in geometry_group_limits[pair_id].items():
+                    exact, false_positive, missed = limits
+                    group = comparison["groups"][group_name]
+                    self.assertGreaterEqual(group["exact"], exact)
+                    self.assertLessEqual(group["false_positive"], false_positive)
+                    self.assertLessEqual(group["missed"], missed)
+                    self.assertEqual(group["shifted"], 0)
+                    self.assertEqual(group["wrong_orientation"], 0)
 
     def test_bright_filled_reconcile_keeps_near_threshold_strong_spike(self) -> None:
         """A strong topology spike survives a narrowly clipped fill profile."""

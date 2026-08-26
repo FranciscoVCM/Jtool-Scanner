@@ -208,6 +208,33 @@ MINI_BLOCK_FULL_SPIKE_MAX_COVERAGE = 1
 MINI_BLOCK_FULL_SPIKE_RECOVERY_EDGE_DENSITY = 0.32
 MINI_BLOCK_FULL_SPIKE_RECOVERY_DIRECTION_MARGIN = 0.13
 MINI_BLOCK_FULL_SPIKE_RECOVERY_OUTLINE_DELTA = 0.20
+DENSE_MINIBLOCK_MATERIAL_MIN_DESCRIPTOR_DISTANCE = 0.25
+DENSE_MINIBLOCK_MATERIAL_MIN_NORMALIZED_EDGE_DENSITY = 0.10
+DENSE_MINIBLOCK_MATERIAL_MAX_NORMALIZED_CENTER_GRADIENT = 0.12
+DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP = 90.0
+DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
+DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY = 0.40
+DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_EDGE_DENSITY = 0.11
+DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_CLUSTER_GAP = 68.0
+DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
+DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_NORMALIZED_EDGE_DENSITY = 28.0 / 256.0
+DENSE_MINIBLOCK_RUN_MIN_NORMALIZED_EDGE_DENSITY = 0.11
+DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_SCORE = 0.35
+DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_DIRECTION_MARGIN = 0.05
+DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_OUTLINE_DELTA = 0.05
+DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_EDGE_DENSITY = 0.28
+DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_FILL_DENSITY_CONTRAST = 0.20
+DENSE_MINIBLOCK_BASED_RUN_MIN_SCORE = 0.40
+DENSE_MINIBLOCK_BASED_RUN_MIN_DIRECTION_MARGIN = 0.10
+DENSE_MINIBLOCK_BASED_RUN_MIN_OUTLINE_DELTA = 0.18
+DENSE_MINIBLOCK_BASED_RUN_MIN_EDGE_DENSITY = 0.30
+DENSE_MINIBLOCK_BASED_RUN_MIN_FILL_DENSITY_CONTRAST = 0.40
+DENSE_MINIBLOCK_BASED_RUN_MIN_ABS_LUMA_CONTRAST = 50.0
+DENSE_MINIBLOCK_FULL_MIN_NATIVE_EDGE_EXTENT = 26.0
+DENSE_MINIBLOCK_FULL_MIN_SCORE = 0.24
+DENSE_MINIBLOCK_FULL_MIN_OUTLINE_DELTA = 0.10
+DENSE_MINIBLOCK_FULL_MIN_SIDE_COVERAGE = 0.75
+DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY = 0.25
 REPEATED_TERRAIN_CLUSTER_COUNT = 6
 REPEATED_TERRAIN_MIN_SUPPORT_VOTES = 3
 REPEATED_TERRAIN_MIN_SUPPORT_SHARE = 0.30
@@ -2283,6 +2310,13 @@ def scan_image(
         image,
         box,
     )
+    if include_geometry:
+        detections = _arbitrate_dense_miniblock_geometry(
+            detections,
+            mini_blocks,
+            image,
+            box,
+        )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -14537,6 +14571,13 @@ class _ColorProfile:
     avg_g: float
     avg_b: float
     saturation: float
+
+
+@dataclass(frozen=True, slots=True)
+class _NormalizedLumaPatch:
+    descriptor: tuple[float, ...]
+    edge_density: float
+    center_gradient: float
 
 
 @dataclass(frozen=True, slots=True)
@@ -27183,6 +27224,12 @@ def _select_miniblock_room_mini_spikes(
         OBJ_MINI_SPIKE_LEFT: "left",
         OBJ_MINI_SPIKE_DOWN: "down",
     }
+    base_offsets = {
+        OBJ_MINI_SPIKE_UP: (0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_RIGHT: (-MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_LEFT: (MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_DOWN: (0, -MINI_BLOCK_SIZE),
+    }
     opposite_types = {
         OBJ_MINI_SPIKE_UP: OBJ_MINI_SPIKE_DOWN,
         OBJ_MINI_SPIKE_DOWN: OBJ_MINI_SPIKE_UP,
@@ -27195,6 +27242,14 @@ def _select_miniblock_room_mini_spikes(
     mini_blocks = [
         detection for detection in detections if detection.type_id == OBJ_MINI_BLOCK
     ]
+    raw_mini_block_positions = {
+        (detection.x, detection.y)
+        for detection in mini_blocks
+        if detection.kind == "mini_block"
+    }
+    dense_miniblock_room = _looks_miniblock_dominant(
+        raw_mini_block_positions
+    )
     block_profiles = [
         _patch_color_profile(
             image,
@@ -27230,6 +27285,12 @@ def _select_miniblock_room_mini_spikes(
             detection.y,
             MINI_BLOCK_SIZE,
             direction,
+        )
+        normalized_patch = _normalized_miniblock_luma_patch(
+            image,
+            room,
+            detection.x,
+            detection.y,
         )
         profile = _patch_color_profile(
             image,
@@ -27274,7 +27335,21 @@ def _select_miniblock_room_mini_spikes(
             in mini_keys
             for dx, dy in axis_offsets
         )
-        if _is_miniblock_room_mini_spike_candidate(
+        base_dx, base_dy = base_offsets[detection.type_id]
+        run_supported = _is_dense_miniblock_run_supported(
+            shape,
+            patch,
+            fill,
+            normalized_patch,
+            same_type_immediate_axis,
+            (
+                detection.x + base_dx,
+                detection.y + base_dy,
+            )
+            in raw_mini_block_positions,
+            dense_miniblock_room=dense_miniblock_room,
+        )
+        if run_supported or _is_miniblock_room_mini_spike_candidate(
             detection.type_id,
             detection.score,
             shape.direction_margin,
@@ -27296,6 +27371,55 @@ def _select_miniblock_room_mini_spikes(
         ):
             kept.append(detection)
     return kept
+
+
+def _is_dense_miniblock_run_supported(
+    shape: _GeometryClass,
+    patch: _PatchFeatures,
+    fill: _TriangleFillFeatures,
+    normalized_patch: _NormalizedLumaPatch,
+    same_type_immediate_axis: int,
+    raw_base_support: bool,
+    *,
+    dense_miniblock_room: bool,
+) -> bool:
+    """Recognize a triangle from palette-relative shape and local run topology.
+
+    Two immediate same-direction neighbors provide independent support on both
+    sides.  With only one neighbor, require stronger triangle evidence and a
+    direction-relative base emitted by the immutable raw miniblock detector.
+    Later recovered geometry therefore cannot manufacture its own support.
+    """
+
+    if not dense_miniblock_room:
+        return False
+
+    normalized_edge = normalized_patch.edge_density
+    two_sided_run = (
+        same_type_immediate_axis >= 2
+        and shape.score >= DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_SCORE
+        and shape.direction_margin
+        >= DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_DIRECTION_MARGIN
+        and shape.outline_delta >= DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_OUTLINE_DELTA
+        and patch.edge_density >= DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_EDGE_DENSITY
+        and fill.density_contrast
+        >= DENSE_MINIBLOCK_TWO_SIDED_RUN_MIN_FILL_DENSITY_CONTRAST
+        and normalized_edge >= DENSE_MINIBLOCK_RUN_MIN_NORMALIZED_EDGE_DENSITY
+    )
+    based_run = (
+        same_type_immediate_axis >= 1
+        and raw_base_support
+        and shape.score >= DENSE_MINIBLOCK_BASED_RUN_MIN_SCORE
+        and shape.direction_margin >= DENSE_MINIBLOCK_BASED_RUN_MIN_DIRECTION_MARGIN
+        and shape.outline_delta >= DENSE_MINIBLOCK_BASED_RUN_MIN_OUTLINE_DELTA
+        and patch.edge_density >= DENSE_MINIBLOCK_BASED_RUN_MIN_EDGE_DENSITY
+        and fill.density_contrast
+        >= DENSE_MINIBLOCK_BASED_RUN_MIN_FILL_DENSITY_CONTRAST
+        and abs(fill.luma_contrast)
+        >= DENSE_MINIBLOCK_BASED_RUN_MIN_ABS_LUMA_CONTRAST
+        and normalized_edge >= DENSE_MINIBLOCK_RUN_MIN_NORMALIZED_EDGE_DENSITY
+    )
+    return two_sided_run or based_run
 
 
 def _is_miniblock_room_mini_spike_candidate(
@@ -28318,6 +28442,406 @@ def _recover_dark_textured_adjacent_up_mini_spikes(
             )
         )
     return [*detections, *added] if added else detections
+
+
+def _arbitrate_dense_miniblock_geometry(
+    detections: list[Detection],
+    detected_mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Resolve material and scale aliases in a proven dense 16px lattice.
+
+    The activation evidence is the immutable output of the raw miniblock
+    detector, rather than later structural recoveries.  This keeps the rule
+    palette- and room-independent while preventing recovered cells from
+    manufacturing the topology that enables their own pruning.
+
+    Once active, the learned material profile can reject only raw miniblock
+    candidates.  Structural miniblocks retain their provenance unless a
+    decisive same-origin triangle owns that cell.  A separately decisive
+    primary 32px spike can then absorb contained 16px spike fragments without
+    deleting or reorienting the full spike itself.  When a triangle remains
+    plausible but does not prove ownership, retain both hypotheses instead of
+    converting uncertainty into a false negative.
+    """
+
+    seed_blocks = [
+        detection
+        for detection in detected_mini_blocks
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+    ]
+    seed_positions = {
+        (detection.x, detection.y) for detection in seed_blocks
+    }
+    if not _looks_miniblock_dominant(seed_positions):
+        return detections
+
+    mini_directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    mini_base_offsets = {
+        OBJ_MINI_SPIKE_UP: (0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_RIGHT: (-MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_LEFT: (MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_DOWN: (0, -MINI_BLOCK_SIZE),
+    }
+    full_directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    primary_mini_kinds = {
+        OBJ_MINI_SPIKE_UP: "mini_spike_up",
+        OBJ_MINI_SPIKE_RIGHT: "mini_spike_right",
+        OBJ_MINI_SPIKE_LEFT: "mini_spike_left",
+        OBJ_MINI_SPIKE_DOWN: "mini_spike_down",
+    }
+    primary_full_kinds = {
+        OBJ_SPIKE_UP: "spike_up",
+        OBJ_SPIKE_RIGHT: "spike_right",
+        OBJ_SPIKE_LEFT: "spike_left",
+        OBJ_SPIKE_DOWN: "spike_down",
+    }
+    mini_type_order = {
+        OBJ_MINI_SPIKE_UP: 0,
+        OBJ_MINI_SPIKE_RIGHT: 1,
+        OBJ_MINI_SPIKE_LEFT: 2,
+        OBJ_MINI_SPIKE_DOWN: 3,
+    }
+    input_index = {
+        id(detection): index for index, detection in enumerate(detections)
+    }
+    remove_ids: set[int] = set()
+
+    material_blocks = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+    ]
+    if material_blocks:
+        material_features = [
+            (
+                detection,
+                _normalized_miniblock_luma_patch(
+                    image,
+                    room,
+                    detection.x,
+                    detection.y,
+                ),
+            )
+            for detection in material_blocks
+        ]
+        learned_descriptor = tuple(
+            median(values)
+            for values in zip(
+                *(features.descriptor for _detection, features in material_features)
+            )
+        )
+        for detection, features in material_features:
+            descriptor_distance = _normalized_luma_descriptor_distance(
+                features.descriptor,
+                learned_descriptor,
+            )
+            if (
+                descriptor_distance
+                > DENSE_MINIBLOCK_MATERIAL_MIN_DESCRIPTOR_DISTANCE
+                and features.edge_density
+                >= DENSE_MINIBLOCK_MATERIAL_MIN_NORMALIZED_EDGE_DENSITY
+                and features.center_gradient
+                <= DENSE_MINIBLOCK_MATERIAL_MAX_NORMALIZED_CENTER_GRADIENT
+            ):
+                remove_ids.add(id(detection))
+
+    blocks_by_origin: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    minis_by_origin: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for detection in detections:
+        if id(detection) in remove_ids:
+            continue
+        origin = (detection.x, detection.y)
+        if detection.type_id == OBJ_MINI_BLOCK:
+            blocks_by_origin[origin].append(detection)
+        elif detection.type_id in MINI_SPIKE_TYPES:
+            minis_by_origin[origin].append(detection)
+
+    mini_keys = {
+        (detection.type_id, detection.x, detection.y)
+        for hypotheses in minis_by_origin.values()
+        for detection in hypotheses
+    }
+
+    conflict_origins = sorted(blocks_by_origin.keys() & minis_by_origin.keys())
+    for origin in conflict_origins:
+        admissible: list[tuple[tuple[float, ...], Detection]] = []
+        plausible_ids: set[int] = set()
+        for detection in minis_by_origin[origin]:
+            direction = mini_directions[detection.type_id]
+            patch = _patch_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                MINI_BLOCK_SIZE,
+            )
+            shape = _mini_spike_class_for_detection(detection, patch)
+            if shape is None:
+                continue
+            fill = _triangle_fill_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                MINI_BLOCK_SIZE,
+                direction,
+            )
+            normalized_luma = abs(fill.luma_contrast) / max(
+                1.0,
+                fill.cluster_gap,
+            )
+            fill_polarity = abs(fill.inside_density - 0.50)
+            normalized_patch = _normalized_miniblock_luma_patch(
+                image,
+                room,
+                detection.x,
+                detection.y,
+            )
+            if detection.type_id in (OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_DOWN):
+                immediate_offsets = ((0, -MINI_BLOCK_SIZE), (0, MINI_BLOCK_SIZE))
+            else:
+                immediate_offsets = ((-MINI_BLOCK_SIZE, 0), (MINI_BLOCK_SIZE, 0))
+            same_type_immediate_axis = sum(
+                (
+                    detection.type_id,
+                    detection.x + dx,
+                    detection.y + dy,
+                )
+                in mini_keys
+                for dx, dy in immediate_offsets
+            )
+            base_dx, base_dy = mini_base_offsets[detection.type_id]
+            run_supported = _is_dense_miniblock_run_supported(
+                shape,
+                patch,
+                fill,
+                normalized_patch,
+                same_type_immediate_axis,
+                (
+                    detection.x + base_dx,
+                    detection.y + base_dy,
+                )
+                in seed_positions,
+                dense_miniblock_room=True,
+            )
+            evidence = (
+                fill_polarity,
+                normalized_patch.edge_density,
+                normalized_luma,
+                fill.cluster_gap,
+                shape.score,
+                shape.direction_margin,
+                shape.outline_delta,
+                detection.score,
+                float(detection.kind == primary_mini_kinds[detection.type_id]),
+                float(-mini_type_order[detection.type_id]),
+                float(-input_index[id(detection)]),
+            )
+            if run_supported or (
+                fill.cluster_gap
+                >= DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_CLUSTER_GAP
+                and normalized_luma
+                >= DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_NORMALIZED_LUMA_CONTRAST
+                and normalized_patch.edge_density
+                >= DENSE_MINIBLOCK_MINI_PLAUSIBLE_MIN_NORMALIZED_EDGE_DENSITY
+            ):
+                plausible_ids.add(id(detection))
+            if not (
+                fill.cluster_gap >= DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP
+                and normalized_luma
+                >= DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST
+                and (
+                    fill_polarity >= DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY
+                    or normalized_patch.edge_density
+                    >= DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_EDGE_DENSITY
+                )
+            ):
+                continue
+            admissible.append((evidence, detection))
+
+        if admissible:
+            winners_by_type: dict[int, tuple[tuple[float, ...], Detection]] = {}
+            for evidence, detection in admissible:
+                previous = winners_by_type.get(detection.type_id)
+                if previous is None or evidence > previous[0]:
+                    winners_by_type[detection.type_id] = (evidence, detection)
+            winner_ids = {
+                id(detection)
+                for _evidence, detection in winners_by_type.values()
+            }
+            remove_ids.update(
+                id(detection) for detection in blocks_by_origin[origin]
+            )
+            remove_ids.update(
+                id(detection)
+                for detection in minis_by_origin[origin]
+                if id(detection) not in winner_ids
+            )
+        elif plausible_ids:
+            remove_ids.update(
+                id(detection)
+                for detection in minis_by_origin[origin]
+                if id(detection) not in plausible_ids
+            )
+        else:
+            remove_ids.update(
+                id(detection) for detection in minis_by_origin[origin]
+            )
+
+    strong_fulls: list[Detection] = []
+    for full in detections:
+        if (
+            id(full) in remove_ids
+            or full.type_id not in FULL_SPIKE_TYPES
+            or full.kind != primary_full_kinds[full.type_id]
+        ):
+            continue
+        patch = _patch_features(image, room, full.x, full.y, GRID_SIZE)
+        shape = _classify_full_spike(patch)
+        direction = full_directions[full.type_id]
+        if (
+            shape is not None
+            and shape.type_id == full.type_id
+            and _native_edge_component_extent(
+                image,
+                room,
+                full.x,
+                full.y,
+            )
+            >= DENSE_MINIBLOCK_FULL_MIN_NATIVE_EDGE_EXTENT
+            and shape.score >= DENSE_MINIBLOCK_FULL_MIN_SCORE
+            and shape.outline_delta >= DENSE_MINIBLOCK_FULL_MIN_OUTLINE_DELTA
+            and _triangle_side_coverage(patch, direction)
+            >= DENSE_MINIBLOCK_FULL_MIN_SIDE_COVERAGE
+            and _triangle_min_side_coverage(patch, direction)
+            >= DENSE_MINIBLOCK_FULL_MIN_SIDE_COVERAGE
+        ):
+            strong_fulls.append(full)
+
+    for mini in detections:
+        if id(mini) in remove_ids or mini.type_id not in MINI_SPIKE_TYPES:
+            continue
+        normalized_patch = _normalized_miniblock_luma_patch(
+            image,
+            room,
+            mini.x,
+            mini.y,
+        )
+        if (
+            normalized_patch.edge_density
+            >= DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY
+        ):
+            continue
+        if any(
+            full.x <= mini.x
+            and mini.x + MINI_BLOCK_SIZE <= full.x + GRID_SIZE
+            and full.y <= mini.y
+            and mini.y + MINI_BLOCK_SIZE <= full.y + GRID_SIZE
+            for full in strong_fulls
+        ):
+            remove_ids.add(id(mini))
+
+    return [
+        detection
+        for detection in detections
+        if id(detection) not in remove_ids
+    ]
+
+
+def _normalized_miniblock_luma_patch(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+) -> _NormalizedLumaPatch:
+    """Describe 16px material structure independent of palette and offset."""
+
+    colors = _sample_map_patch_colors(
+        image,
+        room,
+        map_x,
+        map_y,
+        MINI_BLOCK_SIZE,
+    )
+    luma = [
+        (red * 30 + green * 59 + blue * 11) / 100
+        for red, green, blue in colors
+    ]
+    ordered = sorted(luma)
+
+    def percentile(fraction: float) -> float:
+        index = fraction * (len(ordered) - 1)
+        lower = math.floor(index)
+        upper = math.ceil(index)
+        if lower == upper:
+            return ordered[lower]
+        return (
+            ordered[lower] * (upper - index)
+            + ordered[upper] * (index - lower)
+        )
+
+    scale = max(8.0, percentile(0.90) - percentile(0.10))
+    mean_luma = sum(luma) / len(luma)
+    descriptor = tuple(
+        (
+            sum(
+                luma[y * 16 + x]
+                for y in range(block_y, block_y + 4)
+                for x in range(block_x, block_x + 4)
+            )
+            / 16
+            - mean_luma
+        )
+        / scale
+        for block_y in range(0, 16, 4)
+        for block_x in range(0, 16, 4)
+    )
+    edge_strengths = [
+        abs(luma[y * 16 + min(15, x + 1)] - luma[y * 16 + x])
+        + abs(luma[min(15, y + 1) * 16 + x] - luma[y * 16 + x])
+        for y in range(16)
+        for x in range(16)
+    ]
+    center_strengths = [
+        abs(luma[y * 16 + x + 1] - luma[y * 16 + x])
+        + abs(luma[(y + 1) * 16 + x] - luma[y * 16 + x])
+        for y in range(4, 11)
+        for x in range(4, 11)
+    ]
+    return _NormalizedLumaPatch(
+        descriptor=descriptor,
+        edge_density=(
+            sum(strength / scale >= 0.50 for strength in edge_strengths)
+            / len(edge_strengths)
+        ),
+        center_gradient=(
+            sum(center_strengths) / len(center_strengths) / scale
+        ),
+    )
+
+
+def _normalized_luma_descriptor_distance(
+    first: tuple[float, ...],
+    second: tuple[float, ...],
+) -> float:
+    return math.sqrt(
+        sum((left - right) ** 2 for left, right in zip(first, second))
+        / len(first)
+    )
 
 
 def _dark_textured_up_mini_shape_score(
