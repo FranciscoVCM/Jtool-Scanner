@@ -43,6 +43,7 @@ from jtool_scanner.scanner import (
     _CaptureLatticeNormalization,
     _capture_lattice_axis_has_material_gain,
     _capture_lattice_axis_has_distinct_boundaries,
+    _capture_lattice_consensus_enabled,
     _detect_outlined_terrain_saves,
     _detect_outlined_terrain_spikes,
     _dark_save_header_is_label_like,
@@ -52,6 +53,7 @@ from jtool_scanner.scanner import (
     _infer_capture_lattice_normalization,
     _infer_source_grid,
     _looks_like_outlined_terrain_room,
+    _merge_capture_lattice_geometry,
     _outlined_terrain_cell_stats,
     _reorient_unsupported_spikes,
     _realign_warm_component_spike_phase,
@@ -177,6 +179,102 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
                         detect_room_box(ftfa),
                     )
                 )
+
+        for name in ("irkara-89-game.png", "irkara-nr-flames-game.png"):
+            with self.subTest(large_capture=name):
+                image = load_png(Path("fixtures") / "block_spike" / name)
+                self.assertIsNotNone(
+                    _infer_capture_lattice_normalization(
+                        image,
+                        detect_room_box(image),
+                    )
+                )
+
+        for name in ("k3-ex-hades-game.png", "f189-game.png"):
+            with self.subTest(held_out=name):
+                image = load_png(Path("fixtures") / "block_spike" / name)
+                self.assertIsNone(
+                    _infer_capture_lattice_normalization(
+                        image,
+                        detect_room_box(image),
+                    )
+                )
+
+    def test_capture_lattice_consensus_replaces_only_corroborated_geometry(self) -> None:
+        source = [
+            Detection("block", OBJ_BLOCK, 100, 100, 0.7, Box(0, 0, 32, 32)),
+            Detection("block", OBJ_BLOCK, 300, 100, 0.7, Box(0, 0, 32, 32)),
+            Detection("save", OBJ_SAVE, 16, 16, 0.9, Box(0, 0, 16, 16)),
+        ]
+        canonical = [
+            Detection("block", OBJ_BLOCK, 108, 100, 0.8, Box(0, 0, 32, 32)),
+            Detection("block", OBJ_BLOCK, 600, 100, 0.8, Box(0, 0, 32, 32)),
+            Detection("save", OBJ_SAVE, 24, 24, 0.8, Box(0, 0, 16, 16)),
+        ]
+
+        merged = _merge_capture_lattice_geometry(
+            source,
+            canonical,
+            radius=24.0,
+        )
+        positions = {(item.type_id, item.x, item.y) for item in merged}
+        self.assertIn((OBJ_BLOCK, 108, 100), positions)
+        self.assertIn((OBJ_BLOCK, 300, 100), positions)
+        self.assertNotIn((OBJ_BLOCK, 100, 100), positions)
+        self.assertNotIn((OBJ_BLOCK, 600, 100), positions)
+        self.assertIn((OBJ_SAVE, 16, 16), positions)
+        self.assertNotIn((OBJ_SAVE, 24, 24), positions)
+
+        anchored = _merge_capture_lattice_geometry(
+            [
+                Detection(
+                    "block",
+                    OBJ_BLOCK,
+                    200,
+                    200,
+                    0.7,
+                    Box(0, 0, 32, 32),
+                ),
+                Detection(
+                    "walljump_left",
+                    OBJ_WALLJUMP_LEFT,
+                    200,
+                    200,
+                    0.9,
+                    Box(0, 0, 16, 32),
+                ),
+            ],
+            [
+                Detection(
+                    "block",
+                    OBJ_BLOCK,
+                    208,
+                    200,
+                    0.8,
+                    Box(0, 0, 32, 32),
+                ),
+            ],
+            radius=24.0,
+        )
+        anchored_positions = {
+            (item.type_id, item.x, item.y) for item in anchored
+        }
+        self.assertIn((OBJ_BLOCK, 200, 200), anchored_positions)
+        self.assertNotIn((OBJ_BLOCK, 208, 200), anchored_positions)
+
+    def test_large_capture_dimensions_enable_consensus_only(self) -> None:
+        large = _CaptureLatticeNormalization(
+            Box(0, 0, 980, 742),
+            _CaptureLatticeAxis(-5, 986, 60.0, 10.0),
+            _CaptureLatticeAxis(-4, 750, 50.0, 10.0),
+        )
+        small = _CaptureLatticeNormalization(
+            Box(0, 0, 900, 690),
+            _CaptureLatticeAxis(-5, 906, 60.0, 10.0),
+            _CaptureLatticeAxis(-4, 698, 50.0, 10.0),
+        )
+        self.assertTrue(_capture_lattice_consensus_enabled(large))
+        self.assertFalse(_capture_lattice_consensus_enabled(small))
 
     def test_lattice_merge_preserves_source_save_and_vine_anchors(self) -> None:
         source_room = Box(0, 0, 480, 365)

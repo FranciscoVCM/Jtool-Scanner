@@ -259,6 +259,15 @@ CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT = 400
 CAPTURE_LATTICE_SOURCE_POSITION_TYPES = frozenset(
     {OBJ_SAVE, OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT}
 )
+# Full-size 32px captures need a complete source geometry pass before the
+# lattice-aligned pass can be used as corroborating evidence.  Keep this
+# route limited to the dimensions of the known large-room capture family;
+# compact rooms and ordinary 800x608 screenshots remain on their established
+# paths.
+CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH = ROOM_WIDTH + 100
+CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT = ROOM_HEIGHT + 90
+CAPTURE_LATTICE_CONSENSUS_RADIUS = 24.0
+CAPTURE_LATTICE_CONSENSUS_TYPES = frozenset({*GEOMETRY_TYPES, OBJ_PLATFORM})
 REPEATED_TERRAIN_CLUSTER_COUNT = 6
 REPEATED_TERRAIN_MIN_SUPPORT_VOTES = 3
 REPEATED_TERRAIN_MIN_SUPPORT_SHARE = 0.30
@@ -3083,7 +3092,9 @@ def _infer_capture_lattice_normalization(
     intentionally declined unless both axes have strong absolute evidence, at
     least one axis materially improves over the ordinary full-room mapping,
     one axis distinguishes cell boundaries from interiors, and the inferred
-    transform includes an actual origin-phase displacement.
+    transform includes an actual origin-phase displacement.  Dense miniblock
+    rooms remain valid; a large full-block/spike capture may also qualify and
+    is handled by the corroborating source/canonical merge below.
     """
 
     if room.width < ROOM_WIDTH // 2 or room.height < ROOM_HEIGHT // 2:
@@ -3107,8 +3118,16 @@ def _infer_capture_lattice_normalization(
         < CAPTURE_LATTICE_MIN_ORIGIN_DISPLACEMENT
     ):
         return None
+    # Dense miniblock rooms were the original safe activation case.  A strong
+    # large-room lattice can also be a full-block/spike capture (where the
+    # miniblock detector intentionally returns zero); those rooms are safe
+    # only because the caller uses a source-vs-canonical consensus merge.
     if len(_detect_mini_blocks(image, room)) < CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT:
-        return None
+        if not (
+            room.width >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH
+            and room.height >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT
+        ):
+            return None
     return _CaptureLatticeNormalization(room, x_axis, y_axis)
 
 
@@ -3333,19 +3352,23 @@ def _scan_lattice_normalized_room(
 ) -> ScanResult:
     """Merge stable source-space objects with canonical geometry evidence.
 
-    The source-space pass omits geometry and is inexpensive relative to the
-    complete scan.  It preserves exact SAVE and vine positions, whose sprite
-    anchors are already stable in source space.  The single complete pass runs
-    on the lattice-aligned canonical image, where resolution-dependent patch
-    phases are removed for geometry and the remaining object families.
+    The source-space pass normally omits geometry and is inexpensive relative
+    to the complete scan.  It preserves exact SAVE and vine positions, whose
+    sprite anchors are already stable in source space.  Strong large-room
+    captures additionally run a complete source pass so the lattice-aligned
+    geometry can replace only independently corroborated detections; this
+    prevents a second pass from flooding the result with unmatched candidates.
+    The complete canonical pass runs on the lattice-aligned image, where
+    resolution-dependent patch phases are removed for geometry.
     """
 
+    use_consensus = _capture_lattice_consensus_enabled(normalization)
     source_result = scan_image(
         source_image,
         room_box=normalization.source_room,
         grid_step=grid_step,
         include_color_objects=include_color_objects,
-        include_geometry=False,
+        include_geometry=use_consensus,
         recognized_text=recognized_text,
     )
     canonical_image = _resample_capture_lattice_room(source_image, normalization)
@@ -3380,12 +3403,19 @@ def _scan_lattice_normalized_room(
         for detection in canonical_result.detections
         if detection.type_id not in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
     ]
-    detections = [
-        detection
-        for detection in source_result.detections
-        if detection.type_id in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
-    ]
-    detections.extend(canonical_detections)
+    if use_consensus:
+        detections = _merge_capture_lattice_geometry(
+            source_result.detections,
+            canonical_detections,
+            radius=CAPTURE_LATTICE_CONSENSUS_RADIUS,
+        )
+    else:
+        detections = [
+            detection
+            for detection in source_result.detections
+            if detection.type_id in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
+        ]
+        detections.extend(canonical_detections)
     # Reapply the ordinary source-space anchor arbitration once canonical
     # terrain has been mapped back.  This preserves the established 8px SAVE
     # and vine phase without paying for a second geometry scan.
@@ -3424,6 +3454,110 @@ def _scan_lattice_normalized_room(
         source_grid=(25, 19),
         structural_warnings=structural_scan_warnings(detections),
     )
+
+
+def _capture_lattice_consensus_enabled(
+    normalization: _CaptureLatticeNormalization,
+) -> bool:
+    """Return whether both source and canonical geometry passes are warranted.
+
+    The dimensions are deliberately a capture-family gate, not a room or
+    tileset identity.  Smaller rooms retain the historical source-marker plus
+    canonical-geometry merge, while large non-native-phase captures get the
+    extra source evidence needed to reject canonical-only false positives.
+    """
+
+    room = normalization.source_room
+    return (
+        room.width >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH
+        and room.height >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT
+    )
+
+
+def _merge_capture_lattice_geometry(
+    source_detections: list[Detection],
+    canonical_detections: list[Detection],
+    *,
+    radius: float,
+) -> list[Detection]:
+    """Use canonical geometry only when a source candidate corroborates it.
+
+    Both passes report logical JTool coordinates.  A greedy nearest-distance
+    pairing is sufficient after each detector's own de-duplication and keeps
+    unrelated canonical candidates out of the final map.  Source detections
+    remain authoritative for color/anchor objects and for unmatched geometry;
+    paired geometry takes the phase-stable canonical candidate except when a
+    source block shares a source walljump/vine anchor, in which case that
+    independently anchored terrain phase is retained.
+    """
+
+    source_by_type: dict[int, list[Detection]] = defaultdict(list)
+    canonical_by_type: dict[int, list[Detection]] = defaultdict(list)
+    for detection in source_detections:
+        source_by_type[detection.type_id].append(detection)
+    for detection in canonical_detections:
+        if detection.type_id in CAPTURE_LATTICE_CONSENSUS_TYPES:
+            canonical_by_type[detection.type_id].append(detection)
+
+    merged: list[Detection] = [
+        detection
+        for detection in source_detections
+        if detection.type_id not in CAPTURE_LATTICE_CONSENSUS_TYPES
+    ]
+    source_marker_positions = {
+        (detection.x, detection.y)
+        for detection in source_detections
+        if detection.type_id in {
+            OBJ_WALLJUMP_LEFT,
+            OBJ_WALLJUMP_RIGHT,
+        }
+    }
+    for type_id in sorted(
+        set(source_by_type) | set(canonical_by_type)
+    ):
+        source_items = source_by_type.get(type_id, [])
+        canonical_items = canonical_by_type.get(type_id, [])
+        if type_id not in CAPTURE_LATTICE_CONSENSUS_TYPES:
+            continue
+        edges = sorted(
+            (
+                distance((source.x, source.y), (candidate.x, candidate.y)),
+                source_index,
+                canonical_index,
+            )
+            for source_index, source in enumerate(source_items)
+            for canonical_index, candidate in enumerate(canonical_items)
+            if distance(
+                (source.x, source.y),
+                (candidate.x, candidate.y),
+            )
+            <= radius
+        )
+        used_source: set[int] = set()
+        used_canonical: set[int] = set()
+        for _, source_index, canonical_index in edges:
+            if source_index in used_source or canonical_index in used_canonical:
+                continue
+            used_source.add(source_index)
+            used_canonical.add(canonical_index)
+            source_item = source_items[source_index]
+            if (
+                source_item.type_id in {OBJ_BLOCK, OBJ_MINI_BLOCK}
+                and (source_item.x, source_item.y) in source_marker_positions
+            ):
+                # A source-space walljump/vine is an independent anchor for
+                # the terrain cell.  Preserve that block phase instead of
+                # allowing resampling to move the supporting square away from
+                # its marker.
+                merged.append(source_item)
+            else:
+                merged.append(canonical_items[canonical_index])
+        merged.extend(
+            item
+            for index, item in enumerate(source_items)
+            if index not in used_source
+        )
+    return _dedupe_exact_detections(merged)
 
 
 def _normalize_room_to_jtool(

@@ -4230,3 +4230,55 @@ and the rejected prototypes.  Those artifacts remain ignored.  The unresolved
 merge and exact controls that demonstrate net improvement before production
 scope can be widened.  The complete final-code suite passes **401 tests in
 2422.379 seconds, `OK`**.
+
+## Checkpoint: large-capture source/canonical geometry consensus (2026-08-27)
+
+The next bounded batch revisited the 32px capture-phase family with a
+read-only probe before changing production.  Irkara-89 and Irkara-NR Flames
+were selected as positive cases because their room-local luminance lattice has
+strong, non-native phase evidence in both axes; K3 Ex Hades and F189 were held
+out controls.  The probe compared the ordinary source scan with a bilinearly
+resampled 800x608 canonical scan.  A canonical candidate was eligible only if
+it had the same object type as a source candidate within 24 logical map pixels.
+Unmatched canonical candidates were deliberately discarded, while unmatched
+source geometry and every source color/anchor object were retained.  When a
+terrain block shares a source walljump/vine anchor, the source block phase is
+retained as an additional anchor invariant; this prevents canonical
+resampling from moving a supporting square away from its independently
+detected marker.
+
+Production now permits the existing lattice inference to qualify a large
+full-block/spike capture even when its raw 16px miniblock detector returns
+zero.  The dimensions are a capture-family gate (`at least 900x698`), not a
+room name, filename, palette, or map coordinate.  Such a room receives both a
+full source geometry scan and the canonical geometry scan, then uses the
+same-type corroboration merge.  Dense miniblock rooms retain their previous
+path, and smaller captures still require the original dense-miniblock evidence.
+The canonical pass cannot introduce an isolated object, so this change targets
+phase/scale shifts without allowing a second detector to flood the map.
+
+The exact logical-coordinate probe and real production scans measured the
+following deltas against the same authoritative JMaps:
+
+| case | baseline | consensus result | effect |
+| --- | --- | --- | --- |
+| Irkara-89 | 161/238 exact, 36 FP, 12 missed, 61 shifted, 4 wrong direction | 202/238 exact, 35 FP, 11 missed, 24 shifted, 1 wrong direction | +41 exact, −1 FP |
+| Irkara-NR Flames | 241/295 exact, 46 FP, 23 missed, 28 shifted, 3 wrong direction | 249/295 exact, 46 FP, 23 missed, 20 shifted, 3 wrong direction | +8 exact, −8 shifted |
+| K3 Ex Hades | 332/350 exact, 31 FP, 4 missed, 14 shifted, 0 wrong direction | unchanged; lattice rejected | negative control preserved |
+| F189 | 248/248 exact, 13 FP, 0 missed, 0 shifted, 0 wrong direction | unchanged; lattice rejected | exact control preserved |
+
+The fixture workflow was regenerated with tolerance 24.  Irkara-89 retains
+100% matches for its save, warp, apple, water, walljump and platform controls;
+its geometry remains 87/98 blocks and 112/113 full spikes matched.  Flames
+retains all save, warp, apple and water matches and remains 173/180 blocks,
+69/82 full spikes and 6/11 minispikes matched.  The strict FTFA benchmark is
+still **926/928 exact, zero false positives, two missed, zero shifted and zero
+wrong direction**.  The existing CN3/NANG/12-pair and Irkara safety gates were
+not broadened by this batch.
+
+Focused capture-lattice regressions now cover positive large-capture
+qualification, K3/F189 rejection, source-anchor preservation, and the
+corroboration invariant that discards unmatched canonical geometry.  The
+complete discovery run passed **403 tests in 3487.290 seconds, `OK`**.  Fresh
+ignored probe results, fixture scans, overlays and reports are under
+`.artifacts/goal-continuation/scale-stability-20260827-32px-consensus/`.
