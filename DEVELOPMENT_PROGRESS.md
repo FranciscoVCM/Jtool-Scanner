@@ -4163,3 +4163,70 @@ ignored measured delta is recorded at
 `.artifacts/goal-continuation/dense-miniblock-arbitration-20260825/dense-miniblock-delta.md`;
 generated projects, dashboards, crops, reports and audit files remain local and
 untracked.
+
+## Checkpoint: dense-miniblock capture-lattice normalization (2026-08-27)
+
+The immutable 71-screen audit showed that two captures of CN3-18 could produce
+very different reconstructions even though they depicted the same room.  The
+full-resolution 975x749 capture mapped the logical 16px lattice at a different
+native scale and sub-pixel phase, leaving 159 exact errors against the tracked
+corrected JMap.  This batch tested capture-lattice normalization as a
+generalized resolution/phase mechanism rather than adding CN3 coordinates,
+palette values, filenames, or corrected-map objects to production logic.
+
+The accepted inference measures room-local luminance edges across both axes,
+searches a small origin/extent neighborhood, and compares the candidate lattice
+with the legacy full-image mapping.  Production normalization requires strong
+evidence in both axes, at least 1.65x material gain on one transformed axis,
+strong boundary-to-cell-interior contrast, a real source-origin displacement
+of at least two pixels, and at least 400 immutable raw miniblock candidates.
+It applies only to implicit full 25x19 geometry scans.  Explicit room/source
+grids, compact rooms, object-only scans, and every capture that fails a gate
+continue through the established scanner unchanged.
+
+An activated room receives one inexpensive source-space object-only scan and
+one full canonical 800x608 scan after edge-extended bilinear resampling.  SAVE
+and walljump/vine positions remain source-space authoritative; canonical
+geometry and other objects are mapped back to the original image, then passed
+through the established source-anchor arbitration.  This protects the known
+8px SAVE and 16px vine phase behavior while correcting the terrain lattice.
+
+The final 71-screen activation audit is deliberately narrow: **only
+CN3-18's full-resolution giant-review capture activates**.  No tracked FTFA,
+block/spike, NANG, or Irkara fixture activates.  Against the authoritative
+CN3-18 JMap, the same-path result changes from `557 detected / 440 exact / 107
+false positives / 42 missed / 8 shifted / 2 wrong direction` (159 exact
+errors) to **`515 / 478 / 36 / 13 / 0 / 1` (50 exact errors)**.  Full spikes
+are 46/50 exact, miniblocks 372/374, minispikes 47/54, saves 3/3, walljumps
+4/4, warp 1/1, and water 5/6; the water miss remains the known right-edge
+offscreen truth object.
+
+The small activation scope is the result of negative controls, not a room-name
+exception.  A one-pixel extent alias on LapBackwards led to the material-
+transform gate.  Golden2--6 and NR2 tiled backgrounds led to absolute boundary
+and contrast gates.  FTFA-1/3 scale-only aliases led to the real-origin-phase
+gate.  Irkara-89 and Flames demonstrated that apparent 32px visual alignment
+was insufficient: the broader prototype lost 22 matched Irkara full spikes
+and introduced false water, vines and platforms, while Flames gained eight
+false platforms.  The broad merge was removed.  Raw miniblock evidence then
+separated the demonstrated CN3-18 16px root cause (535 raw candidates) from
+every reviewed 32px room (zero).
+
+Safety benchmarks retain their previous results.  FTFA remains **926/928
+exact with zero false positives, two misses, zero shifts and zero wrong
+directions**.  NANG-128/135/138 remains **503/510 exact, three false positives,
+five misses, two shifts and zero wrong directions**.  The complete 12-pair
+tolerance workflow retains every matched count, including 875/875 miniblocks,
+281/288 minispikes, 1,463/1,486 blocks and 724/748 full spikes.  The ten-room
+Irkara control likewise remains unchanged in every metric.  Focused confidence,
+merge, synthetic phase, tracked CN3/NANG, and FTFA rejection tests cover the
+new gate.
+
+The complete local evidence is preserved under
+`.artifacts/goal-continuation/scale-stability-20260826/`, including the exact
+legacy/production JSON reports, all-71 activation CSV, generated review pairs,
+and the rejected prototypes.  Those artifacts remain ignored.  The unresolved
+32px capture-phase family is a separate future batch: it needs a safer object
+merge and exact controls that demonstrate net improvement before production
+scope can be widened.  The complete final-code suite passes **401 tests in
+2422.379 seconds, `OK`**.

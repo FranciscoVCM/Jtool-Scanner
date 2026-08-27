@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 from jtool_scanner.constants import (
     GRID_SIZE,
@@ -37,12 +38,18 @@ from jtool_scanner.scanner import (
     Detection,
     FULL_SPIKE_TYPES,
     MINI_SPIKE_TYPES,
+    ScanResult,
+    _CaptureLatticeAxis,
+    _CaptureLatticeNormalization,
+    _capture_lattice_axis_has_material_gain,
+    _capture_lattice_axis_has_distinct_boundaries,
     _detect_outlined_terrain_saves,
     _detect_outlined_terrain_spikes,
     _dark_save_header_is_label_like,
     _align_unsupported_opposite_spike_pairs,
     _choose_component_spike_candidate,
     _image_box_to_jtool_center,
+    _infer_capture_lattice_normalization,
     _infer_source_grid,
     _looks_like_outlined_terrain_room,
     _outlined_terrain_cell_stats,
@@ -50,6 +57,7 @@ from jtool_scanner.scanner import (
     _realign_warm_component_spike_phase,
     _reconcile_terrain_markers,
     _reconcile_walljump_terrain_anchors,
+    _scan_lattice_normalized_room,
     _separate_overlapping_opposite_spikes,
     _warm_room_allows_bottom_block_offset,
     detect_room_box,
@@ -93,6 +101,156 @@ class OutlinedTerrainRegressionTests(unittest.TestCase):
                         for detection in spikes
                     )
                 )
+
+
+class CaptureLatticeRegressionTests(unittest.TestCase):
+    def test_capture_lattice_gain_must_belong_to_a_material_transform(self) -> None:
+        self.assertFalse(
+            _capture_lattice_axis_has_material_gain(
+                _CaptureLatticeAxis(0, 750, 30.0, 10.0),
+                749,
+            )
+        )
+        self.assertTrue(
+            _capture_lattice_axis_has_material_gain(
+                _CaptureLatticeAxis(-3, 750, 30.0, 10.0),
+                749,
+            )
+        )
+
+    def test_capture_lattice_confidence_rejects_tiled_background_alias(self) -> None:
+        self.assertFalse(
+            _capture_lattice_axis_has_distinct_boundaries(
+                _CaptureLatticeAxis(-3, 750, 40.0, 10.0, 2.8),
+            )
+        )
+        self.assertTrue(
+            _capture_lattice_axis_has_distinct_boundaries(
+                _CaptureLatticeAxis(-3, 750, 40.0, 10.0, 3.2),
+            )
+        )
+
+    def test_capture_lattice_normalization_requires_measured_phase_gain(self) -> None:
+        misaligned = _misaligned_capture_lattice_image()
+        with patch(
+            "jtool_scanner.scanner._detect_mini_blocks",
+            return_value=[object()] * 400,
+        ):
+            normalization = _infer_capture_lattice_normalization(
+                misaligned,
+                Box(0, 0, misaligned.width, misaligned.height),
+            )
+        self.assertIsNotNone(normalization)
+        assert normalization is not None
+        self.assertGreaterEqual(normalization.x_axis.gain, 1.65)
+
+        tracked = load_png(
+            Path("fixtures") / "block_spike" / "cn3-18-game.png"
+        )
+        self.assertIsNone(
+            _infer_capture_lattice_normalization(
+                tracked,
+                detect_room_box(tracked),
+            )
+        )
+
+        sparse = load_png(Path("fixtures") / "block_spike" / "nang135-game.png")
+        self.assertIsNone(
+            _infer_capture_lattice_normalization(
+                sparse,
+                detect_room_box(sparse),
+            )
+        )
+
+        for name in ("screen-1-source.png", "screen-3-source.png"):
+            with self.subTest(ftfa=name):
+                ftfa = load_png(
+                    Path("fixtures")
+                    / "regressions"
+                    / "unseen-rooms"
+                    / "ftfa"
+                    / name
+                )
+                self.assertIsNone(
+                    _infer_capture_lattice_normalization(
+                        ftfa,
+                        detect_room_box(ftfa),
+                    )
+                )
+
+    def test_lattice_merge_preserves_source_save_and_vine_anchors(self) -> None:
+        source_room = Box(0, 0, 480, 365)
+        normalization = _CaptureLatticeNormalization(
+            source_room,
+            _CaptureLatticeAxis(-4, 490, 30.0, 15.0),
+            _CaptureLatticeAxis(-2, 370, 24.0, 18.0),
+        )
+        source_result = ScanResult(
+            480,
+            365,
+            source_room,
+            detections=[
+                Detection("save", OBJ_SAVE, 96, 96, 0.9, Box(50, 50, 20, 20)),
+                Detection(
+                    "walljump_left",
+                    OBJ_WALLJUMP_LEFT,
+                    16,
+                    32,
+                    0.9,
+                    Box(10, 20, 10, 20),
+                ),
+                Detection("warp", OBJ_WARP, 32, 32, 0.9, Box(20, 20, 20, 20)),
+            ],
+        )
+        canonical_result = ScanResult(
+            800,
+            608,
+            Box(0, 0, 800, 608),
+            detections=[
+                Detection("save", OBJ_SAVE, 96, 104, 0.9, Box(96, 104, 32, 32)),
+                Detection(
+                    "walljump_left",
+                    OBJ_WALLJUMP_LEFT,
+                    24,
+                    32,
+                    0.9,
+                    Box(24, 32, 16, 32),
+                ),
+                Detection("warp", OBJ_WARP, 40, 40, 0.9, Box(40, 40, 32, 32)),
+                Detection("block", OBJ_BLOCK, 64, 64, 0.9, Box(64, 64, 32, 32)),
+            ],
+        )
+        image = RGBImage(480, 365, bytes(480 * 365 * 3))
+        canonical_image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        with (
+            patch(
+                "jtool_scanner.scanner.scan_image",
+                side_effect=[source_result, canonical_result],
+            ) as scan,
+            patch(
+                "jtool_scanner.scanner._resample_capture_lattice_room",
+                return_value=canonical_image,
+            ),
+        ):
+            merged = _scan_lattice_normalized_room(
+                image,
+                normalization,
+                grid_step=8,
+                include_color_objects=True,
+                recognized_text="",
+            )
+
+        objects = {(item.type_id, item.x, item.y) for item in merged.detections}
+        self.assertIn((OBJ_SAVE, 96, 96), objects)
+        self.assertNotIn((OBJ_SAVE, 96, 104), objects)
+        self.assertIn((OBJ_WALLJUMP_LEFT, 16, 32), objects)
+        self.assertNotIn((OBJ_WALLJUMP_LEFT, 24, 32), objects)
+        self.assertIn((OBJ_WARP, 40, 40), objects)
+        self.assertNotIn((OBJ_WARP, 32, 32), objects)
+        self.assertIn((OBJ_BLOCK, 64, 64), objects)
+        self.assertEqual(scan.call_count, 2)
+        self.assertFalse(scan.call_args_list[0].kwargs["include_geometry"])
+        self.assertTrue(scan.call_args_list[1].kwargs["include_geometry"])
 
 
 class UnseenScreenRegressionTests(unittest.TestCase):
@@ -1716,6 +1874,22 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 - max(first.y, second.y),
             )
         )
+
+
+def _misaligned_capture_lattice_image() -> RGBImage:
+    width, height = 480, 365
+    origin_x, origin_y = -4, -2
+    extent_x, extent_y = 490, 370
+    data = bytearray(width * height * 3)
+    offset = 0
+    for y in range(height):
+        cell_y = int((y - origin_y) * 38 / extent_y)
+        for x in range(width):
+            cell_x = int((x - origin_x) * 50 / extent_x)
+            value = 212 if (cell_x + cell_y) % 2 else 28
+            data[offset : offset + 3] = bytes((value, value, value))
+            offset += 3
+    return RGBImage(width, height, bytes(data))
 
 
 if __name__ == "__main__":

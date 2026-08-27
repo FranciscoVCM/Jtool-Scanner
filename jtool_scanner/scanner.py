@@ -235,6 +235,30 @@ DENSE_MINIBLOCK_FULL_MIN_SCORE = 0.24
 DENSE_MINIBLOCK_FULL_MIN_OUTLINE_DELTA = 0.10
 DENSE_MINIBLOCK_FULL_MIN_SIDE_COVERAGE = 0.75
 DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY = 0.25
+# Full-room screenshots can retain the same logical tile lattice at slightly
+# different capture scales and sub-pixel phases.  A dense repeated lattice is
+# safe to normalize only when its edge evidence is strong in both axes, a
+# candidate transform materially out-scores the legacy full-image mapping,
+# boundaries separate from cell interiors, and a real capture-origin phase is
+# present.  The contrast and origin gates keep tiled backgrounds and ordinary
+# scale-only captures on the established path.  These are relative, room-local
+# gates; they do not encode a tileset palette, room name, or reference-map
+# coordinate.
+CAPTURE_LATTICE_MIN_AXIS_SCORE = 18.0
+CAPTURE_LATTICE_MIN_PRIMARY_GAIN = 1.65
+CAPTURE_LATTICE_MIN_PRIMARY_DISPLACEMENT = 2
+CAPTURE_LATTICE_MIN_ORIGIN_DISPLACEMENT = 2
+CAPTURE_LATTICE_MIN_PRIMARY_AXIS_SCORE = 28.0
+CAPTURE_LATTICE_MIN_PRIMARY_CONTRAST = 3.0
+CAPTURE_LATTICE_AXIS_SCORE_CAP_PERCENTILE = 0.92
+CAPTURE_LATTICE_AXIS_SCORE_TOP_SHARE = 0.28
+CAPTURE_LATTICE_ORIGIN_SEARCH = 8
+CAPTURE_LATTICE_EXTENT_SEARCH = 12
+CAPTURE_LATTICE_EDGE_SAMPLE_TARGET = 192
+CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT = 400
+CAPTURE_LATTICE_SOURCE_POSITION_TYPES = frozenset(
+    {OBJ_SAVE, OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT}
+)
 REPEATED_TERRAIN_CLUSTER_COUNT = 6
 REPEATED_TERRAIN_MIN_SUPPORT_VOTES = 3
 REPEATED_TERRAIN_MIN_SUPPORT_SHARE = 0.30
@@ -1750,6 +1774,35 @@ class Detection:
 
 
 @dataclass(frozen=True, slots=True)
+class _CaptureLatticeAxis:
+    origin: int
+    extent: int
+    score: float
+    legacy_score: float
+    contrast: float = 1.0
+
+    @property
+    def gain(self) -> float:
+        return self.score / max(0.001, self.legacy_score)
+
+
+@dataclass(frozen=True, slots=True)
+class _CaptureLatticeNormalization:
+    source_room: Box
+    x_axis: _CaptureLatticeAxis
+    y_axis: _CaptureLatticeAxis
+
+    @property
+    def source_extent(self) -> Box:
+        return Box(
+            self.source_room.x + self.x_axis.origin,
+            self.source_room.y + self.y_axis.origin,
+            self.x_axis.extent,
+            self.y_axis.extent,
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class _PlatformPatchFeatures:
     horizontal_run: int
     vertical_run: int
@@ -1858,6 +1911,25 @@ def scan_image(
             normalized_grid = inferred_grid
     else:
         normalized_grid = source_grid or _infer_source_grid(source_box)
+    if (
+        include_geometry
+        and room_box is None
+        and source_grid is None
+        and not embedded_compact_room
+        and normalized_grid == (25, 19)
+    ):
+        lattice_normalization = _infer_capture_lattice_normalization(
+            image,
+            source_box,
+        )
+        if lattice_normalization is not None:
+            return _scan_lattice_normalized_room(
+                image,
+                lattice_normalization,
+                grid_step=grid_step,
+                include_color_objects=include_color_objects,
+                recognized_text=recognized_text,
+            )
     source_translation: tuple[int, int] | None = None
     compact_room = normalized_grid == (19, 13)
     if normalized_grid is not None and normalized_grid != (25, 19):
@@ -2998,6 +3070,360 @@ def _infer_embedded_room_grid(
     if len(candidates) > 1 and best[0] - candidates[1][0] < EMBEDDED_ROOM_MIN_GRID_MARGIN:
         return None
     return best[1], best[2]
+
+
+def _infer_capture_lattice_normalization(
+    image: RGBImage,
+    room: Box,
+) -> _CaptureLatticeNormalization | None:
+    """Infer a strong repeated 16px lattice with a non-legacy capture phase.
+
+    The score uses luminance edges distributed across each axis, so it is
+    independent of the terrain hue and background palette.  Normalization is
+    intentionally declined unless both axes have strong absolute evidence, at
+    least one axis materially improves over the ordinary full-room mapping,
+    one axis distinguishes cell boundaries from interiors, and the inferred
+    transform includes an actual origin-phase displacement.
+    """
+
+    if room.width < ROOM_WIDTH // 2 or room.height < ROOM_HEIGHT // 2:
+        return None
+    x_profile = _capture_lattice_edge_profile(image, room, horizontal=True)
+    y_profile = _capture_lattice_edge_profile(image, room, horizontal=False)
+    x_axis = _best_capture_lattice_axis(x_profile, ROOM_WIDTH // MINI_BLOCK_SIZE)
+    y_axis = _best_capture_lattice_axis(y_profile, ROOM_HEIGHT // MINI_BLOCK_SIZE)
+    if (
+        x_axis.score < CAPTURE_LATTICE_MIN_AXIS_SCORE
+        or y_axis.score < CAPTURE_LATTICE_MIN_AXIS_SCORE
+        or not (
+            _capture_lattice_axis_has_material_gain(x_axis, room.width)
+            or _capture_lattice_axis_has_material_gain(y_axis, room.height)
+        )
+        or not (
+            _capture_lattice_axis_has_distinct_boundaries(x_axis)
+            or _capture_lattice_axis_has_distinct_boundaries(y_axis)
+        )
+        or max(abs(x_axis.origin), abs(y_axis.origin))
+        < CAPTURE_LATTICE_MIN_ORIGIN_DISPLACEMENT
+    ):
+        return None
+    if len(_detect_mini_blocks(image, room)) < CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT:
+        return None
+    return _CaptureLatticeNormalization(room, x_axis, y_axis)
+
+
+def _capture_lattice_axis_has_material_gain(
+    axis: _CaptureLatticeAxis,
+    legacy_extent: int,
+) -> bool:
+    return (
+        axis.gain >= CAPTURE_LATTICE_MIN_PRIMARY_GAIN
+        and max(
+            abs(axis.origin),
+            abs(axis.extent - legacy_extent),
+        )
+        >= CAPTURE_LATTICE_MIN_PRIMARY_DISPLACEMENT
+    )
+
+
+def _capture_lattice_axis_has_distinct_boundaries(
+    axis: _CaptureLatticeAxis,
+) -> bool:
+    return (
+        axis.score >= CAPTURE_LATTICE_MIN_PRIMARY_AXIS_SCORE
+        and axis.contrast >= CAPTURE_LATTICE_MIN_PRIMARY_CONTRAST
+    )
+
+
+def _capture_lattice_edge_profile(
+    image: RGBImage,
+    room: Box,
+    *,
+    horizontal: bool,
+) -> list[float]:
+    length = room.width if horizontal else room.height
+    cross_length = room.height if horizontal else room.width
+    cross_step = max(1, cross_length // CAPTURE_LATTICE_EDGE_SAMPLE_TARGET)
+    profile = [0.0] * length
+
+    def luminance(x: int, y: int) -> int:
+        red, green, blue = image.pixel(x, y)
+        return (red * 30 + green * 59 + blue * 11) // 100
+
+    for position in range(1, length):
+        values: list[int] = []
+        for cross in range(0, cross_length, cross_step):
+            if horizontal:
+                first = luminance(room.x + position - 1, room.y + cross)
+                second = luminance(room.x + position, room.y + cross)
+            else:
+                first = luminance(room.x + cross, room.y + position - 1)
+                second = luminance(room.x + cross, room.y + position)
+            values.append(abs(second - first))
+        values.sort()
+        if not values:
+            continue
+        cap_index = min(
+            len(values) - 1,
+            int((len(values) - 1) * CAPTURE_LATTICE_AXIS_SCORE_CAP_PERCENTILE),
+        )
+        cap = values[cap_index]
+        start = int(len(values) * (1.0 - CAPTURE_LATTICE_AXIS_SCORE_TOP_SHARE))
+        strongest = values[start:]
+        profile[position] = sum(min(value, cap) for value in strongest) / max(
+            1,
+            len(strongest),
+        )
+    return profile
+
+
+def _best_capture_lattice_axis(
+    profile: list[float],
+    cells: int,
+) -> _CaptureLatticeAxis:
+    length = len(profile)
+
+    def score(origin: int, extent: int) -> tuple[float, float]:
+        lines: list[float] = []
+        midpoints: list[float] = []
+        midpoint_deltas: list[float] = []
+        for cell in range(1, cells):
+            position = round(origin + cell * extent / cells)
+            midpoint = round(origin + (cell + 0.5) * extent / cells)
+            if not (
+                1 <= position < length - 1
+                and 1 <= midpoint < length - 1
+            ):
+                continue
+            line_score = profile[position]
+            midpoint_score = profile[midpoint]
+            lines.append(line_score)
+            midpoints.append(midpoint_score)
+            midpoint_deltas.append(line_score - midpoint_score)
+        if len(lines) < cells * 0.8:
+            return 0.0, 0.0
+        line_score = median(lines)
+        return (
+            line_score + 0.35 * median(midpoint_deltas),
+            line_score / max(0.1, median(midpoints)),
+        )
+
+    legacy_score, legacy_contrast = score(0, length)
+    best = _CaptureLatticeAxis(
+        0,
+        length,
+        legacy_score,
+        legacy_score,
+        legacy_contrast,
+    )
+    for origin in range(
+        -CAPTURE_LATTICE_ORIGIN_SEARCH,
+        CAPTURE_LATTICE_ORIGIN_SEARCH + 1,
+    ):
+        for extent in range(
+            length - CAPTURE_LATTICE_EXTENT_SEARCH,
+            length + CAPTURE_LATTICE_EXTENT_SEARCH + 1,
+        ):
+            candidate_score, candidate_contrast = score(origin, extent)
+            if candidate_score > best.score:
+                best = _CaptureLatticeAxis(
+                    origin,
+                    extent,
+                    candidate_score,
+                    legacy_score,
+                    candidate_contrast,
+                )
+    return best
+
+
+def _resample_capture_lattice_room(
+    image: RGBImage,
+    normalization: _CaptureLatticeNormalization,
+) -> RGBImage:
+    """Bilinearly resample a virtual, edge-extended room to 800x608."""
+
+    from PIL import Image
+
+    source_room = normalization.source_room
+    source = Image.frombytes(
+        "RGB",
+        (image.width, image.height),
+        image.data,
+    ).crop(
+        (
+            source_room.x,
+            source_room.y,
+            source_room.right,
+            source_room.bottom,
+        )
+    )
+    padding = max(
+        CAPTURE_LATTICE_ORIGIN_SEARCH,
+        CAPTURE_LATTICE_EXTENT_SEARCH,
+    ) + 2
+    padded = Image.new(
+        "RGB",
+        (source.width + 2 * padding, source.height + 2 * padding),
+    )
+    padded.paste(source, (padding, padding))
+    padded.paste(
+        source.crop((0, 0, 1, source.height)).resize((padding, source.height)),
+        (0, padding),
+    )
+    padded.paste(
+        source.crop((source.width - 1, 0, source.width, source.height)).resize(
+            (padding, source.height)
+        ),
+        (padding + source.width, padding),
+    )
+    padded.paste(
+        source.crop((0, 0, source.width, 1)).resize((source.width, padding)),
+        (padding, 0),
+    )
+    padded.paste(
+        source.crop((0, source.height - 1, source.width, source.height)).resize(
+            (source.width, padding)
+        ),
+        (padding, padding + source.height),
+    )
+    for x, y, color in (
+        (0, 0, source.getpixel((0, 0))),
+        (
+            padding + source.width,
+            0,
+            source.getpixel((source.width - 1, 0)),
+        ),
+        (
+            0,
+            padding + source.height,
+            source.getpixel((0, source.height - 1)),
+        ),
+        (
+            padding + source.width,
+            padding + source.height,
+            source.getpixel((source.width - 1, source.height - 1)),
+        ),
+    ):
+        padded.paste(Image.new("RGB", (padding, padding), color), (x, y))
+
+    x_axis = normalization.x_axis
+    y_axis = normalization.y_axis
+    extent = (
+        x_axis.origin + padding,
+        y_axis.origin + padding,
+        x_axis.origin + x_axis.extent + padding,
+        y_axis.origin + y_axis.extent + padding,
+    )
+    normalized = padded.transform(
+        (ROOM_WIDTH, ROOM_HEIGHT),
+        Image.Transform.EXTENT,
+        extent,
+        resample=Image.Resampling.BILINEAR,
+    )
+    return RGBImage(normalized.width, normalized.height, normalized.tobytes())
+
+
+def _scan_lattice_normalized_room(
+    source_image: RGBImage,
+    normalization: _CaptureLatticeNormalization,
+    *,
+    grid_step: int,
+    include_color_objects: bool,
+    recognized_text: str | None,
+) -> ScanResult:
+    """Merge stable source-space objects with canonical geometry evidence.
+
+    The source-space pass omits geometry and is inexpensive relative to the
+    complete scan.  It preserves exact SAVE and vine positions, whose sprite
+    anchors are already stable in source space.  The single complete pass runs
+    on the lattice-aligned canonical image, where resolution-dependent patch
+    phases are removed for geometry and the remaining object families.
+    """
+
+    source_result = scan_image(
+        source_image,
+        room_box=normalization.source_room,
+        grid_step=grid_step,
+        include_color_objects=include_color_objects,
+        include_geometry=False,
+        recognized_text=recognized_text,
+    )
+    canonical_image = _resample_capture_lattice_room(source_image, normalization)
+    canonical_result = scan_image(
+        canonical_image,
+        room_box=Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT),
+        grid_step=grid_step,
+        include_color_objects=include_color_objects,
+        include_geometry=True,
+        source_grid=(25, 19),
+        recognized_text=recognized_text,
+    )
+    extent = normalization.source_extent
+
+    def source_box(box: Box) -> Box:
+        return Box(
+            round(extent.x + box.x * extent.width / ROOM_WIDTH),
+            round(extent.y + box.y * extent.height / ROOM_HEIGHT),
+            max(1, round(box.width * extent.width / ROOM_WIDTH)),
+            max(1, round(box.height * extent.height / ROOM_HEIGHT)),
+        )
+
+    canonical_detections = [
+        Detection(
+            detection.kind,
+            detection.type_id,
+            detection.x,
+            detection.y,
+            detection.score,
+            source_box(detection.image_box),
+        )
+        for detection in canonical_result.detections
+        if detection.type_id not in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
+    ]
+    detections = [
+        detection
+        for detection in source_result.detections
+        if detection.type_id in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
+    ]
+    detections.extend(canonical_detections)
+    # Reapply the ordinary source-space anchor arbitration once canonical
+    # terrain has been mapped back.  This preserves the established 8px SAVE
+    # and vine phase without paying for a second geometry scan.
+    detections = _reconcile_profiled_marker_anchors(
+        detections,
+        source_image,
+        normalization.source_room,
+    )
+    detections = _reconcile_walljump_terrain_anchors(
+        detections,
+        source_image,
+        normalization.source_room,
+    )
+    detections = _reanchor_save_headers(
+        detections,
+        source_image,
+        normalization.source_room,
+        grid_step,
+        dark_only=False,
+    )
+    detections = _reconcile_mini_terrain_marker_anchors(
+        detections,
+        source_image,
+        normalization.source_room,
+    )
+    detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
+    _PATCH_FEATURE_CACHE.clear()
+    return ScanResult(
+        image_width=source_image.width,
+        image_height=source_image.height,
+        room_box=normalization.source_room,
+        detections=detections,
+        infinite_jump=source_result.infinite_jump,
+        dot_kid=source_result.dot_kid,
+        recognized_text=source_result.recognized_text,
+        source_grid=(25, 19),
+        structural_warnings=structural_scan_warnings(detections),
+    )
 
 
 def _normalize_room_to_jtool(
