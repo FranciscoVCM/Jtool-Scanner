@@ -4397,8 +4397,9 @@ gravity flippers, terrain, spikes, killer blocks, and refreshers retain their
 previous matched totals.  FTFA remains **926/928 exact, zero false positives,
 two misses, zero shifted, and zero wrong direction**.  The focused compact
 platform tests and the combined geometry/unseen regression run pass
-**325 tests in 1590.014 seconds, `OK`**.  Fresh scans, probes, and benchmark
-reports are preserved under ignored
+**325 tests in 1590.014 seconds, `OK`**; the complete documented discovery
+suite subsequently passes **408 tests in 1848.907 seconds, `OK`**.  Fresh scans,
+probes, and benchmark reports are preserved under ignored
 `.artifacts/goal-continuation/platform-followup-20260828/`.
 
 This is a measured visual improvement for two compact NANG screens, not a
