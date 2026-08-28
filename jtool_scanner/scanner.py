@@ -232,6 +232,12 @@ TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN = 0.03
 # phase.  Treat only a meaningful quarter-cell overlap as an alias; horizontal
 # occlusion provenance remains eligible for intentional coexistence.
 TERRAIN_MINI_SPIKE_OVERLAP_MIN_AREA = MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 4
+# A neutral 16px candidate can survive after its corresponding 32px
+# candidate is removed by later support/phase arbitration.  Only a raw,
+# same-direction full candidate with strong masked shape evidence is treated
+# as corroborating alias evidence; weak raw candidates remain available to
+# represent a real mini spike.
+TERRAIN_MINI_RAW_FULL_ALIAS_MIN_SCORE = 0.84
 DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP = 90.0
 DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
 DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY = 0.40
@@ -8706,6 +8712,11 @@ def _detect_neutral_terrain_spikes(
                         )
                     )
     detections.extend(_opposite_horizontal_spike_candidates(detections, "terrain"))
+    raw_full_candidates = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
     full_spikes = []
     mini_spikes = []
     for detection in detections:
@@ -8730,6 +8741,11 @@ def _detect_neutral_terrain_spikes(
                 )
             continue
         if detection.type_id not in MINI_SPIKE_TYPES:
+            continue
+        if _terrain_mini_overlaps_strong_raw_full(
+            detection,
+            raw_full_candidates,
+        ):
             continue
         keep = (
             detection.type_id == OBJ_MINI_SPIKE_UP
@@ -29356,6 +29372,40 @@ def _prune_terrain_mini_spike_overlaps(
             continue
         kept.append(detection)
     return kept if removed else detections
+
+
+def _terrain_mini_overlaps_strong_raw_full(
+    mini_spike: Detection,
+    raw_full_candidates: list[Detection],
+) -> bool:
+    """Identify a neutral mini candidate duplicated by raw full shape evidence."""
+
+    if (
+        mini_spike.type_id not in MINI_SPIKE_TYPES
+        or not mini_spike.kind.startswith("terrain_mini_spike_")
+    ):
+        return False
+    full_type_by_mini = {
+        OBJ_MINI_SPIKE_UP: OBJ_SPIKE_UP,
+        OBJ_MINI_SPIKE_RIGHT: OBJ_SPIKE_RIGHT,
+        OBJ_MINI_SPIKE_LEFT: OBJ_SPIKE_LEFT,
+        OBJ_MINI_SPIKE_DOWN: OBJ_SPIKE_DOWN,
+    }
+    full_type = full_type_by_mini[mini_spike.type_id]
+    return any(
+        candidate.type_id == full_type
+        and candidate.score >= TERRAIN_MINI_RAW_FULL_ALIAS_MIN_SCORE
+        and _sized_box_overlap_area(
+            mini_spike.x,
+            mini_spike.y,
+            MINI_BLOCK_SIZE,
+            candidate.x,
+            candidate.y,
+            GRID_SIZE,
+        )
+        >= TERRAIN_MINI_SPIKE_OVERLAP_MIN_AREA
+        for candidate in raw_full_candidates
+    )
 
 
 def _prune_late_dense_miniblock_aliases(

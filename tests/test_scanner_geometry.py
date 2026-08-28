@@ -57,6 +57,7 @@ from jtool_scanner.scanner import (
     _prune_late_dense_miniblock_aliases,
     _prune_overlapping_terrain_full_spikes,
     _prune_terrain_mini_spike_overlaps,
+    _terrain_mini_overlaps_strong_raw_full,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
@@ -7530,6 +7531,50 @@ class ScannerGeometryTests(unittest.TestCase):
         )
 
         self.assertEqual(_prune_terrain_mini_spike_overlaps([alias, full]), [alias, full])
+
+    def test_terrain_mini_raw_alias_requires_strong_same_direction_overlap(self) -> None:
+        mini = Detection(
+            "terrain_mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            72,
+            64,
+            0.84,
+            Box(72, 64, 16, 16),
+        )
+        strong_same_direction = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.84,
+            Box(64, 64, 32, 32),
+        )
+        weak_same_direction = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.83,
+            Box(64, 64, 32, 32),
+        )
+        opposite_direction = Detection(
+            "terrain_full_spike_down",
+            OBJ_SPIKE_DOWN,
+            64,
+            64,
+            0.99,
+            Box(64, 64, 32, 32),
+        )
+
+        self.assertTrue(
+            _terrain_mini_overlaps_strong_raw_full(mini, [strong_same_direction])
+        )
+        self.assertFalse(
+            _terrain_mini_overlaps_strong_raw_full(mini, [weak_same_direction])
+        )
+        self.assertFalse(
+            _terrain_mini_overlaps_strong_raw_full(mini, [opposite_direction])
+        )
 
     def test_dense_miniblock_luma_profile_is_affine_palette_relative(self) -> None:
         def make_patch(*, altered: bool, transform: str) -> RGBImage:

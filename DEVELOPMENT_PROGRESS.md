@@ -4439,3 +4439,27 @@ outputs are preserved under ignored
 `.artifacts/goal-continuation/mini-overlap-20260828/`.
 The broader 71-screen geometry audit, unresolved bright/occluded compact
 platforms, and full-resolution capture-phase families remain open.
+
+## Checkpoint: raw neutral-terrain mini alias corroboration (2026-08-28)
+
+One residual CN2-5 fallback mini-spike alias had no overlap with a *retained*
+full spike because later phase arbitration discarded its corresponding 32px
+candidate.  The neutral fallback now keeps the raw 32px candidates as
+corroborating evidence and removes a 16px `terrain_mini_spike_*` only when a
+same-direction raw full candidate has masked-shape score at least `0.84` and
+overlaps at least one quarter of the mini footprint.  This threshold is
+relative to the neutral triangle evidence and does not depend on palette,
+tileset, screen identity, or coordinates; weak and opposite-direction raw
+shapes do not veto a mini-spike.
+
+The CN2-5 control moves from the previous checkpoint's `6 detected / 3
+matched` mini-spikes to **`5 detected / 3 matched`**.  Across the full twelve-
+pair workflow the aggregate is now **`330 detected / 281 matched`** versus
+`336 / 281` before the two neutral-alias passes.  All other category totals
+remain unchanged, including the exact color/object controls, 875/875
+miniblocks, 1463/1486 blocks, and 724/748 full spikes.  FTFA remains
+**926/928 exact, zero false positives, two misses, zero shifts, and zero
+wrong directions**.  Four focused raw-corroboration/late-overlap tests pass;
+the complete discovery suite passed **411 tests in 2749.853 seconds, `OK`**.
+Fresh raw-gate scans and the captured test log are under
+ignored `.artifacts/goal-continuation/mini-overlap-20260828/`.
