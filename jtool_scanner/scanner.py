@@ -227,6 +227,11 @@ TERRAIN_FULL_SPIKE_OVERLAP_MIN_DIRECTION_MARGIN = 0.08
 TERRAIN_FULL_SPIKE_OVERLAP_MAX_SHALLOW_AREA = GRID_SIZE * 6
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_SCORE = 0.80
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN = 0.03
+# Neutral-terrain fallback mini spikes can be emitted from the same visible
+# triangle as a retained full spike when the capture is sampled on an 8px
+# phase.  Treat only a meaningful quarter-cell overlap as an alias; horizontal
+# occlusion provenance remains eligible for intentional coexistence.
+TERRAIN_MINI_SPIKE_OVERLAP_MIN_AREA = MINI_BLOCK_SIZE * MINI_BLOCK_SIZE // 4
 DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP = 90.0
 DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
 DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY = 0.40
@@ -2500,6 +2505,7 @@ def scan_image(
             image,
             box,
         )
+        detections = _prune_terrain_mini_spike_overlaps(detections)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -29300,6 +29306,52 @@ def _prune_overlapping_terrain_full_spikes(
             >= TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN
         )
         if (weak_shape or weak_orientation) and not shallow_phase_recovery:
+            removed = True
+            continue
+        kept.append(detection)
+    return kept if removed else detections
+
+
+def _prune_terrain_mini_spike_overlaps(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Drop neutral-terrain mini aliases that duplicate a full-spike cell.
+
+    The neutral fallback runs on both 32px and 16px windows.  On an 8px
+    capture phase, the same triangle can therefore survive once as a full
+    spike and once as a ``terrain_mini_spike_*`` candidate.  The full-spike
+    result is the more specific hypothesis when their actual footprints
+    overlap materially.  Only the fallback mini provenance is considered;
+    ordinary mini spikes and ``terrain_occluded_horizontal_spike`` recoveries
+    are left untouched because they can represent independent objects.
+    """
+
+    full_spikes = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    if not full_spikes:
+        return detections
+    removed = False
+    kept: list[Detection] = []
+    for detection in detections:
+        if (
+            detection.type_id in MINI_SPIKE_TYPES
+            and detection.kind.startswith("terrain_mini_spike_")
+            and any(
+                _sized_box_overlap_area(
+                    detection.x,
+                    detection.y,
+                    MINI_BLOCK_SIZE,
+                    full_spike.x,
+                    full_spike.y,
+                    GRID_SIZE,
+                )
+                >= TERRAIN_MINI_SPIKE_OVERLAP_MIN_AREA
+                for full_spike in full_spikes
+            )
+        ):
             removed = True
             continue
         kept.append(detection)

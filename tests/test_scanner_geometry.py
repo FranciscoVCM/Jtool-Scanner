@@ -56,6 +56,7 @@ from jtool_scanner.scanner import (
     _normalized_miniblock_luma_patch,
     _prune_late_dense_miniblock_aliases,
     _prune_overlapping_terrain_full_spikes,
+    _prune_terrain_mini_spike_overlaps,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
@@ -7466,6 +7467,69 @@ class ScannerGeometryTests(unittest.TestCase):
                 Box(0, 0, 800, 608),
             )
         self.assertIn(phase_shifted, result)
+
+    def test_terrain_mini_spike_overlap_veto_removes_only_fallback_aliases(self) -> None:
+        full = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.90,
+            Box(64, 64, 32, 32),
+        )
+        fallback_alias = Detection(
+            "terrain_mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            72,
+            64,
+            0.84,
+            Box(72, 64, 16, 16),
+        )
+        ordinary = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            72,
+            96,
+            0.84,
+            Box(72, 96, 16, 16),
+        )
+        occluded = Detection(
+            "terrain_occluded_horizontal_spike",
+            OBJ_MINI_SPIKE_LEFT,
+            72,
+            64,
+            0.84,
+            Box(72, 64, 16, 16),
+        )
+
+        result = _prune_terrain_mini_spike_overlaps(
+            [full, fallback_alias, ordinary, occluded]
+        )
+
+        self.assertIn(full, result)
+        self.assertNotIn(fallback_alias, result)
+        self.assertIn(ordinary, result)
+        self.assertIn(occluded, result)
+
+    def test_terrain_mini_spike_overlap_veto_keeps_unoverlapped_fallback(self) -> None:
+        alias = Detection(
+            "terrain_mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            128,
+            64,
+            0.84,
+            Box(128, 64, 16, 16),
+        )
+        full = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.90,
+            Box(64, 64, 32, 32),
+        )
+
+        self.assertEqual(_prune_terrain_mini_spike_overlaps([alias, full]), [alias, full])
 
     def test_dense_miniblock_luma_profile_is_affine_palette_relative(self) -> None:
         def make_patch(*, altered: bool, transform: str) -> RGBImage:

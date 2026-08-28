@@ -4406,3 +4406,36 @@ This is a measured visual improvement for two compact NANG screens, not a
 claim that all 71 screens or all platform sprites are exact.  Bright-relative
 and partially occluded compact bars remain a separate hypothesis; no broad
 grayscale or screen-specific exception was added in this batch.
+
+## Checkpoint: late neutral-terrain mini-spike overlap veto (2026-08-28)
+
+The next bounded precision batch followed the recurring report of spikes
+appearing inside unrelated geometry.  Feature and provenance profiling showed
+that CN2-5's five extra `terrain_mini_spike_up` detections each overlap a
+retained full-spike footprint by at least a quarter of the 16px candidate
+cell.  Its three true mini-spikes have no such final full-spike overlap.  The
+new late veto runs after terrain replacement and all geometry consumers.  It
+removes only the neutral fallback provenance `terrain_mini_spike_*`; ordinary
+mini-spikes and `terrain_occluded_horizontal_spike` recoveries remain
+untouched because they can represent independent or intentionally occluded
+objects.  The overlap test is footprint-based and palette/tileset agnostic;
+it does not inspect a room name, coordinate, filename, or RGB value.
+
+The production fixture workflow measured CN2-5 mini-spikes improving from
+`11 detected / 3 matched` to **`6 detected / 3 matched`**.  Across all twelve
+tracked block/spike pairs, mini-spike detections fell from 336 to **331** while
+the matched total remained **281/288**.  Every other matched category and
+control pair retained its previous result: saves 22/22, warps 12/12, apples
+4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3, mini-blocks
+875/875, blocks 1463/1486, full spikes 724/748, killer blocks 99/99, and
+jump refreshers 18/19.  FTFA remains the strict gate at **926/928 exact, zero
+false positives, two misses, zero shifts, and zero wrong directions**.
+
+Two focused synthetic regressions cover fallback-alias removal, unoverlapped
+fallback preservation, and protection of ordinary/occluded provenance.  The
+targeted test run passed 3/3, and the complete discovery suite passed **410
+tests in 2630.984 seconds, `OK`**.  Fresh CN2, twelve-pair, FTFA, and profiling
+outputs are preserved under ignored
+`.artifacts/goal-continuation/mini-overlap-20260828/`.
+The broader 71-screen geometry audit, unresolved bright/occluded compact
+platforms, and full-resolution capture-phase families remain open.
