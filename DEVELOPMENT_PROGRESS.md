@@ -4479,7 +4479,7 @@ the normalized fallback score; it does not inspect a room name, coordinate,
 filename, RGB value, or tileset.
 
 On the CN2-5 control, the embedded down-spike alias at `(488,360)` is removed:
-full spikes move from `60 detected / 29 matched` to **`59 / 29`** in the
+full spikes move from `61 detected / 29 matched` to **`60 / 29`** in the
 one-pair scan.  The complete twelve-pair workflow removes exactly one
 additional full-spike detection (`871 → 870`) while retaining every matched
 category: full spikes remain **`724/748`**, blocks `1463/1486`, miniblocks
