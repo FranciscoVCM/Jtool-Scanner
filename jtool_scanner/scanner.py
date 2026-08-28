@@ -211,6 +211,13 @@ MINI_BLOCK_FULL_SPIKE_RECOVERY_OUTLINE_DELTA = 0.20
 DENSE_MINIBLOCK_MATERIAL_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_MATERIAL_MIN_NORMALIZED_EDGE_DENSITY = 0.10
 DENSE_MINIBLOCK_MATERIAL_MAX_NORMALIZED_CENTER_GRADIENT = 0.12
+# Applied only after geometry arbitration, so rejecting an alias cannot remove
+# terrain support that a later spike or marker recovery still needs.
+DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.20
+DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MAX_CENTER_GRADIENT = 0.08
+DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
+DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
+DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
 DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP = 90.0
 DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
 DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY = 0.40
@@ -2451,6 +2458,15 @@ def scan_image(
     if include_color_objects:
         detections = _recover_water_behind_save_markers(
             detections,
+            image,
+            box,
+        )
+    if include_geometry:
+        # Material aliases are safe to prune only after all geometry recovery
+        # has consumed the terrain candidates as support evidence.
+        detections = _prune_late_dense_miniblock_aliases(
+            detections,
+            mini_blocks,
             image,
             box,
         )
@@ -29002,6 +29018,97 @@ def _recover_dark_textured_adjacent_up_mini_spikes(
             )
         )
     return [*detections, *added] if added else detections
+
+
+def _prune_late_dense_miniblock_aliases(
+    detections: list[Detection],
+    detected_mini_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Remove flat material aliases after geometry has consumed support.
+
+    Dense-room arbitration intentionally runs before the final full-spike and
+    marker passes because it resolves overlapping hypotheses.  A material
+    alias that is not at a same-origin conflict is still useful support for
+    those passes, however.  This late, independent veto handles only raw
+    ``mini_block`` candidates after all such consumers have finished.  The
+    descriptor, center-gradient, and cardinal-neighbor features are
+    normalized relative to the room palette/lattice, so the rule does not
+    depend on a fixed RGB tileset.
+    """
+
+    seed_positions = {
+        (detection.x, detection.y)
+        for detection in detected_mini_blocks
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+    }
+    if not _looks_miniblock_dominant(seed_positions):
+        return detections
+    candidates = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+        and (detection.x, detection.y) in seed_positions
+    ]
+    if len(candidates) < 4:
+        return detections
+    candidate_positions = {(detection.x, detection.y) for detection in candidates}
+    material_features = [
+        (
+            detection,
+            _normalized_miniblock_luma_patch(
+                image,
+                room,
+                detection.x,
+                detection.y,
+            ),
+        )
+        for detection in candidates
+    ]
+    learned_descriptor = tuple(
+        median(values)
+        for values in zip(
+            *(features.descriptor for _detection, features in material_features)
+        )
+    )
+    remove_ids: set[int] = set()
+    for detection, features in material_features:
+        descriptor_distance = _normalized_luma_descriptor_distance(
+            features.descriptor,
+            learned_descriptor,
+        )
+        neighbors4 = sum(
+            (detection.x + dx, detection.y + dy) in candidate_positions
+            for dx, dy in (
+                (-MINI_BLOCK_SIZE, 0),
+                (MINI_BLOCK_SIZE, 0),
+                (0, -MINI_BLOCK_SIZE),
+                (0, MINI_BLOCK_SIZE),
+            )
+        )
+        if (
+            descriptor_distance
+            > DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MIN_DESCRIPTOR_DISTANCE
+            and features.center_gradient
+            < DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MAX_CENTER_GRADIENT
+        ) or (
+            descriptor_distance
+            > DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE
+            and neighbors4 <= DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS
+            and features.edge_density
+            >= DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY
+        ):
+            remove_ids.add(id(detection))
+    if not remove_ids:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if id(detection) not in remove_ids
+    ]
 
 
 def _arbitrate_dense_miniblock_geometry(

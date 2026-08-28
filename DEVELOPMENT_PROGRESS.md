@@ -4282,3 +4282,49 @@ corroboration invariant that discards unmatched canonical geometry.  The
 complete discovery run passed **403 tests in 3487.290 seconds, `OK`**.  Fresh
 ignored probe results, fixture scans, overlays and reports are under
 `.artifacts/goal-continuation/scale-stability-20260827-32px-consensus/`.
+
+## Checkpoint: post-consumer dense-miniblock alias pruning (2026-08-28)
+
+The next bounded batch targeted the remaining dense CN3 false mini-blocks.
+Feature profiling of CN3-16 and CN3-18 showed that many unmatched candidates
+were palette-relative material outliers with weak cardinal support.  A first
+prototype added the rule inside the existing arbitration pass; it was rejected
+because deleting a support cell before later spike recovery reduced CN3-18
+recall.  The accepted rule runs only after full-spike, marker, walljump, water,
+and other geometry consumers have finished.  It examines only raw
+`mini_block` candidates in a room that already proves dense-mini-block
+dominance, and requires either a strict flat-center outlier or a descriptor
+outlier with at most one cardinal mini-block neighbor and normalized edge
+density of at least 0.05.  The descriptor/edge/center features remain
+palette-relative; no CN3 coordinate, filename, or tileset value is used.
+
+The edge floor was added after the tracked CN3-18 fixture exposed a legitimate
+low-edge block at `(704,336)` that the broader sparse rule would remove.  The
+final condition preserves that block and keeps the rule limited to candidates
+with visible normalized edge evidence.
+
+Measured exact/resampled giant-room results are:
+
+| case | prior result | post-consumer result | effect |
+| --- | --- | --- | --- |
+| CN3-16 resampled giant | 570/590 exact, 18 FP, 20 missed | 570/590 exact, 14 FP, 20 missed | −4 FP, recall unchanged |
+| CN3-18 resampled giant | 472/492 exact, 27 FP, 17 missed, 2 shifted, 1 wrong direction | 472/492 exact, 14 FP, 17 missed, 2 shifted, 1 wrong direction | −13 FP, recall/orientation unchanged |
+
+The tracked block/spike manifest confirms the same safety boundary.  CN3-16
+retains 501/501 mini-block matches while detections fall from 537 to 519;
+CN3-18 retains 374/374 matches while detections fall from 416 to 391.  Every
+other tracked pair is unchanged, including all saves, warps, apples, water,
+walljumps, gravity flippers, platforms, full spikes, mini spikes, killer
+blocks, and jump refreshers.  Aggregate mini-block detections fall from
+`953/875/875` to `910/875/875` (detected/truth/matched), with no matched-count
+regression.  FTFA remains **926/928 exact, zero false positives, two missed,
+zero shifted and zero wrong direction**.
+
+The complete discovery suite passes **405 tests in 2589.675 seconds, `OK`**;
+the two new unit tests cover both late flat-alias and sparse-outlier behavior.
+Fresh ignored feature probes, resample reports, tracked scans, the complete
+12-pair report, and FTFA dashboard are under
+`.artifacts/goal-continuation/dense-miniblock-next-20260827/`.  The broader
+32px capture-phase problem and the remaining CN3 full-resolution spike misses
+are still unresolved; this batch deliberately improves precision without
+claiming that all 71 screens are exact.

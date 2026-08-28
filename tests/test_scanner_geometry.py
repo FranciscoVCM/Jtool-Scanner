@@ -54,6 +54,7 @@ from jtool_scanner.scanner import (
     _is_dense_miniblock_run_supported,
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
+    _prune_late_dense_miniblock_aliases,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
@@ -7206,6 +7207,100 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertNotIn(raw_blocks[-2], result)
         self.assertIn(raw_blocks[-1], result)
         self.assertIn(structural, result)
+
+    def test_late_dense_miniblock_alias_pruning_preserves_support_phase(self) -> None:
+        """Late flat-alias pruning runs after geometry consumers."""
+
+        raw_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (0, 16, 32, 48, 64)
+        ]
+
+        def features(_image, _room, x, _y):
+            if x == 64:
+                return _NormalizedLumaPatch(
+                    (1.0, *(0.0 for _ in range(15))),
+                    0.08,
+                    0.07,
+                )
+            return _NormalizedLumaPatch(
+                (0.0,) * 16,
+                0.02,
+                0.20,
+            )
+
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                side_effect=features,
+            ),
+        ):
+            result = _prune_late_dense_miniblock_aliases(
+                raw_blocks,
+                raw_blocks,
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, raw_blocks[:-1])
+
+    def test_late_dense_miniblock_alias_pruning_rejects_sparse_outlier(self) -> None:
+        """A displaced, weakly supported alias is removed after arbitration."""
+
+        raw_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (0, 16, 32, 48, 64)
+        ]
+
+        def features(_image, _room, x, _y):
+            if x == 64:
+                return _NormalizedLumaPatch(
+                    (1.2, *(0.0 for _ in range(15))),
+                    0.08,
+                    0.20,
+                )
+            return _NormalizedLumaPatch(
+                (0.0,) * 16,
+                0.02,
+                0.20,
+            )
+
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                side_effect=features,
+            ),
+        ):
+            result = _prune_late_dense_miniblock_aliases(
+                raw_blocks,
+                raw_blocks,
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, raw_blocks[:-1])
 
     def test_dense_miniblock_luma_profile_is_affine_palette_relative(self) -> None:
         def make_patch(*, altered: bool, transform: str) -> RGBImage:
