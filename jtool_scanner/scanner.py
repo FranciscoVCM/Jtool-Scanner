@@ -225,6 +225,16 @@ DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_SIDE_COVERAGE = 0.50
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_DIRECTION_MARGIN = 0.08
 TERRAIN_FULL_SPIKE_OVERLAP_MAX_SHALLOW_AREA = GRID_SIZE * 6
+# A neutral fallback triangle that occupies more than a quarter of a terrain
+# cell without touching its directional support face is an embedded material
+# alias.  Keep the smaller phase exception above for genuine 8px capture
+# offsets, but do not let a deep unsupported body survive merely because its
+# local silhouette classifier is confident.
+TERRAIN_FULL_SPIKE_OVERLAP_MAX_UNSUPPORTED_AREA = GRID_SIZE * GRID_SIZE // 4
+# Independently strong overlapping triangles remain valid geometry; the deep
+# unsupported veto is limited to candidates that only barely passed the
+# neutral-terrain fallback score floor.
+TERRAIN_FULL_SPIKE_OVERLAP_MAX_DEEP_UNSUPPORTED_SCORE = 0.80
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_SCORE = 0.80
 TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN = 0.03
 # Neutral-terrain fallback mini spikes can be emitted from the same visible
@@ -29321,7 +29331,21 @@ def _prune_overlapping_terrain_full_spikes(
             and classified.direction_margin
             >= TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN
         )
-        if (weak_shape or weak_orientation) and not shallow_phase_recovery:
+        directional_support = _warm_spike_support_overlap(
+            detection.x,
+            detection.y,
+            direction,
+            block_positions,
+        )
+        deep_unsupported_alias = (
+            overlap_area > TERRAIN_FULL_SPIKE_OVERLAP_MAX_UNSUPPORTED_AREA
+            and directional_support == 0
+            and detection.score < TERRAIN_FULL_SPIKE_OVERLAP_MAX_DEEP_UNSUPPORTED_SCORE
+        )
+        if (
+            (weak_shape or weak_orientation or deep_unsupported_alias)
+            and not shallow_phase_recovery
+        ):
             removed = True
             continue
         kept.append(detection)

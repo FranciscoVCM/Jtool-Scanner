@@ -7469,6 +7469,97 @@ class ScannerGeometryTests(unittest.TestCase):
             )
         self.assertIn(phase_shifted, result)
 
+    def test_terrain_full_spike_overlap_veto_removes_deep_unsupported_alias(self) -> None:
+        alias = Detection(
+            "terrain_full_spike_down",
+            OBJ_SPIKE_DOWN,
+            64,
+            64,
+            0.79,
+            Box(64, 64, 32, 32),
+        )
+        overlapping_block = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            80,
+            64,
+            0.80,
+            Box(80, 64, 32, 32),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_down",
+                    OBJ_SPIKE_DOWN,
+                    0.90,
+                    direction_margin=0.20,
+                    outline_delta=0.20,
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_side_coverage",
+                return_value=0.90,
+            ),
+        ):
+            result = _prune_overlapping_terrain_full_spikes(
+                [overlapping_block, alias],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+
+        self.assertNotIn(alias, result)
+        self.assertIn(overlapping_block, result)
+
+    def test_terrain_full_spike_overlap_veto_keeps_deep_supported_geometry(self) -> None:
+        spike = Detection(
+            "terrain_full_spike_down",
+            OBJ_SPIKE_DOWN,
+            64,
+            64,
+            0.79,
+            Box(64, 64, 32, 32),
+        )
+        overlapping_block = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            80,
+            64,
+            0.80,
+            Box(80, 64, 32, 32),
+        )
+        support_block = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            64,
+            32,
+            0.80,
+            Box(64, 32, 32, 32),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_down",
+                    OBJ_SPIKE_DOWN,
+                    0.90,
+                    direction_margin=0.20,
+                    outline_delta=0.20,
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_side_coverage",
+                return_value=0.90,
+            ),
+        ):
+            result = _prune_overlapping_terrain_full_spikes(
+                [overlapping_block, support_block, spike],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+
+        self.assertIn(spike, result)
+
     def test_terrain_mini_spike_overlap_veto_removes_only_fallback_aliases(self) -> None:
         full = Detection(
             "terrain_full_spike_up",

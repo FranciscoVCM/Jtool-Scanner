@@ -4463,3 +4463,34 @@ wrong directions**.  Four focused raw-corroboration/late-overlap tests pass;
 the complete discovery suite passed **411 tests in 2749.853 seconds, `OK`**.
 Fresh raw-gate scans and the captured test log are under
 ignored `.artifacts/goal-continuation/mini-overlap-20260828/`.
+
+## Checkpoint: deep unsupported neutral-terrain spike veto (2026-08-28)
+
+The next bounded precision batch followed the remaining CN2-5 report of a
+full spike embedded in a solid block.  The safe subfamily is narrower than
+the existing weak-shape veto: a `terrain_full_spike_*` candidate must overlap
+an independently retained ordinary block by more than one quarter of its
+32px footprint, have no directional support face, and sit below the
+independent strong-overlap score threshold.  This removes a barely passing
+neutral-material alias while preserving strong overlapping geometry,
+shallow 8px capture-phase candidates, and the dedicated occluded-horizontal
+recovery.  The decision uses only footprint overlap, support topology, and
+the normalized fallback score; it does not inspect a room name, coordinate,
+filename, RGB value, or tileset.
+
+On the CN2-5 control, the embedded down-spike alias at `(488,360)` is removed:
+full spikes move from `60 detected / 29 matched` to **`59 / 29`** in the
+one-pair scan.  The complete twelve-pair workflow removes exactly one
+additional full-spike detection (`871 → 870`) while retaining every matched
+category: full spikes remain **`724/748`**, blocks `1463/1486`, miniblocks
+`875/875`, mini-spikes `281/288`, saves `22/22`, warps `12/12`, apples `4/4`,
+water `35/35`, walljumps `13/13`, gravity `8/8`, platforms `3/3`, killer
+blocks `99/99`, and refreshers `18/19`.  The strict FTFA benchmark remains
+**`926/928` exact, zero false positives, two missed, zero shifted, and zero
+wrong directions**.  Synthetic tests cover removal of a deep unsupported
+alias and preservation of an overlapping candidate with directional support;
+the existing weak/occluded/shallow-phase regressions remain green.
+
+The complete discovery suite passes **413 tests in 2130.458 seconds, `OK`**.
+All generated scans and benchmark output remain ignored under
+`.artifacts/goal-continuation/mini-overlap-20260828/`.
