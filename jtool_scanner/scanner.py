@@ -218,6 +218,15 @@ DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MAX_CENTER_GRADIENT = 0.08
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
+# Neutral-terrain spike candidates are generated before the terrain block
+# field is fully reconciled.  A late overlap veto can therefore reject a
+# weak triangle visibly inside a solid cell without affecting genuinely
+# occluded horizontal recoveries.
+TERRAIN_FULL_SPIKE_OVERLAP_MIN_SIDE_COVERAGE = 0.50
+TERRAIN_FULL_SPIKE_OVERLAP_MIN_DIRECTION_MARGIN = 0.08
+TERRAIN_FULL_SPIKE_OVERLAP_MAX_SHALLOW_AREA = GRID_SIZE * 6
+TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_SCORE = 0.80
+TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN = 0.03
 DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP = 90.0
 DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST = 0.50
 DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY = 0.40
@@ -2464,6 +2473,11 @@ def scan_image(
     if include_geometry:
         # Material aliases are safe to prune only after all geometry recovery
         # has consumed the terrain candidates as support evidence.
+        detections = _prune_overlapping_terrain_full_spikes(
+            detections,
+            image,
+            box,
+        )
         detections = _prune_late_dense_miniblock_aliases(
             detections,
             mini_blocks,
@@ -29018,6 +29032,97 @@ def _recover_dark_textured_adjacent_up_mini_spikes(
             )
         )
     return [*detections, *added] if added else detections
+
+
+def _prune_overlapping_terrain_full_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject weak neutral-terrain triangles drawn inside solid cells.
+
+    The neutral-terrain fallback intentionally permits a high masked-colour
+    score to retain a full spike even when only a small part of its triangle
+    is visible.  In practice a low-coverage, wrong-orientation patch inside a
+    reconciled block is a terrain edge alias, not a lethal object.  Run this
+    veto after every geometry consumer so the block remains available as
+    support while true occluded horizontal recoveries keep their dedicated
+    provenance and are never filtered by this rule.
+
+    The gate uses only local triangle shape, directional confidence, and
+    overlap with the independently retained block field.  It is therefore
+    independent of absolute colour, tileset, room name, and coordinates.
+    """
+
+    block_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_BLOCK
+    }
+    if not block_positions:
+        return detections
+    direction_by_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    removed = False
+    kept: list[Detection] = []
+    for detection in detections:
+        if (
+            detection.type_id not in FULL_SPIKE_TYPES
+            or not detection.kind.startswith("terrain_full_spike_")
+            or detection.kind == "terrain_occluded_horizontal_spike"
+            or _total_block_overlap(
+                detection.x,
+                detection.y,
+                block_positions,
+            )
+            <= 0
+        ):
+            kept.append(detection)
+            continue
+        direction = direction_by_type[detection.type_id]
+        overlap_area = _total_block_overlap(
+            detection.x,
+            detection.y,
+            block_positions,
+        )
+        patch = _patch_features(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            GRID_SIZE,
+        )
+        classified = _classify_full_spike(patch)
+        weak_shape = _triangle_side_coverage(patch, direction) < (
+            TERRAIN_FULL_SPIKE_OVERLAP_MIN_SIDE_COVERAGE
+        )
+        weak_orientation = (
+            classified is None
+            or classified.type_id != detection.type_id
+            or classified.direction_margin
+            < TERRAIN_FULL_SPIKE_OVERLAP_MIN_DIRECTION_MARGIN
+        )
+        # A six-pixel-or-less face overlap can be the native 8px phase of a
+        # real triangle.  Preserve that narrow, same-direction candidate when
+        # its masked score and directional margin are still meaningful; deep
+        # overlaps and orientation disagreements remain vetoed.
+        shallow_phase_recovery = (
+            overlap_area <= TERRAIN_FULL_SPIKE_OVERLAP_MAX_SHALLOW_AREA
+            and classified is not None
+            and classified.type_id == detection.type_id
+            and detection.score >= TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_SCORE
+            and classified.direction_margin
+            >= TERRAIN_FULL_SPIKE_OVERLAP_MIN_PHASE_MARGIN
+        )
+        if (weak_shape or weak_orientation) and not shallow_phase_recovery:
+            removed = True
+            continue
+        kept.append(detection)
+    return kept if removed else detections
 
 
 def _prune_late_dense_miniblock_aliases(

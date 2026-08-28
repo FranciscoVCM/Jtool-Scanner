@@ -4328,3 +4328,41 @@ Fresh ignored feature probes, resample reports, tracked scans, the complete
 32px capture-phase problem and the remaining CN3 full-resolution spike misses
 are still unresolved; this batch deliberately improves precision without
 claiming that all 71 screens are exact.
+
+## Checkpoint: late neutral-terrain spike-overlap veto (2026-08-28)
+
+The next bounded batch targeted the recurring false geometry described as a
+spike drawn inside an ordinary block.  A complete report over the tracked
+12-pair block/spike manifest identified the safe subfamily: candidates emitted
+by the neutral-terrain fallback as `terrain_full_spike_*` that overlap an
+independently retained ordinary block and have either weak directional shape
+or a local classifier disagreement.  The one true overlapping candidate in
+that family's control set is an intentionally occluded horizontal recovery,
+`terrain_occluded_horizontal_spike`, and remains exempt.
+
+The production guard runs after all geometry, marker, walljump, water, and
+terrain consumers.  It uses symmetric local block overlap, triangle-side
+coverage, and normalized directional confidence; it does not inspect a room
+name, coordinate, filename, RGB value, or tileset.  A small-area,
+same-direction, meaningful-score phase exception preserves a real 8px-shifted
+CN2-5 spike rather than converting capture phase into a false negative.
+
+The complete 12-pair workflow retained every matched count from the previous
+published checkpoint.  Full-spike detections fell from `890` to `871`, while
+matches stayed `724/748`; CN2-5's full spikes changed from `80 detected / 29
+matched` to `61 / 29`.  Its ten false terrain-spike/block overlaps were removed,
+the one true occluded overlap was retained, and the known tolerance-matched
+8px phase candidate was preserved.  Saves `22/22`, warps `12/12`, apples
+`4/4`, water `35/35`, walljumps `13/13`, gravity `8/8`, platforms `3/3`, mini
+blocks `875/875`, blocks `1463/1486`, mini spikes `281/288`, killer blocks
+`99/99`, and jump refreshers `18/19` remain unchanged.
+
+FTFA remains the strict golden-room gate at **926/928 exact, zero false
+positives, two missed, zero shifted and zero wrong directions**.  The rule is
+deliberately narrow: it reduces a demonstrated neutral-terrain overlap alias,
+but it does not solve the broader full-resolution 71-screen geometry errors,
+32px capture-phase cases, or all spikes that overlap miniblock cells.
+
+The complete discovery suite passes **406 tests in 4608.705 seconds, `OK`**,
+including the new synthetic regression for weak overlap removal, occluded-spike
+preservation, and shallow phase recovery.

@@ -55,6 +55,7 @@ from jtool_scanner.scanner import (
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
     _prune_late_dense_miniblock_aliases,
+    _prune_overlapping_terrain_full_spikes,
     _reconcile_local_spike_scale_conflicts,
     _reconcile_mini_terrain_marker_anchors,
     _can_recover_diagonal_side_mini_spike,
@@ -7301,6 +7302,120 @@ class ScannerGeometryTests(unittest.TestCase):
             )
 
         self.assertEqual(result, raw_blocks[:-1])
+
+    def test_terrain_full_spike_overlap_veto_keeps_occluded_recovery(self) -> None:
+        block = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            64,
+            64,
+            0.80,
+            Box(64, 64, 32, 32),
+        )
+        weak_alias = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.84,
+            Box(64, 64, 32, 32),
+        )
+        occluded = Detection(
+            "terrain_occluded_horizontal_spike",
+            OBJ_SPIKE_LEFT,
+            64,
+            64,
+            0.84,
+            Box(64, 64, 32, 32),
+        )
+        strong = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            96,
+            64,
+            0.84,
+            Box(96, 64, 32, 32),
+        )
+        block_right = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            96,
+            64,
+            0.80,
+            Box(96, 64, 32, 32),
+        )
+        wrong_orientation = _GeometryClass(
+            "spike_down",
+            OBJ_SPIKE_DOWN,
+            0.70,
+            direction_margin=0.20,
+            outline_delta=0.20,
+        )
+        matching = _GeometryClass(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            0.70,
+            direction_margin=0.20,
+            outline_delta=0.20,
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                side_effect=[wrong_orientation, matching],
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_side_coverage",
+                side_effect=[0.40, 0.80],
+            ),
+        ):
+            result = _prune_overlapping_terrain_full_spikes(
+                [block, weak_alias, occluded, block_right, strong],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+
+        self.assertNotIn(weak_alias, result)
+        self.assertIn(occluded, result)
+        self.assertIn(strong, result)
+
+        phase_block = Detection(
+            "terrain_block",
+            OBJ_BLOCK,
+            72,
+            88,
+            0.80,
+            Box(72, 88, 32, 32),
+        )
+        phase_shifted = Detection(
+            "terrain_full_spike_up",
+            OBJ_SPIKE_UP,
+            64,
+            64,
+            0.81,
+            Box(64, 64, 32, 32),
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._classify_full_spike",
+                return_value=_GeometryClass(
+                    "spike_up",
+                    OBJ_SPIKE_UP,
+                    0.60,
+                    direction_margin=0.05,
+                    outline_delta=0.10,
+                ),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._triangle_side_coverage",
+                return_value=0.40,
+            ),
+        ):
+            result = _prune_overlapping_terrain_full_spikes(
+                [phase_block, phase_shifted],
+                _textured_test_image(),
+                Box(0, 0, 800, 608),
+            )
+        self.assertIn(phase_shifted, result)
 
     def test_dense_miniblock_luma_profile_is_affine_palette_relative(self) -> None:
         def make_patch(*, altered: bool, transform: str) -> RGBImage:
