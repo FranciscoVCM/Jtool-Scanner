@@ -1858,6 +1858,7 @@ class _CaptureLatticeNormalization:
     source_room: Box
     x_axis: _CaptureLatticeAxis
     y_axis: _CaptureLatticeAxis
+    dense_miniblock_evidence: bool = False
 
     @property
     def source_extent(self) -> Box:
@@ -3195,13 +3196,22 @@ def _infer_capture_lattice_normalization(
     # large-room lattice can also be a full-block/spike capture (where the
     # miniblock detector intentionally returns zero); those rooms are safe
     # only because the caller uses a source-vs-canonical consensus merge.
-    if len(_detect_mini_blocks(image, room)) < CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT:
+    dense_miniblock_evidence = (
+        len(_detect_mini_blocks(image, room))
+        >= CAPTURE_LATTICE_MIN_MINIBLOCK_COUNT
+    )
+    if not dense_miniblock_evidence:
         if not (
             room.width >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH
             and room.height >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT
         ):
             return None
-    return _CaptureLatticeNormalization(room, x_axis, y_axis)
+    return _CaptureLatticeNormalization(
+        room,
+        x_axis,
+        y_axis,
+        dense_miniblock_evidence=dense_miniblock_evidence,
+    )
 
 
 def _capture_lattice_axis_has_material_gain(
@@ -3535,14 +3545,16 @@ def _capture_lattice_consensus_enabled(
     """Return whether both source and canonical geometry passes are warranted.
 
     The dimensions are deliberately a capture-family gate, not a room or
-    tileset identity.  Smaller rooms retain the historical source-marker plus
-    canonical-geometry merge, while large non-native-phase captures get the
-    extra source evidence needed to reject canonical-only false positives.
+    tileset identity.  Dense 16px miniblock captures retain the historical
+    source-marker plus canonical-geometry merge at every resolution.  Only a
+    large capture that qualified without dense-miniblock evidence gets the
+    extra source geometry needed to reject canonical-only false positives.
     """
 
     room = normalization.source_room
     return (
-        room.width >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH
+        not normalization.dense_miniblock_evidence
+        and room.width >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH
         and room.height >= CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT
     )
 

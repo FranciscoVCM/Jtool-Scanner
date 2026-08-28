@@ -4557,3 +4557,53 @@ probes, the twelve-pair report, and the FTFA dashboard are preserved under
 `.artifacts/goal-continuation/platform-phase-20260828/`.  This checkpoint
 resolves the four-bar platform subproblem on `NANG_139r`; it does not claim
 that either visual-only room or the full 71-screen corpus is exact.
+
+## Checkpoint: preserve dense-capture lattice normalization routing (2026-08-28)
+
+The fresh exact benchmark exposed a regression in the large-capture consensus
+route.  The capture-lattice normalizer correctly identified the full-resolution
+CN3-18 source as a dense 16px-miniblock room, but consensus was selected from
+image dimensions alone.  That caused an unnecessary source-geometry pass to be
+merged with the canonical pass, changing the user-facing result from the
+previous 50-error checkpoint to 154 exact errors.  This was a routing error,
+not evidence for a new CN3 detector or tileset rule.
+
+Normalization now records whether its raw source contains the measured dense
+miniblock evidence (`>= 400` candidates).  Dense captures retain the original
+source-marker plus canonical-geometry path at any resolution; only a large
+capture that qualified without dense-miniblock evidence enables source/canonical
+consensus.  The decision remains based on room-relative lattice evidence and
+raw object density, never on a room name, coordinate, filename, palette, or
+tileset.  Regression tests cover dense normalization, large non-miniblock
+consensus, and the Irkara-89/Flames held-out family.
+
+The fresh full-resolution exact run measures CN3-18 at **478/492 exact, 23
+false positives, 13 misses, zero shifted, and one wrong-direction object**—37
+exact errors, an improvement of 117 errors over the accidental consensus route
+and 13 better than the earlier 50-error checkpoint.  Its group results are
+46/50 full spikes, 372/374 miniblocks, 47/54 minispikes, 3/3 saves, 4/4
+walljumps, 1/1 warp truth (with one extra warp), and 5/6 water cells; the
+right-edge water miss remains known.  CN3-16 is unchanged by this routing gate.
+
+The large-capture held-out fixture scan remains unchanged: Irkara-89 retains
+202/238 exact in the source/canonical study and all 1/1 save, 1/1 warp, 1/1
+apple, 14/14 water, 9/9 walljump, and 1/1 platform matches; Irkara-NR Flames
+retains its documented 249/295 exact consensus result and all save, warp,
+apple, and water matches.  The complete 12-pair grid-step-8/tolerance-24
+workflow is unchanged at saves 22/22, warps 12/12, apples 4/4, water 35/35,
+walljumps 13/13, gravity 8/8, platforms 3/3, miniblocks 875/875, blocks
+1463/1486, full spikes 724/748, minispikes 281/288, killers 99/99, and
+refreshers 18/19 matched.  FTFA remains the strict gate at **926/928 exact,
+zero false positives, two boundary misses, zero shifts, and zero wrong
+directions**.
+
+The complete discovery suite passes **416 tests in 3290.709 seconds, `OK`**.
+Fresh exact, held-out, fixture, and lattice-probe output is preserved under
+ignored `.artifacts/goal-continuation/luna-reserve-dense-20260828/`.  The
+corresponding CN3-18 giant-review ledger row is updated to the 37-error result;
+the 71-screen corpus remains visual-first and is not being relabeled exact.
+
+This checkpoint fixes a measurable cross-workflow regression and protects the
+dense/full-scale routing boundary.  The broader adaptive color-segmentation
+fallback and the remaining CN3-16/CN3-18 geometry errors remain future bounded
+batches; no broad grayscale second scan or screen-specific exception was added.

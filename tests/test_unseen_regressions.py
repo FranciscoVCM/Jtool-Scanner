@@ -145,6 +145,7 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
         self.assertIsNotNone(normalization)
         assert normalization is not None
         self.assertGreaterEqual(normalization.x_axis.gain, 1.65)
+        self.assertTrue(normalization.dense_miniblock_evidence)
 
         tracked = load_png(
             Path("fixtures") / "block_spike" / "cn3-18-game.png"
@@ -183,12 +184,14 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
         for name in ("irkara-89-game.png", "irkara-nr-flames-game.png"):
             with self.subTest(large_capture=name):
                 image = load_png(Path("fixtures") / "block_spike" / name)
-                self.assertIsNotNone(
-                    _infer_capture_lattice_normalization(
-                        image,
-                        detect_room_box(image),
-                    )
+                normalization = _infer_capture_lattice_normalization(
+                    image,
+                    detect_room_box(image),
                 )
+                self.assertIsNotNone(normalization)
+                assert normalization is not None
+                self.assertFalse(normalization.dense_miniblock_evidence)
+                self.assertTrue(_capture_lattice_consensus_enabled(normalization))
 
         for name in ("k3-ex-hades-game.png", "f189-game.png"):
             with self.subTest(held_out=name):
@@ -262,11 +265,17 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
         self.assertIn((OBJ_BLOCK, 200, 200), anchored_positions)
         self.assertNotIn((OBJ_BLOCK, 208, 200), anchored_positions)
 
-    def test_large_capture_dimensions_enable_consensus_only(self) -> None:
+    def test_large_non_miniblock_capture_dimensions_enable_consensus_only(self) -> None:
         large = _CaptureLatticeNormalization(
             Box(0, 0, 980, 742),
             _CaptureLatticeAxis(-5, 986, 60.0, 10.0),
             _CaptureLatticeAxis(-4, 750, 50.0, 10.0),
+        )
+        dense_large = _CaptureLatticeNormalization(
+            Box(0, 0, 980, 742),
+            _CaptureLatticeAxis(-5, 986, 60.0, 10.0),
+            _CaptureLatticeAxis(-4, 750, 50.0, 10.0),
+            dense_miniblock_evidence=True,
         )
         small = _CaptureLatticeNormalization(
             Box(0, 0, 900, 690),
@@ -274,6 +283,7 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
             _CaptureLatticeAxis(-4, 698, 50.0, 10.0),
         )
         self.assertTrue(_capture_lattice_consensus_enabled(large))
+        self.assertFalse(_capture_lattice_consensus_enabled(dense_large))
         self.assertFalse(_capture_lattice_consensus_enabled(small))
 
     def test_lattice_merge_preserves_source_save_and_vine_anchors(self) -> None:
