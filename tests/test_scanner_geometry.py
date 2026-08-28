@@ -187,6 +187,8 @@ from jtool_scanner.scanner import (
     _is_low_contrast_platform_candidate,
     _is_partial_relative_platform_candidate,
     _is_compact_relative_platform_candidate,
+    _is_compact_room_relative_platform_candidate,
+    _compact_platform_overlaps_geometry,
     _has_complete_low_contrast_platform_context,
     _has_bright_room_platform_bar_evidence,
     _platform_conflicts_supported_terrain,
@@ -6813,6 +6815,54 @@ class ScannerGeometryTests(unittest.TestCase):
                 168.2,
                 neighbor_profile_distance=2.1,
             )
+        )
+
+    def test_compact_room_platform_requires_strong_room_relative_contrast(self) -> None:
+        self.assertTrue(
+            _is_compact_room_relative_platform_candidate(
+                _PlatformPatchFeatures(28, 12, 86, 2),
+                _PatchFeatures((), 0.199, 0.066, 0.359),
+                _ColorProfile(91.0, 87.0, 84.0, 0.128),
+                0.234,
+                0.066,
+                130.0,
+                neighbor_profile_distance=35.8,
+            )
+        )
+        # A similarly shaped terrain lip with little room-relative material
+        # contrast must remain out of the compact recovery path.
+        self.assertFalse(
+            _is_compact_room_relative_platform_candidate(
+                _PlatformPatchFeatures(31, 14, 118, 3),
+                _PatchFeatures((), 0.250, 0.08, 0.328),
+                _ColorProfile(142.0, 149.0, 157.0, 0.08),
+                0.383,
+                0.20,
+                151.0,
+                neighbor_profile_distance=9.5,
+            )
+        )
+
+    def test_compact_platform_overlap_uses_platform_height_not_full_cell(self) -> None:
+        block = Detection(
+            "block",
+            OBJ_BLOCK,
+            240,
+            288,
+            0.90,
+            Box(240, 288, 32, 32),
+        )
+        adjacent = Detection(
+            "block",
+            OBJ_BLOCK,
+            256,
+            304,
+            0.90,
+            Box(256, 304, 32, 32),
+        )
+        self.assertTrue(_compact_platform_overlaps_geometry(256, 288, [block]))
+        self.assertFalse(
+            _compact_platform_overlaps_geometry(256, 288, [adjacent])
         )
 
     def test_late_full_spike_block_arbitration_prefers_coherent_material(self) -> None:

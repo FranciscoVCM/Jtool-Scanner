@@ -4366,3 +4366,42 @@ but it does not solve the broader full-resolution 71-screen geometry errors,
 The complete discovery suite passes **406 tests in 4608.705 seconds, `OK`**,
 including the new synthetic regression for weak overlap removal, occluded-spike
 preservation, and shallow phase recovery.
+
+## Checkpoint: compact-room relative platform recovery (2026-08-28)
+
+The next bounded batch addressed a concrete compact-room omission: the native
+19x13 geometry replacement intentionally removed every platform and never ran
+the platform detector again after screenshot normalization.  Feature profiling
+of the preserved NANG source corpus found a narrow, transferable subfamily of
+dark isolated bars.  The new late route requires two-axis bar enclosure,
+low interior/block occupancy, low saturation, at least 24 map-pixel room
+contrast, and a material boundary in both the strongest horizontal and vertical
+neighbour profiles.  It also rejects any candidate whose actual 32x16 band
+intersects accepted blocks, spikes, mini-spikes, or killer cells.  The route is
+palette/room-relative and does not inspect a screen name, coordinate, filename,
+or tileset; its `compact_relative_platform` provenance is preserved through
+the bright-room impostor prune so a recovered dark bar is not mistaken for a
+terrain edge.
+
+On the visual-only normalized NANG captures, the fresh scan recovers three
+dark bars on `NANG_139` and two on `NANG_139r`; the remaining thin bars in the
+`NANG_139r` screenshot do not yet satisfy this conservative dark-material gate
+and remain unresolved without corrected JMaps.  The route produces no platform
+candidates on the tracked `nang128`, `nang135`, or `nang138` controls and no
+candidate on the other preserved NANG variants tested by the same probe.
+
+The documented 12-pair grid-step-8/tolerance-24 workflow is metric-identical
+to the previous published checkpoint: platforms remain `3/3` matched, compact
+NANG controls remain `0/0`, and all saves, warps, apples, water, walljumps,
+gravity flippers, terrain, spikes, killer blocks, and refreshers retain their
+previous matched totals.  FTFA remains **926/928 exact, zero false positives,
+two misses, zero shifted, and zero wrong direction**.  The focused compact
+platform tests and the combined geometry/unseen regression run pass
+**325 tests in 1590.014 seconds, `OK`**.  Fresh scans, probes, and benchmark
+reports are preserved under ignored
+`.artifacts/goal-continuation/platform-followup-20260828/`.
+
+This is a measured visual improvement for two compact NANG screens, not a
+claim that all 71 screens or all platform sprites are exact.  Bright-relative
+and partially occluded compact bars remain a separate hypothesis; no broad
+grayscale or screen-specific exception was added in this batch.

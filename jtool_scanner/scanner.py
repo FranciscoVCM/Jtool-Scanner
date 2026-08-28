@@ -485,6 +485,22 @@ PLATFORM_COMPACT_RELATIVE_MAX_BLOCK_SCORE = 0.20
 PLATFORM_COMPACT_RELATIVE_MAX_BELOW_EDGE = 0.14
 PLATFORM_COMPACT_RELATIVE_MAX_ROOM_LUMINANCE_DELTA = -10.0
 PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE = 10.0
+# Compact 19x13 captures can contain a darker, brown/gray platform whose
+# resampled bar falls outside the ordinary low-contrast route.  Keep this
+# recovery relative to the room and deliberately stricter than the generic
+# route: the bar must have both axes of enclosure, low interior occupancy,
+# a material contrast against every half-cell neighbour, and no overlap with
+# already accepted compact geometry.  These gates are shape/material based,
+# not tied to a game, screen, filename, or absolute palette.
+COMPACT_ROOM_PLATFORM_MIN_HORIZONTAL_RUN = 28
+COMPACT_ROOM_PLATFORM_MIN_VERTICAL_RUN = 10
+COMPACT_ROOM_PLATFORM_GRAY_RANGE = (40, 220)
+COMPACT_ROOM_PLATFORM_MAX_SATURATION = 0.20
+COMPACT_ROOM_PLATFORM_CENTER_RANGE = (0.08, 0.40)
+COMPACT_ROOM_PLATFORM_MAX_BLOCK_SCORE = 0.34
+COMPACT_ROOM_PLATFORM_MAX_BELOW_EDGE = 0.30
+COMPACT_ROOM_PLATFORM_MAX_ROOM_LUMINANCE_DELTA = -24.0
+COMPACT_ROOM_PLATFORM_MIN_PROFILE_DISTANCE = 24.0
 # A partially occluded platform can retain only a short horizontal contour,
 # but its material still differs chromatically from the room.  Use the local
 # chroma direction (rather than an absolute brown/gray threshold) to recover
@@ -3944,6 +3960,11 @@ def _replace_compact_room_geometry(
             if detection.type_id == OBJ_BLOCK
         }
         result.extend(_detect_compact_room_spikes(image, room, block_positions))
+    # The compact path otherwise has no platform pass at all.  Recover only
+    # the strongly isolated room-relative bars after blocks, spikes, and
+    # killer cells are known, so a terrain cell cannot be promoted merely by
+    # sharing the platform window's 16px phase.
+    result.extend(_detect_compact_room_relative_platforms(result, image, room))
     return _dedupe_exact_detections(result)
 
 
@@ -5449,6 +5470,7 @@ def _prune_bright_room_platform_impostors(
     for detection in detections:
         if (
             detection.type_id == OBJ_PLATFORM
+            and detection.kind != "compact_relative_platform"
             and not _has_bright_room_platform_bar_evidence(
                 _platform_horizontal_edge_runs(
                     image,
@@ -14206,6 +14228,163 @@ def _dedupe_walljumps(detections: list[Detection], min_distance: float) -> list[
     return sorted(result, key=lambda item: (item.y, item.x, -item.score))
 
 
+def _detect_compact_room_relative_platforms(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover isolated dark bars omitted by compact-room geometry replacement.
+
+    The 19x13 normalization has a dedicated block/spike path because the
+    screenshot is often scaled.  That path intentionally replaces the legacy
+    geometry list, which used to discard every platform.  This late recovery
+    scans the same normalized 16px phase as the platform detector, but keeps
+    only compact bars that are materially darker than the local room and
+    separated from every neighbouring profile.  Existing compact geometry is
+    treated as authoritative for overlap arbitration; color objects remain
+    allowed to sit on a recovered platform.
+    """
+
+    room_profile = _room_color_profile(image, room)
+    room_luminance = (
+        room_profile.avg_r * 0.30
+        + room_profile.avg_g * 0.59
+        + room_profile.avg_b * 0.11
+    )
+    geometry = [
+        detection
+        for detection in detections
+        if detection.type_id in GEOMETRY_TYPES
+        or detection.type_id == OBJ_KILLER_BLOCK
+    ]
+    candidates: list[Detection] = []
+    for y in range(0, ROOM_HEIGHT - PLATFORM_HEIGHT + 1, PLATFORM_HEIGHT):
+        for x in range(0, ROOM_WIDTH - PLATFORM_WIDTH + 1, PLATFORM_HEIGHT):
+            features = _platform_patch_features(image, room, x, y)
+            patch = _patch_features(image, room, x, y, PLATFORM_WIDTH)
+            profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
+            block_score = _classify_block(patch).score
+            below_edge = 1.0
+            if y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+                below_edge = _patch_features(
+                    image,
+                    room,
+                    x,
+                    y + PLATFORM_HEIGHT,
+                    PLATFORM_WIDTH,
+                ).edge_density
+            horizontal_profile_distance, vertical_profile_distance = (
+                _platform_neighbor_profile_distances(image, room, x, y)
+            )
+            neighbor_profile_distance = min(
+                horizontal_profile_distance,
+                vertical_profile_distance,
+            )
+            if not _is_compact_room_relative_platform_candidate(
+                features,
+                patch,
+                profile,
+                block_score,
+                below_edge,
+                room_luminance,
+                neighbor_profile_distance=neighbor_profile_distance,
+            ):
+                continue
+            if _compact_platform_overlaps_geometry(x, y, geometry):
+                continue
+            score = (
+                features.horizontal_run / PLATFORM_SAMPLE_WIDTH
+                + features.vertical_run / PLATFORM_SAMPLE_HEIGHT
+                + features.gray_range / 255
+            ) / 3
+            candidates.append(
+                _platform_detection(
+                    x,
+                    y,
+                    score,
+                    image,
+                    room,
+                    kind="compact_relative_platform",
+                )
+            )
+
+    kept: list[Detection] = []
+    for candidate in sorted(candidates, key=lambda detection: -detection.score):
+        if any(
+            distance((candidate.x, candidate.y), (other.x, other.y))
+            < PLATFORM_DEDUPE_DISTANCE
+            for other in kept
+        ):
+            continue
+        kept.append(candidate)
+    return sorted(kept, key=lambda detection: (detection.y, detection.x))
+
+
+def _is_compact_room_relative_platform_candidate(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    profile: _ColorProfile,
+    block_score: float,
+    below_edge: float,
+    room_luminance: float,
+    *,
+    neighbor_profile_distance: float,
+) -> bool:
+    """Recognize a dark compact bar without depending on its RGB palette."""
+
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    return (
+        features.horizontal_run >= COMPACT_ROOM_PLATFORM_MIN_HORIZONTAL_RUN
+        and features.vertical_run >= COMPACT_ROOM_PLATFORM_MIN_VERTICAL_RUN
+        and COMPACT_ROOM_PLATFORM_GRAY_RANGE[0]
+        <= features.gray_range
+        <= COMPACT_ROOM_PLATFORM_GRAY_RANGE[1]
+        and features.horizontal_edge_rows >= 1
+        and profile.saturation <= COMPACT_ROOM_PLATFORM_MAX_SATURATION
+        and COMPACT_ROOM_PLATFORM_CENTER_RANGE[0]
+        <= patch.center_score
+        <= COMPACT_ROOM_PLATFORM_CENTER_RANGE[1]
+        and block_score <= COMPACT_ROOM_PLATFORM_MAX_BLOCK_SCORE
+        and below_edge <= COMPACT_ROOM_PLATFORM_MAX_BELOW_EDGE
+        and patch_luminance - room_luminance
+        <= COMPACT_ROOM_PLATFORM_MAX_ROOM_LUMINANCE_DELTA
+        and neighbor_profile_distance
+        >= COMPACT_ROOM_PLATFORM_MIN_PROFILE_DISTANCE
+    )
+
+
+def _compact_platform_overlaps_geometry(
+    x: int,
+    y: int,
+    geometry: list[Detection],
+) -> bool:
+    """Return whether a 32x16 platform band intersects accepted geometry."""
+
+    for detection in geometry:
+        size = (
+            MINI_BLOCK_SIZE
+            if detection.type_id in {*MINI_SPIKE_TYPES, OBJ_MINI_BLOCK}
+            else GRID_SIZE
+        )
+        overlap_width = max(
+            0,
+            min(x + PLATFORM_WIDTH, detection.x + size)
+            - max(x, detection.x),
+        )
+        overlap_height = max(
+            0,
+            min(y + PLATFORM_HEIGHT, detection.y + size)
+            - max(y, detection.y),
+        )
+        if overlap_width * overlap_height > 0:
+            return True
+    return False
+
+
 def _detect_platforms(
     image: RGBImage,
     room: Box,
@@ -14805,11 +14984,13 @@ def _platform_detection(
     score: float,
     image: RGBImage,
     room: Box,
+    *,
+    kind: str = "platform",
 ) -> Detection:
     scale_x = room.width / ROOM_WIDTH
     scale_y = room.height / ROOM_HEIGHT
     return Detection(
-        "platform",
+        kind,
         OBJ_PLATFORM,
         x,
         y,
