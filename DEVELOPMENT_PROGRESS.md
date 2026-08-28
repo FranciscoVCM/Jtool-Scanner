@@ -4494,3 +4494,66 @@ the existing weak/occluded/shallow-phase regressions remain green.
 The complete discovery suite passes **413 tests in 2130.458 seconds, `OK`**.
 All generated scans and benchmark output remain ignored under
 `.artifacts/goal-continuation/mini-overlap-20260828/`.
+
+## Checkpoint: compact-platform scale-phase recovery (2026-08-28)
+
+The first compact-room platform route recovered three dark bars on `NANG_139`
+and two on `NANG_139r`, but source/JTool/blend review still showed two clear
+platforms missing from the reverse capture.  Feature profiling isolated a
+capture-scale effect rather than a new platform material: resampling moved the
+horizontal contour of an otherwise qualifying 16px bar two to six logical
+pixels below the detector's nominal 16px sampling phase.  Its unshifted patch
+still retained the existing two-axis enclosure, low occupancy, dark
+room-relative material, and neighbour-isolation evidence.
+
+The compact detector now probes offsets `(2, 4, 6)` only when that complete
+unshifted material precursor is present.  An offset sample must still satisfy
+the full existing compact-platform predicate; accepted platforms remain at
+their canonical nominal JTool coordinate and must still avoid retained
+geometry.  Nominal-phase candidates are deduplicated before offset candidates,
+so a higher-scoring resampled contour cannot move or replace an already valid
+platform.  The bright-room prune preserves both compact provenances.  The
+route uses room-relative luminance, chroma, edge, occupancy, isolation, and
+geometry evidence; it does not inspect a screen name, filename, coordinate,
+palette constant, or tileset.
+
+Fresh visual-only source/JTool/blend review measures the intended change:
+
+| case | prior platform result | current platform result | effect |
+| --- | --- | --- | --- |
+| `NANG_139r` | 2 of 4 visible bars | 4 of 4 visible bars | phase bars recovered at `(224,160)` and `(640,336)`; nominal bars at `(320,288)` and `(512,304)` retained |
+| `NANG_139` | 3 of 4 visible bars | 3 of 4 visible bars | all three established candidates retain their coordinates; the player-occluded fourth bar remains unresolved |
+
+The same production scan emits no platform on `NANG_128`, `NANG_130`,
+`NANG_130r`, `NANG_131r`, `NANG_135`, `NANG_135r`, `NANG_137`, `NANG_137r`,
+`NANG_138`, or `NANG_140`.  The pale/hatched bars on `NANG_135r` and
+`NANG_137r` therefore remain an explicitly separate hypothesis rather than
+being admitted through a broader low-contrast rule.  The authoritative
+controls remain exact: Irkara-71 retains five detected/matched platforms,
+K3 Ex Hades plus Irkara-89 retain three detected/matched platforms, and the
+tracked NANG-128/135/138 controls remain platform-free.
+
+The complete twelve-pair block/spike workflow is metric-identical to the
+previous checkpoint: platforms are **3/3**, saves **22/22**, warps **12/12**,
+apples **4/4**, water **35/35**, walljumps **13/13**, gravity flippers
+**8/8**, miniblocks **875/875**, blocks **1463/1486**, full spikes
+**724/748**, minispikes **281/288**, killer blocks **99/99**, and jump
+refreshers **18/19** matched.  Detection totals also remain unchanged at 910
+miniblocks, 1596 blocks, 870 full spikes, and 330 minispikes.  FTFA remains
+the strict golden-room gate at **926/928 exact, zero false positives, two
+missed boundary blocks, zero shifted, and zero wrong directions**.
+
+The complete ten-room Irkara held-out workflow is also unchanged in every
+documented metric: platforms remain **5/5** with exactly five detections,
+saves **23/23**, warps **11/11**, water **520/520**, walljumps **7/7**
+matched, blocks `1329 detected / 976 matched`, full spikes `700 / 534`, and
+minispikes `458 / 447` (detected/matched where shown).
+
+Three focused regressions protect the material precursor, nominal-first
+deduplication, and a synthetic resampled bar whose contour is visible only on
+an offset phase.  The complete discovery suite passes **416 tests in
+1981.844 seconds, `OK`**.  Fresh ignored projects, source/JTool/blend renders,
+probes, the twelve-pair report, and the FTFA dashboard are preserved under
+`.artifacts/goal-continuation/platform-phase-20260828/`.  This checkpoint
+resolves the four-bar platform subproblem on `NANG_139r`; it does not claim
+that either visual-only room or the full 71-screen corpus is exact.

@@ -72,6 +72,7 @@ from jtool_scanner.scanner import (
     _detect_apples,
     _detect_dark_walljump_components,
     _detect_mini_blocks,
+    _detect_compact_room_relative_platforms,
     _detect_saves,
     _detect_warps,
     _detect_outline_cloud_warps,
@@ -190,7 +191,9 @@ from jtool_scanner.scanner import (
     _is_partial_relative_platform_candidate,
     _is_compact_relative_platform_candidate,
     _is_compact_room_relative_platform_candidate,
+    _is_compact_room_platform_phase_precursor,
     _compact_platform_overlaps_geometry,
+    _dedupe_compact_platform_candidates,
     _has_complete_low_contrast_platform_context,
     _has_bright_room_platform_bar_evidence,
     _platform_conflicts_supported_terrain,
@@ -6843,6 +6846,88 @@ class ScannerGeometryTests(unittest.TestCase):
                 151.0,
                 neighbor_profile_distance=9.5,
             )
+        )
+
+    def test_compact_room_platform_phase_probe_requires_material_precursor(self) -> None:
+        features = _PlatformPatchFeatures(13, 14, 87, 1)
+        patch = _PatchFeatures((), 0.191, 0.277, 0.172)
+        profile = _ColorProfile(99.0, 102.0, 96.0, 0.052)
+        self.assertTrue(
+            _is_compact_room_platform_phase_precursor(
+                features,
+                patch,
+                profile,
+                0.281,
+                0.014,
+                148.0,
+                neighbor_profile_distance=47.3,
+            )
+        )
+        self.assertFalse(
+            _is_compact_room_platform_phase_precursor(
+                features,
+                patch,
+                profile,
+                0.281,
+                0.014,
+                148.0,
+                neighbor_profile_distance=4.0,
+            )
+        )
+
+    def test_compact_platform_dedupe_preserves_nominal_phase(self) -> None:
+        base = Detection(
+            "compact_relative_platform",
+            OBJ_PLATFORM,
+            256,
+            288,
+            0.65,
+            Box(256, 288, 32, 16),
+        )
+        higher_nearby_phase = Detection(
+            "compact_relative_platform_phase",
+            OBJ_PLATFORM,
+            256,
+            272,
+            0.90,
+            Box(256, 272, 32, 16),
+        )
+        distinct_phase = Detection(
+            "compact_relative_platform_phase",
+            OBJ_PLATFORM,
+            224,
+            160,
+            0.83,
+            Box(224, 160, 32, 16),
+        )
+        kept = _dedupe_compact_platform_candidates(
+            [base],
+            [higher_nearby_phase, distinct_phase],
+        )
+        self.assertEqual(
+            [(detection.x, detection.y, detection.kind) for detection in kept],
+            [
+                (224, 160, "compact_relative_platform_phase"),
+                (256, 288, "compact_relative_platform"),
+            ],
+        )
+
+    def test_compact_platform_recovers_resampled_vertical_phase(self) -> None:
+        width, height = 800, 608
+        data = bytearray(bytes((150, 150, 150)) * width * height)
+        for y in range(160, 176):
+            for x in range(224, 256):
+                color = (20, 20, 18) if x in (224, 255) else (90, 86, 76)
+                offset = (y * width + x) * 3
+                data[offset : offset + 3] = bytes(color)
+        detected = _detect_compact_room_relative_platforms(
+            [],
+            RGBImage(width, height, bytes(data)),
+            Box(0, 0, width, height),
+        )
+        self.assertEqual(
+            [(item.x, item.y, item.kind) for item in detected],
+            [(224, 160, "compact_relative_platform_phase")],
         )
 
     def test_compact_platform_overlap_uses_platform_height_not_full_cell(self) -> None:

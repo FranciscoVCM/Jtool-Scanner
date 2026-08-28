@@ -522,6 +522,11 @@ COMPACT_ROOM_PLATFORM_MAX_BLOCK_SCORE = 0.34
 COMPACT_ROOM_PLATFORM_MAX_BELOW_EDGE = 0.30
 COMPACT_ROOM_PLATFORM_MAX_ROOM_LUMINANCE_DELTA = -24.0
 COMPACT_ROOM_PLATFORM_MIN_PROFILE_DISTANCE = 24.0
+# A compact source capture can resample a 16px platform contour between the
+# detector's 16px map phases.  Probe only the small forward offsets that occur
+# inside one half-cell; the unshifted phase remains authoritative whenever it
+# already produced a candidate.
+COMPACT_ROOM_PLATFORM_PHASE_OFFSETS = (2, 4, 6)
 # A partially occluded platform can retain only a short horizontal contour,
 # but its material still differs chromatically from the room.  Use the local
 # chroma direction (rather than an absolute brown/gray threshold) to recover
@@ -5492,7 +5497,7 @@ def _prune_bright_room_platform_impostors(
     for detection in detections:
         if (
             detection.type_id == OBJ_PLATFORM
-            and detection.kind != "compact_relative_platform"
+            and not detection.kind.startswith("compact_relative_platform")
             and not _has_bright_room_platform_bar_evidence(
                 _platform_horizontal_edge_runs(
                     image,
@@ -14289,30 +14294,30 @@ def _detect_compact_room_relative_platforms(
         if detection.type_id in GEOMETRY_TYPES
         or detection.type_id == OBJ_KILLER_BLOCK
     ]
-    candidates: list[Detection] = []
+    base_candidates: list[Detection] = []
+    phase_candidates: list[Detection] = []
     for y in range(0, ROOM_HEIGHT - PLATFORM_HEIGHT + 1, PLATFORM_HEIGHT):
         for x in range(0, ROOM_WIDTH - PLATFORM_WIDTH + 1, PLATFORM_HEIGHT):
-            features = _platform_patch_features(image, room, x, y)
-            patch = _patch_features(image, room, x, y, PLATFORM_WIDTH)
-            profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
-            block_score = _classify_block(patch).score
-            below_edge = 1.0
-            if y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
-                below_edge = _patch_features(
-                    image,
-                    room,
-                    x,
-                    y + PLATFORM_HEIGHT,
-                    PLATFORM_WIDTH,
-                ).edge_density
-            horizontal_profile_distance, vertical_profile_distance = (
-                _platform_neighbor_profile_distances(image, room, x, y)
+            (
+                features,
+                patch,
+                profile,
+                block_score,
+                below_edge,
+                neighbor_profile_distance,
+            ) = _compact_room_platform_sample(image, room, x, y)
+            is_base_candidate = _is_compact_room_relative_platform_candidate(
+                features,
+                patch,
+                profile,
+                block_score,
+                below_edge,
+                room_luminance,
+                neighbor_profile_distance=neighbor_profile_distance,
             )
-            neighbor_profile_distance = min(
-                horizontal_profile_distance,
-                vertical_profile_distance,
-            )
-            if not _is_compact_room_relative_platform_candidate(
+            chosen_features = features
+            chosen_kind = "compact_relative_platform"
+            if not is_base_candidate and _is_compact_room_platform_phase_precursor(
                 features,
                 patch,
                 profile,
@@ -14321,34 +14326,170 @@ def _detect_compact_room_relative_platforms(
                 room_luminance,
                 neighbor_profile_distance=neighbor_profile_distance,
             ):
+                shifted_match: tuple[float, _PlatformPatchFeatures] | None = None
+                for offset in COMPACT_ROOM_PLATFORM_PHASE_OFFSETS:
+                    sample_y = y + offset
+                    if sample_y > ROOM_HEIGHT - PLATFORM_HEIGHT:
+                        continue
+                    (
+                        shifted_features,
+                        shifted_patch,
+                        shifted_profile,
+                        shifted_block_score,
+                        shifted_below_edge,
+                        shifted_neighbor_distance,
+                    ) = _compact_room_platform_sample(image, room, x, sample_y)
+                    if not _is_compact_room_relative_platform_candidate(
+                        shifted_features,
+                        shifted_patch,
+                        shifted_profile,
+                        shifted_block_score,
+                        shifted_below_edge,
+                        room_luminance,
+                        neighbor_profile_distance=shifted_neighbor_distance,
+                    ):
+                        continue
+                    shifted_score = _compact_platform_candidate_score(
+                        shifted_features
+                    )
+                    if shifted_match is None or shifted_score > shifted_match[0]:
+                        shifted_match = (shifted_score, shifted_features)
+                if shifted_match is not None:
+                    chosen_features = shifted_match[1]
+                    chosen_kind = "compact_relative_platform_phase"
+            if not is_base_candidate and chosen_kind == "compact_relative_platform":
                 continue
             if _compact_platform_overlaps_geometry(x, y, geometry):
                 continue
-            score = (
-                features.horizontal_run / PLATFORM_SAMPLE_WIDTH
-                + features.vertical_run / PLATFORM_SAMPLE_HEIGHT
-                + features.gray_range / 255
-            ) / 3
-            candidates.append(
-                _platform_detection(
-                    x,
-                    y,
-                    score,
-                    image,
-                    room,
-                    kind="compact_relative_platform",
-                )
+            candidate = _platform_detection(
+                x,
+                y,
+                _compact_platform_candidate_score(chosen_features),
+                image,
+                room,
+                kind=chosen_kind,
             )
+            if is_base_candidate:
+                base_candidates.append(candidate)
+            else:
+                phase_candidates.append(candidate)
+
+    return _dedupe_compact_platform_candidates(
+        base_candidates,
+        phase_candidates,
+    )
+
+
+def _compact_room_platform_sample(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+) -> tuple[
+    _PlatformPatchFeatures,
+    _PatchFeatures,
+    _ColorProfile,
+    float,
+    float,
+    float,
+]:
+    features = _platform_patch_features(image, room, x, y)
+    patch = _patch_features(image, room, x, y, PLATFORM_WIDTH)
+    profile = _patch_color_profile(image, room, x, y, PLATFORM_WIDTH)
+    block_score = _classify_block(patch).score
+    below_edge = 1.0
+    if y + PLATFORM_HEIGHT <= ROOM_HEIGHT - PLATFORM_WIDTH:
+        below_edge = _patch_features(
+            image,
+            room,
+            x,
+            y + PLATFORM_HEIGHT,
+            PLATFORM_WIDTH,
+        ).edge_density
+    horizontal_distance, vertical_distance = _platform_neighbor_profile_distances(
+        image,
+        room,
+        x,
+        y,
+    )
+    return (
+        features,
+        patch,
+        profile,
+        block_score,
+        below_edge,
+        min(horizontal_distance, vertical_distance),
+    )
+
+
+def _is_compact_room_platform_phase_precursor(
+    features: _PlatformPatchFeatures,
+    patch: _PatchFeatures,
+    profile: _ColorProfile,
+    block_score: float,
+    below_edge: float,
+    room_luminance: float,
+    *,
+    neighbor_profile_distance: float,
+) -> bool:
+    """Gate scale-phase probes with the unshifted material evidence.
+
+    Resampling can move a platform's horizontal contour between the nominal
+    16px phases while its vertical enclosure, dark room-relative material,
+    low occupancy, and isolation remain intact.  This is only a precursor: an
+    offset sample must still satisfy the complete compact-platform gate.
+    """
+
+    patch_luminance = (
+        profile.avg_r * 0.30
+        + profile.avg_g * 0.59
+        + profile.avg_b * 0.11
+    )
+    return (
+        features.vertical_run >= COMPACT_ROOM_PLATFORM_MIN_VERTICAL_RUN
+        and COMPACT_ROOM_PLATFORM_GRAY_RANGE[0]
+        <= features.gray_range
+        <= COMPACT_ROOM_PLATFORM_GRAY_RANGE[1]
+        and profile.saturation <= COMPACT_ROOM_PLATFORM_MAX_SATURATION
+        and COMPACT_ROOM_PLATFORM_CENTER_RANGE[0]
+        <= patch.center_score
+        <= COMPACT_ROOM_PLATFORM_CENTER_RANGE[1]
+        and block_score <= COMPACT_ROOM_PLATFORM_MAX_BLOCK_SCORE
+        and below_edge <= COMPACT_ROOM_PLATFORM_MAX_BELOW_EDGE
+        and patch_luminance - room_luminance
+        <= COMPACT_ROOM_PLATFORM_MAX_ROOM_LUMINANCE_DELTA
+        and neighbor_profile_distance
+        >= COMPACT_ROOM_PLATFORM_MIN_PROFILE_DISTANCE
+    )
+
+
+def _compact_platform_candidate_score(features: _PlatformPatchFeatures) -> float:
+    return (
+        features.horizontal_run / PLATFORM_SAMPLE_WIDTH
+        + features.vertical_run / PLATFORM_SAMPLE_HEIGHT
+        + features.gray_range / 255
+    ) / 3
+
+
+def _dedupe_compact_platform_candidates(
+    base_candidates: list[Detection],
+    phase_candidates: list[Detection],
+) -> list[Detection]:
+    """Keep nominal-phase platforms authoritative over offset recoveries."""
 
     kept: list[Detection] = []
-    for candidate in sorted(candidates, key=lambda detection: -detection.score):
-        if any(
-            distance((candidate.x, candidate.y), (other.x, other.y))
-            < PLATFORM_DEDUPE_DISTANCE
-            for other in kept
+    for candidates in (base_candidates, phase_candidates):
+        for candidate in sorted(
+            candidates,
+            key=lambda detection: -detection.score,
         ):
-            continue
-        kept.append(candidate)
+            if any(
+                distance((candidate.x, candidate.y), (other.x, other.y))
+                < PLATFORM_DEDUPE_DISTANCE
+                for other in kept
+            ):
+                continue
+            kept.append(candidate)
     return sorted(kept, key=lambda detection: (detection.y, detection.x))
 
 
