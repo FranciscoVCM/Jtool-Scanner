@@ -7398,6 +7398,57 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertEqual(result, raw_blocks[:-1])
 
+    def test_late_dense_miniblock_alias_pruning_rejects_material_outlier(
+        self,
+    ) -> None:
+        """A low-transition material outlier need not be topologically sparse."""
+
+        raw_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (0, 16, 32, 48, 64, 80)
+        ]
+
+        def features(_image, _room, x, _y):
+            if x == 64:
+                return _NormalizedLumaPatch(
+                    (1.6, *(0.0 for _ in range(15))),
+                    # Below the material-transition boundary, but below the
+                    # sparse-alias edge threshold and with two axis neighbors.
+                    0.02,
+                    0.10,
+                )
+            return _NormalizedLumaPatch(
+                (0.0,) * 16,
+                0.02,
+                0.20,
+            )
+
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                side_effect=features,
+            ),
+        ):
+            result = _prune_late_dense_miniblock_aliases(
+                raw_blocks,
+                raw_blocks,
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result, [*raw_blocks[:4], raw_blocks[-1]])
+
     def test_late_dense_miniblock_alias_pruning_rejects_sparse_outlier(self) -> None:
         """A displaced, weakly supported alias is removed after arbitration."""
 

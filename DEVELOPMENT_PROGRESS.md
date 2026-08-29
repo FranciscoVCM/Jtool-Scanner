@@ -4657,3 +4657,51 @@ Fresh ignored probes, reports, exact projects, and review material are under
 CN3-16 and CN3-18 ledger rows point to these source/JTool/blend artifacts and
 remain `needs-more-work`; neither the two-cell exact improvement nor the
 fixture precision gain is presented as completion of those rooms.
+
+## Checkpoint: palette-normalized dense material-deviation veto (2026-08-29)
+
+The follow-up dense-room batch examined the remaining late raw-miniblock
+candidates inside the production pruning call rather than inferring their
+features from final output coordinates.  Across tracked and full-resolution
+CN3-16/CN3-18 captures, the proposed material-deviation predicate identifies
+seven raw candidates and **zero authoritative truth cells**.  Four of those
+candidates survive the preceding flat and sparse alias rules.  This
+provenance-aware result corrects an earlier post-hoc probe whose full-capture
+coordinates had been measured in the wrong image space.
+
+Late dense-miniblock pruning now rejects a raw candidate when its
+palette-normalized descriptor distance is above `0.36` while its normalized
+centre gradient remains below `0.12`.  The rule is evaluated only after a
+dense 16px lattice is proven, uses no filename, room, coordinate, palette, or
+tileset identity, and leaves structural recovery candidates untouched.  It
+therefore targets a reusable disagreement between a candidate's material and
+the learned room-relative miniblock structure without suppressing occluded
+backing geometry.
+
+The complete 12-pair workflow retains **875/875** miniblock matches while
+reducing miniblock detections from **904 to 900**.  All other protected totals
+are unchanged: saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps
+13/13, gravity 8/8, platforms 3/3, blocks 1463/1486, full spikes 724/748,
+minispikes 281/288, killer blocks 99/99, and jump refreshers 18/19 matched.
+The focused tracked CN3 subset likewise retains all 501 CN3-16 and all 374
+CN3-18 miniblocks while reducing detections from 904 to 900.
+
+On the full-resolution exact crosswalk, CN3-16 improves to **575/590 exact,
+17 false positives, 15 misses, zero shifted, and zero wrong-direction
+objects** (32 errors).  CN3-18 improves to **478/492 exact, 19 false
+positives, 13 misses, zero shifted, and one wrong-direction object** (33
+errors).  Combined exact errors fall **69 to 65**, entirely through four
+fewer false miniblocks; exact matches and misses are unchanged.  FTFA remains
+the strict gate at **926/928 exact, zero false positives, two boundary misses,
+zero shifts, and zero wrong directions**.
+
+Four focused regressions pass, including a two-neighbor low-edge candidate
+that proves this material rule is independent of the flat and sparse vetoes.
+The immediately preceding complete discovery suite remains green at 416
+tests; this bounded change is additionally covered by the production
+provenance study, both capture scales, the complete fixture scan, and FTFA.
+Fresh reports and source/JTool/blend review output are preserved under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/material-gate-*`.
+CN3-16 and CN3-18 remain conservatively `needs-more-work`; 65 authoritative
+geometry errors remain, so this precision checkpoint is not presented as
+completion of either room or of the 71-screen corpus.
