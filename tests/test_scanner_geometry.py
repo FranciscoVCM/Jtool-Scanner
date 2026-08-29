@@ -51,6 +51,8 @@ from jtool_scanner.scanner import (
     _arbitrate_full_spikes_against_blocks,
     _arbitrate_full_spike_scale_duplicates,
     _arbitrate_dense_miniblock_geometry,
+    _has_dense_miniblock_half_phase_material,
+    _is_dense_miniblock_half_phase_column,
     _is_dense_miniblock_run_supported,
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
@@ -7448,6 +7450,59 @@ class ScannerGeometryTests(unittest.TestCase):
             )
 
         self.assertEqual(result, [*raw_blocks[:4], raw_blocks[-1]])
+
+    def test_dense_miniblock_half_phase_column_requires_material_and_caps(
+        self,
+    ) -> None:
+        """Scale-soft block evidence still needs normalized bodies and caps."""
+
+        def patch(edge_density: float, border_score: float) -> _PatchFeatures:
+            return _PatchFeatures((), edge_density, border_score, 0.0)
+
+        def profile(saturation: float) -> _ColorProfile:
+            return _ColorProfile(80.0, 120.0, 160.0, saturation)
+
+        up = _GeometryClass("mini_spike_up", OBJ_MINI_SPIKE_UP, 0.22, 0.0, 0.16)
+        down = _GeometryClass(
+            "mini_spike_down",
+            OBJ_MINI_SPIKE_DOWN,
+            0.25,
+            0.0,
+            -0.20,
+        )
+        coherent = (_NormalizedLumaPatch((), 0.0, 0.28), _NormalizedLumaPatch((), 0.0, 0.21))
+
+        self.assertTrue(
+            _is_dense_miniblock_half_phase_column(
+                patch(0.34, 0.36),
+                patch(0.082, 0.12),
+                profile(0.36),
+                profile(0.42),
+                up,
+                down,
+                0.0,
+                0.5625,
+            )
+        )
+        self.assertTrue(_has_dense_miniblock_half_phase_material(*coherent))
+        self.assertFalse(
+            _is_dense_miniblock_half_phase_column(
+                patch(0.27, 0.22),
+                patch(0.45, 0.33),
+                profile(0.29),
+                profile(0.37),
+                up,
+                down,
+                0.50,
+                0.44,
+            )
+        )
+        self.assertFalse(
+            _has_dense_miniblock_half_phase_material(
+                _NormalizedLumaPatch((), 0.0, 0.04),
+                _NormalizedLumaPatch((), 0.0, 0.08),
+            )
+        )
 
     def test_late_dense_miniblock_alias_pruning_rejects_sparse_outlier(self) -> None:
         """A displaced, weakly supported alias is removed after arbitration."""

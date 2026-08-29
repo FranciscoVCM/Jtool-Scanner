@@ -4705,3 +4705,51 @@ Fresh reports and source/JTool/blend review output are preserved under
 CN3-16 and CN3-18 remain conservatively `needs-more-work`; 65 authoritative
 geometry errors remain, so this precision checkpoint is not presented as
 completion of either room or of the 71-screen corpus.
+
+## Checkpoint: scale-stable dense half-phase column arbitration (2026-08-29)
+
+The next provenance pass classified every final miniblock by detector source
+at both tracked and full-resolution scales.  Raw texture detection still
+accounts for most remaining extras, but the alternate-8px-phase recovery had
+a particularly bounded error: across the four scans it emitted eight false
+miniblocks and only the two authoritative cells at `(200,400)` and
+`(200,416)` in CN3-18.  The same true pair was recovered in the tracked image
+but missed after full-resolution sampling, so simply disabling the recovery
+would have traded precision for a real cross-scale regression.
+
+An in-pipeline feature study separated the pair without palette, filename,
+room, or coordinate knowledge.  Both true block bodies retain normalized
+centre transitions above `0.18`, and the surrounding opposite spike caps have
+more than 50% directional face coverage.  Every observed false column has
+either a flat normalized body or only the exactly-half-face ambiguous cap
+case.  The recovery now requires those stronger relative material/topology
+signals, while its raw block-edge and cap-outline bounds are slightly softened
+to tolerate the measured full-resolution resampling loss.  A synthetic
+regression covers the resampled true case, the ambiguous-cap false case, and
+the flat-material false case.
+
+The complete 12-pair workflow retains **875/875** miniblock matches while
+reducing miniblock detections from **900 to 896**.  CN3-16 remains 501/501 at
+512 detections; CN3-18 remains 374/374 while detections fall 388 to 384.  All
+other aggregate matches and detections are unchanged: saves 22/22, warps
+12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8, platforms 3/3,
+blocks 1463/1486, full spikes 724/748, minispikes 281/288, killer blocks
+99/99, and jump refreshers 18/19 matched.
+
+The full-resolution exact crosswalk improves more substantially.  CN3-16 is
+now **575/590 exact, 15 false positives, 15 misses, zero shifted, and zero
+wrong directions** (30 errors).  CN3-18 is now **482/492 exact, 17 false
+positives, 9 misses, zero shifted, and one wrong direction** (27 errors).
+The strengthened recovery removes four false miniblocks and, at the larger
+capture scale, restores the two true half-phase blocks plus their genuine up
+and down minispike caps.  Combined exact errors therefore fall **65 to 57**.
+FTFA remains unchanged at **926/928 exact, zero false positives, two boundary
+misses, zero shifts, and zero wrong directions**.
+
+The focused helper regressions, tracked CN3 gate, complete 12-pair workflow,
+full-resolution exact benchmark, and strict FTFA benchmark all pass.  Fresh
+ignored reports and source/JTool/blend output are preserved under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/half-phase-*`.
+Both exact rooms remain `needs-more-work`; this eight-error improvement is a
+measured step toward the 71-screen goal, not a claim that either room or the
+corpus is complete.

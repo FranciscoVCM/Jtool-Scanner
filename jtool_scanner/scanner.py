@@ -222,6 +222,15 @@ DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MAX_CENTER_GRADIENT = 0.12
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
+# A two-cell miniblock column on the alternate 8px phase is recoverable only
+# when its two block bodies retain palette-normalized internal transitions and
+# the surrounding opposite caps provide more than an exactly half-filled
+# directional face.  These relative gates keep the recovery stable across
+# resampling while rejecting texture columns that merely resemble two caps.
+DENSE_MINIBLOCK_HALF_PHASE_MIN_EDGE_DENSITY = 0.08
+DENSE_MINIBLOCK_HALF_PHASE_MIN_OUTLINE_DELTA = -0.21
+DENSE_MINIBLOCK_HALF_PHASE_MIN_CENTER_GRADIENT = 0.18
+DENSE_MINIBLOCK_HALF_PHASE_MIN_CAP_SIDE_COVERAGE = 0.50
 # Neutral-terrain spike candidates are generated before the terrain block
 # field is fully reconciled.  A late overlap veto can therefore reject a
 # weak triangle visibly inside a solid cell without affecting genuinely
@@ -18506,6 +18515,50 @@ def _recover_miniblock_backing_cells(
     return result
 
 
+def _is_dense_miniblock_half_phase_column(
+    first_block: _PatchFeatures,
+    second_block: _PatchFeatures,
+    first_profile: _ColorProfile,
+    second_profile: _ColorProfile,
+    up: _GeometryClass,
+    down: _GeometryClass,
+    up_side: float,
+    down_side: float,
+) -> bool:
+    """Return whether opposite caps provide a half-phase column precursor."""
+
+    return (
+        first_block.edge_density
+        >= DENSE_MINIBLOCK_HALF_PHASE_MIN_EDGE_DENSITY
+        and second_block.edge_density
+        >= DENSE_MINIBLOCK_HALF_PHASE_MIN_EDGE_DENSITY
+        and max(first_block.border_score, second_block.border_score) >= 0.25
+        and first_profile.saturation >= 0.25
+        and second_profile.saturation >= 0.25
+        and _color_profile_distance(first_profile, second_profile) <= 60
+        and up.score >= 0.18
+        and up.outline_delta
+        >= DENSE_MINIBLOCK_HALF_PHASE_MIN_OUTLINE_DELTA
+        and down.score >= 0.18
+        and down.outline_delta
+        >= DENSE_MINIBLOCK_HALF_PHASE_MIN_OUTLINE_DELTA
+        and max(up_side, down_side)
+        > DENSE_MINIBLOCK_HALF_PHASE_MIN_CAP_SIDE_COVERAGE
+    )
+
+
+def _has_dense_miniblock_half_phase_material(
+    first_normalized: _NormalizedLumaPatch,
+    second_normalized: _NormalizedLumaPatch,
+) -> bool:
+    """Return whether both half-phase bodies retain normalized structure."""
+
+    return min(
+        first_normalized.center_gradient,
+        second_normalized.center_gradient,
+    ) >= DENSE_MINIBLOCK_HALF_PHASE_MIN_CENTER_GRADIENT
+
+
 def _recover_miniblock_room_mini_spikes(
     detections: list[Detection],
     mini_blocks: list[Detection],
@@ -18692,18 +18745,26 @@ def _recover_miniblock_room_mini_spikes(
             )
             up_side = _triangle_side_coverage(up_patch, "up")
             down_side = _triangle_side_coverage(down_patch, "down")
-            if not (
-                first_block.edge_density >= 0.10
-                and second_block.edge_density >= 0.10
-                and max(first_block.border_score, second_block.border_score) >= 0.25
-                and first_profile.saturation >= 0.25
-                and second_profile.saturation >= 0.25
-                and _color_profile_distance(first_profile, second_profile) <= 60
-                and up.score >= 0.18
-                and up.outline_delta >= -0.15
-                and down.score >= 0.18
-                and down.outline_delta >= -0.15
-                and max(up_side, down_side) >= 0.50
+            if not _is_dense_miniblock_half_phase_column(
+                first_block,
+                second_block,
+                first_profile,
+                second_profile,
+                up,
+                down,
+                up_side,
+                down_side,
+            ):
+                continue
+            first_normalized = _normalized_miniblock_luma_patch(
+                image, room, x, y
+            )
+            second_normalized = _normalized_miniblock_luma_patch(
+                image, room, x, y + MINI_BLOCK_SIZE
+            )
+            if not _has_dense_miniblock_half_phase_material(
+                first_normalized,
+                second_normalized,
             ):
                 continue
             selected.extend(
