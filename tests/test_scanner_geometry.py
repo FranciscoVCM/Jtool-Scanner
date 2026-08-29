@@ -52,7 +52,9 @@ from jtool_scanner.scanner import (
     _arbitrate_full_spike_scale_duplicates,
     _arbitrate_dense_miniblock_geometry,
     _has_dense_miniblock_half_phase_material,
+    _has_dense_walljump_backing_material,
     _is_dense_miniblock_half_phase_column,
+    _is_dense_walljump_edge_mini_spike_candidate,
     _is_dense_miniblock_run_supported,
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
@@ -7501,6 +7503,52 @@ class ScannerGeometryTests(unittest.TestCase):
             _has_dense_miniblock_half_phase_material(
                 _NormalizedLumaPatch((), 0.0, 0.04),
                 _NormalizedLumaPatch((), 0.0, 0.08),
+            )
+        )
+
+    def test_dense_walljump_backing_prefers_decisive_edge_mini_spike(
+        self,
+    ) -> None:
+        """Normalized backing and high-margin triangle evidence stay separate."""
+
+        self.assertTrue(
+            _has_dense_walljump_backing_material(
+                _NormalizedLumaPatch((), 0.16, 0.15)
+            )
+        )
+        self.assertFalse(
+            _has_dense_walljump_backing_material(
+                _NormalizedLumaPatch((), 0.03, 0.084)
+            )
+        )
+        fill = _TriangleFillFeatures(114.9, 0.906, 0.20, 0.70, 63.6)
+        normalized = _NormalizedLumaPatch((), 0.16, 0.17)
+        self.assertTrue(
+            _is_dense_walljump_edge_mini_spike_candidate(
+                _GeometryClass(
+                    "mini_spike_up",
+                    OBJ_MINI_SPIKE_UP,
+                    0.444,
+                    0.146,
+                    0.138,
+                ),
+                fill,
+                normalized,
+                0.875,
+            )
+        )
+        self.assertFalse(
+            _is_dense_walljump_edge_mini_spike_candidate(
+                _GeometryClass(
+                    "mini_spike_down",
+                    OBJ_MINI_SPIKE_DOWN,
+                    0.511,
+                    0.044,
+                    0.241,
+                ),
+                fill,
+                normalized,
+                0.875,
             )
         )
 

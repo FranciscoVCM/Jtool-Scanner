@@ -231,6 +231,15 @@ DENSE_MINIBLOCK_HALF_PHASE_MIN_EDGE_DENSITY = 0.08
 DENSE_MINIBLOCK_HALF_PHASE_MIN_OUTLINE_DELTA = -0.21
 DENSE_MINIBLOCK_HALF_PHASE_MIN_CENTER_GRADIENT = 0.18
 DENSE_MINIBLOCK_HALF_PHASE_MIN_CAP_SIDE_COVERAGE = 0.50
+# Walljump strips occlude real backing cells, but their fixed recovery span can
+# extend into empty background or a strong edge spike.  Resolve those cases by
+# normalized local structure and decisive triangle evidence, independent of
+# vine color, room identity, or an absolute tileset palette.
+DENSE_WALLJUMP_BACKING_MIN_CENTER_GRADIENT = 0.12
+DENSE_WALLJUMP_EDGE_MINI_MIN_SCORE = 0.42
+DENSE_WALLJUMP_EDGE_MINI_MIN_DIRECTION_MARGIN = 0.10
+DENSE_WALLJUMP_EDGE_MINI_MIN_OUTLINE_DELTA = 0.12
+DENSE_WALLJUMP_EDGE_MINI_MIN_SIDE_COVERAGE = 0.85
 # Neutral-terrain spike candidates are generated before the terrain block
 # field is fully reconciled.  A late overlap veto can therefore reject a
 # weak triangle visibly inside a solid cell without affecting genuinely
@@ -2464,6 +2473,11 @@ def scan_image(
         box,
     )
     if include_geometry:
+        detections = _recover_dense_walljump_edge_mini_spikes(
+            detections,
+            image,
+            box,
+        )
         detections = _arbitrate_dense_miniblock_geometry(
             detections,
             mini_blocks,
@@ -18435,6 +18449,17 @@ def _suppress_weaker_miniblock_room_opposites(
     ]
 
 
+def _has_dense_walljump_backing_material(
+    normalized: _NormalizedLumaPatch,
+) -> bool:
+    """Return whether an occluded walljump backing cell contains structure."""
+
+    return (
+        normalized.center_gradient
+        >= DENSE_WALLJUMP_BACKING_MIN_CENTER_GRADIENT
+    )
+
+
 def _recover_miniblock_backing_cells(
     detections: list[Detection],
     mini_blocks: list[Detection],
@@ -18450,6 +18475,17 @@ def _recover_miniblock_backing_cells(
         if not (0 <= x < ROOM_WIDTH and 0 <= y < ROOM_HEIGHT):
             return
         if (x, y) in positions:
+            return
+        if kind == "mini_block_walljump_backing" and not (
+            _has_dense_walljump_backing_material(
+                _normalized_miniblock_luma_patch(
+                    image,
+                    room,
+                    x,
+                    y,
+                )
+            )
+        ):
             return
         patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
         result.append(
@@ -29742,6 +29778,113 @@ def _prune_late_dense_miniblock_aliases(
         for detection in detections
         if id(detection) not in remove_ids
     ]
+
+
+def _is_dense_walljump_edge_mini_spike_candidate(
+    shape: _GeometryClass,
+    fill: _TriangleFillFeatures,
+    normalized: _NormalizedLumaPatch,
+    side_coverage: float,
+) -> bool:
+    """Return whether a walljump-backed cell is decisively a mini spike."""
+
+    normalized_luma = abs(fill.luma_contrast) / max(1.0, fill.cluster_gap)
+    fill_polarity = abs(fill.inside_density - 0.50)
+    return (
+        shape.score >= DENSE_WALLJUMP_EDGE_MINI_MIN_SCORE
+        and shape.direction_margin
+        >= DENSE_WALLJUMP_EDGE_MINI_MIN_DIRECTION_MARGIN
+        and shape.outline_delta >= DENSE_WALLJUMP_EDGE_MINI_MIN_OUTLINE_DELTA
+        and side_coverage >= DENSE_WALLJUMP_EDGE_MINI_MIN_SIDE_COVERAGE
+        and fill.cluster_gap >= DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP
+        and normalized_luma
+        >= DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_LUMA_CONTRAST
+        and (
+            fill_polarity >= DENSE_MINIBLOCK_MINI_MIN_FILL_POLARITY
+            or normalized.edge_density
+            >= DENSE_MINIBLOCK_MINI_MIN_NORMALIZED_EDGE_DENSITY
+        )
+    )
+
+
+def _recover_dense_walljump_edge_mini_spikes(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover decisive mini triangles hidden by structural walljump backing."""
+
+    backing = [
+        detection
+        for detection in detections
+        if detection.kind == "mini_block_walljump_backing"
+        and detection.type_id == OBJ_MINI_BLOCK
+    ]
+    if not backing:
+        return detections
+    existing_mini_origins = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    }
+    directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    added: list[Detection] = []
+    for block in backing:
+        if (block.x, block.y) in existing_mini_origins:
+            continue
+        patch = _patch_features(
+            image,
+            room,
+            block.x,
+            block.y,
+            MINI_BLOCK_SIZE,
+        )
+        shape = max(
+            _classify_mini_spike_candidates(patch),
+            key=lambda item: item.score,
+        )
+        direction = directions[shape.type_id]
+        fill = _triangle_fill_features(
+            image,
+            room,
+            block.x,
+            block.y,
+            MINI_BLOCK_SIZE,
+            direction,
+        )
+        normalized = _normalized_miniblock_luma_patch(
+            image,
+            room,
+            block.x,
+            block.y,
+        )
+        side_coverage = _triangle_side_coverage(patch, direction)
+        if not _is_dense_walljump_edge_mini_spike_candidate(
+            shape,
+            fill,
+            normalized,
+            side_coverage,
+        ):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_spike_walljump_edge_recovery",
+                shape.type_id,
+                block.x,
+                block.y,
+                shape.score,
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+        existing_mini_origins.add((block.x, block.y))
+    return [*detections, *added] if added else detections
 
 
 def _arbitrate_dense_miniblock_geometry(

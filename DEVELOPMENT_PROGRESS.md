@@ -4753,3 +4753,55 @@ ignored reports and source/JTool/blend output are preserved under
 Both exact rooms remain `needs-more-work`; this eight-error improvement is a
 measured step toward the 71-screen goal, not a claim that either room or the
 corpus is complete.
+
+## Checkpoint: dense walljump-edge backing arbitration (2026-08-29)
+
+The next exact mismatch study targeted a recurring overlap failure at a dense
+room boundary: full-resolution CN3-18 emitted a structural walljump-backing
+miniblock at `(0,320)` while missing the authoritative up-minispike in that
+same cell.  The tracked-scale scan already resolved the conflict correctly,
+so the problem was not general block/spike precedence; resampling prevented
+the spike from reaching the existing dense arbitration.  The same recovered
+walljump span also extended one cell into empty background at `(0,480)` at
+both scales.
+
+All 11 recovered walljump-backing cells were profiled at both scales.  The
+empty tail has normalized centre transition below `0.084`, while every true
+backing cell is at least `0.150`.  The missing full-resolution edge spike has
+score `0.444`, direction margin `0.146`, outline delta `0.138`, side coverage
+`0.875`, and the same decisive normalized fill evidence used by dense
+block/spike arbitration.  By contrast, the strongest spike-like hypothesis
+inside any true backing block has direction margin only `0.044`.
+
+Walljump backing now requires normalized local structure before a missing
+cell is synthesized.  A walljump-backed cell with no existing mini candidate
+also receives one bounded recovery opportunity when its strongest 16px
+triangle has decisive score, margin, outline, side coverage, cluster gap, and
+palette-relative fill evidence.  The existing dense arbiter then owns the
+final same-origin choice.  Neither rule uses walljump color, a room name,
+coordinate, source filename, or tileset palette.
+
+The complete 12-pair workflow retains **875/875** miniblock matches while
+reducing detections from **896 to 895**; minispikes remain **281/288** matched
+at 330 detections and walljumps remain **13/13**.  Every other aggregate is
+unchanged: saves 22/22, warps 12/12, apples 4/4, water 35/35, gravity 8/8,
+platforms 3/3, blocks 1463/1486, full spikes 724/748, killer blocks 99/99,
+and jump refreshers 18/19 matched.
+
+The full-resolution exact crosswalk leaves CN3-16 unchanged at **575/590
+exact, 15 false positives, 15 misses, zero shifted, and zero wrong
+directions** (30 errors).  CN3-18 improves to **483/492 exact, 15 false
+positives, 8 misses, zero shifted, and one wrong direction** (24 errors): two
+false backing miniblocks are removed and the true edge up-minispike is
+restored.  Combined exact errors fall **57 to 54**.  FTFA remains protected by
+the immediately preceding strict result of **926/928 exact, zero false
+positives, two boundary misses, zero shifts, and zero wrong directions**; the
+new path cannot activate there because it requires structural dense-room
+walljump backing.
+
+Five focused regressions, the tracked CN3 gate, full-resolution exact
+benchmark, and complete 12-pair workflow pass.  Fresh ignored reports and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/walljump-edge-*`.
+CN3-16 and CN3-18 remain `needs-more-work`; 54 authoritative geometry errors
+remain across the two rooms.
