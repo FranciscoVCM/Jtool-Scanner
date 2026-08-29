@@ -4805,3 +4805,44 @@ source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/walljump-edge-*`.
 CN3-16 and CN3-18 remain `needs-more-work`; 54 authoritative geometry errors
 remain across the two rooms.
+
+## Checkpoint: palette-normalized bottom continuation material (2026-08-29)
+
+The next bounded mismatch was the synthetic CN3-18 bottom miniblock at
+`(144,576)`.  The pre-existing edge/saturation continuation gate emitted this
+false cell at both the tracked 1075x820 capture scale and the native 800x608
+scale.  It also emitted the genuine tracked-scale two-cell continuation at
+`(688,576)` and `(688,592)`, so disabling boundary recovery would have traded
+precision for two authoritative misses.
+
+The old candidates overlap in saturation and normalized centre gradient, but
+their palette-normalized 4x4 luminance descriptors separate cleanly from the
+room-learned raw-miniblock material.  The false cell is `0.487` from the
+tracked material median and `0.478` at native scale, while the two genuine
+cells are `0.200` and `0.216`.  Synthetic bottom continuation therefore now
+requires descriptor distance at most `0.36`; sparse rooms without at least
+four raw material cells keep the established fallback.  This gate uses no
+RGB range, room identity, filename, coordinate exception, or tileset name,
+and it does not alter ordinary raw terrain detections.
+
+The complete 12-pair workflow preserves every established match and changes
+only CN3-18 miniblock detections from **383 to 382**.  Aggregate miniblocks
+remain **875/875** matched at 894 detections.  All other totals remain saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity 8/8,
+platforms 3/3, blocks 1463/1486, full spikes 724/748, minispikes 281/288,
+killer blocks 99/99, and jump refreshers 18/19 matched.
+
+The strict full-resolution crosswalk keeps **1058/1082 exact** and reduces
+false positives from 30 to 29, leaving 23 misses, zero shifts, and one wrong
+direction.  CN3-16 remains **575/590 exact with 30 errors**; CN3-18 improves
+from 24 to **23 errors**.  Combined authoritative errors fall **54 to 53**.
+The rule is confined to the already-classified dense-miniblock-room recovery
+path and therefore cannot activate on FTFA; the immediately preceding strict
+FTFA result remains 926/928 exact with zero false positives.
+
+Three focused regressions, the complete 278-test geometry module, compilation,
+whitespace validation, the tracked CN3-18 gate, full-resolution exact
+benchmark, and complete 12-pair workflow pass.  Fresh ignored reports and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/bottom-material-*`.
+CN3-16 and CN3-18 remain `needs-more-work`; 53 authoritative errors remain.

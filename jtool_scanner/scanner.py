@@ -222,6 +222,11 @@ DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MAX_CENTER_GRADIENT = 0.12
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
+# Bottom-edge continuation starts from weak, clipped evidence.  Require a
+# synthetic cell to resemble the room-learned normalized miniblock material;
+# this rejects decorative texture without tying the recovery to RGB, a room,
+# or a tileset.  Raw terrain detections are deliberately outside this gate.
+DENSE_MINIBLOCK_BOTTOM_MAX_DESCRIPTOR_DISTANCE = 0.36
 # A two-cell miniblock column on the alternate 8px phase is recoverable only
 # when its two block bodies retain palette-normalized internal transitions and
 # the surrounding opposite caps provide more than an exactly half-filled
@@ -18470,6 +18475,46 @@ def _recover_miniblock_backing_cells(
 ) -> list[Detection]:
     result = list(detections)
     positions = {(detection.x, detection.y) for detection in mini_blocks}
+    bottom_material_descriptor: tuple[float, ...] | None = None
+    bottom_material_ready = False
+
+    def has_bottom_material(x: int, y: int) -> bool:
+        nonlocal bottom_material_descriptor, bottom_material_ready
+        if not bottom_material_ready:
+            material_blocks = [
+                detection
+                for detection in mini_blocks
+                if detection.kind == "mini_block"
+            ]
+            # Keep the established fallback when a sparse room cannot provide
+            # a trustworthy learned material profile.
+            if len(material_blocks) >= 4:
+                material_patches = [
+                    _normalized_miniblock_luma_patch(
+                        image,
+                        room,
+                        detection.x,
+                        detection.y,
+                    )
+                    for detection in material_blocks
+                ]
+                bottom_material_descriptor = tuple(
+                    median(values)
+                    for values in zip(
+                        *(patch.descriptor for patch in material_patches)
+                    )
+                )
+            bottom_material_ready = True
+        if bottom_material_descriptor is None:
+            return True
+        normalized = _normalized_miniblock_luma_patch(image, room, x, y)
+        return (
+            _normalized_luma_descriptor_distance(
+                normalized.descriptor,
+                bottom_material_descriptor,
+            )
+            <= DENSE_MINIBLOCK_BOTTOM_MAX_DESCRIPTOR_DISTANCE
+        )
 
     def add_cell(x: int, y: int, kind: str) -> None:
         if not (0 <= x < ROOM_WIDTH and 0 <= y < ROOM_HEIGHT):
@@ -18486,6 +18531,11 @@ def _recover_miniblock_backing_cells(
                 )
             )
         ):
+            return
+        if kind in {
+            "mini_block_bottom_continuation",
+            "mini_block_bottom_boundary_continuation",
+        } and not has_bottom_material(x, y):
             return
         patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
         result.append(

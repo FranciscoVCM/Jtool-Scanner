@@ -5687,6 +5687,57 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertNotIn((656, 576), positions)
         self.assertNotIn((656, 592), positions)
 
+    def test_bottom_continuation_rejects_room_material_outlier(self) -> None:
+        image = RGBImage(800, 608, b"\x00" * (800 * 608 * 3))
+        room = Box(0, 0, 800, 608)
+        existing = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                592,
+                0.70,
+                Box(x, 592, 16, 16),
+            )
+            for x in (112, 128, 144, 160)
+        ]
+
+        def patch_features(_image, _room, x, y, _size):
+            if (x, y) == (144, 576):
+                return _PatchFeatures((), 0.20, 0.18, 0.22)
+            return _PatchFeatures((), 0.0, 0.0, 0.0)
+
+        def normalized_patch(_image, _room, x, y):
+            if (x, y) == (144, 576):
+                return _NormalizedLumaPatch((1.0,) * 16, 0.17, 0.26)
+            return _NormalizedLumaPatch((0.0,) * 16, 0.10, 0.24)
+
+        with mock.patch(
+            "jtool_scanner.scanner._patch_features",
+            side_effect=patch_features,
+        ), mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            return_value=_ColorProfile(50.0, 80.0, 110.0, 0.36),
+        ), mock.patch(
+            "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+            side_effect=normalized_patch,
+        ):
+            result = _recover_miniblock_backing_cells(
+                existing,
+                existing,
+                [],
+                [],
+                image,
+                room,
+            )
+
+        positions = {
+            (detection.x, detection.y)
+            for detection in result
+            if detection.type_id == OBJ_MINI_BLOCK
+        }
+        self.assertNotIn((144, 576), positions)
+
     def test_cardinal_miniblock_can_coexist_with_water_anchor(self) -> None:
         water = Detection(
             "water_3",
