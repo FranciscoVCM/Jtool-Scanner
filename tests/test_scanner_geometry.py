@@ -7346,8 +7346,10 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertIn(raw_blocks[-1], result)
         self.assertIn(structural, result)
 
-    def test_late_dense_miniblock_alias_pruning_preserves_support_phase(self) -> None:
-        """Late flat-alias pruning runs after geometry consumers."""
+    def test_late_dense_miniblock_alias_pruning_uses_normalized_center_transition(
+        self,
+    ) -> None:
+        """A flat normalized centre is sufficient after geometry consumers."""
 
         raw_blocks = [
             Detection(
@@ -7364,7 +7366,10 @@ class ScannerGeometryTests(unittest.TestCase):
         def features(_image, _room, x, _y):
             if x == 64:
                 return _NormalizedLumaPatch(
-                    (1.0, *(0.0 for _ in range(15))),
+                    # Keep the descriptor close to the learned material so
+                    # this exercises the independent normalized-gradient
+                    # veto rather than the older descriptor-distance gate.
+                    (0.4, *(0.0 for _ in range(15))),
                     0.08,
                     0.07,
                 )

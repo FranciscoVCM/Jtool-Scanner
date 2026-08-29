@@ -4607,3 +4607,53 @@ This checkpoint fixes a measurable cross-workflow regression and protects the
 dense/full-scale routing boundary.  The broader adaptive color-segmentation
 fallback and the remaining CN3-16/CN3-18 geometry errors remain future bounded
 batches; no broad grayscale second scan or screen-specific exception was added.
+
+## Checkpoint: palette-normalized flat miniblock alias veto (2026-08-29)
+
+The next dense-room batch targeted a recurring cross-scale error: flat pieces
+of unfamiliar tileset material were surviving as 16px miniblocks even though
+their normalized internal structure did not resemble an authoritative
+miniblock.  An offline study compared the palette-normalized luminance
+descriptor at every current and truth miniblock in the corrected CN3-16 and
+CN3-18 rooms, using both the tracked captures and the full-resolution local
+captures.  All **875** authoritative tracked miniblocks, and every matched
+miniblock in both full-resolution scans, have normalized centre gradient at or
+above `0.08`.  Seventeen measured false candidates across the four source
+scales fall below that boundary; most were already removed by the existing
+descriptor-distance rule, leaving six tracked-capture aliases and two
+full-resolution aliases for the independent shape gate.
+
+Late dense-miniblock pruning now treats a normalized centre gradient below
+`0.08` as sufficient flat-material evidence.  The gate is still activated only
+after the raw detector has proved a dense 16px lattice, and it runs after spike,
+save, marker, and terrain consumers have used the raw support.  It therefore
+does not encode a palette, filename, room identity, coordinate, or tileset and
+cannot activate in ordinary FTFA/Irkara/NANG 32px rooms.  A focused regression
+uses a descriptor-close outlier to prove that the decision comes from the
+palette-relative centre transition rather than the retired RGB/profile
+distance condition; the affine-palette and sparse-outlier controls remain
+green.
+
+The complete 12-pair workflow retains **875/875** miniblock matches while
+reducing miniblock detections from **910 to 904**.  CN3-16 changes from 519 to
+514 detected miniblocks with all 501 truth cells matched; CN3-18 changes from
+391 to 390 with all 374 truth cells matched.  Every other protected total is
+unchanged: saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13,
+gravity 8/8, platforms 3/3, blocks 1463/1486, full spikes 724/748, minispikes
+281/288, killer blocks 99/99, and refreshers 18/19 matched.
+
+On the full-resolution exact crosswalk, CN3-16 remains **575/590 exact** while
+false positives fall 19 to 18 (15 misses, zero shifts or wrong directions), and
+CN3-18 remains **478/492 exact** while false positives fall 23 to 22 (13 misses,
+zero shifts, one wrong direction).  Combined exact errors improve **71 to 69**.
+FTFA remains **926/928 exact, zero false positives, two boundary misses, zero
+shifts, and zero wrong directions**.  Three focused regressions pass.  The
+immediately preceding full discovery suite remains green at 416 tests; the
+current small change is additionally covered by the exact, complete fixture,
+and FTFA gates above.
+
+Fresh ignored probes, reports, exact projects, and review material are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/`.  The current
+CN3-16 and CN3-18 ledger rows point to these source/JTool/blend artifacts and
+remain `needs-more-work`; neither the two-cell exact improvement nor the
+fixture precision gain is presented as completion of those rooms.
