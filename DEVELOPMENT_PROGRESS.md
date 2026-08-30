@@ -4846,3 +4846,59 @@ benchmark, and complete 12-pair workflow pass.  Fresh ignored reports and
 source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/bottom-material-*`.
 CN3-16 and CN3-18 remain `needs-more-work`; 53 authoritative errors remain.
+
+## Checkpoint: dense spike scale and direction arbitration (2026-08-30)
+
+The next exact mismatch study separated three different dense-room spike
+aliases that had previously been counted together.  CN3-16 contained one
+extremely fragmented primary full-spike outline and two sub-26px full-spike
+hypotheses at origins occupied by independently decisive minispikes.  Across
+all 26 tracked authoritative JMaps there are no legitimate same-origin
+full-spike/minispike pairs.  Separately, the final merged output contained
+three origins with competing minispike directions: one in tracked CN3-18 and
+two in its full-resolution scan.  At each origin the authoritative direction
+strictly dominates the false direction in shape score, direction margin,
+triangle-side coverage, and palette-normalized fill contrast.  The sole
+legitimate multi-minispike origin in the tracked corpus is FTFA-4 at
+`(304,264)`; it is outside the dense 16px-room path and remains protected.
+
+Dense geometry arbitration now removes only an extreme interior primary-full
+fragment, or a sub-26px full hypothesis that loses at the same origin to an
+independently decisive 16px triangle.  Competing minispike directions are
+reconciled only under strict Pareto dominance with a meaningful advantage in
+normalized luminance, side coverage, or direction margin.  Because aliases
+from complementary resampling passes can first meet after source/canonical
+merging, `ScanResult` now carries the immutable raw dense-room classification
+through capture normalization and applies the same arbitration in final map
+coordinates.  The rules use no filename, ordinal, room coordinate, RGB
+palette, or tileset identity, and recovered cells cannot manufacture dense
+activation.
+
+The complete 12-pair workflow preserves every established match.  Aggregate
+miniblocks remain **875/875** matched at 894 detections; full spikes remain
+**724/748** matched at 870 detections; minispikes remain **281/288** matched
+while detections fall from 330 to 329.  The other protected totals remain
+saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
+flippers 8/8, platforms 3/3, blocks 1463/1486, killer blocks 99/99, and jump
+refreshers 18/19 matched.
+
+The strict full-resolution crosswalk retains **1058/1082 exact** and improves
+from 29 to **25 false positives**, with 24 misses, zero shifts, and zero wrong
+directions: combined authoritative errors fall **53 to 49**.  CN3-16 improves
+from 30 to **27 errors** (575/590 exact, 12 false positives, 15 misses), and
+CN3-18 improves from 23 to **22 errors** (483/492 exact, 13 false positives,
+9 misses).  The removed false direction had previously consumed a missed
+direction as a wrong-direction pairing, so the stricter crosswalk now exposes
+that independent miss instead of overstating the match.  FTFA remains
+unchanged at **926/928 exact, zero false positives, two boundary misses, zero
+shifts, and zero wrong directions**.
+
+Focused dominance and fragmentation regressions, capture-metadata propagation,
+the complete fixture scan, strict CN3 crosswalk, and strict FTFA benchmark pass.
+Fresh ignored profiles, exact reports, projects, and source/JTool/blend output
+are under `.artifacts/goal-continuation/adaptive-miniblock-20260829/`.  A
+remaining false left full spike at CN3-18 `(496,336)` is intentionally retained:
+its measured contour evidence overlaps valid controls, so no safe generalized
+threshold has yet been established.  CN3-16 and CN3-18 both remain
+`needs-more-work`; this four-error improvement is not a claim that either room
+or the wider 71-screen corpus is complete.

@@ -299,6 +299,18 @@ DENSE_MINIBLOCK_FULL_MIN_SCORE = 0.24
 DENSE_MINIBLOCK_FULL_MIN_OUTLINE_DELTA = 0.10
 DENSE_MINIBLOCK_FULL_MIN_SIDE_COVERAGE = 0.75
 DENSE_MINIBLOCK_CONTAINED_MINI_PRESERVE_MIN_NORMALIZED_EDGE_DENSITY = 0.25
+# Dense-room resampling can leave multiple directions at one 16px origin or
+# inflate a decisive mini triangle into a weak 32px hypothesis.  Resolve only
+# strict local dominance and extreme native-edge fragmentation; these gates
+# do not depend on the room palette or tileset identity.
+DENSE_MINIBLOCK_MULTI_MINI_MIN_LUMA_ADVANTAGE = 0.10
+DENSE_MINIBLOCK_MULTI_MINI_MIN_SIDE_ADVANTAGE = 0.10
+DENSE_MINIBLOCK_MULTI_MINI_MIN_MARGIN_ADVANTAGE = 0.05
+DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_SCORE = 0.50
+DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_MARGIN = 0.15
+DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_SIDE = 0.90
+DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_NORMALIZED_LUMA = 0.70
+DENSE_MINIBLOCK_PRIMARY_FULL_FRAGMENT_MAX_NATIVE_EXTENT = 12.0
 # Full-room screenshots can retain the same logical tile lattice at slightly
 # different capture scales and sub-pixel phases.  A dense repeated lattice is
 # safe to normalize only when its edge evidence is strong in both axes, a
@@ -1916,6 +1928,7 @@ class ScanResult:
     recognized_text: str = ""
     source_grid: tuple[int, int] | None = None
     structural_warnings: list[dict[str, object]] = field(default_factory=list)
+    dense_miniblock_room: bool = False
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
@@ -2079,6 +2092,7 @@ def scan_image(
     )
     repeated_terrain_room = False
     particle_water_room = False
+    dense_miniblock_room = False
     mini_blocks: list[Detection] = []
     raw_full_spikes: list[Detection] = []
     raw_primary_mini_spikes: list[Detection] = []
@@ -2125,6 +2139,9 @@ def scan_image(
             []
             if bright_outlined_terrain_room
             else _detect_mini_blocks(image, box)
+        )
+        dense_miniblock_room = _looks_miniblock_dominant(
+            {(detection.x, detection.y) for detection in mini_blocks}
         )
         detections.extend(mini_blocks)
         if mini_blocks:
@@ -2589,6 +2606,7 @@ def scan_image(
         recognized_text=recognized_text or "",
         source_grid=normalized_grid,
         structural_warnings=structural_scan_warnings(detections),
+        dense_miniblock_room=dense_miniblock_room,
     )
     _PATCH_FEATURE_CACHE.clear()
     return result
@@ -3518,6 +3536,7 @@ def _scan_lattice_normalized_room(
         for detection in canonical_result.detections
         if detection.type_id not in CAPTURE_LATTICE_SOURCE_POSITION_TYPES
     ]
+    canonical_dense_miniblock_room = canonical_result.dense_miniblock_room
     if use_consensus:
         detections = _merge_capture_lattice_geometry(
             source_result.detections,
@@ -3556,6 +3575,15 @@ def _scan_lattice_normalized_room(
         source_image,
         normalization.source_room,
     )
+    # Source and canonical geometry are each reconciled before this merge, but
+    # complementary resampling aliases can coexist only in the merged list.
+    # Reapply the same dense, strict-dominance rule in final map coordinates.
+    detections = _prune_dense_minispike_direction_conflicts(
+        detections,
+        source_image,
+        normalization.source_room,
+        dense_miniblock_room=canonical_dense_miniblock_room,
+    )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
     _PATCH_FEATURE_CACHE.clear()
     return ScanResult(
@@ -3568,6 +3596,10 @@ def _scan_lattice_normalized_room(
         recognized_text=source_result.recognized_text,
         source_grid=(25, 19),
         structural_warnings=structural_scan_warnings(detections),
+        dense_miniblock_room=(
+            source_result.dense_miniblock_room
+            or canonical_result.dense_miniblock_room
+        ),
     )
 
 
@@ -29937,6 +29969,137 @@ def _recover_dense_walljump_edge_mini_spikes(
     return [*detections, *added] if added else detections
 
 
+def _dominant_dense_minispike_type(
+    evidence: list[tuple[int, float, float, float, float]],
+) -> int | None:
+    """Return one direction only when it strictly dominates every rival."""
+
+    if len(evidence) < 2:
+        return None
+    dominant: list[int] = []
+    for type_id, score, margin, side, normalized_luma in evidence:
+        rivals = [row for row in evidence if row[0] != type_id]
+        if not rivals:
+            continue
+        if all(
+            score >= other_score
+            and margin >= other_margin
+            and side >= other_side
+            and normalized_luma >= other_luma
+            and (
+                normalized_luma - other_luma
+                >= DENSE_MINIBLOCK_MULTI_MINI_MIN_LUMA_ADVANTAGE
+                or side - other_side
+                >= DENSE_MINIBLOCK_MULTI_MINI_MIN_SIDE_ADVANTAGE
+                or margin - other_margin
+                >= DENSE_MINIBLOCK_MULTI_MINI_MIN_MARGIN_ADVANTAGE
+            )
+            for (
+                _other_type,
+                other_score,
+                other_margin,
+                other_side,
+                other_luma,
+            ) in rivals
+        ):
+            dominant.append(type_id)
+    return dominant[0] if len(dominant) == 1 else None
+
+
+def _is_decisive_dense_mini_over_fragmented_full(
+    shape: _GeometryClass,
+    fill: _TriangleFillFeatures,
+    side_coverage: float,
+    full_native_extent: float,
+) -> bool:
+    """Return whether a strong 16px triangle disproves a weak 32px alias."""
+
+    normalized_luma = abs(fill.luma_contrast) / max(1.0, fill.cluster_gap)
+    return (
+        full_native_extent < DENSE_MINIBLOCK_FULL_MIN_NATIVE_EDGE_EXTENT
+        and shape.score >= DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_SCORE
+        and shape.direction_margin
+        >= DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_MARGIN
+        and side_coverage >= DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_MINI_SIDE
+        and fill.cluster_gap >= DENSE_MINIBLOCK_MINI_MIN_CLUSTER_GAP
+        and normalized_luma
+        >= DENSE_MINIBLOCK_FULL_MINI_CONFLICT_MIN_NORMALIZED_LUMA
+    )
+
+
+def _prune_dense_minispike_direction_conflicts(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    *,
+    dense_miniblock_room: bool = False,
+) -> list[Detection]:
+    """Resolve only strictly dominated directions in a dense 16px lattice."""
+
+    seed_positions = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+    }
+    if not dense_miniblock_room and not _looks_miniblock_dominant(seed_positions):
+        return detections
+    mini_directions = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    minis_by_origin: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for detection in detections:
+        if detection.type_id in MINI_SPIKE_TYPES:
+            minis_by_origin[(detection.x, detection.y)].append(detection)
+    remove_ids: set[int] = set()
+    for origin, hypotheses in minis_by_origin.items():
+        if len({detection.type_id for detection in hypotheses}) < 2:
+            continue
+        patch = _patch_features(
+            image,
+            room,
+            origin[0],
+            origin[1],
+            MINI_BLOCK_SIZE,
+        )
+        directional_evidence: list[tuple[int, float, float, float, float]] = []
+        for detection in hypotheses:
+            shape = _mini_spike_class_for_detection(detection, patch)
+            if shape is None:
+                continue
+            direction = mini_directions[detection.type_id]
+            fill = _triangle_fill_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                MINI_BLOCK_SIZE,
+                direction,
+            )
+            directional_evidence.append(
+                (
+                    detection.type_id,
+                    shape.score,
+                    shape.direction_margin,
+                    _triangle_side_coverage(patch, direction),
+                    abs(fill.luma_contrast) / max(1.0, fill.cluster_gap),
+                )
+            )
+        dominant_type = _dominant_dense_minispike_type(directional_evidence)
+        if dominant_type is not None:
+            remove_ids.update(
+                id(detection)
+                for detection in hypotheses
+                if detection.type_id != dominant_type
+            )
+    if not remove_ids:
+        return detections
+    return [detection for detection in detections if id(detection) not in remove_ids]
+
+
 def _arbitrate_dense_miniblock_geometry(
     detections: list[Detection],
     detected_mini_blocks: list[Detection],
@@ -30194,6 +30357,82 @@ def _arbitrate_dense_miniblock_geometry(
             remove_ids.update(
                 id(detection) for detection in minis_by_origin[origin]
             )
+
+    # A block conflict is not required for resampling to leave two mini-spike
+    # directions at one origin.  Reuse the final-coordinate-space reconciler
+    # here so both ordinary and capture-consensus scans make the same choice.
+    surviving = [
+        detection for detection in detections if id(detection) not in remove_ids
+    ]
+    direction_reconciled = _prune_dense_minispike_direction_conflicts(
+        surviving,
+        image,
+        room,
+        dense_miniblock_room=True,
+    )
+    retained_direction_ids = {id(detection) for detection in direction_reconciled}
+    remove_ids.update(
+        id(detection)
+        for detection in surviving
+        if id(detection) not in retained_direction_ids
+    )
+
+    # Resolve only the measured asymmetric scale aliases: an extreme interior
+    # primary fragment has insufficient native contour to be a 32px object,
+    # while a sub-26px full hypothesis can lose at the same origin only to an
+    # independently decisive 16px triangle.  Strong and boundary full spikes
+    # remain eligible, including the established occluded recoveries.
+    surviving_minis_by_origin: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    for detection in detections:
+        if id(detection) in remove_ids or detection.type_id not in MINI_SPIKE_TYPES:
+            continue
+        surviving_minis_by_origin[(detection.x, detection.y)].append(detection)
+    for full in detections:
+        if id(full) in remove_ids or full.type_id not in FULL_SPIKE_TYPES:
+            continue
+        native_extent = _native_edge_component_extent(
+            image,
+            room,
+            full.x,
+            full.y,
+        )
+        if (
+            full.kind == primary_full_kinds[full.type_id]
+            and 0 < full.x < ROOM_WIDTH - GRID_SIZE
+            and 0 < full.y < ROOM_HEIGHT - GRID_SIZE
+            and native_extent
+            < DENSE_MINIBLOCK_PRIMARY_FULL_FRAGMENT_MAX_NATIVE_EXTENT
+        ):
+            remove_ids.add(id(full))
+            continue
+        for mini in surviving_minis_by_origin.get((full.x, full.y), ()):
+            patch = _patch_features(
+                image,
+                room,
+                mini.x,
+                mini.y,
+                MINI_BLOCK_SIZE,
+            )
+            shape = _mini_spike_class_for_detection(mini, patch)
+            if shape is None:
+                continue
+            direction = mini_directions[mini.type_id]
+            fill = _triangle_fill_features(
+                image,
+                room,
+                mini.x,
+                mini.y,
+                MINI_BLOCK_SIZE,
+                direction,
+            )
+            if _is_decisive_dense_mini_over_fragmented_full(
+                shape,
+                fill,
+                _triangle_side_coverage(patch, direction),
+                native_extent,
+            ):
+                remove_ids.add(id(full))
+                break
 
     strong_fulls: list[Detection] = []
     for full in detections:

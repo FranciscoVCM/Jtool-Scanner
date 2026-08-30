@@ -327,6 +327,7 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
                 Detection("warp", OBJ_WARP, 40, 40, 0.9, Box(40, 40, 32, 32)),
                 Detection("block", OBJ_BLOCK, 64, 64, 0.9, Box(64, 64, 32, 32)),
             ],
+            dense_miniblock_room=True,
         )
         image = RGBImage(480, 365, bytes(480 * 365 * 3))
         canonical_image = RGBImage(800, 608, bytes(800 * 608 * 3))
@@ -356,6 +357,7 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
         self.assertIn((OBJ_WARP, 40, 40), objects)
         self.assertNotIn((OBJ_WARP, 32, 32), objects)
         self.assertIn((OBJ_BLOCK, 64, 64), objects)
+        self.assertTrue(merged.dense_miniblock_room)
         self.assertEqual(scan.call_count, 2)
         self.assertFalse(scan.call_args_list[0].kwargs["include_geometry"])
         self.assertTrue(scan.call_args_list[1].kwargs["include_geometry"])

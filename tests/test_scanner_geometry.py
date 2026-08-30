@@ -51,10 +51,12 @@ from jtool_scanner.scanner import (
     _arbitrate_full_spikes_against_blocks,
     _arbitrate_full_spike_scale_duplicates,
     _arbitrate_dense_miniblock_geometry,
+    _dominant_dense_minispike_type,
     _has_dense_miniblock_half_phase_material,
     _has_dense_walljump_backing_material,
     _is_dense_miniblock_half_phase_column,
     _is_dense_walljump_edge_mini_spike_candidate,
+    _is_decisive_dense_mini_over_fragmented_full,
     _is_dense_miniblock_run_supported,
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
@@ -7600,6 +7602,65 @@ class ScannerGeometryTests(unittest.TestCase):
                 fill,
                 normalized,
                 0.875,
+            )
+        )
+
+    def test_dense_multi_mini_arbitration_requires_strict_dominance(self) -> None:
+        self.assertEqual(
+            _dominant_dense_minispike_type(
+                [
+                    (OBJ_MINI_SPIKE_LEFT, 0.302, 0.006, 0.5625, 0.695),
+                    (OBJ_MINI_SPIKE_DOWN, 0.296, -0.006, 0.375, 0.247),
+                ]
+            ),
+            OBJ_MINI_SPIKE_LEFT,
+        )
+        self.assertIsNone(
+            _dominant_dense_minispike_type(
+                [
+                    (OBJ_MINI_SPIKE_LEFT, 0.31, 0.01, 0.50, 0.40),
+                    (OBJ_MINI_SPIKE_DOWN, 0.30, 0.02, 0.55, 0.42),
+                ]
+            )
+        )
+
+    def test_decisive_dense_mini_disproves_only_fragmented_full(self) -> None:
+        shape = _GeometryClass(
+            "mini_spike_left",
+            OBJ_MINI_SPIKE_LEFT,
+            0.527,
+            0.171,
+            0.35,
+        )
+        fill = _TriangleFillFeatures(133.0, 0.90, 0.20, 0.70, 101.5)
+        self.assertTrue(
+            _is_decisive_dense_mini_over_fragmented_full(
+                shape,
+                fill,
+                0.938,
+                18.6,
+            )
+        )
+        self.assertFalse(
+            _is_decisive_dense_mini_over_fragmented_full(
+                shape,
+                fill,
+                0.938,
+                31.0,
+            )
+        )
+        self.assertFalse(
+            _is_decisive_dense_mini_over_fragmented_full(
+                _GeometryClass(
+                    "mini_spike_left",
+                    OBJ_MINI_SPIKE_LEFT,
+                    0.527,
+                    0.10,
+                    0.35,
+                ),
+                fill,
+                0.938,
+                18.6,
             )
         )
 
