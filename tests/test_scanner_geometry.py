@@ -136,6 +136,7 @@ from jtool_scanner.scanner import (
     _is_dense_bottom_edge_up_spike_pair_candidate,
     _dense_bottom_edge_up_spike_pair_positions,
     _is_dense_minispike_run_recovery_candidate,
+    _is_late_strong_raw_full_spike_candidate,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_eight_step_full_spike_candidate,
@@ -4143,6 +4144,23 @@ class ScannerGeometryTests(unittest.TestCase):
                 backed_by_material=False,
                 adjacent_count=1,
             )
+        )
+
+    def test_late_strong_raw_full_spike_requires_every_normalized_signal(self) -> None:
+        self.assertTrue(
+            _is_late_strong_raw_full_spike_candidate(0.60, 0.20, 1.00, 0.30)
+        )
+        self.assertFalse(
+            _is_late_strong_raw_full_spike_candidate(0.59, 0.20, 1.00, 0.30)
+        )
+        self.assertFalse(
+            _is_late_strong_raw_full_spike_candidate(0.60, 0.19, 1.00, 0.30)
+        )
+        self.assertFalse(
+            _is_late_strong_raw_full_spike_candidate(0.60, 0.20, 0.99, 0.30)
+        )
+        self.assertFalse(
+            _is_late_strong_raw_full_spike_candidate(0.60, 0.20, 1.00, 0.29)
         )
 
     def test_up_spike_half_step_continuation_patch_requires_strong_up_outline(self) -> None:

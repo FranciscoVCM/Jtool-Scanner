@@ -5160,3 +5160,42 @@ zero wrong directions**.  The complete **285-test** geometry module passes in
 393.154 seconds.  Fresh ignored profiles, exact reviews, overlays, and
 source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/dense-minispike-runs-*`.
+
+## Checkpoint: late strong raw full-spike preservation (2026-08-30)
+
+The next residual study separated three missed full up-spikes by provenance.
+CN3-16 `(48,528)` was already an exact high-confidence primary detection in
+the raw geometry pass, while the two CN3-18 targets were not emitted at their
+exact phase and therefore require a different future recovery.  A four-scale
+profile compared every raw primary full spike absent from the final tracked
+or local dense-room output against authoritative truth.  The CN3-16 target
+was the only candidate satisfying a conservative joint shape/orientation/
+fill predicate; no late-pruned false primary entered that band.
+
+After all ordinary dense terrain and minispike overlap pruning, a proven
+dense room now preserves a missing raw primary full spike only when its
+normalized shape score is at least 0.60, direction margin at least 0.20,
+triangle-side coverage is complete, and palette-normalized luminance contrast
+is at least 0.30.  This does not widen initial recognition: it can only retain
+a candidate the primary detector already emitted, and it contains no room,
+filename, target coordinate, fixed RGB range, or tileset identity.  The two
+CN3-18 phase misses are intentionally unaffected.
+
+The strict full-resolution crosswalk improves from **1077/1082** to
+**1078/1082 exact**.  False positives remain 9 while misses fall from 5 to
+**4**; shifts and wrong directions remain zero, reducing combined
+authoritative errors **14 to 13**.  CN3-16 improves to **589/590 exact, six
+false positives, one miss, and seven errors**.  CN3-18 remains **489/492
+exact, three false positives, three misses, and six errors**.  Both exact
+rooms remain `needs-more-work`.
+
+The complete 12-pair workflow preserves every established aggregate: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections, blocks
+1463/1486, full spikes 724/748 at 870 detections, minispikes 281/288 at 329
+detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **286-test** geometry module passes in
+374.745 seconds.  Fresh ignored profiles, exact reviews, overlays, and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/late-strong-raw-full-*`.

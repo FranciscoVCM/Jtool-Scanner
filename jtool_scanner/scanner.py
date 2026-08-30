@@ -1351,6 +1351,10 @@ DENSE_MINISPIKE_RUN_MIN_SIDE_COVERAGE = 0.50
 DENSE_MINISPIKE_RUN_STRONG_SIDE_COVERAGE = 0.60
 DENSE_MINISPIKE_RUN_MIN_NORMALIZED_LUMA_CONTRAST = 0.44
 DENSE_MINISPIKE_RUN_STRONG_ADJACENT_COUNT = 2
+DENSE_LATE_RAW_FULL_MIN_SHAPE_SCORE = 0.60
+DENSE_LATE_RAW_FULL_MIN_DIRECTION_MARGIN = 0.20
+DENSE_LATE_RAW_FULL_MIN_SIDE_COVERAGE = 1.00
+DENSE_LATE_RAW_FULL_MIN_NORMALIZED_LUMA_CONTRAST = 0.30
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -2119,6 +2123,7 @@ def scan_image(
     dense_miniblock_room = False
     mini_blocks: list[Detection] = []
     raw_full_spikes: list[Detection] = []
+    raw_primary_full_spikes: list[Detection] = []
     raw_primary_mini_spikes: list[Detection] = []
     raw_detected_mini_spikes: list[Detection] = []
     raw_rejected_mini_spikes: list[Detection] = []
@@ -2613,6 +2618,13 @@ def scan_image(
             box,
         )
         detections = _prune_terrain_mini_spike_overlaps(detections)
+        if dense_miniblock_room:
+            detections = _recover_late_strong_raw_full_spikes(
+                detections,
+                raw_primary_full_spikes,
+                image,
+                box,
+            )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -22707,6 +22719,102 @@ def _is_dense_minispike_run_recovery_candidate(
             or adjacent_count >= DENSE_MINISPIKE_RUN_STRONG_ADJACENT_COUNT
             or side_coverage >= DENSE_MINISPIKE_RUN_STRONG_SIDE_COVERAGE
         )
+    )
+
+
+def _recover_late_strong_raw_full_spikes(
+    detections: list[Detection],
+    raw_primary_full_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Preserve exceptionally strong raw full spikes after dense pruning."""
+
+    direction_for_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    occupied = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    }
+    recovered = list(detections)
+    considered: set[tuple[int, int, int]] = set()
+    for candidate in raw_primary_full_spikes:
+        key = (candidate.type_id, candidate.x, candidate.y)
+        if key in occupied or key in considered:
+            continue
+        considered.add(key)
+        direction = direction_for_type[candidate.type_id]
+        patch = _patch_features(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            GRID_SIZE,
+        )
+        direction_scores = {
+            candidate_direction: _triangle_direction_score(
+                patch,
+                candidate_direction,
+            )[0]
+            for candidate_direction in ("up", "right", "left", "down")
+        }
+        shape_score = direction_scores[direction]
+        direction_margin = shape_score - max(
+            score
+            for candidate_direction, score in direction_scores.items()
+            if candidate_direction != direction
+        )
+        fill = _triangle_fill_features(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            GRID_SIZE,
+            direction,
+        )
+        normalized_luma_contrast = abs(fill.luma_contrast) / max(
+            1.0,
+            fill.cluster_gap,
+        )
+        if not _is_late_strong_raw_full_spike_candidate(
+            shape_score,
+            direction_margin,
+            _triangle_side_coverage(patch, direction),
+            normalized_luma_contrast,
+        ):
+            continue
+        recovered.append(
+            _geometry_detection(
+                "late_strong_raw_full_spike",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                max(candidate.score, shape_score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+    return recovered
+
+
+def _is_late_strong_raw_full_spike_candidate(
+    shape_score: float,
+    direction_margin: float,
+    side_coverage: float,
+    normalized_luma_contrast: float,
+) -> bool:
+    return (
+        shape_score >= DENSE_LATE_RAW_FULL_MIN_SHAPE_SCORE
+        and direction_margin >= DENSE_LATE_RAW_FULL_MIN_DIRECTION_MARGIN
+        and side_coverage >= DENSE_LATE_RAW_FULL_MIN_SIDE_COVERAGE
+        and normalized_luma_contrast
+        >= DENSE_LATE_RAW_FULL_MIN_NORMALIZED_LUMA_CONTRAST
     )
 
 
