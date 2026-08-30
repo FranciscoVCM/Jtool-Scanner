@@ -224,6 +224,11 @@ DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MAX_SATURATION = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
+DENSE_MINIBLOCK_CAP_BACKING_MAX_DESCRIPTOR_DISTANCE = 0.10
+DENSE_MINIBLOCK_CAP_BACKING_MIN_SATURATION = 0.35
+DENSE_MINIBLOCK_CAP_BACKING_MIN_CENTER_GRADIENT = 0.15
+DENSE_MINIBLOCK_CAP_BACKING_MIN_EDGE_DENSITY = 0.06
+DENSE_MINIBLOCK_CAP_BACKING_MAX_CENTER_SCORE = 0.05
 # Bottom-edge continuation starts from weak, clipped evidence.  Require a
 # synthetic cell to resemble the room-learned normalized miniblock material;
 # this rejects decorative texture without tying the recovery to RGB, a room,
@@ -29867,13 +29872,104 @@ def _prune_late_dense_miniblock_aliases(
             >= DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY
         ):
             remove_ids.add(id(detection))
-    if not remove_ids:
-        return detections
-    return [
+    pruned = [
         detection
         for detection in detections
         if id(detection) not in remove_ids
     ]
+    return _recover_dense_minispike_backing_cells(pruned, image, room)
+
+
+def _recover_dense_minispike_backing_cells(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Restore room-like 16px cells directly backed by a detected mini cap."""
+
+    material = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+        and detection.kind == "mini_block"
+    ]
+    material_positions = {(detection.x, detection.y) for detection in material}
+    if len(material) < 4 or not _looks_miniblock_dominant(material_positions):
+        return detections
+    material_patches = [
+        _normalized_miniblock_luma_patch(
+            image,
+            room,
+            detection.x,
+            detection.y,
+        )
+        for detection in material
+    ]
+    learned_descriptor = tuple(
+        median(values)
+        for values in zip(*(patch.descriptor for patch in material_patches))
+    )
+    backing_offset = {
+        OBJ_MINI_SPIKE_UP: (0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_DOWN: (0, -MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_LEFT: (MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_RIGHT: (-MINI_BLOCK_SIZE, 0),
+    }
+    existing = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+    }
+    candidates: set[tuple[int, int]] = set()
+    for detection in detections:
+        offset = backing_offset.get(detection.type_id)
+        if offset is None:
+            continue
+        candidates.add((detection.x + offset[0], detection.y + offset[1]))
+    added: list[Detection] = []
+    for x, y in sorted(candidates, key=lambda position: (position[1], position[0])):
+        if (
+            (x, y) in existing
+            or not (0 <= x < ROOM_WIDTH)
+            or not (0 <= y < ROOM_HEIGHT)
+        ):
+            continue
+        normalized = _normalized_miniblock_luma_patch(image, room, x, y)
+        patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+        saturation = _patch_color_profile(
+            image,
+            room,
+            x,
+            y,
+            MINI_BLOCK_SIZE,
+        ).saturation
+        if not (
+            _normalized_luma_descriptor_distance(
+                normalized.descriptor,
+                learned_descriptor,
+            )
+            <= DENSE_MINIBLOCK_CAP_BACKING_MAX_DESCRIPTOR_DISTANCE
+            and saturation >= DENSE_MINIBLOCK_CAP_BACKING_MIN_SATURATION
+            and normalized.center_gradient
+            >= DENSE_MINIBLOCK_CAP_BACKING_MIN_CENTER_GRADIENT
+            and patch.edge_density >= DENSE_MINIBLOCK_CAP_BACKING_MIN_EDGE_DENSITY
+            and patch.center_score <= DENSE_MINIBLOCK_CAP_BACKING_MAX_CENTER_SCORE
+        ):
+            continue
+        added.append(
+            _geometry_detection(
+                "mini_block_minispike_backing",
+                OBJ_MINI_BLOCK,
+                x,
+                y,
+                0.55 + min(0.35, patch.edge_density),
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+        existing.add((x, y))
+    return [*detections, *added] if added else detections
 
 
 def _is_dense_walljump_edge_mini_spike_candidate(

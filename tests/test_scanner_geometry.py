@@ -61,6 +61,7 @@ from jtool_scanner.scanner import (
     _normalized_luma_descriptor_distance,
     _normalized_miniblock_luma_patch,
     _prune_late_dense_miniblock_aliases,
+    _recover_dense_minispike_backing_cells,
     _prune_overlapping_terrain_full_spikes,
     _prune_terrain_mini_spike_overlaps,
     _terrain_mini_overlaps_strong_raw_full,
@@ -7558,6 +7559,73 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertNotIn(raw_blocks[4], result)
         self.assertIn(raw_blocks[5], result)
+
+    def test_dense_minispike_backing_recovery_requires_room_material(self) -> None:
+        raw_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (0, 16, 32, 48)
+        ]
+        caps = [
+            Detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                x,
+                0,
+                0.70,
+                Box(x, 0, 16, 16),
+            )
+            for x in (80, 96)
+        ]
+
+        def normalized(_image, _room, x, y):
+            first = 0.32 if y == 16 else 0.0
+            return _NormalizedLumaPatch(
+                (first, *(0.0 for _ in range(15))),
+                0.06,
+                0.17,
+            )
+
+        def profile(_image, _room, x, _y, _size):
+            saturation = 0.40 if x == 80 else 0.30
+            return _ColorProfile(80.0, 120.0, 160.0, saturation)
+
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._looks_miniblock_dominant",
+                return_value=True,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._normalized_miniblock_luma_patch",
+                side_effect=normalized,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((), 0.07, 0.10, 0.02),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_color_profile",
+                side_effect=profile,
+            ),
+        ):
+            result = _recover_dense_minispike_backing_cells(
+                [*raw_blocks, *caps],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        recovered = {
+            (item.x, item.y)
+            for item in result
+            if item.kind == "mini_block_minispike_backing"
+        }
+        self.assertEqual(recovered, {(80, 16)})
 
     def test_dense_miniblock_half_phase_column_requires_material_and_caps(
         self,

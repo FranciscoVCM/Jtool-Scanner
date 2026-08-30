@@ -4992,3 +4992,41 @@ module pass.  FTFA remains **926/928 exact, zero false positives, two boundary
 misses, zero shifts, and zero wrong directions**.  Fresh ignored provenance,
 exact reports, review crops, overlays, and source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/low-saturation-*`.
+
+## Checkpoint: minispike-backed dense cell recovery (2026-08-30)
+
+After the precision veto, CN3-16 retained two genuine isolated miniblock
+misses at `(320,432)` and `(320,512)`.  Both are immediately behind already
+detected directional minispike caps, agree closely with the room-learned
+palette-normalized material (descriptor distances 0.064 and 0.083), retain
+saturation near 0.40, and have normalized centre gradients 0.18 and 0.17.  A
+production-stage four-scale profile found exactly those two candidates across
+tracked and local CN3-16/CN3-18 and zero false candidates.
+
+Late dense pruning now gives a missing 16px cell one recovery opportunity at
+the backing offset implied by an existing minispike direction.  Recovery
+requires descriptor distance at most 0.10, saturation at least 0.35,
+normalized centre gradient at least 0.15, edge density at least 0.06, and a
+low patch-centre score.  The path activates only after a dense raw miniblock
+room is proven and labels the result with separate structural provenance.  It
+uses no filename, room coordinate, palette, ordinal, or tileset identity.
+
+The strict full-resolution crosswalk improves from **1069/1082** to
+**1071/1082 exact**.  False positives remain 15 while misses fall 13 to 11;
+shifts and wrong directions remain zero, reducing combined authoritative
+errors **28 to 26**.  CN3-16 reaches **588/590 exact, eight false positives,
+two misses, and 10 errors**.  CN3-18 remains **483/492 exact, seven false
+positives, nine misses, and 16 errors**.  Both rooms remain
+`needs-more-work`.
+
+The current tracked CN3 gate is unchanged: miniblocks remain **875/875**
+matched at 885 detections, full spikes 80/80 at 80 detections, minispikes
+108/108 at 109 detections, and all tracked save/warp/water/walljump matches are
+preserved.  The immediately preceding complete 12-pair gate remains unchanged
+outside the nine false miniblocks removed by the prior precision checkpoint.
+FTFA remains **926/928 exact, zero false positives, two boundary misses, zero
+shifts, and zero wrong directions**.  Focused recovery/material regressions
+and the complete **282-test** geometry module pass; fresh ignored profiles,
+exact reports, review crops, overlays, and
+source/JTool/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/cap-backing-*`.
