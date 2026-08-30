@@ -4950,3 +4950,45 @@ source/JTool/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/relaxed-lattice-*`.
 The broader gate result is promising for unfamiliar capture scales, but it is
 not evidence that CN3-16, CN3-18, or the 71-screen corpus is complete.
+
+## Checkpoint: low-saturation dense material veto (2026-08-30)
+
+The first residual batch after lattice normalization profiled raw miniblocks
+inside the production late-pruning call at both tracked and local capture
+scales.  It found 19 surviving candidates whose palette-normalized luminance
+descriptor is more than 0.40 from the learned room material while local
+saturation is below 0.25.  All 19 are false against the authoritative JMaps;
+zero true miniblocks satisfy the predicate.  The set includes text glyphs,
+full-block quadrants, spike backing, and low-saturation bottom-row material,
+so it represents a reusable material/scale disagreement rather than one
+visual sprite.
+
+Late dense-miniblock pruning now applies that combined descriptor/saturation
+veto after geometry, spike, and marker consumers have already used the raw
+support.  It remains confined to a proven dense 16px room and uses a
+room-learned normalized descriptor plus relative saturation, with no fixed RGB
+range, room identity, coordinate, filename, or tileset.  High-saturation
+material at the same descriptor distance is retained; a focused regression
+proves this independent guard.
+
+The complete 12-pair workflow retains **875/875** miniblock matches while
+reducing detections from 894 to **885**: tracked CN3-16 changes 512 to 509 and
+CN3-18 changes 382 to 376.  Every other protected result is unchanged: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, blocks 1463/1486, full spikes 724/748 at 870 detections,
+minispikes 281/288 at 329 detections, killer blocks 99/99, and jump refreshers
+18/19 matched.
+
+The strict full-resolution crosswalk keeps **1069/1082 exact** and 13 misses
+while false positives fall from 25 to **15**; shifts and wrong directions stay
+zero, so combined authoritative errors improve **38 to 28**.  CN3-16 is now
+**586/590 exact, eight false positives, four misses, and 12 errors**.  CN3-18
+is **483/492 exact, seven false positives, nine misses, and 16 errors**.  The
+remaining errors include genuine missed geometry plus text, warp, spike, and
+four harder miniblock aliases; both rooms remain `needs-more-work`.
+
+Four focused late-pruning regressions and the complete **281-test** geometry
+module pass.  FTFA remains **926/928 exact, zero false positives, two boundary
+misses, zero shifts, and zero wrong directions**.  Fresh ignored provenance,
+exact reports, review crops, overlays, and source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/low-saturation-*`.

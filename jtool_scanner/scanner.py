@@ -219,6 +219,8 @@ DENSE_MINIBLOCK_MATERIAL_MAX_NORMALIZED_CENTER_GRADIENT = 0.12
 DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MAX_CENTER_GRADIENT = 0.08
 DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.36
 DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MAX_CENTER_GRADIENT = 0.12
+DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.40
+DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MAX_SATURATION = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05
@@ -29828,6 +29830,13 @@ def _prune_late_dense_miniblock_aliases(
             features.descriptor,
             learned_descriptor,
         )
+        saturation = _patch_color_profile(
+            image,
+            room,
+            detection.x,
+            detection.y,
+            MINI_BLOCK_SIZE,
+        ).saturation
         neighbors4 = sum(
             (detection.x + dx, detection.y + dy) in candidate_positions
             for dx, dy in (
@@ -29845,6 +29854,11 @@ def _prune_late_dense_miniblock_aliases(
             > DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MIN_DESCRIPTOR_DISTANCE
             and features.center_gradient
             < DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MAX_CENTER_GRADIENT
+        ) or (
+            descriptor_distance
+            > DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MIN_DESCRIPTOR_DISTANCE
+            and saturation
+            < DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MAX_SATURATION
         ) or (
             descriptor_distance
             > DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE
