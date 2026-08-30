@@ -4902,3 +4902,51 @@ its measured contour evidence overlaps valid controls, so no safe generalized
 threshold has yet been established.  CN3-16 and CN3-18 both remain
 `needs-more-work`; this four-error improvement is not a claim that either room
 or the wider 71-screen corpus is complete.
+
+## Checkpoint: near-legacy dense capture lattice activation (2026-08-30)
+
+The next scale-stability batch traced CN3-16's remaining miniblock swaps to
+capture normalization rather than another tileset-specific object threshold.
+Its 979x750 local source has a strong repeated 16px lattice whose best axes are
+`origin=-3, extent=986` horizontally and `origin=-1, extent=753` vertically.
+The horizontal transform scores 32.25 against a 20.19 legacy score (gain
+1.597) with boundary contrast 5.05.  Production previously declined that
+transform only because the general material-gain floor was 1.65.  A forced
+offline canonical scan improved miniblocks from 490/501 exact with 11 extras
+and 11 misses to 499/501 exact with six extras and two misses.
+
+The room-relative material-gain floor is now 1.55.  Every other capture gate
+remains required: strong evidence on both axes, a material displacement, a
+distinct boundary-versus-interior axis, a real origin phase, and either at
+least 400 raw miniblocks or the existing large-capture corroboration route.
+This change encodes no room, filename, palette, ordinal, coordinate, or
+tileset.  An activation-only audit across all 71 source screens changes the
+normalization route on exactly one screen: 11 prior activations become 12,
+with CN3-16 the sole addition.  The 12 tracked exact fixture pairs plus both
+local CN3 sources produce the same result: no tracked route changes, and only
+local CN3-16 crosses the relaxed boundary.
+
+The strict full-resolution crosswalk improves from **1058/1082** to
+**1069/1082 exact**.  False positives remain 25 while misses fall from 24 to
+13; shifts and wrong directions remain zero, reducing combined authoritative
+errors **49 to 38**.  CN3-16 improves from 575/590 exact and 27 errors to
+**586/590 exact, 12 false positives, four misses, and 16 errors**.  CN3-18 is
+unchanged at **483/492 exact, 13 false positives, nine misses, and 22 errors**.
+The exact review crops confirm that the four remaining CN3-16 misses include
+real terrain/spike cells, while remaining extras include screen-text and
+decorative aliases; the room is therefore still `needs-more-work`.
+
+The complete 12-pair workflow is unchanged: saves 22/22, warps 12/12, apples
+4/4, water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
+miniblocks 875/875 at 894 detections, blocks 1463/1486, full spikes 724/748 at
+870 detections, minispikes 281/288 at 329 detections, killer blocks 99/99, and
+jump refreshers 18/19 matched.  FTFA remains **926/928 exact, zero false
+positives, two boundary misses, zero shifts, and zero wrong directions**.  All
+six capture-lattice regressions pass, including focused acceptance/rejection
+controls around the new gain boundary.
+
+Fresh ignored activation profiles, exact reports, review crops, overlays, and
+source/JTool/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/relaxed-lattice-*`.
+The broader gate result is promising for unfamiliar capture scales, but it is
+not evidence that CN3-16, CN3-18, or the 71-screen corpus is complete.

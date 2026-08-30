@@ -119,6 +119,18 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
                 749,
             )
         )
+        self.assertTrue(
+            _capture_lattice_axis_has_material_gain(
+                _CaptureLatticeAxis(-3, 986, 32.25, 20.19),
+                979,
+            )
+        )
+        self.assertFalse(
+            _capture_lattice_axis_has_material_gain(
+                _CaptureLatticeAxis(-3, 986, 31.20, 20.19),
+                979,
+            )
+        )
 
     def test_capture_lattice_confidence_rejects_tiled_background_alias(self) -> None:
         self.assertFalse(
@@ -144,7 +156,7 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
             )
         self.assertIsNotNone(normalization)
         assert normalization is not None
-        self.assertGreaterEqual(normalization.x_axis.gain, 1.65)
+        self.assertGreaterEqual(normalization.x_axis.gain, 1.55)
         self.assertTrue(normalization.dense_miniblock_evidence)
 
         tracked = load_png(
