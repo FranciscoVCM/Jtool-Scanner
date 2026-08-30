@@ -5075,3 +5075,44 @@ focused threshold-boundary regressions and complete **282-test** geometry
 module pass in 342.798 seconds.  Fresh ignored datasets, activation reports,
 exact reports, overlays, source/JTool/blend output, and review crops are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/wide-low-saturation-*`.
+
+## Checkpoint: dense bottom-boundary spike pairs (2026-08-30)
+
+The next residual batch investigated CN3-18's two adjacent missed up-spikes at
+the structural bottom boundary.  Both full-resolution targets remain strong
+32px triangles after room/capture normalization, but dense 16px terrain
+decoration weakens them below the ordinary detector's acceptance path.  A
+production-stage profile scanned every 8px bottom-boundary phase across the
+tracked and local CN3 captures and the complete 12-fixture control corpus.
+Requiring two independently strong up-triangles one 32px cell apart separated
+the two missed targets with zero false additions.
+
+Proven dense-miniblock rooms now receive one late bottom-boundary recovery
+pass before final block/spike arbitration.  Each member of a pair must have
+shape score at least 0.50, direction margin at least 0.15, triangle-side
+coverage at least 0.90, and palette-normalized luminance contrast at least
+0.28.  Isolated candidates are rejected.  The route contains no filename,
+room ordinal, RGB range, tileset identity, or target X coordinate; it combines
+an already-established room-relative material classification with normalized
+local shape and topology.  Sparse and ordinary 32px terrain rooms do not pay
+for the late search.
+
+The strict full-resolution crosswalk improves from **1071/1082** to
+**1073/1082 exact**.  False positives remain 9 while misses fall from 11 to
+**9**; shifts and wrong directions remain zero, reducing combined
+authoritative errors **20 to 18**.  CN3-16 is unchanged at **588/590 exact,
+six false positives, two misses, and eight errors**.  CN3-18 improves to
+**485/492 exact, three false positives, seven misses, and ten errors**.  Both
+rooms remain `needs-more-work`; this recovery does not claim that either room
+or the broader 71-screen corpus is accepted.
+
+The complete 12-pair workflow preserves every established aggregate: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections, blocks
+1463/1486, full spikes 724/748 at 870 detections, minispikes 281/288 at 329
+detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **284-test** geometry module passes in
+364.338 seconds.  Fresh ignored profiles, exact reviews, overlays, and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/bottom-up-pair-*`.

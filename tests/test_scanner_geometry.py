@@ -133,6 +133,8 @@ from jtool_scanner.scanner import (
     _is_blocklike_spike_candidate,
     _is_bottom_edge_up_spike_continuation_anchor,
     _is_bottom_edge_up_spike_continuation_patch,
+    _is_dense_bottom_edge_up_spike_pair_candidate,
+    _dense_bottom_edge_up_spike_pair_positions,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_eight_step_full_spike_candidate,
@@ -4068,6 +4070,31 @@ class ScannerGeometryTests(unittest.TestCase):
                     center_score=0.18,
                 )
             )
+        )
+
+    def test_dense_bottom_edge_up_pair_candidate_requires_all_normalized_evidence(self) -> None:
+        self.assertTrue(
+            _is_dense_bottom_edge_up_spike_pair_candidate(0.50, 0.15, 0.90, 0.28)
+        )
+        self.assertFalse(
+            _is_dense_bottom_edge_up_spike_pair_candidate(0.49, 0.15, 0.90, 0.28)
+        )
+        self.assertFalse(
+            _is_dense_bottom_edge_up_spike_pair_candidate(0.50, 0.14, 0.90, 0.28)
+        )
+        self.assertFalse(
+            _is_dense_bottom_edge_up_spike_pair_candidate(0.50, 0.15, 0.89, 0.28)
+        )
+        self.assertFalse(
+            _is_dense_bottom_edge_up_spike_pair_candidate(0.50, 0.15, 0.90, 0.27)
+        )
+
+    def test_dense_bottom_edge_up_pair_positions_rejects_isolated_candidates(self) -> None:
+        self.assertEqual(
+            _dense_bottom_edge_up_spike_pair_positions(
+                {(192, 576), (224, 576), (320, 576), (192, 568)}
+            ),
+            {(192, 576), (224, 576)},
         )
 
     def test_up_spike_half_step_continuation_patch_requires_strong_up_outline(self) -> None:

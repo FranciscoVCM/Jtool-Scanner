@@ -1340,6 +1340,11 @@ BOTTOM_EDGE_UP_SPIKE_CONTINUATION_X_OFFSET = 16
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_EDGE_DENSITY = 0.27
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_BORDER_SCORE = 0.15
 BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_CENTER_SCORE = 0.18
+DENSE_BOTTOM_UP_PAIR_MIN_SHAPE_SCORE = 0.50
+DENSE_BOTTOM_UP_PAIR_MIN_DIRECTION_MARGIN = 0.15
+DENSE_BOTTOM_UP_PAIR_MIN_SIDE_COVERAGE = 0.90
+DENSE_BOTTOM_UP_PAIR_MIN_NORMALIZED_LUMA_CONTRAST = 0.28
+DENSE_BOTTOM_UP_PAIR_X_SEPARATION = GRID_SIZE
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -2549,6 +2554,12 @@ def scan_image(
         # material continuity and triangle shape rather than a room identity
         # or palette, and deliberately runs before walljump-backed blocks are
         # appended below.
+        if dense_miniblock_room:
+            detections = _recover_dense_bottom_edge_up_spike_pairs(
+                detections,
+                image,
+                box,
+            )
         detections = _arbitrate_full_spikes_against_blocks(
             detections,
             image,
@@ -22451,6 +22462,106 @@ def _is_bottom_edge_up_spike_continuation_patch(patch: _PatchFeatures) -> bool:
         and patch.border_score >= BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_BORDER_SCORE
         and patch.center_score >= BOTTOM_EDGE_UP_SPIKE_CONTINUATION_MIN_CENTER_SCORE
     )
+
+
+def _recover_dense_bottom_edge_up_spike_pairs(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Recover paired bottom-boundary spikes in a proven 16px material room.
+
+    Dense decorative terrain can weaken a full spike until the ordinary
+    pass loses it.  Require two independently convincing 32px up-triangles
+    one cell apart on the structural bottom boundary.  Every feature is
+    relative to the local patch/luminance range; the recovery is independent
+    of a particular room palette or game identity.
+    """
+
+    y = ROOM_HEIGHT - GRID_SIZE
+    qualified: dict[tuple[int, int], float] = {}
+    for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 8):
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        scores = {
+            direction: _triangle_direction_score(patch, direction)[0]
+            for direction in ("up", "right", "left", "down")
+        }
+        shape_score = scores["up"]
+        direction_margin = shape_score - max(
+            score for direction, score in scores.items() if direction != "up"
+        )
+        fill = _triangle_fill_features(
+            image,
+            room,
+            x,
+            y,
+            GRID_SIZE,
+            "up",
+        )
+        normalized_luma_contrast = abs(fill.luma_contrast) / max(
+            1.0,
+            fill.cluster_gap,
+        )
+        if _is_dense_bottom_edge_up_spike_pair_candidate(
+            shape_score,
+            direction_margin,
+            _triangle_side_coverage(patch, "up"),
+            normalized_luma_contrast,
+        ):
+            qualified[(x, y)] = shape_score
+
+    pair_positions = _dense_bottom_edge_up_spike_pair_positions(set(qualified))
+    occupied = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_SPIKE_UP
+    }
+    added = [
+        _geometry_detection(
+            "spike_up",
+            OBJ_SPIKE_UP,
+            x,
+            pair_y,
+            max(FULL_SPIKE_WATER_COEXIST_MIN_SCORE, qualified[(x, pair_y)]),
+            image,
+            room,
+            GRID_SIZE,
+        )
+        for x, pair_y in sorted(
+            pair_positions,
+            key=lambda position: (position[1], position[0]),
+        )
+        if (x, pair_y) not in occupied
+    ]
+    return [*detections, *added]
+
+
+def _is_dense_bottom_edge_up_spike_pair_candidate(
+    shape_score: float,
+    direction_margin: float,
+    side_coverage: float,
+    normalized_luma_contrast: float,
+) -> bool:
+    return (
+        shape_score >= DENSE_BOTTOM_UP_PAIR_MIN_SHAPE_SCORE
+        and direction_margin >= DENSE_BOTTOM_UP_PAIR_MIN_DIRECTION_MARGIN
+        and side_coverage >= DENSE_BOTTOM_UP_PAIR_MIN_SIDE_COVERAGE
+        and normalized_luma_contrast
+        >= DENSE_BOTTOM_UP_PAIR_MIN_NORMALIZED_LUMA_CONTRAST
+    )
+
+
+def _dense_bottom_edge_up_spike_pair_positions(
+    positions: set[tuple[int, int]],
+) -> set[tuple[int, int]]:
+    return {
+        (x, y)
+        for x, y in positions
+        if (
+            (x - DENSE_BOTTOM_UP_PAIR_X_SEPARATION, y) in positions
+            or (x + DENSE_BOTTOM_UP_PAIR_X_SEPARATION, y) in positions
+        )
+    }
 
 
 def _recover_up_spike_lateral_continuations(
