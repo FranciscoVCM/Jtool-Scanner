@@ -5030,3 +5030,48 @@ and the complete **282-test** geometry module pass; fresh ignored profiles,
 exact reports, review crops, overlays, and
 source/JTool/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/cap-backing-*`.
+
+## Checkpoint: palette-relative low-saturation dense aliases (2026-08-30)
+
+The remaining six miniblock false positives in the full-resolution CN3 exact
+rooms represented three visibly different failure modes: grey level text,
+block/spike overlap texture, and low-chroma bottom-edge fill.  Treating those
+coordinates or appearances separately was unnecessary.  A production-stage
+dataset of every raw dense miniblock candidate at tracked and full-resolution
+scales found one shared relative separation: every surviving alias has room-
+learned normalized descriptor distance above 0.18 and saturation below 0.30,
+while no authoritative miniblock occupies that joint band.
+
+The existing late material veto now uses those measured bounds.  It still
+runs only after geometry consumers have used the raw terrain as support and
+only in a proven dense 16px material room.  Descriptor distance is learned
+from the current room's normalized luminance patches, and saturation is a
+relative structural corroborator; the rule contains no fixed RGB, filename,
+coordinate, room, or tileset identity.  A 71-screen saved-output eligibility
+check found only CN3-16 and CN3-18 entering this dense-material route.  The
+older audit outputs were used only to bound activation, not as exact truth;
+all promotion decisions came from fresh four-scale scans against corrected
+JMaps.
+
+At tracked scale, CN3-16 miniblocks improve from 509 detections to an exact
+**501/501**, and CN3-18 miniblocks improve from 376 to an exact **374/374**.
+Their other protected groups are unchanged: full spikes remain 80/80 at 80
+detections, minispikes 108/108 at 109 detections, saves 7/7, warps 2/2, water
+5/5, and walljumps 4/4.  The four-scale trial therefore has zero miniblock
+false positives and zero miniblock misses in all four scans.
+
+The strict full-resolution crosswalk keeps **1071/1082 exact** while false
+positives fall from 15 to **9**; 11 misses, zero shifts, and zero wrong
+directions are unchanged, so combined authoritative errors improve **26 to
+20**.  CN3-16 is now **588/590 exact, six false positives, two misses, and
+eight errors**.  CN3-18 is **483/492 exact, three false positives, nine
+misses, and 12 errors**.  Both rooms remain `needs-more-work`; their remaining
+errors are spike, warp, and one clipped water mismatch rather than miniblock
+precision errors.
+
+FTFA remains **926/928 exact, zero false positives, two boundary misses, zero
+shifts, and zero wrong directions** under a hard no-regression baseline.  The
+focused threshold-boundary regressions and complete **282-test** geometry
+module pass in 342.798 seconds.  Fresh ignored datasets, activation reports,
+exact reports, overlays, source/JTool/blend output, and review crops are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/wide-low-saturation-*`.

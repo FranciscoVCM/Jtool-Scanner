@@ -219,8 +219,14 @@ DENSE_MINIBLOCK_MATERIAL_MAX_NORMALIZED_CENTER_GRADIENT = 0.12
 DENSE_MINIBLOCK_LATE_FLAT_ALIAS_MAX_CENTER_GRADIENT = 0.08
 DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.36
 DENSE_MINIBLOCK_LATE_MATERIAL_ALIAS_MAX_CENTER_GRADIENT = 0.12
-DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.40
-DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MAX_SATURATION = 0.25
+# Low-saturation decoration and capture-edge fill can retain the same coarse
+# internal relief as the learned terrain, so the material-distance gate is
+# intentionally paired with saturation rather than treated as a standalone
+# mismatch.  Four-scale dense-room truth separates all observed aliases at
+# distance >0.18 and saturation <0.30 while preserving every authoritative
+# miniblock; the strict inequalities retain the measured boundary controls.
+DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.18
+DENSE_MINIBLOCK_LATE_LOW_SATURATION_ALIAS_MAX_SATURATION = 0.30
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_DESCRIPTOR_DISTANCE = 0.25
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MAX_CARDINAL_NEIGHBORS = 1
 DENSE_MINIBLOCK_LATE_SPARSE_ALIAS_MIN_EDGE_DENSITY = 0.05

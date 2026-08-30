@@ -7525,7 +7525,7 @@ class ScannerGeometryTests(unittest.TestCase):
         ]
 
         def features(_image, _room, x, _y):
-            first = 1.8 if x in (64, 80) else 0.0
+            first = {64: 0.80, 80: 0.70, 96: 0.80}.get(x, 0.0)
             return _NormalizedLumaPatch(
                 (first, *(0.0 for _ in range(15))),
                 0.02,
@@ -7533,7 +7533,7 @@ class ScannerGeometryTests(unittest.TestCase):
             )
 
         def profile(_image, _room, x, _y, _size):
-            saturation = 0.20 if x == 64 else 0.30
+            saturation = 0.30 if x == 96 else 0.20
             return _ColorProfile(80.0, 120.0, 160.0, saturation)
 
         with (
@@ -7559,6 +7559,7 @@ class ScannerGeometryTests(unittest.TestCase):
 
         self.assertNotIn(raw_blocks[4], result)
         self.assertIn(raw_blocks[5], result)
+        self.assertIn(raw_blocks[6], result)
 
     def test_dense_minispike_backing_recovery_requires_room_material(self) -> None:
         raw_blocks = [
