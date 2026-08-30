@@ -5199,3 +5199,43 @@ zero wrong directions**.  The complete **286-test** geometry module passes in
 374.745 seconds.  Fresh ignored profiles, exact reviews, overlays, and
 source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/late-strong-raw-full-*`.
+
+## Checkpoint: late full/minispike scale reconciliation (2026-08-31)
+
+CN3-16's final authoritative miss and one remaining extra were the same
+silhouette resolved at different scales: the raw geometry pass emitted the
+correct full-left spike at `(240,576)`, while final arbitration retained a
+same-direction mini-left hypothesis inside its lower-right quadrant.  A
+four-scale profile found many absent raw full spikes containing final
+same-direction minispikes, proving that overlap alone is unsafe.  The true
+scale swap was the only candidate also satisfying the conservative joint
+full-triangle shape, orientation, side, and normalized-fill predicate.
+
+After late strong-raw preservation, a proven dense room now reconciles this
+specific form of scale conflict.  A missing raw primary full spike must
+contain a same-direction final minispike and have normalized shape score at
+least 0.50, direction margin at least 0.20, triangle-side coverage at least
+0.90, and palette-normalized luminance contrast at least 0.20.  Only then is
+the contained same-direction mini hypothesis replaced by the full spike.
+The rule contains no filename, room ordinal, target coordinate, fixed RGB
+range, tileset identity, or unconditional scale preference.
+
+The strict full-resolution crosswalk improves from **1078/1082** to
+**1079/1082 exact**.  False positives fall from 9 to **8** and misses from 4
+to **3**; shifts and wrong directions remain zero, reducing combined
+authoritative errors **13 to 11**.  CN3-16 now has **590/590 exact truth,
+five false positives, zero misses, and five errors**.  CN3-18 remains
+**489/492 exact, three false positives, three misses, and six errors**.  Both
+rooms remain `needs-more-work`; exact recall does not make CN3-16 accepted
+while its five extra objects remain.
+
+The complete 12-pair workflow preserves every established aggregate: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections, blocks
+1463/1486, full spikes 724/748 at 870 detections, minispikes 281/288 at 329
+detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **287-test** geometry module passes in
+375.113 seconds.  Fresh ignored profiles, exact reviews, overlays, and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/late-scale-swap-*`.

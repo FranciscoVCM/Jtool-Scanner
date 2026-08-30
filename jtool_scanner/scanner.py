@@ -1355,6 +1355,10 @@ DENSE_LATE_RAW_FULL_MIN_SHAPE_SCORE = 0.60
 DENSE_LATE_RAW_FULL_MIN_DIRECTION_MARGIN = 0.20
 DENSE_LATE_RAW_FULL_MIN_SIDE_COVERAGE = 1.00
 DENSE_LATE_RAW_FULL_MIN_NORMALIZED_LUMA_CONTRAST = 0.30
+DENSE_LATE_SCALE_SWAP_MIN_SHAPE_SCORE = 0.50
+DENSE_LATE_SCALE_SWAP_MIN_DIRECTION_MARGIN = 0.20
+DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE = 0.90
+DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST = 0.20
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -2620,6 +2624,12 @@ def scan_image(
         detections = _prune_terrain_mini_spike_overlaps(detections)
         if dense_miniblock_room:
             detections = _recover_late_strong_raw_full_spikes(
+                detections,
+                raw_primary_full_spikes,
+                image,
+                box,
+            )
+            detections = _reconcile_late_raw_full_minispike_scale_swaps(
                 detections,
                 raw_primary_full_spikes,
                 image,
@@ -22815,6 +22825,130 @@ def _is_late_strong_raw_full_spike_candidate(
         and side_coverage >= DENSE_LATE_RAW_FULL_MIN_SIDE_COVERAGE
         and normalized_luma_contrast
         >= DENSE_LATE_RAW_FULL_MIN_NORMALIZED_LUMA_CONTRAST
+    )
+
+
+def _reconcile_late_raw_full_minispike_scale_swaps(
+    detections: list[Detection],
+    raw_primary_full_spikes: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Replace a contained same-direction mini alias with a decisive raw full."""
+
+    direction_for_type = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    mini_for_type = {
+        OBJ_SPIKE_UP: OBJ_MINI_SPIKE_UP,
+        OBJ_SPIKE_RIGHT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_SPIKE_LEFT: OBJ_MINI_SPIKE_LEFT,
+        OBJ_SPIKE_DOWN: OBJ_MINI_SPIKE_DOWN,
+    }
+    occupied_full = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    }
+    considered: set[tuple[int, int, int]] = set()
+    recovered: list[Detection] = []
+    remove_ids: set[int] = set()
+    for candidate in raw_primary_full_spikes:
+        key = (candidate.type_id, candidate.x, candidate.y)
+        if key in occupied_full or key in considered:
+            continue
+        considered.add(key)
+        mini_type = mini_for_type[candidate.type_id]
+        contained_minis = [
+            detection
+            for detection in detections
+            if detection.type_id == mini_type
+            and detection.x in (
+                candidate.x,
+                candidate.x + MINI_BLOCK_SIZE,
+            )
+            and detection.y in (
+                candidate.y,
+                candidate.y + MINI_BLOCK_SIZE,
+            )
+        ]
+        if not contained_minis:
+            continue
+        direction = direction_for_type[candidate.type_id]
+        patch = _patch_features(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            GRID_SIZE,
+        )
+        direction_scores = {
+            candidate_direction: _triangle_direction_score(
+                patch,
+                candidate_direction,
+            )[0]
+            for candidate_direction in ("up", "right", "left", "down")
+        }
+        shape_score = direction_scores[direction]
+        direction_margin = shape_score - max(
+            score
+            for candidate_direction, score in direction_scores.items()
+            if candidate_direction != direction
+        )
+        fill = _triangle_fill_features(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            GRID_SIZE,
+            direction,
+        )
+        normalized_luma_contrast = abs(fill.luma_contrast) / max(
+            1.0,
+            fill.cluster_gap,
+        )
+        if not _is_late_raw_full_minispike_scale_swap_candidate(
+            shape_score,
+            direction_margin,
+            _triangle_side_coverage(patch, direction),
+            normalized_luma_contrast,
+        ):
+            continue
+        remove_ids.update(id(detection) for detection in contained_minis)
+        recovered.append(
+            _geometry_detection(
+                "late_raw_full_scale_recovery",
+                candidate.type_id,
+                candidate.x,
+                candidate.y,
+                max(candidate.score, shape_score),
+                image,
+                room,
+                GRID_SIZE,
+            )
+        )
+        occupied_full.add(key)
+    return [
+        *(detection for detection in detections if id(detection) not in remove_ids),
+        *recovered,
+    ]
+
+
+def _is_late_raw_full_minispike_scale_swap_candidate(
+    shape_score: float,
+    direction_margin: float,
+    side_coverage: float,
+    normalized_luma_contrast: float,
+) -> bool:
+    return (
+        shape_score >= DENSE_LATE_SCALE_SWAP_MIN_SHAPE_SCORE
+        and direction_margin >= DENSE_LATE_SCALE_SWAP_MIN_DIRECTION_MARGIN
+        and side_coverage >= DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE
+        and normalized_luma_contrast
+        >= DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST
     )
 
 
