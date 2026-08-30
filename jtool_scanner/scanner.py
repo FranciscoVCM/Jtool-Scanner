@@ -1345,6 +1345,12 @@ DENSE_BOTTOM_UP_PAIR_MIN_DIRECTION_MARGIN = 0.15
 DENSE_BOTTOM_UP_PAIR_MIN_SIDE_COVERAGE = 0.90
 DENSE_BOTTOM_UP_PAIR_MIN_NORMALIZED_LUMA_CONTRAST = 0.28
 DENSE_BOTTOM_UP_PAIR_X_SEPARATION = GRID_SIZE
+DENSE_MINISPIKE_RUN_MIN_SHAPE_SCORE = 0.30
+DENSE_MINISPIKE_RUN_MIN_DIRECTION_MARGIN = -0.10
+DENSE_MINISPIKE_RUN_MIN_SIDE_COVERAGE = 0.50
+DENSE_MINISPIKE_RUN_STRONG_SIDE_COVERAGE = 0.60
+DENSE_MINISPIKE_RUN_MIN_NORMALIZED_LUMA_CONTRAST = 0.44
+DENSE_MINISPIKE_RUN_STRONG_ADJACENT_COUNT = 2
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -2524,6 +2530,12 @@ def scan_image(
             image,
             box,
         )
+        if dense_miniblock_room:
+            detections = _recover_dense_minispike_run_continuations(
+                detections,
+                image,
+                box,
+            )
     detections = _prune_spatial_background_water_noise(
         detections,
         image,
@@ -22562,6 +22574,140 @@ def _dense_bottom_edge_up_spike_pair_positions(
             or (x + DENSE_BOTTOM_UP_PAIR_X_SEPARATION, y) in positions
         )
     }
+
+
+def _recover_dense_minispike_run_continuations(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Fill strongly corroborated holes and endpoints in dense mini runs."""
+
+    mini_points = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    }
+    material_points = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+    }
+    axis_offsets = {
+        OBJ_MINI_SPIKE_UP: ((0, -MINI_BLOCK_SIZE), (0, MINI_BLOCK_SIZE)),
+        OBJ_MINI_SPIKE_DOWN: ((0, -MINI_BLOCK_SIZE), (0, MINI_BLOCK_SIZE)),
+        OBJ_MINI_SPIKE_LEFT: ((-MINI_BLOCK_SIZE, 0), (MINI_BLOCK_SIZE, 0)),
+        OBJ_MINI_SPIKE_RIGHT: ((-MINI_BLOCK_SIZE, 0), (MINI_BLOCK_SIZE, 0)),
+    }
+    backing_offsets = {
+        OBJ_MINI_SPIKE_UP: (0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_DOWN: (0, -MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_LEFT: (MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_RIGHT: (-MINI_BLOCK_SIZE, 0),
+    }
+    direction_for_type = {
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    candidates: set[tuple[int, int, int]] = set()
+    for type_id, x, y in mini_points:
+        for dx, dy in axis_offsets[type_id]:
+            candidate = (type_id, x + dx, y + dy)
+            if (
+                candidate not in mini_points
+                and 0 <= candidate[1] <= ROOM_WIDTH - MINI_BLOCK_SIZE
+                and 0 <= candidate[2] <= ROOM_HEIGHT - MINI_BLOCK_SIZE
+            ):
+                candidates.add(candidate)
+
+    added: list[Detection] = []
+    for type_id, x, y in sorted(
+        candidates,
+        key=lambda candidate: (candidate[2], candidate[1], candidate[0]),
+    ):
+        direction = direction_for_type[type_id]
+        patch = _patch_features(image, room, x, y, MINI_BLOCK_SIZE)
+        direction_scores = {
+            candidate_direction: _triangle_direction_score(
+                patch,
+                candidate_direction,
+            )[0]
+            for candidate_direction in ("up", "right", "left", "down")
+        }
+        shape_score = direction_scores[direction]
+        direction_margin = shape_score - max(
+            score
+            for candidate_direction, score in direction_scores.items()
+            if candidate_direction != direction
+        )
+        fill = _triangle_fill_features(
+            image,
+            room,
+            x,
+            y,
+            MINI_BLOCK_SIZE,
+            direction,
+        )
+        normalized_luma_contrast = abs(fill.luma_contrast) / max(
+            1.0,
+            fill.cluster_gap,
+        )
+        backing_dx, backing_dy = backing_offsets[type_id]
+        backed_by_material = (
+            x + backing_dx,
+            y + backing_dy,
+        ) in material_points
+        adjacent_count = sum(
+            (type_id, x + dx, y + dy) in mini_points
+            for dx, dy in axis_offsets[type_id]
+        )
+        if not _is_dense_minispike_run_recovery_candidate(
+            shape_score,
+            direction_margin,
+            _triangle_side_coverage(patch, direction),
+            normalized_luma_contrast,
+            backed_by_material=backed_by_material,
+            adjacent_count=adjacent_count,
+        ):
+            continue
+        added.append(
+            _geometry_detection(
+                "dense_minispike_run_recovery",
+                type_id,
+                x,
+                y,
+                shape_score,
+                image,
+                room,
+                MINI_BLOCK_SIZE,
+            )
+        )
+    return [*detections, *added]
+
+
+def _is_dense_minispike_run_recovery_candidate(
+    shape_score: float,
+    direction_margin: float,
+    side_coverage: float,
+    normalized_luma_contrast: float,
+    *,
+    backed_by_material: bool,
+    adjacent_count: int,
+) -> bool:
+    return (
+        shape_score >= DENSE_MINISPIKE_RUN_MIN_SHAPE_SCORE
+        and direction_margin >= DENSE_MINISPIKE_RUN_MIN_DIRECTION_MARGIN
+        and side_coverage >= DENSE_MINISPIKE_RUN_MIN_SIDE_COVERAGE
+        and normalized_luma_contrast
+        >= DENSE_MINISPIKE_RUN_MIN_NORMALIZED_LUMA_CONTRAST
+        and (
+            backed_by_material
+            or adjacent_count >= DENSE_MINISPIKE_RUN_STRONG_ADJACENT_COUNT
+            or side_coverage >= DENSE_MINISPIKE_RUN_STRONG_SIDE_COVERAGE
+        )
+    )
 
 
 def _recover_up_spike_lateral_continuations(

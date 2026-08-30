@@ -5116,3 +5116,47 @@ zero wrong directions**.  The complete **284-test** geometry module passes in
 364.338 seconds.  Fresh ignored profiles, exact reviews, overlays, and
 source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/bottom-up-pair-*`.
+
+## Checkpoint: dense minispike run continuation (2026-08-30)
+
+Four of CN3-18's remaining full-resolution misses were holes or endpoints in
+same-direction 16px minispike runs.  Two retain direct backing from the final
+dense material lattice, one is supported on both sides by the same minispike
+orientation, and one retains especially strong triangle-side coverage.  A
+production-stage profile generated every adjacent same-direction candidate
+from the final tracked and local CN3 outputs, then evaluated normalized shape,
+orientation, fill, local material, and run topology.  One composite predicate
+recovered all four authoritative targets with zero false candidates across
+both capture scales.
+
+Proven dense-miniblock rooms now receive a late minispike-run continuation
+pass after dense scale/direction arbitration.  A candidate must be adjacent
+on its orientation axis, have shape score at least 0.30, direction margin at
+least -0.10, triangle-side coverage at least 0.50, and palette-normalized
+luminance contrast at least 0.44.  It must additionally have direct material
+backing, same-direction support on both sides, or side coverage at least 0.60.
+This combines compensating structural evidence for weak decorative sprites;
+it contains no filename, room ordinal, target coordinate, fixed RGB range, or
+tileset identity, and cannot activate without the existing raw dense-lattice
+classification.
+
+The strict full-resolution crosswalk improves from **1073/1082** to
+**1077/1082 exact**.  False positives remain 9 while misses fall from 9 to
+**5**; shifts and wrong directions remain zero, reducing combined
+authoritative errors **18 to 14**.  CN3-16 is unchanged at **588/590 exact,
+six false positives, two misses, and eight errors**.  CN3-18 improves to
+**489/492 exact, three false positives, three misses, and six errors**.  The
+remaining CN3-18 misses are two full up-spikes and one clipped water cell; its
+extras are a player-like minispike, a bridge-like horizontal full spike, and a
+warp impostor.  Both exact rooms remain `needs-more-work`.
+
+The complete 12-pair workflow again preserves every established aggregate:
+saves 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
+flippers 8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections,
+blocks 1463/1486, full spikes 724/748 at 870 detections, minispikes 281/288 at
+329 detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **285-test** geometry module passes in
+393.154 seconds.  Fresh ignored profiles, exact reviews, overlays, and
+source/JTool/blend output are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/dense-minispike-runs-*`.
