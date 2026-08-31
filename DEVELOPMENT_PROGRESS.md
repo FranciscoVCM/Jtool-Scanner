@@ -5371,3 +5371,48 @@ zero wrong directions**.  The complete **293-test** geometry module passes in
 344.938 seconds.  Fresh ignored profiles, exact reviews, source/JTool/blend
 output, fixture scans, and the 71-screen activation audit are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/warp-spike-pair-*`.
+
+## Checkpoint: generalized boundary floor-label rejection (2026-08-31)
+
+A fresh source/current-output audit confirmed that the large visible floor
+labels in CN3-25, CN3-26, and CN3-27 were still being interpreted as mixed
+terrain.  The `25` produced nine false block/full-spike hypotheses, the `26`
+produced eight, and the `27` produced eight.  This was broader than the small
+CN3-16 digit issue: the aliases came from the ordinary full-block and
+full-spike paths, including several recovery kinds.
+
+An initial palette-relative large-component profile was rejected because it
+activated on 41 of the 71 saved screens and included real edge geometry.  The
+accepted profile requires two separately resolved digit-scale strokes on a
+shared baseline, or two nearly coincident bright/dark masks of a joined
+two-digit label.  Blocks near a relative room boundary are only cheap seeds;
+the final veto also requires low normalized saturation, several overlapping
+block/spike hypotheses, and a source stroke region fully inside the viewport.
+The clipping guard preserves real formations that continue through an image
+edge.  Component extraction is therefore limited to already conflicting
+boundary clusters, and the complete geometry-suite runtime does not increase.
+The rule contains no filename, floor value, OCR result, fixed target
+coordinate, fixed RGB range, or tileset identity.
+
+A production-function activation audit against all 71 saved source/JMap pairs
+finds exactly the three verified labels and removes exactly 25 hypotheses.
+Fresh editable project/JMap/reconstruction/diagnostic/blend generations reduce
+CN3-25 from **263 to 254 objects** and geometry reviews from 64 to **62**;
+CN3-26 from **266 to 258 objects** and reviews from 77 to **74**; and CN3-27
+from **333 to 325 objects** and reviews from 93 to **91**.  Old/new JMap diffs
+contain only the label-bound block/spike removals and no additions.  All three
+rooms remain `needs-more-work`: their wider terrain/spike phase conflicts and
+missing platforms are not disguised by this bounded cleanup.
+
+The strict exact crosswalk remains **1079/1082 exact, two false positives,
+three misses, zero shifts, and zero wrong directions**.  Every complete
+12-pair aggregate remains unchanged: saves 22/22, warps 12/12, apples 4/4,
+water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
+miniblocks 875/875 at 875 detections, blocks 1463/1486 at 1596 detections,
+full spikes 724/748 at 870 detections, minispikes 281/288 at 326 detections,
+killer blocks 99/99, and jump refreshers 18/19.  FTFA remains **926/928
+exact with zero false positives and the same two boundary misses**.  The
+complete **295-test** geometry module passes in 342.334 seconds.  Fresh
+ignored profiles, activation reports, scans, editable projects, and review
+artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/floor-label-*`.

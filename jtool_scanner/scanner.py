@@ -1392,6 +1392,29 @@ DENSE_GLYPH_ALIAS_TEXT_MAX_DENSITY = 0.60
 DENSE_GLYPH_ALIAS_TEXT_NARROW_MAX_WIDTH = 16
 DENSE_GLYPH_ALIAS_TEXT_THIN_MAX_HEIGHT = 8
 DENSE_GLYPH_ALIAS_TEXT_DASH_MIN_WIDTH = 8
+FLOOR_LABEL_BOUNDARY_MARGIN = 136
+FLOOR_LABEL_REGION_EDGE_MARGIN = 16
+FLOOR_LABEL_NEIGHBOR_RADIUS = 80
+FLOOR_LABEL_MAX_SATURATION = 0.20
+FLOOR_LABEL_MIN_OVERLAPPING_GEOMETRY = 4
+FLOOR_LABEL_MIN_OVERLAPPING_BLOCKS = 2
+FLOOR_LABEL_MIN_OVERLAPPING_SPIKES = 2
+FLOOR_LABEL_DIGIT_MIN_WIDTH = 30
+FLOOR_LABEL_DIGIT_MAX_WIDTH = 42
+FLOOR_LABEL_DIGIT_MIN_HEIGHT = 49
+FLOOR_LABEL_DIGIT_MAX_HEIGHT = 54
+FLOOR_LABEL_DIGIT_MIN_DENSITY = 0.18
+FLOOR_LABEL_DIGIT_MAX_DENSITY = 0.43
+FLOOR_LABEL_DIGIT_MAX_BASELINE_DELTA = 3
+FLOOR_LABEL_PAIR_MIN_WIDTH = 60
+FLOOR_LABEL_PAIR_MAX_WIDTH = 82
+FLOOR_LABEL_JOINED_MIN_WIDTH = 64
+FLOOR_LABEL_JOINED_MAX_WIDTH = 82
+FLOOR_LABEL_JOINED_MIN_HEIGHT = 47
+FLOOR_LABEL_JOINED_MAX_HEIGHT = 61
+FLOOR_LABEL_JOINED_MIN_DENSITY = 0.30
+FLOOR_LABEL_JOINED_MAX_DENSITY = 0.43
+FLOOR_LABEL_JOINED_MAX_CENTER_DELTA = 4
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -2702,6 +2725,11 @@ def scan_image(
             box,
         )
         detections = _prune_final_white_warp_spike_pair_aliases(
+            detections,
+            image,
+            box,
+        )
+        detections = _prune_boundary_floor_label_geometry_aliases(
             detections,
             image,
             box,
@@ -23674,6 +23702,222 @@ def _has_signed_text_component_group(
         group_width >= DENSE_GLYPH_ALIAS_TEXT_MIN_GROUP_WIDTH
         and has_thin_dash
         and has_narrow_intersection
+    )
+
+
+def _prune_boundary_floor_label_geometry_aliases(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject large detached floor digits interpreted as terrain geometry.
+
+    Floor labels can reuse the active tileset color and texture, so individual
+    32px patches may resemble both blocks and full spikes.  Use blocks near a
+    room boundary only as cheap seeds, then require a palette-relative pair of
+    large digit strokes and several conflicting geometry hypotheses.  Regions
+    clipped by the room edge are excluded so real edge terrain cannot be
+    inferred as a partly visible label.
+    """
+
+    alias_types = {
+        OBJ_BLOCK,
+        OBJ_PLATFORM,
+        *FULL_SPIKE_TYPES,
+        *MINI_SPIKE_TYPES,
+    }
+    geometry = [
+        detection
+        for detection in detections
+        if detection.type_id in alias_types
+    ]
+    seed_blocks = [
+        detection
+        for detection in geometry
+        if detection.type_id == OBJ_BLOCK
+        and _is_floor_label_boundary_candidate(detection.x, detection.y)
+    ]
+    if not seed_blocks:
+        return detections
+
+    regions: set[tuple[int, int, int, int]] = set()
+    for seed in seed_blocks:
+        neighbors = [
+            detection
+            for detection in geometry
+            if abs(detection.x - seed.x) <= FLOOR_LABEL_NEIGHBOR_RADIUS
+            and abs(detection.y - seed.y) <= FLOOR_LABEL_NEIGHBOR_RADIUS
+        ]
+        if (
+            len(neighbors) < FLOOR_LABEL_MIN_OVERLAPPING_GEOMETRY
+            or sum(
+                detection.type_id in FULL_SPIKE_TYPES for detection in neighbors
+            )
+            < FLOOR_LABEL_MIN_OVERLAPPING_SPIKES
+            or _patch_color_profile(
+                image,
+                room,
+                seed.x,
+                seed.y,
+                GRID_SIZE,
+            ).saturation
+            > FLOOR_LABEL_MAX_SATURATION
+        ):
+            continue
+        for region in _floor_label_regions_from_components(
+            _local_stroke_components(
+                image,
+                room,
+                seed.x,
+                seed.y,
+                GRID_SIZE,
+            )
+        ):
+            if _is_unclipped_floor_label_region(region):
+                regions.add(region)
+
+    accepted_regions: list[tuple[int, int, int, int]] = []
+    for region in regions:
+        overlapping = [
+            detection
+            for detection in geometry
+            if _detection_overlaps_region(detection, region)
+        ]
+        if (
+            len(overlapping) >= FLOOR_LABEL_MIN_OVERLAPPING_GEOMETRY
+            and sum(detection.type_id == OBJ_BLOCK for detection in overlapping)
+            >= FLOOR_LABEL_MIN_OVERLAPPING_BLOCKS
+            and sum(
+                detection.type_id in FULL_SPIKE_TYPES
+                for detection in overlapping
+            )
+            >= FLOOR_LABEL_MIN_OVERLAPPING_SPIKES
+        ):
+            accepted_regions.append(region)
+
+    if not accepted_regions:
+        return detections
+    return [
+        detection
+        for detection in detections
+        if detection.type_id not in alias_types
+        or not any(
+            _detection_overlaps_region(detection, region)
+            for region in accepted_regions
+        )
+    ]
+
+
+def _is_floor_label_boundary_candidate(x: int, y: int) -> bool:
+    return (
+        x < FLOOR_LABEL_BOUNDARY_MARGIN
+        or y < FLOOR_LABEL_BOUNDARY_MARGIN
+        or x + GRID_SIZE > ROOM_WIDTH - FLOOR_LABEL_BOUNDARY_MARGIN
+        or y + GRID_SIZE > ROOM_HEIGHT - FLOOR_LABEL_BOUNDARY_MARGIN
+    )
+
+
+def _is_unclipped_floor_label_region(
+    region: tuple[int, int, int, int],
+) -> bool:
+    left, top, right, bottom = region
+    return (
+        left >= FLOOR_LABEL_REGION_EDGE_MARGIN
+        and top >= FLOOR_LABEL_REGION_EDGE_MARGIN
+        and right <= ROOM_WIDTH - FLOOR_LABEL_REGION_EDGE_MARGIN
+        and bottom <= ROOM_HEIGHT - FLOOR_LABEL_REGION_EDGE_MARGIN
+    )
+
+
+def _floor_label_regions_from_components(
+    components: list[_LocalStrokeComponent],
+) -> list[tuple[int, int, int, int]]:
+    """Return strict two-digit regions from palette-relative stroke masks."""
+
+    digits = [
+        component
+        for component in components
+        if FLOOR_LABEL_DIGIT_MIN_WIDTH
+        <= component.width
+        <= FLOOR_LABEL_DIGIT_MAX_WIDTH
+        and FLOOR_LABEL_DIGIT_MIN_HEIGHT
+        <= component.height
+        <= FLOOR_LABEL_DIGIT_MAX_HEIGHT
+        and FLOOR_LABEL_DIGIT_MIN_DENSITY
+        <= component.density
+        <= FLOOR_LABEL_DIGIT_MAX_DENSITY
+    ]
+    regions: list[tuple[int, int, int, int]] = []
+    for index, first in enumerate(digits):
+        for second in digits[index + 1 :]:
+            if (
+                abs(first.center_y - second.center_y)
+                > FLOOR_LABEL_DIGIT_MAX_BASELINE_DELTA
+            ):
+                continue
+            left = min(first.x, second.x)
+            right = max(first.right, second.right)
+            if (
+                FLOOR_LABEL_PAIR_MIN_WIDTH
+                <= right - left
+                <= FLOOR_LABEL_PAIR_MAX_WIDTH
+            ):
+                regions.append(
+                    (
+                        left,
+                        min(first.y, second.y),
+                        right,
+                        max(first.bottom, second.bottom),
+                    )
+                )
+
+    joined = [
+        component
+        for component in components
+        if FLOOR_LABEL_JOINED_MIN_WIDTH
+        <= component.width
+        <= FLOOR_LABEL_JOINED_MAX_WIDTH
+        and FLOOR_LABEL_JOINED_MIN_HEIGHT
+        <= component.height
+        <= FLOOR_LABEL_JOINED_MAX_HEIGHT
+        and FLOOR_LABEL_JOINED_MIN_DENSITY
+        <= component.density
+        <= FLOOR_LABEL_JOINED_MAX_DENSITY
+    ]
+    for index, first in enumerate(joined):
+        for second in joined[index + 1 :]:
+            if (
+                abs(
+                    (first.x + first.width / 2)
+                    - (second.x + second.width / 2)
+                )
+                > FLOOR_LABEL_JOINED_MAX_CENTER_DELTA
+                or abs(first.center_y - second.center_y)
+                > FLOOR_LABEL_JOINED_MAX_CENTER_DELTA
+            ):
+                continue
+            regions.append(
+                (
+                    min(first.x, second.x),
+                    min(first.y, second.y),
+                    max(first.right, second.right),
+                    max(first.bottom, second.bottom),
+                )
+            )
+    return regions
+
+
+def _detection_overlaps_region(
+    detection: Detection,
+    region: tuple[int, int, int, int],
+) -> bool:
+    left, top, right, bottom = region
+    size = MINI_BLOCK_SIZE if detection.type_id in MINI_SPIKE_TYPES else GRID_SIZE
+    return (
+        detection.x < right
+        and left < detection.x + size
+        and detection.y < bottom
+        and top < detection.y + size
     )
 
 

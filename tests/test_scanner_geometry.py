@@ -146,6 +146,9 @@ from jtool_scanner.scanner import (
     _has_long_glyph_component,
     _has_signed_text_component_group,
     _prune_dense_detached_glyph_aliases,
+    _floor_label_regions_from_components,
+    _is_unclipped_floor_label_region,
+    _prune_boundary_floor_label_geometry_aliases,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_eight_step_full_spike_candidate,
@@ -4400,6 +4403,63 @@ class ScannerGeometryTests(unittest.TestCase):
                 {(item.type_id, item.x, item.y) for item in result},
                 expected,
             )
+
+    def test_floor_label_regions_require_two_digit_scale_masks(self) -> None:
+        pair = [
+            _LocalStrokeComponent(31, 61, 35, 51, 658, 0.369),
+            _LocalStrokeComponent(66, 59, 33, 51, 667, 0.396),
+        ]
+        self.assertEqual(
+            _floor_label_regions_from_components(pair),
+            [(31, 59, 99, 112)],
+        )
+        joined = [
+            _LocalStrokeComponent(27, 471, 76, 58, 1523, 0.346),
+            _LocalStrokeComponent(30, 476, 68, 48, 1308, 0.401),
+        ]
+        self.assertEqual(
+            _floor_label_regions_from_components(joined),
+            [(27, 471, 103, 529)],
+        )
+        self.assertEqual(
+            _floor_label_regions_from_components(
+                [
+                    _LocalStrokeComponent(31, 61, 35, 46, 313, 0.194),
+                    _LocalStrokeComponent(66, 59, 33, 47, 422, 0.273),
+                ]
+            ),
+            [],
+        )
+        self.assertFalse(_is_unclipped_floor_label_region((729, 349, 800, 408)))
+
+    def test_floor_label_prune_removes_only_overlapping_geometry(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        aliases = [
+            Detection("block", OBJ_BLOCK, 32, 64, 0.6, image_box),
+            Detection("block", OBJ_BLOCK, 64, 64, 0.6, image_box),
+            Detection("spike_up", OBJ_SPIKE_UP, 32, 56, 0.5, image_box),
+            Detection("spike_left", OBJ_SPIKE_LEFT, 48, 64, 0.6, image_box),
+            Detection("spike_down", OBJ_SPIKE_DOWN, 32, 96, 0.5, image_box),
+            Detection("spike_down", OBJ_SPIKE_DOWN, 64, 96, 0.5, image_box),
+        ]
+        real = Detection("block", OBJ_BLOCK, 320, 320, 0.9, image_box)
+        components = [
+            _LocalStrokeComponent(31, 61, 35, 51, 658, 0.369),
+            _LocalStrokeComponent(66, 59, 33, 51, 667, 0.396),
+        ]
+        with mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            return_value=_ColorProfile(0.0, 0.0, 0.0, 0.13),
+        ), mock.patch(
+            "jtool_scanner.scanner._local_stroke_components",
+            return_value=components,
+        ):
+            result = _prune_boundary_floor_label_geometry_aliases(
+                [*aliases, real],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+        self.assertEqual(result, [real])
 
     def test_up_spike_half_step_continuation_patch_requires_strong_up_outline(self) -> None:
         self.assertTrue(
