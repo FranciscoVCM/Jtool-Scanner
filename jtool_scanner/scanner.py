@@ -1359,6 +1359,29 @@ DENSE_LATE_SCALE_SWAP_MIN_SHAPE_SCORE = 0.50
 DENSE_LATE_SCALE_SWAP_MIN_DIRECTION_MARGIN = 0.20
 DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE = 0.90
 DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST = 0.20
+DENSE_GLYPH_ALIAS_MAX_SATURATION = 0.20
+DENSE_GLYPH_ALIAS_LONG_MIN_MATERIAL_DISTANCE = 64
+DENSE_GLYPH_ALIAS_TEXT_MIN_MATERIAL_DISTANCE = 32
+DENSE_GLYPH_ALIAS_MAX_NEARBY_GEOMETRY = 1
+DENSE_GLYPH_ALIAS_LOCAL_MEAN_RADIUS = 7
+DENSE_GLYPH_ALIAS_MIN_LOCAL_LUMA_DELTA = 24.0
+DENSE_GLYPH_ALIAS_WINDOW_X_MARGIN = 40
+DENSE_GLYPH_ALIAS_WINDOW_TOP_MARGIN = 40
+DENSE_GLYPH_ALIAS_WINDOW_BOTTOM_MARGIN = 56
+DENSE_GLYPH_ALIAS_MIN_COMPONENT_PIXELS = 8
+DENSE_GLYPH_ALIAS_LONG_MIN_WIDTH = 20
+DENSE_GLYPH_ALIAS_LONG_MAX_WIDTH = 42
+DENSE_GLYPH_ALIAS_LONG_MIN_HEIGHT = 46
+DENSE_GLYPH_ALIAS_LONG_MAX_DENSITY = 0.30
+DENSE_GLYPH_ALIAS_TEXT_MIN_COMPONENTS = 3
+DENSE_GLYPH_ALIAS_TEXT_MIN_GROUP_WIDTH = 48
+DENSE_GLYPH_ALIAS_TEXT_MAX_COMPONENT_WIDTH = 24
+DENSE_GLYPH_ALIAS_TEXT_MAX_COMPONENT_HEIGHT = 28
+DENSE_GLYPH_ALIAS_TEXT_MAX_CENTER_OFFSET = 20
+DENSE_GLYPH_ALIAS_TEXT_MAX_DENSITY = 0.60
+DENSE_GLYPH_ALIAS_TEXT_NARROW_MAX_WIDTH = 16
+DENSE_GLYPH_ALIAS_TEXT_THIN_MAX_HEIGHT = 8
+DENSE_GLYPH_ALIAS_TEXT_DASH_MIN_WIDTH = 8
 UP_SPIKE_HALF_STEP_CONTINUATION_ANCHOR_SCORE = 0.44
 UP_SPIKE_HALF_STEP_CONTINUATION_SUPPORT_SCORE = 0.38
 UP_SPIKE_HALF_STEP_CONTINUATION_X_OFFSET = -16
@@ -1947,6 +1970,28 @@ class _PlatformPatchFeatures:
     vertical_run: int
     gray_range: int
     horizontal_edge_rows: int = 0
+
+
+@dataclass(frozen=True, slots=True)
+class _LocalStrokeComponent:
+    x: int
+    y: int
+    width: int
+    height: int
+    pixels: int
+    density: float
+
+    @property
+    def right(self) -> int:
+        return self.x + self.width
+
+    @property
+    def bottom(self) -> int:
+        return self.y + self.height
+
+    @property
+    def center_y(self) -> float:
+        return self.y + self.height / 2
 
 
 @dataclass(slots=True)
@@ -2632,6 +2677,11 @@ def scan_image(
             detections = _reconcile_late_raw_full_minispike_scale_swaps(
                 detections,
                 raw_primary_full_spikes,
+                image,
+                box,
+            )
+            detections = _prune_dense_detached_glyph_aliases(
+                detections,
                 image,
                 box,
             )
@@ -22949,6 +22999,368 @@ def _is_late_raw_full_minispike_scale_swap_candidate(
         and side_coverage >= DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE
         and normalized_luma_contrast
         >= DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST
+    )
+
+
+def _prune_dense_detached_glyph_aliases(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject unsupported text strokes that survive dense-room arbitration.
+
+    A repeated 16px terrain room can give a floor number or a signed video
+    label enough local edges to resemble a minispike or thin platform.  Work
+    only after final material pruning, then require low chroma, no local
+    geometry context, and source morphology that is inconsistent with the
+    proposed object scale.  The component mask uses local luminance deviation
+    in map space, so the rule is independent of capture scale, room palette,
+    filename, floor value, and screen position.
+    """
+
+    candidate_types = {*MINI_SPIKE_TYPES, OBJ_PLATFORM}
+    candidates = [
+        detection
+        for detection in detections
+        if detection.type_id in candidate_types
+    ]
+    if not candidates:
+        return detections
+
+    material = {
+        (detection.x, detection.y)
+        for detection in detections
+        if detection.type_id == OBJ_MINI_BLOCK
+    }
+    if not material:
+        return detections
+    geometry = [
+        detection
+        for detection in detections
+        if detection.type_id in GEOMETRY_TYPES
+        or detection.type_id == OBJ_PLATFORM
+    ]
+    backing_offsets = {
+        OBJ_MINI_SPIKE_UP: (0, MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_DOWN: (0, -MINI_BLOCK_SIZE),
+        OBJ_MINI_SPIKE_LEFT: (MINI_BLOCK_SIZE, 0),
+        OBJ_MINI_SPIKE_RIGHT: (-MINI_BLOCK_SIZE, 0),
+    }
+
+    removed: set[int] = set()
+    for candidate in candidates:
+        sample_size = (
+            MINI_BLOCK_SIZE
+            if candidate.type_id in MINI_SPIKE_TYPES
+            else GRID_SIZE
+        )
+        saturation = _patch_color_profile(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            sample_size,
+        ).saturation
+        if saturation > DENSE_GLYPH_ALIAS_MAX_SATURATION:
+            continue
+
+        backing_offset = backing_offsets.get(candidate.type_id)
+        backed = bool(
+            backing_offset is not None
+            and (
+                candidate.x + backing_offset[0],
+                candidate.y + backing_offset[1],
+            )
+            in material
+        )
+        nearby_geometry = sum(
+            other is not candidate
+            and abs(other.x - candidate.x) <= GRID_SIZE
+            and abs(other.y - candidate.y) <= GRID_SIZE
+            for other in geometry
+        )
+        if nearby_geometry > DENSE_GLYPH_ALIAS_MAX_NEARBY_GEOMETRY:
+            continue
+        nearest_material = min(
+            (
+                abs(material_x - candidate.x)
+                + abs(material_y - candidate.y)
+                for material_x, material_y in material
+            ),
+            default=ROOM_WIDTH + ROOM_HEIGHT,
+        )
+        components = _local_stroke_components(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            sample_size,
+        )
+        if (
+            candidate.type_id in MINI_SPIKE_TYPES
+            and not backed
+            and nearest_material
+            >= DENSE_GLYPH_ALIAS_LONG_MIN_MATERIAL_DISTANCE
+            and _has_long_glyph_component(
+                components,
+                candidate.x,
+                candidate.y,
+                sample_size,
+            )
+        ) or (
+            not backed
+            and nearest_material
+            >= DENSE_GLYPH_ALIAS_TEXT_MIN_MATERIAL_DISTANCE
+            and (
+                candidate.type_id != OBJ_PLATFORM
+                or not _has_bright_room_platform_bar_evidence(
+                    _platform_horizontal_edge_runs(
+                        image,
+                        room,
+                        candidate.x,
+                        candidate.y,
+                    ),
+                    require_enclosure=True,
+                )
+            )
+            and _has_signed_text_component_group(
+                components,
+                candidate.x,
+                candidate.y,
+                sample_size,
+            )
+        ):
+            removed.add(id(candidate))
+
+    if not removed:
+        return detections
+    return [detection for detection in detections if id(detection) not in removed]
+
+
+def _local_stroke_components(
+    image: RGBImage,
+    room: Box,
+    map_x: int,
+    map_y: int,
+    object_size: int,
+) -> list[_LocalStrokeComponent]:
+    """Extract palette-relative stroke components around one map object."""
+
+    left = max(0, map_x - DENSE_GLYPH_ALIAS_WINDOW_X_MARGIN)
+    top = max(0, map_y - DENSE_GLYPH_ALIAS_WINDOW_TOP_MARGIN)
+    right = min(
+        ROOM_WIDTH,
+        map_x + object_size + DENSE_GLYPH_ALIAS_WINDOW_X_MARGIN,
+    )
+    bottom = min(
+        ROOM_HEIGHT,
+        map_y + object_size + DENSE_GLYPH_ALIAS_WINDOW_BOTTOM_MARGIN,
+    )
+    width = right - left
+    height = bottom - top
+    if width <= 0 or height <= 0:
+        return []
+
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    luma = [0] * (width * height)
+    for local_y in range(height):
+        image_y = int(
+            min(
+                image.height - 1,
+                max(0, room.y + (top + local_y + 0.5) * scale_y),
+            )
+        )
+        row = image.row(image_y)
+        for local_x in range(width):
+            image_x = int(
+                min(
+                    image.width - 1,
+                    max(0, room.x + (left + local_x + 0.5) * scale_x),
+                )
+            )
+            offset = image_x * 3
+            luma[local_y * width + local_x] = (
+                row[offset] * 30
+                + row[offset + 1] * 59
+                + row[offset + 2] * 11
+            ) // 100
+
+    integral_width = width + 1
+    integral = [0] * ((height + 1) * integral_width)
+    for local_y in range(height):
+        row_sum = 0
+        source_base = local_y * width
+        integral_base = (local_y + 1) * integral_width
+        previous_base = local_y * integral_width
+        for local_x in range(width):
+            row_sum += luma[source_base + local_x]
+            integral[integral_base + local_x + 1] = (
+                integral[previous_base + local_x + 1] + row_sum
+            )
+
+    radius = DENSE_GLYPH_ALIAS_LOCAL_MEAN_RADIUS
+    bright_foreground = bytearray(width * height)
+    dark_foreground = bytearray(width * height)
+    for local_y in range(height):
+        y0 = max(0, local_y - radius)
+        y1 = min(height, local_y + radius + 1)
+        for local_x in range(width):
+            x0 = max(0, local_x - radius)
+            x1 = min(width, local_x + radius + 1)
+            total = (
+                integral[y1 * integral_width + x1]
+                - integral[y0 * integral_width + x1]
+                - integral[y1 * integral_width + x0]
+                + integral[y0 * integral_width + x0]
+            )
+            mean_luma = total / ((x1 - x0) * (y1 - y0))
+            delta = luma[local_y * width + local_x] - mean_luma
+            if delta >= DENSE_GLYPH_ALIAS_MIN_LOCAL_LUMA_DELTA:
+                bright_foreground[local_y * width + local_x] = 1
+            elif delta <= -DENSE_GLYPH_ALIAS_MIN_LOCAL_LUMA_DELTA:
+                dark_foreground[local_y * width + local_x] = 1
+
+    components: list[_LocalStrokeComponent] = []
+    for foreground in (bright_foreground, dark_foreground):
+        expanded = bytearray(width * height)
+        for index, value in enumerate(foreground):
+            if not value:
+                continue
+            local_x = index % width
+            local_y = index // width
+            for neighbor_y in range(
+                max(0, local_y - 1),
+                min(height, local_y + 2),
+            ):
+                neighbor_base = neighbor_y * width
+                for neighbor_x in range(
+                    max(0, local_x - 1),
+                    min(width, local_x + 2),
+                ):
+                    expanded[neighbor_base + neighbor_x] = 1
+
+        for seed, value in enumerate(expanded):
+            if value != 1:
+                continue
+            expanded[seed] = 2
+            queue = [seed]
+            min_x = max_x = seed % width
+            min_y = max_y = seed // width
+            while queue:
+                current = queue.pop()
+                current_x = current % width
+                current_y = current // width
+                min_x = min(min_x, current_x)
+                max_x = max(max_x, current_x)
+                min_y = min(min_y, current_y)
+                max_y = max(max_y, current_y)
+                for neighbor_y in range(
+                    max(0, current_y - 1),
+                    min(height, current_y + 2),
+                ):
+                    neighbor_base = neighbor_y * width
+                    for neighbor_x in range(
+                        max(0, current_x - 1),
+                        min(width, current_x + 2),
+                    ):
+                        neighbor = neighbor_base + neighbor_x
+                        if expanded[neighbor] != 1:
+                            continue
+                        expanded[neighbor] = 2
+                        queue.append(neighbor)
+            component_width = max_x - min_x + 1
+            component_height = max_y - min_y + 1
+            original_pixels = sum(
+                foreground[component_y * width + component_x]
+                for component_y in range(min_y, max_y + 1)
+                for component_x in range(min_x, max_x + 1)
+            )
+            if original_pixels < DENSE_GLYPH_ALIAS_MIN_COMPONENT_PIXELS:
+                continue
+            components.append(
+                _LocalStrokeComponent(
+                    left + min_x,
+                    top + min_y,
+                    component_width,
+                    component_height,
+                    original_pixels,
+                    original_pixels / (component_width * component_height),
+                )
+            )
+    return components
+
+
+def _stroke_component_overlaps(
+    component: _LocalStrokeComponent,
+    x: int,
+    y: int,
+    size: int,
+) -> bool:
+    return (
+        component.x < x + size
+        and x < component.right
+        and component.y < y + size
+        and y < component.bottom
+    )
+
+
+def _has_long_glyph_component(
+    components: list[_LocalStrokeComponent],
+    x: int,
+    y: int,
+    size: int,
+) -> bool:
+    return any(
+        _stroke_component_overlaps(component, x, y, size)
+        and component.width >= DENSE_GLYPH_ALIAS_LONG_MIN_WIDTH
+        and component.width <= DENSE_GLYPH_ALIAS_LONG_MAX_WIDTH
+        and component.height >= DENSE_GLYPH_ALIAS_LONG_MIN_HEIGHT
+        and component.density <= DENSE_GLYPH_ALIAS_LONG_MAX_DENSITY
+        for component in components
+    )
+
+
+def _has_signed_text_component_group(
+    components: list[_LocalStrokeComponent],
+    x: int,
+    y: int,
+    size: int,
+) -> bool:
+    center_y = y + size / 2
+    strokes = [
+        component
+        for component in components
+        if component.width <= DENSE_GLYPH_ALIAS_TEXT_MAX_COMPONENT_WIDTH
+        and component.height <= DENSE_GLYPH_ALIAS_TEXT_MAX_COMPONENT_HEIGHT
+        and component.density <= DENSE_GLYPH_ALIAS_TEXT_MAX_DENSITY
+        and abs(component.center_y - center_y)
+        <= DENSE_GLYPH_ALIAS_TEXT_MAX_CENTER_OFFSET
+    ]
+    intersecting = [
+        component
+        for component in strokes
+        if _stroke_component_overlaps(component, x, y, size)
+    ]
+    if not intersecting or len(strokes) < DENSE_GLYPH_ALIAS_TEXT_MIN_COMPONENTS:
+        return False
+    group_width = max(component.right for component in strokes) - min(
+        component.x for component in strokes
+    )
+    has_thin_dash = any(
+        component.width >= DENSE_GLYPH_ALIAS_TEXT_DASH_MIN_WIDTH
+        and component.height <= DENSE_GLYPH_ALIAS_TEXT_THIN_MAX_HEIGHT
+        for component in strokes
+    )
+    has_narrow_intersection = any(
+        component.width <= DENSE_GLYPH_ALIAS_TEXT_NARROW_MAX_WIDTH
+        or component.height <= DENSE_GLYPH_ALIAS_TEXT_THIN_MAX_HEIGHT
+        for component in intersecting
+    )
+    return (
+        group_width >= DENSE_GLYPH_ALIAS_TEXT_MIN_GROUP_WIDTH
+        and has_thin_dash
+        and has_narrow_intersection
     )
 
 

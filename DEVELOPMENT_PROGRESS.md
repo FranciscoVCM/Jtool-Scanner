@@ -5239,3 +5239,46 @@ zero wrong directions**.  The complete **287-test** geometry module passes in
 375.113 seconds.  Fresh ignored profiles, exact reviews, overlays, and
 source/JTool/blend output are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/late-scale-swap-*`.
+
+## Checkpoint: palette-relative detached-glyph rejection (2026-08-31)
+
+The next exact CN3-16 review showed that two of its five remaining extras were
+not terrain at all: the large cyan floor-label digits `1` and `6` were being
+interpreted as left/right minispikes at `(640,48)` and `(672,64)`.  A
+palette-relative component profile separated those tall, sparse strokes from
+real 16px minispikes without relying on the room name, floor value, fixed
+coordinates, fixed RGB values, or OCR.  The nearby `< -45` label is an
+important negative control: the current scan emits no object there, and an
+injected platform or minispike candidate on the minus stroke is rejected by
+the same morphology rule.
+
+After all dense-room recovery and scale arbitration, a proven repeated-16px
+terrain room now performs a narrow unsupported-glyph check for low-chroma
+minispike and platform candidates.  Candidate-local bright and dark stroke
+components are extracted from normalized luminance in canonical map space,
+which makes the measurement independent of capture scale and palette.  A
+candidate is removed only when it lacks material backing and meaningful
+nearby geometry and its source components form either a floor-number-sized
+tall sparse glyph or a detached signed-text group with a thin dash.  Backed
+minispikes and platform patches with real enclosure evidence remain
+protected.  A saved-output activation audit over all 71 indexed screens
+triggered only on CN3-16, removing its known floor-digit alias.
+
+The strict full-resolution crosswalk preserves **1079/1082 exact** while
+false positives fall from 8 to **6**.  Misses remain 3; shifts and wrong
+directions remain zero, reducing combined authoritative errors **11 to 9**.
+CN3-16 remains **590/590 exact truth**, but its false positives fall from 5
+to **3**: one full down-spike, one mini down-spike, and one warp.  CN3-18 is
+deliberately unchanged at **489/492 exact, three false positives, three
+misses, and six errors**.  Both rooms remain `needs-more-work`.
+
+The complete 12-pair workflow preserves every established aggregate: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections, blocks
+1463/1486, full spikes 724/748 at 870 detections, minispikes 281/288 at 329
+detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **290-test** geometry module passes in
+347.526 seconds.  Fresh ignored profiles, exact reviews, source/JTool/blend
+output, and the 71-screen activation audit are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/glyph-alias-*`.

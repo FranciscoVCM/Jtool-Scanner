@@ -138,6 +138,10 @@ from jtool_scanner.scanner import (
     _is_dense_minispike_run_recovery_candidate,
     _is_late_strong_raw_full_spike_candidate,
     _is_late_raw_full_minispike_scale_swap_candidate,
+    _LocalStrokeComponent,
+    _has_long_glyph_component,
+    _has_signed_text_component_group,
+    _prune_dense_detached_glyph_aliases,
     _is_center_heavy_block_candidate,
     _is_dark_outline_block_run_fill_patch,
     _is_dark_outline_eight_step_full_spike_candidate,
@@ -4205,6 +4209,100 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.19,
             )
         )
+
+    def test_dense_glyph_component_metrics_require_scale_mismatch(self) -> None:
+        digit = _LocalStrokeComponent(640, 40, 29, 50, 278, 0.192)
+        mini = _LocalStrokeComponent(640, 48, 18, 18, 120, 0.37)
+        self.assertTrue(_has_long_glyph_component([digit], 640, 48, 16))
+        self.assertFalse(_has_long_glyph_component([mini], 640, 48, 16))
+
+    def test_signed_text_group_requires_aligned_strokes_and_dash(self) -> None:
+        components = [
+            _LocalStrokeComponent(48, 292, 14, 23, 67, 0.21),
+            _LocalStrokeComponent(80, 302, 12, 5, 26, 0.43),
+            _LocalStrokeComponent(104, 296, 13, 19, 77, 0.31),
+            _LocalStrokeComponent(124, 296, 13, 19, 77, 0.31),
+        ]
+        self.assertTrue(
+            _has_signed_text_component_group(components, 80, 296, 32)
+        )
+        self.assertFalse(
+            _has_signed_text_component_group(
+                [
+                    components[0],
+                    _LocalStrokeComponent(80, 302, 12, 12, 48, 0.33),
+                    components[2],
+                    components[3],
+                ],
+                80,
+                296,
+                32,
+            )
+        )
+
+    def test_dense_glyph_alias_prune_is_palette_relative_and_support_safe(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        detections = [
+            Detection(
+                "floor_number_alias",
+                OBJ_MINI_SPIKE_LEFT,
+                640,
+                48,
+                0.5,
+                image_box,
+            ),
+            Detection(
+                "signed_label_alias",
+                OBJ_PLATFORM,
+                80,
+                296,
+                0.5,
+                image_box,
+            ),
+            Detection(
+                "supported_real_mini",
+                OBJ_MINI_SPIKE_UP,
+                320,
+                320,
+                0.8,
+                image_box,
+            ),
+            Detection(
+                "real_platform",
+                OBJ_PLATFORM,
+                200,
+                200,
+                0.8,
+                image_box,
+            ),
+            Detection(
+                "material",
+                OBJ_MINI_BLOCK,
+                320,
+                336,
+                0.9,
+                image_box,
+            ),
+        ]
+        expected = {
+            (OBJ_MINI_SPIKE_UP, 320, 320),
+            (OBJ_PLATFORM, 200, 200),
+            (OBJ_MINI_BLOCK, 320, 336),
+        }
+        for background, foreground in (
+            ((24, 28, 34), (194, 202, 208)),
+            ((112, 116, 122), (232, 224, 228)),
+        ):
+            image = _dense_glyph_alias_test_image(background, foreground)
+            result = _prune_dense_detached_glyph_aliases(
+                detections,
+                image,
+                Box(0, 0, 800, 608),
+            )
+            self.assertEqual(
+                {(item.type_id, item.x, item.y) for item in result},
+                expected,
+            )
 
     def test_up_spike_half_step_continuation_patch_requires_strong_up_outline(self) -> None:
         self.assertTrue(
@@ -9399,6 +9497,52 @@ def _yellowless_save_lattice_test_image(*, dark_center: bool) -> RGBImage:
         for y in range(29, 36):
             start = (y * width + 27) * 3
             data[start : start + 7 * 3] = bytes((24, 24, 24) * 7)
+    return RGBImage(width, height, bytes(data))
+
+
+def _dense_glyph_alias_test_image(
+    background: tuple[int, int, int],
+    foreground: tuple[int, int, int],
+) -> RGBImage:
+    width, height = 800, 608
+    data = bytearray(background * (width * height))
+
+    def paint(left: int, top: int, right: int, bottom: int) -> None:
+        for y in range(top, bottom):
+            start = (y * width + left) * 3
+            data[start : start + (right - left) * 3] = bytes(
+                foreground * (right - left)
+            )
+
+    # A hollow, floor-number-sized stroke crossing a 16px mini hypothesis.
+    paint(640, 40, 669, 43)
+    paint(640, 87, 669, 90)
+    paint(640, 40, 643, 90)
+    paint(666, 40, 669, 90)
+
+    # A detached signed label: arrow-like mark, thin dash, and two glyphs.
+    paint(48, 302, 62, 305)
+    paint(56, 294, 59, 317)
+    paint(80, 302, 92, 305)
+    paint(104, 296, 107, 315)
+    paint(104, 306, 117, 309)
+    paint(114, 296, 117, 315)
+    paint(124, 296, 137, 299)
+    paint(124, 296, 127, 315)
+    paint(124, 306, 137, 309)
+    paint(134, 306, 137, 315)
+    paint(124, 312, 137, 315)
+
+    # Protected supported mini and a solitary platform-scale control.
+    for local_y in range(16):
+        half_width = local_y // 2
+        paint(
+            328 - half_width,
+            320 + local_y,
+            329 + half_width,
+            321 + local_y,
+        )
+    paint(200, 204, 232, 212)
     return RGBImage(width, height, bytes(data))
 
 
