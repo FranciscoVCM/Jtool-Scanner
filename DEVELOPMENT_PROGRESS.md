@@ -5333,3 +5333,41 @@ two boundary misses, zero shifts, and zero wrong directions**.  The complete
 profiles, exact reviews, source/JTool/blend output, fixture scans, and the
 71-screen activation audit are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/late-spike-overlap-*`.
+
+## Checkpoint: chromatic opposing-spike warp rejection (2026-08-31)
+
+The last CN3-16 extra and one CN3-18 extra were not cloud/goal sprites.  Each
+was the saturated cyan diamond formed at the center of an exact opposing
+full-spike pair: up/down spikes around `(368,512)` in CN3-16 and around
+`(208,480)` in CN3-18.  The real white-cloud warps in those rooms have low
+palette-relative saturation.  A saved-output activation audit across all 71
+indexed screens found exactly these two instances of the combined topology
+and color condition; it found no additional screen-specific candidates.
+
+White-cloud warp candidates are now reconciled after every geometry recovery
+stage.  A candidate is removed only when exact full up/down or left/right
+spikes surround its center and its normalized source patch is chromatic.
+Neutral cloud sprites remain protected even when they are near hazards.  The
+rule is limited to detections carrying the white-cloud `warp` provenance and
+contains no room name, target coordinate, fixed RGB range, tileset identity,
+or assumption that an arbitrary warp may not overlap spikes.
+
+The strict full-resolution crosswalk preserves **1079/1082 exact** while
+false positives fall from 4 to **2**.  Misses remain 3; shifts and wrong
+directions remain zero, reducing combined authoritative errors **7 to 5**.
+CN3-16 is now **590/590 exact with zero false positives and zero misses**.
+CN3-18 remains **489/492 exact**, while false positives fall from 3 to **2**;
+its three unrelated misses remain, reducing that room from six errors to
+**five**.
+
+Every aggregate in the complete 12-pair workflow is preserved, including
+warps at **12/12 matched from 12 detections**.  Saves remain 22/22, apples
+4/4, water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
+miniblocks 875/875 at exactly 875 detections, blocks 1463/1486 at 1596
+detections, full spikes 724/748 at 870 detections, minispikes 281/288 at 326
+detections, killer blocks 99/99, and jump refreshers 18/19.  FTFA remains
+**926/928 exact, zero false positives, two boundary misses, zero shifts, and
+zero wrong directions**.  The complete **293-test** geometry module passes in
+344.938 seconds.  Fresh ignored profiles, exact reviews, source/JTool/blend
+output, fixture scans, and the 71-screen activation audit are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/warp-spike-pair-*`.

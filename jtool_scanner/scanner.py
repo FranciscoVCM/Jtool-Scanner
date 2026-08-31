@@ -1860,6 +1860,7 @@ OUTLINE_APPLE_FRAGMENT_MIN_CENTER_SCORE = 0.30
 # merged box should remain close to square.  A broad ratio is retained for the
 # single-component route; the stricter bound rejects wide label/text joins.
 OUTLINE_WARP_FRAGMENTED_MAX_RATIO = 1.18
+MINIBLOCK_WHITE_WARP_SPIKE_PAIR_MIN_SATURATION = 0.25
 APPLE_ROOM_CORNER_MARGIN = 24
 APPLE_ROOM_CORNER_KEEP_MIN_SCORE = 0.90
 APPLE_DEDUPE_DISTANCE = 12
@@ -2696,6 +2697,11 @@ def scan_image(
                 box,
             )
         detections = _reconcile_late_spike_scale_conflicts(
+            detections,
+            image,
+            box,
+        )
+        detections = _prune_final_white_warp_spike_pair_aliases(
             detections,
             image,
             box,
@@ -20778,6 +20784,97 @@ def _detect_miniblock_room_white_warps(
                 _grid_detection("warp", OBJ_WARP, x, y, 0.75, image, room, GRID_SIZE)
             )
     return _dedupe_detections(detections, min_distance=40)
+
+
+def _prune_miniblock_white_warp_spike_pair_aliases(
+    warps: list[Detection],
+    geometry: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject chromatic opposing-spike diamonds mistaken for white warps.
+
+    In a small-tile room, the neutral outlines of a saturated up/down or
+    left/right spike pair can satisfy the centered white-warp patch gate.
+    Require both exact opposing full-spike topology and source saturation;
+    neutral cloud sprites remain eligible even when surrounded by hazards.
+    """
+
+    full_points = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in geometry
+        if detection.type_id in FULL_SPIKE_TYPES
+    }
+    if not full_points:
+        return warps
+    kept: list[Detection] = []
+    for warp in warps:
+        vertical_pair = (
+            (OBJ_SPIKE_UP, warp.x, warp.y - MINI_BLOCK_SIZE) in full_points
+            and (OBJ_SPIKE_DOWN, warp.x, warp.y + MINI_BLOCK_SIZE)
+            in full_points
+        )
+        horizontal_pair = (
+            (OBJ_SPIKE_RIGHT, warp.x - MINI_BLOCK_SIZE, warp.y)
+            in full_points
+            and (OBJ_SPIKE_LEFT, warp.x + MINI_BLOCK_SIZE, warp.y)
+            in full_points
+        )
+        if _is_miniblock_white_warp_spike_pair_alias(
+            _patch_color_profile(
+                image,
+                room,
+                warp.x,
+                warp.y,
+                GRID_SIZE,
+            ).saturation,
+            vertical_pair=vertical_pair,
+            horizontal_pair=horizontal_pair,
+        ):
+            continue
+        kept.append(warp)
+    return kept
+
+
+def _prune_final_white_warp_spike_pair_aliases(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Apply the white-warp spike-pair veto after all geometry recovery."""
+
+    candidate_warps = [
+        detection
+        for detection in detections
+        if detection.type_id == OBJ_WARP and detection.kind == "warp"
+    ]
+    if not candidate_warps:
+        return detections
+    retained_warps = _prune_miniblock_white_warp_spike_pair_aliases(
+        candidate_warps,
+        detections,
+        image,
+        room,
+    )
+    retained_ids = {id(detection) for detection in retained_warps}
+    candidate_ids = {id(detection) for detection in candidate_warps}
+    return [
+        detection
+        for detection in detections
+        if id(detection) not in candidate_ids or id(detection) in retained_ids
+    ]
+
+
+def _is_miniblock_white_warp_spike_pair_alias(
+    saturation: float,
+    *,
+    vertical_pair: bool,
+    horizontal_pair: bool,
+) -> bool:
+    return (
+        saturation >= MINIBLOCK_WHITE_WARP_SPIKE_PAIR_MIN_SATURATION
+        and (vertical_pair or horizontal_pair)
+    )
 
 
 def _detect_miniblock_room_dark_walljumps(

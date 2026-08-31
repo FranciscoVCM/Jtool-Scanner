@@ -82,6 +82,7 @@ from jtool_scanner.scanner import (
     _detect_compact_room_relative_platforms,
     _detect_saves,
     _detect_warps,
+    _prune_final_white_warp_spike_pair_aliases,
     _detect_outline_cloud_warps,
     _detect_outline_warps,
     _is_neutral_outline_warp_color,
@@ -92,6 +93,7 @@ from jtool_scanner.scanner import (
     _filled_cloud_warp_shadow_is_background_like,
     _is_filled_cloud_warp_metrics,
     _is_outline_cloud_warp_metrics,
+    _is_miniblock_white_warp_spike_pair_alias,
     _looks_like_bright_outlined_terrain_room,
     _looks_like_bright_neutral_outlined_terrain_room,
     _recover_bright_neutral_outline_blocks,
@@ -4258,6 +4260,58 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.7720,
             )
         )
+
+    def test_miniblock_white_warp_spike_pair_alias_requires_color_and_topology(
+        self,
+    ) -> None:
+        self.assertTrue(
+            _is_miniblock_white_warp_spike_pair_alias(
+                0.31,
+                vertical_pair=True,
+                horizontal_pair=False,
+            )
+        )
+        self.assertFalse(
+            _is_miniblock_white_warp_spike_pair_alias(
+                0.07,
+                vertical_pair=True,
+                horizontal_pair=False,
+            )
+        )
+        self.assertFalse(
+            _is_miniblock_white_warp_spike_pair_alias(
+                0.31,
+                vertical_pair=False,
+                horizontal_pair=False,
+            )
+        )
+
+    def test_miniblock_white_warp_spike_pair_prune_keeps_neutral_cloud(
+        self,
+    ) -> None:
+        image_box = Box(0, 0, 1, 1)
+        chromatic = Detection("warp", OBJ_WARP, 100, 100, 0.75, image_box)
+        neutral = Detection("warp", OBJ_WARP, 200, 200, 0.75, image_box)
+        geometry = [
+            Detection("spike_up", OBJ_SPIKE_UP, 100, 84, 0.8, image_box),
+            Detection("spike_down", OBJ_SPIKE_DOWN, 100, 116, 0.8, image_box),
+            Detection("spike_up", OBJ_SPIKE_UP, 200, 184, 0.8, image_box),
+            Detection("spike_down", OBJ_SPIKE_DOWN, 200, 216, 0.8, image_box),
+        ]
+
+        def profile(_image, _room, x, _y, _size):
+            return _ColorProfile(0.0, 0.0, 0.0, 0.31 if x == 100 else 0.07)
+
+        with mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            side_effect=profile,
+        ):
+            result = _prune_final_white_warp_spike_pair_aliases(
+                [chromatic, neutral, *geometry],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+        self.assertEqual(result, [neutral, *geometry])
 
     def test_signed_text_group_requires_aligned_strokes_and_dash(self) -> None:
         components = [
