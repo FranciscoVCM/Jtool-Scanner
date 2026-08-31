@@ -1359,6 +1359,16 @@ DENSE_LATE_SCALE_SWAP_MIN_SHAPE_SCORE = 0.50
 DENSE_LATE_SCALE_SWAP_MIN_DIRECTION_MARGIN = 0.20
 DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE = 0.90
 DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST = 0.20
+LATE_FULL_ALIAS_MAX_NATIVE_EXTENT = 20.0
+LATE_FULL_ALIAS_MIN_MINI_SCORE = 0.45
+LATE_FULL_ALIAS_MIN_MINI_MARGIN = 0.15
+LATE_FULL_ALIAS_MIN_MINI_SIDE_COVERAGE = 0.875
+LATE_FULL_ALIAS_MIN_MINI_NORMALIZED_LUMA = 0.70
+LATE_MINI_ALIAS_MIN_FULL_NATIVE_EXTENT = 30.0
+LATE_MINI_ALIAS_MIN_FULL_SCORE = 0.70
+LATE_MINI_ALIAS_MIN_FULL_MARGIN = 0.36
+LATE_MINI_ALIAS_MIN_FULL_SIDE_COVERAGE = 0.9375
+LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA = 0.70
 DENSE_GLYPH_ALIAS_MAX_SATURATION = 0.20
 DENSE_GLYPH_ALIAS_LONG_MIN_MATERIAL_DISTANCE = 64
 DENSE_GLYPH_ALIAS_TEXT_MIN_MATERIAL_DISTANCE = 32
@@ -2685,6 +2695,11 @@ def scan_image(
                 image,
                 box,
             )
+        detections = _reconcile_late_spike_scale_conflicts(
+            detections,
+            image,
+            box,
+        )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -22999,6 +23014,207 @@ def _is_late_raw_full_minispike_scale_swap_candidate(
         and side_coverage >= DENSE_LATE_SCALE_SWAP_MIN_SIDE_COVERAGE
         and normalized_luma_contrast
         >= DENSE_LATE_SCALE_SWAP_MIN_NORMALIZED_LUMA_CONTRAST
+    )
+
+
+def _reconcile_late_spike_scale_conflicts(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Resolve decisive full/mini duplicates after every geometry recovery.
+
+    Earlier arbitration cannot see candidates reintroduced by late raw-shape
+    preservation.  Re-evaluate only two measured overlap forms: a fragmented
+    full hypothesis at the exact origin of a decisive differently oriented
+    mini, and a contained same-direction mini fragment inside an exceptionally
+    complete full silhouette.  Native contour extent and normalized source
+    shape keep the decision independent of palette and capture scale.
+    """
+
+    full_to_mini = {
+        OBJ_SPIKE_UP: OBJ_MINI_SPIKE_UP,
+        OBJ_SPIKE_RIGHT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_SPIKE_LEFT: OBJ_MINI_SPIKE_LEFT,
+        OBJ_SPIKE_DOWN: OBJ_MINI_SPIKE_DOWN,
+    }
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+        OBJ_MINI_SPIKE_UP: "up",
+        OBJ_MINI_SPIKE_RIGHT: "right",
+        OBJ_MINI_SPIKE_LEFT: "left",
+        OBJ_MINI_SPIKE_DOWN: "down",
+    }
+    fulls = [
+        detection
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    ]
+    minis = [
+        detection
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+    ]
+    if not fulls or not minis:
+        return detections
+
+    minis_by_origin: dict[tuple[int, int], list[Detection]] = defaultdict(list)
+    minis_by_key: dict[tuple[int, int, int], list[Detection]] = defaultdict(list)
+    for mini in minis:
+        minis_by_origin[(mini.x, mini.y)].append(mini)
+        minis_by_key[(mini.type_id, mini.x, mini.y)].append(mini)
+
+    native_extent_cache: dict[tuple[int, int], float] = {}
+    metric_cache: dict[tuple[int, int, int], tuple[float, float, float, float]] = {}
+
+    def native_extent(detection: Detection) -> float:
+        key = (detection.x, detection.y)
+        if key not in native_extent_cache:
+            native_extent_cache[key] = _native_edge_component_extent(
+                image,
+                room,
+                detection.x,
+                detection.y,
+            )
+        return native_extent_cache[key]
+
+    def metrics(detection: Detection) -> tuple[float, float, float, float]:
+        key = (detection.type_id, detection.x, detection.y)
+        if key not in metric_cache:
+            size = (
+                GRID_SIZE
+                if detection.type_id in FULL_SPIKE_TYPES
+                else MINI_BLOCK_SIZE
+            )
+            direction = directions[detection.type_id]
+            patch = _patch_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                size,
+            )
+            direction_scores = {
+                candidate_direction: _triangle_direction_score(
+                    patch,
+                    candidate_direction,
+                )[0]
+                for candidate_direction in ("up", "right", "left", "down")
+            }
+            shape_score = direction_scores[direction]
+            direction_margin = shape_score - max(
+                score
+                for candidate_direction, score in direction_scores.items()
+                if candidate_direction != direction
+            )
+            fill = _triangle_fill_features(
+                image,
+                room,
+                detection.x,
+                detection.y,
+                size,
+                direction,
+            )
+            metric_cache[key] = (
+                shape_score,
+                direction_margin,
+                _triangle_side_coverage(patch, direction),
+                abs(fill.luma_contrast) / max(1.0, fill.cluster_gap),
+            )
+        return metric_cache[key]
+
+    remove_ids: set[int] = set()
+    for full in fulls:
+        expected_mini_type = full_to_mini[full.type_id]
+        for mini in minis_by_origin.get((full.x, full.y), ()):
+            if (
+                mini.type_id == expected_mini_type
+                or mini.score < LATE_FULL_ALIAS_MIN_MINI_SCORE
+            ):
+                continue
+            if _is_late_full_alias_over_mini_candidate(
+                native_extent(full),
+                *metrics(mini),
+            ):
+                remove_ids.add(id(full))
+                break
+
+    for full in fulls:
+        if (
+            id(full) in remove_ids
+            or full.score < LATE_MINI_ALIAS_MIN_FULL_SCORE
+        ):
+            continue
+        expected_mini_type = full_to_mini[full.type_id]
+        contained_offsets = (
+            ((0, 0), (MINI_BLOCK_SIZE, 0))
+            if full.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN)
+            else ((0, 0), (0, MINI_BLOCK_SIZE))
+        )
+        contained_minis = [
+            mini
+            for offset_x, offset_y in contained_offsets
+            for mini in minis_by_key.get(
+                (
+                    expected_mini_type,
+                    full.x + offset_x,
+                    full.y + offset_y,
+                ),
+                (),
+            )
+        ]
+        if not contained_minis or not (
+            _is_late_mini_alias_inside_full_candidate(
+                native_extent(full),
+                *metrics(full),
+            )
+        ):
+            continue
+        remove_ids.update(id(mini) for mini in contained_minis)
+
+    if not remove_ids:
+        return detections
+    return [
+        detection for detection in detections if id(detection) not in remove_ids
+    ]
+
+
+def _is_late_full_alias_over_mini_candidate(
+    full_native_extent: float,
+    mini_shape_score: float,
+    mini_direction_margin: float,
+    mini_side_coverage: float,
+    mini_normalized_luma: float,
+) -> bool:
+    return (
+        full_native_extent <= LATE_FULL_ALIAS_MAX_NATIVE_EXTENT
+        and mini_shape_score >= LATE_FULL_ALIAS_MIN_MINI_SCORE
+        and mini_direction_margin >= LATE_FULL_ALIAS_MIN_MINI_MARGIN
+        and mini_side_coverage
+        >= LATE_FULL_ALIAS_MIN_MINI_SIDE_COVERAGE
+        and mini_normalized_luma
+        >= LATE_FULL_ALIAS_MIN_MINI_NORMALIZED_LUMA
+    )
+
+
+def _is_late_mini_alias_inside_full_candidate(
+    full_native_extent: float,
+    full_shape_score: float,
+    full_direction_margin: float,
+    full_side_coverage: float,
+    full_normalized_luma: float,
+) -> bool:
+    return (
+        full_native_extent >= LATE_MINI_ALIAS_MIN_FULL_NATIVE_EXTENT
+        and full_shape_score >= LATE_MINI_ALIAS_MIN_FULL_SCORE
+        and full_direction_margin >= LATE_MINI_ALIAS_MIN_FULL_MARGIN
+        and full_side_coverage
+        >= LATE_MINI_ALIAS_MIN_FULL_SIDE_COVERAGE
+        and full_normalized_luma
+        >= LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA
     )
 
 

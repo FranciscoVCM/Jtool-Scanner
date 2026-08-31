@@ -5282,3 +5282,54 @@ zero wrong directions**.  The complete **290-test** geometry module passes in
 347.526 seconds.  Fresh ignored profiles, exact reviews, source/JTool/blend
 output, and the 71-screen activation audit are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/glyph-alias-*`.
+
+## Checkpoint: profile-independent late spike-scale reconciliation (2026-08-31)
+
+After the floor-label aliases were removed, CN3-16 had two remaining spike
+extras that were both duplicate scale interpretations of real geometry.  A
+false full down-spike at `(512,96)` shared its origin with the true mini-left
+spike but had only a 19px native contour.  A false mini-down at `(624,320)`
+was the right-hand 16px fragment of the exceptionally complete true full
+down-spike at `(608,320)`.  A 71-screen saved-output activation audit found
+only those two cases plus an analogous mini-right fragment at `(544,272)`
+inside the real full right-spike at `(544,256)` in CN3_Halls2.  A fresh Halls2
+scan confirms that the full spike remains while the duplicate mini is
+removed, reducing its current output from 107 to 106 objects.  Halls2 still
+lacks exact truth, so this is a source/reconstruction visual correction, not
+a new exact-acceptance claim.
+
+A final post-recovery resolver now handles the two evidence-backed conflict
+forms across every geometry profile.  A fragmented full candidate can lose
+at the exact origin of a decisive differently oriented mini; an axis-aligned,
+same-direction contained mini can lose inside an exceptionally complete full
+silhouette.  Both decisions require normalized triangle shape, direction,
+side, and fill evidence plus native contour extent.  Candidate score, origin
+indexes, type indexes, and spike-axis alignment are checked first, so source
+metrics run only at real scale conflicts.  This rejected an earlier
+functionally correct prototype that made the complete geometry suite take
+711.668 seconds; the final profile-independent implementation takes 362.588
+seconds.  The rule contains no room name, target coordinate, fixed RGB range,
+tileset identity, or dense-room requirement.
+
+The strict full-resolution crosswalk preserves **1079/1082 exact** while
+false positives fall from 6 to **4**.  Misses remain 3; shifts and wrong
+directions remain zero, reducing combined authoritative errors **9 to 7**.
+CN3-16 remains **590/590 exact truth**, and its false positives fall from 3
+to **1**: only the known warp extra remains.  CN3-18 is deliberately
+unchanged at **489/492 exact, three false positives, three misses, and six
+errors**.  Both rooms remain `needs-more-work`.
+
+Every matched count in the complete 12-pair workflow is protected.  Saves
+remain 22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity
+flippers 8/8, platforms 3/3, miniblocks 875/875 at exactly 875 detections,
+blocks 1463/1486 at 1596 detections, full spikes 724/748 at 870 detections,
+killer blocks 99/99, and jump refreshers 18/19.  Minispikes remain **281/288
+matched**, while detections fall from 329 to **326**, raising precision from
+85.4% to **86.2%**.  The three removals are authoritative false mini-down
+objects in Irkara/Partysu3 at `(432,352)`, `(576,128)`, and `(592,128)`; no
+truth object is removed.  FTFA remains **926/928 exact, zero false positives,
+two boundary misses, zero shifts, and zero wrong directions**.  The complete
+**291-test** geometry module passes in 362.588 seconds.  Fresh ignored
+profiles, exact reviews, source/JTool/blend output, fixture scans, and the
+71-screen activation audit are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/late-spike-overlap-*`.

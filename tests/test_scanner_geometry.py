@@ -138,6 +138,8 @@ from jtool_scanner.scanner import (
     _is_dense_minispike_run_recovery_candidate,
     _is_late_strong_raw_full_spike_candidate,
     _is_late_raw_full_minispike_scale_swap_candidate,
+    _is_late_full_alias_over_mini_candidate,
+    _is_late_mini_alias_inside_full_candidate,
     _LocalStrokeComponent,
     _has_long_glyph_component,
     _has_signed_text_component_group,
@@ -4215,6 +4217,47 @@ class ScannerGeometryTests(unittest.TestCase):
         mini = _LocalStrokeComponent(640, 48, 18, 18, 120, 0.37)
         self.assertTrue(_has_long_glyph_component([digit], 640, 48, 16))
         self.assertFalse(_has_long_glyph_component([mini], 640, 48, 16))
+
+    def test_late_full_mini_conflicts_require_decisive_scale_evidence(
+        self,
+    ) -> None:
+        self.assertTrue(
+            _is_late_full_alias_over_mini_candidate(
+                19.0,
+                0.4725,
+                0.1597,
+                0.875,
+                0.7112,
+            )
+        )
+        self.assertFalse(
+            _is_late_full_alias_over_mini_candidate(
+                26.0,
+                0.4725,
+                0.1597,
+                0.875,
+                0.7112,
+            )
+        )
+        self.assertTrue(
+            _is_late_mini_alias_inside_full_candidate(
+                32.0,
+                0.7831,
+                0.4286,
+                1.0,
+                0.9297,
+            )
+        )
+        # The authoritative Irkara/Partysu3 full+mini overlap is intentional.
+        self.assertFalse(
+            _is_late_mini_alias_inside_full_candidate(
+                31.0956,
+                0.8131,
+                0.3419,
+                0.9375,
+                0.7720,
+            )
+        )
 
     def test_signed_text_group_requires_aligned_strokes_and_dash(self) -> None:
         components = [
