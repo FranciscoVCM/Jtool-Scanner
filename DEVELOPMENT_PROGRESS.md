@@ -5521,3 +5521,50 @@ two boundary misses, zero shifts, and zero wrong directions**.  The complete
 reports, fixture scans, FTFA review, activation audit, and CN3-18
 project/JMap/reconstruction/diagnostic/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/orthogonal-spike-*`.
+
+## Checkpoint: occluded up-spike/miniblock coexistence recovery (2026-09-01)
+
+The first remaining CN3-18 spike miss at `(304,144)` is an intentional overlap,
+not an ordinary phase error: a real miniblock hides the left half of a real
+32px up-spike.  The full-spike classifier therefore prefers a horizontal
+triangle even though the exposed source silhouette still has complete up-spike
+side/base evidence.  A cross-scale candidate profile found 29 analogous
+base-anchored, one-cell-overlap hypotheses across native and normalized
+CN3-16/CN3-18 captures; only the authoritative target combines score at least
+`0.54`, outline delta at least `0.15`, complete side coverage, a bright center,
+and material at all four vertical half-cell probes.  The closest native
+fixture alias has a stronger score but only `0.079` outline delta and is
+rejected.
+
+The dense-miniblock recovery now gives that evidence combination a distinct
+coexistence provenance.  It still requires a single miniblock body overlap,
+an established base anchor, rank-one up geometry, classifier disagreement,
+normalized edge/center/triangle evidence, and a complete vertical material
+column.  The later bright-filled-room reconciler preserves only this already
+verified provenance instead of requiring the deliberately failed full-spike
+direction classifier a second time.  A production-condition audit across all
+12 exact fixture captures and all 71 saved source screens activates exactly
+once, at the intended CN3-18 coordinate.  The rule contains no room name,
+ordinal, target coordinate, fixed RGB range, tileset identity, or background
+color.
+
+The strict full-resolution crosswalk improves from **1079/1082** to
+**1080/1082 exact**, with **zero false positives**, two misses, zero shifts,
+and zero wrong directions.  CN3-16 remains **590/590 exact with zero errors**.
+CN3-18 improves from 489/492 to **490/492 exact** with zero extras; only the
+up-spike at `(480,368)` and clipped water-3 at `(800,240)` remain.  The room
+therefore remains `needs-more-work`.
+
+Every aggregate in the complete 12-pair workflow remains unchanged: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875, blocks 1463/1486 from 1596 detections,
+full spikes 724/748 from 870, minispikes 281/288 from 326, killer blocks 99/99,
+and jump refreshers 18/19.  FTFA remains **926/928 exact, zero false
+positives, two boundary misses, zero shifts, and zero wrong directions**.  The
+complete **299-test** geometry module passes in 230.016 seconds.  A fresh
+CN3-18 editable review contains 490 scanner objects (491 JMap objects after
+the auto-selected start) and 47 conservative structural reviews; the new true
+spike remains review-marked rather than hiding its unsupported-base warning.
+Fresh profiles, exact reports, fixture scans, FTFA review, activation audit,
+and CN3-18 source/JTool/diagnostic/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/occluded-up-*`.

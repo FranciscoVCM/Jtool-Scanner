@@ -19917,6 +19917,13 @@ def _is_bright_filled_recovery_candidate(
 
     if not detection.kind.startswith("miniblock_room_full_spike"):
         return False
+    # This provenance is issued only after the recovery stage has verified a
+    # complete four-cell vertical material column and the exposed triangle's
+    # normalized side/outline evidence. Its full classifier is expected to
+    # disagree because the overlapping miniblock hides half of the up spike;
+    # do not make that known occlusion failure discard the topology result.
+    if detection.kind == "miniblock_room_full_spike_occluded_up_coexistence":
+        return True
     patch = _patch_features(
         image,
         room,
@@ -20471,6 +20478,44 @@ def _is_strong_full_spike_in_dense_minispike_lattice(
     )
 
 
+def _is_occluded_up_full_spike_coexistence_candidate(
+    *,
+    body_overlap: int,
+    base_anchored: bool,
+    rank: int,
+    classifier_failed: bool,
+    score: float,
+    outline_delta: float,
+    edge_density: float,
+    center_score: float,
+    side_coverage: float,
+    min_side_coverage: float,
+    has_complete_vertical_material: bool,
+) -> bool:
+    """Recognize a full up spike whose left half is hidden by a miniblock.
+
+    Dense half-grid rooms can intentionally place a miniblock inside a full
+    spike.  In that topology the ordinary full-spike classifier may prefer a
+    horizontal direction, but the exposed half still has coherent triangular
+    sides and outline evidence.  Require material throughout the vertical
+    support column so isolated tile motifs cannot activate the recovery.
+    """
+
+    return (
+        body_overlap == 1
+        and base_anchored
+        and rank == 1
+        and classifier_failed
+        and score >= 0.54
+        and outline_delta >= 0.15
+        and edge_density >= 0.20
+        and center_score >= 0.625
+        and side_coverage >= 0.875
+        and min_side_coverage >= 1.0
+        and has_complete_vertical_material
+    )
+
+
 def _recover_miniblock_room_full_spikes(
     detections: list[Detection],
     mini_blocks: list[Detection],
@@ -20641,6 +20686,25 @@ def _recover_miniblock_room_full_spikes(
                 classifier_failed = (
                     full_spike is None or full_spike.type_id != type_id
                 )
+                occluded_up_coexistence = (
+                    type_id == OBJ_SPIKE_UP
+                    and _is_occluded_up_full_spike_coexistence_candidate(
+                        body_overlap=body_overlap,
+                        base_anchored=base_anchored,
+                        rank=rank,
+                        classifier_failed=classifier_failed,
+                        score=spike.score,
+                        outline_delta=spike.outline_delta,
+                        edge_density=patch.edge_density,
+                        center_score=patch.center_score,
+                        side_coverage=side_coverage,
+                        min_side_coverage=min_side_coverage,
+                        has_complete_vertical_material=all(
+                            (x, y + offset) in mini_block_positions
+                            for offset in (-32, -16, 16, 32)
+                        ),
+                    )
+                )
                 exposed_partial_body = (
                     body_overlap == 1
                     and base_anchored
@@ -20675,6 +20739,7 @@ def _recover_miniblock_room_full_spikes(
                             and spike.score >= 0.57
                             and side_coverage >= 0.875
                         )
+                        or occluded_up_coexistence
                     )
                 )
                 coherent_uncovered_body = (
@@ -20739,7 +20804,9 @@ def _recover_miniblock_room_full_spikes(
                     continue
                 if _has_nearby_detection(result, type_id, x, y, 24.0):
                     continue
-                if base_anchored:
+                if occluded_up_coexistence:
+                    recovery_reason = "occluded_up_coexistence"
+                elif base_anchored:
                     recovery_reason = "base_anchored"
                 elif strong_axis_down:
                     recovery_reason = "strong_axis_down"

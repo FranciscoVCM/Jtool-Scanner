@@ -143,6 +143,7 @@ from jtool_scanner.scanner import (
     _is_late_full_alias_over_mini_candidate,
     _is_late_mini_alias_inside_full_candidate,
     _prune_weak_orthogonal_spike_pair_aliases,
+    _is_occluded_up_full_spike_coexistence_candidate,
     _LocalStrokeComponent,
     _has_long_glyph_component,
     _has_signed_text_component_group,
@@ -4342,6 +4343,41 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertIn(strong_primary, result)
         self.assertIn(recovered, result)
         self.assertIn(isolated, result)
+
+    def test_occluded_up_full_spike_requires_coherent_vertical_material(
+        self,
+    ) -> None:
+        target = dict(
+            body_overlap=1,
+            base_anchored=True,
+            rank=1,
+            classifier_failed=True,
+            score=0.555465,
+            outline_delta=0.153770,
+            edge_density=0.511719,
+            center_score=0.656250,
+            side_coverage=0.875,
+            min_side_coverage=1.0,
+            has_complete_vertical_material=True,
+        )
+        self.assertTrue(
+            _is_occluded_up_full_spike_coexistence_candidate(**target)
+        )
+
+        fixture_alias = {
+            **target,
+            "score": 0.580432,
+            "outline_delta": 0.079365,
+            "side_coverage": 0.9375,
+        }
+        self.assertFalse(
+            _is_occluded_up_full_spike_coexistence_candidate(**fixture_alias)
+        )
+        self.assertFalse(
+            _is_occluded_up_full_spike_coexistence_candidate(
+                **{**target, "has_complete_vertical_material": False}
+            )
+        )
 
     def test_miniblock_white_warp_spike_pair_prune_keeps_neutral_cloud(
         self,
