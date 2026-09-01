@@ -5468,3 +5468,56 @@ directions**.  The complete **297-test** geometry module passes in 426.278
 seconds.  Fresh exact reports, fixture scans, FTFA review, activation audit,
 and CN3-18 project/JMap/reconstruction/diagnostic/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/neutral-minispike-*`.
+
+## Checkpoint: weak orthogonal spike-pair arbitration (2026-09-01)
+
+CN3-18's last false positive was a primary left-spike at `(496,336)` drawn
+through the midpoint of the real up/down pair at `(496,320)` and `(496,352)`.
+The opposing triangles form a cyan diamond whose shared outline has a plausible
+left-triangle score (`0.5163`), even though no third spike exists in the
+authoritative JMap.  This is a composition/arbitration error rather than a
+palette-specific recognition failure.
+
+A cross-corpus topology profile found four exact-truth cases and two saved
+visual-only cases where a spike sits orthogonally at the half-cell midpoint of
+an opposing pair.  Besides the CN3 false primary, CN2-5 contains two false
+high-confidence terrain-recovery up-spikes and one authoritative down-spike at
+this topology; the saved CN3-8 case is a strong outlined-terrain hypothesis,
+and an older CN3-18 snapshot contains a specialized base-anchored hypothesis.
+That evidence rejects a blanket topology veto.
+
+Final geometry arbitration now removes only an ordinary primary full-spike
+candidate at that exact opposing-pair midpoint when its normalized triangle
+score is at most `0.55`.  Strong primary candidates and every specialized
+terrain/recovery provenance remain protected.  The lookup is performed over
+the already-final spike set, so it adds no new detector sweep and no meaningful
+runtime cost.  The rule contains no filename, room identity, coordinate,
+tileset, palette, brightness, or fixed RGB dependency.
+
+The strict full-resolution crosswalk preserves **1079/1082 exact** while false
+positives fall from one to **zero**.  Three misses remain, with zero shifts and
+zero wrong directions, reducing combined authoritative errors from four to
+**three**.  CN3-16 remains **590/590 exact with zero errors**.  CN3-18 remains
+**489/492 exact**, now with zero extras; its only residuals are missed up-spikes
+at `(304,144)` and `(480,368)` and clipped water at `(800,240)`.  It therefore
+remains `needs-more-work` despite reaching perfect exact precision.
+
+The production-function audit against all 71 saved projects removes zero
+objects: their two orthogonal visual-only candidates are strong or specialized
+and stay intact.  A fresh CN3-18 review set drops from 490 to **489 scanner
+detections**, from 491 to **490 JMap objects** after the auto-selected start,
+and from 47 to **46 structural reviews**.  Source/JTool blend review confirms
+that the false left-facing overlay through the real cyan up/down diamond is
+gone while both authoritative spikes remain.
+
+Every aggregate in the complete 12-pair workflow remains unchanged, including
+CN2-5 at 29/32 matched full spikes from 60 detections.  Overall saves remain
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875, blocks 1463/1486 from 1596 detections,
+full spikes 724/748 from 870, minispikes 281/288 from 326, killer blocks 99/99,
+and jump refreshers 18/19.  FTFA remains **926/928 exact, zero false positives,
+two boundary misses, zero shifts, and zero wrong directions**.  The complete
+**298-test** geometry module passes in 362.026 seconds.  Fresh profiles, exact
+reports, fixture scans, FTFA review, activation audit, and CN3-18
+project/JMap/reconstruction/diagnostic/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/orthogonal-spike-*`.

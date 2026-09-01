@@ -1369,6 +1369,7 @@ LATE_MINI_ALIAS_MIN_FULL_SCORE = 0.70
 LATE_MINI_ALIAS_MIN_FULL_MARGIN = 0.36
 LATE_MINI_ALIAS_MIN_FULL_SIDE_COVERAGE = 0.9375
 LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA = 0.70
+WEAK_ORTHOGONAL_SPIKE_PAIR_ALIAS_MAX_SCORE = 0.55
 DENSE_GLYPH_ALIAS_MAX_SATURATION = 0.20
 DENSE_GLYPH_ALIAS_LONG_MIN_MATERIAL_DISTANCE = 64
 DENSE_GLYPH_ALIAS_TEXT_MIN_MATERIAL_DISTANCE = 32
@@ -2729,6 +2730,7 @@ def scan_image(
             image,
             box,
         )
+        detections = _prune_weak_orthogonal_spike_pair_aliases(detections)
         if dense_miniblock_room:
             detections = _prune_dense_neutral_minispike_sprite_aliases(
                 detections,
@@ -23352,6 +23354,57 @@ def _is_late_mini_alias_inside_full_candidate(
         and full_normalized_luma
         >= LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA
     )
+
+
+def _prune_weak_orthogonal_spike_pair_aliases(
+    detections: list[Detection],
+) -> list[Detection]:
+    """Reject a weak primary triangle drawn by an opposing spike diamond.
+
+    Two real opposing full spikes offset by half a cell form a bright diamond
+    at their shared midpoint.  That composite can resemble a perpendicular
+    third spike.  Preserve strong primary hypotheses and every specialized
+    recovery path; only a weak ordinary shape candidate at the exact midpoint
+    is ambiguous enough to lose to the established pair.
+    """
+
+    primary_kinds = {
+        OBJ_SPIKE_UP: "spike_up",
+        OBJ_SPIKE_RIGHT: "spike_right",
+        OBJ_SPIKE_LEFT: "spike_left",
+        OBJ_SPIKE_DOWN: "spike_down",
+    }
+    keys = {
+        (detection.type_id, detection.x, detection.y)
+        for detection in detections
+        if detection.type_id in FULL_SPIKE_TYPES
+    }
+    remove_ids: set[int] = set()
+    for candidate in detections:
+        if (
+            candidate.type_id not in FULL_SPIKE_TYPES
+            or candidate.kind != primary_kinds[candidate.type_id]
+            or candidate.score > WEAK_ORTHOGONAL_SPIKE_PAIR_ALIAS_MAX_SCORE
+        ):
+            continue
+        if candidate.type_id in (OBJ_SPIKE_LEFT, OBJ_SPIKE_RIGHT):
+            opposing_pair = (
+                (OBJ_SPIKE_UP, candidate.x, candidate.y - MINI_BLOCK_SIZE),
+                (OBJ_SPIKE_DOWN, candidate.x, candidate.y + MINI_BLOCK_SIZE),
+            )
+        else:
+            opposing_pair = (
+                (OBJ_SPIKE_RIGHT, candidate.x - MINI_BLOCK_SIZE, candidate.y),
+                (OBJ_SPIKE_LEFT, candidate.x + MINI_BLOCK_SIZE, candidate.y),
+            )
+        if all(key in keys for key in opposing_pair):
+            remove_ids.add(id(candidate))
+
+    if not remove_ids:
+        return detections
+    return [
+        detection for detection in detections if id(detection) not in remove_ids
+    ]
 
 
 def _is_dense_neutral_minispike_sprite_alias(

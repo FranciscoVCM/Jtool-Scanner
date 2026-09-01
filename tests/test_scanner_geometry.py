@@ -142,6 +142,7 @@ from jtool_scanner.scanner import (
     _is_late_raw_full_minispike_scale_swap_candidate,
     _is_late_full_alias_over_mini_candidate,
     _is_late_mini_alias_inside_full_candidate,
+    _prune_weak_orthogonal_spike_pair_aliases,
     _LocalStrokeComponent,
     _has_long_glyph_component,
     _has_signed_text_component_group,
@@ -4290,6 +4291,57 @@ class ScannerGeometryTests(unittest.TestCase):
                 horizontal_pair=False,
             )
         )
+
+    def test_weak_orthogonal_spike_pair_prune_preserves_strong_and_recovered(
+        self,
+    ) -> None:
+        image_box = Box(0, 0, 1, 1)
+        pair = [
+            Detection("spike_up", OBJ_SPIKE_UP, 496, 320, 0.40, image_box),
+            Detection("spike_down", OBJ_SPIKE_DOWN, 496, 352, 0.60, image_box),
+        ]
+        weak_primary = Detection(
+            "spike_left", OBJ_SPIKE_LEFT, 496, 336, 0.52, image_box
+        )
+        strong_primary = Detection(
+            "spike_right", OBJ_SPIKE_RIGHT, 496, 336, 0.83, image_box
+        )
+        recovered = Detection(
+            "terrain_full_spike_left",
+            OBJ_SPIKE_LEFT,
+            496,
+            336,
+            0.52,
+            image_box,
+        )
+        isolated = Detection(
+            "spike_left", OBJ_SPIKE_LEFT, 640, 336, 0.52, image_box
+        )
+        horizontal_pair = [
+            Detection("spike_right", OBJ_SPIKE_RIGHT, 64, 368, 0.70, image_box),
+            Detection("spike_left", OBJ_SPIKE_LEFT, 96, 368, 0.70, image_box),
+        ]
+        weak_horizontal = Detection(
+            "spike_up", OBJ_SPIKE_UP, 80, 368, 0.52, image_box
+        )
+        result = _prune_weak_orthogonal_spike_pair_aliases(
+            [
+                *pair,
+                weak_primary,
+                strong_primary,
+                recovered,
+                isolated,
+                *horizontal_pair,
+                weak_horizontal,
+            ]
+        )
+        self.assertNotIn(weak_primary, result)
+        self.assertNotIn(weak_horizontal, result)
+        self.assertTrue(all(item in result for item in pair))
+        self.assertTrue(all(item in result for item in horizontal_pair))
+        self.assertIn(strong_primary, result)
+        self.assertIn(recovered, result)
+        self.assertIn(isolated, result)
 
     def test_miniblock_white_warp_spike_pair_prune_keeps_neutral_cloud(
         self,
