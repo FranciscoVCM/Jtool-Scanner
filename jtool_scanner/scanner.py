@@ -1392,6 +1392,11 @@ DENSE_GLYPH_ALIAS_TEXT_MAX_DENSITY = 0.60
 DENSE_GLYPH_ALIAS_TEXT_NARROW_MAX_WIDTH = 16
 DENSE_GLYPH_ALIAS_TEXT_THIN_MAX_HEIGHT = 8
 DENSE_GLYPH_ALIAS_TEXT_DASH_MIN_WIDTH = 8
+DENSE_NEUTRAL_MINISPIKE_MIN_MINIBLOCKS = 64
+DENSE_NEUTRAL_MINISPIKE_MIN_POPULATION = 8
+DENSE_NEUTRAL_MINISPIKE_MIN_MEDIAN_SATURATION = 0.15
+DENSE_NEUTRAL_MINISPIKE_MAX_CANDIDATE_SATURATION = 0.05
+DENSE_NEUTRAL_MINISPIKE_MAX_CANDIDATE_SCORE = 0.32
 FLOOR_LABEL_BOUNDARY_MARGIN = 136
 FLOOR_LABEL_REGION_EDGE_MARGIN = 16
 FLOOR_LABEL_NEIGHBOR_RADIUS = 80
@@ -2724,6 +2729,12 @@ def scan_image(
             image,
             box,
         )
+        if dense_miniblock_room:
+            detections = _prune_dense_neutral_minispike_sprite_aliases(
+                detections,
+                image,
+                box,
+            )
         detections = _prune_final_white_warp_spike_pair_aliases(
             detections,
             image,
@@ -23341,6 +23352,86 @@ def _is_late_mini_alias_inside_full_candidate(
         and full_normalized_luma
         >= LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA
     )
+
+
+def _is_dense_neutral_minispike_sprite_alias(
+    saturation: float,
+    room_median_saturation: float,
+    score: float,
+) -> bool:
+    """Return whether a weak neutral sprite is foreign to a chromatic family."""
+
+    return (
+        saturation <= DENSE_NEUTRAL_MINISPIKE_MAX_CANDIDATE_SATURATION
+        and room_median_saturation
+        >= DENSE_NEUTRAL_MINISPIKE_MIN_MEDIAN_SATURATION
+        and score <= DENSE_NEUTRAL_MINISPIKE_MAX_CANDIDATE_SCORE
+    )
+
+
+def _prune_dense_neutral_minispike_sprite_aliases(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Reject neutral sprite silhouettes foreign to a dense spike palette.
+
+    Dense miniblock rooms provide enough repeated material to establish a
+    reliable local object family.  A player/ghost can still resemble a small
+    triangle, so compare only primary minispike hypotheses with the room's
+    detected minispike chroma.  Sparse neutral tilesets remain outside this
+    rule, as do strong candidates and late geometry recoveries.
+    """
+
+    if (
+        sum(
+            detection.type_id == OBJ_MINI_BLOCK
+            for detection in detections
+        )
+        < DENSE_NEUTRAL_MINISPIKE_MIN_MINIBLOCKS
+    ):
+        return detections
+
+    primary_kinds = {
+        "mini_spike_up",
+        "mini_spike_right",
+        "mini_spike_left",
+        "mini_spike_down",
+    }
+    candidates = [
+        detection
+        for detection in detections
+        if detection.type_id in MINI_SPIKE_TYPES
+        and detection.kind in primary_kinds
+    ]
+    if len(candidates) < DENSE_NEUTRAL_MINISPIKE_MIN_POPULATION:
+        return detections
+
+    saturations = {
+        id(candidate): _patch_color_profile(
+            image,
+            room,
+            candidate.x,
+            candidate.y,
+            MINI_BLOCK_SIZE,
+        ).saturation
+        for candidate in candidates
+    }
+    room_median_saturation = median(saturations.values())
+    remove_ids = {
+        id(candidate)
+        for candidate in candidates
+        if _is_dense_neutral_minispike_sprite_alias(
+            saturations[id(candidate)],
+            room_median_saturation,
+            candidate.score,
+        )
+    }
+    if not remove_ids:
+        return detections
+    return [
+        detection for detection in detections if id(detection) not in remove_ids
+    ]
 
 
 def _prune_dense_detached_glyph_aliases(

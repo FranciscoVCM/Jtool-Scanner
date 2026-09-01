@@ -146,6 +146,8 @@ from jtool_scanner.scanner import (
     _has_long_glyph_component,
     _has_signed_text_component_group,
     _prune_dense_detached_glyph_aliases,
+    _is_dense_neutral_minispike_sprite_alias,
+    _prune_dense_neutral_minispike_sprite_aliases,
     _floor_label_regions_from_components,
     _is_unclipped_floor_label_region,
     _prune_boundary_floor_label_geometry_aliases,
@@ -4403,6 +4405,81 @@ class ScannerGeometryTests(unittest.TestCase):
                 {(item.type_id, item.x, item.y) for item in result},
                 expected,
             )
+
+    def test_dense_neutral_minispike_alias_requires_relative_outlier(self) -> None:
+        self.assertTrue(
+            _is_dense_neutral_minispike_sprite_alias(0.02, 0.27, 0.285)
+        )
+        self.assertFalse(
+            _is_dense_neutral_minispike_sprite_alias(0.18, 0.27, 0.285)
+        )
+        self.assertFalse(
+            _is_dense_neutral_minispike_sprite_alias(0.02, 0.08, 0.285)
+        )
+        self.assertFalse(
+            _is_dense_neutral_minispike_sprite_alias(0.02, 0.27, 0.55)
+        )
+
+    def test_dense_neutral_minispike_prune_preserves_strong_and_chromatic(self) -> None:
+        image_box = Box(0, 0, 1, 1)
+        mini_blocks = [
+            Detection(
+                "mini_block",
+                OBJ_MINI_BLOCK,
+                (index % 16) * 16,
+                (index // 16) * 16,
+                0.9,
+                image_box,
+            )
+            for index in range(64)
+        ]
+        minis = [
+            Detection(
+                "mini_spike_up",
+                OBJ_MINI_SPIKE_UP,
+                320 + index * 16,
+                320,
+                0.285,
+                image_box,
+            )
+            for index in range(8)
+        ]
+        weak_neutral = minis[0]
+        strong_neutral = Detection(
+            "mini_spike_up",
+            OBJ_MINI_SPIKE_UP,
+            480,
+            320,
+            0.55,
+            image_box,
+        )
+
+        def profile(_image, _room, x, _y, _size):
+            saturation = 0.02 if x in (weak_neutral.x, strong_neutral.x) else 0.27
+            return _ColorProfile(0.0, 0.0, 0.0, saturation)
+
+        with mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            side_effect=profile,
+        ):
+            result = _prune_dense_neutral_minispike_sprite_aliases(
+                [*mini_blocks, *minis, strong_neutral],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+        self.assertNotIn(weak_neutral, result)
+        self.assertIn(strong_neutral, result)
+        self.assertTrue(all(candidate in result for candidate in minis[1:]))
+        with mock.patch(
+            "jtool_scanner.scanner._patch_color_profile",
+            side_effect=profile,
+        ):
+            sparse_result = _prune_dense_neutral_minispike_sprite_aliases(
+                [*mini_blocks[:-1], *minis],
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+        self.assertIn(weak_neutral, sparse_result)
 
     def test_floor_label_regions_require_two_digit_scale_masks(self) -> None:
         pair = [

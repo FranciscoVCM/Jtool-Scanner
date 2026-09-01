@@ -5416,3 +5416,55 @@ complete **295-test** geometry module passes in 342.334 seconds.  Fresh
 ignored profiles, activation reports, scans, editable projects, and review
 artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/floor-label-*`.
+
+## Checkpoint: dense-room neutral sprite/minispike rejection (2026-09-01)
+
+The remaining CN3-18 minispike false positive was visually and numerically
+separated from the room's real spike family.  The source silhouette at
+`(688,368)` is the small neutral player/ghost standing on terrain, not a cyan
+minispike.  In the normalized full-resolution scan it had score `0.2850` and
+patch saturation about `0.019`, while the room's real primary minispikes had
+median saturation about `0.27`.  Score alone was rejected as an invariant:
+real minispikes in the same room score as low as about `0.21`, and legitimate
+neutral minispikes occur in sparse Irkara Flames and NANG rooms.
+
+A final dense-room resolver now learns the detected minispike population's
+chroma before rejecting a weak neutral primary minispike hypothesis.  It can
+run only when at least 64 miniblocks and eight primary minispikes establish a
+dense repeated-material family, that family's median saturation is at least
+`0.15`, and the candidate is both nearly neutral (saturation at most `0.05`)
+and weak (score at most `0.32`).  Strong primary candidates, recovered
+geometry, sparse neutral tilesets, and rooms whose minispike family is itself
+neutral remain protected.  The rule contains no filename, room ordinal,
+target coordinate, fixed RGB range, sprite identity, or tileset identity.
+
+The strict full-resolution crosswalk preserves **1079/1082 exact** while
+false positives fall from two to **one**.  Misses remain three; shifts and
+wrong directions remain zero, reducing combined authoritative errors from
+five to **four**.  CN3-16 remains **590/590 exact with zero errors**.  CN3-18
+remains **489/492 exact**, but its false positives fall from two to **one**:
+only the unrelated left-spike at `(496,336)` remains, alongside missed
+up-spikes at `(304,144)` and `(480,368)` and clipped water at `(800,240)`.
+The room therefore remains `needs-more-work` rather than being called exact.
+
+A fresh CN3-18 editable review set contains 490 scanner detections (491 JMap
+objects after the auto-selected player start) and 47 structural reviews.  Its
+source/JTool blend confirms that the neutral ghost no longer carries a
+minispike overlay.  The saved mixed-revision 71-screen projects show zero
+additional removals because their older CN3-18 candidate had a stronger
+historical score; this is recorded as a negative activation control, not as a
+claim that the saved projects were freshly rescanned.
+
+Every aggregate in the complete 12-pair workflow is unchanged.  In
+particular, minispikes remain **281/288 matched from 326 detections**, CN3-18
+retains all **54/54** truth minispikes (55 detections because of a pre-existing
+duplicate at a real truth coordinate), and the sparse neutral Irkara/NANG
+examples remain intact.  Saves stay 22/22, warps 12/12, apples 4/4, water
+35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3, miniblocks
+875/875, blocks 1463/1486 from 1596 detections, full spikes 724/748 from 870,
+killer blocks 99/99, and jump refreshers 18/19.  FTFA remains **926/928 exact,
+zero false positives, two boundary misses, zero shifts, and zero wrong
+directions**.  The complete **297-test** geometry module passes in 426.278
+seconds.  Fresh exact reports, fixture scans, FTFA review, activation audit,
+and CN3-18 project/JMap/reconstruction/diagnostic/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/neutral-minispike-*`.
