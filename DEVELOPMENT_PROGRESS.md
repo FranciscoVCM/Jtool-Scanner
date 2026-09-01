@@ -5620,3 +5620,29 @@ the auto-selected start) and 49 conservative structural reviews.  Fresh
 profiles, traces, exact reports, fixture scans, FTFA review, Golden7 control,
 and CN3-18 source/JTool/diagnostic/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/selected-vertical-partner-*`.
+
+## Checkpoint: rejected offscreen water hallucination (2026-09-01)
+
+The sole residual in the strict full-resolution CN3 crosswalk is the reference
+`water_3` object at `(800,240)`.  Its origin is exactly beyond the right edge
+of the 800x608 logical room.  A source-boundary crop contains the visible
+block/spike column but no water sprite or water-color fragment from which the
+hidden object could be inferred.  The miniblock-room water detector correctly
+evaluates complete 32px cells from `x=0` through `x=768`; sampling a synthetic
+cell at `x=800` would clamp every source lookup to the final image column and
+turn unrelated edge content into duplicated evidence.
+
+The repository already encodes the intended observability rule in
+`tests.test_evaluation.EvaluationTests.test_evaluation_ignores_fully_offscreen_truth_objects`,
+using this exact `(800,240)` water case.  That test passes.  Consequently the
+complete 12-pair tolerance workflow reports water at **35/35 matched**, while
+the deliberately stricter golden-room multiset comparison continues to count
+all non-start JMap objects and remains **1081/1082 exact**.  The latter is a
+reference-completeness residual, not a visible scanner miss.
+
+No scanner rule was added.  In particular, production does not emit an object
+whose complete logical cell is outside the screenshot merely to make the
+strict denominator read 100%.  The ignored source/JTool crops and exact report
+remain under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/boundary-water-*`
+and `selected-vertical-partner-giant-benchmark/`.
