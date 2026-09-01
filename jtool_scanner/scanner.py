@@ -1614,6 +1614,14 @@ BRIGHT_FILLED_VERTICAL_PAIR_MIN_LUMA_MARGIN = 15.0
 BRIGHT_FILLED_VERTICAL_PAIR_EXACT_DENSITY_MARGIN = 0.10
 BRIGHT_FILLED_VERTICAL_PAIR_EXACT_LUMA_MARGIN = 20.0
 BRIGHT_FILLED_VERTICAL_PAIR_NEARBY_PHASE = 24.0
+# A raw bright-filled silhouette can be selected by this reconciler even when
+# it was absent from the pre-reconciliation current list.  Let that selected
+# silhouette support an exact opposing partner only under substantially
+# stronger fill evidence than the ordinary current-partner branch.
+BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_DENSITY_CONTRAST = 0.45
+BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_LUMA_CONTRAST = 80.0
+BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_DENSITY_MARGIN = 0.45
+BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_LUMA_MARGIN = 80.0
 # A strong topology candidate can sit just below the room-scale fill gate
 # when the local triangle is clipped or partly masked by its backing cell.
 # Keep this branch narrower than the anchored fallback: it is only for the
@@ -19822,6 +19830,8 @@ def _recover_bright_filled_vertical_pairs(
 
     pair_keys: set[tuple[int, int, int]] = set()
     exact_partner_keys: set[tuple[int, int, int]] = set()
+    selected_exact_partner_keys: set[tuple[int, int, int]] = set()
+    selected_keys = set(selected)
     for type_id, x, y in candidates:
         opposite = opposite_type[type_id]
         for partner_y in (y - GRID_SIZE, y + GRID_SIZE):
@@ -19845,14 +19855,29 @@ def _recover_bright_filled_vertical_pairs(
                 pair_keys.update(((type_id, x, y), partner_key))
 
         for partner_y in (y - GRID_SIZE, y + GRID_SIZE):
-            if (opposite, x, partner_y) not in current_keys:
+            partner_key = (opposite, x, partner_y)
+            current_partner = partner_key in current_keys
+            selected_partner = partner_key in selected_keys
+            if not current_partner and not selected_partner:
                 continue
             _fill, density_margin, luma_margin = candidates[(type_id, x, y)]
-            if (
+            if current_partner and (
                 density_margin >= BRIGHT_FILLED_VERTICAL_PAIR_EXACT_DENSITY_MARGIN
                 and luma_margin >= BRIGHT_FILLED_VERTICAL_PAIR_EXACT_LUMA_MARGIN
             ):
                 exact_partner_keys.add((type_id, x, y))
+            elif (
+                selected_partner
+                and _is_bright_filled_selected_exact_vertical_partner_candidate(
+                    _fill.density_contrast,
+                    _fill.luma_contrast,
+                    density_margin,
+                    luma_margin,
+                )
+            ):
+                selected_key = (type_id, x, y)
+                exact_partner_keys.add(selected_key)
+                selected_exact_partner_keys.add(selected_key)
 
     for type_id, x, y in pair_keys | exact_partner_keys:
         key = (type_id, x, y)
@@ -19876,7 +19901,11 @@ def _recover_bright_filled_vertical_pairs(
             min(1.0, fill.density_contrast),
         )
         selected[key] = _geometry_detection(
-            "full_spike_bright_fill_vertical_pair",
+            (
+                "full_spike_bright_fill_selected_vertical_pair"
+                if key in selected_exact_partner_keys
+                else "full_spike_bright_fill_vertical_pair"
+            ),
             type_id,
             x,
             y,
@@ -19885,6 +19914,25 @@ def _recover_bright_filled_vertical_pairs(
             room,
             GRID_SIZE,
         )
+
+
+def _is_bright_filled_selected_exact_vertical_partner_candidate(
+    density_contrast: float,
+    luma_contrast: float,
+    density_margin: float,
+    luma_margin: float,
+) -> bool:
+    """Gate an exact partner supported only by a newly selected silhouette."""
+
+    return (
+        density_contrast
+        >= BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_DENSITY_CONTRAST
+        and luma_contrast
+        >= BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_LUMA_CONTRAST
+        and density_margin
+        >= BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_DENSITY_MARGIN
+        and luma_margin >= BRIGHT_FILLED_VERTICAL_PAIR_SELECTED_MIN_LUMA_MARGIN
+    )
 
 
 def _is_bright_filled_full_spike_component(

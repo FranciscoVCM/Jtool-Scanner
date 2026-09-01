@@ -5568,3 +5568,55 @@ spike remains review-marked rather than hiding its unsupported-base warning.
 Fresh profiles, exact reports, fixture scans, FTFA review, activation audit,
 and CN3-18 source/JTool/diagnostic/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/occluded-up-*`.
+
+## Checkpoint: newly selected vertical-spike partner recovery (2026-09-01)
+
+CN3-18's last ordinary spike miss at `(480,368)` is the upper half of a real
+up/down pair.  Its source evidence is strong: density contrast `0.484`,
+luminance contrast `86.4`, density-direction margin `0.484`, and
+luminance-direction margin `91.9`.  The existing bright-filled pair reconciler
+already contained an exact-partner branch, but stage tracing exposed a handoff
+defect: the real down partner at `(480,400)` was established in the
+reconciler's high-confidence `selected` silhouettes, while the branch consulted
+only the pre-reconciliation `current` list.  The candidate was therefore
+discarded despite satisfying the intended geometry.
+
+A naïve expansion of the 24px candidate neighborhood to 32px was measured and
+rejected.  It would evaluate 43 additional hypotheses in the saved outputs and
+would add three false up-spikes in the native CN3-18 exact fixture.  The final
+change leaves the search radius untouched.  It lets a newly selected exact
+opposing partner support a missing candidate only when density contrast and
+density margin are both at least `0.45`, and luminance contrast and luminance
+margin are both at least `80`.  The ordinary current-partner thresholds remain
+unchanged.  The newly supported route has distinct provenance and adds no
+detector pass or meaningful runtime cost.
+
+The evidence profile retains the authoritative CN3-18 target and two visually
+real Golden7 spike halves while rejecting every native exact alias.  A fresh
+enabled-versus-disabled Golden7 scan is identical because the current scanner
+already recovers those two halves through other routes; it is retained as a
+negative causal control rather than claimed as a gain from this rule.  The only
+new production detection measured for this route is CN3-18 `(480,368)`.  The
+rule contains no filename, room identity, coordinate, palette, fixed RGB
+range, tileset, or background assumption.
+
+The strict full-resolution crosswalk improves from **1080/1082** to
+**1081/1082 exact**, with **zero false positives**, one miss, zero shifts, and
+zero wrong directions.  CN3-16 remains **590/590 exact with zero errors**.
+CN3-18 improves from 490/492 to **491/492 exact with zero extras**; its only
+remaining authoritative residual is the clipped water-3 cell at `(800,240)`.
+It remains `needs-more-work` until that boundary case is resolved and its
+broader visual review is not relabeled exact.
+
+Every aggregate in the complete 12-pair workflow remains unchanged: saves
+22/22, warps 12/12, apples 4/4, water 35/35, walljumps 13/13, gravity flippers
+8/8, platforms 3/3, miniblocks 875/875, blocks 1463/1486 from 1596 detections,
+full spikes 724/748 from 870, minispikes 281/288 from 326, killer blocks 99/99,
+and jump refreshers 18/19.  FTFA remains **926/928 exact, zero false
+positives, two boundary misses, zero shifts, and zero wrong directions**.  The
+complete **300-test** geometry module passes in 327.553 seconds.  A fresh
+CN3-18 editable review contains 491 scanner objects (492 JMap objects after
+the auto-selected start) and 49 conservative structural reviews.  Fresh
+profiles, traces, exact reports, fixture scans, FTFA review, Golden7 control,
+and CN3-18 source/JTool/diagnostic/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/selected-vertical-partner-*`.

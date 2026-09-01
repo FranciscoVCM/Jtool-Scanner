@@ -125,6 +125,7 @@ from jtool_scanner.scanner import (
     _is_bright_relative_platform_impostor,
     _is_dark_sparse_relative_platform_candidate,
     _is_bright_filled_full_spike_component,
+    _is_bright_filled_selected_exact_vertical_partner_candidate,
     _should_reconcile_bright_filled_full_spikes,
     _bright_neutral_triangle_direction,
     _is_textured_platform_candidate,
@@ -5225,6 +5226,26 @@ class ScannerGeometryTests(unittest.TestCase):
         self.assertFalse(
             _is_bright_filled_full_spike_component(
                 _TriangleFillFeatures(10.0, 0.90, 0.10, 0.80, 10.0)
+            )
+        )
+
+    def test_selected_exact_vertical_partner_requires_decisive_fill(self) -> None:
+        self.assertTrue(
+            _is_bright_filled_selected_exact_vertical_partner_candidate(
+                0.484375,
+                86.411458,
+                0.484375,
+                91.854167,
+            )
+        )
+        # The strongest native-scale false candidate has comparable density,
+        # but far less luminance contrast and directional margin.
+        self.assertFalse(
+            _is_bright_filled_selected_exact_vertical_partner_candidate(
+                0.500000,
+                56.044271,
+                0.453125,
+                49.536458,
             )
         )
 
