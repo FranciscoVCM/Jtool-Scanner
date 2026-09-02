@@ -5646,3 +5646,61 @@ strict denominator read 100%.  The ignored source/JTool crops and exact report
 remain under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/boundary-water-*`
 and `selected-vertical-partner-giant-benchmark/`.
+
+## Checkpoint: phase-consistent supported-terrain scale reconciliation (2026-09-02)
+
+The supported-material learner deliberately expands on a 16px lattice so it
+can retain genuine half-cell terrain, but that representation fragmented
+unfamiliar 32px blocks into four miniblocks whenever their phase differed from
+the legacy full-block lattice.  The new resolver works per connected residual
+material component, evaluates all four 32px phases, and repacks a 2x2 mini-cell
+group only when its internal seam is weak or independent block morphology
+supports it and one phase strictly dominates the alternatives.  Ambiguous
+components remain miniblocks.  The rule uses component topology, normalized
+seam evidence, and existing block morphology; it contains no filename, room
+identity, absolute target coordinate, fixed palette, or tileset dependency.
+
+An initial implementation exposed a protected arbitration failure: a newly
+inferred block above the real Irkara-89 right spike at `(288,160)` gained
+enough support authority to rotate that independently observed triangle
+downward.  A second weakly shaped spike exposed the same failure class at a
+different position.  The final pipeline lets inferred blocks remain terrain
+but excludes newly repacked block positions from unsupported-spike
+reorientation.  A same-current enabled-versus-disabled Irkara-89 scan is now
+tuple-identical at 262 objects and 70 reviews.  Its exact result remains
+112/113 matched full spikes from 142 detections, including the source-observed
+right direction.
+
+Fresh reviewed outputs improve supported-terrain scale without claiming visual
+completion.  CN3 Entrance2 falls from 350 to 332 enabled objects as blocks rise
+from 76 to 82 and miniblocks fall from 131 to 107; structural reviews fall from
+109 to 105, while saves, platforms, walljumps, water, and all spike counts stay
+stable.  CN3-30 falls from 429 to 372 objects as blocks rise from 163 to 182 and
+miniblocks fall from 191 to 115; reviews fall from 61 to 58.  CN3-21 falls from
+294 to 267 objects as blocks rise from 70 to 79 and miniblocks fall from 112 to
+76; reviews fall from 72 to 66.  CN3-93 falls from 111 to 105 objects as blocks
+rise from 60 to 62 and miniblocks fall from 29 to 21; reviews fall from 12 to
+11.  All four remain `needs-more-work`: the change corrects a bounded
+terrain-scale failure but does not resolve their wider spike, platform, start,
+or material errors.
+
+The saved-project activation profile finds the rule applicable to 13 of the 71
+historical outputs.  That demonstrates cross-room reach, not correctness of
+those additional screens; only the four freshly regenerated and visually
+reviewed rooms receive audit-history claims.  Irkara-59 is a held-out
+nonactivation control: its scan remains 511 objects, including 30 supported
+terrain miniblocks, while its authoritative tolerance results remain 403/412
+matched minispikes from 404 detections and 10/25 matched blocks from 74
+detections.  No Irkara-59 output tuple changes under the rule.
+
+The complete 12-pair workflow remains unchanged: saves 22/22, warps 12/12,
+apples 4/4, water 35/35, walljumps 13/13, gravity flippers 8/8, platforms 3/3,
+miniblocks 875/875 from 875 detections, blocks 1463/1486 from 1596, full spikes
+724/748 from 870, minispikes 281/288 from 326, killer blocks 99/99, and jump
+refreshers 18/19.  FTFA remains **926/928 exact with zero false positives, the
+same two boundary misses, zero shifts, and zero wrong directions**.  The
+complete repository suite passes **446 tests in 2522.785 seconds**.  Fresh
+profiles, exact reports, fixture scans, FTFA review, causal comparisons, and
+source/JTool/blend artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/supported-quartet-*`
+and `quartet-final-*`.

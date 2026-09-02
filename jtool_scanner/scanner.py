@@ -422,6 +422,14 @@ SUPPORTED_TERRAIN_MATERIAL_MIN_MINIBLOCK_GAIN = 4
 SUPPORTED_TERRAIN_MATERIAL_MIN_WATER_FAMILY_VOTES = 3
 SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_COMPONENT_CELLS = 64
 SUPPORTED_TERRAIN_MATERIAL_MAX_WATER_NARROW_AXIS = 3
+# A supported-material expansion works on 16px cells so it can retain genuine
+# half-grid terrain.  Four residual cells can nevertheless be one displaced
+# 32px block.  Collapse only a uniquely dominant component phase and require
+# either weak internal mini-cell seams or independent full-block morphology.
+# These signals are palette-relative and avoid a room/tileset identity gate.
+SUPPORTED_TERRAIN_QUARTET_MAX_INTERNAL_SEAM_SHARE = 0.25
+SUPPORTED_TERRAIN_QUARTET_TEXTURED_MAX_INTERNAL_SEAM_SHARE = 0.50
+SUPPORTED_TERRAIN_QUARTET_TEXTURED_MIN_BLOCK_SCORE = 0.45
 # A supported-cell material learner can absorb a real, full-width water column
 # when the water is the same room-local hue family as the terrain.  Preserve a
 # high-confidence, smooth water anchor when both 16px halves have the same
@@ -7935,8 +7943,15 @@ def _choose_component_spike_candidate(
 def _reorient_unsupported_spikes(
     spikes: list[Detection],
     blocks: list[Detection],
+    *,
+    excluded_block_positions: frozenset[tuple[int, int]] = frozenset(),
 ) -> list[Detection]:
-    """Correct a direction only when one other base has full terrain support."""
+    """Correct a direction only when one other base has full terrain support.
+
+    Callers may exclude newly inferred terrain whose only evidence was a
+    scale conversion. Such geometry can be emitted without immediately
+    gaining authority to rotate an independently observed triangle.
+    """
 
     direction_by_type = {
         OBJ_SPIKE_UP: "up",
@@ -7948,7 +7963,11 @@ def _reorient_unsupported_spikes(
         direction: type_id
         for type_id, direction in direction_by_type.items()
     }
-    block_positions = {(block.x, block.y) for block in blocks}
+    block_positions = {
+        (block.x, block.y)
+        for block in blocks
+        if (block.x, block.y) not in excluded_block_positions
+    }
     reconciled = []
     for spike in spikes:
         direction = direction_by_type.get(spike.type_id)
@@ -16302,8 +16321,15 @@ def _replace_supported_cell_terrain_geometry(
     profile = _learn_supported_cell_terrain_profile(image, room, detections)
     if profile is None:
         return detections, False
-    terrain_blocks = _prune_supported_terrain_spike_body_cells(
+    repacked = _repack_supported_terrain_miniblock_quartets(
         profile.blocks,
+        profile.mini_blocks,
+        image,
+        room,
+    )
+    added_blocks = repacked.blocks - profile.blocks
+    terrain_blocks = _prune_supported_terrain_spike_body_cells(
+        repacked.blocks,
         detections,
         image,
         room,
@@ -16314,9 +16340,19 @@ def _replace_supported_cell_terrain_geometry(
         image,
         room,
     )
+    terrain_mini_blocks = set(repacked.mini_blocks)
+    for x, y in added_blocks - terrain_blocks:
+        terrain_mini_blocks.update(
+            {
+                (x, y),
+                (x + MINI_BLOCK_SIZE, y),
+                (x, y + MINI_BLOCK_SIZE),
+                (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+            }
+        )
     profile = _SupportedCellTerrainProfile(
         blocks=terrain_blocks,
-        mini_blocks=profile.mini_blocks,
+        mini_blocks=frozenset(terrain_mini_blocks),
         seed_cluster=profile.seed_cluster,
         back_votes=profile.back_votes,
         tip_votes=profile.tip_votes,
@@ -16453,6 +16489,7 @@ def _replace_supported_cell_terrain_geometry(
     reoriented_spikes = _reorient_unsupported_spikes(
         full_spikes,
         terrain_blocks,
+        excluded_block_positions=frozenset(added_blocks),
     )
     spike_replacements = {
         id(original): replacement
@@ -17294,6 +17331,115 @@ def _supported_terrain_residual_cell_is_structural(
             return False
     return True
 
+
+def _is_supported_terrain_miniblock_quartet_candidate(
+    internal_seam_share: float,
+    block_score: float,
+) -> bool:
+    """Return whether four residual material cells are one full block.
+
+    Flat unfamiliar tiles can have little generic block evidence but no seam
+    at the 16px midpoint.  Textured tiles may cross that midpoint, so they also
+    need a decisive 32px block classifier.  Strong seams without that separate
+    evidence remain four miniblock hypotheses.
+    """
+
+    return (
+        internal_seam_share
+        <= SUPPORTED_TERRAIN_QUARTET_MAX_INTERNAL_SEAM_SHARE
+    ) or (
+        internal_seam_share
+        <= SUPPORTED_TERRAIN_QUARTET_TEXTURED_MAX_INTERNAL_SEAM_SHARE
+        and block_score >= SUPPORTED_TERRAIN_QUARTET_TEXTURED_MIN_BLOCK_SCORE
+    )
+
+
+def _repack_supported_terrain_miniblock_quartets(
+    blocks: frozenset[tuple[int, int]],
+    mini_blocks: frozenset[tuple[int, int]],
+    image: RGBImage,
+    room: Box,
+) -> _SupportedCellTerrainExpansion:
+    """Collapse unambiguous 2x2 residual cells onto their learned full phase.
+
+    The supported-terrain material graph deliberately grows at 16px so it can
+    represent displaced and genuinely thin terrain.  That also fragments a
+    full tile when its origin is 16px away from the legacy 32px phase.  Work
+    per connected residual component, compare all four possible full-block
+    phases, and act only when one phase has strictly more credible quartets.
+    Groups within a phase never overlap, so the replacement is deterministic.
+    """
+
+    if len(mini_blocks) < 4:
+        return _SupportedCellTerrainExpansion(blocks, mini_blocks)
+
+    remaining = set(mini_blocks)
+    components: list[set[tuple[int, int]]] = []
+    while remaining:
+        seed = remaining.pop()
+        component = {seed}
+        queue = [seed]
+        while queue:
+            position = queue.pop()
+            for neighbor in _axis_neighbors(position, MINI_BLOCK_SIZE):
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    component.add(neighbor)
+                    queue.append(neighbor)
+        components.append(component)
+
+    added_blocks: set[tuple[int, int]] = set()
+    consumed_minis: set[tuple[int, int]] = set()
+    for component in components:
+        phase_groups: dict[tuple[int, int], list[tuple[int, int]]] = {}
+        for phase_x in (0, MINI_BLOCK_SIZE):
+            for phase_y in (0, MINI_BLOCK_SIZE):
+                groups: list[tuple[int, int]] = []
+                for y in range(phase_y, ROOM_HEIGHT - GRID_SIZE + 1, GRID_SIZE):
+                    for x in range(phase_x, ROOM_WIDTH - GRID_SIZE + 1, GRID_SIZE):
+                        quartet = {
+                            (x, y),
+                            (x + MINI_BLOCK_SIZE, y),
+                            (x, y + MINI_BLOCK_SIZE),
+                            (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+                        }
+                        if not quartet <= component:
+                            continue
+                        patch = _patch_features(image, room, x, y, GRID_SIZE)
+                        if not _is_supported_terrain_miniblock_quartet_candidate(
+                            _miniblock_boundary_hit_ratio(image, room, quartet),
+                            _classify_block(patch).score,
+                        ):
+                            continue
+                        groups.append((x, y))
+                phase_groups[(phase_x, phase_y)] = groups
+
+        ranked = sorted(
+            phase_groups.items(),
+            key=lambda item: (len(item[1]), item[0]),
+            reverse=True,
+        )
+        if not ranked or not ranked[0][1]:
+            continue
+        if len(ranked) > 1 and len(ranked[0][1]) == len(ranked[1][1]):
+            continue
+        for x, y in ranked[0][1]:
+            added_blocks.add((x, y))
+            consumed_minis.update(
+                {
+                    (x, y),
+                    (x + MINI_BLOCK_SIZE, y),
+                    (x, y + MINI_BLOCK_SIZE),
+                    (x + MINI_BLOCK_SIZE, y + MINI_BLOCK_SIZE),
+                }
+            )
+
+    if not added_blocks:
+        return _SupportedCellTerrainExpansion(blocks, mini_blocks)
+    return _SupportedCellTerrainExpansion(
+        frozenset(set(blocks) | added_blocks),
+        frozenset(set(mini_blocks) - consumed_minis),
+    )
 
 def _filter_supported_terrain_components(
     blocks: frozenset[tuple[int, int]],

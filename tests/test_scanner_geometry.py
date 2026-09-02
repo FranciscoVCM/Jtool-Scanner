@@ -101,6 +101,9 @@ from jtool_scanner.scanner import (
     _prune_bright_room_platform_impostors,
     _prune_dark_sparse_platform_impostors,
     _expand_supported_cell_terrain_materials,
+    _is_supported_terrain_miniblock_quartet_candidate,
+    _repack_supported_terrain_miniblock_quartets,
+    _reorient_unsupported_spikes,
     _learn_repeated_terrain_profile,
     _learn_supported_cell_terrain_profile,
     _prefer_repeated_terrain_pair_over_single,
@@ -719,6 +722,116 @@ class ScannerGeometryTests(unittest.TestCase):
                 profile_with_connected_residual,
                 raw_blocks,
             )
+        )
+
+    def test_supported_terrain_repacks_unique_flat_miniblock_quartet_phase(
+        self,
+    ) -> None:
+        minis = frozenset(
+            (x, y)
+            for y in (0, 16)
+            for x in (0, 16, 32, 48, 64, 80)
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._miniblock_boundary_hit_ratio",
+                return_value=0.0,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((), 0.02, 0.01, 0.0),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.10),
+            ),
+        ):
+            result = _repack_supported_terrain_miniblock_quartets(
+                frozenset(),
+                minis,
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result.blocks, frozenset({(0, 0), (32, 0), (64, 0)}))
+        self.assertEqual(result.mini_blocks, frozenset())
+
+    def test_supported_terrain_keeps_ambiguous_quartet_phase(self) -> None:
+        minis = frozenset(
+            (x, y)
+            for y in (0, 16)
+            for x in (0, 16, 32)
+        )
+        with (
+            mock.patch(
+                "jtool_scanner.scanner._miniblock_boundary_hit_ratio",
+                return_value=0.0,
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._patch_features",
+                return_value=_PatchFeatures((), 0.02, 0.01, 0.0),
+            ),
+            mock.patch(
+                "jtool_scanner.scanner._classify_block",
+                return_value=_GeometryClass("block", OBJ_BLOCK, 0.10),
+            ),
+        ):
+            result = _repack_supported_terrain_miniblock_quartets(
+                frozenset(),
+                minis,
+                RGBImage(1, 1, b"\x00\x00\x00"),
+                Box(0, 0, 1, 1),
+            )
+
+        self.assertEqual(result.blocks, frozenset())
+        self.assertEqual(result.mini_blocks, minis)
+
+    def test_supported_terrain_quartet_requires_seam_or_block_evidence(
+        self,
+    ) -> None:
+        self.assertTrue(
+            _is_supported_terrain_miniblock_quartet_candidate(0.25, 0.10)
+        )
+        self.assertTrue(
+            _is_supported_terrain_miniblock_quartet_candidate(0.50, 0.45)
+        )
+        self.assertFalse(
+            _is_supported_terrain_miniblock_quartet_candidate(0.50, 0.44)
+        )
+        self.assertFalse(
+            _is_supported_terrain_miniblock_quartet_candidate(0.75, 0.80)
+        )
+
+    def test_supported_terrain_quartet_cannot_reorient_detected_spike(
+        self,
+    ) -> None:
+        spike = Detection(
+            "spike_right",
+            OBJ_SPIKE_RIGHT,
+            288,
+            160,
+            0.8,
+            Box(288, 160, 32, 32),
+        )
+        inferred_block = Detection(
+            "supported_terrain_block",
+            OBJ_BLOCK,
+            288,
+            128,
+            0.8,
+            Box(288, 128, 32, 32),
+        )
+        self.assertEqual(
+            _reorient_unsupported_spikes([spike], [inferred_block])[0].type_id,
+            OBJ_SPIKE_DOWN,
+        )
+        self.assertEqual(
+            _reorient_unsupported_spikes(
+                [spike],
+                [inferred_block],
+                excluded_block_positions=frozenset({(288, 128)}),
+            )[0],
+            spike,
         )
 
     def test_supported_cell_terrain_does_not_join_disconnected_decoration(self) -> None:
