@@ -27,3 +27,7 @@ License. The license text is reproduced in `LICENSE`.
 
 The upstream project used for verification is:
 https://github.com/patrickgh3/jtool
+
+`detection/platform-default-frame.png` is the unchanged `sPlatformDefault_0.png` frame
+from that project's `source.gmx/sprites/images`. It supplies the scanner's
+brightness-normalized platform shape reference, not the preview skin.

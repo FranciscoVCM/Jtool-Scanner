@@ -5793,3 +5793,92 @@ coverage is the consumer replay described above. The preceding complete
 repository gate was 446 passing tests before this new regression was added.
 The fresh strict report is under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/stroke-ownership-ftfa/`.
+
+## Checkpoint: palette-normalized platform sprite structure
+
+CN3-93's three bottom platforms were absent even from the raw detector. The
+existing routes use a 32x32 context patch for a 32x16 object and often require
+background below it. At the room boundary that evidence is unavailable;
+merely substituting an empty below-patch also favored the wrong half-cell
+phase. This batch adds independent internal-shape evidence instead of relaxing
+those context thresholds.
+
+The supplemental route uses the upstream MIT-licensed default platform frame,
+with a zero-mean, unit-length luminance descriptor of its inner frame/posts.
+Correlation tolerates affine brightness changes without requiring a brown
+palette or a particular room background. A small vertical capture-phase probe
+does not shift the exported object origin. Cheap existing edge-run gates limit
+the number of descriptors evaluated. The bright-room context veto preserves
+these shape-verified candidates; other platform routes remain in place. The
+reference is separate from the unchanged 26-sprite preview inventory.
+
+This is recognition of a known silhouette under different capture conditions,
+not a claim to recognize every unknown platform sprite. It adds neither a full
+grayscale second scan nor a filename/room-coordinate rule. Inverted structure,
+flat strips, grid cells, sample floor text and triangle controls fail the new
+shape gate. Synthetic controls exercise different backgrounds, brightness,
+capture scales and vertical phase, including adjacent bottom-edge platforms
+with no context beneath them.
+
+Fresh end-to-end results, reviewed against source and regenerated blends:
+
+- **CN3-93:** platforms 0 to 3 at (352,592), (384,592), (416,592);
+  editable objects 105 to 108, reviews unchanged at 11. The four false objects
+  on label 93, terrain-scale discrepancies and other geometry/start questions
+  remain. Status stays **needs-more-work**, not accepted.
+- **CN3-25:** one platform recovered at (400,224), one false block removed at
+  (408,240), and no other exported object tuples changed against a fresh scan
+  with the committed pre-change detector. The current project has 254 editable
+  objects and 59 reviews; the exported map has 255 objects including start.
+  The blend still shows major block/spike conflicts and missing/misplaced
+  geometry. Status stays **needs-more-work**.
+- **Irkara-71 held-out:** all five authoritative platforms matched from five
+  detections. A fresh pre-change/current comparison is tuple-identical across
+  the entire 294-object exported map. Its unrelated terrain errors remain.
+
+Validation: **309 geometry/platform tests passed in 363.006 seconds**. After
+separating the detection asset from preview assets, **26 platform/app/correction
+tests passed in 2.082 seconds**. A fresh final FTFA benchmark remains
+**926/928 exact, zero false positives, two known boundary misses, zero shifts,
+zero wrong directions**. The complete repository suite and full end-to-end
+12-pair scan were not rerun for this bounded change.
+
+Reproduction and fresh artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/platform-shape/`,
+`platform-shape-irkara/`, and `platform-shape-final-ftfa/`. The ignored
+`platform_shape_baselines.py` performs the pre-change/current full-output
+comparison without modifying the checkout or source truth. The uniform
+71-screen audit is not silently promoted to a fresh all-screen scan; updated
+individual reviews belong in the audit history and review ledger.
+
+A candidate-only A/B sweep of **87 images** (the 71 sources, 12 block/spike
+fixtures and four FTFA rooms) adds 11 candidates across CN3-25, CN3-26,
+CN3-27, CN3-93, CN3-Golden5 and CN3-Halls5, with no removed candidates and
+no changes in the 16 protected images. Source crops for every addition show
+real platform sprites, including platforms under translucent colored regions.
+This sweep does not exercise full downstream arbitration or infer exact room
+accuracy. Median raw-detector times were 2.690 seconds before and 2.772 after,
+with median paired overhead 0.076 seconds while other tests were running;
+this is a rough cost check, not a controlled end-to-end runtime benchmark.
+See `platform-shape/candidate-ab.json` and `added-candidates.png`.
+
+The four additional affected screens were then fully regenerated on both the
+pre-change and current detector, and their new blends reviewed:
+
+| Screen | Editable objects before / after | Platforms added | Reviews before / after |
+|---|---:|---:|---:|
+| CN3-26 | 258 / 261 | 3 | 78 / 78 |
+| CN3-27 | 323 / 324 | 1 | 86 / 86 |
+| CN3-Golden5 | 358 / 360 | 2 | 77 / 77 |
+| CN3-Halls5 | 108 / 109 | 1 | 78 / 78 |
+
+These four full-output comparisons add only the indicated real platforms,
+with no removed or otherwise changed object tuples. Combined with CN3-25
+and CN3-93, the completed batch recovers **11 platforms across six screens**
+and removes **one false block**. No screen is promoted to accepted: notably,
+CN3-26 still has false spike geometry overlapping a recovered platform, and
+the Halls5 blend has substantial missing terrain and spike errors. A useful
+next bounded investigation is sprite/geometry conflict evidence, without a
+blanket rule that would forbid legitimate spike/platform coexistence.
+The ignored `platform-shape/platform-shape-review.md` contains the six-screen
+checkpoint; the other 65 screens have not been freshly re-audited in this batch.

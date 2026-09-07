@@ -49,6 +49,7 @@ from .geometry import Box, distance, round_to_step
 from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
+from .platform_shape import default_platform_shape_score
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -5760,6 +5761,9 @@ def _prune_bright_room_platform_impostors(
         if (
             detection.type_id == OBJ_PLATFORM
             and not detection.kind.startswith("compact_relative_platform")
+            # The sprite route already verifies the internal frame/posts;
+            # this context-based gate cannot assess a bottom-clipped bar.
+            and detection.kind != "platform_sprite_shape"
             and not _has_bright_room_platform_bar_evidence(
                 _platform_horizontal_edge_runs(
                     image,
@@ -14951,6 +14955,15 @@ def _detect_platforms(
                     )
                     >= PLATFORM_COMPACT_RELATIVE_MIN_PROFILE_DISTANCE
                 )
+            sprite_shape_candidate = False
+            if (
+                features.horizontal_run >= 24
+                and features.vertical_run >= 8
+                and features.gray_range >= 24
+            ):
+                sprite_shape_candidate = (
+                    default_platform_shape_score(image, room, x, y) >= 0.80
+                )
             if not (
                 low_contrast_candidate
                 or bright_candidate
@@ -14958,6 +14971,7 @@ def _detect_platforms(
                 or dark_relative_candidate
                 or partial_relative_candidate
                 or compact_relative_candidate
+                or sprite_shape_candidate
             ):
                 continue
             score = (
@@ -14966,7 +14980,10 @@ def _detect_platforms(
                 + features.gray_range / 255
             ) / 3
             candidates.append(
-                _platform_detection(x, y, score, image, room)
+                _platform_detection(
+                    x, y, score, image, room,
+                    kind="platform_sprite_shape" if sprite_shape_candidate else "platform",
+                )
             )
 
     kept: list[Detection] = []
