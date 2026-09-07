@@ -155,6 +155,7 @@ from jtool_scanner.scanner import (
     _is_dense_neutral_minispike_sprite_alias,
     _prune_dense_neutral_minispike_sprite_aliases,
     _floor_label_regions_from_components,
+    _local_stroke_components,
     _is_unclipped_floor_label_region,
     _prune_boundary_floor_label_geometry_aliases,
     _is_center_heavy_block_candidate,
@@ -4682,6 +4683,33 @@ class ScannerGeometryTests(unittest.TestCase):
                 Box(0, 0, 1, 1),
             )
         self.assertIn(weak_neutral, sparse_result)
+
+    def test_stroke_density_excludes_disconnected_enclosed_foreground(self) -> None:
+        def extract(with_dot: bool):
+            data = bytearray([160] * (800 * 608 * 3))
+            for y in range(48, 105):
+                for x in range(48, 105):
+                    if x in (48, 104) or y in (48, 104) or (
+                        with_dot and 75 <= x <= 77 and 75 <= y <= 77
+                    ):
+                        offset = (y * 800 + x) * 3
+                        data[offset:offset + 3] = b"\x00\x00\x00"
+            return _local_stroke_components(
+                RGBImage(800, 608, bytes(data)),
+                Box(0, 0, 800, 608),
+                64, 64, 32,
+            )
+
+        plain = extract(False)
+        nested = extract(True)
+        rings = [c for c in plain if c.width > 50 and c.height > 50]
+        self.assertTrue(rings)
+        for ring in rings:
+            matches = [c for c in nested if (
+                c.x, c.y, c.width, c.height
+            ) == (ring.x, ring.y, ring.width, ring.height)]
+            self.assertEqual(matches, [ring])
+        self.assertTrue(any(c.width < 20 and c.height < 20 for c in nested))
 
     def test_floor_label_regions_require_two_digit_scale_masks(self) -> None:
         pair = [

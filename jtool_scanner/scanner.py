@@ -23993,8 +23993,12 @@ def _local_stroke_components(
             queue = [seed]
             min_x = max_x = seed % width
             min_y = max_y = seed // width
+            original_pixels = 0
             while queue:
                 current = queue.pop()
+                # Count only this connected stroke's original ink. A hollow
+                # stroke's bounding box may enclose separate foreground.
+                original_pixels += foreground[current]
                 current_x = current % width
                 current_y = current // width
                 min_x = min(min_x, current_x)
@@ -24017,11 +24021,6 @@ def _local_stroke_components(
                         queue.append(neighbor)
             component_width = max_x - min_x + 1
             component_height = max_y - min_y + 1
-            original_pixels = sum(
-                foreground[component_y * width + component_x]
-                for component_y in range(min_y, max_y + 1)
-                for component_x in range(min_x, max_x + 1)
-            )
             if original_pixels < DENSE_GLYPH_ALIAS_MIN_COMPONENT_PIXELS:
                 continue
             components.append(

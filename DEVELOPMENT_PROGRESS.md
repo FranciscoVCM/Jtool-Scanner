@@ -5759,3 +5759,37 @@ target. Preserve the current detector until a different shape invariant passes
 these controls. Reproduce with the ignored `profile_scaled_floor_regions.py`
 beside `profile_floor93.py`. No scanner outputs, fixture truth, or screen
 acceptance status changed during this experiment.
+
+## Checkpoint: connected-stroke pixel ownership
+
+The glyph-shape investigation exposed an error in the shared stroke extractor:
+after tracing a connected component, it counted all foreground pixels inside
+that component's bounding rectangle. A separate stroke enclosed by a hollow
+shape therefore inflated the outer shape's pixel count and density. The
+extractor now counts original foreground pixels during the component traversal,
+so each pixel contributes only to the component that owns it. The dilation,
+component bounds, polarity masks and acceptance thresholds are unchanged.
+
+A synthetic regression adds a disconnected nine-pixel dot inside a hollow
+square. Before the fix, the outer stroke's count incorrectly increased from
+224 to 233; afterward it remains 224 and the dot is separately represented.
+The test exercises the actual image extractor, including local luminance
+calibration and connectivity, rather than mocking its measurements.
+
+An offline A/B replay of both consumers (boundary floor-label filtering and
+dense detached-glyph filtering) on 87 saved outputs--all 71 review screens,
+12 block/spike fixtures and four FTFA rooms--finds zero changed decisions.
+This is saved-output compatibility evidence, not a fresh 71-screen exact
+benchmark. The fix provides accurate shape measurements; it does not yet
+resolve CN3-93's four floor-label aliases or justify any acceptance promotion.
+The ignored `compare_stroke_ownership.py` reproduces this replay against the
+pre-fix extractor at commit `670c054`, independent of the current checkout.
+
+Validation: all **305 geometry tests pass in 657.306 seconds**. A fresh FTFA
+end-to-end benchmark remains **926/928 exact, zero false positives, two known
+boundary misses, zero shifts, and zero wrong directions**. This batch did not
+rerun the full 12-pair scanner or the complete repository suite; its 12-pair
+coverage is the consumer replay described above. The preceding complete
+repository gate was 446 passing tests before this new regression was added.
+The fresh strict report is under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/stroke-ownership-ftfa/`.
