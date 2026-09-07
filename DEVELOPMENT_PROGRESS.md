@@ -5704,3 +5704,37 @@ profiles, exact reports, fixture scans, FTFA review, causal comparisons, and
 source/JTool/blend artifacts are under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/supported-quartet-*`
 and `quartet-final-*`.
+
+## Investigation: smaller floor-label aliases remain (2026-09-07)
+
+A fresh CN3-93 project generated from commit `03d663d` is tuple-identical to
+the preceding reviewed output: 105 enabled objects and 11 structural reviews.
+Source inspection identifies four false objects on the visible floor label:
+full up/down spikes at `(256,512)` and `(256,528)`, and miniblocks at
+`(288,512)` and `(288,528)`. These are visual findings, not corrected-JMap
+truth. CN3-93 remains needs-more-work, including its separate terrain,
+platform, and start-placement issues.
+
+The boundary-label filter is narrower than the user-visible requirement to
+reject floor numbers generally. It seeds only full blocks, excludes miniblocks
+from its alias classes, requires two overlapping full blocks and two full
+spikes, and accepts only particular large digit-component sizes. CN3-93 has
+no full block on the label. Its local strokes include a 24x35 bright component
+and a fragmented 54x47 dark group; these do not satisfy the current 49--54px
+individual-digit height or 64--82px joined-group width. Local saturation near
+the false objects ranges from 0.199 to 0.266, additionally crossing the 0.20
+prefilter. Adding miniblock seeds alone therefore cannot solve this case.
+
+CN3-30's visible label is embedded within real terrain rather than detached in
+empty space, while the inspected CN3-92 capture has no visible floor label.
+These provide different controls for a future size-relative glyph grouping
+rule: suppress only detached text evidence and preserve terrain behind text.
+Do not widen all size/color limits or remove geometry merely because it is
+near a number. Current synthetic floor-label tests explicitly protect smaller
+components from the existing coarse filter; both targeted tests still pass.
+No production change or detection improvement is claimed in this investigation.
+
+The fresh CN3-93 project, JMap, reconstruction and blend are preserved under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/floor93-current/`.
+The read-only `profile_floor93.py` in its parent directory reproduces the
+component and saturation measurements on CN3-93 and a CN3-27 terrain control.
