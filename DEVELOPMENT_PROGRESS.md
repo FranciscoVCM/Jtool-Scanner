@@ -5738,3 +5738,24 @@ The fresh CN3-93 project, JMap, reconstruction and blend are preserved under
 `.artifacts/goal-continuation/adaptive-miniblock-20260829/floor93-current/`.
 The read-only `profile_floor93.py` in its parent directory reproduces the
 component and saturation measurements on CN3-93 and a CN3-27 terrain control.
+
+### Rejected size-only extension
+
+An offline follow-up applies the existing digit-group matcher at component
+scales 1.0, 1.25, 1.5 and 2.0, including miniblock and spike seeds and omitting
+the saturation prefilter. Across 656 boundary candidate windows in CN3-93,
+CN3-27, CN3-30 and CN3-21, it still proposes no region for CN3-93's label.
+CN3-30 and CN3-21 also yield no regions. The only two proposals are CN3-27
+regions `(496,174,531,200)` and `(561,174,596,200)`, which correspond to real
+spike formations in the source, not its upper-right floor number. These are
+offline region proposals, not production removals: downstream filter gates
+were deliberately not applied in this sensitivity test.
+
+This rejects size-only rescaling as the next implementation. The missing
+evidence is glyph segmentation/grouping that tolerates shading and fragmented
+strokes while distinguishing triangles. Broadening the current component
+bounding-box limits would introduce hazardous proposals before recovering the
+target. Preserve the current detector until a different shape invariant passes
+these controls. Reproduce with the ignored `profile_scaled_floor_regions.py`
+beside `profile_floor93.py`. No scanner outputs, fixture truth, or screen
+acceptance status changed during this experiment.
