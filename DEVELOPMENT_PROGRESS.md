@@ -5927,3 +5927,46 @@ screen review stays an immutable checkpoint; the ledger and audit history
 record the newer CN3-26 result separately. Next investigate directed edge
 evidence and competing object shapes for the three retained conflicts, rather
 than broadening this ownership rule into a generic overlap veto.
+
+## Investigation: directed slopes still need foreground identity
+
+An offline direction/phase probe now tests whether image gradients follow both
+triangle slopes, rather than only falling near the undirected outline mask.
+It uses patch-relative gradient calibration and canonical luminance with light
+smoothing. Compact 19x13 fixture images are centered before comparing their
+JMap coordinates; stretching them directly to 25x19 would invalidate this test.
+
+The probe covers **1,016 in-bounds reference full spikes in 15 fixture rooms**.
+Direction-only local reorientation makes three unsafe proposals against known
+truth: two in FTFA-1 and one in Irkara-89. Adding normalized inside/outside
+contrast rejects these three, but the subsequent 71-screen shadow sweep shows
+why passing that gate is not sufficient evidence for implementation.
+
+The sweep yields **39 proposals across 15 screens**. All proposal source crops
+were reviewed. At least three fit background gaps rather than actual spikes:
+CN3-21 down at (32,288), CN3-26 down at (336,480), and CN3-Halls2 down at
+(128,288). Some other proposed directions look correct while their phase still
+needs full-contour fitting; a bounded search can select a partial contour when
+the real sprite's origin lies beyond its search window. No proposal is treated
+as an approved correction, and no production threshold was changed.
+
+The initial false down spike at CN3-25 (400,200) scores 0 on the directed
+slopes, versus 1 for the real left-facing candidate at (400,192). CN3-26's
+false left at (552,272) scores 0.083 versus 1 for the down-facing candidate at
+(560,272). However, same-direction neighboring position peaks fail the trial's
+uniqueness margin, so neither is included in the 39 selected proposals. These
+examples remain unresolved, not silently counted as gains.
+
+Next combine directed shape evidence with learned foreground/material identity
+and complete-contour position fitting. Do not simply lower the uniqueness
+threshold, assume one global foreground polarity, or use the current gradient
+probe as a blanket spike veto. The source-crop counterexamples demonstrate the
+missing distinction: a strong triangular boundary may describe either an
+object or empty space between objects.
+
+Reproduce with the ignored `profile_directed_spike_edges.py`,
+`profile_directed_spike_corpus.py`, and `render_directed_spike_proposals.py` in
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/`. The local
+`directed-edge-review.md` records the rejected proposals and scope limits.
+This is diagnostic evidence only: no scanner output, fixture truth or ledger
+acceptance status changed, and no fresh end-to-end benchmark gain is claimed.
