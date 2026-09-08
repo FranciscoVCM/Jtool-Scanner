@@ -5970,3 +5970,87 @@ Reproduce with the ignored `profile_directed_spike_edges.py`,
 `directed-edge-review.md` records the rejected proposals and scope limits.
 This is diagnostic evidence only: no scanner output, fixture truth or ledger
 acceptance status changed, and no fresh end-to-end benchmark gain is claimed.
+
+## Checkpoint: locally corroborated spike direction and phase (2026-09-08)
+
+The directed-slope investigation now has a conservative production route in
+`spike_shape.py`. It measures both triangle slopes in normalized luminance,
+calibrates gradient strength and inside/outside contrast locally, and requires
+at least three independent nearby well-supported spikes to corroborate foreground
+polarity. Duplicate origins are not independent witnesses. A wider position
+search must retain the same unique peak before a weak hypothesis can be refitted.
+Background gaps, clipped shapes, sparse evidence and ambiguous phase abstain.
+No screen identity, room palette or absolute coordinate is a production rule.
+
+Refits run once after capture consensus, not inside its source/canonical inputs.
+Fresh A/B scans exposed unwanted merge shifts in the first integration; those
+outputs are retained as rejected evidence, and a regression test now protects
+the final-coordinate application order. Replacing an alias that points at an
+already recognized spike removes the duplicate rather than adding another one.
+
+Twelve freshly rescanned primary screens contain **22 corrected/removed wrong
+spike hypotheses**: **five direction/phase replacements and 17 duplicate
+removals**. All other exported tuples are unchanged within these fresh A/B
+comparisons. The 71-case saved-output replay predicted 23; one Golden3 alias
+was already absent from its fresh baseline. Replay and fresh results must not
+be conflated.
+
+| Screen | Editable objects before → after | Reviews before → after |
+|---|---:|---:|
+| CN3-9 | 200 → 199 | 91 → 91 |
+| CN3-26 | 260 → 259 | 77 → 76 |
+| CN3-27 | 324 → 324 | 86 → 86 |
+| CN3-31 | 277 → 276 | 48 → 48 |
+| CN3-Entrance3 | 325 → 325 | 53 → 54 |
+| CN3-Golden1 | 315 → 313 | 57 → 56 |
+| CN3-Golden2 | 336 → 335 | 69 → 68 |
+| CN3-Golden3 | 365 → 364 | 77 → 76 |
+| CN3-Golden4 | 369 → 367 | 90 → 89 |
+| CN3-Golden5 | 360 → 355 | 77 → 74 |
+| CN3-Golden6 | 383 → 380 | 74 → 72 |
+| CN3-Halls2 | 106 → 106 | 72 → 72 |
+
+Changed-region source/before/current/blend reviews confirm these deltas, not
+whole-room accuracy. Every listed screen still needs more work. Six older
+accepted labels are withdrawn in the local ledger. Entrance3's warning count
+increases despite the correct direction change because another overlapping
+false spike remains; warnings are not an accuracy score. CN3-25's phase-ambiguous
+spike and CN3-26's ambiguous case near (552,272) remain unresolved. Halls2 still
+misses the right-facing partner beside the newly corrected left-facing spike.
+
+Validation on the final integration:
+
+- **305 geometry tests pass in 385.782 seconds**; **43 focused shape, platform,
+  capture-lattice, application and correction tests pass in 10.002 seconds**.
+  The seven shape tests also pass after adding real-source color-inversion
+  coverage. Synthetic controls include four orientations, brightness inversion,
+  capture scales, sparse/duplicate evidence, background gaps and phase ambiguity.
+- Fresh FTFA remains **926/928 exact, zero false positives, two known boundary
+  misses, zero shifts and zero wrong directions**.
+- Fresh full 12-pair block/spike scans increase matched full spikes from
+  **724 to 725 of 748**, with **870 detections** at tolerance 24. Every other
+  aggregate is unchanged. Full tuple comparison changes only Irkara Flames:
+  false right (72,240) becomes exact up (64,240), independently supported by
+  corrected fixture truth. All other eleven outputs are tuple-identical.
+- The full repository unittest suite was not rerun in this bounded batch.
+  The app was restarted with the final integration and returned HTTP 200.
+
+The new pass takes roughly 0.8–3 seconds on sampled saved-output replays; the
+concurrent fresh A/B timings are noisy and are not a controlled speed benchmark.
+This route corrects existing weak candidates using strong local evidence. It
+does not yet solve initial proposal recall on an unfamiliar, poorly detected
+tileset, arbitrary sprite recognition, or all block/spike conflicts.
+
+Reproducible local evidence is under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/directed-refit-final/`,
+`directed-refit-final-ftfa/` and `directed-refit-final-fixtures/`. The first
+directory contains all twelve fresh A/B projects/JMaps/renders/blends, the
+independent Flames case, exact tuple deltas, reviewed crops and the updated
+mixed-age 71-screen report. The older uniform full-corpus audit is preserved.
+
+The user requested a strategy reassessment before another implementation batch:
+generalization is now the primary objective, with the 71 screens serving as a
+diagnostic and regression corpus. The next plan must address versioned and
+resumable evaluation, stronger held-out-family measurements, and tracing
+candidate-generation versus arbitration failures. No broad rewrite or new goal
+has been started as part of this checkpoint.

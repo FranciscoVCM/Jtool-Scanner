@@ -50,6 +50,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
+from .spike_shape import corroborated_refits
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -2129,6 +2130,8 @@ def scan_image(
     include_geometry: bool = False,
     source_grid: tuple[int, int] | None = None,
     recognized_text: str | None = None,
+    *,
+    _apply_shape_refits: bool = True,
 ) -> ScanResult:
     _PATCH_FEATURE_CACHE.clear()
     source_image = image
@@ -2171,6 +2174,7 @@ def scan_image(
                 grid_step=grid_step,
                 include_color_objects=include_color_objects,
                 recognized_text=recognized_text,
+                _apply_shape_refits=_apply_shape_refits,
             )
     source_translation: tuple[int, int] | None = None
     compact_room = normalized_grid == (19, 13)
@@ -2765,6 +2769,8 @@ def scan_image(
             box,
         )
         detections = _prune_platform_owned_spike_edges(detections, image, box)
+        if _apply_shape_refits:
+            detections = _reconcile_directed_material_spikes(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -3670,6 +3676,7 @@ def _scan_lattice_normalized_room(
     grid_step: int,
     include_color_objects: bool,
     recognized_text: str | None,
+    _apply_shape_refits: bool = True,
 ) -> ScanResult:
     """Merge stable source-space objects with canonical geometry evidence.
 
@@ -3691,6 +3698,7 @@ def _scan_lattice_normalized_room(
         include_color_objects=include_color_objects,
         include_geometry=use_consensus,
         recognized_text=recognized_text,
+        _apply_shape_refits=False,
     )
     canonical_image = _resample_capture_lattice_room(source_image, normalization)
     canonical_result = scan_image(
@@ -3701,6 +3709,7 @@ def _scan_lattice_normalized_room(
         include_geometry=True,
         source_grid=(25, 19),
         recognized_text=recognized_text,
+        _apply_shape_refits=False,
     )
     extent = normalization.source_extent
 
@@ -3772,6 +3781,12 @@ def _scan_lattice_normalized_room(
         normalization.source_room,
         dense_miniblock_room=canonical_dense_miniblock_room,
     )
+    # Shape corrections must not change the inputs of capture consensus.
+    # Evaluate them once, against the final source-coordinate hypothesis set.
+    if _apply_shape_refits:
+        detections = _reconcile_directed_material_spikes(
+            detections, source_image, normalization.source_room,
+        )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
     _PATCH_FEATURE_CACHE.clear()
     return ScanResult(
@@ -14834,6 +14849,34 @@ def _compact_platform_overlaps_geometry(
         if overlap_width * overlap_height > 0:
             return True
     return False
+
+
+def _reconcile_directed_material_spikes(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    spikes = [(d.type_id, d.x, d.y) for d in detections if d.type_id in FULL_SPIKE_TYPES]
+    refits = corroborated_refits(image, room, spikes)
+    if not refits:
+        return detections
+    existing = {(d.type_id, d.x, d.y) for d in detections}
+    emitted = set()
+    result = []
+    for detection in detections:
+        replacement = refits.get((detection.type_id, detection.x, detection.y))
+        if replacement is None:
+            result.append(detection)
+            continue
+        # A refit onto an already recognized object removes a duplicate
+        # hypothesis, not the independently supported target object.
+        if replacement in existing or replacement in emitted:
+            continue
+        direction, x, y = replacement
+        result.append(_geometry_detection(
+            "directed_material_spike_refit", direction, x, y,
+            detection.score, image, room, GRID_SIZE,
+        ))
+        emitted.add(replacement)
+    return result
 
 
 def _prune_platform_owned_spike_edges(

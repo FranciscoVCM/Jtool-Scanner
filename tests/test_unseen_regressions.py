@@ -352,6 +352,10 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
                 "jtool_scanner.scanner._resample_capture_lattice_room",
                 return_value=canonical_image,
             ),
+            patch(
+                "jtool_scanner.scanner._reconcile_directed_material_spikes",
+                side_effect=lambda detections, image, room: detections,
+            ) as refit,
         ):
             merged = _scan_lattice_normalized_room(
                 image,
@@ -373,6 +377,16 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
         self.assertEqual(scan.call_count, 2)
         self.assertFalse(scan.call_args_list[0].kwargs["include_geometry"])
         self.assertTrue(scan.call_args_list[1].kwargs["include_geometry"])
+        # Refits must not influence the two inputs to capture consensus.
+        self.assertFalse(scan.call_args_list[0].kwargs["_apply_shape_refits"])
+        self.assertFalse(scan.call_args_list[1].kwargs["_apply_shape_refits"])
+        refit.assert_called_once()
+        self.assertIs(refit.call_args.args[1], image)
+        self.assertEqual(refit.call_args.args[2], source_room)
+        self.assertEqual(
+            {(item.type_id, item.x, item.y) for item in refit.call_args.args[0]},
+            objects,
+        )
 
 
 class UnseenScreenRegressionTests(unittest.TestCase):
