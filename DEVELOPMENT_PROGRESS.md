@@ -6126,3 +6126,38 @@ explicit region annotations are ignored under `phase-material-shadow/` in the
 same artifact directory. Twenty corpus/shape tests and eighteen subtests pass.
 The local app was restarted and verified HTTP 200 with unchanged production
 scanner behavior. No experimental phase rule has been deployed.
+
+## Verified checkpoint: native-size-aware component placement (2026-09-09)
+
+A second observational trace reproduces NANG-128r's normal final JMap exactly.
+The adaptive compact component stage correctly classifies eighteen 16px
+minispikes but places them using a helper that subtracts a 32px object's half
+size. All eighteen are emitted eight pixels up and left, and that error survives
+downstream arbitration. The correction makes native size an explicit optional
+helper argument and passes 16 for these classified components. Other callers
+retain the existing 32px default. No recognition thresholds or palettes change.
+
+The real NANG-128r scan now matches 18/18 manually reviewed minispike origins,
+up from 0/18; all non-minispike tuples are unchanged. NANG-128 is unchanged.
+This is object-class/region truth, not exact whole-room truth. The reviewed
+annotations, source evidence and fresh blend are preserved under the ignored
+`.artifacts/cross-tileset-20260908/component-origin-focus/` directory.
+Two new tests (twelve subtests) cover native sizes, room offsets, all four
+orientations, three capture scales and two brightness combinations, using
+actual connected components as well as direct coordinate conversion.
+
+The expanded targeted run passed 103 tests and 74 subtests in 4705.14 seconds.
+It covers component origins, spike shape, corpus runner, app/correction and
+unseen regressions; this is not a full repository test-suite claim.
+All 26 versioned cases completed. Only the eighteen NANG-128r minispike tuples
+changed. All other maps and all sixteen exact-reference comparison reports
+are identical to baseline, including FTFA's 926/928 exact with zero extras,
+shifts or orientation errors. Say-1, Say-9 and Zero_Final are unchanged.
+Full comparison: `.artifacts/cross-tileset-20260908/component-origin-fixed/comparison.md`.
+The app runs the fix and returns HTTP 200.
+
+NANG-128r is diagnosed rather than an untouched evaluation case. This fixes a
+general native-size coordinate contract but does not demonstrate new object
+recognition across every unseen tileset. The Halls2 phase guard remains
+research-only. Existing room errors, uncertain visual truth and broader
+recognition generalization remain next-project work, not hidden by this result.

@@ -4865,7 +4865,9 @@ def _detect_adaptive_compact_room_spikes(
             ("left", True): OBJ_MINI_SPIKE_LEFT,
             ("down", True): OBJ_MINI_SPIKE_DOWN,
         }
-        map_x, map_y = _image_box_to_jtool_origin(box, room, 8)
+        map_x, map_y = _image_box_to_jtool_origin(
+            box, room, 8, object_size=16 if is_mini else GRID_SIZE,
+        )
         detections.append(
             Detection(
                 f"compact_adaptive_{'mini_' if is_mini else ''}spike_{direction}",
@@ -33927,11 +33929,18 @@ def _connected_components(
     return components
 
 
-def _image_box_to_jtool_origin(box: Box, room: Box, grid_step: int) -> tuple[int, int]:
+def _image_box_to_jtool_origin(
+    box: Box, room: Box, grid_step: int, *, object_size: int = GRID_SIZE,
+) -> tuple[int, int]:
+    """Convert a component center using its classified object's native size.
+
+    The component can omit outline pixels, so keep center-based placement.
+    Its capture dimensions must not decide the native object size.
+    """
     scale_x = room.width / ROOM_WIDTH
     scale_y = room.height / ROOM_HEIGHT
-    raw_x = (box.center_x - room.x) / scale_x - GRID_SIZE / 2
-    raw_y = (box.center_y - room.y) / scale_y - GRID_SIZE / 2
+    raw_x = (box.center_x - room.x) / scale_x - object_size / 2
+    raw_y = (box.center_y - room.y) / scale_y - object_size / 2
     return round_to_step(raw_x, grid_step), round_to_step(raw_y, grid_step)
 
 
