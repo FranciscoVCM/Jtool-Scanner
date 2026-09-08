@@ -6115,3 +6115,14 @@ being evaluated; this observation is not yet a validated general rule.
 Production scanner code, existing fixtures and whole-room acceptance labels
 are unchanged. Further traces, changed-region review and a measured protected
 production improvement remain required before completing this milestone.
+
+Follow-up counterfactual: adding directed-slope and local contrast-separation
+checks preserves all eight reviewed Halls2 positions (1/8 exact before, 8/8
+after), while rejecting all Irkara-89 phase proposals and leaving that map
+unchanged. NANG-128, NANG-128r and Zero_Final are also unchanged. This selected
+regional result does not establish whole-room accuracy or cross-family gains;
+the complete Halls2 delta still needs broader review. Research outputs and
+explicit region annotations are ignored under `phase-material-shadow/` in the
+same artifact directory. Twenty corpus/shape tests and eighteen subtests pass.
+The local app was restarted and verified HTTP 200 with unchanged production
+scanner behavior. No experimental phase rule has been deployed.

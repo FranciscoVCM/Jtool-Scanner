@@ -71,6 +71,18 @@ are unchanged; initial Irkara-89 metrics are unchanged despite moving another
 already-inexact spike. Complete regional review and further controls before
 accepting or rejecting this approach. Keep the rejected or inconclusive evidence.
 
+The stricter research guard additionally requires strong directed slopes at the
+original position, weak slopes at the forced snap and strong absolute local
+inside/outside contrast separation. In eight manually reviewed Halls2 positions,
+exact presence improves from 1/8 to 8/8. This is a selected regional measurement,
+not whole-room recall or precision. Its complete output still changes 22 added
+and 29 removed spike tuples, and visible errors remain elsewhere in the room.
+Irkara-89 now has zero proposals and an unchanged map, rejecting the earlier
+wrong-position movement. NANG-128, NANG-128r and Zero_Final also have unchanged
+maps. These no-effect checks protect cases but do not demonstrate recognition
+gains on a different tileset. The guard remains outside production pending
+broader changed-region review and evidence of transfer.
+
 ## Ranked development work
 
 1. **Preserve image-supported positions through normalization.** Highest current
