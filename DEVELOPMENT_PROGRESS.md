@@ -5882,3 +5882,48 @@ next bounded investigation is sprite/geometry conflict evidence, without a
 blanket rule that would forbid legitimate spike/platform coexistence.
 The ignored `platform-shape/platform-shape-review.md` contains the six-screen
 checkpoint; the other 65 screens have not been freshly re-audited in this batch.
+
+## Checkpoint: separate platform-owned edges from spike evidence
+
+Source crops of four spike/platform overlaps in CN3-25, CN3-26 and Golden5
+show why rectangle-overlap suppression would be inadequate. Three incorrect
+spike proposals also contain edges from nearby real terrain or differently
+oriented hazards. Their geometry/direction inference needs a separate fix.
+In the fourth, the false left spike at (520,288) in CN3-26 has **no measured
+edge outside the verified platform sprite**. The entire apparent spike signal
+is the platform frame and texture, not an independently visible triangle.
+
+A final ownership pass now removes full-spike candidates only when verified
+platform sprites explain every measured edge in their patch. Source sprite
+structure is rechecked; a platform label or detection score alone is not
+authority. One geometry-sample halo accounts for the forward-difference edge
+kernel and interpolation. Any independent edge preserves the candidate.
+Partially off-room spike patches are excluded because clamped image samples
+cannot establish their missing evidence. Existing geometry-only and unknown-
+skin platform routes are not disabled, and legitimate boundary-touching or
+partly occluded hazards remain allowed.
+
+Fresh CN3-26 source/JMap/blend review confirms **261 to 260 editable objects,
+78 to 77 reviews**, with exactly the false left spike removed and no other
+object tuple changed. All platforms recovered in the preceding batch remain.
+Status is still **needs-more-work**: the other wrong-direction/shifted spike
+proposals and broader terrain errors have not been solved by this rule.
+
+Validation: **27 focused platform tests pass in 7.445 seconds**, including
+new source-image controls for different background palettes, independent
+partially occluded geometry, unverified platform patterns and clipped spikes.
+A saved-output replay across **88 cases** (71 current ledger outputs, 12
+block/spike outputs, four FTFA rooms and Irkara-71) removes only the named
+CN3-26 alias. This is a consumer replay, not a fresh 71-screen scan. A fresh
+FTFA benchmark remains **926/928 exact, zero false positives, two known
+boundary misses, zero shifts and zero wrong directions**. Fresh Irkara-71 is
+tuple-identical across all 294 exported objects, retaining five matched
+platforms from five detections. The full repository suite was not rerun.
+
+Fresh artifacts are under
+`.artifacts/goal-continuation/adaptive-miniblock-20260829/platform-ownership/`,
+`platform-ownership-ftfa/` and `platform-ownership-irkara/`. The earlier six-
+screen review stays an immutable checkpoint; the ledger and audit history
+record the newer CN3-26 result separately. Next investigate directed edge
+evidence and competing object shapes for the three retained conflicts, rather
+than broadening this ownership rule into a generic overlap veto.

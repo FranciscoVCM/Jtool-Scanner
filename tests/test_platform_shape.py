@@ -6,7 +6,10 @@ from PIL import Image, ImageDraw
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.platform_shape import default_platform_shape_score
-from jtool_scanner.scanner import _detect_platforms, _prune_bright_room_platform_impostors
+from jtool_scanner.scanner import (
+    Detection, _detect_platforms, _prune_bright_room_platform_impostors,
+    _prune_platform_owned_spike_edges,
+)
 
 
 class PlatformShapeTests(unittest.TestCase):
@@ -61,6 +64,50 @@ class PlatformShapeTests(unittest.TestCase):
         for x in range(48,432,16):
             with self.subTest(x=x):
                 self.assertLess(default_platform_shape_score(source,Box(0,0,800,608),x,64),.8)
+
+    def test_sprite_owned_edges_reject_false_spike_across_palettes(self):
+        for color in ((110,70,160),(240,240,240),(5,5,5)):
+            with self.subTest(background=color):
+                original=self.image(background=color)
+                sprite=Image.frombytes('RGB',(800,608),original.data).crop((320,592,352,608))
+                canvas=Image.new('RGB',(800,608),color)
+                canvas.paste(sprite,(320,320))
+                im=RGBImage(800,608,canvas.tobytes())
+                platform=Detection('platform',13,320,320,.8,Box(320,320,32,16))
+                spike=Detection('spike_left',5,312,320,.4,Box(312,320,32,32))
+                self.assertEqual(
+                    _prune_platform_owned_spike_edges([platform,spike],im,Box(0,0,800,608)),
+                    [platform],
+                )
+
+    def test_independent_edges_preserve_occluded_spike(self):
+        original=self.image()
+        sprite=Image.frombytes('RGB',(800,608),original.data).crop((320,592,352,608))
+        im=Image.new('RGB',(800,608),(110,70,160))
+        # The partly occluded spike retains visible geometry below the bar.
+        ImageDraw.Draw(im).polygon(((312,336),(344,320),(344,352)),fill='white',outline='black')
+        im.paste(sprite,(320,320))
+        source=RGBImage(800,608,im.tobytes())
+        platform=Detection('platform',13,320,320,.8,Box(320,320,32,16))
+        spike=Detection('spike_left',5,312,320,.4,Box(312,320,32,32))
+        self.assertGreaterEqual(default_platform_shape_score(source,Box(0,0,800,608),320,320),.8)
+        self.assertEqual(_prune_platform_owned_spike_edges([platform,spike],source,Box(0,0,800,608)),[platform,spike])
+
+    def test_unverified_platform_cannot_suppress_spike(self):
+        original=self.image(invert=True)
+        sprite=Image.frombytes('RGB',(800,608),original.data).crop((320,592,352,608))
+        canvas=Image.new('RGB',(800,608),(110,70,160))
+        canvas.paste(sprite,(320,320))
+        im=RGBImage(800,608,canvas.tobytes())
+        platform=Detection('platform',13,320,320,.9,Box(320,320,32,16))
+        spike=Detection('spike_left',5,312,320,.4,Box(312,320,32,32))
+        self.assertEqual(_prune_platform_owned_spike_edges([platform,spike],im,Box(0,0,800,608)),[platform,spike])
+
+    def test_clipped_spike_is_not_judged_from_replicated_boundary_pixels(self):
+        im=self.image(background=(5,5,5))
+        platform=Detection('platform',13,320,592,.9,Box(320,592,32,16))
+        spike=Detection('spike_left',5,312,592,.4,Box(312,592,32,32))
+        self.assertEqual(_prune_platform_owned_spike_edges([platform,spike],im,Box(0,0,800,608)),[platform,spike])
 
 
 if __name__ == '__main__':

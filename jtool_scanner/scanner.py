@@ -2764,6 +2764,7 @@ def scan_image(
             image,
             box,
         )
+        detections = _prune_platform_owned_spike_edges(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -14833,6 +14834,65 @@ def _compact_platform_overlaps_geometry(
         if overlap_width * overlap_height > 0:
             return True
     return False
+
+
+def _prune_platform_owned_spike_edges(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    """Reject a spike only when a verified platform explains all its edges.
+
+    Bounding-box overlap alone is not a conflict: hazards can coexist with
+    platforms. Keep any independent edge evidence outside the known sprite.
+    The 2px halo is one geometry sample, accounting for the forward-difference
+    edge kernel and capture interpolation at the sprite boundary.
+    """
+    platforms = [d for d in detections if d.type_id == OBJ_PLATFORM]
+    if not platforms:
+        return detections
+    verified: dict[tuple[int, int], bool] = {}
+    kept: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in FULL_SPIKE_TYPES or not (
+            0 <= detection.x <= ROOM_WIDTH - GRID_SIZE
+            and 0 <= detection.y <= ROOM_HEIGHT - GRID_SIZE
+        ):
+            kept.append(detection)
+            continue
+        owners = []
+        for platform in platforms:
+            if _rect_box_overlap_area(
+                detection.x, detection.y, GRID_SIZE, GRID_SIZE,
+                platform.x, platform.y, PLATFORM_WIDTH, PLATFORM_HEIGHT,
+            ) <= 0:
+                continue
+            key = (platform.x, platform.y)
+            if key not in verified:
+                verified[key] = default_platform_shape_score(
+                    image, room, platform.x, platform.y,
+                ) >= 0.80
+            if verified[key]:
+                owners.append(platform)
+        if not owners:
+            kept.append(detection)
+            continue
+        mask = _patch_features(
+            image, room, detection.x, detection.y, GRID_SIZE,
+        ).edge_mask
+        edges = [
+            (detection.x + (i % 16) * 2 + 1,
+             detection.y + (i // 16) * 2 + 1)
+            for i, hit in enumerate(mask) if hit
+        ]
+        if not edges or any(
+            not any(
+                owner.x - 2 <= x < owner.x + PLATFORM_WIDTH + 2
+                and owner.y - 2 <= y < owner.y + PLATFORM_HEIGHT + 2
+                for owner in owners
+            )
+            for x, y in edges
+        ):
+            kept.append(detection)
+    return kept
 
 
 def _detect_platforms(
