@@ -6088,3 +6088,30 @@ This is an implementation checkpoint, not completion of the new goal. Remaining:
 run the versioned representative baseline, trace failures through scanner stages,
 rank root causes, demonstrate a new measured generalized improvement against
 separate evaluation families, and verify FTFA/relevant fixture protection.
+
+## Cross-tileset milestone: baseline and causal placement trace (2026-09-08)
+
+All 26 versioned baseline cases completed on `115bb2d`: ten visual cases
+and sixteen reference controls. After an interruption, 23 verified cases were
+reused and only three remaining cases ran. The complete report and per-case
+evidence are preserved in `.artifacts/cross-tileset-20260908/baseline/`.
+`CROSS_TILESET_PLAN.md` records the partition, limitations and ranked next work.
+FTFA remains 926/928 exact, with zero extras, shifts or direction errors.
+The exact baseline exposes existing errors that older shorthand hid, including
+one extra CN3-18 mini-up spike; these are not new scanner regressions.
+
+An observational Halls2 trace reproduced the ordinary final JMap exactly.
+Its missing right spike is accepted at the source-supported position, then
+transversely snapped eight pixels and later pruned. This distinguishes a
+placement failure from an unfamiliar-tileset classification failure.
+A research-only phase-preservation experiment recovers that spike but changes
+additional downstream geometry. It also moves an already-wrong Irkara-89 spike
+without improving exact totals. It is not a production improvement.
+
+Directed contour profiling shows that strong slopes alone still admit the
+Irkara aliases. Source-relative inside/outside separation distinguishes those
+aliases from the Halls2 proposals in this sample. A stricter counterfactual is
+being evaluated; this observation is not yet a validated general rule.
+Production scanner code, existing fixtures and whole-room acceptance labels
+are unchanged. Further traces, changed-region review and a measured protected
+production improvement remain required before completing this milestone.
