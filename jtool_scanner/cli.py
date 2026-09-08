@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from .benchmark import BenchmarkOptions, run_benchmark
+from .corpus import run_corpus
 from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
 from .correction import (
     CorrectionProject,
@@ -183,6 +184,11 @@ def main(argv: list[str] | None = None) -> int:
         dest="pair_ids",
         help="benchmark only this room; may be passed more than once",
     )
+
+    corpus_parser = subparsers.add_parser("scan-corpus", help="versioned resumable exact/visual corpus scans")
+    corpus_parser.add_argument("manifest")
+    corpus_parser.add_argument("out_dir")
+    corpus_parser.add_argument("--resume", action="store_true")
 
     project_create_parser = subparsers.add_parser(
         "project-create",
@@ -362,6 +368,9 @@ def main(argv: list[str] | None = None) -> int:
             args.summary,
             args.report_json,
         )
+    if args.command == "scan-corpus":
+        run_corpus(args.manifest, args.out_dir, resume=args.resume)
+        return 0
     if args.command == "benchmark":
         return _benchmark(
             args.manifest,

@@ -6054,3 +6054,37 @@ diagnostic and regression corpus. The next plan must address versioned and
 resumable evaluation, stronger held-out-family measurements, and tracing
 candidate-generation versus arbitration failures. No broad rewrite or new goal
 has been started as part of this checkpoint.
+
+## Cross-tileset milestone: reproducible evidence runner (2026-09-08)
+
+Started the revised generalization-first milestone with `scan-corpus`, a
+versioned runner for exact-reference and visual-only cases. It reuses the
+production PNG scanner, correction projects, JTool/blend renderer and exact
+JMap comparator; no scanner decisions were changed. Completed cases have
+code/input/settings/runtime fingerprints, immutable attempt directories and
+artifact checksums. Interrupted runs can reuse only completed verified cases.
+Both the original scan revision and current report revision are retained.
+Visual-only cases have no exact score and no automatic acceptance label.
+
+Thirteen new runner tests cover reuse, source/options/code/reference invalidation,
+artifact/result corruption, mid-scan implementation changes, interruption,
+metadata updates, unsafe IDs/options, relocation and preservation of project settings.
+The initial twelve plus existing app/correction tests passed (34 unittest tests).
+The existing
+pytest dependency was missing from this runtime and was installed as documented
+in README. All six existing benchmark tests plus thirteen runner tests pass under
+pytest (19 total); no tests were altered or skipped to hide the environment issue.
+
+A real FTFA-2 smoke scan produced 211/211 exact objects with no errors, taking
+47.117 seconds. The resume command verified and reused that same attempt in
+0.557 seconds including process startup. The later relocation guard is covered
+by its test and does not change scanner decisions. The local manifest at
+`.artifacts/cross-tileset-20260908/manifest.json` selects ten primary visual cases
+and sixteen existing exact-reference controls for the versioned baseline.
+Development/evaluation labels reserve roles for the next change; they do not
+claim these historical images have never been used before.
+
+This is an implementation checkpoint, not completion of the new goal. Remaining:
+run the versioned representative baseline, trace failures through scanner stages,
+rank root causes, demonstrate a new measured generalized improvement against
+separate evaluation families, and verify FTFA/relevant fixture protection.

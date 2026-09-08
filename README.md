@@ -210,6 +210,49 @@ its scanner kind and score, so recovery-path true/false yield can be measured.
 `analyze-report` summarizes those lists by object group, fixture, type, score,
 nearest-distance bucket, snap offset, grid residue, and representative examples.
 
+## Versioned corpus scans
+
+`scan-corpus` keeps resumable evidence for mixed exact-reference and visual-only
+cases. Sources and reference JMaps are resolved relative to the manifest:
+
+```json
+{
+  "cases": [
+    {
+      "id": "example",
+      "source": "room.png",
+      "family": "outlined-terrain",
+      "partition": "development",
+      "expected_jmap": "corrected-reference.jmap"
+    }
+  ]
+}
+```
+
+Omit `expected_jmap` for a visual-only case. Partitions are `development`,
+`evaluation`, or `control`; they label experimental roles, not acceptance.
+They do not prove a family was historically unseen. Defaults scan geometry and
+color objects at grid 8 with OCR disabled. Optional `defaults` and per-case
+`options` support the scanner settings, including `room_box: [x,y,width,height]`,
+`source_grid: [columns,rows]`, `recognized_text` and `start_policy`.
+
+```powershell
+python -m jtool_scanner.cli scan-corpus path/to/manifest.json .artifacts/cross-tileset --resume
+```
+
+Each completed case stores the source snapshot, editable project, JMap, JTool
+preview, blend, raw detections and scan duration. Reference maps are only used
+for evaluation after scanning. All cases initially remain visually unreviewed.
+`report.json` points to the latest complete run; `runs/` also preserves partial
+and historical reports. A failed run can resume completed cases.
+
+Reuse requires matching source/reference hashes, settings, Python/Pillow/platform
+identity and package code/asset hashes, plus intact artifact checksums. Uncommitted
+code changes invalidate reuse. A documentation-only commit can reuse identical
+code, while retaining both the original scan revision and current run revision.
+Damaged results are regenerated into a new attempt directory without removing
+the old evidence. Keep these outputs ignored; do not publish private images.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source
