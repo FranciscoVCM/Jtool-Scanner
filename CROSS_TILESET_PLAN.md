@@ -249,3 +249,89 @@ partial-coverage follow-up rather than weakening protection to force a gain.
 
 Local evidence: `offset-conflicts.json`, `offset-shadow/comparison.json` and
 the profiling/evaluation scripts in `.artifacts/cross-tileset-20260908/`.
+
+### Candidate implementation and visual exceptions
+
+Localized source/triangle panels are preserved as `offset-shadow/*/review.svg`
+and PNG renders. CN3-27's twelve proposed triangles are wrong hypotheses in
+the inspected source. CN3-31 has four clear terrain-interior false positives,
+but two candidates at (128,224) and (160,296) lie on sloping boundaries and are
+ambiguous. Halls2's up candidate at (160,128) is near a genuine up triangle.
+Do not count removing those three uncertain candidates as an improvement.
+
+Independent side profiles show strong single slopes on both CN3-31 boundary
+cases, and a supported nearby same-direction triangle for the Halls2 case.
+The production candidate therefore requires complete block-union coverage,
+weak minimum contour and local contrast, neither individual side strongly
+supported, and no strong nearby same-direction triangle. It runs once after
+the final capture merge/refit, so early recovery inputs remain unchanged.
+No filenames, palettes or diagnostic coordinates are production inputs.
+
+Sixteen focused tests and 26 subtests pass, including seven new tests for
+union coverage/gaps, duplicate blocks, real triangles, single-side evidence,
+nearby alternatives and cropped boundaries. The fresh 26-case run under
+`terrain-arbitration-candidate/` and selected existing geometry regressions are
+running; their results are not yet verified. Controlled end-to-end runtime
+measurement and updated final visual audit are still required. Do not mark
+this goal complete or publish an accuracy claim from the earlier shadow alone.
+
+### Verified full-run result and next work
+
+The fresh 26-case run is complete. Actual output changes agree exactly with
+the reviewed negative annotations: twelve CN3-27, four CN3-31 and two Halls2
+false hypotheses removed, with all three ambiguous hypotheses preserved.
+Irkara-89 false positives improve 35 to 27 without changing exact matches,
+misses, shifts or wrong orientations. Fifteen other exact reports and every
+other primary map are unchanged. `verify_terrain_candidate.py` checks full
+object multisets, the explicit annotations and the exact comparison reports.
+The new mixed-age audit is `71-screen-terrain-checkpoint.md`; no full-room
+acceptance is inferred from these regional gains.
+
+The ABBA comparison completed all eight scans with exact agreement against
+the appropriate saved output. Median baseline/candidate times were
+185.459/193.726 seconds for CN3-27 (+4.46%) and 246.953/225.183 seconds for
+CN3-31 (-8.82%). Individual scans varied substantially. The new stage itself
+took 1.675-1.795 seconds and 0.745-0.759 seconds respectively, under 1% of
+the corresponding baseline medians. This is bounded local overhead evidence,
+not a speedup or a guarantee about every screen. The complete record is
+`timings/b543a235ec284ffbb5f54fe3ac8ba6c9/results.json`.
+
+Final validation passed 52 focused/app/correction/corpus tests (62 subtests),
+six capture-lattice tests (six subtests), and the earlier fourteen selected
+geometry regressions. The polarity/color/scale preservation test is included.
+These 72 tests are targeted coverage, not a full repository suite claim.
+
+Next ranked work after this bounded goal:
+
+1. Golden5's partial-coverage aliases: distinguish a genuine exposed triangle
+   from repeated tile texture and boundary fragments. Preserve the nine exact
+   partial-overlap counterexamples and uncertain CN3-31 slopes. Do not simply
+   relax the complete-coverage rule.
+2. Recovery provenance: investigate why rejected candidates are restored
+   without stronger independent evidence, and whether shared evidence can
+   prevent the false restoration earlier without suppressing real recoveries.
+3. Candidate misses in unfamiliar sprite/material families: choose new
+   source-supported positives and retain genuinely cold examples for transfer
+   evaluation. This precision improvement has not increased candidate recall.
+
+The rule adds neither a screen identity nor a palette requirement, but its
+limits remain important: it relies on full-block hypotheses, cannot resolve
+all partial occlusions, does not reconstruct missing objects, and preserves
+uncertainty where a nearby or single-sided triangle is plausible. It is not
+a universal tileset recognizer or a complete solution for the 71 screens.
+
+### Follow-on completion evidence
+
+| Goal requirement | Verified result |
+|---|---|
+| Recurring failure across visual families | Red lattice and monochrome brick false triangle hypotheses over terrain; traced restored/retained offset conflicts, with Golden5 partial-overlap counterexamples kept open |
+| Shared implementation | Source-relative contour/contrast arbitration after final merge; no filename, palette, coordinate or reference-map lookup |
+| Reviewed gains in at least two families | 12 CN3-27 and 4 CN3-31 false hypotheses removed; two additional Halls2 removals; explicit annotations and current blends reviewed |
+| Preserve uncertainty and exact controls | Three uncertain hypotheses kept; eight Irkara-89 extras removed without losing exact matches; fifteen other exact reports unchanged, including FTFA; corrected NANG-128r unchanged |
+| Untuned evaluation | Say-1, Say-9, Zero_Final and both NANG primary variants unchanged; no tuning from those outcomes |
+| Runtime and regressions | Eight paired timing scans reproduce saved maps; stage overhead measured; 72 targeted tests pass |
+| Reproducibility and audit | Complete versioned reports, source/annotation comparisons, 71-row mixed-age audit and ranked next work preserved; publication verified separately in Git |
+
+The bounded goal can close after the tested files are committed/pushed and
+the live app/remote state are verified. Broader recognition recall, the open
+partial-overlap cases and full 71-screen correctness remain project work.

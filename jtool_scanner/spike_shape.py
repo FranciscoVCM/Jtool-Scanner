@@ -38,6 +38,7 @@ class SpikeShapeField:
         self.pixels = gray.filter(ImageFilter.GaussianBlur(0.7)).tobytes()
         self.stats: dict[tuple[int, int], tuple[float, float]] = {}
         self.scores: dict[tuple[int, int, int], float] = {}
+        self.sides: dict[tuple[int, int, int], tuple[float, float]] = {}
         self.contrasts: dict[tuple[int, int, int], float] = {}
 
     def pixel(self, x: int, y: int) -> int:
@@ -84,7 +85,12 @@ class SpikeShapeField:
                         break
             coverages.append(hits / 12)
         self.scores[key] = min(coverages)
+        self.sides[key] = tuple(coverages)
         return self.scores[key]
+
+    def side_scores(self, x: int, y: int, direction: int) -> tuple[float, float]:
+        self.score(x, y, direction)
+        return self.sides.get((x, y, direction), (-1.0, -1.0))
 
     def contrast(self, x: int, y: int, direction: int) -> float:
         key = x, y, direction
@@ -115,6 +121,49 @@ class SpikeShapeField:
             for dy in range(-radius, radius + 1, 8)
             for other in VERTICES if other != direction
         )[::-1]
+
+
+def terrain_covered_aliases(image: RGBImage, room: Box,
+                            spikes: list[tuple[int, int, int]],
+                            blocks: list[tuple[int, int]]) -> set[tuple[int, int, int]]:
+    """Reject unsupported triangle hypotheses inside a union of full blocks.
+
+    Partial coverage, strong individual slopes and nearby supported triangles
+    are deliberately preserved. Block detections alone cannot reject a spike.
+    Coordinates and image evidence are scan-local; no reference truth is used.
+    """
+    field = None
+    rejected = set()
+    for direction, x, y in spikes:
+        if not (0 <= x <= 768 and 0 <= y <= 576):
+            continue
+        nearby = [(bx, by) for bx, by in blocks if abs(bx-x) < 32 and abs(by-y) < 32]
+        if not nearby:
+            continue
+        covered = True
+        for py in range(y, y+32):
+            cursor = x
+            for left, right in sorted((max(x,bx), min(x+32,bx+32))
+                                      for bx,by in nearby if by <= py < by+32):
+                if left > cursor:
+                    break
+                cursor = max(cursor, right)
+            if cursor < x+32:
+                covered = False
+                break
+        if not covered:
+            continue
+        if field is None:
+            field = SpikeShapeField(image, room)
+        sides = field.side_scores(x, y, direction)
+        if min(sides) >= .5 or max(sides) >= .75 or abs(field.contrast(x,y,direction)) >= .5:
+            continue
+        if any(field.score(x+dx,y+dy,direction) >= .9
+               and abs(field.contrast(x+dx,y+dy,direction)) >= .5
+               for dx in range(-16,17,8) for dy in range(-16,17,8)):
+            continue
+        rejected.add((direction,x,y))
+    return rejected
 
 
 def corroborated_refits(image: RGBImage, room: Box, spikes: list[tuple[int, int, int]]) -> dict[tuple[int, int, int], tuple[int, int, int]]:

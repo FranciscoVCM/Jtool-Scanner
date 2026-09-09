@@ -50,7 +50,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
-from .spike_shape import corroborated_refits
+from .spike_shape import corroborated_refits, terrain_covered_aliases
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -2771,6 +2771,7 @@ def scan_image(
         detections = _prune_platform_owned_spike_edges(detections, image, box)
         if _apply_shape_refits:
             detections = _reconcile_directed_material_spikes(detections, image, box)
+            detections = _prune_terrain_covered_spike_aliases(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -3785,6 +3786,9 @@ def _scan_lattice_normalized_room(
     # Evaluate them once, against the final source-coordinate hypothesis set.
     if _apply_shape_refits:
         detections = _reconcile_directed_material_spikes(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _prune_terrain_covered_spike_aliases(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -14851,6 +14855,17 @@ def _compact_platform_overlaps_geometry(
         if overlap_width * overlap_height > 0:
             return True
     return False
+
+
+def _prune_terrain_covered_spike_aliases(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    rejected = terrain_covered_aliases(
+        image, room,
+        [(d.type_id, d.x, d.y) for d in detections if d.type_id in FULL_SPIKE_TYPES],
+        [(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK],
+    )
+    return [d for d in detections if (d.type_id, d.x, d.y) not in rejected]
 
 
 def _reconcile_directed_material_spikes(

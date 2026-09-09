@@ -6161,3 +6161,68 @@ general native-size coordinate contract but does not demonstrate new object
 recognition across every unseen tileset. The Halls2 phase guard remains
 research-only. Existing room errors, uncertain visual truth and broader
 recognition generalization remain next-project work, not hidden by this result.
+
+## In validation: fully terrain-covered triangle arbitration (2026-09-09)
+
+The cross-family follow-on traces show offset spike hypotheses surviving or
+being restored after pruning. Source review rejects twelve CN3-27 hypotheses
+and four CN3-31 terrain-interior hypotheses. Two sloping CN3-31 boundary cases
+and a Halls2 candidate near a real spike remain explicitly uncertain and are
+preserved. The earlier broad partial-overlap experiment would remove nine
+exact fixture spikes and was rejected.
+
+The candidate requires full block-union coverage plus weak triangle evidence,
+preserving strong individual slopes and nearby supported same-direction
+triangles. It runs after final capture merge and refitting; it does not change
+early candidate generation or recovery inputs. Sixteen focused tests and 26
+subtests pass, as do fourteen selected existing geometry regressions (108.49s;
+291 other geometry tests were not selected in that run).
+
+The fresh CN3-27 result removes exactly the twelve source-reviewed false
+hypotheses with no other tuple changes. CN3-9 is unchanged. The complete
+26-case run remains in progress under the ignored
+`.artifacts/cross-tileset-20260908/terrain-arbitration-candidate/` directory.
+`terrain-reviewed-regions.json` records explicit negative/uncertain annotations.
+The ABBA timing harness is prepared, but must wait until concurrent batch scans
+finish. Its baseline disables only the new final arbitration and verifies each
+timed output against the appropriate frozen JMap. No runtime gain is claimed.
+Publication, remaining exact-control checks and the final corpus audit are
+pending; this checkpoint is not goal completion.
+
+The fresh 26-case candidate run subsequently completed. It removes exactly
+the eighteen annotated false hypotheses (12 CN3-27, 4 CN3-31, 2 Halls2),
+preserving all three explicitly uncertain hypotheses and every other primary
+tuple. Irkara-89 loses eight exact-reference false positives (35 to 27), with
+202 exact, 11 missed, 24 shifted and one wrong orientation unchanged. All
+fifteen other exact reports are unchanged, including FTFA. The verification
+script checks actual before/after multisets and annotations, rather than only
+aggregate warning counts. All 71 rows are listed with mixed-age scope in
+`.artifacts/cross-tileset-20260908/71-screen-terrain-checkpoint.md`.
+
+The original scan session handle disappeared after completing its report;
+process inventory confirmed no Python process remained. The app was restored
+and returns HTTP 200. The first paired timing attempt exited with code 1 and
+no diagnostic output before any measurement; its empty attempt directory is
+preserved. Python starts normally. A diagnostic-captured retry is underway;
+no timing result or performance claim is established yet. No implementation
+code was changed to conceal or compensate for that process failure.
+
+The logged retry completed all eight ABBA timing scans; every map matches its
+frozen baseline or candidate. Median times: CN3-27 185.459s baseline / 193.726s
+candidate (+4.46%); CN3-31 246.953s / 225.183s (-8.82%). Scan-to-scan variation
+is large, so no speedup is claimed. The new stage took 1.675-1.795s on CN3-27
+and 0.745-0.759s on CN3-31 (under 1% of baseline median in both cases).
+Local timings: `timings/b543a235ec284ffbb5f54fe3ac8ba6c9/results.json` in the
+cross-tileset artifact directory. The failed initial attempt is retained.
+
+Final tests pass: 52 focused/app/correction/corpus tests plus 62 subtests;
+six capture-lattice tests plus six subtests; fourteen earlier selected geometry
+regressions. Total targeted coverage is 72 tests, not the full repository suite.
+The added preservation test covers four triangle directions, reversed light/
+dark polarity, a colored palette and two capture scales. Current production
+blends for all three changed primary screens were reviewed; major remaining
+geometry errors are visible, so none is promoted to whole-room acceptance.
+The completed bounded improvement and next priorities are documented in
+`CROSS_TILESET_PLAN.md`; partial-overlap aliases and unfamiliar-family recall
+remain open. The final 71-screen audit keeps historical and fresh evidence
+distinct and stays ignored, along with all source archives and generated output.
