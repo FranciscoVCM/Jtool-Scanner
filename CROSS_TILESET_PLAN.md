@@ -185,3 +185,40 @@ detector's existing white-triangle recognition domain. The phase guard remains
 unpublished because its downstream changes need further review. New cold
 examples, family-level recognition gains, and complete 71-room accuracy remain
 future work. No universal detection or performance improvement is claimed.
+
+## Active follow-on: cross-family recognition/arbitration (2026-09-09)
+
+The new goal requires measured recognition/classification/arbitration gains in
+at least two visual families, not another isolated placement correction.
+Baseline is the verified `9590334` implementation and its completed 26-case
+`component-origin-fixed` run. Do not repeat that baseline unnecessarily.
+
+Initial development pair: CN3-27 (red lattice terrain on a light background)
+and CN3-Golden5 (gold patterned terrain on a dark background). Say, Zero and
+NANG variants are reserved as untuned evaluation cases for this batch; exact
+FTFA and all twelve block/spike controls remain protected. The partition is
+prospective, not a claim these images have never been seen historically.
+
+Fresh observational traces of both development rooms reproduce their current
+baseline JMaps exactly. In CN3-27, support spikes pruned at (656,96) and
+(664,96) are reintroduced by `_recover_raw_full_spike_support`. The exact-origin
+block arbitration removes other aligned conflicts but leaves these offset
+hypotheses. In Golden5, the hypothesis at (464,64) is pruned and restored by
+`_recover_pruned_full_spikes`; the left-facing hypothesis at (432,64) is pruned
+again, then reintroduced by `_reconcile_bright_filled_full_spikes`.
+Primary hypotheses also survive in both rooms. Local source/blend review
+shows terrain-overlapping false spikes; bounding-box overlap alone is not a
+safe rejection rule. Existing exact-origin arbitration deliberately exempts
+primary spikes because prior Irkara evidence includes true shifted spikes.
+
+Next bounded experiment: investigate source-supported terrain/triangle
+arbitration for offset conflicts and restored candidates. Establish explicit
+regional truth and profile positive/negative shape and material evidence before
+changing production decisions. Preserve genuine adjacent/overlapping geometry
+and Irkara counterexamples. Do not disable whole recovery stages or blindly
+extend exact-origin suppression to bounding-box overlap.
+
+Evidence: `traces/CN3_27/conflict-summary.md` and
+`traces/CN3_Golden5/conflict-summary.md`, with full events and instrumented JMaps
+under the existing cross-tileset artifact directory. No detector changes have
+yet been made for this follow-on goal, and no accuracy gain is claimed.
