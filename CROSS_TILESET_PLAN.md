@@ -222,3 +222,30 @@ Evidence: `traces/CN3_27/conflict-summary.md` and
 `traces/CN3_Golden5/conflict-summary.md`, with full events and instrumented JMaps
 under the existing cross-tileset artifact directory. No detector changes have
 yet been made for this follow-on goal, and no accuracy gain is claimed.
+
+### Offset-conflict profiling checkpoint
+
+Reusing the current immutable outputs, source-relative directed-contour and
+contrast profiling took about three seconds across the 26 cases; this is
+diagnostic runtime, not an end-to-end scan benchmark. A broad partial-overlap
+rule (at least half the bounding box covered by blocks, weak directed contour
+and weak local separation) would remove nine exactly correct reference spikes
+in Flames, Hades and CN2-5. Reject that rule; preserve those counterexamples.
+
+Requiring complete block-union coverage instead produces a research-only final
+map counterfactual: twelve candidates removed in CN3-27, six in CN3-31, three
+in Halls2 and eight in Irkara-89. Irkara-89 false positives fall 35 to 27 while
+202 exact, 11 missed, 24 shifted and one wrong orientation remain unchanged.
+All other exact-control reports are unchanged. Golden5 has no removals under
+this rule; its partial-overlap issue is not solved by this experiment.
+
+CN3-31 (monochrome brick) is added to development for this full-coverage branch;
+source inspection shows candidate origins inside continuous terrain. Explicit
+regional annotations, complete changed-region visual review, production
+integration, targeted regression tests and controlled runtime checks are still
+required. A block detection is not itself truth, and no whole-room approval
+or deployed recognition gain is claimed. Keep Golden5's diagnosis as an open
+partial-coverage follow-up rather than weakening protection to force a gain.
+
+Local evidence: `offset-conflicts.json`, `offset-shadow/comparison.json` and
+the profiling/evaluation scripts in `.artifacts/cross-tileset-20260908/`.
