@@ -392,59 +392,41 @@ class CaptureLatticeRegressionTests(unittest.TestCase):
 class UnseenScreenRegressionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        options = {
+        cls._scan_options = {
             "grid_step": 8,
             "include_color_objects": True,
             "include_geometry": True,
             "enable_ocr": False,
         }
-        cls.particle_room = scan_png(
-            FIXTURES / "infinite-jump-particle-water.png",
-            **options,
-        )
-        cls.brick_room = scan_png(
-            FIXTURES / "brick-save-impostors.png",
-            **options,
-        )
-        cls.brick_room_rescaled = scan_png(
-            FIXTURES / "brick-focused-source-rescaled.png",
-            **options,
-        )
-        cls.brick_room_exact = scan_png(
-            UNSEEN_FIXTURES / "ftfa" / "screen-4-source.png",
-            **options,
-        )
-        cls.brick_room_cropped = scan_png(
-            UNSEEN_FIXTURES / "ftfa" / "screen-4-cropped-source.png",
-            **options,
-        )
+        cls._scan_sources = {
+            "particle_room": FIXTURES / "infinite-jump-particle-water.png",
+            "brick_room": FIXTURES / "brick-save-impostors.png",
+            "brick_room_rescaled": FIXTURES / "brick-focused-source-rescaled.png",
+            "brick_room_exact": UNSEEN_FIXTURES / "ftfa" / "screen-4-source.png",
+            "brick_room_cropped": UNSEEN_FIXTURES / "ftfa" / "screen-4-cropped-source.png",
+            "ftfa_room_01": UNSEEN_FIXTURES / "ftfa" / "screen-1-source.png",
+            "lap_first": UNSEEN_FIXTURES / "lap-around" / "screen-01-source.png",
+            "lap_active_save": UNSEEN_FIXTURES / "lap-around" / "screen-11-source.png",
+            "lap_bottom_edge": UNSEEN_FIXTURES / "lap-around" / "screen-06-source.png",
+            "lap_room_08": UNSEEN_FIXTURES / "lap-around" / "screen-08-source.png",
+            "lap_room_09": UNSEEN_FIXTURES / "lap-around" / "screen-09-source.png",
+        }
+        cls._scan_results: dict[str, ScanResult] = {}
         cls.brick_room_truth = JMap.from_file(
             UNSEEN_FIXTURES / "ftfa" / "screen-4.jmap"
         )
-        cls.ftfa_room_01 = scan_png(
-            UNSEEN_FIXTURES / "ftfa" / "screen-1-source.png",
-            **options,
-        )
-        cls.lap_first = scan_png(
-            UNSEEN_FIXTURES / "lap-around" / "screen-01-source.png",
-            **options,
-        )
-        cls.lap_active_save = scan_png(
-            UNSEEN_FIXTURES / "lap-around" / "screen-11-source.png",
-            **options,
-        )
-        cls.lap_bottom_edge = scan_png(
-            UNSEEN_FIXTURES / "lap-around" / "screen-06-source.png",
-            **options,
-        )
-        cls.lap_room_08 = scan_png(
-            UNSEEN_FIXTURES / "lap-around" / "screen-08-source.png",
-            **options,
-        )
-        cls.lap_room_09 = scan_png(
-            UNSEEN_FIXTURES / "lap-around" / "screen-09-source.png",
-            **options,
-        )
+
+    def __getattr__(self, name: str) -> ScanResult:
+        # A focused test should not scan eleven unrelated rooms during setup.
+        # Preserve the original per-class sharing and every real scan option;
+        # only delay the scan until a selected assertion actually needs it.
+        cls = type(self)
+        sources = getattr(cls, "_scan_sources", {})
+        if name not in sources:
+            raise AttributeError(name)
+        if name not in cls._scan_results:
+            cls._scan_results[name] = scan_png(sources[name], **cls._scan_options)
+        return cls._scan_results[name]
 
     def test_particle_field_does_not_become_upper_room_geometry(self) -> None:
         geometry_types = {OBJ_BLOCK, *FULL_SPIKE_TYPES, *MINI_SPIKE_TYPES}
@@ -2010,6 +1992,44 @@ class UnseenScreenRegressionTests(unittest.TestCase):
                 - max(first.y, second.y),
             )
         )
+
+
+class LazyFixtureSetupTests(unittest.TestCase):
+    def test_fixture_scans_are_deferred_and_shared_between_test_instances(self) -> None:
+        class Probe(UnseenScreenRegressionTests):
+            pass
+
+        result = object()
+        with patch(f"{__name__}.scan_png", return_value=result) as scan:
+            Probe.setUpClass()
+            scan.assert_not_called()
+            self.assertEqual(len(Probe._scan_sources), 11)
+            first = Probe("test_adaptive_dark_save_header_rejects_warp_body_without_label")
+            second = Probe("test_adaptive_dark_save_header_rejects_warp_body_without_label")
+            self.assertIs(first.lap_first, result)
+            self.assertIs(second.lap_first, result)
+            scan.assert_called_once_with(
+                UNSEEN_FIXTURES / "lap-around" / "screen-01-source.png",
+                grid_step=8, include_color_objects=True,
+                include_geometry=True, enable_ocr=False,
+            )
+            self.assertEqual(set(Probe._scan_results), {"lap_first"})
+            with self.assertRaises(AttributeError):
+                _ = first.not_a_fixture
+            self.assertEqual(scan.call_count, 1)
+
+    def test_fixture_cache_does_not_leak_across_new_class_setup(self) -> None:
+        class Probe(UnseenScreenRegressionTests):
+            pass
+
+        first_result, second_result = object(), object()
+        with patch(f"{__name__}.scan_png", side_effect=[first_result, second_result]) as scan:
+            Probe.setUpClass()
+            case = Probe("test_adaptive_dark_save_header_rejects_warp_body_without_label")
+            self.assertIs(case.brick_room, first_result)
+            Probe.setUpClass()
+            self.assertIs(case.brick_room, second_result)
+            self.assertEqual(scan.call_count, 2)
 
 
 def _misaligned_capture_lattice_image() -> RGBImage:

@@ -431,3 +431,122 @@ Publication verification subsequently succeeded for implementation commit
 package fingerprint is unchanged. This bounded milestone is verified; its
 historical pending-validation entries above are superseded. Missing-object
 recall/placement and surviving conflicts remain the next project work.
+
+## Active milestone: independent positive recall (2026-09-10)
+
+Resume from published `28c60cb` and the complete exposed-terrain baseline,
+not from the earlier prototype maps. Development roles were declared before
+tuning: Halls2, CN3-31 and Golden5; CN3-27/neon-9 and sixteen exact maps are
+regression cases. NANG-128r is the established origin control. Say-1, Say-9,
+primary NANG-128 and Zero_Final are no-tuning evaluations for this change,
+not historically unseen images.
+
+Current observational traces reproduce the baseline JMap multisets. Halls2
+has correctly proposed triangles discarded by geometry deduplication or
+shifted away by normalization. CN3-31 has real triangles lost to source-scale
+deduplication/block arbitration and final source/canonical consensus, despite
+surviving in the canonical pass. Thus the target is discarded positive evidence,
+not merely moving an already emitted final object.
+
+The candidate adds independent directed-material proposals only after final
+consensus and the existing negative-evidence arbitration. It requires both
+complete localized slopes, strong source-relative contrast, an unambiguous
+orientation/origin, and at least three independent nearby material witnesses
+with agreeing contrast polarity. New proposals cannot bootstrap more proposals.
+Occupied neighborhoods are left to existing conflict/placement workflows.
+No names, palette identities, coordinates or reference answers enter production.
+
+Portable tests exposed blur-fringe position ambiguity on flat triangles.
+The addition-only localization score uses gradient strength relative to local
+luminance spread, while established refit/veto scores remain unchanged. A
+water-overlaid CN3-27 hypothesis was also found to have uncertain placement;
+it is excluded, not counted as an improvement. Completely visible contours
+are required for new objects; partial/isoluminant/ambiguous evidence abstains.
+This still cannot recognize arbitrary custom sprite shapes or start a room
+with no reliable material witnesses. Existing color-specific detectors remain.
+
+The frozen-map candidate proposes 34 source-reviewed additions: Halls2 six,
+CN3-31 two, CN3-27 eighteen, neon-9 six, and Flames two. Both Flames additions
+match its unchanged committed reference. Other exact reports and all four
+no-tuning evaluation maps are unchanged in the counterfactual. These counts
+are not yet freshly verified production results or whole-room accuracy.
+
+A follow-up synthetic counterexample confirmed that shifted hypotheses of two
+physical spikes could masquerade as four witnesses. Nearby support now requires
+spatially independent objects, not merely different origin tuples. This prevents
+that bootstrap and recovers two additional Halls2 objects by discarding redundant
+nearby hypotheses before selecting material witnesses. All thirty-four proposed
+positions were source-reviewed, including the initial lost rightward Halls2 spike.
+
+Partial truth deliberately retains ten additional known misses: 44 reviewed
+positive positions are absent from the baseline final maps, and the candidate
+recovers 34 while abstaining on ten. This selected development set is not a
+whole-room recall estimate. All fifteen reviewed Halls2/CN3-31 positives appear
+in intermediate trace stages; only eight are recovered by this candidate.
+Candidate coverage and final retention must not be conflated. Full primary-room
+extra/shift/direction/size totals remain unknown without complete truth; exact
+reference controls supply those separate error counts where available.
+
+Evidence is under `.artifacts/cross-tileset-recall-20260910/`: declared roles,
+observational traces, explicit positive/negative/uncertain regions, current
+counterfactual maps and small source-review pages. The earlier stopped candidate
+run is retained; `candidate/` is now regenerating the stricter implementation
+with immutable keys. Do not edit package code or commit during this run.
+Fresh deltas/blends, exact controls, affected regressions, serial end-to-end
+timing, the conservative 71-row audit and publication remain completion gates.
+
+### Positive-recall validation complete
+
+The ordinary 26-case production run now reproduces all 34 annotated additions
+exactly, with no removed, relocated, retyped or otherwise changed objects.
+These actual results supersede the prototype/pending entries above. Current
+source/JTool/blend review covers all five changed cases. Substantial room errors
+remain; no historical accepted label is renewed.
+
+| Evidence | Verified result |
+|---|---|
+| Real positive-recall gains | Halls2 +6, monochrome CN3-31 +2, red-textured CN3-27 +18, green-outline neon-9 +6, Flames +2 exact-reference spikes |
+| Candidate versus final recall | All fifteen reviewed Halls2/CN3-31 positives occur in intermediate baseline traces, but none in the final baseline; eight are now retained. Across the selected 44 known missing positions, 34 are recovered and ten remain missing; this is not whole-room recall |
+| Exact controls | Flames exact matches 250 to 252, misses 23 to 21; 43 extras, 20 shifts and two wrong orientations unchanged. Fifteen other reports unchanged. FTFA remains 926/928 exact with zero extras/shifts/wrong directions |
+| Protected cases | Previous sixty reviewed false hypotheses remain absent; preceding terrain gains, nine named true occlusions, NANG-128r's eighteen corrected origins and all unchanged object tuples remain protected |
+| Reserved evaluation | Say-1, Say-9, primary NANG-128 and Zero_Final unchanged, without tuning from their outcomes; these are historically exposed, not truly unseen data |
+| Tests | 153 distinct targeted tests and 247 subtests pass on the final implementation, including capture consensus, floor text, saves, vines, platforms, overlap guards, app/correction and corpus support; not a full-suite run |
+| Current audit | `71-screen-recall-checkpoint.md` contains all 71 rows with explicit fresh versus historical evidence and no whole-room approval |
+
+Eight serial ABBA timing scans reproduced the appropriate saved maps. Median
+end-to-end times were Halls2 43.667 to 45.523s (+4.25%) and CN3-31 108.424 to
+109.249s (+0.76%). The new recovery stage itself took 0.867-0.888s. This is a
+modest measured latency cost, not a speedup or universal latency bound; the
+entire Halls2 end-to-end difference cannot be attributed to that stage alone.
+No duplicate whole-room scanner pass was added. Timing followed completion of
+the affected test run, with no competing scheduled test/corpus work.
+
+Focused regression setup now scans only the fixture rooms actually requested
+by selected assertions, sharing each result per test class as before. All eleven
+fixture paths, scan options and assertions are retained. Two dedicated tests
+protect lazy loading, cache reuse/reset and normal unknown-attribute behavior.
+This is a test-workflow improvement, not a production scan-speed claim.
+
+The immutable production run, explicit annotations, actual regional metrics,
+five current blend reviews, test XML and serial timings are retained under
+`.artifacts/cross-tileset-recall-20260910/`. Package fingerprint:
+`b9dbd80714bae9b86d69931a14feb7710b1e5b0458f6a2ef67c42f1345f033aa`.
+Publication, live remote equality and clean-tree checks are the remaining
+handoff gates; their final result belongs in the local `CHECKPOINT.md` and Git.
+
+### Recommended next bounded work
+
+Trace the ten explicitly retained misses before weakening this recovery rule:
+six Halls2, one CN3-31, two CN3-27 and one neon-9. Separate competing existing
+hypotheses, partially hidden contours and mistaken source/canonical arbitration.
+Try an evidence-aware retention or conflict-resolution change only when two
+visual families show a common cause. The current addition-only rule deliberately
+does not relocate nearby hypotheses or use incomplete/isoluminant luminance
+evidence. Preserve those abstentions unless stronger independent evidence is
+available, along with every new positive and all prior negative controls.
+
+Sparse rooms without reliable witnesses, arbitrary non-triangular custom
+sprites, dense small-object clusters, remaining type/direction/placement errors
+and truly unfamiliar tilesets remain open. Additional examples should target
+those gaps rather than duplicate solved palettes. The bounded positive-recall
+milestone is not a claim of perfect 71-screen or universal recognition.

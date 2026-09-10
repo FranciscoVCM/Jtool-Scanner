@@ -40,6 +40,7 @@ class SpikeShapeField:
         self.scores: dict[tuple[int, int, int], float] = {}
         self.sides: dict[tuple[int, int, int], tuple[float, float]] = {}
         self.contrasts: dict[tuple[int, int, int], float] = {}
+        self.localized_scores: dict[tuple[int, int, int], float] = {}
 
     def pixel(self, x: int, y: int) -> int:
         return self.pixels[min(607, max(0, y)) * 800 + min(799, max(0, x))]
@@ -67,6 +68,32 @@ class SpikeShapeField:
         if key in self.scores:
             return self.scores[key]
         scale, _ = self.patch_stats(x, y)
+        coverages = self._side_coverages(x, y, direction, scale * .25)
+        self.scores[key] = min(coverages)
+        self.sides[key] = coverages
+        return self.scores[key]
+
+    def localized_score(self, x: int, y: int, direction: int) -> float:
+        """Strong edge localization for new objects, not an absence criterion.
+
+        Flat patches can have a near-zero gradient percentile. Gaussian fringe
+        gradients then support several origins of the same filled triangle.
+        Requiring gradient strength relative to local luminance spread removes
+        that fringe without changing the established conservative refit/veto
+        scores. A weak/isoluminant patch is not evidence for adding an object.
+        """
+        if not (0 <= x <= 768 and 0 <= y <= 576):
+            return -1.0
+        key = x, y, direction
+        if key not in self.localized_scores:
+            scale, spread = self.patch_stats(x, y)
+            self.localized_scores[key] = min(self._side_coverages(
+                x, y, direction, max(scale * .25, spread * .15),
+            ))
+        return self.localized_scores[key]
+
+    def _side_coverages(self, x: int, y: int, direction: int,
+                        minimum_strength: float) -> tuple[float, float]:
         tip, *ends = VERTICES[direction]
         coverages = []
         for end in ends:
@@ -80,13 +107,11 @@ class SpikeShapeField:
                 for offset in (-2, -1, 0, 1, 2):
                     gx, gy = self.gradient(round(px + offset * nx), round(py + offset * ny))
                     magnitude = hypot(gx, gy)
-                    if magnitude >= scale * 0.25 and abs(gx * nx + gy * ny) >= magnitude * 0.95:
+                    if magnitude >= minimum_strength and abs(gx * nx + gy * ny) >= magnitude * 0.95:
                         hits += 1
                         break
             coverages.append(hits / 12)
-        self.scores[key] = min(coverages)
-        self.sides[key] = tuple(coverages)
-        return self.scores[key]
+        return coverages[0], coverages[1]
 
     def side_scores(self, x: int, y: int, direction: int) -> tuple[float, float]:
         self.score(x, y, direction)
@@ -339,3 +364,76 @@ def corroborated_refits(image: RGBImage, room: Box, spikes: list[tuple[int, int,
             continue
         replacements[direction, x, y] = other, nx, ny
     return replacements
+
+
+def corroborated_proposals(
+    image: RGBImage, room: Box, spikes: list[tuple[int, int, int]],
+) -> list[tuple[int, int, int]]:
+    """Recover unoccupied, unambiguous triangles with local source witnesses.
+
+    The coarse edge-mask classifier can miss a real triangle or normalize it
+    away before final pruning. This independent directed-slope check uses the
+    original source, not that classifier's acceptance threshold. It runs once
+    after capture consensus; new proposals never become their own witnesses.
+    Sparse, competing, low-contrast and opposite-polarity evidence abstains.
+    """
+    if len(spikes) < 3:
+        return []
+    field = SpikeShapeField(image, room)
+    seed_signs: dict[tuple[int, int], set[bool]] = {}
+    for direction, x, y in spikes:
+        if field.score(x, y, direction) >= .9:
+            contrast = field.contrast(x, y, direction)
+            if abs(contrast) >= .5:
+                seed_signs.setdefault((x, y), set()).add(contrast > 0)
+    # Duplicates and contradictory hypotheses at one origin are not separate
+    # material witnesses. In particular, the last duplicate cannot break a tie.
+    seeds = [(x, y, next(iter(signs))) for (x, y), signs in seed_signs.items()
+             if len(signs) == 1]
+    if len(seeds) < 3:
+        return []
+    proposals = []
+    for y in range(0, 577, 8):
+        for x in range(0, 769, 8):
+            # Leave crowded/shifted/direction conflicts to reconciliation. This
+            # stage adds missing objects, it does not replace existing ones.
+            if any(hypot(x - sx, y - sy) < 24 for _, sx, sy in spikes):
+                continue
+            nearby = []
+            for witness in sorted((hypot(x - sx, y - sy), sx, sy, sign)
+                                  for sx, sy, sign in seeds
+                                  if 40 <= hypot(x - sx, y - sy) <= 192):
+                # Nearby shifted hypotheses can describe the same physical
+                # triangle even when their exact origin tuples differ.
+                if any(hypot(witness[1] - kept[1], witness[2] - kept[2]) < 24
+                       for kept in nearby):
+                    continue
+                nearby.append(witness)
+                if len(nearby) == 5:
+                    break
+            if len(nearby) < 3:
+                continue
+            for direction in VERTICES:
+                # A necessary angular condition saves patch statistics at most
+                # grid positions; it never substitutes for the full evidence.
+                if not _could_have_strong_slopes(field, x, y, direction):
+                    continue
+                score = field.localized_score(x, y, direction)
+                # New objects require every sample on BOTH slopes. A nearly
+                # complete contour can be a displaced, partly occluded sprite;
+                # keep that uncertainty rather than materializing a shifted tile.
+                if score < 1.0:
+                    continue
+                contrast = field.contrast(x, y, direction)
+                if (abs(contrast) < .5
+                        or sum(seed[3] == (contrast > 0) for seed in nearby) / len(nearby) < .8):
+                    continue
+                runner_up = max(field.localized_score(x + dx, y + dy, other)
+                                for dx in (-8, 0, 8) for dy in (-8, 0, 8)
+                                for other in VERTICES
+                                if (dx, dy, other) != (0, 0, direction))
+                # Include the SAME direction at neighboring positions. A long
+                # diagonal can support multiple origins without locating a tile.
+                if score - runner_up >= .25:
+                    proposals.append((direction, x, y))
+    return proposals

@@ -6323,3 +6323,126 @@ The bounded partial-terrain milestone is verified, not awaiting another scan
 or timing run. Resume the broader project from this checkpoint and the
 remaining-work discussion in `CROSS_TILESET_PLAN.md`; do not treat the 71
 rooms as accepted or this precision improvement as universal recognition.
+
+## Positive-recall milestone in progress (2026-09-10)
+
+The clean published baseline was `28c60cb`. Current source traces confirm
+correct Halls2 candidates lost during deduplication/normalization and CN3-31
+candidates lost during arbitration/consensus. Both instrumented baseline scans
+match the ordinary JMap multisets exactly. This is causal evidence for recovering
+discarded objects, not a claim that the earlier classifier never recognized them.
+
+An independent final directed-material recovery stage is implemented locally.
+It requires complete two-slope localization, contrast and independent local
+witnesses, with no screen-specific production lookup. Flat-color synthetic
+tests exposed blur-fringe ambiguity; an addition-only relative-gradient floor
+fixes that without changing established refit/veto evidence. One water-overlaid
+CN3-27 proposal had uncertain placement and was rejected before publication.
+
+The final frozen-map counterfactual has 32 source-reviewed positives across
+Halls2, monochrome CN3-31, red CN3-27, green-outline neon-9 and the Flames control.
+Flames gains two exact reference objects; fifteen other exact comparisons and
+the four no-tuning evaluation maps remain unchanged. This is still a prototype
+measurement until ordinary scans reproduce it. Named uncertain/missed cases
+remain explicit; no room is accepted.
+
+The current focused run passed **73 tests and 199 subtests** (18.82s), including
+48 direction/scale/photometric recovery combinations, duplicate/opposite material
+witnesses, small triangles/texture, incomplete contour and isoluminant abstention,
+two-scale committed Flames positives, existing terrain guards and app/corpus
+tests. This is not a complete-suite claim. XML evidence is retained locally.
+
+The app was confirmed stopped after interruption, then started on the current
+candidate (PID 28804), HTTP 200 verified. The ordinary 26-case scan is active
+under `.artifacts/cross-tileset-recall-20260910/candidate/` with resume support.
+Do not change package identity or commit while it is running. Fresh tuple
+verification/current blends, broader affected tests, serial runtime evidence,
+updated 71-row audit and publication are pending. Private artifacts and
+authoritative source/JMap fixtures remain untracked or unchanged respectively.
+
+### Independent-witness safeguard and final candidate
+
+A new portable counterexample showed that shifted hypotheses of two real spikes
+could count as four witnesses. The candidate now spatially separates supporting
+objects, and that regression passes. This also restores two additional genuine
+Halls2 rightward spikes, including (248,184), bringing the frozen-map proposal to
+34 source-reviewed additions: Halls2 six, CN3-31 two, CN3-27 eighteen, neon-9 six
+and Flames two. Sixteen exact controls still have only the two intended Flames
+gains; reserved evaluation maps remain unchanged without tuning from them.
+
+The post-safeguard focused group passed 74 tests and 199 subtests, with persisted
+XML evidence (`targeted-tests-independent.xml`). An additional affected
+save/vine/platform/floor-label/capture group is still running; it began before
+this isolated witness change. Earlier interrupted corpus runs remain preserved
+as superseded candidates, not current evidence. Final fresh production validation
+will use the independent-witness implementation. No code has been committed yet.
+
+Validation is queued serially in an ignored helper: wait for the existing
+regression process, require its passing XML and the frozen package fingerprint,
+run/resume the 26-case corpus, verify actual annotated deltas, then run ABBA
+timings. Each failed gate stops the pipeline; it cannot commit or push. Detailed
+resume state is in the local recall artifact directory's `CHECKPOINT.md` and
+`validation-queue` logs. Revalidate actual processes before restarting anything.
+The latest app restart (PID 3840) returned HTTP 200 with the final candidate.
+
+### Initial fresh results and focused-test workflow
+
+The broader pre-witness-change regression group completed: 77 tests and 48
+subtests passed in 1768.67s. Inspection found that its shared setup scans all
+eleven fixture rooms even when selected assertions need only a subset. Fixture
+loading is now lazy and still shared once per test class: no assertions, source
+paths or scan options are removed or relaxed. Two new tests verify deferred
+loading, cross-instance reuse, unknown-attribute behavior and fresh setup resets.
+The same affected test selection is rerunning against the final scanner and
+lazy setup, with separate XML evidence. Package identity remains unchanged.
+
+The serial corpus has freshly verified neon-9's six, CN3-27's eighteen and
+CN3-31's two additions, plus unchanged Golden5. Actual deltas match the explicit
+annotations and preserve the earlier negative hypotheses. Current full blends
+for those three changed rooms were viewed: substantial missing, shifted and
+wrong-direction/overlap errors remain. No room is accepted. The partial 71-row
+audit is now generated from completed cases, with other rows explicitly historical.
+
+### Positive-recall milestone: full validation complete
+
+The final ordinary run completed all 26 cases. Actual tuple deltas are exactly
+the 34 source-reviewed full spikes: Halls2 six, CN3-31 two, CN3-27 eighteen,
+neon-9 six and Flames two. No other objects changed. Both Flames gains match
+its unchanged authoritative JMap: exact matches 250 to 252, misses 23 to 21,
+with extras 43, shifts 20 and wrong orientations two unchanged. Fifteen other
+exact reports are unchanged; FTFA remains 926/928 with no extras, shifts or
+wrong directions. All sixty preceding false-spike removals, earlier terrain
+gains, nine true-occlusion controls and corrected NANG-128r origins survive.
+All four reserved evaluation maps are unchanged without tuning from them.
+
+The final scanner and lazy fixture setup passed the same affected selection:
+77 tests and 48 subtests in 1304.21s. Together with 74 focused tests/199 subtests
+and two lazy-setup tests, this is **153 distinct targeted tests and 247 subtests**,
+not the complete repository suite. Durable evidence is in
+`targeted-tests-independent.xml`, `affected-tests-current-lazy.xml` and
+`lazy-fixture-tests.xml`. The earlier pre-safeguard run is historical evidence,
+not a substitute for this completed current-code selection. Test runs overlapped
+other work, so their elapsed-time difference is not a controlled speedup claim.
+
+Eight serial ABBA scans then reproduced the expected baseline/candidate maps.
+Halls2 medians were 43.667 to 45.523s (+4.25%); CN3-31 108.424 to 109.249s
+(+0.76%). The new stage cost 0.867-0.888s. These two-case measurements disclose
+a modest total-time increase, not a speedup or universal bound. The package
+fingerprint remained frozen throughout corpus validation and timing:
+`b9dbd80714bae9b86d69931a14feb7710b1e5b0458f6a2ef67c42f1345f033aa`.
+
+Current production blends for all five changed cases were inspected after
+reviewing each added source region. They still contain substantial missed,
+misplaced, wrong-direction or conflicting geometry. The conservative mixed-age
+`71-screen-recall-checkpoint.md` is complete: fresh representative results are
+distinguished from historical rows, and no whole room is accepted. Partial
+positive truth has 44 known baseline misses, 34 actually recovered and ten
+still missing. This selected development set is not a global recall estimate.
+
+All evidence, superseded candidates and resumable checkpoints remain ignored
+under `.artifacts/cross-tileset-recall-20260910/`. The app is running the tested
+candidate and returns HTTP 200. Final review/publication covers only scanner.py,
+spike_shape.py, the new recall tests, lazy fixture-test setup and these two
+progress documents. Existing fixtures/JMaps and private archives are unchanged.
+Commit/push and independent live-remote/clean-tree verification close this
+bounded milestone; remaining project work is ranked in `CROSS_TILESET_PLAN.md`.
