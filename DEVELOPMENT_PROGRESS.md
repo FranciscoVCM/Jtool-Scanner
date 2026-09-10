@@ -6308,3 +6308,18 @@ test file and the two progress documents. Sources, fixture JMaps, private notes,
 generated reports and archives remain untouched or ignored. Broader object
 recall/placement, surviving ambiguous conflicts and full 71-room correctness
 remain project work beyond this bounded improvement.
+
+### Published and verified
+
+Implementation checkpoint `8b7f5cfbec6cf8892b85091586c47155fa88600c` was
+committed and pushed to `origin/main`. Independent live-remote verification
+subsequently matched local HEAD, the working tree was clean, and the app
+returned HTTP 200. The temporary approval-service error delayed only that
+final verification; it did not lose or invalidate scans, tests, timing or code.
+The published package fingerprint matches the tested 26-case run. No private
+notes, archives, generated output or existing fixtures were committed.
+
+The bounded partial-terrain milestone is verified, not awaiting another scan
+or timing run. Resume the broader project from this checkpoint and the
+remaining-work discussion in `CROSS_TILESET_PLAN.md`; do not treat the 71
+rooms as accepted or this precision improvement as universal recognition.

@@ -424,3 +424,10 @@ never proposed or recognize arbitrary non-triangular custom spike sprites.
 The code/test/documentation checkpoint is ready to commit and push, followed
 by live remote/HEAD, clean-tree and app checks. Only after those checks may this
 bounded goal close. The full scanner project and remaining room errors do not.
+
+Publication verification subsequently succeeded for implementation commit
+`8b7f5cfbec6cf8892b85091586c47155fa88600c`: local HEAD equaled live
+`origin/main`, Git status was clean, and the app returned HTTP 200. The tested
+package fingerprint is unchanged. This bounded milestone is verified; its
+historical pending-validation entries above are superseded. Missing-object
+recall/placement and surviving conflicts remain the next project work.
