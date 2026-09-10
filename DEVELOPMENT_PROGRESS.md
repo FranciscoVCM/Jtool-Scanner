@@ -6226,3 +6226,85 @@ The completed bounded improvement and next priorities are documented in
 `CROSS_TILESET_PLAN.md`; partial-overlap aliases and unfamiliar-family recall
 remain open. The final 71-screen audit keeps historical and fresh evidence
 distinct and stays ignored, along with all source archives and generated output.
+
+## In validation: exposed-slope partial-terrain arbitration (2026-09-09)
+
+Resumed from clean published `e527d59`, retaining its complete 26-case baseline.
+The new diagnostic separates predicted-hidden slopes from observable source
+slopes; this avoids the previous broad overlap rule's nine exact-spike losses.
+Golden5's restored false triangle has strong whole-patch bright-fill scores but
+no exposed edge/separation. The candidate adds final arbitration using that
+independent evidence, preserving insufficient exposure, strong/nearby triangles
+and equal-luminance color boundaries. Early recovery/profile activation inputs
+are left unchanged so this experiment has an auditable final-stage effect.
+
+Sixty proposed removals have explicit source reviews: Golden5 41, CN3-27 one,
+CN3-31 one, untuned Zero_Final one, and sixteen extras in four exact controls.
+Frozen-map exact comparisons preserve exact matches, misses, shifts and wrong
+directions for all sixteen controls; this is not yet a fresh full-run result.
+The remaining Golden5 conflict near a genuine triangle is explicitly retained.
+
+The focused run passed 24 tests and 83 subtests. Expanded app/correction/corpus/
+origin coverage passed 61 tests and 125 subtests. Six capture-lattice tests and
+six subtests passed; selected geometry regressions are still running. None is
+a full repository test-suite claim. The cheap nearby-slope upper bound leaves
+proposals unchanged while reducing standalone Golden5 stage cost from about
+4.0s to 0.30s; controlled end-to-end timing is pending.
+
+The app was restarted with the tested candidate (PID 11028), HTTP 200 verified.
+Fresh 26-case production scanning is active under
+`.artifacts/cross-tileset-20260908/exposed-terrain-candidate/` (resume supported).
+Current run ID: `01a9463fc6f74b928c650d8fe9af7b14`. Source annotations and
+research are in `partial-terrain-research/`. Preserve active scan identity:
+do not change package code or commit until the run completes or is deliberately
+stopped. Final fresh deltas/blends, runtime, audit and publication are pending.
+
+### Full production run verified (2026-09-10)
+
+The 26-case run finished normally. The subsequent integrity/resume check reused
+all 26 completed cases with their artifact checksums. Actual output changes
+match the sixty reviewed negatives exactly, with no additions or other object
+changes. All sixteen exact comparisons agree with the predeclared counterfactual;
+the four improved controls lose extras only. Twelve other exact reports,
+including FTFA, are unchanged. The nine partial-overlap positive controls, the
+previous improvements and the uncertain Golden5 nearby case remain protected.
+
+All selected tests completed: 61 focused/app/correction/corpus/origin tests and
+125 subtests; six capture-lattice tests and six subtests; fourteen selected
+geometry regressions (224.36s). Total: 81 targeted tests, not a full suite run.
+Fresh production blends for Golden5, CN3-27, CN3-31 and Zero_Final were inspected.
+They still show substantial remaining errors, so no whole room is accepted.
+The updated mixed-age audit is `71-screen-exposed-checkpoint.md` in the
+cross-tileset artifact directory; all 71 rows retain explicit review scope.
+
+Controlled serial ABBA timing has started using `time_exposed_terrain.py`,
+disabling only the new stage for the baseline while retaining the preceding
+terrain rule. Evidence directory:
+`partial-terrain-timings/a34e276d5f8c4c7298ac489e3b8a361c/`.
+No competing scans/tests are running. Do not invalidate this active timing
+identity with package edits or commits. Publication and goal completion remain
+pending the measured result and final review.
+
+### Ready for publication: measured partial-terrain improvement
+
+All eight serial ABBA timing scans completed and reproduced their appropriate
+baseline/candidate maps. Median end-to-end times were Golden5 50.413s to
+53.123s (+5.38%), and CN3-31 112.469s to 113.815s (+1.20%). The new stage
+itself took 0.326-0.355s and 0.115-0.124s respectively. These limited local
+measurements show some total-time increase; they are not a speedup claim or
+a universal latency bound. The measured stage cost is under 1% of each baseline
+median, and the remaining end-to-end difference should not be attributed to
+that stage alone without stronger evidence.
+
+The final focused group passed 62 tests and 143 subtests in 8.63s, including a
+new portable regression that reads the three committed fixture/JMap pairs and
+protects all nine exact partial-overlap spikes at original and 1.25x capture
+scales. Together with the six capture-lattice and fourteen geometry tests,
+this is 82 distinct targeted tests (149 subtests), not a complete suite run.
+No package code changed after the verified 26-case run or during timing.
+
+Publication scope is two production files, the new exposed-terrain regression
+test file and the two progress documents. Sources, fixture JMaps, private notes,
+generated reports and archives remain untouched or ignored. Broader object
+recall/placement, surviving ambiguous conflicts and full 71-room correctness
+remain project work beyond this bounded improvement.

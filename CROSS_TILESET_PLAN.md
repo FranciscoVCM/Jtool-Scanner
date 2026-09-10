@@ -335,3 +335,92 @@ a universal tileset recognizer or a complete solution for the 71 screens.
 The bounded goal can close after the tested files are committed/pushed and
 the live app/remote state are verified. Broader recognition recall, the open
 partial-overlap cases and full 71-screen correctness remain project work.
+
+## Active follow-on: observable partial-terrain slopes
+
+Baseline is published `e527d59` and the complete `terrain-arbitration-candidate`
+report. Development remains Golden5, CN3-27, CN3-31, Halls2 and neon-9;
+sixteen exact-reference cases are controls. Say, primary NANG and Zero are
+separate no-tuning evaluations for this experiment, not historically unseen
+screens. NANG-128r is an established placement regression control.
+
+The candidate masks predicted terrain while sampling the two proposed slopes.
+It interprets absent edges only with at least four exposed samples per side,
+weak whole-patch evidence and weak exposed luminance/color separation. Strong
+individual slopes, nearby supported triangles, insufficient exposure and
+isoluminant color boundaries are preserved. Complete-coverage arbitration is
+unchanged. Neither full-block hypotheses nor aggregate brightness alone decide
+whether an exposed triangle exists.
+
+The causal disagreement is measurable in Golden5: the restored left hypothesis
+at (432,64) passes the bright-fill gate with density contrast 0.539 and luma
+contrast 45.612, while both exposed slopes have five samples, zero edge hits
+and zero separation. At the genuine left triangle (480,64), exposed edge
+coverage is 1.0 on both sides. The adjacent right hypothesis (464,64) remains
+uncertain because the genuine neighboring triangle supplies exposed contrast;
+do not weaken safeguards to force its removal.
+
+Applying the production candidate to frozen maps proposes 41 source-reviewed
+removals in Golden5, one each in CN3-27 and CN3-31, and one in the untuned
+Zero_Final evaluation. Sixteen exact-control extras are also removed: Arcfoxp1
+one, Irkara-89 one, Flames three and Hades eleven, without changing their exact,
+missed, shifted or orientation totals. These are final-map counterfactuals,
+not yet freshly verified production results or whole-room acceptance.
+
+The nine exact partial-overlap counterexamples survive: some have one hidden
+slope and insufficient observable evidence, others retain measurable exposed
+contrast/edges. New synthetic tests cover four directions, three scales,
+inverted polarity, color variation and isoluminant visible triangles. A cheap
+necessary angular condition avoids most nearby-patch statistics while leaving
+the full nearby safeguard intact; proposed removals remain unchanged. The
+standalone added stage takes about 0.30s in Golden5 and 0.41s in Hades in this
+probe, not an end-to-end timing claim.
+
+Local research: `partial-terrain-research/` under the existing cross-tileset
+artifact directory, including explicit `reviewed-regions.json`, paginated
+source/hypothesis crops, recovery features and frozen-map comparisons.
+The new full run is `exposed-terrain-candidate/`; do not invalidate its active
+implementation identity with edits or commits. Fresh output verification,
+current blends, end-to-end timing and conservative 71-row audit update remain
+required before publication and goal completion.
+
+### Fresh-run verification
+
+All 26 actual scans match the predeclared deltas: sixty reviewed false
+hypotheses removed, no additions or other tuple changes. Exact matches, misses,
+shifts and wrong directions are preserved in all sixteen controls. Arcfoxp1
+extras improve 18 to 17, Irkara-89 27 to 26, Flames 46 to 43, and Hades 31 to 20.
+Twelve other exact reports are unchanged. FTFA retains 926/928 exact with zero
+extras/shifts/wrong directions. NANG-128r is unchanged. Say and NANG evaluation
+maps are unchanged; Zero_Final improves by one source-reviewed extra without
+tuning on that outcome.
+
+The complete actual-map verifier also preserves the nine documented true
+partial-overlap spikes and the unresolved Golden5 nearby candidate. All 26
+artifacts passed a final cache-integrity/resume check. Eighty-one targeted tests
+passed; this is not a full-suite result. The four changed primary blends were
+reviewed and retain major room errors. `71-screen-exposed-checkpoint.md` gives
+all 71 rows with mixed-age scope; no historical accepted label is renewed.
+
+Controlled end-to-end timing is active under
+`partial-terrain-timings/a34e276d5f8c4c7298ac489e3b8a361c/`; publication waits for
+that gate. The next project work should address surviving ambiguous conflicts
+and missing-object recall/placement, not repeatedly loosen this negative-evidence
+rule. This change rejects unsupported protrusions; it cannot invent an object
+never proposed or recognize arbitrary non-triangular custom spike sprites.
+
+### Completion evidence for partial-terrain milestone
+
+| Requirement | Verified result |
+|---|---|
+| Shared recognition/arbitration gain | Current production removes 41 Golden5, one CN3-27 and one CN3-31 false hypotheses, plus sixteen extras in four exact controls; no screen identity or palette lookup |
+| Independent recovery evidence | Golden5's restored false candidate passes whole-patch bright-fill scores but has no observable slope support; real triangles and the ambiguous neighboring case remain protected |
+| Protected controls and evaluation | All sixteen controls preserve exact/miss/shift/orientation totals; nine named partial-overlap positives retained; FTFA and corrected NANG-128r preserved; untuned Zero_Final loses one reviewed extra, Say/NANG unchanged |
+| Current review and audit | All sixty removals source-reviewed, actual tuple deltas match exactly, four changed primary blends inspected; complete mixed-age 71-row audit with no whole-room approval |
+| Regression tests | 82 targeted tests and 149 subtests pass, including real fixture positives at two capture scales and isoluminant synthetic triangles; not a full suite claim |
+| Runtime | Eight serial ABBA scans reproduce frozen maps; Golden5 medians 50.413/53.123s (+5.38%), CN3-31 112.469/113.815s (+1.20%); new-stage cost 0.326-0.355s and 0.115-0.124s, no speedup claimed |
+| Reproducibility | Complete versioned 26-case run and checksum-verified cache reuse; explicit annotations, comparisons and timing records retained locally |
+
+The code/test/documentation checkpoint is ready to commit and push, followed
+by live remote/HEAD, clean-tree and app checks. Only after those checks may this
+bounded goal close. The full scanner project and remaining room errors do not.

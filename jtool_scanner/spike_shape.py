@@ -166,6 +166,141 @@ def terrain_covered_aliases(image: RGBImage, room: Box,
     return rejected
 
 
+def _block_union_area(x: int, y: int, blocks: list[tuple[int, int]]) -> int:
+    """Area inside the candidate box, counting duplicate/overlapping tiles once."""
+    area = 0
+    for py in range(y, y + 32):
+        cursor = x
+        for left, right in sorted((max(x, bx), min(x + 32, bx + 32))
+                                  for bx, by in blocks if by <= py < by + 32):
+            if right > max(cursor, left):
+                area += right - max(cursor, left)
+            cursor = max(cursor, right)
+    return area
+
+
+def _unsupported_exposed_slopes(
+    field: SpikeShapeField, rgb: RGBImage, x: int, y: int, direction: int,
+    blocks: list[tuple[int, int]],
+) -> bool:
+    """Absence is evidence only where both sides of a slope are observable.
+
+    Terrain hypotheses mask samples, never supply negative image evidence.
+    A color-separation guard preserves visible isoluminant objects even when
+    the luminance edge field cannot see them.
+    """
+    scale, spread = field.patch_stats(x, y)
+    channels = [[rgb.pixel(px, py)[channel]
+                 for py in range(y, y + 32) for px in range(x, x + 32)]
+                for channel in range(3)]
+    color_spread = max(1.0, sum(_percentile(values, .95) - _percentile(values, .05)
+                                for values in channels))
+    tip, *ends = VERTICES[direction]
+    for end in ends:
+        tx, ty = end[0] - tip[0], end[1] - tip[1]
+        length = hypot(tx, ty)
+        nx, ny = -ty / length, tx / length
+        hits, contrasts, color_contrasts = [], [], []
+        for index in range(12):
+            t = .15 + .70 * index / 11
+            px, py = x + tip[0] + t * tx, y + tip[1] + t * ty
+            samples = [(round(px + offset * nx), round(py + offset * ny))
+                       for offset in range(-4, 5)]
+            if any(not (0 <= sx < 800 and 0 <= sy < 608)
+                   or any(bx <= sx < bx + 32 and by <= sy < by + 32 for bx, by in blocks)
+                   for sx, sy in samples):
+                continue
+            supported = False
+            for sx, sy in samples[2:7]:
+                gx, gy = field.gradient(sx, sy)
+                magnitude = hypot(gx, gy)
+                if magnitude >= scale * .25 and abs(gx * nx + gy * ny) >= magnitude * .95:
+                    supported = True
+                    break
+            hits.append(supported)
+            inside, outside = samples[0], samples[-1]
+            contrasts.append(abs(field.pixel(*outside) - field.pixel(*inside)) / spread)
+            first, last = rgb.pixel(*inside), rgb.pixel(*outside)
+            color_contrasts.append(sum(abs(a - b) for a, b in zip(first, last)) / color_spread)
+        if (len(hits) < 4 or sum(hits) / len(hits) > .25
+                or median(contrasts) >= .15 or median(color_contrasts) >= .15):
+            return False
+    return True
+
+
+def _could_have_strong_slopes(field: SpikeShapeField, x: int, y: int, direction: int) -> bool:
+    """Cheap upper bound for score >= .9, avoiding most patch-statistic work.
+
+    A calibrated hit requires magnitude >= .25 because patch scale is at
+    least one. Two misses among twelve samples rule out .9 coverage. This
+    uses the same sampling/angle conditions as score; it cannot admit a
+    rejection that the full nearby-triangle safeguard would have prevented.
+    """
+    if not (0 <= x <= 768 and 0 <= y <= 576):
+        return False
+    tip, *ends = VERTICES[direction]
+    for end in ends:
+        tx, ty = end[0] - tip[0], end[1] - tip[1]
+        length = hypot(tx, ty)
+        nx, ny = -ty / length, tx / length
+        misses = 0
+        for index in range(12):
+            t = .15 + .70 * index / 11
+            px, py = x + tip[0] + t * tx, y + tip[1] + t * ty
+            for offset in (-2, -1, 0, 1, 2):
+                gx, gy = field.gradient(round(px + offset * nx), round(py + offset * ny))
+                magnitude = hypot(gx, gy)
+                if magnitude >= .25 and abs(gx * nx + gy * ny) >= magnitude * .95:
+                    break
+            else:
+                misses += 1
+                if misses >= 2:
+                    return False
+    return True
+
+
+def terrain_exposed_aliases(
+    image: RGBImage, room: Box, spikes: list[tuple[int, int, int]],
+    blocks: list[tuple[int, int]],
+) -> set[tuple[int, int, int]]:
+    """Reject partial-terrain aliases only when their exposed slopes are absent.
+
+    Whole-patch scores can be supplied by patterned terrain covering a spike's
+    base. Inspect the unmasked source separately, retaining insufficiently
+    exposed, strongly edged, color-separated or nearby-triangle cases. This
+    complements complete-coverage arbitration; it does not weaken that rule.
+    """
+    field = None
+    rgb = None
+    rejected = set()
+    for direction, x, y in spikes:
+        if direction not in VERTICES or not (0 <= x <= 768 and 0 <= y <= 576):
+            continue
+        # Include terrain just outside the box: normal samples extend four px.
+        nearby = [(bx, by) for bx, by in blocks if abs(bx - x) < 40 and abs(by - y) < 40]
+        if not 512 <= _block_union_area(x, y, nearby) < 1024:
+            continue
+        if field is None:
+            field = SpikeShapeField(image, room)
+        sides = field.side_scores(x, y, direction)
+        if min(sides) >= .5 or max(sides) >= .75 or abs(field.contrast(x, y, direction)) >= .5:
+            continue
+        if rgb is None:
+            crop = image.crop(room)
+            normalized = Image.frombytes('RGB', (crop.width, crop.height), crop.data)
+            normalized = normalized.resize((800, 608), Image.Resampling.BILINEAR)
+            rgb = RGBImage(800, 608, normalized.filter(ImageFilter.GaussianBlur(.7)).tobytes())
+        if not _unsupported_exposed_slopes(field, rgb, x, y, direction, nearby):
+            continue
+        if any(_could_have_strong_slopes(field, x + dx, y + dy, direction)
+               and field.score(x + dx, y + dy, direction) >= .9
+               and abs(field.contrast(x + dx, y + dy, direction)) >= .5
+               for dx in range(-16, 17, 8) for dy in range(-16, 17, 8)):
+            continue
+        rejected.add((direction, x, y))
+    return rejected
+
+
 def corroborated_refits(image: RGBImage, room: Box, spikes: list[tuple[int, int, int]]) -> dict[tuple[int, int, int], tuple[int, int, int]]:
     """Map (type,x,y) to a corroborated replacement; never force an answer."""
     if len(spikes) < 3:

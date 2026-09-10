@@ -50,7 +50,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
-from .spike_shape import corroborated_refits, terrain_covered_aliases
+from .spike_shape import corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -14860,11 +14860,10 @@ def _compact_platform_overlaps_geometry(
 def _prune_terrain_covered_spike_aliases(
     detections: list[Detection], image: RGBImage, room: Box,
 ) -> list[Detection]:
-    rejected = terrain_covered_aliases(
-        image, room,
-        [(d.type_id, d.x, d.y) for d in detections if d.type_id in FULL_SPIKE_TYPES],
-        [(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK],
-    )
+    spikes = [(d.type_id, d.x, d.y) for d in detections if d.type_id in FULL_SPIKE_TYPES]
+    blocks = [(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK]
+    rejected = terrain_covered_aliases(image, room, spikes, blocks)
+    rejected |= terrain_exposed_aliases(image, room, spikes, blocks)
     return [d for d in detections if (d.type_id, d.x, d.y) not in rejected]
 
 
