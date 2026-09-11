@@ -584,3 +584,48 @@ Secret, neon and the remaining numbered/compact cases. Preserve strong cases
 as controls. NANG138's full/mini overlap flags demonstrate that deleting the
 miniature candidate can remove real source geometry when the full candidate is
 the false one. Review source evidence before choosing which hypothesis to keep.
+
+### Full 71-room baseline complete; next causal batch (2026-09-11)
+
+All 71 individual current reviews are now saved. The complete local baseline
+audit supersedes the coverage counts above: 49 major, five moderate, six localized,
+one reference-boundary limitation, and ten with no visible mismatch under their
+stated review scope. None of these labels supplies unmeasured exact whole-room
+truth. The scanner is unchanged; all generated baseline outputs are compatible.
+
+Fresh evidence changes the priority from the preceding ten residual spike misses:
+
+1. **Terrain/material and placement arbitration.** Trace NR1's lattice terrain
+   (101 false full spikes despite no source triangles) and Halls5's masonry ledges
+   becoming spike rows. Determine whether phase sampling, material learning,
+   candidate classification or later arbitration causes the loss. Keep correctly
+   recognized isolated/partly hidden triangles as counterexamples. Golden7 and
+   Secret1 also show major occupancy/placement failures and can test transfer.
+2. **Marker coverage and impostors.** Missing white portals span multiple visual
+   families; Halls1's white/black portals and Redcube's white portals are useful
+   positive controls. Platforms have both misses and false positives. Halls3's
+   false save shares the actual gravity flipper's origin: protect the flipper.
+3. **Mini/full scale and dense object conflict.** Redcube pairs/triples and NANG
+   miniature rails have different failure patterns; do not erase a real small
+   object merely because an incorrect larger hypothesis overlaps it.
+4. **Vine origin/coverage, labels and semantic colors.** Explicitly distinguish
+   true shifts from partial strip coverage. Use neon/30/93 text negatives and
+   NANG11/139 dark killblocks, retaining background and valid-color controls.
+
+For the first causal experiment, NR1 and Halls5 are development cases from two
+previously historical visual families. NR2, Golden7, Secret1, Bathhouse1 and
+NANG128r are prospective no-tuning evaluation cases. All have now been visually
+reviewed and have historical exposure; this partition is not a claim of unseen
+data. If investigation requires tuning an evaluation case, explicitly change
+its role for a later experiment rather than calling it an untouched evaluation.
+All 16 exact controls, preceding recoveries/removals and object-origin/occlusion
+regressions remain protected. Trace results must reproduce ordinary baseline
+maps before they justify a production change.
+
+Success requires source-verified restored solid occupancy and/or fewer false
+terrain aliases across distinct families without losing true spikes, markers,
+water or valid small objects. Keep baseline regional annotations stable and
+report misses, extras, shifts, direction and type separately. Inspect every
+changed region, measure runtime without competing jobs, regenerate final-current
+71-room output and publish the honest remaining-error audit. Auditing alone has
+not completed the goal; no production tuning has started at this checkpoint.

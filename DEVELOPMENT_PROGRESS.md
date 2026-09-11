@@ -6501,3 +6501,54 @@ only changes ignored review images; original inputs and scanner code are
 unchanged. Detailed scope, concrete regions, preserved detections and uncertainty
 remain in the progressive 71-row local audit. Complete the remaining baseline
 reviews before choosing the first causal batch.
+
+### Complete fresh baseline: all 71 individual reviews (2026-09-11)
+
+All 71 canonical rooms now have an individual current Source/JTool/Blend review,
+with enlarged regions and actual output tuples used where needed. All baseline
+outputs use the unchanged frozen package fingerprint `b9dbd807...`; no detector
+change or new test result is claimed by this audit checkpoint. The complete
+local audit is `.artifacts/corpus-revalidation-20260910/71-screen-baseline-audit.md`,
+with detailed keyed evidence in `baseline-visual-reviews.json`.
+
+| Current review category | Rooms |
+|---|---:|
+| Major issues | 49 |
+| Moderate issues | 5 |
+| Localized issues | 6 |
+| Localized reference-boundary limitation | 1 |
+| No visible mismatch under the stated review scope | 10 |
+
+These categories are qualitative review results, not percentages of correct
+objects or exact acceptance. In particular, ten visually stronger rooms are not
+ten certified perfect rooms. No row remains historical-only; historical labels
+are retained separately so old acceptance cannot silently become new approval.
+
+The broadest high-severity cluster is still terrain/triangle interpretation:
+patterned and off-phase solid material is lost, fragmented, or emitted as spikes.
+NR1 has no visible source triangles but emits 101 full spikes, while large
+lattice-block regions vanish. Halls5 ledges become false spike rows; Golden7
+loses much of its frame; pink-striped Secret1 has fragmented U-shaped terrain
+and actual spikes replaced by blocks plus displaced spike hypotheses. Redcube
+rails are substantially represented, but many upward pairs/triples disappear
+or become shifted downward hypotheses. These distinct failure patterns need
+causal traces, not a universal color threshold or blanket overlap deletion.
+
+Other independently observed errors include missing white portals across several
+families, missed and false platforms, neon floor-label impostors, false vines on
+green block edges, short/partial vine misses, opposite vine-offset directions,
+dark-red killblock misses, and a false save on Halls3's correctly detected gravity
+flipper. Source review also rejects tempting wrong fixes: NR2's two vine segments
+are aligned inside a much longer source strip, so their main problem is missing
+coverage, not a global coordinate shift. Secret1's historical false background
+water and nested-mini complaints are no longer reproduced. Redcube currently
+has no false apples on its red terrain and retains the actual white portals.
+
+The next batch prioritizes severe terrain/material/phase failures in previously
+historical families, with declared development and no-tuning evaluation cases,
+before returning to smaller isolated recall fixes. Full baseline publication is
+complete with this checkpoint; implementation, cross-family transfer, protected
+tests/exact controls, runtime measurement and final-current all-room evidence
+are still required by the active goal. The tested app was restarted hidden and
+its HTTP 200 response and source fingerprint verified. Private images, detailed
+reports, source maps and generated outputs remain ignored and unpublished.
