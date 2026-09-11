@@ -550,3 +550,21 @@ sprites, dense small-object clusters, remaining type/direction/placement errors
 and truly unfamiliar tilesets remain open. Additional examples should target
 those gaps rather than duplicate solved palettes. The bounded positive-recall
 milestone is not a claim of perfect 71-screen or universal recognition.
+
+## Current priority: full-corpus revalidation (2026-09-11)
+
+The user's new goal supersedes the suggestion to immediately tune the preceding
+ten spike misses. First revalidate all 71 canonical screens, especially the 61
+historical-only rows, and use their failures to rank shared detection causes.
+The detailed local plan is `.artifacts/corpus-revalidation-20260910/GOAL_PLAN.md`.
+Completion requires both full fresh review/final-current outputs and substantive
+shared gains across at least two previously historical visual families; an audit
+alone does not complete the goal.
+
+All 71 frozen-baseline outputs now exist and passed integrity reuse. Eight rooms
+are individually reviewed; do not conflate generation with review. The partial
+audit already confirms major Entrance and engraved-metal CN3 failures, including
+mini/full geometry confusion, missing short vines, missed gravity arrows, Roman
+floor-text impostors and missed real portals. These findings are hypotheses and
+regional evidence, not a selected implementation batch or full-room counts.
+Review the remaining families before committing to the next detector change.

@@ -6446,3 +6446,35 @@ spike_shape.py, the new recall tests, lazy fixture-test setup and these two
 progress documents. Existing fixtures/JMaps and private archives are unchanged.
 Commit/push and independent live-remote/clean-tree verification close this
 bounded milestone; remaining project work is ranked in `CROSS_TILESET_PLAN.md`.
+
+## Full-corpus revalidation started (2026-09-11)
+
+The user requested renewed inspection of the 61 historical-only audit rows,
+not another batch confined to recently studied spike rooms. The frozen baseline
+at `f824fb6` now has ordinary outputs for all 71 canonical sources: 61 fresh
+scans and ten exact-compatible checksum-verified cache imports. A subsequent
+integrity/resume check reused all 71 successfully. No scanner code changed.
+The full visual baseline is NOT finished: eight rooms have individual current
+source/JTool/blend reviews, while the remaining generated rooms await review.
+
+Entrance1-3, Zero_Final and CN3-19/21 have major issues. Newly documented examples
+include Entrance1 miniature spike rails becoming full spikes; Entrance2 missing
+short vine patches; Entrance3 missing both gravity arrows and some small blocks;
+and CN3-19/21 Roman floor labels becoming five false objects, with real portals
+missing. These are observations for cause ranking, not fixes or complete room
+truth. Entrance2 save zooms did not support a blanket vertical-offset correction.
+
+CN3-16/18 are materially stronger. Their canonical captures differ from tracked
+fixture images, so references were not transferred by name. Full source-layout
+inspection plus supplemental comparisons show 590/590 exact for CN3-16 and
+491/492 for CN3-18, whose sole missing reference water tile begins outside the
+viewport at (800,240). Warning boxes and the established stretched-spike
+approximation are not automatically new errors. No universal accuracy claim.
+
+Evidence and the progressive 71-row audit are ignored under
+`.artifacts/corpus-revalidation-20260910/`. Scan freshness and individual review
+coverage are separate. The existing app serves the unchanged tested code. Its
+default OCR cannot recognize infinite-jump text because Tesseract is unavailable;
+this metadata limitation is documented, not hidden by changing scanner logic.
+Complete all 71 visual reviews before substantial tuning, then select shared
+causes affecting previously historical visual families and preserve prior gains.
