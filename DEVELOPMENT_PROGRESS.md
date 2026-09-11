@@ -6478,3 +6478,26 @@ default OCR cannot recognize infinite-jump text because Tesseract is unavailable
 this metadata limitation is documented, not hidden by changing scanner logic.
 Complete all 71 visual reviews before substantial tuning, then select shared
 causes affecting previously historical visual families and preserve prior gains.
+
+### Fresh baseline review: 33 of 71 rooms
+
+Individual current source/JTool/blend reviews now cover all Say rooms,
+LapBackwards, NANG11 and the listed NANG130-140 normal/reverse cases, in addition
+to the earlier Entrance/CN3 reviews. All 71 outputs exist; 38 visual reviews
+remain. This is an audit checkpoint, not a detector improvement or completion.
+
+The new evidence broadens the candidate causes: missing white portals also
+affect Say9; Say1 saves have opposite horizontal shifts of roughly 8px; several
+NANG thin platforms are missing, one NANG139 platform is about 16px too high,
+and false platforms still occur. NANG139's dark red floor mostly becomes normal
+blocks. NANG11 emits no killblocks, with many red cells missing entirely.
+NANG130/138 retain substantial miniature/full geometry errors. Conversely,
+NANG135 and 138r look materially stronger under the stated visual scope; no
+whole-room exact acceptance is inferred from that observation.
+
+The local diagnostic source-view helper now follows the production blend's
+actual compact-room placement rather than stretching it across 800x608. This
+only changes ignored review images; original inputs and scanner code are
+unchanged. Detailed scope, concrete regions, preserved detections and uncertainty
+remain in the progressive 71-row local audit. Complete the remaining baseline
+reviews before choosing the first causal batch.

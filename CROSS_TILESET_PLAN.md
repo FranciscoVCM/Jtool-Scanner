@@ -568,3 +568,19 @@ mini/full geometry confusion, missing short vines, missed gravity arrows, Roman
 floor-text impostors and missed real portals. These findings are hypotheses and
 regional evidence, not a selected implementation batch or full-room counts.
 Review the remaining families before committing to the next detector change.
+
+### Revalidation checkpoint: 33 individual reviews
+
+All 71 scans remain available, with 33 individual reviews now recorded. Findings
+extend beyond spike arbitration: real white portals are missing across engraved
+CN3, red-lattice CN3 and Say; platform misses/type/origin errors recur across
+those and NANG families; dark red killblocks fail in NANG11/139; faint active
+saves and some short vines/gravity arrows remain missing. Say1 demonstrates
+opposite horizontal save shifts, so a blanket coordinate offset is not valid.
+These are ranked-cause candidates, not proven mechanisms or implemented fixes.
+
+Finish the remaining 38 reviews, including Dotkid, Golden, Halls, Redcube, NR,
+Secret, neon and the remaining numbered/compact cases. Preserve strong cases
+as controls. NANG138's full/mini overlap flags demonstrate that deleting the
+miniature candidate can remove real source geometry when the full candidate is
+the false one. Review source evidence before choosing which hypothesis to keep.
