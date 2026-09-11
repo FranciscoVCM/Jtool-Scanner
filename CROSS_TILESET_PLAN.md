@@ -629,3 +629,22 @@ report misses, extras, shifts, direction and type separately. Inspect every
 changed region, measure runtime without competing jobs, regenerate final-current
 71-room output and publish the honest remaining-error audit. Auditing alone has
 not completed the goal; no production tuning has started at this checkpoint.
+
+#### Causal evidence now available
+
+The two development traces and subsequent input-capture scans exactly reproduce
+their ordinary baseline maps. Strong correctly positioned NR1/Halls5 blocks are
+proposed and then removed by the fixed-grid preference in `_dedupe_geometry`.
+Later supported-cell replacement also fails to reconstruct their actual terrain.
+Read the current development-progress entry and local `terrain-summary.json`
+files for scores, transitions and exactly located cases.
+
+A phase-only repeated-material counterfactual failed in both rooms with existing
+thresholds. NR1 additionally fails the interleaved material-pair distance gate;
+Halls5's mixed-phase/irregular occupancy fails the single-phase completeness gate.
+Do not turn these observations into a blanket threshold reduction. Test local
+source-supported phase/rectangle evidence, composite-material co-occurrence and
+existing strong-candidate retention, preserving background/triangle/field vetoes.
+Captured ordinary inputs permit isolated hypothesis checks before expensive full
+rescans. An isolated replay must be followed by ordinary final-map verification
+and genuine transfer; replay success alone is not a shipped improvement.

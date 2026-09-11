@@ -6552,3 +6552,38 @@ tests/exact controls, runtime measurement and final-current all-room evidence
 are still required by the active goal. The tested app was restarted hidden and
 its HTTP 200 response and source fingerprint verified. Private images, detailed
 reports, source maps and generated outputs remain ignored and unpublished.
+
+### First terrain-cause traces: shared early loss, later reconstruction failure
+
+Ordinary NR1 and Halls5 scans were instrumented without changing their outputs.
+Both traced JMap multisets exactly equal the frozen baseline. A second capture
+preserved raw deduplication and material-learner inputs for cheaper isolated
+experiments; its two complete maps also reproduce the ordinary outputs exactly.
+
+The previously historical families share an early failure. NR1's source-backed
+blocks at (368,64), (400,64), (368,96) and (400,96) are proposed as blocks, with
+scores around 0.554-0.563. Deduplication discards them while preferring 32px-grid
+hypotheses, including a weaker edge-straddling block at (416,64), score 0.336.
+Halls5's actual ledge candidates at (96,112) and (128,112) score 0.605 and 0.595,
+but lose to 32px-grid candidates at y96, scoring 0.331 and 0.327. These traces
+demonstrate recognized-then-discarded solid geometry, not absent color recognition.
+The later supported-cell material replacement still produces incomplete/wrong-phase
+terrain and does not repair those losses.
+
+An isolated four-phase experiment retained all existing learner thresholds and
+used its captured ordinary inputs. Shifting the complete-block assembly phase
+alone produced no valid repeated-terrain profile in either room. NR1's two
+interleaved gray texture clusters have color distance 45.46 versus the current
+pair gate 34.93; their best 16px-shifted complete-cell coverage is 86.23%.
+Halls5's two brown clusters pass their color-distance gate, but best single-phase
+coverage is 78.43%, below the existing 85% gate. These are diagnostic quantities,
+not recovered-object counts or a justification to simply relax the gates.
+
+Next: test evidence-aware phase selection/retention and structurally justified
+multi-shade material grouping, including mixed-phase terrain and hard negative
+background/triangle examples. Preserve field/false-merge safeguards and verify
+the full downstream pipeline, since fixing early deduplication alone may still
+be undone later. No scanner implementation has changed in this checkpoint;
+no new unit-suite, runtime improvement or full-room accuracy claim is made.
+The ignored trace summaries and replay inputs are under the revalidation
+directory's `traces/` and `traces-inputs/` folders.
