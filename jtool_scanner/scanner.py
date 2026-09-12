@@ -51,6 +51,7 @@ from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .spike_shape import corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
+from .terrain_material import distributed_cell_edges, learn_complementary_terrain
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -15958,6 +15959,7 @@ class _RepeatedTerrainProfile:
     seed_cluster: int
     support_votes: int
     full_coverage: float
+    complementary_texture: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -16247,8 +16249,18 @@ def _replace_repeated_terrain_geometry(
     current_coverage = matched / max(1, len(profile.full_blocks))
     if current_coverage >= REPEATED_TERRAIN_KEEP_COVERAGE:
         return detections, False
+    replacement_coverage = current_coverage
+    if profile.complementary_texture:
+        # Complete textured rectangles support mixed phases independently of
+        # the raw block grid. An overgenerated raw grid is not adequate terrain
+        # merely because some of its many hypotheses match that evidence.
+        # Keep the high-recall veto above; measure agreement in both directions
+        # only for this stronger, fully cell-supported material fallback.
+        replacement_coverage = min(
+            current_coverage, matched / max(1, len(current_blocks))
+        )
     if (
-        current_coverage > REPEATED_TERRAIN_REPLACE_MAX_COVERAGE
+        replacement_coverage > REPEATED_TERRAIN_REPLACE_MAX_COVERAGE
         or len(profile.full_blocks) < REPEATED_TERRAIN_MIN_CANDIDATES
     ):
         return detections, False
@@ -17984,6 +17996,30 @@ def _learn_repeated_terrain_profile(
         seed_cluster, top_votes = single_seed
         family = {seed_cluster}
     else:
+        complementary = learn_complementary_terrain(
+            labels,
+            cluster_edges,
+            votes,
+            lambda position: _classify_block(
+                _patch_features(image, room, *position, GRID_SIZE)
+            ).score,
+            _repeated_terrain_blocks_form_dense_field,
+            lambda position: _patch_features(
+                image, room, *position, MINI_BLOCK_SIZE
+            ).edge_density,
+            weak_cell_texture=lambda position: distributed_cell_edges(
+                _patch_features(image, room, *position, MINI_BLOCK_SIZE).edge_mask
+            ),
+        )
+        if complementary is not None:
+            return _RepeatedTerrainProfile(
+                terrain_cells=complementary.terrain_cells,
+                full_blocks=complementary.full_blocks,
+                seed_cluster=complementary.seed_cluster,
+                support_votes=complementary.support_votes,
+                full_coverage=complementary.full_coverage,
+                complementary_texture=True,
+            )
         return None
 
     direct_distance = max(10.0, room_contrast * 0.25)

@@ -6587,3 +6587,98 @@ be undone later. No scanner implementation has changed in this checkpoint;
 no new unit-suite, runtime improvement or full-room accuracy claim is made.
 The ignored trace summaries and replay inputs are under the revalidation
 directory's `traces/` and `traces-inputs/` folders.
+
+### Terrain checkpoint: complementary texture and mixed placement (2026-09-13)
+
+The first implementation batch follows the completed 71-room baseline, using
+NR1's gray framed lattice and Halls5's brown masonry as the two declared
+development families. A new fallback learns complementary room-local material
+clusters from independent support, interleaved texture and complete rectangles
+on the 16px lattice. It does not identify a room or palette by name. Existing
+material profiles keep their original decisions and thresholds.
+
+Complete rectangles may use different phases within the room and overlap by
+half a block to cover an independently supported strip. This describes solid
+occupancy, not an authoritative original JMap decomposition. Dense fields,
+independently complete materials, sparse support, ambiguous competing pairs,
+small objects and background fringe remain explicit rejection cases.
+
+The experiments exposed two important errors before publication. First, the
+isolated learner recovered NR1 but ordinary output stayed unchanged: a later
+replacement gate considered the overgenerated raw block set adequate. For the
+new fully cell-supported fallback only, replacement now considers agreement
+against both proposed and existing block counts, while retaining the high-recall
+preservation veto. Second, requiring strong texture in every quadrant discarded
+real mostly-smooth masonry quarters. A weak quadrant now needs distributed
+two-dimensional edge evidence and three original strong neighboring quadrants;
+accepted weak cells cannot bootstrap other weak cells. This restores a right
+masonry column and prevents the intermediate candidate's new false edge spike.
+
+Current ordinary development results, compared with the frozen baseline:
+
+| Measurement | Before | Candidate |
+|---|---:|---:|
+| NR1 selected block origins | 0/4 exact | 4/4 exact |
+| NR1 selected solid occupancy samples | 16/64 | 64/64 |
+| NR1 false full spikes; source has no triangles | 101 | 41 |
+| Halls5 selected ledge occupancy samples | 8/144 | 144/144 |
+| Halls5 source-reviewed false spikes removed | — | 27 |
+| Halls5 declared true spikes retained | 11/11 | 11/11 |
+
+Both rooms still have **major issues**. NR1 retains 41 false spikes and extensive
+missing water. Its exact delta removes 95 old false spike tuples but introduces
+35 new false tuples; six are unchanged. The net reduction of 60 is not a claim
+that no new false detections appear. Those 35 new hypotheses remain explicit
+errors to address. Halls5 retains opposite-direction, overlapping and misplaced
+triangle hypotheses. Its 304px ledge admits different overlapping block
+decompositions: complete sampled occupancy does not mean nine exact original
+block objects. Saves, water and other existing non-block/non-spike tuples in the
+two development rooms remain unchanged. Whole Source, standalone JTool and Blend
+views were inspected; the standalone view caught holes that blend opacity hid.
+
+The current candidate passes 150 affected tests and 147 subtests, including real
+pixel sampling/clustering at three capture scales and two contrasting palettes,
+plus terrain, material, object-origin, overlap, platform, vine and save controls.
+This is not a full-suite result. All 32 ordinary cases completed: only the two
+development maps changed. All 16 exact reports and all five declared no-tuning
+evaluation maps are unchanged. The preceding 34 recoveries, 60 false removals,
+nine real occlusions and 18 NANG-128r origins remain protected. FTFA stays
+926/928 exact with no extras, shifts or wrong directions; Flames stays 252 exact
+with 43 extras, 21 misses, 20 shifts and two wrong directions. Unchanged reserved
+outputs establish non-regression here, not gains on genuinely unseen families.
+
+Serial end-to-end ABBA timings, with every timed map checked against its saved
+ordinary result:
+
+| Room | Baseline median | Candidate median | Change |
+|---|---:|---:|---:|
+| NR1 | 63.581s | 75.873s | +19.33% |
+| Halls5 | 45.453s | 45.310s | -0.32% |
+
+NR1's slowdown is a real remaining cost, not a speed improvement. Observational
+stage profiling points to increased work in existing boundary-floor-label
+pruning and fully covered spike arbitration. The new material learner itself
+took about 0.58s in that instrumented candidate; nested stage times are not
+additive and are not the controlled benchmark. Both instrumented maps exactly
+reproduce their ordinary outputs. Reducing downstream cost without changing
+geometry is a concrete follow-up, alongside the remaining false-spike errors.
+
+The all-71 baseline review is complete, but final post-change coverage is only
+16/71: two changed outputs reviewed and 14 verified equal to reviewed baselines.
+The other 55 still require final-current output and appropriate changed-region
+review. This bounded checkpoint does not complete the active goal or certify
+the two development rooms, the full corpus, or arbitrary future tilesets.
+
+Local evidence is under `.artifacts/corpus-revalidation-20260910/`: `terrain-v6`,
+`terrain-current-reviews.json` and `71-screen-terrain-progress.md`. The latter
+keeps all 71 rows and separates reviewed baseline from post-change coverage.
+The baseline is not rerun or relabeled as current output. A review correction
+also records that NR2's type 10 is a mini-down spike, not an apple; the orange
+source object's gameplay identity remains uncertain.
+
+The app was restarted with the candidate and HTTP 200 plus loaded-code parity
+verified. One longer artifact directory exposed Windows' disabled long-path
+support: the temporary report filename reached 261 characters. Existing output
+was preserved and the ordinary scan rerun successfully in the shorter
+`terrain-v6` directory. No scanner logic or system setting was changed to hide
+that filesystem error. Future output directories should remain short.

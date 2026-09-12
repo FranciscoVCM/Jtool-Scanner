@@ -1,5 +1,11 @@
 # Cross-tileset milestone
 
+The active goal is **full-corpus revalidation and gains across two previously
+historical visual families**. See “Current priority: full-corpus revalidation”
+below and the latest implementation entry. Earlier milestones are retained as
+history; their completed gates and narrower objectives do not replace the
+active all-71 review/final-current requirements.
+
 ## Objective and completion requirements
 
 Establish a reproducible, versioned cross-tileset baseline; trace representative
@@ -648,3 +654,44 @@ existing strong-candidate retention, preserving background/triangle/field vetoes
 Captured ordinary inputs permit isolated hypothesis checks before expensive full
 rescans. An isolated replay must be followed by ordinary final-map verification
 and genuine transfer; replay success alone is not a shipped improvement.
+
+#### Verified material checkpoint; remaining goal work (2026-09-13)
+
+The complementary-texture/mixed-phase fallback now produces measured ordinary
+gains in both declared development families. NR1's four annotated blocks recover
+exactly and its false spikes drop101->41. Halls5's fixed ledge samples improve
+8/144->144/144 and27false spikes disappear while11declared true spikes and its
+markers remain. Neither room is accepted; read the development-progress entry
+for remaining errors and the distinction between occupancy and hidden block
+decomposition.
+
+The ordinary pipeline check caught an isolated-prototype false conclusion about
+NR1's replacement gate. Separate JTool review then caught genuine weak-texture
+quarters lost in Halls5 and one newly surviving false spike. Both mechanisms
+were addressed with portable tests and source-backed negative examples rather
+than a screen-specific filter or global threshold reduction.
+
+The candidate passes 150 affected tests/147 subtests and all 32 ordinary cases
+are complete. Only the two development maps changed; all 16 exact reports and
+five no-tuning maps are unchanged, with prior positives/negatives protected.
+No-tuning roles are unchanged. The real gains span the two declared development
+families; unchanged reserved outputs do not establish new-family improvement.
+
+NR1 still has 41 false spikes: 95 old false tuples disappear but 35 new false
+tuples appear, with six unchanged. Do not hide these new errors behind the net
+reduction or declare the room accepted. Halls5 removes 27 false spikes without
+adding non-block tuples, but substantial triangle conflicts remain there too.
+
+Serial ABBA medians are NR1 63.581->75.873s (+19.33%) and Halls5
+45.453->45.310s (-0.32%); all eight maps match their saved ordinary outputs.
+Profiling implicates existing boundary-label pruning and covered-spike checks
+as the main added work, rather than material grouping alone. Prioritize a
+semantics-preserving cost reduction and source-verified remaining contour
+conflicts; do not trade away the recovered terrain to make a timer pass.
+
+Final-current coverage is 16/71, with two changed reviews and 14 baseline reviews
+carried through verified output/crop/settings equality. Generate the remaining
+55 on the final implementation and inspect every material change. Keep the goal
+active until the full audit, publication and final-state gates are satisfied.
+The local 71-row terrain progress audit explicitly distinguishes pending final
+outputs from the already-complete individual baseline review.
