@@ -17,6 +17,7 @@ from itertools import combinations
 from pathlib import Path
 from statistics import median
 
+from .binary_components import dilated_ink_components
 from .constants import (
     GRID_SIZE,
     OBJ_APPLE,
@@ -24159,60 +24160,9 @@ def _local_stroke_components(
 
     components: list[_LocalStrokeComponent] = []
     for foreground in (bright_foreground, dark_foreground):
-        expanded = bytearray(width * height)
-        for index, value in enumerate(foreground):
-            if not value:
-                continue
-            local_x = index % width
-            local_y = index // width
-            for neighbor_y in range(
-                max(0, local_y - 1),
-                min(height, local_y + 2),
-            ):
-                neighbor_base = neighbor_y * width
-                for neighbor_x in range(
-                    max(0, local_x - 1),
-                    min(width, local_x + 2),
-                ):
-                    expanded[neighbor_base + neighbor_x] = 1
-
-        for seed, value in enumerate(expanded):
-            if value != 1:
-                continue
-            expanded[seed] = 2
-            queue = [seed]
-            min_x = max_x = seed % width
-            min_y = max_y = seed // width
-            original_pixels = 0
-            while queue:
-                current = queue.pop()
-                # Count only this connected stroke's original ink. A hollow
-                # stroke's bounding box may enclose separate foreground.
-                original_pixels += foreground[current]
-                current_x = current % width
-                current_y = current // width
-                min_x = min(min_x, current_x)
-                max_x = max(max_x, current_x)
-                min_y = min(min_y, current_y)
-                max_y = max(max_y, current_y)
-                for neighbor_y in range(
-                    max(0, current_y - 1),
-                    min(height, current_y + 2),
-                ):
-                    neighbor_base = neighbor_y * width
-                    for neighbor_x in range(
-                        max(0, current_x - 1),
-                        min(width, current_x + 2),
-                    ):
-                        neighbor = neighbor_base + neighbor_x
-                        if expanded[neighbor] != 1:
-                            continue
-                        expanded[neighbor] = 2
-                        queue.append(neighbor)
-            component_width = max_x - min_x + 1
-            component_height = max_y - min_y + 1
-            if original_pixels < DENSE_GLYPH_ALIAS_MIN_COMPONENT_PIXELS:
-                continue
+        for min_x, min_y, component_width, component_height, original_pixels in dilated_ink_components(
+            foreground, width, height, DENSE_GLYPH_ALIAS_MIN_COMPONENT_PIXELS
+        ):
             components.append(
                 _LocalStrokeComponent(
                     left + min_x,

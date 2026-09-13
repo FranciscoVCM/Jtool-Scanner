@@ -715,3 +715,20 @@ ordinary final map. Halls5 also reproduces its map but does not call this helper
 This targets the measured boundary-label cost without changing detection policy;
 portable glyph/nested-ink tests and controlled end-to-end timing remain required
 before adoption. Do not turn preliminary helper timings into an app speed claim.
+
+#### Exact-output optimization verified; finish final coverage (2026-09-13)
+
+The row-run binary traversal is now implemented with an independent pixel oracle
+and 162 passing affected tests/2,103 subtests. All 32 ordinary outputs, raw
+detections, warnings and exact reports equal the published contour checkpoint.
+Serial ABBA NR1 medians improve 74.636->69.510s (-6.87%); Halls5, which does not
+call the helper, is approximately unchanged at 44.762->44.060s. Every timed map
+matches. No detection policy or source/reference lookup was added.
+
+The immediate priority is the remaining 55 final-current canonical outputs, not
+another speculative optimization. Resume the combined 87-case manifest using
+the 32 checksummed compatible outputs. Actually review every changed room and
+carry previous visual reviews only through verified source/settings/crop/map
+equality. Report all 71 remaining-error rows and preserve the two obscured NR2
+removals as uncertain. A clean frame is still needed for those locations; this
+does not prevent completing the other available reviews and publication gates.

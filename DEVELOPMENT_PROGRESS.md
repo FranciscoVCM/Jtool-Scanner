@@ -6747,3 +6747,47 @@ ran during the measurement; the app's CPU use stayed essentially idle. The
 larger material-stage slowdown remains the reason for the separate exact-output
 stroke-processing optimization. This publication is a recoverable intermediate
 checkpoint, not approval of NR2's obscured geometry or completion of the goal.
+
+### Exact-output stroke-component cost reduction (2026-09-13)
+
+The measured boundary-label bottleneck now uses Pillow's existing square
+dilation followed by row-run eight-connected components, instead of Python
+per-pixel dilation and flood traversal. This changes only binary traversal inside
+`_local_stroke_components`: sampling, local contrast, classification thresholds
+and detection policy are unchanged. The helper preserves first-pixel order,
+clipped bounds and original ink belonging to each component, including when a
+hollow component encloses a separate stroke. No new dependency is required.
+
+An independent pixel oracle checks every 3x3 binary mask at three thresholds,
+larger randomized/thin/border masks, diagonal connectivity, nested ink, ordering,
+nonmutation and invalid input. Focused validation passes 12 tests/1,810 subtests;
+broader affected terrain, origin, glyph, overlap, recall and marker coverage
+passes 162 tests/2,103 subtests. These are not full-suite results.
+
+All 32 ordinary validation cases exactly reproduce the published contour maps,
+raw detections, warnings, object counts, crop/scale and exact-reference reports.
+The prior 34 recoveries, 60 false removals, nine real occlusions and 18 corrected
+NANG-128r origins remain protected. FTFA stays 926/928 exact with no extras,
+shifts or wrong directions; Flames retains its prior 252 exact and error counts.
+Equality also preserves NR2's two uncertain removals: it does not verify them.
+
+Serial ABBA end-to-end timing, with no competing scan/test jobs and an idle app,
+checks all eight timed maps against the ordinary output:
+
+| Room | Published traversal median | Row-run median | Change |
+|---|---:|---:|---:|
+| NR1 | 74.636s | 69.510s | -6.87% |
+| Halls5 | 44.762s | 44.060s | -1.57% |
+
+NR1 saves about 5.13 seconds in this small two-sample-per-variant comparison.
+Halls5 does not call the changed helper; its small difference is timing variation,
+not a demonstrated benefit from this change. This recovers part, not all, of the
+preceding material-stage cost. Preliminary helper-only timings are not app speed.
+
+The optimized app is running with verified HTTP 200 and loaded-code parity.
+Local evidence is in the revalidation directory's `final-v1` and
+`component-times/7525d5e7ffe148a9917c274b31bd67c7`. The combined manifest contains
+all 71 canonical screens plus 16 exact controls. Thirty-two compatible outputs
+are ready; 55 remaining canonical outputs still need regeneration and review of
+every change. All 71 frozen baseline reviews remain intact. This performance
+checkpoint neither completes the active goal nor accepts the remaining errors.
