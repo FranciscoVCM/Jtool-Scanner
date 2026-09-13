@@ -695,3 +695,23 @@ carried through verified output/crop/settings equality. Generate the remaining
 active until the full audit, publication and final-state gates are satisfied.
 The local 71-row terrain progress audit explicitly distinguishes pending final
 outputs from the already-complete individual baseline review.
+
+#### Contour verification and outstanding evidence (2026-09-13)
+
+The next necessary-contour batch has 50 source-verified false removals across
+development/control families, with exact-control positives and prior annotations
+protected in all32 ordinary cases. Two further NR2 removals are obscured by a
+yellow effect: retain them as unverified, not as measured accuracy gains. A clean
+frame was requested; no tuning from that evaluation case has occurred. The
+development-progress entry and current contour audit record the scope and the
+remaining major errors. This is not full batch acceptance or goal completion.
+Balanced contour timing adds approximately1.75%onNR1 and2.04%onHalls5 in two
+samples per variant, with all timed maps unchanged from ordinary results.
+These are not speed gains; the next exact-output cost reduction remains useful.
+
+A separate, unshipped row-run component prototype reproduces 1860 binary cases,
+20 real windows and all198 actual stroke-component calls in NR1, with an equal
+ordinary final map. Halls5 also reproduces its map but does not call this helper.
+This targets the measured boundary-label cost without changing detection policy;
+portable glyph/nested-ink tests and controlled end-to-end timing remain required
+before adoption. Do not turn preliminary helper timings into an app speed claim.

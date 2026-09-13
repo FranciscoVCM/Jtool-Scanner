@@ -1,7 +1,7 @@
 import random
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from PIL import Image, ImageDraw
 
@@ -10,17 +10,22 @@ from jtool_scanner.image import RGBImage, load_png
 from jtool_scanner.jmap import JMap
 from jtool_scanner.scanner import Detection, _prune_terrain_covered_spike_aliases
 from jtool_scanner.spike_shape import (
-    SpikeShapeField, VERTICES, _block_union_area, _could_have_strong_slopes, terrain_exposed_aliases,
+    SpikeShapeField, VERTICES, _block_union_area, _could_have_strong_slopes,
+    _unsupported_exposed_slopes, terrain_exposed_aliases,
 )
 
 
-def scene(direction=3, *, triangle=False, scale=1, palette=((45,45,45),(220,220,220))):
+def scene(direction=3, *, triangle=False, scale=1,
+          palette=((45,45,45),(220,220,220)), lateral_side=0):
     background, foreground = palette
     image = Image.new('RGB', (800,608), background)
     draw = ImageDraw.Draw(image)
     if triangle:
         draw.polygon([(160+px,160+py) for px,py in VERTICES[direction]], fill=foreground)
     block = {3:(160,176),4:(144,160),5:(176,160),6:(160,144)}[direction]
+    if lateral_side:
+        block = ((160+lateral_side*16,160) if direction in (3,6)
+                 else (160,160+lateral_side*16))
     bx,by = block
     draw.rectangle((bx,by,bx+31,by+31), fill=(125,110,100))
     # Texture in the predicted occluder must not stand in for exposed slopes.
@@ -62,10 +67,56 @@ class ExposedTerrainSpikeTests(unittest.TestCase):
         self.assertLess(field.score(160,160,3),.5)
         self.assertEqual(set(),self.reject(image,[(3,160,160)],[block]))
 
-    def test_insufficient_observable_slope_is_preserved(self):
-        image,_=scene()
-        # A sideways occluder hides one complete side of this up hypothesis.
-        self.assertEqual(set(),self.reject(image,[(3,160,160)],[(144,160)]))
+    def test_lateral_occlusion_needs_source_evidence_not_both_sides_visible(self):
+        # Replaces the old no-triangle/either-side-insufficient abstention
+        # contract. A hidden side does not excuse an observably absent side,
+        # but every genuine lateral triangle must remain protected.
+        palettes=(((40,40,40),(220,220,220)),
+                  ((220,220,220),(40,40,40)),
+                  ((180,0,0),(0,92,0)))
+        for direction in VERTICES:
+            for side in (-1,1):
+                for scale in (1,1.25,1.5):
+                    for palette in palettes:
+                        for triangle in (False,True):
+                            with self.subTest(direction=direction,side=side,scale=scale,
+                                              palette=palette,triangle=triangle):
+                                image,block=scene(direction,triangle=triangle,scale=scale,
+                                                  palette=palette,lateral_side=side)
+                                expected=set() if triangle else {(direction,160,160)}
+                                self.assertEqual(expected,self.reject(image,[(direction,160,160)],[block]))
+
+    def test_both_exposed_slopes_insufficient_still_abstains(self):
+        image=RGBImage(800,608,bytes(800*608*3))
+        field=Mock()
+        field.patch_stats.return_value=(1,1)
+        field.gradient.return_value=(0,0)
+        field.pixel.return_value=0
+        # Four occluders leave only an 8px horizontal strip; neither slope
+        # has enough unmasked cross-boundary samples for negative evidence.
+        blocks=[(x,y) for x in (144,176) for y in (144,184)]
+        self.assertEqual(768,_block_union_area(160,160,blocks))
+        self.assertFalse(_unsupported_exposed_slopes(field,image,160,160,3,blocks))
+        self.assertEqual(set(),self.reject(image,[(3,160,160)],blocks))
+
+    def test_positive_short_slope_vetoes_other_observably_absent_slope(self):
+        image=RGBImage(800,608,bytes(800*608*3))
+        for left in (False,True):
+            with self.subTest(left=left):
+                field=Mock()
+                field.patch_stats.return_value=(1,1)
+                field.pixel.return_value=0
+                field.gradient.return_value=(0,0)
+                # The masked side has only three observable samples, while
+                # the opposite side supplies enough absent samples.
+                blocks=[(144 if left else 176,172),(160,176)]
+                self.assertEqual(576,_block_union_area(160,160,blocks))
+                self.assertTrue(_unsupported_exposed_slopes(field,image,160,160,3,blocks))
+                field.gradient.side_effect=lambda x,y: (
+                    (32,16 if left else -16)
+                    if (x<176 if left else x>176) else (0,0)
+                )
+                self.assertFalse(_unsupported_exposed_slopes(field,image,160,160,3,blocks))
 
     def test_no_partial_coverage_and_invalid_bounds_are_not_rejected(self):
         image,block=scene()

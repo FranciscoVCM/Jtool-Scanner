@@ -208,9 +208,12 @@ def _unsupported_exposed_slopes(
     field: SpikeShapeField, rgb: RGBImage, x: int, y: int, direction: int,
     blocks: list[tuple[int, int]],
 ) -> bool:
-    """Absence is evidence only where both sides of a slope are observable.
+    """Require an absent necessary slope with observable samples across it.
 
     Terrain hypotheses mask samples, never supply negative image evidence.
+    One observed absent slope suffices even if terrain hides the other slope.
+    Any positive evidence on either observable part vetoes rejection, including
+    a shorter part that cannot itself supply enough negative samples.
     A color-separation guard preserves visible isoluminant objects even when
     the luminance edge field cannot see them.
     """
@@ -221,6 +224,7 @@ def _unsupported_exposed_slopes(
     color_spread = max(1.0, sum(_percentile(values, .95) - _percentile(values, .05)
                                 for values in channels))
     tip, *ends = VERTICES[direction]
+    observed_absent = 0
     for end in ends:
         tx, ty = end[0] - tip[0], end[1] - tip[1]
         length = hypot(tx, ty)
@@ -247,10 +251,12 @@ def _unsupported_exposed_slopes(
             contrasts.append(abs(field.pixel(*outside) - field.pixel(*inside)) / spread)
             first, last = rgb.pixel(*inside), rgb.pixel(*outside)
             color_contrasts.append(sum(abs(a - b) for a, b in zip(first, last)) / color_spread)
-        if (len(hits) < 4 or sum(hits) / len(hits) > .25
+        if hits and (sum(hits) / len(hits) > .25
                 or median(contrasts) >= .15 or median(color_contrasts) >= .15):
             return False
-    return True
+        if len(hits) >= 4:
+            observed_absent += 1
+    return observed_absent >= 1
 
 
 def _could_have_strong_slopes(field: SpikeShapeField, x: int, y: int, direction: int) -> bool:

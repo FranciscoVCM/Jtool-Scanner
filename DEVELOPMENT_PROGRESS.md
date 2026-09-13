@@ -6682,3 +6682,68 @@ support: the temporary report filename reached 261 characters. Existing output
 was preserved and the ordinary scan rerun successfully in the shorter
 `terrain-v6` directory. No scanner logic or system setting was changed to hide
 that filesystem error. Future output directories should remain short.
+
+### Necessary exposed contours: gains and explicit uncertainty (2026-09-13)
+
+A subsequent shared contour rule no longer requires both predicted spike slopes
+to be visible before rejecting an unsupported partial-terrain hypothesis. One
+necessary slope with at least four observable absent samples is sufficient;
+positive edge, luminance or RGB separation on either observable part vetoes
+rejection, including a shorter part. Both sides insufficient still abstains.
+Existing terrain-coverage, strong-shape and nearby-triangle protections remain.
+No screen, palette or reference-map lookup is involved.
+
+Ordinary results versus the published material checkpoint:
+
+| Screen / control | Changed objects | Evidence |
+|---|---|---|
+| CN3 NR1 | 34 false spikes removed; 41->7 | Source contains no triangles; all blocks and markers unchanged |
+| CN3 Halls5 | Four false down spikes removed | Located source review; all other tuples unchanged |
+| CN3-27 | Three false down spikes removed | Untuned red-lattice control; source review |
+| CN3-31 | Two false orientations removed | Untuned white-masonry/dark-background control; source review |
+| Arcfox exact capture | One extra removed; 17->16 | Source and corrected JMap; 261 exact unchanged |
+| Irkara-89 exact capture | Three extras removed; 26->23 | Source and corrected JMap; 202 exact unchanged |
+| CN3 NR2 | Three confirmed false removals; two unverified removals | Lower-left yellow effect obscures two changed locations |
+
+This is 50 confirmed false removals and two uncertain removals, **not 52 verified
+corrections**. A clean NR2 frame was requested for the two obscured down-spike
+locations. Its evaluation role was not used for tuning. The remaining four
+no-tuning outputs are unchanged. All 32 ordinary cases are complete; the seven
+changed maps contain no added tuples or changes outside full-spike removals.
+All 16 exact controls retain their previous exact matches without increased
+misses, shifts or direction errors; only the two listed extra counts improve.
+FTFA remains 926/928 exact with no extras/shifts/wrong directions. Flames retains
+252 exact and its previous 43 extras, 21 misses, 20 shifts and two wrong directions.
+The prior 34 recoveries, 60 false removals, nine real occlusions and 18 NANG-128r
+origins remain protected.
+
+Affected tests pass: 152 tests and 293 subtests, not the complete suite. The
+short-positive-slope test was additionally strengthened to stay inside the
+production partial-coverage range; all 12 contour tests/227 subtests pass again.
+The tests exercise lateral occlusions across direction, scale and palette,
+including isoluminant colors, both-insufficient abstention and short positive
+evidence. Current standalone JTool and Blend views were reviewed against source
+for all seven changed outputs. The review preserves NR2's uncertainty rather
+than converting a missing visible edge into proof about hidden geometry.
+
+All affected canonical rooms still have major issues. Cumulatively, NR1 now
+loses all 101 old false spike tuples but retains seven new false tuples introduced
+by the material reconstruction. Missing water also remains. Halls5's remaining
+45 full-spike detections include both genuine objects and wrong/overlapping ones.
+These partial gains do not certify whole rooms or arbitrary future tilesets.
+
+The current ignored audit is `71-screen-contour-v1-progress.md` under the
+revalidation directory. It covers all 71 reviewed baselines, but only 16 current
+outputs: five changed canonical reviews and 11 equality-carried reviews. The two
+changed exact captures are additional controls, not extra canonical rooms.
+Final-current output for the other 55 remains required. NR2's two unverified
+changes are a separate unresolved acceptance item.
+
+Serial ABBA contour timings are complete; all eight timed maps equal their
+saved ordinary outputs. NR1 median73.833->75.122s (+1.75%); Halls5
+44.177->45.076s (+2.04%). These small samples show no speed improvement and do
+not establish a precise long-run latency difference. No competing scan/test job
+ran during the measurement; the app's CPU use stayed essentially idle. The
+larger material-stage slowdown remains the reason for the separate exact-output
+stroke-processing optimization. This publication is a recoverable intermediate
+checkpoint, not approval of NR2's obscured geometry or completion of the goal.
