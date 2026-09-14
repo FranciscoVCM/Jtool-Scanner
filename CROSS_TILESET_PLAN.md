@@ -732,3 +732,51 @@ carry previous visual reviews only through verified source/settings/crop/map
 equality. Report all 71 remaining-error rows and preserve the two obscured NR2
 removals as uncertain. A clean frame is still needed for those locations; this
 does not prevent completing the other available reviews and publication gates.
+
+#### All-71 final review available; acceptance evidence still open (2026-09-14)
+
+The complete final 87-case run has 71 canonical outputs and 16 exact controls.
+All 15 changed canonical maps have source-backed review, while 56 unchanged
+reviews carry through verified input, geometry and metadata equality. All 71
+fresh baseline reviews are preserved; no row depends merely on historical
+acceptance. The readable all-screen before/after report is in the ignored
+revalidation directory as `71-screen-before-after.md`.
+
+The previously pending 55 outputs reveal another 37 verified false removals
+and one true right-spike recovery across ten canonical controls; see the latest
+development-progress table for the actual cases. No tuning followed those
+evaluations. The two development families retain their substantial terrain gains,
+and all protected annotations/exact controls pass. These gains demonstrate
+limited transfer, not arbitrary-tileset accuracy. All 49 major-issue rooms remain
+major; no severity was upgraded merely because a few errors disappeared.
+
+NR2's two obscured changed locations remain unverified. The archived and original
+named sources are byte-identical, and the other named local candidate is only a
+vine crop. Do not replace missing evidence with historical generated maps or
+count the two changes as false removals. The clean-frame request remains open;
+final acceptance of this goal must not silently waive it.
+
+NR1's seven newly introduced false spikes are a second acceptance issue, not
+seven unchanged old errors. Prior protected checks do not certify new geometry.
+The next immediate bounded work must trace and address those fully covered
+aliases without sacrificing true occlusions or the restored terrain. Net gains
+alone do not establish that every newly emitted object is an improvement.
+
+After resolving that acceptance evidence, rank the next bounded work from the
+current all-room findings:
+
+1. Trace gross phase/native-size errors in Entrance1/2, Halls4 and CN3-92,
+   separating never-proposed true geometry from normalization/arbitration losses.
+   Preserve proposal provenance and measure true-object recall alongside extras.
+   The visual patterns suggest shared mechanisms but are not yet a causal proof.
+2. Broaden real portal/platform/short-vine coverage and gravity-arrow recognition,
+   using source-supported positives plus look-alike negatives across families.
+   Check measured save origins separately; no universal 16px/8px offset.
+3. Investigate faint water and dark killblocks with local relative material and
+   retained color evidence, not a duplicate grayscale scan or palette lookup.
+4. Clarify standard-JTool representation of nonstandard Dotkid hazards and
+   vertical brown objects before claiming exact comparisons for those shapes.
+
+Keep the existing scope guards, exact controls, source-verified annotations and
+controlled runtime checks. New example requests should be specific and minimal;
+the preserved corpus remains sufficient for these diagnoses.

@@ -6791,3 +6791,102 @@ all 71 canonical screens plus 16 exact controls. Thirty-two compatible outputs
 are ready; 55 remaining canonical outputs still need regeneration and review of
 every change. All 71 frozen baseline reviews remain intact. This performance
 checkpoint neither completes the active goal nor accepts the remaining errors.
+
+### All-71 final-current audit and additional transfer (2026-09-14)
+
+The final ordinary run is complete: all 71 canonical screens plus 16 exact
+controls, using package
+`d028de5c9526dc8257a49e39816bebda7ac83c99ceb02b430626a0a15c5a402a`.
+Thirty-two compatible checksummed results were reused and the remaining 55
+canonical screens were scanned. Current original images, options and all 16
+reference files were independently rehashed against the sealed results. No
+source, fixture or corrected JMap was edited. Reference maps remain evaluation
+inputs only, never detector answers.
+
+All 71 baseline rooms had individual Source/JTool/Blend review. All 15 changed
+canonical final maps have now also been reviewed, with localized source crops
+and exact contour overlays where needed. The other 56 reviews carry forward
+only through verified source/settings/crop/scale/object-map/metadata equality.
+Entrance1–3 and Say2 were independently viewed again on the final code. The
+Entrance rooms still contain substantial terrain/mini/full conflicts; both
+gravity arrows remain missing in Entrance3. Unchanged output is not acceptance.
+
+The final 55-screen refresh establishes additional source-verified gains without
+tuning from these reviews:
+
+| Canonical case | Confirmed false full spikes removed | Other change |
+|---|---:|---|
+| CN3-19 | 4 | None |
+| CN3-21 | 2 | None |
+| CN3-25 | 4 | Real right spike at (496,112) recovered |
+| CN3-26 | 2 | None |
+| CN3-92 | 1 | None |
+| Dotkid2 | 1 | Irregular-hazard representation remains unresolved |
+| Golden3 | 1 | None |
+| Golden4 | 3 | None |
+| Halls1 | 3 | None |
+| Halls4 | 16 | None |
+
+That is 37 additional verified false removals and one recovered triangle, across
+engraved metal, red lattice, grass/bricks, flat Dotkid, golden and blue/pale Halls
+visual families. These historically exposed controls are not genuinely unseen
+data. Every changed tuple in these ten cases is accounted for by the final
+review annotations. Removing a wrong hypothesis beside a real triangle does
+not mean the correct triangle has been recovered. All ten rooms still have
+major issues; existing non-spike objects, metadata and crop/scale are unchanged.
+
+The earlier material gains remain: NR1's selected four block origins and 64
+solid samples recover, and Halls5's selected ledge improves from 8/144 to 144/144
+solid samples. NR1 loses all 101 old false spikes but retains seven new false
+spikes; water is still largely absent. Halls5 has 31 cumulative verified false
+removals with its 11 declared real spikes retained, but the remaining 45 full
+spikes include both correct and incorrect detections. Stage deltas must not be
+summed as unique baseline corrections, and occupancy is not exact hidden block
+decomposition.
+
+Final severity totals are unchanged: **49 major**, five moderate, six localized,
+one reference-boundary limitation and ten with no visible mismatch under their
+stated review scope. The major total includes NR2's two uncertain changes.
+No available row is merely historical-only; no room was promoted by warnings,
+counts or an old accepted label. The shared rules improve recognition in several
+visual families but do not solve arbitrary sprites, colors or tilesets.
+
+All 87 integrity checks pass. The original 32 cases preserve the published
+contour maps, raw detections, warnings, crop/scale, metadata and exact reports.
+All prior 34 recoveries, 60 false removals, nine true occlusions and 18 NANG-128r
+origins remain protected, with no recorded protected-annotation failures. The
+16 exact controls retain all previous matches: FTFA remains 926/928 without
+extras/shifts/wrong directions, and Flames remains 252 exact with its previous
+error counts. Arcfox and Irkara-89 retain the earlier one/three-extra reductions.
+Canonical CN3-16/18 supplemental comparisons remain 590/590 and 491/492 following
+the separately documented source-layout review; the latter miss starts outside
+the viewport. The differently captured tracked CN3-18 control still has its
+separate known extra; these captures are not interchangeable.
+
+The final code retains the recorded 162 passing affected tests and 2,103 subtests
+and serial exact-map timing evidence from the performance checkpoint. This is
+not a new full-suite result. No detector change was made during final scanning
+or review. The app remains on that code with HTTP 200 and health parity verified.
+
+The readable local report is
+`.artifacts/corpus-revalidation-20260910/71-screen-before-after.md`, with all 71
+before/current findings and separate Source/JTool/Blend links. The companion
+`71-screen-final-progress.json` retains hashes, exact deltas and review provenance.
+An evaluation-only SVG overlay helper makes the exact removed contours visible
+on source crops; it does not alter scan inputs. These generated/private artifacts
+remain ignored and are not included in this publication.
+
+**Unresolved acceptance evidence:** NR2 down hypotheses at (16,512) and (48,512)
+remain hidden by the bright yellow effect. Its other three removals are verified;
+these two are not. The copied archive image and original named testing image
+are byte-identical to the canonical source. The other named local image is a
+vine crop, not a clearer frame. Historical generated maps are not corrected
+truth. A clean frame is still needed; this publication records full review
+coverage, not final acceptance of those changes or completion of the active goal.
+
+The requirement-level audit also keeps NR1's seven **new** false spikes open.
+Its large net improvement is real, but does not satisfy a claim that every new
+object is correct. The existing protected controls cover declared positives
+and negatives, not all newly introduced geometry. Resolve these new aliases
+with source-supported general arbitration before final acceptance; do not hide
+them behind the overall count reduction or weaken the goal's safeguards.
