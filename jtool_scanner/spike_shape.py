@@ -12,6 +12,7 @@ from PIL import Image, ImageFilter
 
 from .geometry import Box
 from .image import RGBImage
+from .spike_color_evidence import QuantizedColorSlopeField
 
 
 VERTICES = {
@@ -154,10 +155,13 @@ def terrain_covered_aliases(image: RGBImage, room: Box,
     """Reject unsupported triangle hypotheses inside a union of full blocks.
 
     Partial coverage, strong individual slopes and nearby supported triangles
-    are deliberately preserved. Block detections alone cannot reject a spike.
+    are deliberately preserved. Scalar contrast also needs a possible directed
+    boundary: periodic non-triangular texture can supply contrast alone.
+    Block detections alone cannot reject a spike.
     Coordinates and image evidence are scan-local; no reference truth is used.
     """
     field = None
+    color_field = None
     rejected = set()
     for direction, x, y in spikes:
         if not (0 <= x <= 768 and 0 <= y <= 576):
@@ -181,8 +185,17 @@ def terrain_covered_aliases(image: RGBImage, room: Box,
         if field is None:
             field = SpikeShapeField(image, room)
         sides = field.side_scores(x, y, direction)
-        if min(sides) >= .5 or max(sides) >= .75 or abs(field.contrast(x,y,direction)) >= .5:
+        if min(sides) >= .5 or max(sides) >= .75:
             continue
+        if abs(field.contrast(x, y, direction)) >= .5:
+            if color_field is None:
+                color_field = QuantizedColorSlopeField(image, room)
+            # Possible color directions protect uncertain low-contrast edges;
+            # they must not become positive evidence for otherwise unsupported
+            # candidates. Both sides need at most a quarter compatible samples
+            # before scalar contrast can be discounted as a texture alias.
+            if max(color_field.possible_side_scores(x, y, VERTICES[direction])) > .25:
+                continue
         if any(field.score(x+dx,y+dy,direction) >= .9
                and abs(field.contrast(x+dx,y+dy,direction)) >= .5
                for dx in range(-16,17,8) for dy in range(-16,17,8)):

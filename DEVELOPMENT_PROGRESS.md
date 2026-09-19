@@ -6890,3 +6890,76 @@ object is correct. The existing protected controls cover declared positives
 and negatives, not all newly introduced geometry. Resolve these new aliases
 with source-supported general arbitration before final acceptance; do not hide
 them behind the overall count reduction or weaken the goal's safeguards.
+
+### Covered texture contrast: acceptance repair (2026-09-19)
+
+The covered-spike filter now checks whether high scalar contrast has any
+plausible directional boundary, using locally calibrated RGB gradients with
+8-bit rounding uncertainty. Repeated rectangular texture can supply contrast
+without a triangle. Strong existing slopes and nearby supported triangles still
+protect a candidate, and partial coverage follows the unchanged separate rule.
+The color field is constructed lazily for fully covered, weak-luminance-contour,
+high-contrast candidates; this is not another whole-image detection pass.
+
+The ordinary NR1 trace reproduces the published map, metadata and crop and
+isolates the seven new false left spikes: their scalar contrast is about
+0.52–0.56 despite only zero to two of twelve directional samples per side.
+The new rule removes exactly those seven in the ordinary pipeline. Source,
+standalone JTool and Blend were individually reviewed again. All 220 blocks,
+two saves, seven existing water objects and the earlier recovered plates are
+unchanged. Relative to the frozen goal baseline, all 101 old false spikes are
+gone and no new spike aliases remain. Extensive water misses still make this a
+**major-issue room**, not an accepted or exact-certified reconstruction.
+
+The numerical distinction between uncertainty and positive evidence matters:
+
+- A first RGB-direction prototype newly lost eight very low-contrast synthetic
+  triangles. Integer gradient steps could not support a precise direction test.
+- A second variant expanded direction compatibility for quantization but used
+  that uncertainty as positive evidence, newly retaining 34 false noise/ring
+  hypotheses. It was rejected and its experimental scan deliberately stopped.
+- The implemented version uses possible color directions only to decide whether
+  the existing scalar-contrast safeguard must abstain from rejection. It does
+  not promote uncertainty to a new color-only object detection.
+
+Portable comparisons cover 480 generated positives and 216 generated negatives,
+with no newly lost positives or newly retained negatives. Production results
+match the frozen prototype case by case. This is relative non-regression evidence:
+130 old positive misses and eight old false retentions remain in these deliberately
+adversarial scenes with supplied covering-block hypotheses. They are not an
+ordinary-room accuracy estimate, and color-only recall is not claimed solved.
+
+The 32-case ordinary validation is complete and checksummed. Only NR1 changes
+versus the previously published final-code maps; the other 31 are identical.
+All 16 exact controls retain their reports, including FTFA 926/928 with no
+extras/shifts/wrong orientations and Flames 252 exact with no error increase.
+The prior 34 recoveries, 60 false removals, nine real occlusions, 18 NANG-128r
+origins, Halls5 declared spikes/markers and recovered terrain remain protected.
+The possible Golden7 change from the deliberately incomplete contrast-guard
+ablation does not occur in the implemented version.
+
+Focused coverage passes 27 tests/248 subtests; the broader affected selection
+passes 169 tests/2,118 subtests. These are not full-suite results. New portable
+tests explicitly distinguish an uncertain direction from positive evidence and
+protect real low-contrast triangles across directions, polarity and capture scale.
+The public implementation consists of `spike_color_evidence.py` and the narrow
+integration in `spike_shape.py`, with no source-name, coordinate, hue-identity or
+reference-answer lookup and no fixture/source/JMap edits.
+
+Serial quiet ABBA timing is complete, with all eight maps and metadata matching
+their corresponding ordinary outputs. NR1 median latency is 64.844 -> 65.931s
+(+1.68%); Halls5 is 42.234 -> 41.880s (-0.84%). This small sample shows a modest
+NR1 cost amid run-to-run variation, not proof of zero overhead or a speedup.
+Earlier NR1 samples overlapped a read-only audit update and are excluded from
+this comparison. No scan/test/helper jobs competed in the quiet repeat.
+
+The separate ignored `71-screen-covered-color-progress.md/json` records current
+coverage without overwriting the previous complete 71-room report: 16 canonical
+screens have this implementation's outputs and reviewed/equality-carried findings.
+All 71 original baseline reviews remain intact. The remaining 55 need regeneration
+on final code and any changed output needs source review. NR2's two obscured
+removals remain unverified; this batch does not resolve that evidence or complete
+the active goal. The tested app has been restarted on this implementation;
+HTTP 200 and loaded-source fingerprint parity are verified. The reviewed change
+is ready for its bounded checkpoint publication; the all-71 current-code
+successor remains pending rather than being silently inherited from old code.

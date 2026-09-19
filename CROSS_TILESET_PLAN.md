@@ -780,3 +780,33 @@ current all-room findings:
 Keep the existing scope guards, exact controls, source-verified annotations and
 controlled runtime checks. New example requests should be specific and minimal;
 the preserved corpus remains sufficient for these diagnoses.
+
+#### Covered-contrast acceptance repair verified on 32 cases (2026-09-19)
+
+The seven newly introduced NR1 aliases are removed by a shared directional-color
+check on the existing high-contrast preservation rule. Their scalar contrast
+comes from non-triangular texture; rounded low-contrast gradients need explicit
+uncertainty rather than a brittle angle test. Crucially, a possible direction is
+an abstention signal, not positive evidence for a new object. Two less safe
+prototypes were rejected on actual-pixel synthetic counterexamples before any
+deployment. See the development-progress entry for scope and remaining limits.
+
+All 32 ordinary cases and the affected 169-test selection pass. NR1 is the only
+map changed versus the preceding final implementation, with its terrain/markers
+unchanged; its large water misses still prevent acceptance. All 16 exact controls,
+the preceding positives/negatives and true occlusions remain protected. This
+closes the source-visible seven-alias issue in the tested candidate, not the
+two obscured NR2 changes or arbitrary color-only recall.
+
+Quiet serial ABBA timing now passes map/metadata parity for all eight scans:
+NR1 median 64.844 -> 65.931s (+1.68%), Halls5 42.234 -> 41.880s (-0.84%). Report
+the modest observed NR1 cost and sample variation, not zero overhead or a speedup.
+The tested app is deployed with HTTP 200 and loaded-source parity verified.
+Finish reviewed checkpoint publication, then reuse the compatible 32 current-code
+results for a full 87-case manifest run, generate the other 55 canonical outputs,
+inspect changed regions
+and carry prior reviews only through verified input/map/metadata equality.
+Preserve the previous complete 71-room audit as history and publish a current-code
+successor. Do not mark the goal complete while NR2's acceptance evidence remains
+unverified, and do not broaden this cleanup into another long spike-only campaign
+at the expense of the ranked native-size/phase and missing-object work above.
