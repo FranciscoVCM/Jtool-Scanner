@@ -6963,3 +6963,64 @@ the active goal. The tested app has been restarted on this implementation;
 HTTP 200 and loaded-source fingerprint parity are verified. The reviewed change
 is ready for its bounded checkpoint publication; the all-71 current-code
 successor remains pending rather than being silently inherited from old code.
+
+### Complete current-code 71-screen audit; one evidence gap (2026-09-20)
+
+The final 87-case refresh is complete: all 71 canonical screens and all 16 exact
+controls now have outputs from the covered-contrast implementation in `517aac7`.
+All 87 cache/integrity and protected-annotation checks pass. Every original source,
+reference hash and option set is unchanged. Only NR1 changes versus the preceding
+published implementation: the seven source-verified false left spikes are gone;
+the other 86 object maps are identical. No implementation changed during final
+scanning or verification.
+
+All 71 goal-baseline screens were individually reviewed. Their current findings
+are backed by final-code outputs: all 15 changed baseline-to-current canonical
+maps have source review, and the other 56 reviews carry through verified source,
+options, crop, scale, object-map and metadata equality. NR1's Source/JTool/Blend
+were directly inspected again during this final verification. Review coverage
+does not certify every changed object: NR2's two obscured removals remain open.
+
+The final statuses remain deliberately conservative: 49 major-issue rooms
+(including NR2), five moderate, six localized, one reference-boundary limitation
+and ten with no visible mismatch under the stated review scope. There is no
+whole-room approval inferred from counts or warnings. Of the 40 historically
+accepted screens, 21 have major issues, three moderate and six localized;
+only ten have no visible mismatch under the stated scope. This corrects the
+historical evidence, not a claim that the new implementation caused those errors.
+
+Both development families retain substantive source-supported terrain gains:
+NR1's selected occupancy is 64/64 versus 16/64, with four exact selected origins
+versus zero; Halls5's selected ledge is 144/144 versus 8/144. All 101 original NR1
+false spikes are gone, and its seven subsequently introduced aliases are now
+removed too. Water remains extensively missing. Previously reviewed contour
+improvements in the other visual families remain intact, not counted again as
+new changes from this seven-alias batch.
+
+All 34 protected recoveries, the required 60 prior false removals (plus the
+separate 18 earlier terrain negatives), nine true occlusions and 18 NANG-128r
+origins remain protected. All 16 exact controls preserve the preceding reports;
+FTFA remains 926/928 without extras/shifts/wrong directions and Flames remains
+252 exact without increased errors. The differently captured canonical CN3-16/18
+supplemental comparisons remain 590/590 and 491/492 with the known offscreen miss.
+The existing 169-test/2,118-subtest result and quiet ABBA timing belong to this
+unchanged implementation; this is not a new full-suite or speedup claim.
+
+The local report is
+`.artifacts/corpus-revalidation-20260910/71-screen-covered-color-before-after.md`,
+with 71 individual before/current sections and separate source/JTool/blend links.
+Its technical companion is `71-screen-covered-color-progress.md/json` in the
+same directory. The preceding complete report is preserved as history; generated
+outputs, images, private notes and these local reports are not published to Git.
+The tested app was restarted after the prior process was confirmed absent;
+HTTP 200 and the loaded-source fingerprint again match the tested implementation.
+
+**Remaining acceptance evidence:** NR2 down hypotheses at (16,512) and (48,512)
+are hidden by the yellow effect. A read-only clipping diagnostic did not justify
+a replacement rule: excluding fully clipped samples leaves one removal unresolved;
+excluding any single-channel-clipped sample would retain four known false
+triangles on ordinary saturated-color backgrounds. No such rule was implemented.
+The available duplicate source files do not reveal the hidden geometry. A clean
+same-layout frame or authoritative confirmation is still needed. Full audit and
+publication coverage do not waive this map-change acceptance gate or establish
+perfect recognition of future tilesets.

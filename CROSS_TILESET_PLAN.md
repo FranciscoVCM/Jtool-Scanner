@@ -810,3 +810,31 @@ Preserve the previous complete 71-room audit as history and publish a current-co
 successor. Do not mark the goal complete while NR2's acceptance evidence remains
 unverified, and do not broaden this cleanup into another long spike-only campaign
 at the expense of the ranked native-size/phase and missing-object work above.
+
+#### Final-current audit verified; resolve NR2 evidence before completion (2026-09-20)
+
+The complete 87-case run now verifies current outputs for all 71 canonical rooms
+and all 16 exact controls. Only NR1 differs from the preceding implementation,
+with its seven new aliases source-verified removed. All prior protected geometry,
+annotations and exact reports hold. All 15 changed baseline-to-current canonical
+maps have source review; the other 56 reviews carry only through verified full
+input/geometry/metadata equality. The current local readable report is
+`71-screen-covered-color-before-after.md` in the revalidation directory.
+
+The review still finds 49 major-issue rooms. In particular, 30 of 40 historical
+accepted labels conflict with visible remaining errors; ten show no visible
+mismatch only within the stated review scope. Do not use the old labels to rank
+rooms as solved, and do not confuse full review coverage with exact accuracy.
+
+The remaining goal acceptance gap is NR2's two obscured removals. The current
+source and available duplicate images cannot establish the hidden geometry.
+A narrowly scoped read-only diagnostic tested whether clipped samples explain
+the problem. An all-channel clipping exclusion does not protect both locations;
+an any-channel exclusion would also retain four known false hypotheses on red,
+blue, cyan and yellow backgrounds. That simple blanket veto is not a safe
+generalization fix and was not implemented. Seek a clearer same-layout source
+or explicit geometry confirmation; do not manufacture a threshold or coordinate
+exception to close the goal. This evidence gap does not invalidate the published
+gains or justify redoing the complete scan, but it prevents final acceptance of
+those two changes. The ranked next development work above remains appropriate
+once that evidence is resolved.
