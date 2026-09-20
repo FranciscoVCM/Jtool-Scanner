@@ -1,6 +1,6 @@
 # Cross-tileset milestone
 
-The active goal is **full-corpus revalidation and gains across two previously
+The current milestone is **full-corpus revalidation and gains across two previously
 historical visual families**. See “Current priority: full-corpus revalidation”
 below and the latest implementation entry. Earlier milestones are retained as
 history; their completed gates and narrower objectives do not replace the
@@ -838,3 +838,20 @@ exception to close the goal. This evidence gap does not invalidate the published
 gains or justify redoing the complete scan, but it prevents final acceptance of
 those two changes. The ranked next development work above remains appropriate
 once that evidence is resolved.
+
+#### NR2 confirmation resolves the final evidence gap (2026-09-20)
+
+The user confirmed, after the coordinates and lower-left region were clarified,
+that the two questioned down spikes are absent and the glow is only a visual
+effect. Record these as two user-confirmed false removals, separate from the
+three visually verified removals. Do not describe the obscured source pixels
+as independently revealing those shapes. Current code and all outputs are
+unchanged; NR2 remains a major-issue room with other uncorrected geometry.
+
+This closes the last changed-object evidence gap for the full fresh review and
+two-family improvement milestone. Preserve its complete audit and controls;
+do not repeat it or confuse completion of that bounded milestone with perfect
+recognition. The next development priorities remain the native-size/grid-phase,
+missing-object and local-color/material diagnoses ranked above. Use explicit
+development/control/evaluation cases and measured recall, placement and false
+positives for the next batch.

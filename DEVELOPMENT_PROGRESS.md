@@ -7024,3 +7024,26 @@ The available duplicate source files do not reveal the hidden geometry. A clean
 same-layout frame or authoritative confirmation is still needed. Full audit and
 publication coverage do not waive this map-change acceptance gate or establish
 perfect recognition of future tilesets.
+
+### NR2 effect clarified; changed-object evidence gap resolved (2026-09-20)
+
+After both lower-left locations and the coordinate convention were clarified,
+the user explicitly confirmed that there are no spikes beneath the NR2 glow:
+it is a visual effect. The existing removals of down(16,512) and down(48,512)
+are therefore correct. Their evidence is attributed to user confirmation,
+not to seeing through the obscuring pixels. Together with the three previously
+source-verified removals, all five NR2 changes now have independent justification.
+
+This is an evidence update, not a new detection fix. Implementation `517aac7`,
+all 87 ordinary outputs, source images, fixtures and authoritative JMaps are
+unchanged. The earlier uncertain audit is preserved locally; the current
+71-screen report records three visually verified and two user-confirmed NR2
+negatives separately. No whole-room acceptance follows: NR2 remains major,
+and the overall statuses remain 49 major, five moderate, six localized,
+one reference-boundary limitation and ten with no visible mismatch under scope.
+
+The final changed-object evidence gap for the fresh-review/two-family milestone
+is resolved. Broader recognition work remains, particularly native-size/grid-phase
+failures, missing thin platforms/short vines/portals, and faint water or dark
+killblocks. The next batch should follow that ranked evidence, not repeat the
+completed scan or infer that all 71 rooms are accurate.
