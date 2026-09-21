@@ -51,7 +51,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
-from .spike_shape import corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
+from .spike_shape import corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .terrain_material import distributed_cell_edges, learn_complementary_terrain
 
 
@@ -2775,6 +2775,7 @@ def scan_image(
             detections = _reconcile_directed_material_spikes(detections, image, box)
             detections = _prune_terrain_covered_spike_aliases(detections, image, box)
             detections = _recover_directed_material_spikes(detections, image, box)
+            detections = _recover_directed_mini_runs(detections, image, box)
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -3795,6 +3796,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _recover_directed_material_spikes(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _recover_directed_mini_runs(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -14885,6 +14889,28 @@ def _recover_directed_material_spikes(
                             .9, image, room, GRID_SIZE)
         for direction, x, y in proposals
     ]
+
+
+def _recover_directed_mini_runs(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    """Retain independently supported native16 runs after capture consensus.
+
+    Requiring an old source-scale mini hypothesis would repeat the sampling
+    failure this recovery addresses. Contour, base and material evidence come
+    directly from the source. Existing objects remain unchanged; competing or
+    near-duplicate mini hypotheses are left for separate reconciliation.
+    """
+    spikes = [(d.type_id, d.x, d.y) for d in detections if d.type_id in FULL_SPIKE_TYPES]
+    minis = [d for d in detections if d.type_id in MINI_SPIKE_TYPES]
+    proposals = corroborated_mini_runs(image, room, spikes)
+    additions = [
+        _geometry_detection("directed_native_mini_run", direction, x, y,
+                            .9, image, room, MINI_BLOCK_SIZE)
+        for direction, x, y in proposals
+        if not any(abs(d.x - x) <= 8 and abs(d.y - y) <= 8 for d in minis)
+    ]
+    return detections + additions if additions else detections
 
 
 def _reconcile_directed_material_spikes(

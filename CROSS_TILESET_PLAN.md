@@ -1,12 +1,40 @@
 # Cross-tileset milestone
 
-The current milestone is **full-corpus revalidation and gains across two previously
-historical visual families**. See “Current priority: full-corpus revalidation”
-below and the latest implementation entry. Earlier milestones are retained as
-history; their completed gates and narrower objectives do not replace the
-active all-71 review/final-current requirements.
+The current milestone is **generalized native geometry and positive-object
+recovery**, starting from `a087d6d`. The full-corpus revalidation milestone below
+is complete; its conservative findings and protected controls are the baseline,
+not a reason to repeat unchanged scans or declare the remaining rooms accurate.
 
-## Objective and completion requirements
+## Current priority: native geometry and positive recovery (2026-09-21)
+
+Develop against Entrance1/Halls4, reserving Entrance2/CN3-92 from tuning for
+each declared experiment. Require substantive source-supported recovery across
+at least three rooms and two visual families, including one untuned transfer.
+These rooms have historical exposure; they are not genuinely unseen holdouts.
+Complete contiguous structures, independent changed-object review, protected
+exact controls, runtime evidence and a final-current all-71 audit remain gates.
+
+Two ordinary-output-equivalent traces separate the first causes. Entrance1's
+canonical pass classifies all 24 minis in its lower-right rail correctly, but
+deduplication/terrain replacement lose them and same-type capture consensus
+discards the surviving 11 up minis because the source pass has no matching
+mini proposals. Halls4 proposes correctly placed ceiling blocks but loses
+their half-cell phase. Its single-material rectangle mask is a next candidate
+for phase-independent packing; that exploratory mask is not a shipped fix.
+
+The first native-mini implementation independently checks 16px directed slopes,
+the material transition at their bases, and corroborating contrast polarity.
+It recovers 45 source-visible Entrance1 minis, including all 24 rail spikes.
+The predeclared rail improves from 0/36 to 24/36 native objects: its twelve
+solid cells and the old full-spike aliases remain unresolved. This is not
+whole-room acceptance. Halls4 and reserved Entrance2/CN3-92 remain unchanged,
+so the three-room/two-family milestone is not yet met. The 24-case ordinary
+validation preserves all sixteen exact controls; 177 affected tests pass.
+Quiet ABBA timing, limitations and interim successor audit coverage are
+recorded in DEVELOPMENT_PROGRESS.md. Next, test phase-free single-material
+rectangle recovery without weakening texture/background or exact-control gates.
+
+## Earlier milestone: objective and completion requirements
 
 Establish a reproducible, versioned cross-tileset baseline; trace representative
 failures through candidate generation, classification, placement and arbitration;

@@ -32,7 +32,15 @@ def _percentile(values: list[float], fraction: float) -> float:
 
 
 class SpikeShapeField:
-    def __init__(self, image: RGBImage, room: Box):
+    def __init__(self, image: RGBImage, room: Box, *, native_size: int = 32):
+        if native_size not in (16, 32):
+            raise ValueError("triangle evidence requires a native 16px or 32px object")
+        self.native_size = native_size
+        self.vertices = {
+            direction: tuple((px * native_size / 32, py * native_size / 32)
+                             for px, py in points)
+            for direction, points in VERTICES.items()
+        }
         crop = image.crop(room)
         gray = Image.frombytes("RGB", (crop.width, crop.height), crop.data)
         gray = gray.convert("L").resize((800, 608), Image.Resampling.BILINEAR)
@@ -54,8 +62,10 @@ class SpikeShapeField:
     def patch_stats(self, x: int, y: int) -> tuple[float, float]:
         key = x, y
         if key not in self.stats:
-            values = [self.pixel(px, py) for py in range(y, y + 32) for px in range(x, x + 32)]
-            magnitudes = [hypot(*self.gradient(px, py)) for py in range(y, y + 32) for px in range(x, x + 32)]
+            values = [self.pixel(px, py) for py in range(y, y + self.native_size)
+                      for px in range(x, x + self.native_size)]
+            magnitudes = [hypot(*self.gradient(px, py)) for py in range(y, y + self.native_size)
+                          for px in range(x, x + self.native_size)]
             self.stats[key] = (
                 max(1.0, _percentile(magnitudes, 0.90)),
                 max(1.0, _percentile(values, 0.95) - _percentile(values, 0.05)),
@@ -63,7 +73,7 @@ class SpikeShapeField:
         return self.stats[key]
 
     def score(self, x: int, y: int, direction: int) -> float:
-        if not (0 <= x <= 768 and 0 <= y <= 576):
+        if not (0 <= x <= 800 - self.native_size and 0 <= y <= 608 - self.native_size):
             return -1.0
         key = x, y, direction
         if key in self.scores:
@@ -83,7 +93,7 @@ class SpikeShapeField:
         that fringe without changing the established conservative refit/veto
         scores. A weak/isoluminant patch is not evidence for adding an object.
         """
-        if not (0 <= x <= 768 and 0 <= y <= 576):
+        if not (0 <= x <= 800 - self.native_size and 0 <= y <= 608 - self.native_size):
             return -1.0
         key = x, y, direction
         if key not in self.localized_scores:
@@ -95,7 +105,7 @@ class SpikeShapeField:
 
     def _side_coverages(self, x: int, y: int, direction: int,
                         minimum_strength: float) -> tuple[float, float]:
-        tip, *ends = VERTICES[direction]
+        tip, *ends = self.vertices[direction]
         coverages = []
         for end in ends:
             tx, ty = end[0] - tip[0], end[1] - tip[1]
@@ -122,9 +132,9 @@ class SpikeShapeField:
         key = x, y, direction
         if key in self.contrasts:
             return self.contrasts[key]
-        tip, *ends = VERTICES[direction]
-        cx = sum(p[0] for p in VERTICES[direction]) / 3
-        cy = sum(p[1] for p in VERTICES[direction]) / 3
+        tip, *ends = self.vertices[direction]
+        cx = sum(p[0] for p in self.vertices[direction]) / 3
+        cy = sum(p[1] for p in self.vertices[direction]) / 3
         values = []
         for end in ends:
             tx, ty = end[0] - tip[0], end[1] - tip[1]
@@ -136,7 +146,9 @@ class SpikeShapeField:
             for index in range(10):
                 t = 0.2 + 0.6 * index / 9
                 px, py = x + tip[0] + t * tx, y + tip[1] + t * ty
-                values.append(self.pixel(round(px + 4 * nx), round(py + 4 * ny)) - self.pixel(round(px - 4 * nx), round(py - 4 * ny)))
+                offset = self.native_size / 8
+                values.append(self.pixel(round(px + offset * nx), round(py + offset * ny))
+                              - self.pixel(round(px - offset * nx), round(py - offset * ny)))
         self.contrasts[key] = median(values) / self.patch_stats(x, y)[1]
         return self.contrasts[key]
 
@@ -272,17 +284,18 @@ def _unsupported_exposed_slopes(
     return observed_absent >= 1
 
 
-def _could_have_strong_slopes(field: SpikeShapeField, x: int, y: int, direction: int) -> bool:
-    """Cheap upper bound for score >= .9, avoiding most patch-statistic work.
+def _could_have_strong_slopes(field: SpikeShapeField, x: int, y: int, direction: int,
+                              *, max_misses: int = 1) -> bool:
+    """Cheap angular upper bound, avoiding most patch-statistic work.
 
     A calibrated hit requires magnitude >= .25 because patch scale is at
     least one. Two misses among twelve samples rule out .9 coverage. This
     uses the same sampling/angle conditions as score; it cannot admit a
     rejection that the full nearby-triangle safeguard would have prevented.
     """
-    if not (0 <= x <= 768 and 0 <= y <= 576):
+    if not (0 <= x <= 800 - field.native_size and 0 <= y <= 608 - field.native_size):
         return False
-    tip, *ends = VERTICES[direction]
+    tip, *ends = field.vertices[direction]
     for end in ends:
         tx, ty = end[0] - tip[0], end[1] - tip[1]
         length = hypot(tx, ty)
@@ -298,7 +311,7 @@ def _could_have_strong_slopes(field: SpikeShapeField, x: int, y: int, direction:
                     break
             else:
                 misses += 1
-                if misses >= 2:
+                if misses > max_misses:
                     return False
     return True
 
@@ -455,4 +468,114 @@ def corroborated_proposals(
                 # diagonal can support multiple origins without locating a tile.
                 if score - runner_up >= .25:
                     proposals.append((direction, x, y))
+    return proposals
+
+
+def _mini_base_transition(image: RGBImage, room: Box, x: int, y: int,
+                          direction: int) -> float:
+    """RGB separation across the proposed native16 base, in source pixels.
+
+    Repeated full spikes can hide each other's lower slopes, exposing a row of
+    miniature-looking tips. No observed end to that material means its native
+    size is ambiguous. Sampling either side of the base rejects that case.
+    """
+    def pixel(px, py):
+        sx = min(image.width - 1, max(0, int(room.x + px * room.width / 800)))
+        sy = min(image.height - 1, max(0, int(room.y + py * room.height / 608)))
+        return image.pixel(sx, sy)
+
+    differences = []
+    for cross in (4, 8, 12):
+        inside, outside = {
+            3: ((x + cross, y + 13), (x + cross, y + 19)),
+            4: ((x + 3, y + cross), (x - 3, y + cross)),
+            5: ((x + 13, y + cross), (x + 19, y + cross)),
+            6: ((x + cross, y + 3), (x + cross, y - 3)),
+        }[direction]
+        differences.append(sum(abs(a - b) for a, b in zip(pixel(*inside), pixel(*outside))) / 3)
+    return median(differences)
+
+
+def corroborated_mini_runs(
+    image: RGBImage, room: Box, spikes: list[tuple[int, int, int]],
+) -> list[tuple[int, int, int]]:
+    """Propose repeated native16 triangles independently of coarse edge masks.
+
+    A run needs three contiguous, individually supported silhouettes. Existing
+    well-localized full triangles supply contrast polarity, never geometry or
+    coordinates. This rejects the opposite-polarity gaps between real spikes.
+    New proposals cannot become witnesses. Weak/isoluminant evidence abstains;
+    no existing color evidence or detection is removed here.
+    """
+    if len(spikes) < 3:
+        return []
+    full = SpikeShapeField(image, room)
+    signs: dict[tuple[int, int], set[bool]] = {}
+    for direction, x, y in spikes:
+        if full.localized_score(x, y, direction) >= .9:
+            contrast = full.contrast(x, y, direction)
+            if abs(contrast) >= .5:
+                signs.setdefault((x, y), set()).add(contrast > 0)
+    witnesses = []
+    for (x, y), polarities in sorted(signs.items()):
+        if len(polarities) != 1:
+            continue
+        if any(hypot(x - sx, y - sy) < 24 for sx, sy, _ in witnesses):
+            continue
+        witnesses.append((x, y, next(iter(polarities))))
+    if len(witnesses) < 3:
+        return []
+
+    mini = SpikeShapeField(image, room, native_size=16)
+    candidates = set()
+    # The same native16 lattice as the primary mini detector; no room phase
+    # learned from output/reference objects. Runs on another phase abstain.
+    for y in range(0, 593, 16):
+        for x in range(0, 785, 16):
+            nearby = sorted((hypot(x - sx, y - sy), sx, sy, sign)
+                            for sx, sy, sign in witnesses
+                            if 24 <= hypot(x - sx, y - sy) <= 192)[:5]
+            agreement = .8
+            if len(nearby) < 3:
+                if len(witnesses) < 8:
+                    continue
+                nearby = [(0, sx, sy, sign) for sx, sy, sign in witnesses]
+                agreement = .9
+            for direction in VERTICES:
+                if not _could_have_strong_slopes(mini, x, y, direction, max_misses=2):
+                    continue
+                if mini.localized_score(x, y, direction) < 10 / 12:
+                    continue
+                if _mini_base_transition(image, room, x, y, direction) < max(
+                        8, mini.patch_stats(x, y)[1] * .15):
+                    continue
+                contrast = mini.contrast(x, y, direction)
+                if abs(contrast) < .2:
+                    continue
+                if sum(p[3] == (contrast > 0) for p in nearby) / len(nearby) < agreement:
+                    continue
+                if max(mini.localized_score(x, y, other)
+                       for other in VERTICES if other != direction) > .5:
+                    continue
+                # The tip half of a full triangle has two correctly angled
+                # miniature slopes too. Require evidence against that enclosing
+                # full-size interpretation, not merely a smaller bounding box.
+                dx, dy = {3: (-8, 0), 4: (-16, -8),
+                          5: (0, -8), 6: (-8, -16)}[direction]
+                if (full.localized_score(x + dx, y + dy, direction) >= .75
+                        and abs(full.contrast(x + dx, y + dy, direction)) >= .3):
+                    continue
+                candidates.add((direction, x, y))
+
+    proposals = []
+    for direction, x, y in sorted(candidates):
+        dx, dy = (16, 0) if direction in (3, 6) else (0, 16)
+        if (direction, x - dx, y - dy) in candidates:
+            continue
+        run = []
+        while (direction, x, y) in candidates:
+            run.append((direction + 4, x, y))
+            x, y = x + dx, y + dy
+        if len(run) >= 3:
+            proposals.extend(run)
     return proposals

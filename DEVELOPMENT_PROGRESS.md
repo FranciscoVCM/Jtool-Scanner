@@ -7047,3 +7047,81 @@ is resolved. Broader recognition work remains, particularly native-size/grid-pha
 failures, missing thin platforms/short vines/portals, and faint water or dark
 killblocks. The next batch should follow that ranked evidence, not repeat the
 completed scan or infer that all 71 rooms are accurate.
+
+### Native-size recovery checkpoint: complete miniature contours (2026-09-21)
+
+The successor milestone starts from `a087d6d` and targets positive recovery,
+correct size and placement across at least three rooms/two visual families.
+Entrance1 and Halls4 are development cases; Entrance2 and CN3-92 are reserved
+from tuning. Source identities, ordinary settings and complete selected
+structures were frozen before implementation. The preceding 87-case ordinary
+run and all-71 review are retained as the baseline, not regenerated wholesale.
+
+Entrance1's two-scale trace reproduces ordinary map/metadata exactly. The
+source-scale coarse mask misclassifies the lower-right rail's 16px triangles.
+The canonical pass correctly classifies all 24, but later size/terrain
+arbitration loses most; the final capture merge rejects the eleven surviving
+up minis because there are no source-scale mini detections of the same type.
+Simply accepting every canonical candidate would also accept wrong terrain
+and full-size aliases, so that shortcut was not implemented.
+
+The implementation makes directed-shape evidence native-size-aware, retaining the
+existing 32px default. A short final 16px contour pass requires a run of at
+least three individually supported triangles, direction agreement, independent
+material-polarity witnesses and an observed RGB transition at each base.
+It runs once after final capture consensus, not as another full scanner pass.
+It does not use room names, coordinates, fixed hues or reference answers.
+Existing objects and color evidence are retained; weak/isoluminant and
+conflicting mini evidence abstains. This does not solve all outlined sprites,
+isolated minis, mini pairs or differently phased mini lattices.
+
+A rejected prototype mistook the exposed tips of overlapping full triangles
+for minis. The base-material termination check now rejects that ambiguity;
+portable regressions also cover triangle gaps, brick-like texture/floor text,
+duplicate witnesses, polarity, directions, capture scaling and source boxes.
+
+Ordinary development scans show exactly **45 added minis and no other changes
+in Entrance1**. Current Source/JTool/Blend were inspected: all 24 lower-right
+rail spikes and 21 bottom-floor minis correspond to source-visible objects.
+The complete predeclared 36-object rail improves **0/36 -> 24/36**; the twelve
+solid16 cells remain missing and old full-size false positives remain. The
+other 21 gains are separately reviewed changes outside that fixed denominator.
+Entrance1 remains **major issues**, with extensive terrain fragmentation and
+geometry conflicts elsewhere. Halls4 is unchanged; its declared ceiling and
+adjacent triangles still require recovery/phase work.
+
+The two reserved ordinary evaluations, Entrance2 and CN3-92, are unchanged.
+The complete 87-case isolated-stage replay also predicts no additions outside
+Entrance1. That replay is explicitly not a final-code ordinary all-71 refresh
+or evidence of successful cross-family transfer. The broader milestone stays
+active; this one-room gain cannot satisfy the three-room/two-family requirement.
+
+The ordinary 24-case candidate validation completes with unchanged maps on
+the other 23 cases and identical map metadata. All sixteen exact-control
+reports are unchanged, including FTFA 926/928 with zero extras/shifts/wrong
+directions and Flames 252 exact without increased errors. NR1, Halls5,
+NANG-128r and the clarified NR2 negatives retain their prior maps. The broader
+protected selection passes **177 tests / 2,137 subtests**, with no failures,
+errors or skips; this is not a full-suite result. Separate focused tests also
+protect the unchanged full-size contour behavior and capture-consensus hooks.
+
+Local evidence is under `.artifacts/native-geometry-20260920/`, with immutable
+ordinary output caches in `mini-run-v1/`, frozen `annotations.json`, source
+review images and the observational traces. Quiet serial ABBA timing completes
+with all eight maps and metadata matching their respective ordinary outputs.
+Entrance1 median scan time is **232.096 -> 242.040s (+4.28%)**; Halls4 is
+**95.895 -> 96.583s (+0.72%)**. Individual samples vary noticeably; this is a
+small controlled comparison, not a claim of zero overhead or a speedup. Baseline
+callbacks were loaded read-only from `a087d6d`; no checkout or fixture edits
+were used to produce the comparison.
+
+The ignored `71-screen-native-mini-before-after.md` and structured progress
+companion record **8/71 current ordinary canonical outputs/reviews; 63 pending**.
+The one changed canonical map has fresh Source/JTool/Blend and changed-object
+review; seven unchanged reviews carry only through input/map/metadata equality.
+Every prior all-71 baseline finding remains preserved. The remaining rooms
+still need final-current ordinary outputs/equality checks before the complete
+successor audit is certified. No room is upgraded to accepted by this batch.
+
+The tested app is restored on `127.0.0.1:8765`; root HTTP 200 and the health
+endpoint's loaded-source fingerprint match the checked implementation.
