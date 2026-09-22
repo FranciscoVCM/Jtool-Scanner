@@ -7125,3 +7125,46 @@ successor audit is certified. No room is upgraded to accepted by this batch.
 
 The tested app is restored on `127.0.0.1:8765`; root HTTP 200 and the health
 endpoint's loaded-source fingerprint match the checked implementation.
+
+### Mixed-phase single-material terrain: source-backed Halls4 recovery (2026-09-22)
+
+The next bounded batch addresses a different loss stage from Entrance1's
+miniature contours. In Halls4, the ordinary-equivalent trace finds plausible
+blue-block proposals, but fixed-32px phase preference displaces them. The
+existing repeated-material path then abstains: its best fixed-phase coverage
+is 70.1%, below the 85% gate. A 16px-cell rectangular interpretation covers
+98.8% of the independently supported textured blue material and proposes 62
+blocks, including all twelve source-visible ceiling blocks. This is a
+room-local topology/material mechanism, not a Halls4 name or hue lookup.
+
+The first implementation applied that mask early. Although it recovered the
+declared 25-object region, direct whole Source/JTool/Blend review found a real
+up spike shifted and unsupported spikes near the save. That version was
+rejected. The current implementation defers only this new phase-free profile
+until the existing non-block decisions are complete, then replaces blocks
+alone. Established successful terrain routes are unchanged. Portable tests
+cover mixed grid phases, translations, contrasting palettes, capture scales,
+independent supports, competing materials, nonrectangular hazards, dense
+backgrounds and preservation of already-decided nonblocks.
+
+In the frozen Halls4 ceiling/adjacent structure, exact objects improve
+**11/25 to 24/25**. A separate whole-source blue-sprite inventory finds
+**34/63 exact blocks with 77 extra block origins before**, versus **62/63
+exact and zero extra blocks now**. The sole remaining visible blue block at
+`(448,232)` is missed. All Halls4 non-block objects and map metadata are
+unchanged from the published mini checkpoint, including existing save and
+spike mistakes; the room still has **major issues**. This does not establish
+the origin of hidden/editor-internal terrain from visible occupancy alone.
+
+All 24 ordinary development, reserved-evaluation and protected-control cases
+pass checksum/input and map/metadata checks. Only Halls4 changes; Entrance1's
+45 source-verified mini additions remain. Reserved Entrance2 and CN3-92,
+supplementary Halls2/Halls3 and all 16 exact controls are unchanged. The
+affected test selection passes **185 tests / 2,172 subtests**; this is not the full suite.
+The ignored successor audit currently has **8/71** final-candidate ordinary
+outputs with reviewed/equality-carried provenance, **63 pending**. Neither a
+third-room gain nor no-tuning transfer has yet occurred. Quiet serial ABBA
+timing matches all eight respective ordinary maps and metadata. Entrance1
+median is **135.525 -> 135.428 s (-0.07%)** and Halls4 **55.256 -> 54.791 s
+(-0.84%)**. These small, variable samples show no material slowdown here, not
+a generalized speedup claim.

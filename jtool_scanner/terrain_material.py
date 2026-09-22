@@ -178,3 +178,51 @@ def learn_complementary_terrain(
     if len(accepted) > 1 and accepted[0][0] / max(1e-6, accepted[1][0]) < 1.25:
         return None
     return accepted[0][2] if accepted else None
+
+
+def learn_single_rectangular_terrain(
+    labels: Mapping[Point, int],
+    edges: Mapping[int, float],
+    votes: Mapping[int, int],
+    score_patch: Callable[[Point], float],
+    dense_field: Callable[[frozenset[Point]], bool],
+    cell_edge: Callable[[Point], float],
+) -> ComplementaryTerrain | None:
+    """Recover textured rectangles when one material has mixed native phases.
+
+    This is a fallback after the existing single/paired interpretations abstain.
+    It never joins colors: independent spike-back supports identify a material,
+    and complete textured quadrants establish occupancy without a global 32px
+    phase. Keep the existing coverage, room-share and dense-field safeguards.
+    As with complementary packing, hidden interior object origins may be
+    ambiguous even when the supported solid occupancy is unambiguous.
+    """
+    accepted: list[tuple[float, int, ComplementaryTerrain]] = []
+    total_votes = max(1, sum(votes.values()))
+    for cluster in sorted(set(labels.values())):
+        edge = edges.get(cluster, 0)
+        support = votes.get(cluster, 0)
+        if edge < 0.12 or support < 3 or support / total_votes < 0.30:
+            continue
+        positions = frozenset(p for p, label in labels.items() if label == cluster)
+        if not 48 <= len(positions) <= len(labels) * 0.65:
+            continue
+        textured = frozenset(p for p in positions if cell_edge(p) >= edge * 0.4)
+        origins = {p for p in textured if cell_quad(p) <= textured}
+        if len(origins) < 12:
+            continue
+        scores = {p: score_patch(p) for p in origins}
+        blocks = pack_textured_rectangles(textured, scores)
+        covered = frozenset(cell for p in blocks for cell in cell_quad(p))
+        coverage = len(covered) / len(positions)
+        if coverage < 0.85 or len(blocks) < 12 or dense_field(blocks):
+            continue
+        result = ComplementaryTerrain(
+            terrain_cells=positions, full_blocks=blocks,
+            seed_cluster=cluster, support_votes=support, full_coverage=coverage,
+        )
+        accepted.append((support * (1 + 4 * edge) * coverage, cluster, result))
+    accepted.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    if len(accepted) > 1 and accepted[0][0] / max(1e-6, accepted[1][0]) < 1.25:
+        return None
+    return accepted[0][2] if accepted else None

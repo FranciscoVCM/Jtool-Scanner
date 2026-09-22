@@ -52,7 +52,10 @@ from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .spike_shape import corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
-from .terrain_material import distributed_cell_edges, learn_complementary_terrain
+from .terrain_material import (
+    distributed_cell_edges, learn_complementary_terrain,
+    learn_single_rectangular_terrain,
+)
 
 
 FULL_SPIKE_TYPES = frozenset(
@@ -2231,6 +2234,7 @@ def scan_image(
         and _looks_like_bright_outlined_terrain_room(image, box)
     )
     repeated_terrain_room = False
+    deferred_phase_free_profile: _RepeatedTerrainProfile | None = None
     particle_water_room = False
     dense_miniblock_room = False
     mini_blocks: list[Detection] = []
@@ -2469,9 +2473,20 @@ def scan_image(
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
         elif not mini_blocks and not particle_water_room:
-            detections, repeated_terrain_room = (
-                _replace_repeated_terrain_geometry(detections, image, box)
-            )
+            learned_terrain = _learn_repeated_terrain_profile(image, box, detections)
+            if learned_terrain is not None and learned_terrain.phase_free_texture:
+                # A mixed-phase rectangle mask can establish block occupancy,
+                # but replacing the raw block pool here also changes later
+                # spike and marker decisions. Defer its block-only correction
+                # until those independently detected objects are settled.
+                deferred_phase_free_profile = learned_terrain
+            else:
+                detections, repeated_terrain_room = (
+                    _replace_repeated_terrain_geometry(
+                        detections, image, box,
+                        profile=learned_terrain, already_learned=True,
+                    )
+                )
             if not repeated_terrain_room:
                 detections, repeated_terrain_room = (
                     _replace_supported_cell_terrain_geometry(
@@ -2480,6 +2495,10 @@ def scan_image(
                         box,
                     )
                 )
+            if repeated_terrain_room:
+                # An established supported-cell interpretation takes priority
+                # over a later, alternative single-material rectangle mask.
+                deferred_phase_free_profile = None
     if include_geometry:
         detections = _reconcile_common_room_geometry(
             detections,
@@ -2776,6 +2795,12 @@ def scan_image(
             detections = _prune_terrain_covered_spike_aliases(detections, image, box)
             detections = _recover_directed_material_spikes(detections, image, box)
             detections = _recover_directed_mini_runs(detections, image, box)
+        if deferred_phase_free_profile is not None:
+            detections, _ = _replace_repeated_terrain_geometry(
+                detections, image, box,
+                profile=deferred_phase_free_profile, already_learned=True,
+                blocks_only=True,
+            )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -15987,6 +16012,7 @@ class _RepeatedTerrainProfile:
     support_votes: int
     full_coverage: float
     complementary_texture: bool = False
+    phase_free_texture: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -16249,6 +16275,10 @@ def _replace_repeated_terrain_geometry(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
+    *,
+    profile: _RepeatedTerrainProfile | None = None,
+    already_learned: bool = False,
+    blocks_only: bool = False,
 ) -> tuple[list[Detection], bool]:
     """Reconcile repeated terrain only when the generic result is clearly poor.
 
@@ -16259,7 +16289,8 @@ def _replace_repeated_terrain_geometry(
     this function by ``scan_image``.
     """
 
-    profile = _learn_repeated_terrain_profile(image, room, detections)
+    if not already_learned:
+        profile = _learn_repeated_terrain_profile(image, room, detections)
     if profile is None:
         return detections, False
 
@@ -16277,7 +16308,7 @@ def _replace_repeated_terrain_geometry(
     if current_coverage >= REPEATED_TERRAIN_KEEP_COVERAGE:
         return detections, False
     replacement_coverage = current_coverage
-    if profile.complementary_texture:
+    if profile.complementary_texture or profile.phase_free_texture:
         # Complete textured rectangles support mixed phases independently of
         # the raw block grid. An overgenerated raw grid is not adequate terrain
         # merely because some of its many hypotheses match that evidence.
@@ -16296,15 +16327,15 @@ def _replace_repeated_terrain_geometry(
         detection
         for detection in detections
         if detection.type_id != OBJ_BLOCK
-        and not (
+        and (blocks_only or not (
             detection.type_id
             in (OBJ_APPLE, OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT)
             and _overlaps_repeated_terrain(detection, profile.full_blocks)
-        )
-        and not (
+        ))
+        and (blocks_only or not (
             detection.type_id in MINI_SPIKE_TYPES
             and _contained_by_repeated_terrain(detection, profile.full_blocks)
-        )
+        ))
     ]
     reconciled.extend(
         _geometry_detection(
@@ -18046,6 +18077,27 @@ def _learn_repeated_terrain_profile(
                 support_votes=complementary.support_votes,
                 full_coverage=complementary.full_coverage,
                 complementary_texture=True,
+            )
+        phase_free = learn_single_rectangular_terrain(
+            labels,
+            cluster_edges,
+            votes,
+            lambda position: _classify_block(
+                _patch_features(image, room, *position, GRID_SIZE)
+            ).score,
+            _repeated_terrain_blocks_form_dense_field,
+            lambda position: _patch_features(
+                image, room, *position, MINI_BLOCK_SIZE
+            ).edge_density,
+        )
+        if phase_free is not None:
+            return _RepeatedTerrainProfile(
+                terrain_cells=phase_free.terrain_cells,
+                full_blocks=phase_free.full_blocks,
+                seed_cluster=phase_free.seed_cluster,
+                support_votes=phase_free.support_votes,
+                full_coverage=phase_free.full_coverage,
+                phase_free_texture=True,
             )
         return None
 

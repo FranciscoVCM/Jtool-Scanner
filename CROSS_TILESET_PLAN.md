@@ -883,3 +883,37 @@ recognition. The next development priorities remain the native-size/grid-phase,
 missing-object and local-color/material diagnoses ranked above. Use explicit
 development/control/evaluation cases and measured recall, placement and false
 positives for the next batch.
+
+#### Native geometry successor: phase-free single-material occupancy (2026-09-22)
+
+The published native-mini checkpoint adds 45 source-verified Entrance1 minis
+but leaves its rail's twelve solid cells and many old aliases unresolved.
+The next candidate traces Halls4's blue-block losses to fixed-phase proposal
+selection followed by a material learner that abstains at 70.1% coverage.
+Room-relative 16px-cell rectangular packing reaches 98.8% coverage with
+independent spike-back supports, without selecting the blue hue by identity.
+This is a genuine second visual-family mechanism, not evidence of arbitrary
+future tileset performance.
+
+An early whole-geometry replacement caused a real spike shift and unsupported
+near-save hypotheses, so it was rejected. A late block-only application now
+recovers 62 of 63 visible Halls4 blocks exactly and emits no extra blocks,
+versus 34 exact and 77 extras in the published implementation. The frozen
+ceiling/adjacent region improves 11/25 to 24/25. The remaining true block at
+`(448,232)` and existing non-block errors keep Halls4 in major-issues status.
+The current 24-case ordinary validation changes only Halls4; all protected
+exact controls and reserved Entrance2/CN3-92 outputs remain equal. The affected
+selection passes 185 tests. The 71-screen successor audit is interim at 8/71
+current outputs. Quiet serial ABBA scans reproduce all eight ordinary maps and
+metadata: Entrance1 median 135.525->135.428 s (-0.07%) and Halls4
+55.256->54.791 s (-0.84%). The small samples do not prove a speedup or
+universal cost neutrality. The three-room/transfer and final-71 gates remain
+open after this bounded checkpoint.
+
+Next, seek a third canonical room with substantial independently verified
+positive recovery and a no-tuning transfer case. Do not lower material gates
+merely to force Halls2/Halls3 changes: their existing frozen structures stayed
+unchanged. The compact NANG-130 pair offers a contrasting miniature-contour
+failure but needs aligned source-coordinate annotation before tuning. Keep
+source color evidence, validate mini versus full-size orientation and protect
+the sixteen exact controls, existing saves/portals and true occlusions.
