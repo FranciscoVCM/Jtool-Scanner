@@ -951,3 +951,33 @@ preserve the exact/protected controls and audit every changed object. Only
 then evaluate completion of this bounded milestone; subsequent work should
 target reciprocal compact minis, missing short vines/portals/platforms and
 remaining full-spike/terrain conflicts across visual families.
+
+#### Final-current audit and palette stress (2026-09-23)
+
+All 87 final-code ordinary outputs are complete: 71 canonical screens and
+16 exact controls. Seven changed canonical maps have independent
+Source/JTool/Blend plus changed-object crop review; the remaining 80 maps
+and metadata exactly equal their preceding reviewed outputs, with input and
+artifact identity checked. The ignored per-room successor audit is
+`.artifacts/native-geometry-20260920/71-screen-backed-native-before-after.md`.
+It keeps 49 major, five moderate, six localized and one reference-boundary
+limitation, plus ten visually cleaner rooms that are **not** exact-certified.
+All sixteen exact controls are unchanged (FTFA 926/928, no extras/shifts/
+wrong directions; Flames 252 exact, with no increased errors).
+
+For a deliberately different stress axis, six real source rooms were
+recolored by dimming, brightening, inversion and RGB-channel rotation.
+The backed-native *proposal helper* retained 395 of 404 original proposals
+across 24 variants, lost nine and added none. This is not a full-scanner
+benchmark or independent unseen-tileset test; in particular, changed
+contrast still loses paired minis in CN3-9 and NANG-128. It does show why
+the next design should continue to distinguish geometric evidence from
+palette-relative confidence and test both across unrelated textures,
+rather than erasing color or claiming universal transfer.
+
+Rank the next independent batch around block/full-spike/mini conflicts in
+CN3-27/30/92 and a contrasting Dotkid/Bathhouse source, with a frozen whole
+structure and reserved cases. Count exact true origins, extras, size and
+direction errors separately. Then address missing vines, portals and
+platforms using cases where both real objects and impostors are visible.
+Do not mark a room accepted from low warnings or a visually pleasing blend.

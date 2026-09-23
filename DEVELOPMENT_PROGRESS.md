@@ -7219,3 +7219,46 @@ remain major. The app was restarted with the tested candidate: root HTTP 200,
 and its loaded source fingerprint matches the current package files. Complete
 final-code all-71 regeneration/review and reviewed publication remain separate
 gates of the active milestone.
+
+### Final-current all-71 backed-native audit (2026-09-23)
+
+The resumable final-code ordinary scan has now finished **87/87 cases**:
+all 71 canonical screens and all sixteen exact controls. The merge verifier
+checks each source hash, crop/options identity, implementation fingerprint,
+cached artifact hashes and complete object-map/metadata delta against its
+preceding reviewed output. Exactly seven canonical maps change, and they are
+the seven source-reviewed additions reported above: **38 true native16
+mini spikes and twelve solid16 cells, with no removals**. The other eighty
+maps, including every exact control, are identical and carry their prior
+visual findings only through that verified equality. There are no newly
+changed maps awaiting review. The ignored audit is
+`.artifacts/native-geometry-20260920/71-screen-backed-native-before-after.md`
+with structured JSON and the per-case Source/JTool/Blend paths; it does not
+publish local image material.
+
+The 71-room severity distribution remains deliberately conservative:
+**49 major**, five moderate, six localized, one reference-boundary limitation,
+and ten with no visible mismatch under the stated review. The latter ten are
+not exact-certified. This is a current-output audit, not a declaration that
+the 71 screens are finished or that an unknown tileset will scan correctly.
+FTFA remains **926/928** exact, zero extras/shifts/wrong directions, and
+Flames remains **252** exact with 43 extras, 21 misses, 20 shifts and two
+wrong directions. The protected controls did not change.
+
+A separate **diagnostic**, not a corrected-JMap benchmark, applied dim,
+bright, inverted and RGB-channel-rotated versions to six real sources while
+preserving geometry. Across 24 perturbed views, the local backed-native
+proposal helper retained **395/404** original proposals and gained none;
+nine disappeared. The losses occur in Entrance1 (one dim), CN3-9 (two dim,
+two bright) and NANG-128 (two bright, two channel-rotated). This supports
+some palette transfer, but exposes remaining contrast sensitivity and says
+nothing conclusive about completely unfamiliar sprites or whole-scanner
+accuracy. The ignored probe/result are `probe_backed_palette_transfer.py`
+and `backed-palette-transfer.json` in the same artifact directory.
+
+The ranked next batch is source-backed block/full/mini arbitration across
+CN3-27/30/92, Entrance1 and a different-family control, with exact typed
+origin/size/direction denominators and FTFA/Flames protection. Subsequent
+families are missing short vines/portals/platforms and uniform-material or
+compact reciprocal-mini structures. The new rule's seven gains do not erase
+older wrong full triangles, displaced markers or missing terrain.
