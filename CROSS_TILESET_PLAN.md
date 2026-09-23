@@ -917,3 +917,37 @@ unchanged. The compact NANG-130 pair offers a contrasting miniature-contour
 failure but needs aligned source-coordinate annotation before tuning. Keep
 source color evidence, validate mini versus full-size orientation and protect
 the sixteen exact controls, existing saves/portals and true occlusions.
+
+#### Backed native mini transfer: seven-room positive recovery (2026-09-23)
+
+The Entrance1 stripe rail did not generate solid16 seeds; its high-edge
+backing was never proposed, rather than correctly proposed and later shifted.
+A shared source-local native16 contour/backing run now recovers the twelve
+solid cells between opposing mini rails and missing mini pairs with coherent
+adjacent material. It preserves RGB evidence and the existing detectors;
+there is no tileset, screen, coordinate or reference-answer lookup.
+
+In completed ordinary scans, Entrance1 gains 14 real objects, reserved
+no-tuning Entrance2 gains 6, and five differently styled exploratory rooms
+(CN3-7/9/25/27 and NANG-128) gain 30 further source-reviewed minis. Across
+the 29 development/evaluation/transfer/protected scans there are fifty
+additions and no removals; all 20 protected maps and sixteen exact-reference
+comparisons are unchanged. The frozen Entrance1 rail reaches 36/36 from 24/36;
+Halls4's prior blue-block gain remains. This satisfies a bounded three-room,
+two-style positive-recovery test with a reserved transfer room, **not** a
+claim that any whole room or unseen tileset is fully recognized. All seven
+changed rooms retain major errors, including older false full spikes and
+terrain/marker omissions. Uniform-material joins and the NANG-130 reciprocal
+diamond case are still outside this mechanism's reliable evidence.
+
+The 332-test affected selection and a subsequent side-facing regression test
+pass. Quiet serial samples show Entrance1 +2.39%
+median and Halls4 +5.91%/+5.72% in two variable ABBA runs; direct hook
+instrumentation is 0.775/0.300 seconds respectively. Keep the measured cost
+and variance visible, and avoid a false zero-overhead claim. The current
+successor audit is interim at 13/71 current ordinary outputs, 58 pending.
+Next finish all 71 current-code output/review with equality-backed carry,
+preserve the exact/protected controls and audit every changed object. Only
+then evaluate completion of this bounded milestone; subsequent work should
+target reciprocal compact minis, missing short vines/portals/platforms and
+remaining full-spike/terrain conflicts across visual families.

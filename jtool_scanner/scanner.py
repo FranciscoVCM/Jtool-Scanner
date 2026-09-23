@@ -51,7 +51,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
-from .spike_shape import corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
+from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .terrain_material import (
     distributed_cell_edges, learn_complementary_terrain,
     learn_single_rectangular_terrain,
@@ -2795,6 +2795,9 @@ def scan_image(
             detections = _prune_terrain_covered_spike_aliases(detections, image, box)
             detections = _recover_directed_material_spikes(detections, image, box)
             detections = _recover_directed_mini_runs(detections, image, box)
+            detections = _recover_backed_native_mini_structures(
+                detections, image, box,
+            )
         if deferred_phase_free_profile is not None:
             detections, _ = _replace_repeated_terrain_geometry(
                 detections, image, box,
@@ -3824,6 +3827,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _recover_directed_mini_runs(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _recover_backed_native_mini_structures(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -14935,6 +14941,127 @@ def _recover_directed_mini_runs(
         for direction, x, y in proposals
         if not any(abs(d.x - x) <= 8 and abs(d.y - y) <= 8 for d in minis)
     ]
+    return detections + additions if additions else detections
+
+
+def _backed_native_mini_structures(
+    image: RGBImage, room: Box,
+) -> tuple[list[tuple[int, int, int]], list[tuple[int, int]]]:
+    """Find short 16px triangle runs backed by a coherent local material.
+
+    This does not use existing map hypotheses as witnesses. A source-visible
+    backing cell can corroborate a two-object run when the older three-object
+    full-spike-witness route abstains. Opposing supported rails also locate
+    the intervening solid16 cell without a flat-patch miniblock seed.
+    """
+    mini = SpikeShapeField(image, room, native_size=MINI_BLOCK_SIZE)
+    full = SpikeShapeField(image, room)
+    directions = {
+        OBJ_SPIKE_UP: ((0, 16), (0, -16), (16, 0), (-8, 0)),
+        OBJ_SPIKE_RIGHT: ((-16, 0), (16, 0), (0, 16), (-16, -8)),
+        OBJ_SPIKE_LEFT: ((16, 0), (-16, 0), (0, 16), (0, -8)),
+        OBJ_SPIKE_DOWN: ((0, -16), (0, 16), (16, 0), (-8, -16)),
+    }
+    profiles: dict[tuple[int, int], _ColorProfile] = {}
+
+    def profile(x: int, y: int) -> _ColorProfile:
+        if (x, y) not in profiles:
+            profiles[x, y] = _patch_color_profile(image, room, x, y, MINI_BLOCK_SIZE)
+        return profiles[x, y]
+
+    def color_distance(a: tuple[int, int], b: tuple[int, int]) -> float:
+        left, right = profile(*a), profile(*b)
+        return math.dist((left.avg_r, left.avg_g, left.avg_b),
+                         (right.avg_r, right.avg_g, right.avg_b))
+
+    candidates: dict[tuple[int, int, int], tuple[tuple[int, int], float]] = {}
+    # A one-cell interior margin gives both the front and backing samples a
+    # complete native16 source footprint in every direction.
+    for y in range(MINI_BLOCK_SIZE, ROOM_HEIGHT - GRID_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(MINI_BLOCK_SIZE, ROOM_WIDTH - MINI_BLOCK_SIZE + 1,
+                       MINI_BLOCK_SIZE):
+            for direction, (back, ahead, _, enclosure) in directions.items():
+                if not _could_have_strong_slopes(
+                    mini, x, y, direction, max_misses=2,
+                ):
+                    continue
+                if mini.localized_score(x, y, direction) < .75:
+                    continue
+                if abs(mini.contrast(x, y, direction)) < .2:
+                    continue
+                if max(mini.localized_score(x, y, other)
+                       for other in directions if other != direction) > .5:
+                    continue
+                fx, fy = x + enclosure[0], y + enclosure[1]
+                if (full.localized_score(fx, fy, direction) >= .75
+                        and abs(full.contrast(fx, fy, direction)) >= .3):
+                    continue
+                if _mini_base_transition(image, room, x, y, direction) < max(
+                    8, mini.patch_stats(x, y)[1] * .15,
+                ):
+                    continue
+                backing = (x + back[0], y + back[1])
+                front = (x + ahead[0], y + ahead[1])
+                if not all(0 <= px <= ROOM_WIDTH - MINI_BLOCK_SIZE
+                           and 0 <= py <= ROOM_HEIGHT - MINI_BLOCK_SIZE
+                           for px, py in (backing, front)):
+                    continue
+                separation = color_distance(backing, front)
+                if separation < 24:
+                    continue
+                candidates[direction, x, y] = backing, separation
+
+    runs: list[tuple[int, int, int]] = []
+    for direction, (_, _, axis, _) in directions.items():
+        dx, dy = axis
+        for candidate in candidates:
+            other, x, y = candidate
+            if other != direction or (direction, x - dx, y - dy) in candidates:
+                continue
+            group: list[tuple[int, int, int]] = []
+            while (direction, x, y) in candidates:
+                group.append((direction, x, y))
+                x, y = x + dx, y + dy
+            if len(group) < 2:
+                continue
+            if not all(
+                color_distance(candidates[a][0], candidates[b][0])
+                <= min(candidates[a][1], candidates[b][1]) * .5 + 10
+                for a, b in zip(group, group[1:])
+            ):
+                continue
+            runs.extend(group)
+
+    up = {(x, y) for direction, x, y in runs if direction == OBJ_SPIKE_UP}
+    down = {(x, y) for direction, x, y in runs if direction == OBJ_SPIKE_DOWN}
+    solids = sorted({(x, y + MINI_BLOCK_SIZE) for x, y in up
+                     if (x, y + GRID_SIZE) in down})
+    return sorted((direction + 4, x, y) for direction, x, y in runs), solids
+
+
+def _recover_backed_native_mini_structures(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    minis, solids = _backed_native_mini_structures(image, room)
+    if not minis and not solids:
+        return detections
+    existing = {(detection.type_id, detection.x, detection.y)
+                for detection in detections}
+    existing_minis = [detection for detection in detections
+                      if detection.type_id in MINI_SPIKE_TYPES]
+    additions = [
+        _geometry_detection("backed_native_mini_run", direction, x, y,
+                            .9, image, room, MINI_BLOCK_SIZE)
+        for direction, x, y in minis
+        if (direction, x, y) not in existing
+        and not any(abs(detection.x - x) <= 8 and abs(detection.y - y) <= 8
+                    for detection in existing_minis)
+    ]
+    additions.extend(
+        _geometry_detection("backed_native_solid16", OBJ_MINI_BLOCK, x, y,
+                            .9, image, room, MINI_BLOCK_SIZE)
+        for x, y in solids if (OBJ_MINI_BLOCK, x, y) not in existing
+    )
     return detections + additions if additions else detections
 
 

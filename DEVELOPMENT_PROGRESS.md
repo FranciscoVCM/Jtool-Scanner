@@ -7168,3 +7168,54 @@ timing matches all eight respective ordinary maps and metadata. Entrance1
 median is **135.525 -> 135.428 s (-0.07%)** and Halls4 **55.256 -> 54.791 s
 (-0.84%)**. These small, variable samples show no material slowdown here, not
 a generalized speedup claim.
+
+### Source-backed native mini runs and rail occupancy (2026-09-23)
+
+The next positive-recovery batch traces Entrance1's twelve missing rail solids
+to **no miniblock proposal at all**: the striped 16px backing has high patch
+edge density/center score and misses the existing flat seed. Source-local
+native16 two-sided contours plus a contrasting, coherent backing cell can
+corroborate even a pair of mini spikes without using prior map hypotheses.
+Where independently supported up/down rails face away from the same backing
+cell, the intervening native16 solid is recovered. The rule uses local RGB
+differences, not a room name, tile palette, fixed hue or reference answer;
+it keeps the older full-size and mini-run paths. Uniform-color joins without
+a visible native-size base remain deliberately ambiguous and abstain.
+
+A fixed memory-only probe matches the production helper on all 87 baseline
+inputs. It suggested 38 absent mini origins and twelve solid cells, with no
+absent candidate on any of the sixteen exact controls. The subsequent
+**ordinary** 29-case run confirms exactly those fifty additions across seven
+canonical rooms and **zero removals**: Entrance1 +14 (twelve solids and two
+separate minis), reserved no-tuning Entrance2 +6, CN3-9 +13, CN3-27 +6,
+NANG-128 +3, CN3-25 +2 and CN3-7 +6. Source/JTool/Blend and changed-object
+crops were reviewed for all seven rooms. The frozen Entrance1 rail improves
+**24/36 -> 36/36**. Its old false full triangles and other errors remain;
+none of these rooms is promoted to exact or accepted. Entrance2's six gains
+include the two predeclared missing ledge minis. Halls4 retains its prior
+source-backed block gain and CN3-92 is unchanged. CN3-7/9/25/27 and NANG-128
+are exploratory cross-style corroboration, not predeclared holdouts.
+
+All twenty protected ordinary maps/metadata and reference comparisons are
+unchanged, including FTFA **926/928** exact without extras/shifts/wrong
+directions and Flames **252** exact with its previous error counts. The
+affected selection passes **332 tests**, followed by a passing side-facing
+native-mini regression; this is not a full-suite result.
+Quiet serial ABBA timing reproduced each corresponding ordinary map:
+Entrance1 median **109.543 -> 112.163s (+2.39%)**, Halls4
+**49.035 -> 51.935s (+5.91%)**. A second sparse-room ABBA yielded
+**45.024 -> 47.598s (+5.72%)**. Direct hook instrumentation in separate
+ordinary scans measured **0.775s** in Entrance1 and **0.300s** in Halls4,
+so the several-second whole-scan differences cannot be attributed solely to
+the new helper; the samples have substantial run variation. Do not claim
+zero cost, a speedup or a universal throughput result.
+
+The ignored successor `71-screen-backed-native-before-after.md` and JSON
+record **13/71 final-code canonical outputs/reviews, 58 pending**. Seven
+changed maps have fresh source review; unchanged rows carry prior reviews
+only through checked input/map/metadata equality. The other rows are marked
+prior-output-only, not silently accepted. All 49 pre-existing major labels
+remain major. The app was restarted with the tested candidate: root HTTP 200,
+and its loaded source fingerprint matches the current package files. Complete
+final-code all-71 regeneration/review and reviewed publication remain separate
+gates of the active milestone.
