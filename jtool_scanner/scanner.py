@@ -364,6 +364,7 @@ CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_WIDTH = ROOM_WIDTH + 100
 CAPTURE_LATTICE_CONSENSUS_MIN_ROOM_HEIGHT = ROOM_HEIGHT + 90
 CAPTURE_LATTICE_CONSENSUS_RADIUS = 24.0
 CAPTURE_LATTICE_CONSENSUS_TYPES = frozenset({*GEOMETRY_TYPES, OBJ_PLATFORM})
+CAPTURE_LATTICE_MINI_TYPES = frozenset({OBJ_MINI_BLOCK, *MINI_SPIKE_TYPES})
 REPEATED_TERRAIN_CLUSTER_COUNT = 6
 REPEATED_TERRAIN_MIN_SUPPORT_VOTES = 3
 REPEATED_TERRAIN_MIN_SUPPORT_SHARE = 0.30
@@ -2792,6 +2793,9 @@ def scan_image(
         detections = _prune_platform_owned_spike_edges(detections, image, box)
         if _apply_shape_refits:
             detections = _reconcile_directed_material_spikes(detections, image, box)
+            detections = _reconcile_source_supported_spike_phases(
+                detections, image, box,
+            )
             detections = _prune_terrain_covered_spike_aliases(detections, image, box)
             detections = _recover_directed_material_spikes(detections, image, box)
             detections = _recover_directed_mini_runs(detections, image, box)
@@ -2803,6 +2807,10 @@ def scan_image(
                 detections, image, box,
                 profile=deferred_phase_free_profile, already_learned=True,
                 blocks_only=True,
+            )
+        if _apply_shape_refits:
+            detections = _prune_source_exterior_block_aliases(
+                detections, image, box,
             )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
@@ -3772,6 +3780,8 @@ def _scan_lattice_normalized_room(
             source_result.detections,
             canonical_detections,
             radius=CAPTURE_LATTICE_CONSENSUS_RADIUS,
+            source_image=source_image,
+            source_room=normalization.source_room,
         )
     else:
         detections = [
@@ -3820,6 +3830,9 @@ def _scan_lattice_normalized_room(
         detections = _reconcile_directed_material_spikes(
             detections, source_image, normalization.source_room,
         )
+        detections = _reconcile_source_supported_spike_phases(
+            detections, source_image, normalization.source_room,
+        )
         detections = _prune_terrain_covered_spike_aliases(
             detections, source_image, normalization.source_room,
         )
@@ -3830,6 +3843,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _recover_backed_native_mini_structures(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _prune_source_exterior_block_aliases(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -3876,12 +3892,17 @@ def _merge_capture_lattice_geometry(
     canonical_detections: list[Detection],
     *,
     radius: float,
+    source_image: RGBImage | None = None,
+    source_room: Box | None = None,
 ) -> list[Detection]:
     """Use canonical geometry only when a source candidate corroborates it.
 
-    Both passes report logical JTool coordinates.  A greedy nearest-distance
-    pairing is sufficient after each detector's own de-duplication and keeps
-    unrelated canonical candidates out of the final map.  Source detections
+    Both passes report logical JTool coordinates. Pairing keeps unrelated
+    canonical candidates out of the final map. Mini geometry usually needs
+    overlapping 16px cell footprints. Distinct source/canonical terrain-mini
+    cells can both survive when their visible material and edges corroborate
+    two real cells; disjoint mini-spike hypotheses cannot be doubled this way.
+    Source detections
     remain authoritative for color/anchor objects and for unmatched geometry;
     paired geometry takes the phase-stable canonical candidate except when a
     source block shares a source walljump/vine anchor, in which case that
@@ -3909,6 +3930,7 @@ def _merge_capture_lattice_geometry(
             OBJ_WALLJUMP_RIGHT,
         }
     }
+    source_shape: SpikeShapeField | None = None
     for type_id in sorted(
         set(source_by_type) | set(canonical_by_type)
     ):
@@ -3929,6 +3951,19 @@ def _merge_capture_lattice_geometry(
                 (candidate.x, candidate.y),
             )
             <= radius
+            and (
+                type_id not in CAPTURE_LATTICE_MINI_TYPES
+                or (
+                    abs(source.x - candidate.x) < MINI_BLOCK_SIZE
+                    and abs(source.y - candidate.y) < MINI_BLOCK_SIZE
+                )
+                or (
+                    type_id == OBJ_MINI_BLOCK
+                    and source_image is not None
+                    and source_room is not None
+                    and source.kind == candidate.kind == "supported_terrain_miniblock"
+                )
+            )
         )
         used_source: set[int] = set()
         used_canonical: set[int] = set()
@@ -3938,6 +3973,41 @@ def _merge_capture_lattice_geometry(
             used_source.add(source_index)
             used_canonical.add(canonical_index)
             source_item = source_items[source_index]
+            canonical_item = canonical_items[canonical_index]
+            if (
+                type_id in FULL_SPIKE_TYPES
+                and source_image is not None
+                and source_room is not None
+                and (source_item.x, source_item.y)
+                != (canonical_item.x, canonical_item.y)
+            ):
+                if source_shape is None:
+                    source_shape = SpikeShapeField(source_image, source_room)
+                if (
+                    source_shape.localized_score(
+                        source_item.x, source_item.y, type_id,
+                    ) >= 1.0
+                    and source_shape.localized_score(
+                        canonical_item.x, canonical_item.y, type_id,
+                    ) <= 1 / 4
+                    and abs(source_shape.contrast(
+                        source_item.x, source_item.y, type_id,
+                    )) >= .35
+                    and max(
+                        source_shape.localized_score(
+                            source_item.x, source_item.y, other_type,
+                        )
+                        for other_type in FULL_SPIKE_TYPES
+                        if other_type != type_id
+                    ) <= 1 / 3
+                ):
+                    # The canonical resample may move a valid source triangle
+                    # onto a blank neighboring phase. Both passes proposed
+                    # the same type, but only the source origin has its
+                    # complete directed outline; keep that independently supported
+                    # origin instead of manufacturing a shifted duplicate.
+                    merged.append(source_item)
+                    continue
             if (
                 source_item.type_id in {OBJ_BLOCK, OBJ_MINI_BLOCK}
                 and (source_item.x, source_item.y) in source_marker_positions
@@ -3948,13 +4018,81 @@ def _merge_capture_lattice_geometry(
                 # its marker.
                 merged.append(source_item)
             else:
-                merged.append(canonical_items[canonical_index])
+                if (
+                    type_id == OBJ_MINI_BLOCK
+                    and source_image is not None
+                    and source_room is not None
+                    and source_item.kind == canonical_item.kind
+                    == "supported_terrain_miniblock"
+                    and (
+                        abs(source_item.x - canonical_item.x) >= MINI_BLOCK_SIZE
+                        or abs(source_item.y - canonical_item.y) >= MINI_BLOCK_SIZE
+                    )
+                    and _source_supports_distinct_native_mini_cells(
+                        source_image, source_room, source_item, canonical_item,
+                    )
+                ):
+                    merged.append(source_item)
+                merged.append(canonical_item)
         merged.extend(
             item
             for index, item in enumerate(source_items)
             if index not in used_source
         )
     return _dedupe_exact_detections(merged)
+
+
+def _source_supports_distinct_native_mini_cells(
+    image: RGBImage,
+    room: Box,
+    first: Detection,
+    second: Detection,
+) -> bool:
+    """Keep disjoint 16px cells only when both look like the same terrain.
+
+    Capture resampling can shift a supported 16px terrain proposal into a
+    neighboring real cell. A nearest-neighbor merge would erase one of them;
+    retaining every source proposal instead would admit vines/background
+    impostors. Compare their source-space material to the nearby contrast and
+    require substantial, similar texture on both cells. No room palette or
+    fixed map position enters the decision.
+    """
+
+    first_profile = _patch_color_profile(
+        image, room, first.x, first.y, MINI_BLOCK_SIZE,
+    )
+    second_profile = _patch_color_profile(
+        image, room, second.x, second.y, MINI_BLOCK_SIZE,
+    )
+    first_edges = _patch_features(
+        image, room, first.x, first.y, MINI_BLOCK_SIZE,
+    ).edge_density
+    second_edges = _patch_features(
+        image, room, second.x, second.y, MINI_BLOCK_SIZE,
+    ).edge_density
+    if min(first_edges, second_edges) < 0.14 or abs(first_edges - second_edges) > 0.23:
+        return False
+
+    excluded = {(first.x, first.y), (second.x, second.y)}
+    neighbors = {
+        (item.x + dx, item.y + dy)
+        for item in (first, second)
+        for dx, dy in ((-32, 0), (-16, 0), (16, 0), (32, 0),
+                       (0, -32), (0, -16), (0, 16), (0, 32))
+        if (item.x + dx, item.y + dy) not in excluded
+        and 0 <= item.x + dx <= ROOM_WIDTH - MINI_BLOCK_SIZE
+        and 0 <= item.y + dy <= ROOM_HEIGHT - MINI_BLOCK_SIZE
+    }
+    contrast = max((
+        _color_profile_distance(
+            second_profile,
+            _patch_color_profile(image, room, x, y, MINI_BLOCK_SIZE),
+        )
+        for x, y in neighbors
+    ), default=0.0)
+    if contrast < 20:
+        return False
+    return _color_profile_distance(first_profile, second_profile) <= 0.16 * contrast
 
 
 def _normalize_room_to_jtool(
@@ -15093,6 +15231,215 @@ def _reconcile_directed_material_spikes(
     return result
 
 
+def _reconcile_source_supported_spike_phases(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    """Refit a weak full-spike origin to a unique 8px source triangle.
+
+    This acts on existing same-direction proposals only; a contour in an
+    otherwise empty cell never creates a spike. It complements the older
+    material refit, which handles competing directions but not capture-phase
+    shifts of an already correctly typed proposal.
+    """
+    spikes = [d for d in detections if d.type_id in FULL_SPIKE_TYPES]
+    if not spikes:
+        return detections
+    field = SpikeShapeField(image, room)
+    existing = {(d.type_id, d.x, d.y) for d in spikes}
+    anchors = [d for d in detections if d.type_id not in GEOMETRY_TYPES]
+    block_positions = {(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK}
+    directions = {
+        OBJ_SPIKE_UP: "up", OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left", OBJ_SPIKE_DOWN: "down",
+    }
+    occupied = set(existing)
+    result: list[Detection] = []
+    for detection in detections:
+        if detection.type_id not in FULL_SPIKE_TYPES or field.localized_score(
+            detection.x, detection.y, detection.type_id,
+        ) > 1 / 4:
+            result.append(detection)
+            continue
+        candidates: list[tuple[float, int, int]] = []
+        for dy in (-8, 0, 8):
+            for dx in (-8, 0, 8):
+                if dx == dy == 0:
+                    continue
+                x, y = detection.x + dx, detection.y + dy
+                support = field.localized_score(x, y, detection.type_id)
+                if support >= 0:
+                    candidates.append((support, x, y))
+        candidates.sort(reverse=True)
+        if (
+            not candidates
+            or candidates[0][0] < 11 / 12
+            or len(candidates) > 1 and candidates[1][0] > 2 / 3
+            or candidates[0][0] - (candidates[1][0] if len(candidates) > 1 else 0)
+            < 1 / 4
+        ):
+            result.append(detection)
+            continue
+        _, x, y = candidates[0]
+        replacement = (detection.type_id, x, y)
+        direction = directions[detection.type_id]
+        if _warm_spike_support_overlap(
+            detection.x, detection.y, direction, block_positions,
+        ) > _warm_spike_support_overlap(x, y, direction, block_positions):
+            # Source antialiasing can put its strongest edge one half-step
+            # away from a correctly supported editor origin. Never weaken a
+            # confirmed terrain face merely to maximize the image gradient.
+            result.append(detection)
+            continue
+        if replacement in occupied or abs(field.contrast(x, y, detection.type_id)) < .5:
+            result.append(detection)
+            continue
+        if max(
+            field.localized_score(x, y, direction)
+            for direction in FULL_SPIKE_TYPES
+            if direction != detection.type_id
+        ) > 1 / 3:
+            result.append(detection)
+            continue
+        patch = _patch_features(image, room, x, y, GRID_SIZE)
+        classified = _classify_full_spike(patch)
+        if (
+            classified is None
+            or classified.type_id != detection.type_id
+            or classified.direction_margin < .15
+            or classified.outline_delta < .35
+        ):
+            result.append(detection)
+            continue
+        candidate = _geometry_detection(
+            "source_supported_spike_phase_refit", detection.type_id,
+            x, y, detection.score, image, room, GRID_SIZE,
+        )
+        if any(_geometry_anchor_conflicts(candidate, anchor) for anchor in anchors):
+            result.append(detection)
+            continue
+        result.append(candidate)
+        occupied.add(replacement)
+    return result
+
+
+def _prune_source_exterior_block_aliases(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    """Reject a block in a real triangle's exposed background, not its backing.
+
+    A shape refit may correctly preserve a source triangle even when a terrain
+    proposal occupies its body. Retain true occlusions: only a corroborated
+    backing block and a palette-relative comparison of the triangle's exterior
+    with the front background can identify an unsupported intrusive block.
+    This is deliberately local and abstains when foreground/background colors
+    are not separable.
+    """
+    spikes = [d for d in detections if d.type_id in FULL_SPIKE_TYPES]
+    blocks = [d for d in detections if d.type_id == OBJ_BLOCK]
+    if not spikes or not blocks:
+        return detections
+    block_positions = {(d.x, d.y) for d in blocks}
+    marker_positions = {
+        (d.x, d.y) for d in detections
+        if d.type_id in {OBJ_WALLJUMP_LEFT, OBJ_WALLJUMP_RIGHT, OBJ_SAVE, OBJ_WARP}
+    }
+    source_shape: SpikeShapeField | None = None
+    removed: set[tuple[int, int]] = set()
+    for spike in spikes:
+        intrusive = [
+            block for block in blocks
+            if (block.x, block.y) not in marker_positions
+            and _box_overlap_area(spike.x, spike.y, block.x, block.y)
+            > GRID_SIZE * MINI_BLOCK_SIZE
+        ]
+        if not intrusive:
+            continue
+        expected_x, expected_y = _full_spike_expected_block_origin(spike)
+        if not any(
+            abs(x - expected_x) <= 8 and abs(y - expected_y) <= 8
+            for x, y in block_positions
+        ):
+            continue
+        front_x = 2 * spike.x - expected_x
+        front_y = 2 * spike.y - expected_y
+        if not (
+            0 <= front_x <= ROOM_WIDTH - GRID_SIZE
+            and 0 <= front_y <= ROOM_HEIGHT - GRID_SIZE
+            and 0 <= expected_x <= ROOM_WIDTH - GRID_SIZE
+            and 0 <= expected_y <= ROOM_HEIGHT - GRID_SIZE
+        ):
+            continue
+        if source_shape is None:
+            source_shape = SpikeShapeField(image, room)
+        if (
+            source_shape.localized_score(spike.x, spike.y, spike.type_id) < 11 / 12
+            or max(
+                source_shape.localized_score(spike.x, spike.y, other)
+                for other in FULL_SPIKE_TYPES if other != spike.type_id
+            ) > 1 / 3
+        ):
+            continue
+        classified = _classify_full_spike(
+            _patch_features(image, room, spike.x, spike.y, GRID_SIZE)
+        )
+        if (
+            classified is None or classified.type_id != spike.type_id
+            or classified.direction_margin < .15 or classified.outline_delta < .35
+        ):
+            continue
+
+        front = _sample_map_patch_colors(
+            image, room, front_x, front_y, GRID_SIZE,
+        )
+        backing = _sample_map_patch_colors(
+            image, room, expected_x, expected_y, GRID_SIZE,
+        )
+        triangle = _sample_map_patch_colors(
+            image, room, spike.x, spike.y, GRID_SIZE,
+        )
+        centers = (sy * 16 + sx for sy in range(5, 11) for sx in range(5, 11))
+        center_indices = tuple(centers)
+        front_rgb = tuple(median(front[i][channel] for i in center_indices)
+                          for channel in range(3))
+        backing_rgb = tuple(median(backing[i][channel] for i in center_indices)
+                            for channel in range(3))
+        separation = sum(abs(a - b) for a, b in zip(front_rgb, backing_rgb))
+        if separation < 64:
+            continue
+        if spike.type_id == OBJ_SPIKE_UP:
+            exterior = (sy * 16 + sx for sy in range(1, 6)
+                        for sx in (*range(1, 5), *range(11, 15)))
+        elif spike.type_id == OBJ_SPIKE_DOWN:
+            exterior = (sy * 16 + sx for sy in range(10, 15)
+                        for sx in (*range(1, 5), *range(11, 15)))
+        elif spike.type_id == OBJ_SPIKE_LEFT:
+            exterior = (sy * 16 + sx for sx in range(1, 6)
+                        for sy in (*range(1, 5), *range(11, 15)))
+        else:
+            exterior = (sy * 16 + sx for sx in range(10, 15)
+                        for sy in (*range(1, 5), *range(11, 15)))
+        indices = tuple(exterior)
+        front_distance = sum(
+            sum(abs(triangle[i][channel] - front_rgb[channel])
+                for channel in range(3)) for i in indices
+        ) / len(indices)
+        backing_distance = sum(
+            sum(abs(triangle[i][channel] - backing_rgb[channel])
+                for channel in range(3)) for i in indices
+        ) / len(indices)
+        if (
+            front_distance <= .45 * backing_distance
+            and backing_distance - front_distance >= .45 * separation
+        ):
+            removed.update((block.x, block.y) for block in intrusive)
+    if not removed:
+        return detections
+    return [
+        d for d in detections
+        if not (d.type_id == OBJ_BLOCK and (d.x, d.y) in removed)
+    ]
+
+
 def _prune_platform_owned_spike_edges(
     detections: list[Detection], image: RGBImage, room: Box,
 ) -> list[Detection]:
@@ -22642,6 +22989,7 @@ def _prune_profiled_full_spike_noise(
         OBJ_SPIKE_DOWN: "down",
     }
     kept: list[Detection] = []
+    source_shape: SpikeShapeField | None = None
     for detection in detections:
         if detection.type_id not in FULL_SPIKE_TYPES:
             kept.append(detection)
@@ -22710,6 +23058,31 @@ def _prune_profiled_full_spike_noise(
             nearest_same_distance,
             nearest_spike_distance,
         ):
+            # Room-density profiles are useful negative evidence, but their
+            # support-distance gates can reject a real triangle when a scaled
+            # or textured capture shifts the terrain hypotheses. An existing
+            # proposal with a complete, unambiguous source contour and an
+            # independently agreeing patch classifier wins that disagreement.
+            if source_shape is None:
+                source_shape = SpikeShapeField(image, room)
+            classified = _classify_full_spike(patch)
+            if (
+                source_shape.localized_score(
+                    detection.x, detection.y, detection.type_id,
+                ) >= 11 / 12
+                and max(
+                    source_shape.localized_score(
+                        detection.x, detection.y, other_type,
+                    )
+                    for other_type in FULL_SPIKE_TYPES
+                    if other_type != detection.type_id
+                ) <= 1 / 3
+                and classified is not None
+                and classified.type_id == detection.type_id
+                and classified.direction_margin >= 0.15
+                and classified.outline_delta >= 0.35
+            ):
+                kept.append(detection)
             continue
         kept.append(detection)
     return kept
@@ -31172,6 +31545,20 @@ def _reconcile_common_room_geometry(
         return _dedupe_overlapping_geometry(filtered)
 
     reconciled: list[Detection] = []
+    source_shape: SpikeShapeField | None = None
+
+    def source_prefers_current_face(spike: Detection, x: int, y: int) -> bool:
+        nonlocal source_shape
+        if (x, y) == (spike.x, spike.y):
+            return False
+        if source_shape is None:
+            source_shape = SpikeShapeField(image, room)
+        return (
+            source_shape.localized_score(spike.x, spike.y, spike.type_id)
+            >= 11 / 12
+            and source_shape.localized_score(x, y, spike.type_id) <= 1 / 4
+        )
+
     for detection in filtered:
         if detection.type_id not in FULL_SPIKE_TYPES:
             reconciled.append(detection)
@@ -31201,7 +31588,11 @@ def _reconcile_common_room_geometry(
             direction,
             block_positions,
         )
-        if movement <= 8 and new_support > old_support:
+        if (
+            movement <= 8
+            and new_support > old_support
+            and not source_prefers_current_face(detection, aligned_x, aligned_y)
+        ):
             detection = _geometry_detection(
                 f"{detection.kind}_common_aligned",
                 detection.type_id,
@@ -31232,6 +31623,12 @@ def _reconcile_common_room_geometry(
         if clear_face is None:
             continue
         x, y = clear_face
+        if source_prefers_current_face(detection, x, y):
+            # An intrusive block proposal cannot relocate a source-drawn
+            # triangle onto an empty neighboring face. This is a positive
+            # contour comparison, not a blanket overlap exemption.
+            reconciled.append(detection)
+            continue
         reconciled.append(
             _geometry_detection(
                 f"{detection.kind}_common_resolved",

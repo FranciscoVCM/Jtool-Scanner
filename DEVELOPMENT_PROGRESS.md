@@ -7262,3 +7262,37 @@ origin/size/direction denominators and FTFA/Flames protection. Subsequent
 families are missing short vines/portals/platforms and uniform-material or
 compact reciprocal-mini structures. The new rule's seven gains do not erase
 older wrong full triangles, displaced markers or missing terrain.
+
+### Full-contour phase arbitration regression guard (2026-09-25)
+
+The later local spike/block arbitration candidate was **not** safe to accept
+unchanged: its v8 exact-control scan moved the Flames down-spike at
+`(624,32)` to `(624,24)`. The merge could be overridden by a source contour
+scoring 11/12, which was strong but not complete enough to justify the phase
+override. The source-contour override now requires a fully complete 1.0
+directed contour; all other evidence and candidate-generation rules are
+unchanged. This avoids a Flames-specific exception and retains the v8
+CN3-25 candidate map.
+
+The v9 focused suite passed **32 tests** (source arbitration, exposed-terrain
+spikes, and capture-lattice regression tests). All **16 exact controls** were
+rescanned and passed the frozen-reference checker: 13 unchanged and three
+retaining their prior improvements. Irkara-89 remains 208/238 exact with 18
+shifts (was 202 exact/24 shifts); Arcfox remains 262/269 exact with one fewer
+miss and one fewer false positive; Flames remains 252/295 exact, with false
+positives reduced from 43 to 42 and no lost exact origin. FTFA's four maps
+remain exactly unchanged. The corrected Flames placement restores
+`(6,624,32)` and removes `(6,624,24)` relative to v8.
+
+The v9 ordinary CN3-25 map is identical to v8. Its pre-frozen neighboring
+structure remains incomplete at **2/3 exact spikes**, with two extra full
+spikes, one missing source-visible block and five extra solid cells. That
+room is not accepted; this guard fixes a control regression rather than
+claiming a new room-level gain. The earlier 87-case audit remains the last
+completed all-room regeneration: v9 has not yet received a final-current
+all-71 audit. No broad unseen-regression rerun or controlled runtime
+measurement was performed for this one-threshold adjustment; the full v8
+unseen-regressions run passed 61 tests, and the v9 focused tests and all16
+controls passed. Continue with source review, runtime measurement, a refreshed
+conservative audit, and the reserved no-tuning transfer gate before claiming
+milestone completion.

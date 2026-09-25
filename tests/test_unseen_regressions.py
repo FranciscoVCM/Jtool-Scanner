@@ -477,6 +477,21 @@ class UnseenScreenRegressionTests(unittest.TestCase):
             ),
             GRID_SIZE * 16,
         )
+        # The source shows triangles at these origins, with visible background
+        # (not terrain) in their exteriors. Preserve the triangles and reject
+        # the intrusive block phases rather than satisfying the overlap cap by
+        # moving a real triangle into an empty cell.
+        typed = {(d.type_id, d.x, d.y) for d in self.particle_room.detections}
+        self.assertTrue({
+            (OBJ_SPIKE_UP, 608, 256),
+            (OBJ_SPIKE_UP, 256, 536),
+            (OBJ_SPIKE_RIGHT, 608, 552),
+        } <= typed)
+        self.assertTrue({
+            (OBJ_BLOCK, 608, 256),
+            (OBJ_BLOCK, 256, 544),
+            (OBJ_BLOCK, 608, 544),
+        }.isdisjoint(typed))
 
     def test_terrain_save_prefers_exact_support_cell_over_partial_overlap(self) -> None:
         image = load_png(UNSEEN_FIXTURES / "ftfa" / "screen-2-source.png")
