@@ -7517,3 +7517,37 @@ candidate before profile replacement. Any candidate must retain exact
 FTFA-1 anchors and protected overlapping objects; contour support alone must
 not move or suppress detections. This was an in-memory/read-only experiment;
 scanner code, fixtures, and generated outputs were not changed.
+
+### CN3_27 phase-candidate trace and current Source/JTool/Blend review (2026-09-25)
+
+The follow-up trace was run against the canonical CN3_27 source
+`local_corpus/giant-review/sources/CN3_27.png` (SHA-256
+`4088d20c701e1ccee20ceb79c7f4b11d8f3338b20ad3645873d851dad2a88249`) and the
+same v10 implementation hash as the saved trace. It reproduced the saved
+v10 JMap and metadata exactly; the single diagnostic scan took 103.467s with
+in-memory instrumentation and is not a quiet runtime benchmark.
+
+At the first geometry `_dedupe_geometry` pass, all four frozen block origins
+were present as strong 32px block candidates: `(16,16)` score **0.8413**,
+`(16,48)` **0.7011**, `(120,16)` **0.8278**, `(120,48)` **0.8068**. All four
+were dropped. `_geometry_dedupe_key` ranks preferred 32px-aligned blocks ahead
+of off-phase blocks before comparing scores, while `_geometry_conflicts`
+rejects same-type candidates within 28px. For example, the `(16,16)` candidate
+was suppressed by four aligned neighboring cells scored **0.2942–0.6468**;
+the `(120,16)` candidate was suppressed by `(128,0)` at **0.4546** and
+`(128,32)` at **0.7368**. This is direct evidence that an absolute lattice
+preference can discard stronger local block proposals during generic geometry
+deduplication.
+
+That finding is not yet a CN3_27 repair: its final `warm_tiled_room` path calls
+`_replace_warm_tiled_room_geometry`, which removes the existing geometry and
+rebuilds blocks from 32px warm-ratio samples plus boundary recovery. Therefore
+changing `_dedupe_geometry` alone would not fix this room's final JMap. The
+v10 current-candidate Source/JTool/Blend crop also confirms the visible
+phase discrepancy, but the room remains at its previously reported
+7/12-exact frozen structure with five extras and five shifts. No accuracy
+status changes. The next diagnostic must test a shared phase/material method
+at the final profile-replacement boundary and show final-map effects, while
+protecting exact controls; do not ship a dedupe-only change or tune reserved
+CN3_30/NANG_138 from this result. Only ignored local review renders were
+generated; source images, fixtures and JMaps were not modified.
