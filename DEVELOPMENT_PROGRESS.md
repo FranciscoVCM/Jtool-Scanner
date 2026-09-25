@@ -7782,3 +7782,48 @@ generated app output; it is not a full-scan fix. Full evidence is preserved in
 ignored `.artifacts/native-conflicts-20260923/exact-block-dedupe-loss-trace-v1.json`
 and its frozen procedure in `BATCH_7_PLAN.md`. No full suite, 87-case
 benchmark, reserved-case tuning, or all-71 rescan was run.
+
+### Competing phase hypotheses and closed-boundary probe (2026-09-25)
+
+The BATCH_8 trace reproduced the earlier score-aware detector-stage result
+exactly (CN3_27 whole-stage delta 237 additions/313 removals; fixed region
+4/12 exact, 8 misses, 70 extras). The four true block candidates were present
+before the first dedupe call, but raw score alone still did not select them:
+the left candidates `(16,16)=0.841323` and `(16,48)=0.701088` initially
+replaced weaker conflicts, then both were displaced by the overlapping
+off-phase candidate `(16,24)=0.851116`. On the right, `(120,16)=0.827846` and
+`(120,48)=0.806836` lost to `(120,40)=0.893722`. None remained for the second
+dedupe call. This establishes that the central issue is competition between
+overlapping phase hypotheses; neither fixed-grid preference nor raw classifier
+score is sufficient. No policy change was made.
+
+A predeclared BATCH_9 counterfactual then used the earlier grayscale side
+support measure: each 32px proposal samples a 16x16 patch, and a candidate is
+considered closed-boundary-supported only if at least 75% of samples on each
+of its four sides have luminance difference `>=34`. It can replace block-only
+conflicts only when it is the unique supported candidate. This derives from
+source pixels, not palette or answer identity.
+
+In CN3_27's fixed 4-block/8-full-spike structure, the generic geometry stage
+improves from 0/4 blocks and 4/8 full spikes exact (4/12 total; 81 extras) to
+3/4 blocks and the same 4/8 full spikes (7/12; 75 extras). CN3_92's fixed
+38-block/14-spike structure remains 52/52 with 103 extras. The positive
+regional signal is not safe to ship: it changes 60 whole-stage block origins
+out and 56 in across CN3_27, plus four mini-spike detections in and four out;
+CN3_92 also changes four block origins outside its frozen region. Those full
+outputs lack complete source truth, and the extra selected block changes can
+propagate into other geometry. It therefore fails its frozen
+whole-output safety criterion despite the local recovery. The probe computes
+side support separately for thousands of candidate positions; its stage-time
+samples reuse warmed patch caches and are not controlled latency evidence.
+
+Keep the BATCH_9 rule out of production and do not use reserved CN3_30 or
+NANG_138 to tune it. The next useful step is to profile a contrast-relative,
+cached contour-continuity feature against the frozen candidate/alias pairs and
+photometric variations, then test its whole-room effects on an independent
+style before any reserved evaluation. Detailed procedures and ignored outputs
+remain in `.artifacts/native-conflicts-20260923/BATCH_8_PLAN.md`,
+`BATCH_9_PLAN.md`, and their corresponding trace/profile JSON files. This
+turn changes only the progress note and ignored diagnostic artifacts; no
+scanner code, fixture, JMap, ordinary app output, tests or full corpus audit
+was changed or regenerated. The app root remains HTTP 200.
