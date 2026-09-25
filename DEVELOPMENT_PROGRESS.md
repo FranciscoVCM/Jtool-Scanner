@@ -7296,3 +7296,38 @@ unseen-regressions run passed 61 tests, and the v9 focused tests and all16
 controls passed. Continue with source review, runtime measurement, a refreshed
 conservative audit, and the reserved no-tuning transfer gate before claiming
 milestone completion.
+
+### v9 frozen-room rescan and overlap-hypothesis check (2026-09-25)
+
+Ordinary-option rescans of the predeclared CN3_27 and CN3_92 development
+regions used the current candidate fingerprint and the frozen region truth.
+CN3_92 improved from **39/52 exact, 27 extras and 13 misses** to **50/52
+exact, 5 extras and 2 misses**, with no shifts or wrong directions. This is a
+substantial positive result, but the room is still not exact. CN3_27 changed
+from **5/12 exact, 4 extras, 0 misses, 5 shifts and 2 wrong directions** to
+**7/12 exact, 5 extras, 0 misses, 5 shifts and 0 wrong directions**. Its exact
+count and orientation improve, but the extra false positive violates the
+frozen batch gate; it is not counted as a successful CN3_27 result. The v9
+CN3_27 map is unchanged from v8, so this is diagnosis of the current
+development state, not a new v9 implementation gain.
+
+Ordinary-equivalent tracing localizes the new CN3_27 right-spike proposal at
+`(16,64)` to `_detect_geometry`; the source-supported down spike at `(16,80)`
+is separately proposed and both survive final reconciliation. The right
+proposal has weak direction-specific material evidence (localized shape
+score 0, contrast 0.125, classifier margin 0.120) despite high apparent side
+coverage; the down proposal has localized shape score 1.0 and contrast
+0.906. This explains the alias candidate but is not, by itself, a safe
+production predicate.
+
+A proposed blanket rule to discard a weak full-spike candidate when another
+direction is nearby was rejected before implementation. Exact fixture
+JMaps include legitimate close/overlapping spikes whose local template or
+classifier evidence is similarly weak, including the supported CN3-18 pair
+and the middle FTFA-4 left spike between two up spikes. Therefore local
+evidence weakness alone cannot resolve occlusion; future arbitration needs
+positive evidence that the candidate's contour is explained by the neighbor,
+while preserving independently supported overlaps. No scanner code or
+fixtures changed in this diagnostic batch, and no screen is promoted to
+accepted. The v9 app/candidate remains the tested checkpoint; a refreshed
+all-71 audit and no-tuning reserved transfer are still outstanding.
