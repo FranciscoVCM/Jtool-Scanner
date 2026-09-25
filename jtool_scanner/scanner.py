@@ -31559,6 +31559,28 @@ def _reconcile_common_room_geometry(
             and source_shape.localized_score(x, y, spike.type_id) <= 1 / 4
         )
 
+    def source_confirms_current_spike(spike: Detection) -> bool:
+        nonlocal source_shape
+        if source_shape is None:
+            source_shape = SpikeShapeField(image, room)
+        if (
+            source_shape.localized_score(spike.x, spike.y, spike.type_id) < 11 / 12
+            or max(
+                source_shape.localized_score(spike.x, spike.y, other_type)
+                for other_type in FULL_SPIKE_TYPES
+                if other_type != spike.type_id
+            ) > 1 / 3
+        ):
+            return False
+        patch = _patch_features(image, room, spike.x, spike.y, GRID_SIZE)
+        classified = _classify_full_spike(patch)
+        return (
+            classified is not None
+            and classified.type_id == spike.type_id
+            and classified.direction_margin >= 0.20
+            and classified.outline_delta >= 0.30
+        )
+
     for detection in filtered:
         if detection.type_id not in FULL_SPIKE_TYPES:
             reconciled.append(detection)
@@ -31621,6 +31643,13 @@ def _reconcile_common_room_geometry(
 
         clear_face = _nearest_clear_spike_face(detection, block_positions)
         if clear_face is None:
+            # Do not discard a complete source triangle just because every
+            # neighboring terrain face is occupied. Keep this high-confidence
+            # proposal for the later source/material alias arbiter, which can
+            # remove an intrusive block only when the source separates it
+            # from the spike's backing; otherwise both hypotheses stay.
+            if source_confirms_current_spike(detection):
+                reconciled.append(detection)
             continue
         x, y = clear_face
         if source_prefers_current_face(detection, x, y):

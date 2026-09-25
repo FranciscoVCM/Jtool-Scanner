@@ -94,6 +94,60 @@ class SourceSpikeArbitrationTests(unittest.TestCase):
         result = _reconcile_common_room_geometry([spike, terrain], image, room)
         self.assertNotIn(spike, result)
 
+    def test_complete_source_spike_survives_when_no_clear_terrain_face_exists(self):
+        for direction in VERTICES:
+            for foreground, background in ((30, 220), (220, 30)):
+                with self.subTest(direction=direction, foreground=foreground):
+                    origin = (320, 256)
+                    bitmap = Image.new("RGB", (800, 608), (background,) * 3)
+                    ImageDraw.Draw(bitmap).polygon(
+                        [(origin[0] + dx, origin[1] + dy)
+                         for dx, dy in VERTICES[direction]],
+                        fill=(foreground,) * 3,
+                    )
+                    captured = bitmap.resize((1000, 760), Image.Resampling.BILINEAR)
+                    normalized = captured.resize((800, 608), Image.Resampling.BILINEAR)
+                    image = RGBImage(normalized.width, normalized.height,
+                                     normalized.tobytes())
+                    room = Box(0, 0, image.width, image.height)
+                    x, y = origin
+                    if direction == 3:
+                        block_positions = [(x, row) for row in range(0, y + 33, 32)]
+                    elif direction == 6:
+                        block_positions = [(x, row) for row in range(y, 608, 32)]
+                    elif direction == 4:
+                        block_positions = [(col, y) for col in range(x, 800, 32)]
+                    else:
+                        block_positions = [(col, y) for col in range(0, x + 1, 32)]
+
+                    spike = Detection("primary_spike", direction, x, y, .8,
+                                      Box(x, y, 32, 32))
+                    blocks = [
+                        Detection("block", 1, bx, by, .8, Box(bx, by, 32, 32))
+                        for bx, by in block_positions
+                    ]
+                    result = _reconcile_common_room_geometry(
+                        [spike, *blocks], image, room,
+                    )
+
+                    self.assertIn(spike, result)
+
+    def test_complete_contour_does_not_preserve_a_wrong_direction_alias(self):
+        image = scene(3)
+        room = Box(0, 0, image.width, image.height)
+        false_right = Detection("spike_right", 4, 160, 160, .8,
+                                Box(160, 160, 32, 32))
+        blocks = [
+            Detection("block", 1, x, 160, .8, Box(x, 160, 32, 32))
+            for x in range(160, 800, 32)
+        ]
+
+        result = _reconcile_common_room_geometry(
+            [false_right, *blocks], image, room,
+        )
+
+        self.assertNotIn(false_right, result)
+
     def test_profile_veto_respects_unambiguous_source_triangle(self):
         for direction in VERTICES:
             for foreground, background, scale in ((30, 220, 1), (220, 30, 1.25)):
