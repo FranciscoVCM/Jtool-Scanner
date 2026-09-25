@@ -7848,3 +7848,43 @@ feature must again distinguish both CN3_27 aliases and remain non-permissive
 on CN3_92 before any detector experiment. Full input identities and per-origin
 profiles are in ignored `.artifacts/native-conflicts-20260923/BATCH_10_PLAN.md`
 and `relative-contour-photometric-stability-v1.json`.
+
+### Wider contour band and block/triangle competition (2026-09-25)
+
+BATCH_11 oversampled each candidate on a 32x32 map-pixel grid and searched a
+six-pixel boundary band. It retained CN3_27 support across the brightness,
+contrast and capture-scale variants (3/4 truths under identity and 4/4 at
+0.75x), but both known shifted aliases also passed on every variant. In
+CN3_92, five of 38 true blocks and two of 35 block extras passed on identity.
+The wider band therefore recovers resampling stability by accepting nearby
+periodic texture; it does not distinguish the competing anchors.
+
+BATCH_12 kept each of the six offset responses separate. At the nominal side
+crossing, no CN3_27 truth or alias had four-side support. Widening to the
+three central offsets admits 2/4 truths and both aliases; the full band admits
+3/4 truths and both aliases. At 0.75x the full band admits 4/4 truths but
+still one alias. CN3_92's full band supports only 5/38 truths and 2/35 extras.
+This rejects local edge-placement thresholds as a sufficient shared conflict
+rule; the apparent support is not uniquely tied to the object boundary.
+
+BATCH_13 compared the existing directional triangle hypotheses with block
+classification at the frozen origins. For CN3_27, the best triangle score
+meets/exceeds the block score at 1/4 true blocks versus 12/16 score-aware
+block extras; direction margin `>=0.10` occurs at 0/4 truths and 4/16 extras.
+Among the two traced aliases, neither triangle score exceeds its block score,
+but one has a strong direction margin (`0.142083`, at `(120,40)`); neither
+alias overlaps a frozen true-spike bounding box. CN3_92 shows a smaller but
+similar enrichment: 0/38 true blocks and 6/35 extras have triangle score at
+least the block score; 0/38 versus 3/35 have margin `>=0.10`. This is a
+potential arbitration signal, not yet a detector rule: a score comparison
+alone misses both aliases, and the whole pipeline has not been tested with a
+direction-aware policy.
+
+These measurements favor profiling joint material/shape composition alongside
+direction margin before another block-only boundary rule. Keep all three
+features out of production and leave CN3_30/NANG_138 reserved. Inputs,
+procedures and source-feature outputs remain ignored under
+`.artifacts/native-conflicts-20260923/` (`BATCH_11_PLAN.md`,
+`BATCH_12_PLAN.md`, `BATCH_13_PLAN.md` and corresponding profile JSONs). No
+scanner code, fixture, JMap, ordinary scan, test suite, benchmark or all-71
+audit changed in these batches; the app root remains HTTP 200.
