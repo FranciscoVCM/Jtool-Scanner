@@ -7695,3 +7695,63 @@ the CN3_30 missing spike as a separately evidenced defect. The local app was
 started on the tested current code and verified at HTTP 200 with its loaded
 source fingerprint matching the module. These are diagnostic-only results;
 no full suite, full 87-case benchmark, or all-71 rescan was run.
+
+### Off-phase block candidate probes rejected; retain score and contour evidence (2026-09-25)
+
+The alias/filter checkpoint was followed by four frozen, read-only probes
+against the current v10 implementation (`9a3499265b2866e69a241372c51c5eecb148104006ff00a70bbce608d4a63fa2`).
+No scanner code, fixture, expected JMap, or ordinary output changed.
+
+First, the CN3_27 trace was rechecked as three distinct `scan_image` passes:
+the initial 978x745 source pass takes the bright-outlined path, while the
+canonical 800x608 pass activates the warm-profile replacement. Using that
+exact canonical image, the existing warm-ratio threshold (`>=0.33`) finds none
+of the four fixed block origins on the phase-0 32px lattice. Expanding windows
+to every 8px finds all four, but yields 193 candidates in the fixed region:
+189 non-truth anchors and 123 windows overlapping one of eight true spikes.
+The true blocks rank only 2nd, 2nd, 3rd and 3rd by generic block score in their
+local 24px neighborhoods. The same mask generalized to CN3_92 produces 353
+candidates, hits only 28/38 fixed blocks, misses ten and adds 325 non-truth
+anchors, 39 of which overlap true spikes. This rejects a raw phase sweep.
+
+Second, the existing `_detect_geometry` stage was evaluated independently on
+cached source inputs. On CN3_27's exact canonical pass it produces 79 regional
+geometry proposals but none of the 12 frozen objects; 43 proposals intersect
+true spike footprints. On the ordinary CN3_92 source pass it preserves 52/52
+truths but has 103 extras, 42 intersecting true spikes. A union with the
+current profile output is not justified.
+
+A block-only score-aware replacement for `_dedupe_geometry` was then tested
+in memory on the ordinary source-space stage. It did not recover the four
+CN3_27 blocks: regional exact geometry stayed 4/12 with 70 extras. Across all
+geometry-stage output origins in the source image it changed 237 in and 313
+out, with
+five non-block additions and nine non-block removals after downstream
+recovery. On CN3_92, exact regional geometry fell from 52/52 to 22/52, extras
+rose from 103 to 122, and the whole-room delta included 222 additions, 263
+removals, two non-block additions and 21 non-block removals. Score-first
+block conflict replacement is rejected; alignment priority cannot simply be
+reversed.
+
+Finally, the current bright-neutral outline helper was evaluated with its
+existing thresholds but outside its caller neutral-profile gate, while still
+using current non-geometry anchors. CN3_27's bright-outlined gate is true and
+neutral subgate false; the helper emits four regional blocks, none at the
+four truths, all four overlapping true spikes. It emits two unsupported
+candidates in CN3_92. On the exact `irkara-nr-flames` control (truth JMap SHA
+`0946c922677ff015c9c250fb0e88f6941c268ff49a1c61de2ccd6d924875bcb6`), it
+emits eight non-truth blocks, seven intersecting expected spikes, despite 196
+current exact blocks. This helper is not a chromatic-family repair.
+
+The evidence narrows the immediate cause but supplies no safe repair: the
+canonical warm branch's fixed phase misses off-phase CN3_27 blocks; unconstrained
+phase proposals collide with true spike geometry; and generic block score,
+dedupe priority, and neutral-outline contours do not distinguish the true
+anchors across these styles. Keep all three candidates out of production and
+do not inspect the reserved CN3_30/NANG_138 results for tuning. Full details
+and predeclared protocols remain local and ignored under
+`.artifacts/native-conflicts-20260923/` (`BATCH_3_PLAN.md`,
+`BATCH_4_PLAN.md`, `BATCH_5_PLAN.md`, `BATCH_6_PLAN.md`, and their profile
+JSONs). No full scanner, 87-case benchmark, all-71 rescan or test suite was
+run. The app remains on unchanged v10; `/` returned HTTP 200 and health
+fingerprint `80d06af62446e56693e09b4c996ce9406df941a5ada58a1bdc625636319efc63`.
