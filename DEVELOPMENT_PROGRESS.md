@@ -7452,24 +7452,68 @@ changed, and cross-family positive transfer, the reserved success gate,
 Source/JTool/Blend visual review of changed maps and the final-current 71-room
 audit remain incomplete.
 
-### CN3_27 exposed-contour masking counterfactual (2026-09-25)
+### CN3_27 overlap-probe input-identity correction (2026-09-25)
 
-Rechecked whether the existing palette-aware `_unsupported_exposed_slopes`
-predicate can distinguish the false right-spike proposal at `(16,64)` from
-the true down spike at `(16,80)` when each candidate's overlapping neighbor
-is masked. It returns `False` (no safe absence conclusion) for **both**. The
-false right candidate has one visible side with 10 samples, 50% aligned
-luminance-gradient hits, median normalized luminance contrast **0.307**, and
-RGB contrast **0.394**; its other side is fully occluded. The true down spike
-has five visible samples on each side, with 80% and 100% aligned hits and
-strong median luminance/RGB contrasts (0.988/0.978 and 0.988/0.926).
+An audit of the preceding diagnostic found that its detailed exposed-contour
+numbers came from `.artifacts/native-conflicts-20260923/common-inputs/CN3_27/
+image-1.png` (SHA-256 `3694057e6cbfcd7a46acdbd0a52b5217812371de41c486f0e6c7a8d02c5e06b6`),
+not the frozen ordinary-scan source in `baseline-index.json` (SHA-256
+`4088d20c701e1ccee20ceb79c7f4b11d8f3338b20ad3645873d851dad2a88249`,
+978x745). The probe also supplied a neighboring spike's box to the
+`_unsupported_exposed_slopes` parameter named `blocks`, although that helper's
+production meaning is terrain-mask hypotheses. The earlier per-side values
+and the resulting claim about the canonical scan are therefore withdrawn;
+they are not valid source evidence for the development case.
 
-Thus the helper's negative-contour test correctly abstains on the false
-candidate because its remaining side has appreciable source evidence; masking
-the true neighbor does not make the candidates separable. Reusing this helper
-as a delete rule would not remove this false proposal and weakening its
-positive-evidence veto would risk deleting genuinely occluded geometry. No
-scanner or fixture changes were made. The independent-neighbor-contour idea
-remains unproven for production; next work should seek a feature that explains
-the candidate's apparent exposed contour using the neighbor without treating
-ordinary source texture or a legitimate overlap as negative evidence.
+Reprofiling the canonical input through `detect_room_box` and the same
+`_patch_features`/`SpikeShapeField` coordinate normalization used by the
+scanner gives the proposed right spike `(16,64)` localized right-direction
+support **0.000**, side coverages **(0.333, 0.000)**, and a weak full-spike
+classification that still agrees with right (score **0.760**, margin **0.120**,
+outline delta **0.247**). The expected down spike `(16,80)` has localized
+support **1.000**, side coverages **(1.000, 1.000)**, and a down classification
+(score **0.655**, margin **0.208**, outline delta **0.430**). These measurements
+do not establish a safe deletion rule: one hypothesis is poorly localized,
+but its classifier does not identify the neighboring spike's direction.
+
+The ordinary-equivalent v10 trace itself is still valid for its recorded
+canonical scan: `traces-current-candidate-v10/CN3_27/complete.json` confirms
+map-and-metadata equality with the ordinary result. No scanner or fixture
+changes were made. Do not use the mismatched cached image for tuning; any next
+candidate must use the frozen source hash, preserve the recorded capture
+identity, and be evaluated against the complete fixed region and protected
+overlaps. The warm-profile rectangular-contour/phase-flexible experiment
+remains a separate, unimplemented hypothesis.
+
+### Rectilinear contour anchor-refit experiment rejected (2026-09-25)
+
+An offline positive-cue probe measured four-sided, phase-flexible edge support
+as a possible way to distinguish rectangular terrain from spikes. On the
+hash-verified CN3_27 frozen source and fixed region, the strict criterion
+(support >=0.80 on all four sides) selected the four expected block patches
+and no spike patches across the tested brightness, hue, grayscale, contrast,
+and scale variants. The cue is not a broad block detector: across 15 exact
+control fixture sources it selected 142 of 2,881 expected solid-block patches
+and one of 990 full-spike patches, with several visual families yielding no
+positive blocks at all. It is suitable only as a high-confidence positive
+contour observation, not as a universal block rule or negative veto.
+
+A counterfactual that moved weak CN3_27 block seeds toward nearby strict-cue
+patches improved that room's geometry summary from 7/12 exact, 5 false
+positives, 5 shifts to 11/12 exact, 5 false positives, 1 shift. Applying the
+same rule to the existing FTFA-1 exact-control map regressed exact matches
+from 233 to 226 by moving seven previously exact block anchors; Flames made
+no moves, and Irkara89's aggregate counts stayed unchanged despite four
+moves. This falsifies blind contour-based anchor relocation: visible tile
+edges may be inset or phase-shifted relative to the JMap's object anchor.
+No production implementation is justified by this experiment.
+
+The canonical CN3_27 trace adds a better next diagnostic target: the four
+expected blocks were removed during `_dedupe_geometry`, while warm-profile
+cells were added later by `_detect_geometry` and reintroduced by
+`_replace_warm_tiled_room_geometry`. Inspect why the deduper prefers those
+nearby candidates and whether phase evidence can safely preserve a raw
+candidate before profile replacement. Any candidate must retain exact
+FTFA-1 anchors and protected overlapping objects; contour support alone must
+not move or suppress detections. This was an in-memory/read-only experiment;
+scanner code, fixtures, and generated outputs were not changed.
