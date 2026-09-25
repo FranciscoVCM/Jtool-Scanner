@@ -7640,14 +7640,58 @@ wrong directions are unchanged. These positive map-level signals justify
 further validation, not integration.
 
 The generated before/after Source/JTool/Blend review files in the ignored
-`.artifacts/native-conflicts-20260923/review-block-alias-v1/` directory do not
-yet reconcile visually with the map-level delta: the after renders appear to
-omit substantially more structure than the simulated one-to-three object
-removals explain. Treat this as an unresolved review/render-generation issue;
-do not claim a visual improvement, tune the threshold, or integrate the rule
-until the rendered maps are reconciled with the serialized object deltas.
-Resume by auditing the review renderer and object counts, then visually verify
-all changed source/JTool/blend regions. If that passes, freeze the predicate
-and evaluate it once on the reserved no-tuning NANG_138 case. No scanner code,
+`.artifacts/native-conflicts-20260923/review-block-alias-v1/` directory have
+since been reconciled with the serialized map deltas. SVG object inventories
+show exactly one removed cell in CN3_92 and Irkara NR Flames, and exactly two
+in CN3_27. Pixel diffs are confined to those cells: CN3_92 changes one local
+40px cell, Flames one local 39px cell, and CN3_27 the two 39px cells at source
+origins `(544,0)` and `(496,480)`. The earlier impression that the after
+renders omitted much more structure was incorrect; it was a visual-review
+misread, not a renderer defect. This correction establishes render/map
+consistency only, not that the filter is safe to integrate. No scanner code,
 fixtures, expected JMaps, or authoritative scan outputs were modified; the
 full scanner suite and the 87-case baseline were not rerun for this probe.
+
+### Frozen alias probe: reserved transfer and cross-case boundary diagnostic (2026-09-25)
+
+The alias predicate above was frozen before two no-tuning checks. On reserved
+NANG_138, the ordinary current-code map and metadata match the saved scan; the
+candidate changes nothing. Its predeclared 41-object region remains 38 exact,
+3 false positives, 3 misses, 0 shifts and 0 wrong directions. This is a neutral
+holdout result, not a transfer success, and no NANG-specific failure was used
+to tune the predicate.
+
+CN3_30 was also evaluated once as a no-tuning reserve. Its visible 15-spike
+region remains 12 exact, 3 false positives, 0 misses and 3 wrong orientations;
+the alias candidate changes neither its geometry map nor its solid/open
+occupancy scores (81/102 solid cells covered, 1/130 open cells falsely
+covered). The fresh ordinary scan differs from the pinned map by one removed
+left-facing spike at `(544,288)`. A source crop confirms visible spike-shaped
+evidence there, but this unrelated current-versus-pinned discrepancy is not
+attributed to the candidate and is not a tuning target on the reserved room.
+The first diagnostic harness attempt failed after scanning while calling an
+incorrect comparison helper; the wrapper was corrected, and the one saved
+ordinary result below is from the successful rerun. No source or scanner files
+were changed.
+
+A read-only cross-case diagnostic measured palette-neutral luminance changes
+at 16px candidate-block boundaries in CN3_27, CN3_92 and the exact Irkara NR
+Flames control. On CN3_27, at least 75% support on all four sides appears on
+3/4 true blocks and 0/5 current block extras. That apparent separation does
+not transfer: on CN3_92, all four sides are below the same support level for
+both true blocks and extras, with similar median side profiles; the inherited
+Flames true blocks also have no four-side-closed examples. The feature is thus
+an interesting CN3_27 diagnostic, not a generalized material/geometry rule.
+No threshold was selected, no scanner code was changed, and no reserved case
+was used for tuning. The profile and exact inputs are preserved in ignored
+`.artifacts/native-conflicts-20260923/block-boundary-cross-case-profile-v1.json`
+and `profile_block_boundaries_across_cases.py`.
+
+This batch produces no positive reserved transfer and no validated generalized
+repair, so it does not advance the goal's completion gate. Keep the frozen
+candidate out of production; next work should seek a causal shared feature
+that separates true blocks from aliases across visual families, while treating
+the CN3_30 missing spike as a separately evidenced defect. The local app was
+started on the tested current code and verified at HTTP 200 with its loaded
+source fingerprint matching the module. These are diagnostic-only results;
+no full suite, full 87-case benchmark, or all-71 rescan was run.
