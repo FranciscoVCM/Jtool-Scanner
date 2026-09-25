@@ -7451,3 +7451,25 @@ Current v10 remains the committed/app-served checkpoint. No acceptance status
 changed, and cross-family positive transfer, the reserved success gate,
 Source/JTool/Blend visual review of changed maps and the final-current 71-room
 audit remain incomplete.
+
+### CN3_27 exposed-contour masking counterfactual (2026-09-25)
+
+Rechecked whether the existing palette-aware `_unsupported_exposed_slopes`
+predicate can distinguish the false right-spike proposal at `(16,64)` from
+the true down spike at `(16,80)` when each candidate's overlapping neighbor
+is masked. It returns `False` (no safe absence conclusion) for **both**. The
+false right candidate has one visible side with 10 samples, 50% aligned
+luminance-gradient hits, median normalized luminance contrast **0.307**, and
+RGB contrast **0.394**; its other side is fully occluded. The true down spike
+has five visible samples on each side, with 80% and 100% aligned hits and
+strong median luminance/RGB contrasts (0.988/0.978 and 0.988/0.926).
+
+Thus the helper's negative-contour test correctly abstains on the false
+candidate because its remaining side has appreciable source evidence; masking
+the true neighbor does not make the candidates separable. Reusing this helper
+as a delete rule would not remove this false proposal and weakening its
+positive-evidence veto would risk deleting genuinely occluded geometry. No
+scanner or fixture changes were made. The independent-neighbor-contour idea
+remains unproven for production; next work should seek a feature that explains
+the candidate's apparent exposed contour using the neighbor without treating
+ordinary source texture or a legitimate overlap as negative evidence.
