@@ -7405,3 +7405,49 @@ screen is promoted to accepted, and the all-71 current audit, reserved
 no-tuning transfer gate, and further cross-tileset positive transfer evidence
 remain unresolved. This validation preserves the v10 candidate as a useful,
 bounded checkpoint; it does not complete the active goal.
+
+### v10 reserved-transfer and CN3_27 profile-ablation diagnosis (2026-09-25)
+
+The frozen, ordinary v10 scan of reserved **NANG_138** made no map or metadata
+change from the pinned baseline (`added=0`, `removed=0`). Its predeclared
+41-object chamber remains **38 exact, 3 extras, 3 misses, 0 shifts and 0
+wrong directions**. This is a neutral no-tuning evaluation, not a reserved
+positive transfer; no per-object NANG failure analysis was used for tuning.
+NANG_138 remains protected for a later candidate. CN3_30 still has no frozen
+source-visible structure because its flat material does not establish a
+unique hidden block decomposition; do not count it as an exact geometry gate
+without a separately source-backed annotation.
+
+A fresh v10 observation-only trace of development room **CN3_27** reproduces
+the ordinary map and metadata exactly. Its frozen 12-object structure remains
+**7 exact, 5 extras, 0 misses, 5 shifts and 0 wrong directions**. The trace
+shows the initial geometry pass proposing both the unsupported right spike
+`(16,64)` and the source-supported down spike `(16,80)`. The later warm-tiled
+profile replaces the initial geometry set and reconstructs blocks from
+room-local warm-color occupancy, using canonical 32px sample cells plus a
+separate boundary-recovery rule. In the region, this leaves five block
+detections, none at the four frozen block origins; four are shifted and one is
+extra. This is a phase/material-classification hypothesis, not proof that all
+warm-profile errors share one cause.
+
+An in-memory diagnostic disabled only warm-profile selection for CN3_27; no
+production source changed. The frozen structure stayed exactly **7/12 with 5
+extras and 5 shifts**, while the whole-room map changed substantially (**37
+typed origins added and 33 removed** versus v10). Therefore simply bypassing
+the warm profile is rejected: it yields no frozen-region improvement and
+unreviewed whole-room changes. An offline patch survey also found overlapping
+warm-color ratios: the four expected block patches range **0.422–0.555**, the
+false block patch at `(96,32)` is **0.555**, and visible spike patches can be
+similarly or more warm-dominant. A lower or phase-shifted warm-ratio threshold
+alone cannot separate blocks from spike silhouettes safely.
+
+This rules out the easy selector toggle and scalar-occupancy adjustment. The
+next development experiment should test positive local rectangular-contour
+evidence together with phase-flexible occupancy, preserving spike contour and
+supported-overlap hypotheses. First establish separation on the frozen
+CN3_27 positives, false cells and exact overlap controls; only after a
+candidate is frozen should it be run as a no-tuning NANG_138 evaluation.
+Current v10 remains the committed/app-served checkpoint. No acceptance status
+changed, and cross-family positive transfer, the reserved success gate,
+Source/JTool/Blend visual review of changed maps and the final-current 71-room
+audit remain incomplete.
