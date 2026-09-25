@@ -7585,3 +7585,30 @@ work and are not runtime benchmarks. Avoid another full scan for this same
 abstention question; continue from cached source/features and reserve the
 next scan for a frozen candidate or a distinct causal question. No scanner
 code, fixtures, or authoritative JMaps changed.
+
+### CN3_27 naive four-phase material sweep rejected; loss precedes consensus (2026-09-25)
+
+A no-code phase-bank diagnostic reused the canonical CN3_27 source and its
+source-derived `_detect_geometry` candidates (1,246 typed proposals). It built
+16px color-cell labels at all four 8px lattice phases `(0,0)`, `(8,0)`,
+`(0,8)`, `(8,8)`, then applied the existing complementary and single-rectangle
+learners with their unchanged gates. All **8/8** phase/learner combinations
+abstained. This rejects the simple “run the current fitter four times and
+union its rectangles” idea; it is not evidence against a more local
+shape/material method, and the raw proposal set is noisier than the
+production-filtered set. No phase bank is being integrated.
+
+The saved ordinary-equivalent trace also contains local `scan_image` output
+snapshots on both sides of capture-lattice consensus. In the frozen
+`[0,0,176,192]` region, the 978x745 source-space pass proposes blocks at
+`(0,32),(32,32),(96,32),(128,32),(128,64)`; the canonical 800x608
+warm-profile pass proposes blocks at
+`(0,32),(0,96),(0,128),(16,64),(32,32),(64,96),(64,128),(64,160),
+(96,32),(112,64),(128,0),(128,96),(128,128)`. Neither contains any of the
+four frozen block origins `(16,16),(16,48),(120,16),(120,48)`. The final
+source-coordinate scan also contains none of them. Therefore the ordinary
+merge has no correct block proposal to select or preserve; consensus changes
+alone cannot repair this failure. Candidate generation/material profiling
+must recover source-supported positions before the merge, while preserving
+the real overlapping spike and texture negatives. No scanner code, fixtures,
+or authoritative maps changed.
