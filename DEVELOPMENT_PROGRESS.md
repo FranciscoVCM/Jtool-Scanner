@@ -7827,3 +7827,24 @@ remain in `.artifacts/native-conflicts-20260923/BATCH_8_PLAN.md`,
 turn changes only the progress note and ignored diagnostic artifacts; no
 scanner code, fixture, JMap, ordinary app output, tests or full corpus audit
 was changed or regenerated. The app root remains HTTP 200.
+
+### Relative contour feature fails capture-scale gate (2026-09-25)
+
+BATCH_10 profiled a per-crop normalized variant of the four-side support
+feature on the frozen truth and score-aware extra origins. For CN3_27, 3/4 true
+blocks passed and neither traced alias passed under identity, +40 brightness,
+half/double-ish contrast transforms, or RGB channel permutation. The result
+is stable against these photometric changes, but not capture resampling: only
+1/4 true blocks passed at both 0.75x and 1.25x. In CN3_92, the feature abstains
+on every tested variant: 0/38 true blocks and 0/35 candidate extras passed.
+It therefore does not transfer useful positive evidence to the second style.
+
+This fails BATCH_10's frozen gate. Do not carry the contour threshold into a
+detector prototype. No ordinary scan or detector-stage policy was run, and no
+reserved case or production code was touched. The finding narrows the next
+measurement to a wider, map-relative boundary-gradient band that may tolerate
+resampling without treating a shifted interior seam as a block edge; that
+feature must again distinguish both CN3_27 aliases and remain non-permissive
+on CN3_92 before any detector experiment. Full input identities and per-origin
+profiles are in ignored `.artifacts/native-conflicts-20260923/BATCH_10_PLAN.md`
+and `relative-contour-photometric-stability-v1.json`.
