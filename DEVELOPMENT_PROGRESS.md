@@ -7612,3 +7612,42 @@ alone cannot repair this failure. Candidate generation/material profiling
 must recover source-supported positions before the merge, while preserving
 the real overlapping spike and texture negatives. No scanner code, fixtures,
 or authoritative maps changed.
+
+### Strong-spike / weak-block alias filter: provisional offline checkpoint (2026-09-25)
+
+A read-only, in-memory filter probe was applied to the saved v10 object maps.
+It removes a block only when its overlap with a full spike is at least 384
+px², block score is at most 0.45, a source-backed full-spike classifier agrees
+with the spike type and has margin at least 0.20 and outline delta at least
+0.30, the `SpikeShapeField` localized score is at least 11/12, and the
+full-spike score exceeds the block score by at least 0.25. The rule is
+geometry/shape based; it does not use screen identity, coordinates, hashes,
+palette identity, or JMaps. This was a map-only simulation, not an ordinary
+scanner run, so none of the results below is yet an accepted corpus result.
+
+On the frozen CN3_92 region, the current v10 scan has 54 detections: 52 exact
+and 2 false positives. The simulation removes one weak block alias on a
+strong true full-down spike, which would leave 53 detections, 52 exact and 1
+false positive if the serialized-map delta is reproduced by an ordinary scan.
+This is a one-false-positive improvement, not a perfect region result. On
+CN3_27, the frozen 12-object region is unchanged at 7 exact, 5 extras, 5
+shifts, and no wrong directions; two blocks outside that frozen region would
+be removed, and their whole-room truth still needs visual/source review. Of
+the 16 hash-verified exact-control output maps, only `irkara-nr-flames`
+changes: one false block overlapping a strongly supported full-up spike is
+removed, while its 252 existing exact matches, 21 misses, 20 shifts, and 2
+wrong directions are unchanged. These positive map-level signals justify
+further validation, not integration.
+
+The generated before/after Source/JTool/Blend review files in the ignored
+`.artifacts/native-conflicts-20260923/review-block-alias-v1/` directory do not
+yet reconcile visually with the map-level delta: the after renders appear to
+omit substantially more structure than the simulated one-to-three object
+removals explain. Treat this as an unresolved review/render-generation issue;
+do not claim a visual improvement, tune the threshold, or integrate the rule
+until the rendered maps are reconciled with the serialized object deltas.
+Resume by auditing the review renderer and object counts, then visually verify
+all changed source/JTool/blend regions. If that passes, freeze the predicate
+and evaluate it once on the reserved no-tuning NANG_138 case. No scanner code,
+fixtures, expected JMaps, or authoritative scan outputs were modified; the
+full scanner suite and the 87-case baseline were not rerun for this probe.
