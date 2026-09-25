@@ -7755,3 +7755,30 @@ and predeclared protocols remain local and ignored under
 JSONs). No full scanner, 87-case benchmark, all-71 rescan or test suite was
 run. The app remains on unchanged v10; `/` returned HTTP 200 and health
 fingerprint `80d06af62446e56693e09b4c996ce9406df941a5ada58a1bdc625636319efc63`.
+
+### Exact trace of CN3_27 off-phase block loss (2026-09-25)
+
+Follow-up instrumentation wrapped `_dedupe_geometry` without changing its
+sort, conflict predicate, or returned detections; each wrapped result was
+asserted equal to the uninstrumented function. In the raw-source
+`_detect_geometry` path, all four fixed CN3_27 block candidates are proposed
+before the first dedupe call and all four are absent immediately after it.
+Their scores are `(16,16)=0.841323`, `(16,48)=0.701088`,
+`(120,16)=0.827846`, and `(120,48)=0.806836`. The surviving conflict
+neighborhoods include lower-scoring 32-aligned candidates: `(32,32)=0.646763`
+conflicts with the first two, and `(128,32)=0.736775` with the latter two.
+Other blockers are recorded in the ignored trace. Thus the true off-phase
+proposals exist in raw geometry evidence but are lost at conflict resolution;
+this does not establish a safe generalized replacement policy.
+
+The same instrumented run preserves CN3_92: all 38 fixed block candidates
+survive both dedupe calls (4054→709 and 727→725 input/output counts). CN3_27's
+first call is 5071→1087; the second has no frozen true-block candidate to lose.
+The final stage result matches the saved ordinary default detector-stage
+metrics. This makes indiscriminate conflict-policy changes risky: they must
+recover the off-phase CN3_27 anchors without regressing aligned CN3_92. The
+trace is diagnostic only and changes no scanner logic, fixtures, JMaps, or
+generated app output; it is not a full-scan fix. Full evidence is preserved in
+ignored `.artifacts/native-conflicts-20260923/exact-block-dedupe-loss-trace-v1.json`
+and its frozen procedure in `BATCH_7_PLAN.md`. No full suite, 87-case
+benchmark, reserved-case tuning, or all-71 rescan was run.
