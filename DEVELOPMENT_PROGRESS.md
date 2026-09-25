@@ -7371,3 +7371,37 @@ Current candidate outputs and review SVGs are ignored under
 trace and typed-map delta have been checked. Browser policy blocked opening the
 local SVG URL, so the generated JTool/Blend SVGs have not been visually
 inspected in this checkpoint.
+
+### v10 validation and preservation checkpoint (2026-09-25)
+
+The v10 no-clear-face spike candidate has now passed the remaining automated
+checks, and this checkpoint supersedes the pending-test statements above. The
+focused `tests.test_source_spike_arbitration` module passes **16 tests**. The
+complete `tests.test_unseen_regressions` module passes **61 tests**. The
+frozen-control comparison rescanned all **16 exact controls** and directly
+compared their v10 JMaps and map metadata with the published v9 candidate:
+all **16/16 are identical to v9**, with no control-map or metadata changes.
+Therefore the three previously documented v9 improvements are retained, but
+v10 claims no additional exact-control gains.
+
+An ABBA quiet-runtime comparison reproduced each candidate's output and
+metadata on both workloads. For dense CN3_92, v9 median runtime was **53.145 s**
+and v10 was **54.995 s** (+1.850 s, **3.48%**). For sparse CN2-5 jump-refresh,
+v9 was **59.390 s** and v10 was **62.604 s** (+3.214 s, **5.41%**). This is a
+modest measured overhead on these two samples, not a corpus-wide performance
+claim.
+
+The running app was restarted from the committed v10 source. `GET /` returns
+HTTP **200**, `/api/health` reports `ok: true`, and its source fingerprint
+`80d06af62446e56693e09b4c996ce9406df941a5ada58a1bdc625636319efc63` matches
+the current workspace source fingerprint.
+
+The frozen CN3_92 source/map comparison is verified at 52/52 exact with two
+remaining extras, and CN3_27 remains unchanged at 7/12 exact with five extras;
+its no-extra gate still fails. The Source image, trace, and typed-map delta
+were reviewed, but local SVG viewing was blocked by browser policy, so this
+checkpoint does **not** claim completed visual Source/JTool/Blend review. No
+screen is promoted to accepted, and the all-71 current audit, reserved
+no-tuning transfer gate, and further cross-tileset positive transfer evidence
+remain unresolved. This validation preserves the v10 candidate as a useful,
+bounded checkpoint; it does not complete the active goal.
