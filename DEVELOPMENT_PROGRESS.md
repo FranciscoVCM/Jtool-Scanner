@@ -7551,3 +7551,37 @@ at the final profile-replacement boundary and show final-map effects, while
 protecting exact controls; do not ship a dedupe-only change or tune reserved
 CN3_30/NANG_138 from this result. Only ignored local review renders were
 generated; source images, fixtures and JMaps were not modified.
+
+### CN3_27 phase-free material fitter abstention traced (2026-09-25)
+
+The production `_learn_repeated_terrain_profile` call was observed during an
+ordinary CN3_27 scan. It receives six 16px material clusters with room
+contrast **269.954** and **444** independent full/mini-spike support votes
+distributed across them, but returns `None` with no map or metadata change
+from v10. The exact internal return shows `eligible_vote_clusters=[]` and
+`seed_clusters=[]`; neither the complementary-material nor single-rectangular
+fallback returns a profile. Thus insufficient contrast or a lack of spike
+support is not the gate. Every voted cluster misses the current
+`_is_repeated_terrain_lattice_candidate` full-coverage criterion; on the
+current 16px sampling lattice their coverage values range from **0.000** to
+**0.612**, below the required **0.85**.
+
+The frozen positives explain a structural limitation in that representation.
+At `(16,16)` the four 16px quadrant labels are `[4,3,3,3]`; at `(16,48)` they
+are `[4,3,4,3]`, so neither square is a single-cluster 2x2 cell. More
+importantly, the second true block column begins at **x=120**, which is **8px
+off** the profile's 16px sample lattice (`120 % 16 == 8`); the profile does
+not create a cell anchored at that origin. Its “phase-free” rectangle fitter
+is phase-flexible only in 16px increments, not across the scanner's full 8px
+geometry lattice. Do not lower the 0.85 gate based on this one room. A
+position-agnostic multi-phase/material experiment should first demonstrate
+complete frozen-region block recovery without filling nearby spike/texture
+negatives, then be checked against exact controls before any integration.
+
+Three observation-only CN3_27 scan runs used different in-memory trace
+instrumentation to resolve the dedupe and profile call paths. Each reproduced
+the saved v10 map and metadata; their **102–103s** durations include diagnostic
+work and are not runtime benchmarks. Avoid another full scan for this same
+abstention question; continue from cached source/features and reserve the
+next scan for a frozen candidate or a distinct causal question. No scanner
+code, fixtures, or authoritative JMaps changed.
