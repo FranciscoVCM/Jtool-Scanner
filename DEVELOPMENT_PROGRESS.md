@@ -7946,3 +7946,32 @@ plan, complete proposal pools and profiles are preserved locally under ignored
 `repeated-block-motif-*-v1.json`). The next bounded candidate needs independent
 source occupancy or multi-object structure evidence, with CN3_92's final-map
 truths protected and reserved rooms still untouched.
+
+### Greedy block replacement rejected; group structure is the next cause (2026-09-26)
+
+BATCH_17 tested normalized four-side RGB boundary closure on the same frozen
+first-dedupe proposals. It separated CN3_27's four outlined true blocks from
+178 other block proposals (AUC 0.991573; both traced aliases weaker than the
+truth median), but failed the second development texture: CN3_92 AUC 0.632763,
+with off-phase brick/spike boundary windows showing strong closure. This is not
+a shared standalone rule.
+
+BATCH_18 then tested one fixed, stricter *in-memory* first-dedupe policy:
+replace retained blocks only if the incoming block beats every conflict on
+original classifier score, repeated-motif distance and boundary closure.
+Instrumented ordinary geometry signatures and complete original proposal
+pools matched before the replay. The whole frozen CN3_27 region improved only
+4/12 to 6/12 exact, with 2/4 true blocks recovered and extras 81 to 70;
+whole-stage origins changed +164/-199. CN3_92 regressed 52/52 to 44/52 exact,
+extras 103 to 113, whole-stage +73/-72. It fails the predeclared gate and was
+not promoted to a full ordinary scan, reserved evaluation or production code.
+
+The trace shows why local arbitration remains unsafe: an off-phase CN3_92
+window can individually dominate and displace two adjacent true blocks,
+leaving a structural gap, while CN3_27's right-post alias enters before its
+true half-phase blocks. The next candidate must compare complete local
+block/spike configurations and source-supported coverage, not a scalar or
+greedy candidate-versus-current-block replacement. The plans, full decisions
+and stage deltas remain ignored under `.artifacts/native-conflicts-20260923/`
+(`BATCH_17_PLAN.md`, `BATCH_18_PLAN.md`, and their profile JSONs). No scanner,
+fixture, JMap, test, app or all-71 output changed.
