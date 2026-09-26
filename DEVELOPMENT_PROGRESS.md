@@ -7975,3 +7975,37 @@ greedy candidate-versus-current-block replacement. The plans, full decisions
 and stage deltas remain ignored under `.artifacts/native-conflicts-20260923/`
 (`BATCH_17_PLAN.md`, `BATCH_18_PLAN.md`, and their profile JSONs). No scanner,
 fixture, JMap, test, app or all-71 output changed.
+
+### Compact half-phase plate diagnosis checkpoint (2026-09-26)
+
+At the user's request, work was saved before testing or promoting another
+scanner change. BATCH_19 used a fresh NANG_130r ordinary scan and confirmed
+exact equality with the saved current JMap and metadata (262 map objects).
+Instrumentation showed that this room uses the adaptive compact branch, not
+generic geometry deduplication. A visually confirmed missing 32px metal plate
+at native `(464,176)` passes the branch's existing foreground, learned-material,
+block-score and spike-score checks; it is never proposed because the adaptive
+block detector enumerates only 32px origins while this plate is on a native16
+offset. This is a proposal-lattice failure, not evidence that the room palette
+was unrecognized.
+
+The complete frozen source-reviewed regions currently measure 18/20 exact
+with one extra block for the left plate/mini rail, 10/11 for the upper plate,
+and 9/10 for a separately frozen lower plate region. The four missing true
+block origins are `(208,272)`, `(240,272)`, `(464,176)` and `(448,336)`; the
+extra block is `(224,256)`. BATCH_20 enumerated native16 offset block
+proposals using only the existing adaptive material/shape gates: 37 of 1,338
+offset windows passed, including all four reviewed true blocks. Many others
+are aliases, so adding every off-phase proposal would be unsafe. A
+predeclared, group-aware in-memory counterfactual and strict whole-output
+gate are recorded in `BATCH_21_PLAN.md`, but **have not been run**. No
+counterfactual gain, cross-room transfer, runtime, protected regression, or
+all-71 improvement is claimed here.
+
+All detailed inputs, aligned Source/JTool/Blend crops, frozen region truth,
+proposal inventory, plans, and the unrun profiling script remain local and
+ignored under `.artifacts/native-conflicts-20260923/`. No production scanner
+code, fixture, JMap, test or generated app output changed in BATCH_19-21.
+The next continuation should run the fixed BATCH_21 in-memory gate first and
+reject it if any frozen or whole-output protection fails; do not use the
+reserved CN3_30/NANG_138 screens to tune it.
