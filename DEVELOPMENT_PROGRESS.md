@@ -7888,3 +7888,37 @@ procedures and source-feature outputs remain ignored under
 `BATCH_12_PLAN.md`, `BATCH_13_PLAN.md` and corresponding profile JSONs). No
 scanner code, fixture, JMap, ordinary scan, test suite, benchmark or all-71
 audit changed in these batches; the app root remains HTTP 200.
+
+### Spatial material probe rejected at geometry arbitration (2026-09-26)
+
+BATCH_14 measured fixed 32px patch material descriptors alongside the existing
+block and triangle scores at the frozen CN3_27/CN3_92 development origins.
+The coarse 4x4-cell luminance variability ranked both traced CN3_27 shifted
+block aliases below the four true blocks' median in the block-like direction
+under brightness, contrast and RGB-channel permutation. Its true-block versus
+alias AUC was 0.75 on the source, 0.75 at 0.75x capture scale, and 0.62 at
+1.25x. The same direction ranked CN3_92's 38 true blocks above its 35
+score-aware block extras only modestly: AUC 0.71 on the source and 0.70/0.73
+at 0.75x/1.25x. This was a candidate-set profile, not whole-scan accuracy;
+the weak scale and second-family margins warned against a standalone rule.
+
+BATCH_15 therefore tested one fixed, threshold-free in-memory policy at the
+ordinary source-space geometry stage: a block proposal could replace
+overlapping retained blocks only if its coarse luminance variability was
+strictly lower than every conflict's. Observation-only instrumentation exactly
+reproduced each unmodified geometry-stage signature before the counterfactual.
+The whole frozen CN3_27 structure stayed at 4/12 exact, with zero of four
+blocks recovered; extras fell only 81 to 78. CN3_92 regressed from 52/52 to
+18/52 exact and extras rose 103 to 123. Whole geometry-stage changes were
+224 added/264 removed origins in CN3_27 and 181 added/235 removed in CN3_92.
+The material rank alone selects many unsupported phases and fails the
+predeclared gate. Reject it; do not promote or tune it against the reserved
+CN3_30/NANG_138 rooms. No scanner, fixture, JMap, test, app, ordinary full
+scan, or all-71 output changed. Detailed input identities, variation profiles,
+conflict decisions and complete deltas remain ignored under
+`.artifacts/native-conflicts-20260923/` (`BATCH_14_PLAN.md`,
+`BATCH_15_PLAN.md`, `spatial-material-shape-profile-v1-with-scale.json`, and
+`coarse-material-rank-arbitration-stage-v1.json`). The next diagnosis should
+use the already ordinary-map-equivalent CN3_27/CN3_92 traces to separate
+missing proposals from final selection and compare block/full/mini geometry
+jointly; another block-only scalar rank is not justified by these results.
