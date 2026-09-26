@@ -7922,3 +7922,27 @@ conflict decisions and complete deltas remain ignored under
 use the already ordinary-map-equivalent CN3_27/CN3_92 traces to separate
 missing proposals from final selection and compare block/full/mini geometry
 jointly; another block-only scalar rank is not justified by these results.
+
+### Repeated block motif profile held at the stability gate (2026-09-26)
+
+The ordinary-output-equivalent first-dedupe trace shows all four CN3_27 true
+block proposals exist before deduplication but lose to preferred-grid block
+proposals. CN3_92's 38 true block proposals survive that step, and its current
+final frozen region is already 52/52 exact with two extras. This makes a
+first-dedupe intervention particularly risky for the second room.
+
+BATCH_16 compared palette-normalized repeated 32px source motifs at the frozen
+block origins without changing scanner behavior. The top-score-pool
+third-nearest motif distance ranked true blocks ahead of other proposals with
+AUC 0.998596 in CN3_27 and 0.812541 in CN3_92. Its AUC stayed above 0.70
+under the declared brightness, contrast, RGB-permutation and 0.75x/1.25x
+capture-scale variants. However, at 0.75x one traced CN3_27 shifted alias
+ranked *stronger* than the true-block median (distance 0.06272493 versus
+0.06758093). The predeclared stability gate therefore failed. The feature is
+diagnostic evidence, not a safe production ranking rule. No scanner code,
+fixture, JMap, ordinary scan, test suite or all-71 output changed. The frozen
+plan, complete proposal pools and profiles are preserved locally under ignored
+`.artifacts/native-conflicts-20260923/` (`BATCH_16_PLAN.md` and
+`repeated-block-motif-*-v1.json`). The next bounded candidate needs independent
+source occupancy or multi-object structure evidence, with CN3_92's final-map
+truths protected and reserved rooms still untouched.
