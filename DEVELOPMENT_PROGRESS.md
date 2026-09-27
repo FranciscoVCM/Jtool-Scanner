@@ -8009,3 +8009,48 @@ code, fixture, JMap, test or generated app output changed in BATCH_19-21.
 The next continuation should run the fixed BATCH_21 in-memory gate first and
 reject it if any frozen or whole-output protection fails; do not use the
 reserved CN3_30/NANG_138 screens to tune it.
+
+### Compact local gain did not transfer; group/occupancy selectors rejected (2026-09-27)
+
+The fixed BATCH_21 *in-memory* compact counterfactual passed its frozen
+NANG_130r gate: the complete reviewed left/upper/lower regions changed from
+18/20, 10/11 and 9/10 exact to 20/20, 11/11 and 10/10, each with zero
+extras. The complete ordinary map gained only the four source-reviewed metal
+blocks `(208,272)`, `(240,272)`, `(464,176)` and `(448,336)` and lost only
+the source-refuted `(224,256)` block over the real mini rail; metadata and all
+other typed origins were unchanged. This is a local counterfactual, **not a
+shipped scanner gain**. The locked no-tuning NANG_130 transfer then produced
+equal 136-object ordinary/counterfactual maps and equal metadata: its compact
+branch had no learned adaptive profile, so the policy abstained. The declared
+positive-transfer criterion failed. The rule was neither widened to force
+participation nor promoted to production.
+
+BATCH_23 measured whole two-cell alternatives in the saved CN3_27/CN3_92
+first-dedupe pools. CN3_27's two visible block pairs lead their traced false
+aliases on nearly every measured source feature, but CN3_92's true pairs rank
+only 2nd–7th among competing pairs on several features. BATCH_24 tested a
+single fixed post-dedupe pair-group policy in memory after proving ordinary
+geometry-stage and proposal-pool equality. It failed: CN3_27 stayed 4/12
+exact with zero of four true blocks and changed +28/-29 whole-stage block
+origins, selecting a shifted false pair; CN3_92 regressed 52/52 to 50/52
+exact, extras 103 to 105, with +4/-5 whole-stage block origins. No non-block
+stage origin changed, but the protected region and churn gates failed. No
+ordinary full scan or reserved evaluation followed.
+
+BATCH_25 tested the existing source-relative foreground occupancy feature
+without a map change. CN3_27/CN3_92 true-versus-other regional block-proposal
+AUCs were 0.853230/0.800209, but CN3_27's shifted false block pairs had
+higher mean occupancy than the true pairs and CN3_92's true and false pairs
+were all saturated at 1.0. True CN3_27 spike footprints also overlapped the
+block occupancy range. Thus room-dominant occupancy cannot select the correct
+phase or distinguish these block/spike structures. Reject scalar or simple
+pair-preference variants; next diagnosis should seek independent tile-boundary
+phase evidence or a larger source-supported terrain/spike configuration.
+
+Frozen plans, checksummed inputs, complete deltas, source/JTool/Blend views
+and profile outputs remain ignored under `.artifacts/native-conflicts-20260923/`
+(`BATCH_21_PLAN.md` through `BATCH_25_PLAN.md` and corresponding JSONs).
+CN3_30/NANG_138 were not used for tuning. No scanner code, fixture, JMap,
+test, ordinary all-71 output or published app implementation changed in these
+batches; the milestone's multi-family recovery, reserved success, control,
+runtime and final-audit gates remain open.
