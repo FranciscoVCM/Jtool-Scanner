@@ -8113,3 +8113,23 @@ and `cn3-27-full-spike-origin-provenance-v1.json` preserve the full evidence.
 No implementation change or scanner improvement is claimed. The remaining
 work still requires a separately gated cross-family mechanism, protected
 controls, runtime check, reserved evaluation and final all-71 audit.
+
+### Source-shape-only spike phase relaxation rejected (2026-09-27)
+
+BATCH_31 tested the CN3_27 left-spike phase clue against all 16 current exact
+controls without changing scanner code or ordinary outputs. A fixed read-only
+selector allowed an 8px same-direction move when the new triangle contour
+score was at least 11/12 and strictly stronger, absolute source contrast at
+least 0.5, and competing directions no stronger than 1/3. It deliberately
+omitted the current weak-position and classifier guards. Source hashes,
+tracked reference JMap hashes and saved current-map scanner fingerprints were
+verified. Of 1,111 emitted full spikes, it proposed 39 moves: **34 would
+damage exact typed origins; five would correct them** (all five in Irkara NR
+Flames). All 34 harmful moves leave an already-correct 16px-grid origin; the
+five helpful moves enter that grid. The reviewed CN3_27 `(80,48)->(88,48)`
+left-spike correction also meets the simple source-shape criterion, but does
+not outweigh those protected regressions. The relaxation is rejected, not
+implemented or threshold-tuned. The detailed ignored `BATCH_31_PLAN.md`,
+script and `full-spike-shape-phase-safety-v1.json` preserve this negative
+result. A future mechanism needs independent source-supported local structure
+for genuine half-cell placements; stronger edge score alone is insufficient.
