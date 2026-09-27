@@ -8133,3 +8133,29 @@ implemented or threshold-tuned. The detailed ignored `BATCH_31_PLAN.md`,
 script and `full-spike-shape-phase-safety-v1.json` preserve this negative
 result. A future mechanism needs independent source-supported local structure
 for genuine half-cell placements; stronger edge score alone is insufficient.
+
+### Spike-backed solid inventory: opportunity without safe backfill (2026-09-27)
+
+BATCH_32 inventoried the immediate 32px backing origin of every final full
+spike in current CN3_27/CN3_92 and all 16 exact controls, using saved current-
+v10 JMaps with verified scanner fingerprints and source/reference hashes. In
+the complete CN3_27 frozen structure,
+two real missed visible blocks `(16,48)` and `(120,48)` have spike anchors,
+but seven other nominated origins are reference-negative and one false block
+already occupies a backing origin. The shifted false left-spike proposal
+nominates a block-like wrong cell `(112,48)`. CN3_92's 14 nominated cells in
+its frozen region are all true blocks already present, so this construction
+adds no recovery there.
+
+Across the controls, 890 distinct in-bounds backing origins include 572 true
+blocks already present, 18 reference-positive missing blocks, 285 reference-
+negative empty cells and 15 reference-negative emitted blocks. The missing
+reference blocks are not counted as source-visible without separate review.
+A descriptive post-hoc check finds 17 reference-negative empty backing cells
+with generic block score at least 0.70, including dense Partysu3 red spike
+material. Spike attachment plus strong block score therefore cannot justify
+speculative filling across families. The ignored `BATCH_32_PLAN.md`, script
+and `spike-backing-cell-inventory-v1.json` preserve all features and labels.
+No detector, test, fixture, JMap or scan output changed. The next candidate
+must distinguish source-visible solid material and object size within a joint
+terrain/spike configuration; the goal's positive-transfer gates remain open.
