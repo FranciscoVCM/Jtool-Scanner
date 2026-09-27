@@ -8239,3 +8239,33 @@ implementation changed, so no production test or runtime claim is made. The
 goal's shared-repair, reserved-transfer, runtime and final-audit gates remain
 open; next work should seek less photometrically fragile joint material/shape
 evidence before another fixed cross-family pilot.
+
+### Higher-resolution repeated material is not sufficient (2026-09-27)
+
+BATCH_37 tested a concrete alternative to the rejected selector's fragile
+absolute image gates: 8x8 normalized luminance and channel-normalized RGB
+descriptors, compared with the existing 4x4 luminance motif. The same fixed
+seven capture/photometric variants and checksummed candidate-bearing final-
+spike inventory were used; no reserved room was inspected. Fourteen previously
+source-reviewed solid cells all had at least three disjoint current-block
+exemplars, and original 4x4 distances reproduced BATCH_34.
+
+Finer sampling did **not** separate the critical classes. On the original
+capture, the 8x8 luminance and RGB third-match distances each put a genuine
+Irkara-89 block behind the independently source-negative `(32,192)` spike-
+only cell (positive maximum about .268 versus spike .232). At 1.20x
+brightness, two positives rank behind that spike under either 8x8 measure,
+with positive maximum about .49. The 4x4 luma motif is relatively more
+stable, but three positives rank behind the same negative on the bright
+variant, and reference-negative candidates overlap its positive range on
+the original image. Aggregate label AUC can obscure that decisive failure;
+some reference-negative cells also appear block-like in Source. No motif-
+distance threshold is adopted from this development/control profile.
+
+The ignored `BATCH_37_PLAN.md`, script and `repeated-material-resolution-v1.json`
+retain the complete per-cell, per-variant measurements. No scanner code,
+fixture, test, JMap, ordinary output or app implementation changed; reserved
+transfer, runtime and all-71 final-audit gates remain open. The next bounded
+experiment should test genuinely joint square-boundary/solid-occupancy and
+competing triangle-size evidence, rather than increasing material descriptor
+resolution or relaxing the rejected BATCH_35 thresholds.
