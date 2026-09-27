@@ -8054,3 +8054,43 @@ CN3_30/NANG_138 were not used for tuning. No scanner code, fixture, JMap,
 test, ordinary all-71 output or published app implementation changed in these
 batches; the milestone's multi-family recovery, reserved success, control,
 runtime and final-audit gates remain open.
+
+### Local edge-phase and compact-runtime gates rejected (2026-09-27)
+
+BATCH_26 checked a palette-relative, continuous two-cell entry-edge signal
+against every adjacent regional block-proposal pair, with the source images
+aligned to native scale. Although CN3_27's true-versus-other pair AUC was
+0.978814, both explicitly traced shifted false pairs scored *higher* than
+the true pairs (0.307182>0.181955 and 0.335314>0.171355). CN3_92's pair
+AUC was only 0.653942 and its shifted false pair scored 0.306612 versus
+0.022302 for the true pair. The internal sprite and brick lines defeat this
+simple boundary signal. It failed the predeclared criterion; no selection or
+scanner code followed.
+
+BATCH_27 measured the unchanged, locally successful NANG_130r compact group
+counterfactual with quiet serial ordinary/candidate/candidate/ordinary full
+scans. Every repeat map and metadata matched its variant, and the candidate
+retained *only* the frozen four real block additions and one false-block
+removal. Median elapsed time nevertheless rose from 20.480276s to 22.672064s:
++2.191789s (+10.702%), beyond the material-overhead gate. BATCH_28 tested
+only a logically equivalent cheap-material-gates-first reordering on the
+same source. All four candidate maps, metadata and selected events matched
+exactly, but median slow/fast times were 23.916403/24.109900s, a 0.193497s
+slowdown rather than the required one-second saving. The optimization was
+rejected. BATCH_29 profiled the original fixed group call: 1,338 offset
+windows invoke full source decisions; triangle classification and masks,
+color sampling, foreground ratio and color-profile computation are the main
+cost centers. Profiled time is diagnostic, not a controlled timing result.
+
+These findings leave the compact-only NANG_130r gain as an unshipped local
+counterfactual: it has no positive NANG_130 transfer and material unoptimized
+latency. Do not widen its adaptive-profile gate or ship it merely for that
+one room. The next priority is larger source-supported terrain/spike
+configurations or another cross-path causal mechanism, with frozen complete
+structures and a separate reserved evaluation. Complete plans, signatures,
+runtime profiles and source-grid crops remain ignored under
+`.artifacts/native-conflicts-20260923/` (`BATCH_26_PLAN.md` through
+`BATCH_29_PLAN.md`). No implementation, fixture, JMap or all-71 output
+changed; tests and exact controls were not rerun because no production code
+was altered. The goal's multi-family, protected, runtime and final-audit
+gates remain open.
