@@ -8407,3 +8407,40 @@ absolute proposal thresholds; it must pass whole protected controls before
 opening CN3_30/NANG_138 reserved evaluation. All goal completion gates,
 including shipped multi-family improvement and final-current audit, remain
 open.
+
+### Protected source review and terrain-profile abstention (2026-09-27)
+
+BATCH_50 independently rendered the eight protected block additions from
+the rejected BATCH_48 policy against their original Source, standalone
+current/pilot JTool and current/pilot Blend. Five Flames upward shifts
+move a 32px box into the visible spike/background band instead of the
+tiled row. Its sixth horizontal shift lies in repeated 16px material
+whose exact 32px editor decomposition is not visible. K3 Hades `(224,48)`
+is a textured spike-only diamond, not a square block. At NANG-128
+`(544,344)` versus expected/current `(544,352)`, neither phase has visible
+32px block material; the reference may encode hidden editor geometry or
+have a boundary error. That uncertainty does **not** vindicate the pilot's
+shift, and the independently wrong Flames/K3 changes suffice to reject it.
+The ignored `protected-phase-review-v1/review.md`, checked manifest and
+eight contact-sheet pairs preserve the individual assessments.
+
+BATCH_51 tested whether the existing room-local repeated-native16 or
+supported-cell terrain profiles already supply a safe occupancy cue at
+these phases. The repeated profile abstains in all five tested rooms.
+The supported-cell profile is absent in Flames; in CN3_27 it covers none
+of six independently source-reviewed true proposed blocks, and in
+Irkara-89 it covers only one of three partially (0.25 of its footprint,
+versus 0.5 for that cell's wrong incumbent). It misleadingly covers half
+of the K3 spike-only box and neither NANG phase. This is a measured
+negative result, not evidence that the missed true blocks are absent.
+The ignored `existing-terrain-occupancy-v1.json` retains every candidate
+and incumbent measurement. No scanner, fixture, JMap, test or app code
+changed; the previous exact controls and ordinary outputs remain intact.
+
+The next shared-cause test should distinguish an occupied square interior
+from a spike polygon or empty background using source-local, palette-
+relative evidence and competing mini/full triangle geometry, with
+abstention on unidentifiable block partitioning. Freeze both the full
+positive structures and source-reviewed/protected negatives before any
+policy, then test variants and whole controls. Do not treat room-profile
+abstention or a missing exact-reference block as a universal absence cue.
