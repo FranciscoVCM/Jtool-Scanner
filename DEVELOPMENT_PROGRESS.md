@@ -8444,3 +8444,46 @@ abstention on unidentifiable block partitioning. Freeze both the full
 positive structures and source-reviewed/protected negatives before any
 policy, then test variants and whole controls. Do not treat room-profile
 abstention or a missing exact-reference block as a universal absence cue.
+
+### Calibrated phase investigation checkpoint (2026-09-27)
+
+BATCH_52 tested raw native-16 terrain-cluster backing/tip votes as an
+occupancy cue. It failed decisive within-room comparisons: the Irkara-89
+spike-only cell ties a real block, and five visually wrong Flames phase
+shifts outrank their aligned incumbent blocks. BATCH_53 removed the
+paired-edge score's per-patch normalization; six of seven protected false
+shifts still win on the original and both scaled captures. Neither score
+is a safe block selector. These negative results narrow the likely cause
+to phase aliasing against spike bases and repeated 16px material, rather
+than merely a color-profile or score-denominator problem.
+
+BATCH_54 measured exposed borders of *current connected full blocks* to
+calibrate a source-to-JTool offset without consulting corrected JMaps.
+Horizontal offsets differ across CN3_27, Irkara-89, Flames, K3 Hades and
+NANG-128 (respectively 0,+1,-2,-2,+1 native pixels), each with at least
+16 usable sides and a best/second response ratio above 1.05. This is a
+descriptive room-level signal, not proof that every object has the same
+offset. BATCH_55 used these variant-specific offsets in competing-phase
+comparisons. All nine independently source-reviewed true corrections win
+across seven original/capture variants, but two of seven protected false
+shifts still win on original/0.75x, so the strict gate fails.
+
+BATCH_56 added the weakest of the two calibrated square-border axes,
+compared fairly for candidate and incumbent. All nine reviewed true
+corrections win across seven variants; six of seven protected false
+shifts lose. The remaining false horizontal Flames shift still wins in
+repeated 16px material whose hidden 32px JTool partition is not uniquely
+visible. This is **not** a production accuracy gain or a valid standalone
+selector. Do not retune the energy threshold on the same examples.
+
+The ignored `BATCH_52_PLAN.md`–`BATCH_56_PLAN.md`, scripts and checked
+JSON under `.artifacts/native-conflicts-20260923/` preserve inputs,
+calculations, variants and exact results. `BATCH_57_PLAN.md` freezes a
+separate *unrun* map-only pilot: abstain on horizontal-only phase shifts,
+non-overlap additions and weak room calibration, then test the bounded
+two-axis selector against source-reviewed positives/negatives, CN3_27/
+CN3_92 and all 16 exact controls. Its gates were written before whole-map
+outcomes. Do not implement unless subsequent independent Source/JTool/
+Blend, protected, reserved, ordinary-map and runtime gates pass. This
+checkpoint changes no production scanner/app code, tests, fixtures or
+JMaps; the 71-screen audit and goal-completion gates remain open.
