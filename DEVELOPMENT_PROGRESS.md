@@ -8159,3 +8159,45 @@ and `spike-backing-cell-inventory-v1.json` preserve all features and labels.
 No detector, test, fixture, JMap or scan output changed. The next candidate
 must distinguish source-visible solid material and object size within a joint
 terrain/spike configuration; the goal's positive-transfer gates remain open.
+
+### Spike-backed material candidate: saved map-only checkpoint (2026-09-27)
+
+BATCH_33 measured the union of existing 32px blocks over full-spike backing
+cells. Both true missing CN3_27 cells `(16,48)` and `(120,48)` are only
+partially covered (512/1024 and 896/1024 source-scale pixels), while the
+shifted false `(112,48)` cell and two Partysu3 split-block aliases are fully
+covered. Union coverage by itself is insufficient: it also covers 33 known
+reference-negative empty cells and three known reference-positive missing
+cells among the labelled inventory. BATCH_34 combined independent mini-block
+occupancy, marker overlap, source spike contour, existing block score and a
+palette-normalized repeated-material descriptor. A post-hoc exploratory
+combination identified true missing blocks in CN3_27, Irkara-89 and Irkara NR
+Flames without a labelled false addition, but that same evidence was used to
+form the candidate; it is not a generalization estimate.
+
+BATCH_35 froze one source-only selector and replayed it **in memory** against
+the saved current-v10 maps. It requires a final full-spike backing nomination,
+source-localized contour, incomplete existing full-block coverage, no mini-
+block or marker overlap, the existing minimum block score, and three repeated
+full-block material exemplars within a fixed palette-normalized distance. It
+removes only overlapping existing full blocks and adds the selected cell; no
+reference answer controls selection. The complete frozen CN3_27 region moves
+from 7/12 exact (5 missing, 15 extras) to 9/12 exact (3 missing, 10 extras):
+two true blocks are recovered and five false blocks removed. CN3_92 remains
+52/52 exact in its frozen region. Across all 16 exact controls, only Irkara-89
+and Irkara NR Flames change: whole-map exact typed origins move 208 to 211
+and 252 to 257, respectively, with no reference-negative block additions,
+true-block removals, non-block changes or metadata changes. The selector also
+changes four CN3_27 cells **outside** the frozen region; those additions and
+their displaced blocks are not yet independently source-verified.
+
+These are map-only counterfactuals, **not shipped scanner improvements**.
+The material threshold is development-fitted; the 16 controls were used in
+its design and cannot be counted as independent validation. Source/JTool/Blend
+review images for every changed room are generated but not fully reviewed.
+Capture-scale and photometric stability, a locked no-tuning reserved case,
+ordinary-scan integration/parity, controlled runtime and a current all-71
+audit remain open. The ignored `.artifacts/native-conflicts-20260923/`
+`BATCH_33_PLAN.md`–`BATCH_35_PLAN.md`, scripts, JSON reports and review
+images preserve the exact local evidence. No scanner implementation, fixture,
+test, JMap, ordinary output or deployed app has changed in BATCH_33–35.
