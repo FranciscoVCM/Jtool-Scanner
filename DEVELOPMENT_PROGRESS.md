@@ -8487,3 +8487,36 @@ outcomes. Do not implement unless subsequent independent Source/JTool/
 Blend, protected, reserved, ordinary-map and runtime gates pass. This
 checkpoint changes no production scanner/app code, tests, fixtures or
 JMaps; the 71-screen audit and goal-completion gates remain open.
+
+### Bounded calibrated phase pilot rejected (2026-09-27)
+
+BATCH_57 ran its previously frozen map-only policy against the checked
+ordinary maps, all 16 exact controls and seven fixed feature variants.
+It selects all nine independently reviewed overlapping true block
+corrections under every variant. CN3_27's complete frozen region moves
+from 7/12 exact with 15 extras to 9/12 exact with 10 extras; CN3_92
+remains 52/52 exact with its two pre-existing extras. Flames improves
+252 to 254 exact with no added reference-negative block.
+
+The pilot nevertheless **fails** its protection gates: it selects the
+known wrong Irkara-89 `(640,336)` block phase on five of seven variants,
+including the original and both capture scales. On the original it
+adds one reference-negative block and removes the reference-positive
+`(640,328)` incumbent. Its original calibrated horizontal paired-line
+energy is 5.5 versus 3.0476 for that incumbent, showing that room
+calibration, two-axis support and a horizontal-only ambiguity veto do
+not resolve every spike-adjacent 8px alias. Existing Source/JTool/Blend
+contact review records the competing phases. This is a measured
+negative result, not a scanner improvement; do not retune the same
+selector on those labels or ship it.
+
+The ignored `BATCH_57_PLAN.md`, `replay_bounded_calibrated_phase.py` and
+`bounded-calibrated-phase-v1/report.json` preserve the frozen policy,
+every per-candidate decision and whole-control metrics. CN3_30 and
+NANG_138 remain sealed for no-tuning evaluation. Production scanner,
+tests, fixtures, JMaps, ordinary outputs and the app are unchanged.
+The next causal test needs independent source-visible square occupancy
+and competing spike/mini geometry where line energy can align to a
+triangle base or repeated decorative line; abstain when the source does
+not uniquely establish the JTool phase. Multi-family gains, protected
+transfer, controlled runtime and final-current all-71 gates remain open.
