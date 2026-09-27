@@ -8353,3 +8353,57 @@ code, fixture, JMap, test or app implementation changed in this checkpoint.
 Do not infer an Irkara-specific scanner offset. A shared repair still needs
 source-supported phase evidence across multiple materials, reserved
 transfer, exact controls and runtime verification.
+
+### Cross-family phase policy rejected by protected controls (2026-09-27)
+
+BATCH_45's frozen 32px paired-edge calculation favors the corrected JMap
+phase for all three Irkara-89 comparison pairs at original, 0.75x and
+1.25x capture; the measured first-border inset varies +3–6 native pixels.
+BATCH_46 tested an interior paired-edge square score on the fixed 14
+source-reviewed true blocks, one reviewed spike-only negative and 200
+reference-negative cells across seven variants. It ranks the two Irkara
+wrong-phase aliases below their correct blocks on every variant, but fails
+as a standalone detector: a true left-boundary block ranks no better than
+the spike-only negative on six variants, and reference-negative rank AUC
+is below .85 on four variants. Missing paired borders cannot mean missing
+solid occupancy.
+
+BATCH_47 narrowed the comparison to overlapping block phases. All nine
+source-reviewed true corrections beat every overlapping current block on
+the original, 0.75x and 1.25x source captures; both known Irkara aliases
+lose on all seven variants. Three brightness-related runs tie near zero
+at the Irkara left image boundary, so even this is conditional evidence.
+
+BATCH_48 froze an axis/material/relative-phase map-only pilot on the same
+275 static-eligible backing cells before seeing whole-map outcomes. Its
+fixed-pool feature stress retains all 14 reviewed positives and excludes
+the three reviewed negatives under all seven variants. The original-image
+counterfactual improves CN3_27's frozen structure from 7/12 exact and 15
+extras to 9/12 exact and 10 extras; CN3_92 stays 52/52. But it **fails the
+protected-control gate**: Irkara Flames declines from 252 to 251 exact,
+with six added reference-negative blocks and six removed reference-positive
+blocks; NANG-128 shifts a correct reference block 8px; K3 Hades gains one
+extra block. These are not scanner gains. The fixed 0..6px inset and local
+normalized-edge ratio do not transfer safely across tilesets, and the
+original candidate pool still inherits BATCH_35 block-score/contour gates
+that were unstable under capture variants. No rule from BATCH_48 shipped.
+
+BATCH_49 tested the existing palette-normalized luma4/luma8/RGB8 material
+motifs as a phase tie-breaker on nine reviewed true corrections and seven
+protected false shifts. Each descriptor favors only 7/9 true corrections
+on the original image and also favors the NANG-128 false shift; luma4
+recovers 9/9 at both capture scales but still makes that NANG error. Thus
+motif-only phase selection also fails its frozen gate. The protected shift
+labels are authoritative exact-control mismatches, not claims that every
+underlying source pixel has been independently adjudicated. Existing
+`BATCH_45_PLAN.md`–`BATCH_49_PLAN.md`, checked reports and scripts under
+ignored `.artifacts/native-conflicts-20260923/` preserve every result.
+
+No production scanner/app code, fixture, JMap, test or ordinary output
+changed. The next mechanism should model source-visible block phase with
+room-relative border/material calibration and explicit abstention where a
+unique JTool origin is unsupported, while separately replacing brittle
+absolute proposal thresholds; it must pass whole protected controls before
+opening CN3_30/NANG_138 reserved evaluation. All goal completion gates,
+including shipped multi-family improvement and final-current audit, remain
+open.
