@@ -8094,3 +8094,22 @@ runtime profiles and source-grid crops remain ignored under
 changed; tests and exact controls were not rerun because no production code
 was altered. The goal's multi-family, protected, runtime and final-audit
 gates remain open.
+
+### CN3_27 full-spike provenance checkpoint (2026-09-27)
+
+BATCH_30 traced the four apparent full-spike misses through the unchanged
+ordinary CN3_27 scan, using the frozen complete 12-object region and verified
+source/code fingerprints. Its instrumented final JMap signature equals the
+previously saved ordinary JMap. The region is 4/12 exact with 81 extras at
+raw geometry output, but **7/12 exact with 15 extras at the final scan**:
+the up spike at `(120,144)` is restored by source-supported phase refit, and
+the right `(136,112)` and down `(120,80)` spikes by directed-material recovery.
+The left spike at `(88,48)` remains missing: the classifier at that origin
+prefers up, and a left detection survives at `(80,48)`. Four true blocks also
+remain missing. Earlier reasoning that all four spikes were missing in the
+final map conflated a raw stage with the final result; no broad phase rule
+should be based on that premise. The local ignored `BATCH_30_PLAN.md`, script
+and `cn3-27-full-spike-origin-provenance-v1.json` preserve the full evidence.
+No implementation change or scanner improvement is claimed. The remaining
+work still requires a separately gated cross-family mechanism, protected
+controls, runtime check, reserved evaluation and final all-71 audit.
