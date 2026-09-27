@@ -8543,3 +8543,47 @@ competing connected block/full/mini configurations to source-visible
 solid and triangle evidence, rather than accumulate another scalar
 veto on the present map. No production behavior, fixtures, JMaps or
 the 71-screen audit changed; reserved cases remain uninspected.
+
+### Paired-mini/full conflict investigation checkpoint (2026-09-28)
+
+BATCH_59 checked source, map and scanner identities before inventorying
+full/mini containment in 83 historical cached cases (four reserved
+identities excluded). It found 142 contained full/mini pairs, including
+104 same-direction pairs. Exact controls contain conflicts in *both*
+directions: 26 same-direction full-true/mini-false and 23
+full-false/mini-true pairs. Thus indiscriminate overlap suppression is
+unsafe. Targeted current-code scans for Say_4, CN3_7 and CN3_Entrance1
+are saved beside the inventory. Source crops show a real Say_4 full-up
+spike, two visible CN3_7 mini-left spikes under a false full-left, and
+CN3_Entrance1's repeating mini-up rail under several false full-ups.
+
+BATCH_60 tested extending the existing strong-full mini-alias predicate
+to trailing half-cells. It supports neither the reviewed false CN3_7
+full nor the real Say_4 full, and it resolves none of eight exact-control
+false minis. That simple extension was rejected without a production edit.
+
+BATCH_61 froze a different, asymmetric *map-only* hypothesis: remove a
+weak full spike only when its trailing half contains exactly the two
+same-direction canonical 16px minis, with no other contained mini; keep
+both minis and every other object. Its existing native-edge extent cutoff
+is 20 pixels, and mutually overlapping proposed fulls cause abstention.
+The initial pilot passes its frozen map-only and seven feature-variant
+gates: it removes one source-refuted CN3_7 full-left and three
+source-refuted CN3_Entrance1 full-ups while retaining all minis and the
+Say_4 real full. In the non-reserved exact controls it removes three
+reference-negative Partysu3 full-lefts, changing that control from 72 to
+69 extras without lowering its 255 exact matches or raising 11 misses;
+no reference-positive full is removed. CN3_27/CN3_92 frozen structures
+and all non-full objects stay unchanged in this map-only replay.
+
+This is **not a shipped scanner improvement**. The seven affected
+Source/JTool/Blend contact sheets, before/after maps, checked JSON,
+plans and replay scripts are preserved under the ignored local
+`.artifacts/native-conflicts-20260923/` directory. Their visual
+adjudication, ordinary scanner-stage parity, protected/challenge scans,
+all 16 exact controls after any code edit, runtime and reserved transfer
+remain outstanding. BATCH_61 only addresses false-full conflicts; the
+goal's positive geometry-recovery and current all-71 review gates are
+also still open. Do not infer acceptance or alter production behavior
+solely from this pilot. No scanner, app, fixture, JMap or test file
+changed in BATCH_59–61.
