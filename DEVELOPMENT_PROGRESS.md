@@ -8324,3 +8324,32 @@ The next shared-cause experiment should compare source-aligned boundary
 while retaining competing spike/mini evidence, before freezing another
 map-only policy. The multi-family, reserved, controls, runtime and final-
 all-71 gates remain open.
+
+### Phase-alias diagnostic checkpoint (2026-09-27)
+
+BATCH_43 registered oriented-side evidence for all 14 source-reviewed
+BATCH_35 block cells and their overlapping current blocks across seven
+capture variants. It did not yield a safe phase selector: an actual
+Irkara-89 block at `(608,296)` can have weaker exact-box side evidence
+than its erroneous `(608,304)` incumbent, while other reviewed additions
+favor the correct phase. No scanner rule changed.
+
+BATCH_44 rendered Source/JTool/Blend comparisons for the Irkara-89
+`(560,536)/(560,544)` and `(640,328)/(640,336)` overlapping phases, using
+the independently corrected `(608,296)/(608,304)` pair as calibration.
+Source crops and original/0.75x/1.25x oriented-edge line profiles are
+preserved locally. In the original image, prominent horizontal lines lie
+approximately 3–4 native pixels inside the corrected JMap block origins
+and recur 32px apart. That pattern also appears at the calibration block;
+an edge score taken exactly on a JTool origin can therefore misleadingly
+favor an 8px-shifted alias. This is suggestive, not yet a completed source
+adjudication or a cross-tileset detection gain.
+
+The ignored `BATCH_43_PLAN.md`–`BATCH_45_PLAN.md`, scripts, JSON and contact
+sheets in `.artifacts/native-conflicts-20260923/` preserve the reproducible
+investigation. BATCH_45 freezes a paired-edge calculation on the saved
+profiles as the next read-only check; it has not been run. No production
+code, fixture, JMap, test or app implementation changed in this checkpoint.
+Do not infer an Irkara-specific scanner offset. A shared repair still needs
+source-supported phase evidence across multiple materials, reserved
+transfer, exact controls and runtime verification.
