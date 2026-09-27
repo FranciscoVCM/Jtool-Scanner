@@ -8201,3 +8201,41 @@ audit remain open. The ignored `.artifacts/native-conflicts-20260923/`
 `BATCH_33_PLAN.md`–`BATCH_35_PLAN.md`, scripts, JSON reports and review
 images preserve the exact local evidence. No scanner implementation, fixture,
 test, JMap, ordinary output or deployed app has changed in BATCH_33–35.
+
+### Spike-backed pilot rejected at fixed stability gate (2026-09-27)
+
+BATCH_35's changed-cell Source/JTool/Blend review is complete for the three
+affected maps. All 14 proposed full-block additions have visible 32px solid
+material at their nominated cells, including the four previously uncertain
+CN3_27 additions outside its frozen region. The 14 displaced block origins
+cross spikes, neighboring solids or shifted material instead of representing
+independent full blocks in those local views. This strengthens the original-
+capture map-only result but does not certify any whole room or an ordinary
+scanner gain.
+
+BATCH_36 then evaluated the **unchanged** selector's image-dependent features
+under predeclared 0.75x/1.25x bilinear capture sizes, 0.70x/1.20x brightness,
+nonuniform RGB gains, and a dark/downscaled stress variant. The original-room
+crop reproduced all 14 BATCH_35 decisions and saved feature values. The
+0.75x variant lost three original additions and gained two others; 1.25x lost
+one and gained two; darkening lost four; brightening lost five and gained one;
+RGB gains lost four and gained one; combined dark/downscale lost six. The
+bright/RGB gain at Irkara-89 `(32,192)` is visibly a left spike with no full
+block. Another newly selected origin `(560,544)` is reference-negative but
+looks block-like in Source, so its source identity is recorded as uncertain
+rather than called a proven visual false positive. The lost recoveries arise
+from unstable contour and existing block-score gates, not from a changed
+reference or selection threshold.
+
+The candidate fails its frozen pass gate and is **rejected for production**;
+do not tune the same threshold on these variants or inspect the reserved
+CN3_30/NANG_138 merely to rescue it. This component test holds current full-
+spike nominations and map occupancy fixed, so it does not prove how the whole
+scanner behaves on transformed captures. It does identify a concrete cross-
+scale/brightness fragility in the proposed shared reconciliation rule. The
+ignored `BATCH_36_PLAN.md`, script, checksummed JSON and diagnostic contacts
+preserve the experiment. No scanner/test/fixture/JMap/ordinary output or app
+implementation changed, so no production test or runtime claim is made. The
+goal's shared-repair, reserved-transfer, runtime and final-audit gates remain
+open; next work should seek less photometrically fragile joint material/shape
+evidence before another fixed cross-family pilot.
