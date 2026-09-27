@@ -8269,3 +8269,58 @@ transfer, runtime and all-71 final-audit gates remain open. The next bounded
 experiment should test genuinely joint square-boundary/solid-occupancy and
 competing triangle-size evidence, rather than increasing material descriptor
 resolution or relaxing the rejected BATCH_35 thresholds.
+
+### Joint source features expose phase alias risk (2026-09-27)
+
+BATCH_38 reapplied the existing four-side RGB border-difference feature in
+the final-full-spike backing pool. It still failed: the source-negative
+Irkara-89 `(32,192)` left spike outranked 12/14 source-reviewed true blocks
+on the original image; positive-vs-200-reference-negative rank AUC was .606.
+Diagonals and adjacent terrain generate differences in all four border
+strips, so a threshold on that scalar cannot justify a block.
+
+BATCH_39 instead measured *oriented* horizontal/vertical line coverage on
+each of the four expected block sides. A strict four-side minimum rejected
+five true blocks whose boundary is off-screen, continuous with neighboring
+terrain or hidden; original rank AUC was .769. BATCH_40 froze a more causal
+two-axis balance: at least one supported horizontal and one supported
+vertical side, `min(max(top,bottom),max(left,right))`. All 14 reviewed true
+blocks outranked the source-negative Irkara spike across all seven fixed
+scale/brightness/RGB variants; original AUC against 200 reference-negative
+candidates was .949, with .941–.956 across variants. This is useful shape
+evidence, not a standalone fill rule: 32 reference-negative cells score
+at least .5 on the original image.
+
+Seventeen high-scoring negative Source crops identify why. CN3-16 empty
+spaces between spikes, F189 spike diamonds, CN2-5 teal/decorative gaps and
+a CN3_27 platform can show two-axis edges without a full block. Two Irkara-89
+cells that previously looked block-like—`(560,544)` and `(640,336)`—are
+actually +8px shifted overlaps of correct blocks already present in both
+the authoritative JMap and current output at `(560,536)` and `(640,328)`.
+They are not additional solids. Some checkerboard Irkara Flames windows
+remain uncertain in exact JTool decomposition; visible material alone does
+not establish their 32px origin. This resolves BATCH_36's `(560,544)` source
+ambiguity and makes incumbent phase protection explicit.
+
+BATCH_41 profiled a complementary palette-relative central RGB match to
+current full blocks, retaining color mean that the normalized motif discards.
+All 14 reviewed true blocks have third-neighbor distance at most .01132
+across the seven variants, whereas three reviewed CN2-5 background/decorative
+gaps remain at least .60940 away. White Irkara's spike-only cell also matches
+white block color (.00314 originally), so this color feature needs shape.
+BATCH_42 compared every candidate against overlapping incumbent blocks on
+axis balance and central-color similarity. A strict two-feature improvement
+recovers only 8/9 overlapping true additions on the original image and 7–8/9
+on variants; worse, the known wrong-phase `(560,544)` beats its correct
+incumbent at both capture scales and `(640,336)` does so under RGB gains.
+The direct phase comparison therefore also fails a safety gate.
+
+The ignored `BATCH_38_PLAN.md`–`BATCH_42_PLAN.md`, scripts, checked JSON
+reports and source crops preserve these results. No scanner implementation,
+test, fixture, JMap, ordinary output or app code changed; no production
+accuracy or runtime gain is claimed. Reserved CN3_30/NANG_138 remain sealed.
+The next shared-cause experiment should compare source-aligned boundary
+*positions* and supporting neighboring structure across overlapping phases,
+while retaining competing spike/mini evidence, before freezing another
+map-only policy. The multi-family, reserved, controls, runtime and final-
+all-71 gates remain open.
