@@ -8520,3 +8520,26 @@ and competing spike/mini geometry where line energy can align to a
 triangle base or repeated decorative line; abstain when the source does
 not uniquely establish the JTool phase. Multi-family gains, protected
 transfer, controlled runtime and final-current all-71 gates remain open.
+
+### Current-block contact is not independent phase evidence (2026-09-27)
+
+BATCH_58 froze a map-geometry diagnostic before measuring whether a
+candidate block would gain or lose face-contact length with unaffected
+current blocks when replacing its overlapping incumbents. It used every
+overlapping original-source candidate in the checked BATCH_57 inventory,
+not only selected successes, and made no map edit. Among the nine
+independently source-reviewed true overlap corrections, three gain
+contact, four tie and **two lose** it. All seven protected false shifts
+and both known Irkara wrong aliases are non-positive, but an
+anti-contact-loss veto would wrongly reject real CN3_27 `(704,176)`
+(-112px) and Flames `(64,304)` (-16px). The frozen usefulness gate fails.
+
+`BATCH_58_PLAN.md`, `profile_block_contact_phase.py` and
+`block-contact-phase-v1.json` remain ignored local evidence. This
+rules out using coherence of the *current* block graph as independent
+source truth: erroneous retained neighbors can form a stronger-looking
+structure than a real replacement. The next experiment must compare
+competing connected block/full/mini configurations to source-visible
+solid and triangle evidence, rather than accumulate another scalar
+veto on the present map. No production behavior, fixtures, JMaps or
+the 71-screen audit changed; reserved cases remain uninspected.
