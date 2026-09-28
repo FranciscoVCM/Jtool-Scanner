@@ -8854,3 +8854,52 @@ ordinary scan, app behavior or all-71 audit changed. Do not promote
 this score by retuning around its hard negatives. A future model
 needs explicit positive-object support, not merely a cleaner
 aggregate outline; the reserved rooms remain uninspected.
+
+### First-dedupe phase alternatives do not admit a simple source rank (2026-09-28)
+
+BATCH_72 used the ordinary-equivalent complete first-dedupe pools for
+Irkara-89 and Irkara/Flames, in both source and canonical captures.
+Among same-type full-spike candidates less than 28px apart, there are
+148/105 truth-discordant Irkara source/canonical pairs and 135/116
+Flames pairs. A higher source direction margin favors the two
+Irkara source final misses that dedupe loses, but would replace 15
+currently true Irkara source pairs, 32 true Flames source pairs and
+three true Flames canonical pairs with false candidates. RGB margin,
+RGB whole-triangle delta and raw direction score do not solve this.
+The current rank protects many real objects; a blanket inversion is
+unsafe.
+
+BATCH_73 restricted the predeclared comparison to genuine one-axis
+8px alternatives. Direction margin still selects false in 10/32
+Irkara source pairs and 6/18 Flames source pairs, breaking seven and
+six current true retentions, respectively. BATCH_74 measured the
+triangle's source RGB base seam as a more local positive cue. It also
+failed: at Irkara's real up `(640,296)` versus false `(640,304)`,
+raw seam response was 2.0 versus 48.5, and it would break five
+current true Flames source pairs. A stronger line can come from tile
+texture or an adjacent contour. These are rejected diagnostic
+rankers, **not** scanner changes or accuracy gains. The fixed plans,
+complete pair reports and outcomes remain ignored locally as
+`BATCH_72_*`, `BATCH_73_*`, and `BATCH_74_*` under the goal artifact
+directory. Next test the structural question of whether preserving
+8px alternatives through early dedupe lets later contextual stages
+resolve them; keep this truth-blind and research-only until whole-room
+and cross-family protections pass. Reserved CN3_30/NANG_138 stay sealed.
+
+BATCH_75 tested that structural question with a truth-blind research
+monkeypatch, retaining all same-type 8px `full_spike_support`/primary
+alternatives at both early dedupe calls. Whole-room Irkara-89 full
+spikes fell from 106 exact/7 missing/24 extra to **85/28/24**:
+one lost true origin was recovered, another remained missing, and 22
+previously exact full origins were lost; the map also added 81 and
+removed 11 non-full typed objects. Flames remained 72/10/16, merely
+swapping three false fulls for other false fulls. Metadata stayed
+equal, and original code was restored after each research run. The
+complete ignored counterfactual maps/reports are in
+`batch75-preserved-phase/`, with frozen plan and result note beside
+them. This decisively rejects blanket candidate preservation; no
+production scanner, test, fixture, JMap or app behavior changed. No
+all16 sweep or controlled runtime was warranted for this failed
+candidate. A future correction needs positive source-supported
+context and complete-room false/true protection, not local scalar
+rank or wholesale retention. Reserved evaluation remains sealed.
