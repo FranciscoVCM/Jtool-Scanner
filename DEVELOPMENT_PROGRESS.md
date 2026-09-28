@@ -9132,6 +9132,18 @@ options and current semantic outputs are verified; the fresh SVG bytes differ
 from the earlier review renderings, so prior visual approval is not carried
 forward.
 
+The frozen `regions-v1.json` annotation was also compared with the refreshed
+maps using `compare_jmaps` and the complete declared geometry-origin regions.
+CN3_27 has 12 expected / 17 detected: 7 exact, 5 false positives, 0 misses,
+5 shifted and 0 wrong-direction objects. The five shifts are four blocks:
+`(16,16)->(0,32)`, `(16,48)->(32,32)`, `(120,16)->(128,32)`,
+`(120,48)->(112,64)`, plus the left spike `(88,48)->(80,48)`. Its five
+false positives are up spike `(0,0)`, block `(96,32)`, right spike `(16,64)`,
+left spike `(112,160)` and down spike `(16,176)`. CN3_92 has 52 expected /
+54 detected: 52 exact, 2 false positives, 0 misses/shifts/wrong directions;
+the extras are down mini-spike `(496,64)` and block `(272,120)`. These are
+fixed-region diagnostics, not whole-room acceptance claims.
+
 BATCH_80's two candidate dedupe ranks remain rejected: both retain the four
 CN3_27 off-phase block misses, and each loses eight exact aligned CN3_92
 blocks. No further phase/dedupe heuristic is justified until the fresh
