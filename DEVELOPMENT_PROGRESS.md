@@ -9007,3 +9007,22 @@ classification-v1.json`, `trace_batch79_base_geometry.py`,
 of grid-phase-aware overlap arbitration; it does not justify tuning a
 single-room coordinate rule. Current app `/` returned HTTP 200 and
 `/api/health` was healthy with the expected loaded-source fingerprint.
+
+### BATCH_80 rejects blanket block-dedupe rank changes
+
+Two offline, reference-blind alternatives changed only the ordering of block
+proposals in the first geometry dedupe stage and were measured on the same
+frozen CN3_27/CN3_92 regions. Score-first changes CN3_27 from 7/12 exact,
+five misses and ten extras to 8/12, four misses and six extras; it restores
+the expected spike at `(88,48)` but does not recover any of the four missing
+blocks. It also regresses CN3_92 from 52/52 exact to 44/52, losing eight exact
+blocks along its repeated run and increasing extras from two to eighteen.
+Preferring 16px-only block phases collapses CN3_27 to 1/12 exact and causes
+the same eight CN3_92 block misses. Both alternatives fail the frozen
+cross-style gate, so no exact-control replay or scanner integration was
+justified. Preserve the current alignment rank for now; it protects CN3_92
+but is implicated in CN3_27's four removed block proposals. The failure
+indicates that position phase needs independent positive shape evidence,
+not a global rank reversal. Full replay outputs/plans remain ignored in
+`.artifacts/native-conflicts-20260923/BATCH_80_*` and
+`batch80-block-dedupe-v1.json`; ordinary scanner behavior is unchanged.
