@@ -8631,3 +8631,35 @@ recovery across multiple families and the goal's other completion gates
 remain unproved. Plans, stage traces, source crops, no-op/candidate maps,
 rendered contacts and checksummed scans remain ignored local evidence in
 `.artifacts/native-conflicts-20260923/`.
+
+### Paired-mini/full candidate rejected on portable full geometry (2026-09-28)
+
+The uncommitted BATCH_64 selector passed 308 geometry tests, four frozen
+ordinary-map checks, source-reviewed Entrance2 and fifteen non-reserved
+exact controls. Quiet serial A–B–B–A measurements on Entrance2 and
+NANG-128 reproduced their checked maps; end-to-end candidate medians were
+respectively +1.64s/+1.56% and +1.02s/+2.01%, while direct helper time
+was about 0.002s and <0.0001s. Baseline run variation was 2.89s and
+1.34s, so those end-to-end differences are not attributable to the
+helper alone.
+
+A separate adversarial **real-source-shape** test then invalidated the
+rule's assumed evidence: a visibly complete synthetic 32px full-up
+triangle has `_native_edge_component_extent` 16 native pixels because
+its sloping edge components are narrow. Given two false trailing mini
+proposals, the proposed selector removes that real full. This happens
+across 0.75×, 1× and 1.25× captures, light/dark and colored polarity,
+and weak texture. It is a plausible unfamiliar-tileset failure even
+though the present exact corpus happened not to contain this configuration.
+The false-full gains therefore do **not** justify shipping this selector.
+
+The BATCH_64 scanner and test edits were deliberately removed with a
+patch; tracked implementation and tests are back to the preceding
+fingerprint, Git is clean apart from this documentation update, and no
+app or published scanner behavior changed. All pilot/replay/runtime/
+counterexample evidence remains ignored locally. A successor needs
+independent leading-half full-triangle support or a direct full-versus-
+paired-mini source-model comparison; native connected-edge extent alone
+cannot decide the object scale. Do not retune the same cutoff on the
+reviewed room labels. The reserved cases remain sealed. Positive
+multi-family recovery and final all-71 gates remain open.
