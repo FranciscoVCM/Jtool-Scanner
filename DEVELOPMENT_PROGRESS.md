@@ -8784,3 +8784,38 @@ intersection and dedupe true-versus-alias evidence against independent
 families and protected negatives before any code proposal. Reserved
 CN3_30/NANG_138 remain sealed; positive multi-family recovery,
 runtime, all controls and final-current all-71 gates remain open.
+
+### Canonical-only full recovery gate rejected as a general rule (2026-09-28)
+
+BATCH_69 reused the checked complete Irkara-89 and Flames source/
+canonical candidate pools without another scanner run. It measured
+every canonical-only full against the original source patch, canonical
+bright-fill evidence, and whether the source bright-fill field rebuild
+had specifically removed the same typed origin. Whole-room truth was
+joined only for evaluation; no reference answer entered detection.
+
+Adding every canonical-only full would recover two true/30 false in
+Irkara-89 and six true/one false in Flames. Merely requiring the
+existing source full classifier to agree and accept still adds **eight
+false** Irkara-89 fulls and no true recovery there. Requiring a
+canonical bright-fill pass, source bright-fill fail, and the source
+pre-bright removal selects four Flames objects: two already final and
+two current misses, down `(384,160)` and `(400,128)`. It adds no false
+full in these two exact rooms, but yields only one-family positive
+recovery and needs preserved stage provenance. The third tempting
+Flames miss at right `(560,96)` correctly abstains because the source
+full classifier does not accept it. This narrow intersection is a
+research result, **not** a published scanner repair or evidence of
+general transfer.
+
+Only Irkara-89 and Flames among the original twelve tracked block/
+spike fixtures and FTFA-1..4 activate capture-lattice consensus; the
+other exact rooms cannot validate a consensus-only change on their
+original captures. CN3_27 activates consensus but shows no regional
+bright-fill rebuild event in its frozen structure. The portable
+negative/transfer gate therefore remains unmet. No scanner, test,
+fixture, JMap or app behavior changed. The ignored fixed plan and
+full candidate-level report are `BATCH_69_PLAN.md` and
+`batch69-canonical-corroboration-v1.json`. Return to complete cross-
+family geometry structures rather than widening these gates around a
+single room; CN3_30/NANG_138 remain sealed.
