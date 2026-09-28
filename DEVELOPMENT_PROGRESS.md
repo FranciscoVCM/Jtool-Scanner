@@ -9322,3 +9322,44 @@ labels to freeze complete positive/negative structures and a fresh no-tuning
 transfer case before selecting a positive recovery mechanism. Keep the goal's
 multi-family, reserved-transfer, controlled-runtime, all-71 review and
 publication gates open.
+
+### BATCH_86 terrain-overlap edge profile (2026-09-29)
+
+A read-only profile tested whether weak full-spike hypotheses overlapping an
+emitted block/miniblock footprint share a source-contour signature. It used
+only the existing checksummed exact-control and current-71 outputs: 32px spike
+footprints were compared with detected 32px blocks and 16px miniblocks;
+ordinary 16x16 grayscale edge density and the existing RGB directional-edge
+profile were measured at each full-spike source patch. This covers one original
+capture per exact control, not a capture-scale robustness benchmark. No
+detector threshold, screen label, or output map was changed.
+
+Across the 16 exact controls, 71 full-spike detections overlapping emitted
+terrain were associated with exact, shifted, or wrong-direction references;
+30 were annotated false positives. Five had grayscale edge density below
+`0.1875`. Requiring the existing RGB profile's `p90 >= 48` and leading-edge
+delta `< 0.20` flags four of those five; all four are reference false positives
+in CN2-5, Irkara-NR Arcfoxp1 and Irkara-NR Flames, with no exact, shifted or
+wrong-direction reference-associated detection lost in those controls. One
+additional CN2-5 false remains because its RGB evidence is too weak for that
+gate. Four removals among 108 full-spike false positives is a small
+negative-only result, not substantial shared progress or a production rule.
+
+Applying the same fixed diagnostic to the current visual-only 71 outputs finds
+735 full-spike/terrain footprint overlaps, 32 low-grayscale candidates, and 10
+that also pass the RGB gate across seven rooms. These 10 are explicitly
+unreviewed, not presumed false: they include NANG_138 and other rooms where
+RGB edges may support real geometry. The detailed coordinates and measurements
+are in the ignored `current-71-stable-v1/LOW_EDGE_BLOCK_OVERLAP_REVIEW.md`;
+Source/JTool/Blend paths remain in the adjacent ignored `USER_REVIEW.csv`.
+NANG_138 was not used to select the diagnostic thresholds, and must remain a
+no-tuning evaluation for any frozen candidate. CN3_NR2's user-confirmed visual
+effects at `(16,512)` and `(48,512)` are unrelated to the flagged coordinate
+`(440,16)` and remain untouched.
+
+Conclusion: retain this as a narrowly screened conflict hypothesis only. Do
+not ship it without independent source review and real positive-recovery work;
+the control sample and four removals do not establish transfer to the 71
+screens. Current scanner, exact maps and all-71 maps remain unchanged. No
+controlled runtime measurement was made. The shared recovery, multi-family,
+reserved-success, changed-map review and final audit gates remain open.
