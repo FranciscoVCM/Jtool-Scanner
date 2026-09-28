@@ -9162,3 +9162,51 @@ ignored; the tracked worktree remains unchanged apart from this progress log.
 After the human review, freeze the next causal experiment and preserve the
 current 32px alignment behavior unless a source-supported, cross-style
 positive anchor improves CN3_27 without sacrificing CN3_92.
+
+### BATCH_83 ordinary current-code exact-control replay (2026-09-28)
+
+The pinned `baseline-index.json` source identities were rechecked: all 87 source
+files and all 16 exact reference JMaps are present and match their recorded
+SHA-256 values. The 16 pinned baseline detections used for control comparisons
+also match their stored artifact hashes. A local-only `scan-corpus` manifest
+then ran the ordinary scanner on all 16 exact controls with the frozen grid-8,
+color+geometry, OCR-off, automatic-start options. Current implementation
+identity was
+`0308d520c4c1252d60e31820b5813da161010d96cb014ad65f8ba0f65f0410fb`.
+The initial pass completed 16/16; a second `--resume` pass reused 16/16
+checksummed results. Artifacts and the helper manifest remain ignored under
+`.artifacts/native-conflicts-20260923/final-controls-v1/`.
+
+Twelve current detected JMaps are byte-identical to the pinned outputs. Four
+maps changed, with no decrease in exact matches and no increased miss, shift,
+or direction-error totals:
+
+| Exact control | Exact matches | False positives | Misses | Shifts | Wrong directions |
+|---|---:|---:|---:|---:|---:|
+| Irkara-89 | 202/238 → 208/238 | 23 → 23 | 11 → 11 | 24 → 18 | 1 → 1 |
+| Irkara-NR Arcfoxp1 | 261/269 → 262/269 | 16 → 15 | 2 → 1 | 4 → 4 | 2 → 2 |
+| Irkara-NR Flames | 252/295 → 252/295 | 43 → 42 | 21 → 21 | 20 → 20 | 2 → 2 |
+| Irkara-NR Partysu3 | 255/265 → 255/265 | 66 → 63 | 5 → 5 | 5 → 5 | 0 → 0 |
+
+The four FTFA outputs are byte-identical to baseline: **926/928 exact**, with
+zero extras, shifts, or wrong directions. Irkara-89 corrects six full-spike
+origins from shifted to exact; Arcfoxp1 gains one exact origin while removing
+one extra and one miss. Flames removes one additional down-spike hypothesis
+at `(624,24)` while retaining the exact-reference objects at `(624,32)` and
+`(656,32)`. Partysu3 retains its previously source-reviewed three-false-full
+reduction; current source hash, map hash and code identity equal the already
+reviewed integrated output. These are reference-backed current-code results,
+not a claim that all four changed maps have fresh whole-room visual approval.
+In particular, Irkara-89 and Arcfoxp1 still need focused Source/JTool/Blend
+review of their changed regions before acceptance.
+
+The focused `test_source_spike_arbitration.py` suite passes 20 tests. The app
+health endpoint remains HTTP 200 with the loaded-source fingerprint matching
+the recorded current app fingerprint. No scanner code, fixture or JMap changed
+in this verification batch. This cross-control replay demonstrates both
+positive correction and reduced conflict, but it does not satisfy the reserved
+evaluation gate: CN3_30/NANG_138 remain no-effect checks, and a successful
+reserved transfer is still required. The final-current all-71 audit remains
+pending until scanner changes are stable; this targeted control run is not a
+substitute for it. Its accumulated scan time is not treated as a controlled
+runtime benchmark.
