@@ -8972,3 +8972,38 @@ fixture, JMap or application behavior changed. The current app/workflow
 smoke was separately verified at HTTP 200 with loaded-source fingerprint
 parity; all four unittest app checks passed. The bundled Python runtime does
 not include `pytest`, so no pytest suite is claimed by this checkpoint.
+
+### BATCH_79 classifier and arbitration trace: valid replay, split failure modes
+
+An observation-only instrumented replay of CN3_27, CN3_92 and three exact
+controls reproduced each saved current-candidate-v10 JMap and metadata
+exactly. The scanner fingerprint was
+`9a3499265b2866e69a241372c51c5eecb148104006ff00a70bbce608d4a63fa2`; all
+five frozen input/baseline/map identities matched. CN3_27's full annotated
+region remains 7/12 exact (five misses, ten extras); CN3_92 remains 52/52
+exact with two extras. The exact-control maps stayed at their saved baseline.
+
+This did not reveal one universal score/threshold cause. It did separate two
+concrete geometry failures. In CN3_27, the base classifier emits all four
+annotated blocks at `(16,16)`, `(16,48)`, `(120,16)` and `(120,48)`, but the
+first `_dedupe_geometry` pass removes them. The detector orders overlapping
+block proposals by a fixed 32px-preferred coordinate phase before classifier
+score; nearby lower-scoring, globally aligned texture proposals can therefore
+displace the annotated locations. This is a plausible palette-independent
+grid/arbitration defect, not yet a safe production fix: it must be tested on
+other independently reviewed rooms and exact controls. In the separate
+CN3_27 left-spike conflict, `(80,48)` is confidently emitted as left
+(score `.61279`, margin `.26048`), while the annotated `(88,48)` candidate is
+classified as a weak up spike (score `.49301`, margin `.00280`) and rejected.
+That phase error begins in classification and is distinct from the block
+dedupe loss. CN3_92's annotated geometry survives the detector, so the two
+styles do not support a shared threshold change.
+
+No detector or fixture code changed and no candidate was promoted. The full
+cell-level trace, identity checks, script and frozen batch plan are ignored
+under `.artifacts/native-conflicts-20260923/` (`batch79-base-geometry-
+classification-v1.json`, `trace_batch79_base_geometry.py`,
+`BATCH_79_PLAN.md`). This finding motivates a bounded, read-only evaluation
+of grid-phase-aware overlap arbitration; it does not justify tuning a
+single-room coordinate rule. Current app `/` returned HTTP 200 and
+`/api/health` was healthy with the expected loaded-source fingerprint.
