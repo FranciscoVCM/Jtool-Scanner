@@ -8903,3 +8903,40 @@ all16 sweep or controlled runtime was warranted for this failed
 candidate. A future correction needs positive source-supported
 context and complete-room false/true protection, not local scalar
 rank or wholesale retention. Reserved evaluation remains sealed.
+
+### Bounded RGB silhouette follow-up: promising only for filled material
+
+BATCH_76 and BATCH_77 asked whether a source-local RGB silhouette can
+resolve an 8px full-spike phase choice. They reuse only native source
+pixels, immutable current maps and independently fixed regional truth;
+the feature is not allowed to see case names or reference answers.
+Two-cluster RGB membership within the cropped triangle distinguishes
+red-on-white and white-on-cyan filled material, but the eroded-core
+feature ties CN3_27's true left `(88,48)` with its emitted `(80,48)`.
+Scoring the full 32x32 triangle including its boundary breaks that tie:
+balanced membership is `.89160` at the source-reviewed true phase versus
+`.87207` at the emitted phase. It also ranks all31 and 51 phase pairs
+correctly in the frozen CN3_27 and CN3_92 regions.
+
+The same fixed feature is not a universal phase rank: among scorable
+Irkara-89 alternatives it prefers the wrong phase 175 times and the
+true phase 216 times, with44 abstentions; Flames has25 wrong preferences
+and two ties among328 pairs. These full-spike exact controls expose the
+outline-on-white counterexample. No candidate was promoted and no
+ordinary scanner output changed. The ignored plans, scripts and complete
+candidate reports are `BATCH_76_*`, `BATCH_77_*` and
+`BATCH_78_PLAN.md` under `.artifacts/native-conflicts-20260923/`.
+
+BATCH_78 freezes one bounded map-only pilot before exact-control replay:
+apply unchanged full-mask feature thresholds (balanced accuracy at
+least `.85`, normalized centroid separation at least `3.0`, rank margin
+`.01`) to one-axis 8px alternatives in the complete declared development
+regions; ties and occupied destinations abstain. The pilot must correct
+CN3_27 left `(80,48)` to `(88,48)`, move no currently exact full spike in
+any of the16 exact controls, lose no CN3_92 regional exact geometry and
+increase no exact-control full-spike extras. Even a pass would justify
+only further source-review and transfer experiments, not production use.
+Reserved CN3_30/NANG_138 remain sealed. This research adds no scanner,
+test, fixture, JMap, application behavior or accuracy claim; if the
+fixed gate fails, record the rejection and prefer additional current-app
+source review over threshold retuning.
