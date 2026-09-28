@@ -9219,3 +9219,74 @@ reserved transfer is still required. The final-current all-71 audit remains
 pending until scanner changes are stable; this targeted control run is not a
 substitute for it. Its accumulated scan time is not treated as a controlled
 runtime benchmark.
+
+### BATCH_84 current-code 71-screen refresh (2026-09-28)
+
+The scanner has remained unchanged since the BATCH_81 code checkpoint. Using
+the bundled Python runtime, the ordinary grid-8, color+geometry, OCR-off,
+automatic-start workflow freshly scanned all 71 canonical sources from
+`local_corpus/giant-review/manifest.csv`. Every source SHA-256 matches the
+manifest and pinned baseline; every output artifact hash verifies. No expected
+JMaps were supplied, so these are visual-only outputs, not exact benchmarks.
+There were no compatible cache hits under this code fingerprint. The complete
+run is ignored at `.artifacts/native-conflicts-20260923/current-71-stable-v1/`;
+its per-room interim comparison is
+`71-screen-before-after.md` in that directory.
+
+The current 71 outputs and the separate 16-control report use the same
+implementation fingerprint, `0308d520c4c1252d60e31820b5813da161010d96cb014ad65f8ba0f65f0410fb`.
+Against the pinned 2026-09-20 output, 44 canonical typed-object maps and all
+JMap metadata are unchanged. Twenty-seven maps differ, with 213 added and 203
+removed typed tuples in aggregate and no metadata changes. These are cumulative
+deltas against an older implementation, not changes attributable to one batch
+and not an accuracy score. Input hashes and scan options match for all cases.
+
+| Changed canonical room | Added tuples | Removed tuples |
+|---|---:|---:|
+| Zero_Final | 4 | 6 |
+| Say_7 | 31 | 27 |
+| CN3_7 | 0 | 1 |
+| CN3_9 | 0 | 1 |
+| CN3_18 | 1 | 1 |
+| CN3_19 | 2 | 5 |
+| CN3_25 | 19 | 14 |
+| CN3_26 | 16 | 18 |
+| CN3_27 | 12 | 8 |
+| CN3_28 | 1 | 1 |
+| CN3_29 | 2 | 2 |
+| CN3_30 | 0 | 1 |
+| CN3_92 | 35 | 70 |
+| CN3_Dotkid3 | 6 | 0 |
+| CN3_Dotkid4 | 2 | 0 |
+| CN3_Entrance1 | 33 | 4 |
+| CN3_Entrance2 | 23 | 13 |
+| CN3_Entrance3 | 2 | 3 |
+| CN3_Golden2 | 0 | 1 |
+| CN3_Golden3 | 0 | 6 |
+| CN3_Golden4 | 0 | 4 |
+| CN3_Golden5 | 0 | 1 |
+| CN3_Golden6 | 1 | 2 |
+| CN3_Halls2 | 3 | 3 |
+| CN3_Halls6 | 7 | 0 |
+| CN3_NR2 | 11 | 9 |
+| CN3_Secret1 | 2 | 2 |
+
+The 44 equal outputs can inherit the pinned audit state through verified source,
+options, complete typed-object-map and metadata equality. Twenty-seven changed
+outputs remain pending independent source review unless their map, metadata,
+crop and settings are matched to a separately reviewed artifact; filename
+similarity or object-count movement is insufficient. CN3_27's current region
+remains 7/12 exact with five shifts and five extras; CN3_92 remains 52/52 exact
+in its declared region with two extras. Those regional metrics carry from
+BATCH_82's semantically identical JMaps, but fresh whole-room approval is not
+implied. The two reserved evaluation cases were not tuned from this audit.
+
+The current-code exact-control report is 16/16 complete with verified artifact
+hashes. FTFA remains 926/928 exact with zero extras, shifts or wrong directions;
+Flames remains 252/295 exact with 42 extras, 21 misses, 20 shifts and two wrong
+directions. These checks and the 71-screen sum of recorded scan durations
+(4,890.72 seconds) are not a controlled latency benchmark. The app still returns
+HTTP 200 and its loaded source fingerprint matches local source. No scanner,
+fixture or JMap changed. This is a current-output coverage checkpoint; changed
+map review, positive reserved transfer and the final completion gates remain
+open.
