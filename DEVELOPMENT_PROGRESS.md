@@ -9108,3 +9108,45 @@ work remains independent positive geometry recovery with source evidence,
 including a successful reserved transfer on a newly frozen evaluation case,
 then broader controls/runtime and the final current-code all71 audit. This
 bounded false-conflict fix alone is not completion of the active goal.
+
+### BATCH_82 refreshes current review artifacts without changing scanner code
+
+After the BATCH_81 checkpoint, the ordinary editable-project workflow was
+rerun on only the two current development cases, CN3_27 and CN3_92. Inputs
+were the pinned `local_corpus/giant-review/sources` files, with their
+`baseline-index.json` SHA-256 values verified. Both runs used the frozen
+options: grid step 8, color objects and geometry enabled, OCR disabled,
+automatic start policy, and no room-box or source-grid override. The active
+implementation identity was
+`0308d520c4c1252d60e31820b5813da161010d96cb014ad65f8ba0f65f0410fb`; the app
+reported source fingerprint `02b404a4fd48e404ae2481ce783e44b63e555bf3be71b224e2ccd94b076e23da`.
+
+Fresh editable projects, JMaps and Source/JTool/Blend SVGs are saved under
+ignored `.artifacts/native-conflicts-20260923/batch82-current-review-v1/`.
+Each current JMap was decoded and compared against its frozen
+`current-candidate-v10` map. CN3_27 is exactly equal by the full multiset of
+(x,y,type) objects and every JMap metadata field (337 objects); CN3_92 is
+also exactly equal by those same semantic fields (281 objects). The serialized
+file digests differ, so byte equality is not claimed. The source hashes,
+options and current semantic outputs are verified; the fresh SVG bytes differ
+from the earlier review renderings, so prior visual approval is not carried
+forward.
+
+BATCH_80's two candidate dedupe ranks remain rejected: both retain the four
+CN3_27 off-phase block misses, and each loses eight exact aligned CN3_92
+blocks. No further phase/dedupe heuristic is justified until the fresh
+Source/JTool/Blend view receives an independent human read. A focused review
+was requested for CN3_27 `[0,0,176,192]` (including the four annotated blocks
+and competing left-spike phase) and CN3_92 `[256,0,320,288]` (including the
+eight protected aligned block cells). The review should distinguish real
+objects, unsupported overlaps and uncertain/occluded pixels; it must not
+change the frozen denominators.
+
+This is a workflow/evidence checkpoint, not a detection improvement. No
+implementation code or fixtures changed, no tests or latency benchmark were
+run, and no visual acceptance is asserted. The local app health endpoint
+returned `ok: true` with the current source fingerprint. The new artifacts are
+ignored; the tracked worktree remains unchanged apart from this progress log.
+After the human review, freeze the next causal experiment and preserve the
+current 32px alignment behavior unless a source-supported, cross-style
+positive anchor improves CN3_27 without sacrificing CN3_92.
