@@ -9290,3 +9290,35 @@ HTTP 200 and its loaded source fingerprint matches local source. No scanner,
 fixture or JMap changed. This is a current-output coverage checkpoint; changed
 map review, positive reserved transfer and the final completion gates remain
 open.
+
+### BATCH_85 mini-pair-to-full recovery screen (2026-09-29)
+
+Before attempting a positive complement to the shipped paired-mini/full veto,
+the current checksummed 16-control report was inspected at the same scanner
+fingerprint as the all-71 refresh. Across all exact references, there are 38
+reference full-spike origins that are currently missed or shifted (16 missing,
+22 shifted). None has even one detected 16px mini-spike inside its 32px
+reference box; consequently none has the exact trailing mini pair required by
+the proposed full-recovery topology. The complementary mini-pair-to-full
+selector has no exact-control positive examples and is not justified for
+production from current evidence. This does not establish absence of such
+cases in the visual-only 71 corpus; do not infer labels there from counts.
+
+To support a source-based review without reopening the archive, an ignored
+71-row `USER_REVIEW.csv` and `USER_REVIEW_GUIDE.md` were generated beside the
+current-code output. All 71 source, detected-JTool, blend and detected-JMap
+paths resolve locally. The worksheet prioritizes the 27 maps changed from the
+pinned 2026-09-20 output but includes the other 44 because equality is not
+proof of accuracy. It records the user's confirmed CN3_NR2 down visual effects
+at `(16,512)` and `(48,512)` as negatives; they are not to be re-adjudicated.
+The worksheet and all referenced scan artifacts remain ignored and are not
+publication material.
+
+The live app still returns HTTP 200 and its loaded source fingerprint matches
+the local import (`02b404a4fd48e404ae2481ce783e44b63e555bf3be71b224e2ccd94b076e23da`).
+No scanner code, fixture, source or JMap changed. This is an evidence/workflow
+checkpoint, not a detection gain. Next, use independently reviewed source
+labels to freeze complete positive/negative structures and a fresh no-tuning
+transfer case before selecting a positive recovery mechanism. Keep the goal's
+multi-family, reserved-transfer, controlled-runtime, all-71 review and
+publication gates open.
