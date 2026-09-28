@@ -8696,3 +8696,45 @@ adversarial negatives across multiple visual families, while preserving
 the weak-evidence abstention and the sealed evaluation cases. Positive
 geometry recovery, reserved transfer and final-current all-71 gates
 remain open.
+
+### Positive full-spike RGB profile did not justify a detector (2026-09-28)
+
+BATCH_66 froze complete positive/negative sets before profiling the RGB
+triangle feature: CN3_27's 12-object region (8 reference full spikes),
+all 113 reference fulls in Irkara-89, and all 82 in Irkara/Flames. The
+checked current outputs have respectively 7/8, 106/113 and 72/82 exact
+fulls; they miss 1, 7 and 10 fulls and emit 5, 24 and 16 extra fulls.
+This is a source-only experiment, not a scanner improvement. Protected
+CN3_92 has 14/14 exact fulls in its frozen region; the four FTFA rooms
+have 71/71, 63/63, 58/58 and 76/76 exact fulls; Partysu3 has 90/95.
+Those full-only counts do not replace the strict all-object benchmarks.
+
+On the original sources, whole-triangle RGB outline-minus-outside
+support still overlaps heavily between missed real fulls and emitted
+extras. Irkara-89's missing-full range is -0.12 to 0.46, versus -0.12
+to 0.53 for extras; Irkara/Flames is -0.12 to 0.25 versus 0.13 to 0.53.
+Direction margins also overlap. A cutoff from these labels would either
+miss real geometry or create false fulls on another material; none was
+put into production. The current scanner code remains at its pre-pilot
+fingerprint, and the earlier unsafe paired-mini/full selector remains
+rejected.
+
+Independent Source/JTool/Blend contact reviews found three distinct
+visible errors: CN3_27's left full at `(88,48)` is emitted eight pixels
+early at `(80,48)`; Irkara-89's up full at `(640,296)` is eight pixels
+low at `(640,304)`; and Irkara/Flames' down full at `(384,160)` is
+covered by block-like reconstruction. The existing ordinary-equivalent
+CN3_27 trace finds no correct-origin left proposal: its grayscale
+classifier picks the early left proposal, while the correct-origin
+patch is classified as up and rejected. That supports investigating
+proposal phase/classification, not blindly adding RGB-positive output.
+The other two sites still need stage traces before asserting a shared
+mechanism.
+
+The checksummed inputs, fixed variants, complete per-room counts, RGB
+feature rows, images and frozen BATCH_66/BATCH_67 plans remain ignored
+under `.artifacts/native-conflicts-20260923/`. CN3_30 and NANG_138
+remain sealed evaluation cases. No implementation, test, fixture, JMap
+or app behavior changed in this checkpoint. Positive multi-family
+recovery, reserved transfer, controlled runtime and final-current all-71
+audit remain open.
