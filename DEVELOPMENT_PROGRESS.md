@@ -9200,6 +9200,15 @@ not a claim that all four changed maps have fresh whole-room visual approval.
 In particular, Irkara-89 and Arcfoxp1 still need focused Source/JTool/Blend
 review of their changed regions before acceptance.
 
+Do not attribute all four current-vs-pinned changes to BATCH_81. The frozen
+BATCH_81 exact-control map replay selected exactly three false fulls, all in
+Partysu3, preserved their six paired minis, and removed no reference-positive
+full. The current Partysu3 output hash matches its reviewed integrated output.
+For Irkara-89, Arcfoxp1 and Flames, the BATCH_81 replay selected nothing and
+the current maps equal its pre-veto map hashes; those three current-vs-pinned
+differences were already present before the paired-mini veto. Keep the
+cumulative goal-baseline comparison separate from BATCH_81's causal delta.
+
 The focused `test_source_spike_arbitration.py` suite passes 20 tests. The app
 health endpoint remains HTTP 200 with the loaded-source fingerprint matching
 the recorded current app fingerprint. No scanner code, fixture or JMap changed
