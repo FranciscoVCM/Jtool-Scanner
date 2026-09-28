@@ -9363,3 +9363,35 @@ the control sample and four removals do not establish transfer to the 71
 screens. Current scanner, exact maps and all-71 maps remain unchanged. No
 controlled runtime measurement was made. The shared recovery, multi-family,
 reserved-success, changed-map review and final audit gates remain open.
+
+### BATCH_87 resolution stress of terrain-overlap profile (2026-09-29)
+
+The BATCH_86 diagnostic was stress-tested at feature level on all 16 exact
+controls by resizing each source raster in memory with Lanczos at `0.75x` and
+`1.25x`, scaling its room box proportionally, and recomputing the same local
+features at the existing map-space detections. Detection generation,
+coordinates, settings and output JMaps were held fixed; this is not a scanner
+rescan or an end-to-end scale benchmark.
+
+The frozen grayscale/RGB screen flags four reference false spikes and no
+reference-associated full spike at native resolution, one false and no
+reference-associated full spike at `0.75x`, and three false and no
+reference-associated full spike at `1.25x`. Thus the tested variants show no
+protected losses in this small exact-control sample, but the false-removal
+yield changes from 4/4 to 1/4 and 3/4. This confirms that the selector depends
+on resampling-sensitive edge measurements; it is not yet an adequately stable
+shared production rule and remains rejected as a standalone repair.
+
+Source screenshots for all seven visual-only rooms carrying the ten BATCH_86
+flags were spot-checked, along with the before/current Blend previews for
+CN3_25, CN3_Dotkid3 and CN3_Entrance3. Several flagged sites coincide with
+triangle-like forms or highly geometric terrain; these views do not resolve
+whether the scanner object is genuine or a decoration/background alias. No
+label was promoted to confirmed false, and all ten stay unreviewed in the local
+note. The other four candidate rooms were source-only in this pass, and no
+standalone JTool SVG was visually inspected; the complete Source/JTool/Blend
+review remains open. NANG_138 remains no-tuning for this candidate. No scanner
+code, fixture, JMap or scan output changed, and no runtime benchmark was run.
+Continue toward source-confirmed positive recovery and a stable cross-style
+conflict repair; all multi-family, reserve, control, runtime and final-audit
+gates remain open.
