@@ -8819,3 +8819,38 @@ full candidate-level report are `BATCH_69_PLAN.md` and
 `batch69-canonical-corroboration-v1.json`. Return to complete cross-
 family geometry structures rather than widening these gates around a
 single room; CN3_30/NANG_138 remain sealed.
+
+### Configuration-outline diagnostic rejected by complete negatives (2026-09-28)
+
+BATCH_70 evaluated a different, configuration-level hypothesis after
+the local scalar/pair policies failed: rasterize the union of blocks,
+full spikes and minis, and compare its exterior to source RGB edges
+over complete fixed regions. Evaluation-only reference silhouettes
+beat the current silhouettes on mean edge support and ≥34 edge rate
+in CN3_27 (103.82 versus 73.94 mean), CN3_92 (107.30 versus 105.14),
+an Irkara-89 neighborhood (89.45 versus 85.22), and a Flames
+neighborhood (75.12 versus 62.23). However, the perimeter-adjusted
+edge sum already favored the incorrect Irkara-89 configuration, so
+the family evidence was mixed; no scanner change followed.
+
+BATCH_71 then generated every frozen single-object deletion, every
+current false addition, each ±8px phase shift, each alternate spike
+direction and full/mini size swap in those regions. The reference
+mean beat only **6/12** real-object deletions in CN3_27, **38/52** in
+CN3_92 and **5/7** in Flames. It preferred deleting source-visible
+true spikes, including CN3_27 left `(88,48)` and Flames down
+`(384,160)`. It also preferred shifting Irkara-89's real up
+`(640,296)` to the known wrong `(640,304)` (mean 90.23 versus
+89.45). Thus the union-outline mean fails the predeclared standalone
+recall/phase gate despite rejecting all tested wrong-direction
+substitutions. One CN3_92 false addition and two Irkara false
+additions were silhouette-unobservable, another structural limit.
+
+The complete results and frozen plans are ignored locally as
+`BATCH_70_PLAN.md`, `batch70-union-edge-profile-v1.json`,
+`BATCH_71_PLAN.md`, and `batch71-union-mutants-v1.json`. Reference
+masks were diagnostic only. No implementation, test, fixture, JMap,
+ordinary scan, app behavior or all-71 audit changed. Do not promote
+this score by retuning around its hard negatives. A future model
+needs explicit positive-object support, not merely a cleaner
+aggregate outline; the reserved rooms remain uninspected.
