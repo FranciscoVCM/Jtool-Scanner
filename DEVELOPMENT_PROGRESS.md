@@ -8663,3 +8663,36 @@ paired-mini source-model comparison; native connected-edge extent alone
 cannot decide the object scale. Do not retune the same cutoff on the
 reviewed room labels. The reserved cases remain sealed. Positive
 multi-family recovery and final all-71 gates remain open.
+
+### Source-contour follow-up, no selector shipped (2026-09-28)
+
+BATCH_65 profiled the half of each 32px full-spike patch not covered by
+the trailing pair of minis. All eight BATCH_61 paired candidates, the
+later source-reviewed Entrance2 case, Say_4, exact reference-positive
+full/mini overlaps and fixed source capture variants were included.
+Grayscale leading-outline minus nearby-outside edge support separated
+the original reviewed sources, but failed an isoluminant red/green
+synthetic full: both colors map to the same 8-bit gray value, making a
+real full look like an absent full by this feature.
+
+The same fixed 16×16 sampling with max-channel RGB edges gives a more
+promising diagnostic. Across the checked original/capture variants,
+source/exact false-full leading RGB deltas range from -0.023 to 0.159;
+source/exact true-full controls range from 0.409 to 0.818. The
+high-contrast synthetic full, including the isoluminant RGB palette,
+ranges from 0.409 to 0.455. A weak-contrast 18-level synthetic full
+instead overlaps the mini-pair range (-0.045 to 0.12), with patch RGB
+edge p90 only 18–24 versus 63–177 in the reviewed false-full sources.
+Weak color evidence must therefore mean *abstain*, never delete.
+
+These are feature profiles, **not** accuracy gains or an approved
+threshold. Unfamiliar textured true fulls may have misleading edges;
+the present sources cannot prove a universally safe deletion rule.
+`BATCH_65_PLAN.md` and `leading-full-contour-profile-v1.json` through
+`v4.json` are ignored local evidence. No implementation, test, fixture,
+JMap or app behavior changed. The next causal batch should test this RGB
+shape evidence against independently frozen missing real fulls and
+adversarial negatives across multiple visual families, while preserving
+the weak-evidence abstention and the sealed evaluation cases. Positive
+geometry recovery, reserved transfer and final-current all-71 gates
+remain open.
