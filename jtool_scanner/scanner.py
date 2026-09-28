@@ -1385,6 +1385,8 @@ LATE_MINI_ALIAS_MIN_FULL_SCORE = 0.70
 LATE_MINI_ALIAS_MIN_FULL_MARGIN = 0.36
 LATE_MINI_ALIAS_MIN_FULL_SIDE_COVERAGE = 0.9375
 LATE_MINI_ALIAS_MIN_FULL_NORMALIZED_LUMA = 0.70
+PAIRED_MINI_FULL_CONFLICT_MIN_RGB_EDGE_P90 = 48
+PAIRED_MINI_FULL_CONFLICT_MAX_LEADING_RGB_DELTA = 0.20
 WEAK_ORTHOGONAL_SPIKE_PAIR_ALIAS_MAX_SCORE = 0.55
 DENSE_GLYPH_ALIAS_MAX_SATURATION = 0.20
 DENSE_GLYPH_ALIAS_LONG_MIN_MATERIAL_DISTANCE = 64
@@ -2812,6 +2814,9 @@ def scan_image(
             detections = _prune_source_exterior_block_aliases(
                 detections, image, box,
             )
+            detections = _prune_paired_mini_full_spike_conflicts(
+                detections, image, box,
+            )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
         offset_x, offset_y = source_translation
@@ -3846,6 +3851,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _prune_source_exterior_block_aliases(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _prune_paired_mini_full_spike_conflicts(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -20468,6 +20476,172 @@ def _native_edge_component_extent(
         map_height = (max(ys) - min(ys) + 1) / max(scale_y, 1e-9)
         maximum = max(maximum, min(map_width, map_height))
     return maximum
+
+
+def _paired_mini_full_rgb_edge_profile(
+    image: RGBImage,
+    room: Box,
+    full: Detection,
+) -> tuple[int, float]:
+    """Measure RGB edge signal and triangle evidence on a full spike's free half.
+
+    The fixed 16x16 sampling is map-relative, so the measurements use the same
+    coordinates for native and resampled captures.  RGB max-channel edges
+    preserve isoluminant boundaries that a grayscale edge mask can miss.
+    """
+
+    directions = {
+        OBJ_SPIKE_UP: "up",
+        OBJ_SPIKE_RIGHT: "right",
+        OBJ_SPIKE_LEFT: "left",
+        OBJ_SPIKE_DOWN: "down",
+    }
+    direction = directions.get(full.type_id)
+    if direction is None:
+        return 0, 1.0
+
+    sample = 16
+    scale_x = room.width / ROOM_WIDTH
+    scale_y = room.height / ROOM_HEIGHT
+    left = room.x + full.x * scale_x
+    top = room.y + full.y * scale_y
+    width = GRID_SIZE * scale_x
+    height = GRID_SIZE * scale_y
+    samples: list[tuple[int, int, int]] = []
+    for sy in range(sample):
+        py = int(min(image.height - 1, max(0, top + (sy + 0.5) * height / sample)))
+        for sx in range(sample):
+            px = int(min(image.width - 1, max(0, left + (sx + 0.5) * width / sample)))
+            samples.append(image.pixel(px, py))
+
+    strengths: list[int] = []
+    for sy in range(sample):
+        for sx in range(sample):
+            current = samples[sy * sample + sx]
+            right = samples[sy * sample + min(sample - 1, sx + 1)]
+            down = samples[min(sample - 1, sy + 1) * sample + sx]
+            strengths.append(
+                max(abs(a - b) for a, b in zip(current, right))
+                + max(abs(a - b) for a, b in zip(current, down))
+            )
+
+    rgb_edges = [strength >= 34 for strength in strengths]
+    outline, outside = _triangle_masks(direction)
+    if direction in ("up", "down"):
+        leading_outline = [pos for pos in outline if pos // sample < sample // 2]
+        leading_outside = [pos for pos in outside if pos // sample < sample // 2]
+    else:
+        leading_outline = [pos for pos in outline if pos % sample < sample // 2]
+        leading_outside = [pos for pos in outside if pos % sample < sample // 2]
+    if not leading_outline or not leading_outside:
+        leading_delta = 1.0
+    else:
+        outline_rate = (
+            sum(rgb_edges[pos] for pos in leading_outline) / len(leading_outline)
+        )
+        outside_rate = (
+            sum(rgb_edges[pos] for pos in leading_outside) / len(leading_outside)
+        )
+        leading_delta = outline_rate - outside_rate
+    p90_index = round(0.90 * (len(strengths) - 1))
+    rgb_edge_p90 = sorted(strengths)[p90_index]
+    return rgb_edge_p90, leading_delta
+
+
+def _prune_paired_mini_full_spike_conflicts(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+) -> list[Detection]:
+    """Remove only a weak full alias when exact trailing minis outvote it.
+
+    A full is considered only when exactly two same-direction 16px minis occupy
+    its canonical trailing half and no other mini is fully contained.  Small
+    native edge extent alone is insufficient: the free leading half must also
+    lack a directional RGB contour while the patch has enough RGB edge signal
+    to make that absence meaningful.  Ambiguous and overlapping proposals
+    abstain, and any accepted decision removes the full hypothesis only.
+    """
+
+    full_to_mini = {
+        OBJ_SPIKE_UP: OBJ_MINI_SPIKE_UP,
+        OBJ_SPIKE_RIGHT: OBJ_MINI_SPIKE_RIGHT,
+        OBJ_SPIKE_LEFT: OBJ_MINI_SPIKE_LEFT,
+        OBJ_SPIKE_DOWN: OBJ_MINI_SPIKE_DOWN,
+    }
+    fulls = [detection for detection in detections if detection.type_id in full_to_mini]
+    minis = [detection for detection in detections if detection.type_id in MINI_SPIKE_TYPES]
+    if not fulls or not minis:
+        return detections
+
+    candidates: list[Detection] = []
+    evidence_cache: dict[tuple[int, int, int], tuple[float, int, float]] = {}
+    for full in fulls:
+        contained = [
+            mini for mini in minis
+            if full.x <= mini.x
+            and mini.x + MINI_BLOCK_SIZE <= full.x + GRID_SIZE
+            and full.y <= mini.y
+            and mini.y + MINI_BLOCK_SIZE <= full.y + GRID_SIZE
+        ]
+        if len(contained) != 2:
+            continue
+        expected_type = full_to_mini[full.type_id]
+        if {mini.type_id for mini in contained} != {expected_type}:
+            continue
+        if full.type_id in (OBJ_SPIKE_UP, OBJ_SPIKE_DOWN):
+            expected_origins = {
+                (full.x, full.y + MINI_BLOCK_SIZE),
+                (full.x + MINI_BLOCK_SIZE, full.y + MINI_BLOCK_SIZE),
+            }
+        else:
+            expected_origins = {
+                (full.x + MINI_BLOCK_SIZE, full.y),
+                (full.x + MINI_BLOCK_SIZE, full.y + MINI_BLOCK_SIZE),
+            }
+        if {(mini.x, mini.y) for mini in contained} != expected_origins:
+            continue
+
+        evidence_key = (full.type_id, full.x, full.y)
+        evidence = evidence_cache.get(evidence_key)
+        if evidence is None:
+            native_extent = _native_edge_component_extent(
+                image, room, full.x, full.y,
+            )
+            rgb_edge_p90, leading_rgb_delta = _paired_mini_full_rgb_edge_profile(
+                image, room, full,
+            )
+            evidence = (native_extent, rgb_edge_p90, leading_rgb_delta)
+            evidence_cache[evidence_key] = evidence
+        native_extent, rgb_edge_p90, leading_rgb_delta = evidence
+        if native_extent > LATE_FULL_ALIAS_MAX_NATIVE_EXTENT:
+            continue
+        if (
+            rgb_edge_p90 >= PAIRED_MINI_FULL_CONFLICT_MIN_RGB_EDGE_P90
+            and leading_rgb_delta < PAIRED_MINI_FULL_CONFLICT_MAX_LEADING_RGB_DELTA
+        ):
+            candidates.append(full)
+
+    if len(candidates) < 2:
+        selected_ids = {id(full) for full in candidates}
+    else:
+        overlapping_ids: set[int] = set()
+        for index, first in enumerate(candidates):
+            for second in candidates[index + 1:]:
+                if (
+                    abs(first.x - second.x) < GRID_SIZE
+                    and abs(first.y - second.y) < GRID_SIZE
+                ):
+                    overlapping_ids.update((id(first), id(second)))
+        selected_ids = {
+            id(full) for full in candidates if id(full) not in overlapping_ids
+        }
+
+    if not selected_ids:
+        return detections
+    return [
+        detection for detection in detections if id(detection) not in selected_ids
+    ]
 
 
 def _reconcile_bright_filled_full_spikes(

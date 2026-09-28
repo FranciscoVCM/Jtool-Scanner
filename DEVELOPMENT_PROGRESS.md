@@ -9026,3 +9026,85 @@ indicates that position phase needs independent positive shape evidence,
 not a global rank reversal. Full replay outputs/plans remain ignored in
 `.artifacts/native-conflicts-20260923/BATCH_80_*` and
 `batch80-block-dedupe-v1.json`; ordinary scanner behavior is unchanged.
+
+### BATCH_81 ships a narrowly gated paired-mini/full conflict veto
+
+BATCH_81 froze a source-only selector after a feature-only profile gate, a
+map-only replay over the protected structures and all16 exact controls, and
+ordinary final-boundary injection. The shared correction now runs after the
+last geometry refit in both ordinary and capture-lattice-normalized scans. It
+considers only a 32px full-spike hypothesis containing exactly the canonical
+two same-direction 16px minis in the previously measured trailing half, with
+no other fully contained mini. It retains the existing native edge-extent
+limit (`<=20`) but also requires a strong max-channel RGB edge-strength P90
+(`>=48`) and weak directional contour evidence on the unpaired leading half
+(`<0.20`). Either weak or conflicting evidence abstains. If eligible full
+proposals overlap one another, all overlapping proposals abstain. The rule
+can remove only the full; paired minis, every other object and map metadata
+are preserved. It does not name a screen, coordinate, palette, source hash or
+reference answer. The fixed thresholds came from BATCH_65's prior profile;
+they were not retuned against the protected or reserved outcomes.
+
+The current implementation fingerprint is
+`0308d520c4c1252d60e31820b5813da161010d96cb014ad65f8ba0f65f0410fb`. Three
+quiet ordinary scans, with exact source identities and options, reproduced
+the frozen BATCH_81 counterfactual JMap file hashes and metadata exactly. The
+seven changed full-spike crops had already been checked against
+their Source/JTool/Blend views; the current map hashes equal those reviewed
+counterfactuals, so that local review can be carried forward. This is not a
+whole-room accuracy certification:
+
+| Room | Source-reviewed false fulls removed | Paired minis retained | Whole-room exact-reference change |
+|---|---:|---:|---|
+| CN3_7 | 1 | 2 | no corrected JMap; region/source review only |
+| CN3_Entrance1 | 3 | 6 | no corrected JMap; region/source review only |
+| Irkara / Partysu3 | 3 | 6 | 255 exact remains; false positives 66→63 and total exact errors 76→73; five misses and five shifts unchanged |
+
+The Partysu3 result is a real measured conflict reduction, not a recall gain.
+All16 exact-control maps were replayed against the frozen selector before
+integration: no reference-positive full was removed, and no control's exact
+matches, misses, shifts or directions regressed. Partysu3's three reviewed
+false fulls account for its exact-error improvement. FTFA stays at 926/928
+exact with no extras, shifts or wrong directions; Flames stays at 252 exact
+with 42 extras, 21 misses, 20 shifts and two wrong directions. CN3_27 and
+CN3_92's frozen regions are unchanged. This protects the listed controls, but
+does not establish positive recovery or transfer to the reserved rooms.
+
+The one-time, no-tuning reserved checks found no applicable paired-mini
+topology in CN3_30 and no selected full in NANG_138. Thus this batch has **no
+successful reserved transfer** and does not satisfy the goal's multi-family
+positive-recovery gate. CN3_30 had no corrected reference JMap. In the
+protected replay, NANG_138's `baseline_map_hash_verified: false` means only
+that it was intentionally absent from BATCH_61's prior map-hash set while
+reserved; the report did verify its source hash, current pre-change scanner
+identity and baseline key. It was not evidence of a contradictory or
+mismatched map. Do not tune against either consumed reserved result; the next
+causal experiment needs a newly frozen evaluation case if a holdout is needed.
+
+Portable and neighboring spike regressions pass: 52 affected tests in 21.6s,
+covering polarity, all four directions, 0.75x/1.25x capture scales, texture,
+weak-signal abstention, extra/misplaced mini negatives, overlapping proposal
+abstention, backed minis, terrain arbitration, spike color and recall. A full
+`unittest discover -s tests -q` run remained CPU-active for more than 21
+minutes without a reported failure, then was stopped because it was much
+broader and slower than this bounded change; it did **not** complete and is
+not claimed as a pass.
+
+Quiet serial ABBA timing used the prior scanner from `cf7c10d` and current
+ordinary scans, checking map and metadata equality on every sample. On dense
+CN3_7, old samples were 57.735/61.070s (median 59.403s), current samples
+62.445/60.619s (median 61.532s), a +2.129s / +3.6% sample difference. On
+sparser FTFA-2, old was 32.936/32.124s (median 32.530s), current
+32.691/32.615s (median 32.653s), a +0.123s / +0.4% sample difference. Two
+ABBA pairs are small and show ordinary timing variance; they do not prove a
+speedup, but show no material repeated slowdown for this narrow selector.
+
+The app was restarted after the scanner edit and returned HTTP 200 at both `/`
+and `/api/health`; its loaded package fingerprint matched local source. The
+complete latest-code outputs for the seven changed regions, test/runtime
+records and trace-free review material remain ignored under
+`.artifacts/native-conflicts-20260923/` (not committed). The next required
+work remains independent positive geometry recovery with source evidence,
+including a successful reserved transfer on a newly frozen evaluation case,
+then broader controls/runtime and the final current-code all71 audit. This
+bounded false-conflict fix alone is not completion of the active goal.

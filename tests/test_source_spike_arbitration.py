@@ -6,8 +6,9 @@ from unittest.mock import patch
 from PIL import Image, ImageDraw
 
 from jtool_scanner.constants import (
-    OBJ_MINI_BLOCK, OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_RIGHT,
-    OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_DOWN,
+    OBJ_BLOCK, OBJ_MINI_BLOCK, OBJ_MINI_SPIKE_UP, OBJ_MINI_SPIKE_RIGHT,
+    OBJ_MINI_SPIKE_LEFT, OBJ_MINI_SPIKE_DOWN, OBJ_SPIKE_UP,
+    OBJ_SPIKE_RIGHT, OBJ_SPIKE_LEFT, OBJ_SPIKE_DOWN,
 )
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
@@ -15,6 +16,7 @@ from jtool_scanner.scanner import (
     Detection,
     _merge_capture_lattice_geometry,
     _prune_profiled_full_spike_noise,
+    _prune_paired_mini_full_spike_conflicts,
     _prune_source_exterior_block_aliases,
     _reconcile_common_room_geometry,
     _reconcile_source_supported_spike_phases,
@@ -37,7 +39,151 @@ def scene(direction, *, triangle=True, foreground=30, background=220,
     return RGBImage(image.width, image.height, image.tobytes())
 
 
+def paired_mini_scene(direction, *, foreground=(24, 35, 72),
+                      background=(80, 175, 120), scale=1.0,
+                      full_contour=False, texture=0):
+    """Render a canonical two-mini trailing half, optionally with a real full."""
+    bitmap = Image.new("RGB", (800, 608), background)
+    draw = ImageDraw.Draw(bitmap)
+    x, y = 320, 240
+    full_type = {"up": OBJ_SPIKE_UP, "right": OBJ_SPIKE_RIGHT,
+                 "left": OBJ_SPIKE_LEFT, "down": OBJ_SPIKE_DOWN}[direction]
+    mini_type = {"up": OBJ_MINI_SPIKE_UP, "right": OBJ_MINI_SPIKE_RIGHT,
+                 "left": OBJ_MINI_SPIKE_LEFT, "down": OBJ_MINI_SPIKE_DOWN}[direction]
+    if texture:
+        for py in range(y, y + 32):
+            for px in range(x, x + 32):
+                offset = texture if (px + py) % 2 else -texture
+                color = tuple(max(0, min(255, value + offset))
+                              for value in background)
+                draw.point((px, py), fill=color)
+    if full_contour:
+        draw.polygon([(x + dx, y + dy) for dx, dy in VERTICES[full_type]],
+                     fill=foreground)
+    if direction in ("up", "down"):
+        mini_origins = ((x, y + 16), (x + 16, y + 16))
+    else:
+        mini_origins = ((x + 16, y), (x + 16, y + 16))
+    mini_vertices = VERTICES[full_type]
+    for mini_x, mini_y in mini_origins:
+        points = [(mini_x + dx // 2, mini_y + dy // 2)
+                  for dx, dy in mini_vertices]
+        draw.polygon(points, fill=foreground)
+    if scale != 1.0:
+        bitmap = bitmap.resize(
+            (round(bitmap.width * scale), round(bitmap.height * scale)),
+            Image.Resampling.BILINEAR,
+        )
+    image = RGBImage(bitmap.width, bitmap.height, bitmap.tobytes())
+    room = Box(0, 0, image.width, image.height)
+    full = Detection("spike", full_type, x, y, 0.8, Box(x, y, 32, 32))
+    minis = [
+        Detection("mini_spike", mini_type, mini_x, mini_y, 0.8,
+                  Box(mini_x, mini_y, 16, 16))
+        for mini_x, mini_y in mini_origins
+    ]
+    return image, room, full, minis
+
+
 class SourceSpikeArbitrationTests(unittest.TestCase):
+    def test_paired_mini_conflict_removes_only_false_full_across_scale_and_polarity(self):
+        cases = (
+            ("up", (24, 35, 72), (80, 175, 120), 1.0),
+            ("right", (230, 230, 230), (25, 25, 25), 0.75),
+            ("left", (20, 20, 20), (220, 220, 220), 1.25),
+            ("down", (35, 20, 90), (65, 180, 120), 1.0),
+        )
+        block = Detection("block", OBJ_BLOCK, 512, 384, .7,
+                          Box(512, 384, 32, 32))
+        for direction, foreground, background, scale in cases:
+            with self.subTest(direction=direction, scale=scale):
+                image, room, full, minis = paired_mini_scene(
+                    direction, foreground=foreground, background=background,
+                    scale=scale, texture=6,
+                )
+                result = _prune_paired_mini_full_spike_conflicts(
+                    [full, *minis, block], image, room,
+                )
+                self.assertNotIn(full, result)
+                self.assertEqual(minis, [item for item in result if item.kind == "mini_spike"])
+                self.assertIn(block, result)
+
+    def test_leading_full_contour_and_weak_rgb_signal_abstain(self):
+        for direction in ("up", "right", "left", "down"):
+            for scale, foreground, background in (
+                (0.75, (230, 230, 230), (25, 25, 25)),
+                (1.25, (24, 35, 72), (80, 175, 120)),
+            ):
+                with self.subTest(direction=direction, scale=scale,
+                                  case="full-contour"):
+                    image, room, full, minis = paired_mini_scene(
+                        direction, foreground=foreground, background=background,
+                        scale=scale, full_contour=True, texture=6,
+                    )
+                    result = _prune_paired_mini_full_spike_conflicts(
+                        [full, *minis], image, room,
+                    )
+                    self.assertIn(full, result)
+                    self.assertEqual(
+                        minis,
+                        [item for item in result if item.kind == "mini_spike"],
+                    )
+
+        image, room, full, minis = paired_mini_scene(
+            "up", foreground=(90, 90, 90), background=(75, 75, 75),
+        )
+        result = _prune_paired_mini_full_spike_conflicts([full, *minis], image, room)
+        self.assertIn(full, result)
+
+    def test_paired_mini_topology_rejects_extra_or_misplaced_minis(self):
+        image, room, full, minis = paired_mini_scene("up")
+        extra = Detection("mini_spike", OBJ_MINI_SPIKE_UP, 320, 240, .8,
+                          Box(320, 240, 16, 16))
+        result = _prune_paired_mini_full_spike_conflicts(
+            [full, *minis, extra], image, room,
+        )
+        self.assertIn(full, result)
+
+        misplaced = [
+            Detection("mini_spike", OBJ_MINI_SPIKE_UP, 320, 256, .8,
+                      Box(320, 256, 16, 16)),
+            Detection("mini_spike", OBJ_MINI_SPIKE_UP, 336, 240, .8,
+                      Box(336, 240, 16, 16)),
+        ]
+        result = _prune_paired_mini_full_spike_conflicts(
+            [full, *misplaced], image, room,
+        )
+        self.assertIn(full, result)
+
+    def test_overlapping_conflict_proposals_abstain(self):
+        image = RGBImage(800, 608, bytes((20, 20, 20)) * 800 * 608)
+        room = Box(0, 0, 800, 608)
+        first = Detection("spike", OBJ_SPIKE_UP, 320, 256, .8,
+                          Box(320, 256, 32, 32))
+        second = Detection("spike", OBJ_SPIKE_RIGHT, 328, 248, .8,
+                           Box(328, 248, 32, 32))
+        minis = [
+            Detection("mini", OBJ_MINI_SPIKE_UP, 320, 272, .8,
+                      Box(320, 272, 16, 16)),
+            Detection("mini", OBJ_MINI_SPIKE_UP, 336, 272, .8,
+                      Box(336, 272, 16, 16)),
+            Detection("mini", OBJ_MINI_SPIKE_RIGHT, 344, 248, .8,
+                      Box(344, 248, 16, 16)),
+            Detection("mini", OBJ_MINI_SPIKE_RIGHT, 344, 264, .8,
+                      Box(344, 264, 16, 16)),
+        ]
+        with patch("jtool_scanner.scanner._native_edge_component_extent",
+                   return_value=15.0), patch(
+            "jtool_scanner.scanner._paired_mini_full_rgb_edge_profile",
+            return_value=(100, 0.0),
+        ):
+            result = _prune_paired_mini_full_spike_conflicts(
+                [first, second, *minis], image, room,
+            )
+        self.assertIn(first, result)
+        self.assertIn(second, result)
+        self.assertEqual(minis, result[2:])
+
     def test_triangle_exterior_rejects_intrusive_block_but_keeps_true_occlusion(self):
         for background, terrain, scale in ((30, 220, 1), (220, 30, 1.25)):
             for occluded_block in (False, True):
