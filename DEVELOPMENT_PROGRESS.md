@@ -8587,3 +8587,47 @@ goal's positive geometry-recovery and current all-71 review gates are
 also still open. Do not infer acceptance or alter production behavior
 solely from this pilot. No scanner, app, fixture, JMap or test file
 changed in BATCH_59–61.
+
+### Paired-mini/full ordinary-stage and protection checkpoint (2026-09-28)
+
+BATCH_62–64 reviewed all seven initially affected five-panel
+Source/JTool/Blend contacts. The CN3_7 and Entrance1 false fulls overlay
+two visible 16px minis; the three exact Partysu3 locations show paired
+small triangles under more textured source material. These are local
+object judgments, not whole-room acceptance. The first ordinary-stage
+replay passed CN3_7, Partysu3 and protected real-full Say_4, but failed
+Entrance1 because its six relevant minis enter later via
+`_recover_directed_mini_runs`. A final-boundary replay exactly matched
+the map-only counterfactual in all four rooms.
+
+The scanner has two terminal geometry paths: a single-image cleanup and
+a post-source/canonical-consensus cleanup. Attaching the same selector
+only to the first fixed CN3_7 but not Entrance1; only to the second fixed
+Entrance1 but not CN3_7. The current **uncommitted candidate** calls one
+shared rule after each terminal cleanup, without case/coordinate/palette
+conditions. Ordinary outputs in both rooms, Say_4 and exact Partysu3 are
+byte-equal to their frozen counterfactual JMaps. Three focused topology
+tests and the full geometry module (308 tests, `OK`) pass.
+
+Protected Entrance2 has one additional source-reviewed improvement:
+the candidate removes false full-up `(672,448)` over two real minis.
+An ordinary no-op comparison proves that is its only map difference;
+Source/JTool/Blend confirms the false full without disturbing the nearby
+save. Halls4 and Bathhouse1 are byte-unchanged; Dotkid4 has no selector
+removal (its two differences from an older cache predate this rule).
+Current-code CN3_27/CN3_92 maps remain unchanged. Fifteen non-reserved
+exact controls were scanned under the candidate: all four FTFA outputs
+and every control except Partysu3 are unchanged from checked current-code
+maps. Partysu3 stays at 255 exact/11 missing while extras fall 72→69;
+no reference-positive full was removed. The all-object set counts in the
+pilot are not a substitute for the separate strict FTFA/Flames benchmark
+categories; their unchanged maps preserve the prior benchmark result.
+
+This candidate is **not published or deployed**. Controlled before/after
+runtime, texture/scale mechanism tests, the sealed CN3_30/NANG_138
+evaluation, broader affected tests, and final-current all-71 review are
+still pending. It reduces false-full conflicts only; positive geometry
+recovery across multiple families and the goal's other completion gates
+remain unproved. Plans, stage traces, source crops, no-op/candidate maps,
+rendered contacts and checksummed scans remain ignored local evidence in
+`.artifacts/native-conflicts-20260923/`.
