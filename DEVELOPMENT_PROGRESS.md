@@ -8915,13 +8915,13 @@ red-on-white and white-on-cyan filled material, but the eroded-core
 feature ties CN3_27's true left `(88,48)` with its emitted `(80,48)`.
 Scoring the full 32x32 triangle including its boundary breaks that tie:
 balanced membership is `.89160` at the source-reviewed true phase versus
-`.87207` at the emitted phase. It also ranks all31 and 51 phase pairs
+`.87207` at the emitted phase. It also ranks all 31 and 51 phase pairs
 correctly in the frozen CN3_27 and CN3_92 regions.
 
 The same fixed feature is not a universal phase rank: among scorable
 Irkara-89 alternatives it prefers the wrong phase 175 times and the
-true phase 216 times, with44 abstentions; Flames has25 wrong preferences
-and two ties among328 pairs. These full-spike exact controls expose the
+true phase 216 times, with 44 abstentions; Flames has 25 wrong preferences
+and two ties among 328 pairs. These full-spike exact controls expose the
 outline-on-white counterexample. No candidate was promoted and no
 ordinary scanner output changed. The ignored plans, scripts and complete
 candidate reports are `BATCH_76_*`, `BATCH_77_*` and
@@ -8940,3 +8940,35 @@ Reserved CN3_30/NANG_138 remain sealed. This research adds no scanner,
 test, fixture, JMap, application behavior or accuracy claim; if the
 fixed gate fails, record the rejection and prefer additional current-app
 source review over threshold retuning.
+
+### BATCH_78 exact-control replay rejects the filled-RGB phase policy
+
+The unchanged, fixed-threshold map-only policy does repair the specific
+CN3_27 left spike `(80,48)` → `(88,48)`: its frozen region moves from
+7 exact / 1 miss / 5 extra full spikes to 8 / 0 / 4. CN3_92 stays at
+14 / 0 / 0. This local gain does **not** pass the frozen protection gate.
+
+All 16 authoritative exact controls were identity-checked against the saved
+current-code scan fingerprint, pinned baseline key, source hash, 8px scan
+options, fixture-manifest JMap and generated-map hash before replay. The
+policy moves exact geometry in three controls: CN3-16 loses its left spike
+`(96,400)` to `(88,400)` (30/0/0 → 29/1/1); CN3-18 loses its right spike
+`(656,272)` to `(664,272)` (50/0/0 → 49/1/1); Partysu3 moves six exact
+down spikes 8px lower, falling from 90/5/29 to 84/11/35. The Partysu3
+alternative features still satisfy the frozen nominal confidence gate
+(balanced accuracy .8926–.9200; normalized separation 3.30–5.83), so those
+thresholds cannot distinguish confidently scored false phases there.
+The other 13 exact controls are unchanged.
+
+Both fixed global protections therefore fail: currently exact full spikes
+are moved in an exact control, and exact-control full-spike extras increase.
+Reject the policy without retuning, screen-specific exceptions or scanner
+integration. The complete per-object report and replay script remain ignored
+at `.artifacts/native-conflicts-20260923/BATCH_78_RESULTS.md`,
+`batch78-fixed-rgb-phase-v1.json` and
+`replay_batch78_fixed_rgb_phase.py`. This remains a diagnostic
+counterfactual, not an ordinary scan or accuracy claim; no scanner, test,
+fixture, JMap or application behavior changed. The current app/workflow
+smoke was separately verified at HTTP 200 with loaded-source fingerprint
+parity; all four unittest app checks passed. The bundled Python runtime does
+not include `pytest`, so no pytest suite is claimed by this checkpoint.
