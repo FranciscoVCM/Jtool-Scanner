@@ -8738,3 +8738,49 @@ remain sealed evaluation cases. No implementation, test, fixture, JMap
 or app behavior changed in this checkpoint. Positive multi-family
 recovery, reserved transfer, controlled runtime and final-current all-71
 audit remain open.
+
+### Full-spike origin traces separate three causes (2026-09-28)
+
+BATCH_67 reused the ordinary-equivalent CN3_27 provenance trace and
+captured ordinary-equivalent stage traces for exact Irkara-89 and
+Irkara/Flames. All checked source/options/code identities and both new
+instrumented final JMaps **and metadata** match the saved ordinary
+results. The source-reviewed CN3_27 left full at `(88,48)` is absent
+as a correct left raw proposal; grayscale patch classification favors
+up there while accepting a left proposal eight pixels early.
+
+Irkara-89 is different: both source and canonical passes propose an up
+`full_spike_support` at the true `(640,296)`, but `_dedupe_geometry`
+removes it in favor of `spike_up` at `(640,304)`. The true patch passes
+full acceptance and has a stronger direction margin; the low patch
+has a higher overall spike score and receives a preferred dedupe rank.
+Flames differs again: both passes propose the real down `(384,160)`;
+the source bright-fill field rebuild removes it, the canonical pass
+retains it, and source/canonical consensus drops the resulting
+canonical-only candidate. Source fill density contrast is 0.328,
+below the 0.40 gate; canonical is 0.500. A single RGB threshold cannot
+repair all three paths safely.
+
+BATCH_68 then captured **complete** pre/post dedupe and bright-fill
+pools for both exact rooms, again with ordinary map/metadata parity.
+Irkara-89's first dedupe loses eight reference-true full origins in
+source and six in canonical; many recover later, but two of the source
+losses are final misses. Its 56 canonical-only full candidates include
+**32 false** origins, so accepting them wholesale would be unsafe.
+Flames' first dedupe loses no reference-true origin; its source
+bright-fill rebuild removes six. Five canonical-only fulls specifically
+vetoed by that source rebuild are exact-reference true and none false
+in this room, but only three are current final misses. That promising
+intersection is one-family research evidence, not a portable selector.
+Final whole-room full counts remain Irkara-89 106 exact/7 missing/24
+extra and Flames 72/10/16; no accuracy gain is claimed.
+
+The fixed plans, traces, direct grayscale/RGB/fill measurements and
+complete-pool reports are ignored locally under
+`.artifacts/native-conflicts-20260923/` (`BATCH_67_RESULTS.md` and
+`BATCH_68_RESULTS.md` summarize them). No implementation, test,
+fixture, JMap or app behavior changed. Next test the source-bright-veto
+intersection and dedupe true-versus-alias evidence against independent
+families and protected negatives before any code proposal. Reserved
+CN3_30/NANG_138 remain sealed; positive multi-family recovery,
+runtime, all controls and final-current all-71 gates remain open.
