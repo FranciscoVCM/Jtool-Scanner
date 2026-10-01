@@ -2,6 +2,27 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+BATCH_92 closes the current-output/review audit, not the geometry goal. All71
+ordinary outputs now use BATCH91's tested code; 57 were newly scanned and14
+checksummed compatible cases reused. All16 exact controls remain identical.
+Against the pinned87 baseline,28 canonical maps differ and43 carry prior
+review only through source/options/crop/full-map/all-metadata equality. Every
+changed complete map has Source/standalone JTool/Blend evidence. The ignored
+`71-screen-final-current-successor-audit.md` supersedes partial14/57 ledgers.
+
+The stricter audit exposes three unresolved net regressions: CN3_30 loses a
+real lower left triangle, Halls6 invents down(304,96) between two real ups, and
+Say_7 has one extra mini versus the pinned baseline. These coordinates are
+evaluation evidence, never production rules. Say_7's BATCH90 recovery repaired
+an intermediate regression; pinned output already matched302/302 with two
+source-visible reference disagreements, versus three extras now. Do not count
+that as net positive second-family transfer. New CN3_7 terrain improves pinned
+181/299 and157 errors to234/299 and106; the neon terrain gain is genuine but
+does not establish arbitrary-palette recognition or the missing multi-family
+reserved-success gate. Trace these whole configurations before another repair,
+freeze complete positives/negatives and new no-tuning roles before implementation,
+and require source-supported recovery AND reduced false directions/size aliases.
+
 BATCH_91 follows the new CN3_7 reference to shared half-phase terrain loss.
 Supported 16px interior material quadrants establish complete 32px rectangles
 without assuming one global tile-origin phase. Missing solid area falls

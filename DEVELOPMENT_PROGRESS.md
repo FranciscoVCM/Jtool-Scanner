@@ -9633,3 +9633,91 @@ CN3_7 scan and JMap export return HTTP200. The exported typed map and every
 JMap metadata field equal the ordinary result. Loaded-source fingerprint is
 `23752cc28cdc79c16acd945fba84f7656ab29eeff51a64a3424390ebd1696998`,
 matching local source; ignored batch91-app-parity.json records the evidence.
+
+### BATCH_92 final-current all71 audit and corrected progress accounting
+
+No implementation, fixture, original source or reference map changed. The
+existing final-stable worker completed all71 ordinary canonical cases, rather
+than restarting after observation timeouts:57 new scans and14 compatible
+checksummed reuses. Its run is `19bc5e931c5a45f7a1a2f86ffa3b891b`; package
+fingerprint remains `2b1f537661d6ddd90e185c797a6a1d76b4219f0f29101f2a68e51da70a3f7d21`.
+All sources, runtime/options identities, resolved crops/grids and artifact hashes
+verify. Full typed-object multisets and every JMap metadata field are compared
+with the pinned87 baseline and the preceding BATCH84 all71 output.
+
+Relative to BATCH84, only Say_7/CN3_7/8/9 change. Relative to the pinned goal
+baseline,28 canonical maps differ and43 are strictly equal. Every changed
+whole room now has Source, standalone JTool and Blend review, or an explicitly
+verified equality chain to the complete BATCH90/91 review. Review seals retain
+source/options/crop/grid/artifact/typed-map/metadata identities. The43 unchanged
+cases carry pinned visual findings only through the same equality checks;
+equality is not evidence that they are correct. All71 new human reviews remain
+preserved and joined to the ledger. No historical accepted label is promoted.
+
+Ignored evidence under `.artifacts/user-review-20261001/`:
+`71-screen-final-current-successor-audit.md`, `FINAL71_REVIEW_NOTES.md`,
+`final71-successor-review/verification.json`, `review-seals.json` and
+`final-audit.json`, with faithful diagnostic crops for the newly confirmed
+issues. The earlier14-current/57-older audit remains historical. Current
+conservative states:47 major,7 moderate,7 localized,1 reference-boundary/
+representation limitation and9 with no visible mismatch under their stated
+review. The latter category is not automatic exact certification. Severity
+changes are review judgments, not a numerical accuracy metric.
+
+The full review corrects three important progress claims:
+
+- CN3_30's sole pinned removal, left(544,288), did not simply remove a false
+  object. A lower left triangle visibly exists and is now unrepresented; its
+  actual origin appears about(544,296), still provisional. Keep the source
+  crop and trace proposal/phase/arbitration before fixing it. No answer-origin
+  injection or blanket overlap removal.
+- Halls6's older seven full additions are not seven certified gains. The
+  source crop confirms down(304,96) is an invented gap between two actual up
+  triangles. Several other additions represent real silhouettes; do not
+  delete the whole batch. The old source-confirmed error survives current code.
+- Offline comparison of the newly supplied Say_7 map against the PINNED output
+  gives302/302 exact with two source-visible reference omissions, versus
+  current302/302 and three extras. BATCH90 genuinely repairs an intermediate
+  regression, but it is not net positive recall/transfer for this goal. One
+  unwanted mini is a net remaining regression. Other supplied Say/Lap exact
+  measurements are unchanged against the pinned baseline.
+
+CN3_7's net pinned measurement improves181/299 and157 strict errors to234/299
+and106; its61,440 recovered solid pixels and zero extra area remain verified.
+CN3_8/9's positive terrain is independently source-backed. None is a perfect
+room, and the neon family alone does not establish the required complete
+multi-family/reserved positive-recovery result. CN3_92's52/52 region with two
+extras also cannot hide its many whole-room false hazards.
+
+All16 protected controls were rechecked by hashes and complete typed-map,
+metadata and exact-report equality to the preceding protected checkpoint.
+FTFA remains926/928 with zero extras/shifts/wrong directions; Flames252/295
+with42 extras/21 misses/20 shifts/two wrong directions. The current audit
+lists every control's actual errors rather than calling all controls perfect.
+The existing BATCH91 affected399 tests/170 subtests and controlled dense/sparse
+runtime evidence remain applicable because implementation is unchanged; this
+read-only audit did not rerun or claim a new full test-suite pass.
+
+Three observational ordinary scans now reproduce their cached typed maps and
+every metadata field exactly. CN3_30's real left proposal is recovered by
+grid-shape evidence and survives geometry pruning, then late marker-anchor
+arbitration removes it near the actual apple. The confirmed Halls6 false down
+is already present in initial geometry output and survives subsequent passes.
+Say_7's remaining mini is also an initial proposal surviving scale arbitration.
+These are diagnostic findings, not three implemented fixes. Private traces
+are retained under `batch92-traces/`; correct marker proximity and interstitial
+polarity require source evidence, not relaxed global overlap precedence.
+
+Goal gate5's current-output/review audit is now met for this checkpoint. The
+wider goal stays ACTIVE: complete net multi-family structures, successful
+no-tuning transfer and no-hidden-recall-loss are still open. Next trace the
+CN3_30 positive miss, Halls6 opposite-gap false and Say_7 mini alias; freeze
+whole structures and evaluation roles before any shared polarity/phase/size
+repair. Preserve all earlier mini/rail/solid facts, partial spikes, RGB evidence
+and exact controls. Do not repeat all71 merely for documentation changes.
+
+The unchanged tested app root and health returnHTTP200 with loaded-source
+fingerprint `23752cc28cdc79c16acd945fba84f7656ab29eeff51a64a3424390ebd1696998`.
+The prior actual CN3_7 HTTP scan/export parity remains valid. Raw human intake,
+generated audits/images/maps, private notes and transcript remain ignored and
+untracked; only this public summarized checkpoint is intended for publication.

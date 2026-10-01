@@ -6,6 +6,24 @@ branch, clone or worktree.
 
 ## New human-review intake (BATCH_89)
 
+BATCH_92 is the latest completed audit checkpoint; it supersedes the partial
+coverage statements below. Read recent DEVELOPMENT_PROGRESS.md and ignored
+`.artifacts/user-review-20261001/71-screen-final-current-successor-audit.md`.
+All71 outputs and16 controls use BATCH91 code; all28 changed complete maps
+have Source/JTool/Blend review,43 unchanged maps have strict equality carry.
+Do not rerun this sweep just for documentation or reopen the archive.
+
+Three important remaining net regressions are now explicitly evidenced:
+CN3_30's real lower left triangle is missing after an older removal; Halls6's
+gap between real ups becomes a false down; Say_7 has one unwanted extra mini
+relative to the pinned baseline. Its302/302 result repairs an intermediate
+regression, not a net recall gain from the original goal baseline. Preserve
+the detailed source crops/review seals and do not insert/delete answer tuples
+in production. Next trace whole configurations, freeze fixed denominators,
+reserve no-tuning evaluation before code changes and pursue shared polarity/
+phase/size evidence. All goal completion gates still apply; positive net
+multi-family/reserved evidence and no-hidden-recall-loss are not proved.
+
 BATCH_91 supersedes the terrain baseline below. Source-only half-phase rectangle
 recovery improves CN3_7 missing solid area 62,976 → 1,536, with zero extra area
 and all prior terrain retained. Strict matching rises 181/299 → 234/299;

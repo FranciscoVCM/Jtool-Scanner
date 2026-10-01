@@ -175,3 +175,27 @@ still count as strict tuple discrepancies; do not describe 99.1% terrain coverag
 as 99.1% whole-room accuracy. Hollow-spike clusters, missing minis, floor-label
 aliases and false vines remain. Keep full source/JTool/blend review and the
 independent area comparison together.
+
+### Final-current successor audit and pinned-baseline accounting
+
+BATCH92's ignored `71-screen-final-current-successor-audit.md` now joins all71
+current outputs, all16 controls, complete human notes and conservative visual
+findings. It links each Source/JTool/Blend and records strict exact errors where
+an independent supplied map exists. Changed complete maps have fresh review or
+explicit full-equality review carry; unchanged maps do not gain an accuracy
+certificate merely because the output is stable. Public summaries contain no
+raw private reviews, images, maps or transcript.
+
+Use BOTH the preceding checkpoint and the pinned goal baseline. Say_7 improves
+275/302 to302/302 against an intermediate scanner, but the pinned scanner already
+matched302/302 with two source-visible reference disagreements. Current output
+adds one unwanted mini, so it is not net positive transfer across the milestone.
+CN3_7 improves pinned181/299 and157 errors to234/299 and106 errors; its terrain
+gain is real and still does not make the whole room correct.
+
+Source crops also confirm an older missing real left triangle in CN3_30 and an
+invented down triangle between two actual ups in Halls6. Preserve those as
+positive-recall and negative-configuration examples. Removing an inaccurate
+proposal can lose a real object entirely; adding a plausible gap-shaped triangle
+can create a hazard that does not exist. These labels guide shared mechanism
+tests, never fixed-coordinate repairs. The wider geometry goal remains active.
