@@ -45,7 +45,9 @@ scan. Say7's actual 32px directed slopes pass, but coarse shape/luma gates fail;
 the extra 16px proposal has only one slope. Freeze complete positive/negative
 structures and no-tuning roles before implementation; see ignored
 BATCH95_PLANNING.md. Saved maps contain 60 same-direction full/mini pairs,
-including 35 Partysu3 composites: hypothesis count is NOT error count. Protect
+including 35 Partysu3 hypothesis pairs, NOT confirmed composites. Its reference
+contains a mixture of real fulls/false minis and real minis/false fulls; source
+review must choose between them, not assume both are real. Protect
 real overlaps, earlier minis/rails/terrain, weak/RGB-only evidence and all 16
 controls. Early fruit-origin arbitration remains another confirmed cause.
 The final-stable all 71 audit and every original goal gate remain required.

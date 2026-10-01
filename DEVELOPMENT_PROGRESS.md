@@ -9894,3 +9894,19 @@ The ignored BATCH95_PLANNING file records proposed source-label/test gates.
 Final-stable all 71 review, net multi-family completion and all GOAL_PLAN gates
 remain required. Unfamiliar sprites, backgrounds and native600 clipping are
 not universally solved by this bounded mechanism.
+
+#### BATCH_95 planning correction: Partysu3 pairs are not all intentional
+
+The saved-map inventory's 35 Partysu3 full/mini pairs were initially described
+as intentional composites in planning/handoff wording. Its authoritative JMap
+contradicts that assumption: 18 pairs contain only the full tuple, 15 only the
+mini tuple, and two neither tuple (a displaced full hypothesis is involved).
+None of those 35 pairs contains both reference tuples. These are pair counts,
+not unique-object counts, and source review must corroborate the reference.
+The current control has 255/265 exact and 73 strict errors, not perfection.
+No detector or fixture changed for this correction. BATCH94's protected-map
+equality remains valid; it does not prove every existing hypothesis is real.
+Future size arbitration must distinguish real fulls from real miniature pairs,
+not always prefer one size. Genuine partial/embedded composites still need
+source-based protections. The next experiment will use independently frozen
+contiguous structures and actual pixels rather than that mistaken assumption.
