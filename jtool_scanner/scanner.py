@@ -52,6 +52,7 @@ from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
+from .interstitial_geometry import interstitial_triangle_aliases
 from .terrain_material import (
     cell_quad, distributed_cell_edges, learn_complementary_terrain,
     learn_single_rectangular_terrain, pack_textured_rectangles,
@@ -2551,6 +2552,8 @@ def scan_image(
         detections = _dedupe_overlapping_geometry(
             detections,
             anchor_types=LATE_GEOMETRY_ANCHOR_TYPES,
+            source_image=image,
+            source_room=box,
         )
         detections = _prune_detached_top_ui_band(detections, image, box)
         detections = _prune_miniblock_room_primary_full_spike_noise(
@@ -2827,6 +2830,9 @@ def scan_image(
                 detections, image, box,
             )
             detections = _prune_paired_mini_full_spike_conflicts(
+                detections, image, box,
+            )
+            detections = _prune_source_interstitial_triangle_aliases(
                 detections, image, box,
             )
         # Missing half-phase solids must not change the terrain support used
@@ -3873,6 +3879,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _prune_paired_mini_full_spike_conflicts(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _prune_source_interstitial_triangle_aliases(
             detections, source_image, normalization.source_room,
         )
         # Inner scans intentionally leave recovery deferred: their blocks can
@@ -34596,6 +34605,20 @@ def _grid_detection(
     return _geometry_detection(kind, type_id, x, y, score, image, room, size)
 
 
+def _prune_source_interstitial_triangle_aliases(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    spikes = [(d.type_id, d.x, d.y) for d in detections
+              if d.type_id in FULL_SPIKE_TYPES or d.type_id in MINI_SPIKE_TYPES]
+    solids = [(d.x, d.y, MINI_BLOCK_SIZE, MINI_BLOCK_SIZE)
+              if d.type_id == OBJ_MINI_BLOCK else (d.x, d.y, GRID_SIZE, GRID_SIZE)
+              for d in detections if d.type_id in {OBJ_BLOCK, OBJ_MINI_BLOCK}]
+    rejected = interstitial_triangle_aliases(image, room, spikes, solids)
+    if not rejected:
+        return detections
+    return [d for d in detections if (d.type_id, d.x, d.y) not in rejected]
+
+
 def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:
     result: list[Detection] = []
     for det in sorted(
@@ -34669,6 +34692,9 @@ def _geometry_conflicts(det: Detection, existing: Detection) -> bool:
 def _dedupe_overlapping_geometry(
     detections: list[Detection],
     anchor_types: frozenset[int] | None = None,
+    *,
+    source_image: RGBImage | None = None,
+    source_room: Box | None = None,
 ) -> list[Detection]:
     # Saves and warps are more reliable than the experimental geometry pass.
     anchors = [
@@ -34678,18 +34704,25 @@ def _dedupe_overlapping_geometry(
         and (anchor_types is None or det.type_id in anchor_types)
     ]
     result: list[Detection] = []
+    source_shape: SpikeShapeField | None = None
+
+    def conflicts(det: Detection, anchor: Detection) -> bool:
+        nonlocal source_shape
+        if (source_image is not None and source_room is not None
+                and det.type_id in FULL_SPIKE_TYPES and anchor.type_id == OBJ_APPLE
+                and max(abs(det.x - anchor.x), abs(det.y - anchor.y)) < 20
+                and source_shape is None):
+            source_shape = SpikeShapeField(source_image, source_room)
+        return _geometry_anchor_conflicts(
+            det, anchor, include_diagonal_overlap=anchor_types is not None,
+            source_shape=source_shape,
+        )
+
     for det in detections:
         if det.type_id not in GEOMETRY_TYPES:
             result.append(det)
             continue
-        if any(
-            _geometry_anchor_conflicts(
-                det,
-                anchor,
-                include_diagonal_overlap=anchor_types is not None,
-            )
-            for anchor in anchors
-        ):
+        if any(conflicts(det, anchor) for anchor in anchors):
             continue
         result.append(det)
     return result
@@ -34700,6 +34733,7 @@ def _geometry_anchor_conflicts(
     anchor: Detection,
     *,
     include_diagonal_overlap: bool = False,
+    source_shape: SpikeShapeField | None = None,
 ) -> bool:
     delta_x = abs(det.x - anchor.x)
     delta_y = abs(det.y - anchor.y)
@@ -34716,6 +34750,26 @@ def _geometry_anchor_conflicts(
         overlaps = distance((det.x, det.y), (anchor.x, anchor.y)) < 20
     if not overlaps:
         return False
+    if anchor.type_id == OBJ_APPLE and det.type_id in FULL_SPIKE_TYPES:
+        # Fruit coordinates are sprite origins (10,12), not a32px top-left.
+        # Raw-origin proximity can delete a physically separate real triangle.
+        # Require separation in BOTH native sprite bounds and observed source
+        # boxes: a larger/custom fruit or source-overlapping alias still loses.
+        ax, ay, width, height = _supported_terrain_detection_bounds(anchor)
+        native_overlap = _rect_box_overlap_area(
+            det.x, det.y, GRID_SIZE, GRID_SIZE, ax, ay, width, height,
+        )
+        source_overlap = (
+            min(det.image_box.right, anchor.image_box.right)
+            > max(det.image_box.x, anchor.image_box.x)
+            and min(det.image_box.bottom, anchor.image_box.bottom)
+            > max(det.image_box.y, anchor.image_box.y)
+        )
+        if (native_overlap == 0 and not source_overlap
+                and det.image_box.area > 0 and anchor.image_box.area > 0
+                and source_shape is not None
+                and source_shape.localized_score(det.x, det.y, det.type_id) >= 11 / 12):
+            return False
     return not _can_geometry_coexist_with_anchor(det, anchor)
 
 

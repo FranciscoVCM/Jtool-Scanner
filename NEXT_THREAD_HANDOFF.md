@@ -4,7 +4,56 @@ Updated 2026-10-01. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## New human-review intake (BATCH_89)
+## Latest checkpoint: BATCH_94 (supersedes older status below)
+
+Read recent DEVELOPMENT_PROGRESS.md, CROSS_TILESET_PLAN.md and the ENTIRE
+ignored `.artifacts/native-conflicts-20260923/GOAL_PLAN.md`. Goal ACTIVE;
+do not complete it from this bounded checkpoint or start another repository.
+
+Source-owned interstitial gap arbitration and a contour-guarded late fruit
+origin correction restore three real spikes/remove eight false spikes across
+CN3_30, Halls6, CN3_9, Halls2 and reserved CN3_93. Every changed whole map has
+Source/standalone JTool/Blend review; no room-wide acceptance upgrade. The
+frozen CN3_30 structure reaches 6/6, Halls6 stays 8/8 with one extra, CN3_93
+stays 9/9 with no extra hazard but 512 solid pixels missing. NANG130r's 28-mini
+bar and Say7's 8-object structure remain unchanged, including the extra mini.
+
+Ordinary run `dd489fcb72424929affa51112747c13b` is COMPLETE at code SHA
+`9d37393e65c93f547e09d701d0c04eb55a0af28f687f4791debbbea8e2d3cd7e`.
+Do not restart session 27776. All 33 inputs/artifacts/maps/metadata verify;
+all 16 exact controls are identical. Final v2 affected 424 tests and focused 19
+source-mechanism tests pass. V1 physical-bounds-only additions included two
+false triangles and were rejected; never reuse its outputs as v2 evidence.
+Quiet ABBA timing is complete: dense -0.796s (-1.91%), sparse +0.227s (+0.59%),
+within observed variation; all eight maps/metadata match. App root/health and
+real changed CN3_30 scan/export are HTTP 200 with full ordinary-map parity.
+Loaded-source fingerprint:
+`6361fbac82e1b196a91cef35aa3fe39a5319b676ced7356d609cf68c0ac1ccbb`.
+Server PID 9992; recheck identity/listener before any later restart. Timing worker
+24767 and HTTP worker 29569 completed normally; do not restart them. Consult
+ignored BATCH94_RESUME for publication and durable worker/artifact state.
+
+Current successor is ignored
+`.artifacts/user-review-20261001/71-screen-batch94-interim-audit.md`: 16
+current-code canonical outputs, 55 explicitly older-code rows. The complete
+BATCH92 audit remains historical evidence; do not claim it uses BATCH94 code.
+Frozen annotations, source reviews and verification are under that same
+ignored directory. Original sources/JMaps/private human reviews are untouched.
+
+Next bounded candidate: source-native size ownership, not a new full grayscale
+scan. Say7's actual 32px directed slopes pass, but coarse shape/luma gates fail;
+the extra 16px proposal has only one slope. Freeze complete positive/negative
+structures and no-tuning roles before implementation; see ignored
+BATCH95_PLANNING.md. Saved maps contain 60 same-direction full/mini pairs,
+including 35 Partysu3 composites: hypothesis count is NOT error count. Protect
+real overlaps, earlier minis/rails/terrain, weak/RGB-only evidence and all 16
+controls. Early fruit-origin arbitration remains another confirmed cause.
+The final-stable all 71 audit and every original goal gate remain required.
+
+## Historical intake and checkpoints (BATCH_89–93)
+
+Older Git/app/worker/status statements below describe their own checkpoints,
+not current availability or new-code coverage. The latest section above wins.
 
 BATCH_93 adds twelve local Lap Around user JMaps. Complete source/reference
 review confirms ordinalN -> test(N+5) -> tracked screen-NN. Read ignored
@@ -129,15 +178,12 @@ two CN3_92 blocks at `(512,128)` and `(544,128)` share a ledge whose separate
 boundaries are less distinct. Do not treat these judgments as exact-map
 certification.
 
-The user says they have written visual reviews for about 30/71 rooms. The
-current ignored `USER_REVIEW.csv` at
-`.artifacts/native-conflicts-20260923/current-71-stable-v1/USER_REVIEW.csv`
-still has blank review fields. Ask the user where their notes are or accept
-them in manageable batches; do not make them repeat the reviews. Use their
-observations to establish complete source-backed structures, separate
-development from no-tuning evaluation, and measure true recovery as well as
-false detections. Do not rescan all 71 just to resume; reuse compatible
-checksummed outputs and review only where evidence requires it.
+All 71 human reviews have since arrived and are preserved under ignored
+`local_corpus/user-reviewed-20261001/USER_REVIEWS.md`. The older blank
+USER_REVIEW.csv is superseded: do not request those notes again. Use them
+to establish complete source-backed structures and no-tuning evaluation;
+measure positive recovery and false detections independently. Do not rescan
+all 71 just to resume; reuse only compatible checksummed outputs.
 
 ## Corpus distinctions
 

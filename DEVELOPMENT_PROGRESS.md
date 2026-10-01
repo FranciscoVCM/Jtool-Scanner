@@ -9796,3 +9796,101 @@ evidence, not room answers. Deterministic synthetic scenes isolate mechanisms
 now with texture/brightness/scale/clipping variants and real transfer tests.
 Human reviews/JMaps are supervised engineering/evaluation evidence, not an
 unsupervised learning pipeline. Wider goal stays ACTIVE.
+
+### BATCH_94 source-owned interstitial spikes and fruit-origin arbitration
+
+Starting published checkpoint: `7adaee8e861545d25b3857d13363767b3a5dbcd3`.
+The ordinary-output-equivalent BATCH92 traces exposed two shared causes:
+unsigned triangle slopes also describe the empty gap between real triangles,
+and raw fruit-origin proximity can discard a physically separate real spike.
+This checkpoint adds source evidence for those decisions, not room answers.
+
+`interstitial_geometry.py` tests an opposite hypothesis exactly between two
+adjacent same-direction full or mini triangles. Complete directed contours,
+consistent original RGB inside/outside polarity opposite to both peers, and
+absence of an independently visible base establish a gap. A base outline,
+masked/clipped samples, weak/isoluminant localization, different peer material
+or incomplete configuration abstains. Real interlocked triples and backed
+peers remain. Features are lazy/cached; this is one final source reconciliation
+after capture consensus, not a second full scan or a grayscale-only detector.
+
+Late fruit arbitration now distinguishes its native sprite origin from the
+triangle's top-left. Separation must hold in BOTH native sprite bounds and
+observed source boxes, with a complete source-directed native32 contour.
+Custom larger fruit, actual overlap, missing bounds and unsupported contours
+retain the old marker protection. Earlier arbitration remains unchanged.
+An initial physical-bounds-only candidate restored three real triangles but
+also two false ones in CN3_30; it was stopped, preserved and rejected. The
+source-contour guard keeps two real additions without those false proposals.
+
+The frozen annotations predate implementation and include whole contiguous
+positive/negative structures, not convenient single tuples. Their SHA-256 is
+`2d412f048606442bc6e822385e5bbbbe9ba478ac3571a4c5f3fd61620d80ba11`.
+Development is CN3_30/Halls6/Say7/CN3_7; CN3_93/NANG_130r successor outcomes
+are reserved from tuning and have historical exposure. Preimplementation
+source annotation/contrast inspection is recorded; they are not unseen data.
+
+| Frozen structure | Before | After | Remaining limitation |
+|---|---|---|---|
+| CN3_30: three solids, two lefts, one fruit | 5/6 exact, 0 extras | 6/6 exact, 0 extras | Other whole-room geometry remains major |
+| Halls6: four solids, two full ups, two mini rights | 8/8 exact, 2 extras | 8/8 exact, 1 extra | One unsupported left remains |
+| CN3_93: complete nine-hazard branch | 9/9 exact, 1 extra | 9/9 exact, 0 extras | Solid union still 5,632/6,144 pixels; 512 missing, 0 extra |
+| NANG_130r: complete 28-mini bar | 28/28 exact | unchanged | Protection, not positive transfer |
+| Say7: five solids, three full hazards | 8/8 exact, 1 extra mini | unchanged | Independent native-size ownership still required |
+
+All 33 ordinary cases complete at code SHA
+`9d37393e65c93f547e09d701d0c04eb55a0af28f687f4791debbbea8e2d3cd7e`.
+Source/options/runtime/crop/grid/artifact hashes and every metadata field
+verify. Every one of the 16 exact-control typed maps and comparison reports
+is identical. FTFA stays 926/928 with zero extras/shifts/wrong directions;
+Flames stays 252/295 with 42 extras/21 misses/20 shifts/two wrong directions.
+Controls are protected, not all perfect.
+
+Whole current Source, standalone JTool and Blend review covers every changed
+map: CN3_30 gains two real fulls/removes one false; Halls6 removes one false;
+CN3_9 removes one false; Halls2 gains one real/removes four false; reserved
+CN3_93 removes one false. Total three source-backed additions/eight false
+removals, with no other typed changes or metadata differences. Entrance1/2,
+Halls4, Bathhouse1, Dotkid4, NR2, NANG128r and LapBackwards1/2 are identical,
+preserving previous mini/rail/terrain/marker gains and confirmed negatives.
+No room is promoted to accepted or exact from these regional results.
+
+424 affected tests pass in 523.527s; this concurrent test/scan elapsed time is
+NOT controlled scanner latency. Final 19 source-mechanism tests also pass,
+including strengthened actual-source custom-fruit/overlap/missing-box checks.
+Actual-pixel variations cover four directions, both sizes, brightness/polarity,
+texture and 1/1.25/1.5 capture scales, interlocked triples, outlined bases,
+occlusion, clipped contours and weak/color-only uncertainty.
+
+Quiet serial ABBA against the starting scanner reproduces all eight ordinary
+typed maps and every metadata field. Dense CN3_7 medians are 41.673s before /
+40.878s after (-0.796s, -1.91%); sparse NANG128 is 38.466s / 38.693s (+0.227s,
++0.59%). These differences fall within observed run variation: sparse baseline
+endpoints alone differ by 3.282s. No speedup or persistent slowdown is claimed.
+The app was stopped during timing; no other Python worker was active.
+
+The restarted app root, health, actual changed CN3_30 scan and export all
+return HTTP 200. Exported typed objects and ALL metadata equal the ordinary
+result. Loaded-source fingerprint equals local tested code:
+`6361fbac82e1b196a91cef35aa3fe39a5319b676ced7356d609cf68c0ac1ccbb`.
+Ignored `batch94-app-parity.json` records the live proof. Timing is preserved
+under `batch94-quiet-runtime/4a8498714f2f4ad797fd1b7b69e238b8/`.
+
+Ignored evidence under `.artifacts/user-review-20261001/`: BATCH94_EXPERIMENT,
+BATCH94_REVIEW_NOTES, immutable batch94-v2-candidate outputs/run
+`dd489fcb72424929affa51112747c13b`, batch94-v2-verification.json and review
+renders/review seals, plus `71-screen-batch94-interim-audit.md`. The successor
+contains 16 new-code canonical outputs and 55 explicitly older-code rows with
+all human findings retained. BATCH92's complete 71 audit remains historical; it is not
+silently treated as final-current evidence for this new code.
+
+The wider goal stays ACTIVE. Two traced regressions are repaired, but Say7's
+mini remains and early fruit arbitration still discards a real neighboring
+triangle. Next investigate independent native full/mini contour ownership,
+then broader early-marker evidence. Saved maps contain 60 same-direction
+full/mini pairs across 12 rooms, including 35 in Partysu3; these are hypotheses,
+NOT 60 errors, and intentional composites forbid blanket overlap deletion.
+The ignored BATCH95_PLANNING file records proposed source-label/test gates.
+Final-stable all 71 review, net multi-family completion and all GOAL_PLAN gates
+remain required. Unfamiliar sprites, backgrounds and native600 clipping are
+not universally solved by this bounded mechanism.

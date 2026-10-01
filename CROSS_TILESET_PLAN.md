@@ -2,6 +2,28 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+BATCH_94 adds source-owned interstitial gap arbitration and a contour-guarded
+late fruit-origin correction. Five whole maps improve: three real full spikes
+recovered/eight false opposing gaps removed, including reserved CN3_93. Complete
+frozen CN3_30 improves from 5/6 to 6/6; Halls6 extras from 2 to 1; CN3_93 extras
+from 1 to 0 with 512 missing solid pixels unchanged. All 33 ordinary cases
+complete; all 16 exact-control maps/metadata/reports are identical and 424
+affected tests pass. Read the latest DEVELOPMENT_PROGRESS.md and ignored
+BATCH94 experiment/review.
+
+This corrects two BATCH92 regressions below without screen/palette answers or
+relaxing global marker precedence. Signed local RGB polarity, independent
+contours/base and physical sprite bounds guide decisions; ambiguous/occluded/
+isoluminant configurations abstain. The next source-size cause is Say7's extra
+mini: native32 contours exist while its coarse shape/luma gates fail. Preserve
+real mini/full composites, partially embedded objects and Partysu3 controls;
+do not lower global gates or delete all contained minis. Early fruit losses
+also remain. The new conservative audit has 16 current-code canonical outputs
+and 55 explicitly older-code rows; final-stable all 71 and full goal gates remain.
+Quiet dense/sparse medians change by -0.796s/+0.227s within observed variation;
+all eight timed maps/metadata match. The tested app root, health, changed CN3_30
+scan and export return HTTP 200 with source fingerprint and ordinary-map parity.
+
 BATCH_93 associates all twelve preserved Lap Around user JMaps without detector
 changes. OrdinalN is historical test(N+5)/tracked screen-NN. The source-only
 baseline is2,657/2,660 exact,22 strict extras/three misses; source review shows
