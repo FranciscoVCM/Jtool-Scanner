@@ -10055,3 +10055,74 @@ separate gameplay object. Preserve genuine pairs/composites, partial/RGB-only
 boundaries, prior terrain/rails and all controls; never tune the exposed room
 and keep calling it a blind reserve. The published71 successor remains17
 current-code/54 explicitly older outputs until a final safe stable code sweep.
+
+### BATCH_97 negative checkpoint: source ownership, masks and existing targets
+
+Published detection remains B95/a068931. B97 declares development CN37/NANG130/
+exposed CN38 and reserved historically exposed CN325 before implementation.
+Complete21/25/9/5 source structures are frozen. Independent source-axis review
+corrects the old CN38 smallLeft annotation from304328 to304336 BEFORE tuning;
+the9-object denominator and original B96 failure/labels remain preserved.
+B97 annotations-v2 SHA93b9bd16648c06f1c34ce3a47785ea774c8ab664891a98d7dd44d20c1b62c906.
+
+The candidate uses independent larger-source ownership to veto NEW inner-art
+minis, opposite closed-base joins for genuine touching contours, and native32
+direction refits guarded by observable RGB/partial sides. It retains B96's
+source-native miniature neighborhoods and cached gradient/per-side polarity.
+35 focused tests and115 selected mechanism tests (which INCLUDE those35) plus
+122 different upstream geometry/marker/transform tests pass:237 UNIQUE selected
+tests, not272. Elapsed times33.152/161.546s are under corpus contention and are
+NOT quiet scanner latency or a complete-suite claim.
+
+Sealed candidate packageeba0dca9abf10c0da3d587568c74ffc984eea2c674576beadf82529e76ace813;
+ordinary run d0f50d23b0d644ab95f820566fd57c6a COMPLETE37/all16 controls. All source,
+options/runtime/crop/grid/artifacts and ALL map metadata verify. Fifteen control
+maps/reports equal B95, including FTFA926/928/no extras/shifts/wrong directions
+and Flames252/295,42extras/21misses/20shifts/two wrong directions unchanged.
+
+| Fixed source structure | B95 | Rejected B97 | Interpretation |
+|---|---|---|---|
+| CN37 complete21 |11 exact/10 misses/1 extra|20 exact/1 miss/1 extra|Nine genuine minis recovered; partial full and false overlap remain|
+| NANG130 complete25 |11 exact/14 misses/13 extras|18 exact/7 misses/6 extras|Seven actual directions corrected; other whole-room minis recovered|
+| CN38 complete9 |3 exact/6 misses/6 extras|5 exact/4 misses/5 extras|Real fullRight and joined miniLeft restored, false inner miniature absent|
+| Reserved CN325 complete5 |1 exact/4 absent typed origins/7 extras|ENTIRELY unchanged|FAILS positive reserved transfer;2048 true solid pixels covered but1536 extra pixels remain|
+
+Eight changed maps receive independent source evidence: CN37/NANG130/CN39/
+Entrance2 exactly carry B96's source/options/grid/map/ALLmetadata-verified
+whole/crop findings; CN38, Halls2, NR2 and Arcfox have fresh raw whole Source,
+standalone JTool/Blend and crops. Halls2 right128288 becomes the real down;
+NR2 right288224 becomes the real up, and its genuine small up remains. No room
+acceptance upgrade: all these canonical maps still have major unrelated errors.
+
+Arcfox FAILS typed-multiset protection although summary262/269/errors22 is
+unchanged. The correct up544384 already exists alongside a false right there.
+Refit re-emits that existing up while removing the false right, leaving TWO
+identical ups. Raw source and supplied JMap agree on one up: NOT a reference
+disagreement. No correct exact tuple is lost, but one duplicate error replaces
+another false type. Future correction APIs must preserve existing targets
+without duplicating them; summary totals alone cannot certify a candidate.
+
+CN325's ordinary-equivalent observational trace reproduces the full map and
+ALLmetadata, capturing one late source context. Both minis have native source
+slopes>=11/12, own base1 and coherent side contrast~.725. One is directly masked
+by a shifted block; the other is unmasked. NEITHER is searched because no nearby
+source anchor survives. Late helper replay.837s exposes that cause cheaply.
+It is a screening aid, NOT an equivalent whole scan or controlled speed ratio;
+later terrain recovery and final metadata still require ordinary verification.
+
+B97 fails its frozen reserved-gain criterion and the Arcfox duplicate-target
+protection. It is NOT published or deployed; no quiet timing or final71 sweep
+is run on rejected code. Exact helper/scanner/tests, labels/seal/run/reviews/
+trace are preserved under ignored `.artifacts/user-review-20261001/`.
+All workers finish normally before only our three experimental files are
+returned with apply_patch to B95.15 final tests pass2.258s, including a new
+public tracked-fixture inner-art regression. Production package remainsce89a6c8...;
+tested app root/health200 and loaded fingerprint418a7a... match B95 disk.
+
+Goal ACTIVE; original six gates unchanged. The interim71 audit remains17
+current B95 outputs/54 older, not a final-current certificate. Next freeze a
+new no-tuning reserve/complete structures; separate source-only witness
+eligibility from masks governing absence/emission, retaining real occlusions,
+internal-art/gap/RGB negatives. Fix existing-target correction semantics before
+another full refit batch. Twelve preserved Lap references keep ordinalN=testN+5;
+ATK2 native600 versus default608 remains separate unresolved work.

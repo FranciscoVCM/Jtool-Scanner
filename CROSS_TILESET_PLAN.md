@@ -1,6 +1,44 @@
 # Cross-tileset milestone
 
-## Latest evidence and bounded repair (2026-10-01)
+## Latest evidence and bounded repair (2026-10-02)
+
+### BATCH_97 rejected: masks/anchors and duplicate correction targets
+
+Published detection remains B95; a new actual-source regression guard protects
+against emitting miniature geometry from outlined full-spike interior artwork.
+The successor candidate fixes that B96 false and recovers a genuine shared-base
+miniature plus source-supported full directions. Complete development structures
+improve CN37 11->20/21, NANG130 11->18/25/extras13->6 and CN38 3->5/9/extras6->5.
+These are UNSHIPPED measurements, not current app improvements or room approval.
+
+Reserved CN325 is entirely unchanged,1/5 with1536 excess solid pixels: it fails
+the predeclared positive transfer criterion. Ordinary-equivalent tracing shows
+one real mini is masked by a shifted block, while both real minis lie outside
+the search because no nearby source anchor survives. Clear source contours do
+not help when an upstream proposal prevents their evaluation. Do not widen a
+radius or add a room/palette exception just to force this result.
+
+All37 ordinary cases/all16 controls finish;237 selected tests pass. Fifteen
+control maps/reports are identical. Arcfox exposes a separate API defect:
+correcting a false right to an ALREADY PRESENT true up duplicates that up.
+Source and reference agree; the unchanged benchmark summary hides the changed
+typed multiset. Passing tests and unchanged detection totals do not excuse it.
+The candidate fails, is preserved locally and is not deployed/published.
+No candidate quiet-runtime or final71 certificate is claimed.
+
+Only our three experimental files were returned with apply_patch to B95 after
+all workers finished.15 final source-size tests pass, including the new tracked
+fixture regression; app root/health200 and loaded-source parity remain verified.
+All twelve Lap maps/ordinal associations are preserved; native600/default608
+projection remains unresolved. Read latest DEVELOPMENT_PROGRESS and ignored
+BATCH97_RESUME/REVIEW_NOTES. Original goal and all six gates remain active.
+
+Next distinguish source-only LOCATION/MATERIAL witness eligibility from masks
+protecting negative absence and emitted geometry; keep real occlusions, RGB,
+internal-art/background negatives and strict new-object evidence. Correction
+APIs must not re-emit an existing correct target. Capture late-pass contexts to
+screen hypotheses cheaply, but still require ordinary/fullmetadata equivalence,
+new frozen reserve/labels, source reviews, controls, runtime and final-current71.
 
 ### BATCH_96 rejected: inner artwork is not miniature geometry
 

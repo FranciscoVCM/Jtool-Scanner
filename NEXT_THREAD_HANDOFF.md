@@ -1,8 +1,47 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-01. Continue in the existing repository at
+Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest checkpoint: BATCH_97 REJECTED; detection remains B95
+
+Read the ENTIRE ignored GOAL_PLAN, recent DEVELOPMENT_PROGRESS and
+`.artifacts/user-review-20261001/BATCH97_RESUME.md`/BATCH97_REVIEW_NOTES.
+Do not restart completed workers18467(corpus37),71334/15244(237 unique selected
+tests),38147(ordinary-equivalent trace). Candidate run
+d0f50d23b0d644ab95f820566fd57c6a and its exact helper/scanner/tests are preserved
+in batch97-rejected-v1; candidate packageeba0dca9... is NOT current code.
+
+Source ownership/shared-base/full-direction improvements are real but UNSHIPPED:
+frozen CN37 11->20/21, NANG130 11->18/25/extras13->6, CN38 3->5/9/extras6->5.
+Old CN38 smallLeft304328 was a source-label error; independent source axes
+correct it to304336 before tuning, preserving the9 denominator and old B96
+failure. Do not erase that history or hardcode positions into detection.
+
+Reserved CN325 is ENTIRELY unchanged1/5 with1536 excess solid pixels: FAILS
+positive transfer. It is now exposed evidence, not a reusable no-tuning reserve.
+Arcfox also fails: correcting a false right re-adds an ALREADY PRESENT correct
+up, leaving a duplicate. Source/reference agree; unchanged benchmark summary
+262/269/errors22 concealed the typed-multiset change. Fifteen other controls
+fully equal B95; FTFA/Flames unchanged. No quiet runtime/final71 was run for B97.
+
+All workers ended before only our three experimental files returned via
+apply_patch to B95.15 final source-size tests pass; new public fixture regression
+protects full-spike inner art without demanding that incorrect labels remain.
+App remains PID30824/B95, root/health200, fingerprint418a7a... matches disk;
+no failed implementation deployed. Sources/JMaps/private artifacts unchanged.
+
+Ordinary-equivalent trace under batch97-mask-trace captures a real late source
+context, letting helper hypotheses be screened in.837s without another full
+approximately107s concurrent scan. This is NOT an ordinary-equivalence/runtime
+certificate. One real mini is masked, the other unmasked; both have clear slopes/
+bases but are unsearched because nearby source anchors disappear. Next separate
+source-only LOCATION/MATERIAL witnesses from masks protecting absence/emitted
+geometry, and guard correction APIs against existing-target duplication.
+Freeze new roles/source labels/criteria BEFORE tuning; retain real occlusions,
+weak RGB/internal-art/background negatives, all gains/controls and all six gates.
+Do not reuse CN325 as a blind reserve, force a room, or mark this goal complete.
 
 ## Latest checkpoint: BATCH_96 REJECTED (published code is B95)
 

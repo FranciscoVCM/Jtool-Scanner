@@ -161,6 +161,19 @@ class SpikeSizeTests(unittest.TestCase):
         full = (3, 0, 320)
         self.assertEqual(changes(scene(pair(3, 0, 320)), [full]), (set(), set()))
 
+    def test_outlined_full_inner_art_is_not_a_mini_despite_wrong_coarse_direction(self):
+        from pathlib import Path
+        from jtool_scanner.image import load_png
+        image = load_png(Path(__file__).resolve().parents[1]
+                         / 'fixtures/regressions/unseen-rooms/cn3-neon/floor-08-source.png')
+        # Two existing hypotheses locate this test. The interior right-facing
+        # artwork is not another 16px game object, even when the coarse full
+        # label is wrong. Future genuine direction/mini recovery stays allowed.
+        added, _ = contour_size_changes(
+            image, Box(0, 0, image.width, image.height),
+            [(5, 320, 320), (3, 352, 288)], [])
+        self.assertNotIn((8, 328, 328), added)
+
 
 if __name__ == '__main__':
     unittest.main()
