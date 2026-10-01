@@ -9395,3 +9395,52 @@ code, fixture, JMap or scan output changed, and no runtime benchmark was run.
 Continue toward source-confirmed positive recovery and a stable cross-style
 conflict repair; all multi-family, reserve, control, runtime and final-audit
 gates remain open.
+
+### BATCH_88 diagnostic continuation and source-position check (2026-10-01)
+
+This continuation made no scanner-code, fixture, corrected-map or production
+output changes. Instrumented ordinary scans of CN3_27 and CN3_92 reproduced
+their cached complete typed-object maps and JMap metadata exactly. The traces
+are retained under the ignored `batch88-traces/` directory for stage-level
+inspection; they are diagnostic refreshes, not a new shipped fix.
+
+A CN3_27 warm-room route bypass left the frozen region unchanged at 7/12 exact,
+five shifts and five extras, while changing 37 whole-room tuples in and 33 out.
+Reject it: there is no regional gain and the room-wide churn is substantial.
+A read-only scalar block-origin search also fails its safety gate: the simple
+local peak policy moves 127 of 149 emitted blocks across the full room without
+a dependable cross-room improvement. Do not promote it or repeat another
+single-block/greedy phase ranking; earlier batches already rejected these
+families of selectors in CN3_27/CN3_92 and transfer controls. Prefer a complete
+local block/spike configuration with independently source-supported positives
+and negatives, if new evidence supports one.
+
+The existing Source/JTool/Blend views were reopened for the pending human
+source check. The four CN3_27 post blocks at `(16,16)`, `(16,48)`, `(120,16)`
+and `(120,48)` appear source-visible and unoccluded. The inward spike is
+visible; its expected `(88,48)` origin looks more plausible than the current
+`(80,48)` proposal, but the 8px distinction remains provisional pending the
+user's visual confirmation. The eight CN3_92 blocks at `(256,224)`,
+`(288,192)`, `(320,192)`, `(352,160)`, `(384,160)`, `(416,128)`, `(512,128)`
+and `(544,128)` appear on visible solid material; the last pair share a
+continuous ledge, so their separate boundaries are less visually distinct.
+These visual judgments are not exact-map certification and must remain easy to
+revise if the user disagrees.
+
+The user reports independently writing visual reviews for about 30/71 rooms.
+The repository worksheet
+`.artifacts/native-conflicts-20260923/current-71-stable-v1/USER_REVIEW.csv`
+still has blank review fields, so those notes have not yet been incorporated.
+Next thread should ask where the user's notes are stored or accept them in
+manageable batches; do not assume the blank worksheet contains them and do not
+ask the user to repeat the work. Use those findings to freeze source-visible
+positive/negative structures and select a small cross-style development plus
+separate no-tuning evaluation set. Reference JMaps remain evaluation-only.
+
+No tests were needed for this read-only diagnostic; the affected
+`test_source_spike_arbitration.py` selection last recorded 20/20 passing before
+this batch. The local app remains HTTP 200 with loaded-source fingerprint
+`02b404a4fd48e404ae2481ce783e44b63e555bf3be71b224e2ccd94b076e23da`. The
+active milestone is not complete: positive recovery across multiple families,
+a reserved transfer gain, control/regression evidence, controlled runtime,
+updated conservative all-71 review, and publication gates remain open.
