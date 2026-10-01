@@ -2,6 +2,40 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+### BATCH_96 rejected: inner artwork is not miniature geometry
+
+The published detector remains BATCH_95. A sealed short/zigzag native16
+candidate gained15 real CN3_7 minis and21 NANG130 minis/direction corrections,
+plus real additions on CN3_9, Entrance2 and NR2. Fixed CN3_7 improves11->20/21;
+NANG13011->18/25 with13->6extras and unchanged solid occupancy. These are
+UNSHIPPED candidate measurements, not current app gains or accepted rooms.
+
+Reserved CN3_8 exposes a false miniRight inside the inner triangular artwork
+of a real outlined full spike. Its fixed9-object structure stays3/9 exact
+and extras6->7, while the intended short left triangle remains missing.
+One other real miniature is recovered elsewhere in that room, but it does
+not excuse the new false. The candidate fails predeclared criteria and is
+not published. All36 ordinary cases/all16 control maps/reports/ALLmetadata
+verify and243 affected tests pass; passing tests alone cannot overrule this
+real-source failure. No quiet runtime or final71 sweep is claimed for it.
+
+The rejected implementation/tests, frozen labels/seal, complete run and
+Source/JTool/Blend reviews are ignored local evidence under
+`.artifacts/user-review-20261001/`. Only our two experimental files were
+returned with apply_patch to B95;14 B95 mechanism tests pass and the still
+running app matches its verified fingerprint, root/health HTTP200.
+The current published audit remains17 current-code canonical outputs/54 older.
+
+Successor BATCH97 reserves historically exposed CN3_25 before new outcomes;
+CN3_8 is now development evidence, not a reusable no-tuning reserve. Compare
+independent source16/32 contour ownership and phase, including internal sprite
+art, while preserving genuine pairs, partial/RGB-only composites and B95
+gains. Do not repair this with a coordinate/tileset exception, blanket overlap
+deletion or relaxed global thresholds. The original goal and all six gates
+remain active; final-stable71, runtime and net transfer still require proof.
+
+### Published BATCH_95
+
 BATCH_95 adds shared source-native size ownership after capture consensus.
 Two independent native16 contours and their middle-base strokes can replace
 an unsupported full hypothesis; strong native32 sides can reject an unsupported

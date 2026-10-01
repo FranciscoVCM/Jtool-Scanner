@@ -9995,3 +9995,63 @@ full parent, with new frozen development/evaluation regions and protected weak
 RGB/partly hidden fulls. Early fruit arbitration and missing material/markers
 remain. Native600 clipping/default608 projection and final-stable all71/net
 multi-family goal review still need explicit evidence; keep all original gates.
+
+### BATCH_96 negative checkpoint: short mini contours and outlined inner art
+
+Published implementation remains B95/a068931. Before tuning, CN3_7/NANG130
+development and CN3_8 reserved roles plus complete21/25/9 source structures
+were frozen (annotation SHA7cf4a508e39c0b87be83fa4f77e12b3c32a5ee2e89b985655f0dea66da05301a).
+Ordinary-equivalent traces show unproposed short/zigzag minis and NANG130's
+wrong down labels. The candidate uses localized sides, middle bases and
+local boundary-band polarity, rather than a straight three-object run or
+false full parent. Exact bounded half-integer gradient buffers reduce repeated
+sampling; weak partial RGB and terrain-masked absence remain protected.
+
+Prototype counterexamples found narrow outline samples skipping the stroke,
+a partly visible weaker RGB line, and one protected texture alias whose
+aggregate side contrast hid the other non-material side. Independent per-side
+boundary checks reject the texture alias; an actual-source regression test
+reproduces it whereas the portable bright-stroke negative did not. Original
+B95 size-veto gates were retained. These are experimental mechanisms, NOT a
+shipped release or a general tileset-recognition claim.
+
+The final candidate was sealed before reserved outcomes, at package SHA
+7717e792c247a4ee434918933bcc5ae60c7d96edb0118869fcb00b1ed21c3ca3.
+Ordinary run ae74dd1c06044b3596cd597322132847 completes36 cases/all16 exact
+controls. All metadata, input/source/options/runtime/crop/grid/artifact
+identities verify. Every control typed map/report equals B95; FTFA926/928
+with zero extras/shifts/wrong directions and Flames252/295 are unchanged.
+
+| Fixed source structure | B95 baseline | Rejected candidate | Interpretation |
+|---|---|---|---|
+| CN3_7 complete21 |11 exact/10 misses/1 extra|20 exact/1 miss/1 extra|Nine real minis recovered; whole room gains15 real minis, remains major|
+| NANG130 complete25 |11 exact/14 misses/13 extras|18 exact/7 misses/6 extras|Seven wrong down labels become real horizontal halves; other14 minis gained elsewhere; major misses remain|
+| Reserved CN3_8 complete9 |3 exact/6 misses/6 extras|3 exact/6 misses/7 extras|FALSE miniature from inner artwork of a real full; intended small left still missed|
+
+CN3_9 gains seven real minis, Entrance2/NR2 one each; CN3_8 also gains one
+real short left elsewhere. Whole Source/standalone JTool/Blend and changed
+object crops corroborate all six changed rooms, including the false addition.
+The outside-region CN3_8 gain cannot excuse its new frozen false object.
+No room is accepted from those local gains. No original source/map was edited.
+
+The candidate FAILS its predeclared no-new-false-object criterion. It was
+NOT staged, committed, deployed or used for a final-stable all71 sweep.
+243 affected tests pass in5004.053s under corpus contention; that elapsed
+time is NOT quiet scan latency, and test success does not override source
+failure. No controlled runtime claim is made for the rejected candidate.
+Implementation/tests and complete sealed evidence are preserved under ignored
+`.artifacts/user-review-20261001/batch96-rejected-v2` and sibling evidence.
+After both workers finish, only our two experimental files are returned with
+apply_patch to B95. Tracked tree is clean before this documentation checkpoint;
+14 B95 mechanism tests pass1.992s. App remains PID30824, root/health200,
+loaded fingerprint418a7a03be137f62416758a00a53af62a717d5f729b74e63c72c0dbec63c9a46
+equal to B95 disk. No app restart or failed-code publication occurred.
+
+Goal ACTIVE; all original six gates remain. BATCH97 reserves CN3_25 before
+new candidate outcomes and makes CN3_8 explicit development. Next compare
+independent source-native32/16 ownership, not a trusted coarse full label:
+inner sprite artwork can satisfy a closed smaller triangle without being a
+separate gameplay object. Preserve genuine pairs/composites, partial/RGB-only
+boundaries, prior terrain/rails and all controls; never tune the exposed room
+and keep calling it a blind reserve. The published71 successor remains17
+current-code/54 explicitly older outputs until a final safe stable code sweep.

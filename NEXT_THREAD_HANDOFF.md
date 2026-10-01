@@ -4,7 +4,37 @@ Updated 2026-10-01. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: BATCH_95 (supersedes older status below)
+## Latest checkpoint: BATCH_96 REJECTED (published code is B95)
+
+Do not deploy or count the rejected B96 candidate as current app progress.
+Its sealed36-case run ae74dd1c06044b3596cd597322132847 and243-test affected
+run are COMPLETE; workers53993/30853 finished normally, do not restart.
+CN37 candidate frozen11->20/21; NANG13011->18/25, extras13->6. These real
+UNSHIPPED gains are not eligible for publication because of a new reserved
+CN38 inner-art mini false:
+fixed9 stays3/9, extras6->7. A real upper mini elsewhere is not an excuse.
+The candidate fails its declared no-new-false-object criterion. Whole/crop
+reviews of all6 changed rooms, original labels/plan/seal, controls and exact
+rejected source/tests are preserved under ignored user-review-20261001.
+Package candidate7717e792... and source/test snapshots9335c205.../2f758210...
+must not be confused with the published B95 implementation ce89a6c8....
+
+Only our two experiments were returned with apply_patch to B95 after both
+workers finished.14 B95 mechanism tests pass; root/health200 and loaded
+fingerprint418a7a... match B95 disk again. AppPID30824 remains up; verify
+identity before any future restart. No failed code, private material or
+generated outputs were staged/published. No B96 quiet timing or final71 claim.
+
+Read `.artifacts/user-review-20261001/BATCH96_RESUME.md`, BATCH96_REVIEW_NOTES
+and BATCH97_EXPERIMENT. CN38 is now exposed development. CN325 is declared
+reserved BEFORE successor tuning/results (not present in rejected36 run),
+historically exposed rather than truly unseen. Freeze its complete source
+structure before implementation. Compare independent native32/16 contours,
+inner sprite artwork, origin/direction and true pairs/partial RGB composites.
+Never add a screen/coordinate/palette exception or blanket overlap deletion.
+All original GOAL_PLAN gates remain; final71 and net goal completion are open.
+
+## Published checkpoint: BATCH_95 (supersedes older status below)
 
 Goal ACTIVE. Read recent DEVELOPMENT_PROGRESS, CROSS_TILESET_PLAN and the ENTIRE
 ignored `.artifacts/native-conflicts-20260923/GOAL_PLAN.md`; its six completion
