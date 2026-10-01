@@ -53,6 +53,7 @@ from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .interstitial_geometry import interstitial_triangle_aliases
+from .spike_size import contour_size_changes
 from .terrain_material import (
     cell_quad, distributed_cell_edges, learn_complementary_terrain,
     learn_single_rectangular_terrain, pack_textured_rectangles,
@@ -2835,6 +2836,9 @@ def scan_image(
             detections = _prune_source_interstitial_triangle_aliases(
                 detections, image, box,
             )
+            detections = _reconcile_source_triangle_sizes(
+                detections, image, box,
+            )
         # Missing half-phase solids must not change the terrain support used
         # by earlier spike/marker arbitration. Merge only source-established
         # complete rectangles after those decisions, retaining existing objects.
@@ -3882,6 +3886,9 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _prune_source_interstitial_triangle_aliases(
+            detections, source_image, normalization.source_room,
+        )
+        detections = _reconcile_source_triangle_sizes(
             detections, source_image, normalization.source_room,
         )
         # Inner scans intentionally leave recovery deferred: their blocks can
@@ -34617,6 +34624,23 @@ def _prune_source_interstitial_triangle_aliases(
     if not rejected:
         return detections
     return [d for d in detections if (d.type_id, d.x, d.y) not in rejected]
+
+
+def _reconcile_source_triangle_sizes(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    spikes = [(d.type_id, d.x, d.y) for d in detections
+              if d.type_id in FULL_SPIKE_TYPES or d.type_id in MINI_SPIKE_TYPES]
+    solids = [(d.x, d.y, MINI_BLOCK_SIZE, MINI_BLOCK_SIZE)
+              if d.type_id == OBJ_MINI_BLOCK else (d.x, d.y, GRID_SIZE, GRID_SIZE)
+              for d in detections if d.type_id in {OBJ_BLOCK, OBJ_MINI_BLOCK}]
+    added, rejected = contour_size_changes(image, room, spikes, solids)
+    if not added and not rejected:
+        return detections
+    return [d for d in detections if (d.type_id, d.x, d.y) not in rejected] + [
+        _grid_detection('source_closed_mini', t, x, y, .9, image, room, MINI_BLOCK_SIZE)
+        for t, x, y in sorted(added)
+    ]
 
 
 def _dedupe_geometry(detections: list[Detection]) -> list[Detection]:

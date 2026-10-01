@@ -4,7 +4,62 @@ Updated 2026-10-01. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: BATCH_94 (supersedes older status below)
+## Latest checkpoint: BATCH_95 (supersedes older status below)
+
+Goal ACTIVE. Read recent DEVELOPMENT_PROGRESS, CROSS_TILESET_PLAN and the ENTIRE
+ignored `.artifacts/native-conflicts-20260923/GOAL_PLAN.md`; its six completion
+gates remain required. Existing main only. Do not restart from older snapshots.
+
+Source-native full/mini contour ownership gains two real CN3_7 minis/removes
+two false fulls; Say7's unwanted mini disappears; Partysu3 loses two false
+minis without any exact loss. CN3_7 frozen21:9->11 exact/3->1 extras, still
+major errors. Whole234->236/299, errors106->102. Say7 remains302/302 with two
+source-visible reference omissions; Partysu3 remains255/265, errors73->71.
+Reserved Halls1 unchanged; it is NOT a new positive transfer. Fresh source
+review also confirms prior B94 Halls1 up672,544, outside B94's targeted set.
+
+Only two mini candidates per ambiguous existing full; original source sides,
+closed bases and exposed RGB absence supply evidence. Weak signed coherent RGB
+boundaries and masks protect uncertainty. No tile/hue/coordinate/reference
+answers, blanket overlap deletion or duplicate full scan. V1 was rejected for
+erasing a real weaker RGB-only mini inside a bright full; v2 adds that protection.
+
+Final ordinary run2bd2830dd3b942bbb7b27ac0c6501d59 is COMPLETE34/all16 controls
+at package code SHAce89a6c820d7da23ddbfe333aaf174bde045177e911a90036d9e3149661521a3.
+All input/artifact/map/ALLmetadata checks pass. Fifteen exact reports/maps
+equal; Partysu3 only improves.534 affected tests/2003.665s OK; final40 focused
+tests and unchanged scalar-gate assertion pass. Test elapsed time is not
+controlled scan latency. Ordinary96041, tests41192, quiet62826 and HTTP23868
+workers are COMPLETE; do not rerun them. Original annotations SHA
+772d06e5469ae9235b559d437d2b2a35010e484deb9ff8260ef2d4d8f528bf03 is unchanged.
+
+Quiet serial ABBA under batch95-quiet-runtime/26a32112439e437dabfbab60f3a232cd
+reproduces all8 maps/metadata: dense41.805->42.386s(+.581s/+1.39%), sparse
+36.841->36.508s(-.334s/-.91%). One source-size hook per current scan costs
+.319-.353s dense/.081-.097s sparse. Observed variation prevents a universal
+speedup/slowdown claim. Tested app is UP, PID30824 (verify identity before restart).
+Root/health/actual CN3_7 scan/export HTTP200, full ordinary-map/metadata parity.
+Loaded-source fingerprint418a7a03be137f62416758a00a53af62a717d5f729b74e63c72c0dbec63c9a46.
+
+Ignored successor `71-screen-batch95-interim-audit.md` has17 current-code
+canonical results/54 explicitly older-code rows; all71 human findings preserved,
+no acceptance upgrades. Original sources/JMaps remain untouched and ignored.
+The twelve Lap user maps remain associated ordinalN -> test(N+5), with
+provisional reference omissions/disagreements preserved. Native600/default608
+Source/Blend correction remains a separate unresolved issue.
+
+Review seals/verification under `.artifacts/user-review-20261001/` are immutable.
+They record test HEAD83aa321; publication changes HEAD only. Compare package
+files/code/runtime separately from Git HEAD after committing; do not rerun
+old verify_batch95's strict prepublication HEAD assertion as if code changed.
+
+Next investigate independent miniature zigzags/isolated closed contours without
+requiring a false-full parent. Reserve new no-tuning outcomes before another
+experiment; Halls1 is now exposed. Preserve partial/full/minis, weak RGB and all
+prior rails/terrain/marker gains. Final-stable all71 review and net multi-family
+completion audit remain required; arbitrary future tilesets are NOT solved.
+
+## Preceding checkpoint: BATCH_94
 
 Read recent DEVELOPMENT_PROGRESS.md, CROSS_TILESET_PLAN.md and the ENTIRE
 ignored `.artifacts/native-conflicts-20260923/GOAL_PLAN.md`. Goal ACTIVE;

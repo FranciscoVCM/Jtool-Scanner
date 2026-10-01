@@ -2,6 +2,41 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+BATCH_95 adds shared source-native size ownership after capture consensus.
+Two independent native16 contours and their middle-base strokes can replace
+an unsupported full hypothesis; strong native32 sides can reject an unsupported
+mini. RGB directional uncertainty, coherent weaker color boundaries and terrain
+masking guard absence decisions. Only two mini origins per ambiguous existing
+full are tested; no second scanner, room/palette identity or reference lookup.
+
+CN3_7 gains two true minis and loses two false fulls: frozen21 objects9->11
+exact/3->1 extras; whole supplied-reference234->236/299, errors106->102.
+Say7 loses its unwanted mini with all302 reference matches retained; two
+source-visible omissions from its provisional map remain. Partysu3 retains
+255/265 exact while two false minis disappear, errors73->71. Reserved Halls1
+is unchanged, including its unwanted mini: protection, NOT positive transfer.
+A prior B94 Halls1 real up addition outside that checkpoint's targeted set now
+has fresh whole-source review. No whole-room acceptance upgrade.
+
+All34 ordinary cases and16 controls verify, with every metadata field unchanged;
+15 control maps/reports equal and Partysu3 only improves. The534-test affected
+selection and final40 source-mechanism tests plus one coarse gate check pass.
+Quiet serial ABBA reproduces all8 maps/metadata: dense+0.581s/+1.39%, sparse
+-.334s/-.91%, within observed variation; no universal timing claim. App root,
+health, actual CN3_7 scan/export are HTTP200 with ordinary-map/fullmetadata parity.
+The conservative successor audit has17 current-code canonical outputs and54
+explicitly older-code rows. See latest DEVELOPMENT_PROGRESS and ignored BATCH95
+experiment/review/seals; rejected v1 exposed a weaker RGB-only mini loss and was
+not published. Every original GOAL_PLAN gate still applies before completion.
+
+Next: source-closed miniature zigzags/isolated contours without a false-full
+parent, preserving visible and partly hidden full/mini alternatives and weak
+RGB evidence. Halls1 is now exposed evaluation; do not tune from its result
+while retaining a no-tuning claim. Unknown sprites, material semantics, native600
+clipping and the final-current71/net multi-family goal audit remain unresolved.
+
+### Preceding BATCH_94 checkpoint
+
 BATCH_94 adds source-owned interstitial gap arbitration and a contour-guarded
 late fruit-origin correction. Five whole maps improve: three real full spikes
 recovered/eight false opposing gaps removed, including reserved CN3_93. Complete

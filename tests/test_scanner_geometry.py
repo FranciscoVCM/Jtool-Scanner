@@ -4372,7 +4372,9 @@ class ScannerGeometryTests(unittest.TestCase):
                 0.9297,
             )
         )
-        # The authoritative Irkara/Partysu3 full+mini overlap is intentional.
+        # Ambiguous coarse metrics must abstain. This scalar gate does not
+        # establish reference identity: saved Partysu3 pairs mix real fulls
+        # and real minis, rather than proving both overlap intentionally.
         self.assertFalse(
             _is_late_mini_alias_inside_full_candidate(
                 31.0956,

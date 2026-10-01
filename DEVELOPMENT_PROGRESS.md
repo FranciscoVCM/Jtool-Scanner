@@ -9910,3 +9910,88 @@ Future size arbitration must distinguish real fulls from real miniature pairs,
 not always prefer one size. Genuine partial/embedded composites still need
 source-based protections. The next experiment will use independently frozen
 contiguous structures and actual pixels rather than that mistaken assumption.
+
+### BATCH_95 source-native full/mini contour ownership
+
+Starting checkpoint83aa321532f599b8745de37d1a82d441d2ae54ed. Ordinary-equivalent
+development traces show no proposal for CN3_7's paired mini-ups, while Say7's
+unwanted mini survives late arbitration. CN3_7 native sides are strong: the
+initial weak-fill hypothesis was refined explicitly, not silently rewritten.
+The independently visible shared base stroke is missed by across-base equal
+fill tests, and two adjacent minis do not satisfy an existing three-mini run.
+
+New `spike_size.py` tests exactly two native16 candidates per ambiguous full
+hypothesis after capture consensus. Both independent localized slopes and a
+middle-base stroke establish a miniature pair. Exposed, observable RGB absence
+can reject the enclosing full; terrain masks never prove absence. Conversely,
+two strong full-size source sides plus a missing necessary mini side can reject
+a miniature alias without relaxing old coarse shape/luma gates. Newly added
+objects never become their own witnesses. Original RGB, weak signed coherent
+boundaries and quantization uncertainty remain. No source hash, room, palette,
+reference coordinate or blanket overlap filter enters detection.
+
+V1's relative RGB gradient threshold erased a real weaker isoluminant mini
+inside a strong bright full on a portable actual-pixel counterexample. V1 was
+terminated and preserved, not published or counted as a test pass. V2 adds a
+coherent weaker signed RGB boundary guard above central-difference rounding
+uncertainty; texture compatibility does not become positive object evidence.
+Three RGB-only mini contrast levels remain protected. Filled/outlined scenes
+cover four directions, polarity, brightness, texture,1/1.25/1.5 scales, open
+strokes, masks, clipping and genuine composites. A misleading older scalar
+test comment about intentional Partysu3 overlap was corrected, assertions intact.
+
+Frozen annotations/roles predate implementation:
+SHA772d06e5469ae9235b559d437d2b2a35010e484deb9ff8260ef2d4d8f528bf03.
+Say7/CN3_7 development; Halls1 reserved successor outcomes, historically
+exposed rather than unseen. Halls1 v1 outcome was not inspected to choose v2.
+Partysu3 is protected source-size challenge, not assumed-perfect overlap truth.
+
+| Fixed structure / reference | Before | After | Interpretation |
+|---|---|---|---|
+| CN3_7 complete21-object mini branch |9 exact/12 misses/3 extras|11 exact/10 misses/1 extra|Two real up16s gained, two false fulls removed; both actual down16s retained|
+| CN3_7 whole provisional reference |234/299,106 strict errors|236/299,102 errors|Major whole-room errors remain; regional solid3584/3584 unchanged|
+| Say7 complete8-object branch |8/8,1 extra|8/8,0 extras|Real full retained;5120 solid pixels unchanged|
+| Say7 whole provisional reference |302/302,3 extras|302/302,2 extras|Two source-visible reference omissions preserved; not strict exact certification|
+| Halls1 complete4-object branch |4/4,1 extra|unchanged|Protection, NOT positive reserved transfer; mini remains|
+| Partysu3 exact control |255/265,73 strict errors|255/265,71 errors|Two false minis removed; other aliases/misses/shifts remain|
+
+Run2bd2830dd3b942bbb7b27ac0c6501d59 completes34 ordinary cases at package
+SHAce89a6c820d7da23ddbfe333aaf174bde045177e911a90036d9e3149661521a3.
+Every source/options/runtime/crop/grid/artifact identity and ALL metadata verify.
+Only CN3_7/Say7/Partysu3 change: two true additions/five false removals. All16
+controls retain exact matches; fifteen maps/reports are identical and Partysu3
+only improves. FTFA926/928, no extras/shifts/wrong directions; Flames252/295
+with42 extras/21 misses/20 shifts/two wrong directions unchanged. Prior rails,
+terrain, NANG128r origins, confirmed NR2 negatives and marker behavior hold.
+
+All three changed whole Source/JTool/Blend maps and changed-object crops have
+independent source review. Fresh Halls1 review also closes a prior B94 coverage
+gap: its real up672,544 addition near fruit was outside B94's targeted set.
+That is a previous checkpoint gain, not a B95 addition. No acceptance upgrades.
+Successor `71-screen-batch95-interim-audit.md` contains17 current-code canonical
+outputs and54 explicitly older-code rows, preserving all human findings.
+
+534 affected tests pass in2003.665s, plus final40 focused mechanism tests and
+one unchanged coarse-gate assertion. The broader selection ran concurrently
+with corpus; its elapsed time is NOT scanner latency. Quiet serial ABBA with
+app/other Python workers stopped reproduces all8 ordinary maps and ALLmetadata:
+dense41.805->42.386s(+.581s/+1.39%), sparse36.841->36.508s(-.334s/-.91%).
+The new hook executes once, costing.319-.353s dense/.081-.097s sparse.
+Dense baseline endpoints differ1.018s, current endpoints1.305s; this small
+sample does not prove a general speedup or persistent slowdown.
+
+Restarted app root/health/actual changed CN3_7 scan/export all return HTTP200;
+exported typed map and ALLmetadata equal the ordinary result. Loaded source
+matches tested code, fingerprint
+418a7a03be137f62416758a00a53af62a717d5f729b74e63c72c0dbec63c9a46.
+Ignored review seals, candidate seals, verification, runtime and app proof are
+under `.artifacts/user-review-20261001/`; originals/private/generated outputs
+are never staged. No original reference/source/implementation fixture changed.
+
+Goal ACTIVE. This small source-backed repair does not solve all71, add positive
+reserved transfer in this experiment or prove arbitrary new sprites/tilesets.
+Next study short miniature zigzags/isolated closed shapes lacking an erroneous
+full parent, with new frozen development/evaluation regions and protected weak
+RGB/partly hidden fulls. Early fruit arbitration and missing material/markers
+remain. Native600 clipping/default608 projection and final-stable all71/net
+multi-family goal review still need explicit evidence; keep all original gates.
