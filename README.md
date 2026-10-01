@@ -285,6 +285,15 @@ exact matches. A room can be selected with `--pair ID` for quick iteration.
 Screens without a corrected `.jmap` remain visual examples; add that reference
 once before promoting them into this exact benchmark.
 
+To evaluate existing detected maps against newly supplied references without
+rescanning, use `compare-maps detected.jmap corrected.jmap --report-json
+out\comparison.json --fail-on-error`. It preserves strict exact scoring and
+also reports visible solid-area equivalence for alternative overlapping block
+arrangements. `--viewport 0,0,800,600` clips only that supplementary measure;
+it does not alter detection or relax exact errors. See
+[USER_REVIEW_WORKFLOW.md](USER_REVIEW_WORKFLOW.md) for reference-map safeguards,
+the twelve new reference baselines, and human/synthetic evaluation policy.
+
 Start-save policies:
 
 - `auto`: bottom-left region, then left side, then bottom side, then nearest bottom-left

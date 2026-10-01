@@ -16,6 +16,7 @@ from PIL import Image, ImageDraw
 from .constants import (
     GRID_SIZE,
     OBJ_BLOCK,
+    OBJ_MINI_BLOCK,
     OBJ_GRAVITY_DOWN,
     OBJ_GRAVITY_UP,
     OBJ_MINI_SPIKE_DOWN,
@@ -156,6 +157,57 @@ def compare_jmaps(
             "infinite_jump_exact": metadata_exact,
         },
         "reference_warnings": reference_warnings,
+    }
+
+
+def compare_solid_occupancy(
+    detected: JMap,
+    expected: JMap,
+    viewport: Box = Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT),
+) -> dict:
+    """Compare visible full/mini block unions, independently of exact tuples.
+
+    Overlapping blocks can describe the same solid area in different ways.
+    Duplicate blocks, four minis replacing a full block, and geometry outside
+    the capture do not change this supplementary measure. Hazards, platforms,
+    water and spikes are deliberately excluded: equal terrain does not certify
+    their semantics or the entire room. Never use this to relax exact gates.
+    """
+    if viewport.width <= 0 or viewport.height <= 0:
+        raise ValueError("occupancy viewport must have positive dimensions")
+
+    def rows(jmap: JMap) -> list[int]:
+        masks = [0] * viewport.height
+        for obj in jmap.objects:
+            if obj.type_id not in {OBJ_BLOCK, OBJ_MINI_BLOCK}:
+                continue
+            size = GRID_SIZE if obj.type_id == OBJ_BLOCK else GRID_SIZE // 2
+            left = max(0, obj.x - viewport.x)
+            top = max(0, obj.y - viewport.y)
+            right = min(viewport.width, obj.x + size - viewport.x)
+            bottom = min(viewport.height, obj.y + size - viewport.y)
+            if right <= left or bottom <= top:
+                continue
+            bits = ((1 << (right - left)) - 1) << left
+            for y in range(top, bottom):
+                masks[y] |= bits
+        return masks
+
+    detected_rows, expected_rows = rows(detected), rows(expected)
+    detected_pixels = sum(row.bit_count() for row in detected_rows)
+    expected_pixels = sum(row.bit_count() for row in expected_rows)
+    intersection = sum((a & b).bit_count() for a, b in zip(detected_rows, expected_rows))
+    union = detected_pixels + expected_pixels - intersection
+    return {
+        "viewport": dict(x=viewport.x, y=viewport.y,
+                         width=viewport.width, height=viewport.height),
+        "expected_pixels": expected_pixels,
+        "detected_pixels": detected_pixels,
+        "intersection_pixels": intersection,
+        "missing_pixels": expected_pixels - intersection,
+        "extra_pixels": detected_pixels - intersection,
+        "intersection_over_union": round(intersection / union, 6) if union else 1.0,
+        "equivalent": detected_rows == expected_rows,
     }
 
 

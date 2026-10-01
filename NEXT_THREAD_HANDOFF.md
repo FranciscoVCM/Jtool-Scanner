@@ -4,6 +4,28 @@ Updated 2026-10-01. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## New human-review intake (BATCH_89)
+
+All 71 reviews, twelve JMaps and four new images have arrived. Do not ask the
+user to repeat them or reopen the archive. Read USER_REVIEW_WORKFLOW.md and
+ignored `local_corpus/user-reviewed-20261001/USER_REVIEWS.md`; the same directory
+contains verified copies, PROVENANCE.json and reference manifests. The new
+ignored `.artifacts/user-review-20261001/71-screen-user-review.md` joins the
+complete human review coverage to cached output. It is not independent whole-
+corpus certification; the older blank USER_REVIEW.csv is superseded.
+
+`compare-maps` retains strict scoring and adds solid-area comparison. Both Lap
+Backwards references and Say_2 match exactly. Say_7 has 47 strict errors but
+equivalent terrain; CN3_7 has major terrain loss. A forced offline neutral-
+component probe recovers all 82 reference Say_7 full spikes but is not shipped.
+Two visible down spikes at (352,32)/(320,64) are absent from the provisional
+reference; retain source evidence and await human confirmation, not score hacks.
+
+New development cases: Say_7/CN3_7/ATK2. Keep LapBackwards_2 and Say_1/4/9
+separate from tuning; maintain prior reserved CN3_30/NANG_138 checks. The older
+handoff below remains useful history, but its request for missing user reviews
+is superseded. No all-71 acceptance or universal recognition claim.
+
 ## Verified checkpoint
 
 - Before this handoff, `main` was clean and equal to `origin/main` at

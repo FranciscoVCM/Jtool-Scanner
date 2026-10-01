@@ -8,9 +8,9 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 
-from .benchmark import BenchmarkOptions, run_benchmark
+from .benchmark import BenchmarkOptions, compare_jmaps, compare_solid_occupancy, run_benchmark
 from .corpus import run_corpus
-from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES
+from .constants import OBJ_PLAYER_START, OBJ_SAVE, OBJECT_NAMES, ROOM_WIDTH, ROOM_HEIGHT
 from .correction import (
     CorrectionProject,
     parse_object_type,
@@ -189,6 +189,15 @@ def main(argv: list[str] | None = None) -> int:
     corpus_parser.add_argument("manifest")
     corpus_parser.add_argument("out_dir")
     corpus_parser.add_argument("--resume", action="store_true")
+
+    compare_parser = subparsers.add_parser(
+        "compare-maps", help="evaluate existing maps without rescanning or using reference answers in detection",
+    )
+    compare_parser.add_argument("detected")
+    compare_parser.add_argument("expected")
+    compare_parser.add_argument("--viewport", default=None, help="solid-area crop x,y,width,height; exact comparison remains whole-map")
+    compare_parser.add_argument("--report-json", default=None)
+    compare_parser.add_argument("--fail-on-error", action="store_true", help="exit 1 for any strict exact error, even if solid area is equivalent")
 
     project_create_parser = subparsers.add_parser(
         "project-create",
@@ -371,6 +380,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "scan-corpus":
         run_corpus(args.manifest, args.out_dir, resume=args.resume)
         return 0
+    if args.command == "compare-maps":
+        detected, expected = JMap.from_file(args.detected), JMap.from_file(args.expected)
+        report = compare_jmaps(detected, expected)
+        viewport = _parse_box(args.viewport) if args.viewport else Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT)
+        report["solid_occupancy"] = compare_solid_occupancy(detected, expected, viewport)
+        if args.report_json:
+            destination = Path(args.report_json)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(json.dumps(dict(summary=report["summary"], solid_occupancy=report["solid_occupancy"]), indent=2))
+        return int(args.fail_on_error and report["summary"]["exact_error_count"] != 0)
     if args.command == "benchmark":
         return _benchmark(
             args.manifest,

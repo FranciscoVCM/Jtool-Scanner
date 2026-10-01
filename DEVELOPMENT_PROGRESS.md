@@ -9444,3 +9444,47 @@ this batch. The local app remains HTTP 200 with loaded-source fingerprint
 active milestone is not complete: positive recovery across multiple families,
 a reserved transfer gain, control/regression evidence, controlled runtime,
 updated conservative all-71 review, and publication gates remain open.
+
+### BATCH_89 human-review intake and independent reference baseline (2026-10-01)
+
+Preserved all 71 named-room human reviews, twelve user JMaps and four supplied
+source/scan images under ignored `local_corpus/user-reviewed-20261001/`.
+All sixteen copied assets match their original SHA-256 values. No originals,
+fixtures or archive files were changed. PROVENANCE.json, two source/reference
+manifests and a local README make the intake recoverable without this chat.
+Raw notes and supplied assets are not public Git content.
+
+Added offline `compare-maps` and independent visible solid-area comparison.
+Strict multiset/error scoring is unchanged. Full/mini block union equivalence
+never certifies hazards or relaxes exact gates. Tests cover alternative block
+decompositions, full/mini equivalence, shifts, duplicates, nonzero crops,
+600/608 clipping and strict CLI failure. The affected benchmark/corpus suite
+passes 28 tests and 8 subtests. Installed the documented pytest dependency in
+this bundled runtime, which otherwise lacked it; no code hides that environment
+error. Use a task-local pytest cache to avoid this host's unwritable default.
+
+Eleven existing 71-room cached outputs were hash-verified and evaluated against
+new references. LapBackwards_2 and ATK2 were scanned from source only. Both Lap
+Backwards maps are exact (250/250 and 260/260), as is Say_2 (289/289). Several
+visually “perfect” Say rooms have small exact discrepancies. The twelve-reference
+baseline is in USER_REVIEW_WORKFLOW.md; ignored per-object detail and all-71
+human-review coverage are under `.artifacts/user-review-20261001/`.
+
+CN3_7 has 181/299 exact, 38 extras, 94 misses, 20 shifts and four wrong
+directions. Solid-area IoU is 0.626140 with 62,976 missing solid pixels and no
+extras: missing terrain is real, not merely editor decomposition. Say_7 has
+275/302 exact, 20 extras, 14 misses and 13 wrong directions while its terrain
+union is equivalent. An observation-only trace reproduces ordinary map and
+metadata. Independent neutral components find 84 full spikes, but 110 earlier
+hypotheses make the original coverage gate fail (84/110 < 0.775). A forced
+offline probe recovers all 82 reference full spikes, not a shipped change.
+Two down triangles at (352,32)/(320,64) visibly exist in source but are absent
+from the provisional user map; human confirmation is pending. Preserve that
+JMap unchanged and do not suppress visible objects to improve reference scores.
+
+ATK2 is a 997×762 resized capture, not a native 800×600 image; its ordinary
+output remains poor. No viewport guess or broad normalization change was
+shipped on aspect ratio alone. Establish cell-lattice/native clipping evidence
+before altering coordinates. Next test source-component morphology against
+inflated hypotheses rather than merely lower a coverage threshold. This
+checkpoint improves evaluation, not detection; the wider milestone remains open.
