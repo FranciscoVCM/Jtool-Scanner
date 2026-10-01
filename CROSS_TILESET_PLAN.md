@@ -2,6 +2,15 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+BATCH_91 follows the new CN3_7 reference to shared half-phase terrain loss.
+Supported 16px interior material quadrants establish complete 32px rectangles
+without assuming one global tile-origin phase. Missing solid area falls
+62,976 → 1,536 pixels, without extra solid area or removal of existing terrain;
+strict exact objects improve 181/299 → 234/299. Outer capture consensus must
+finish before terrain merges, preserving marker and spike behavior. This is
+still a bounded outlined-material fallback, not unfamiliar-palette universality
+or whole-room acceptance. Consult the latest progress and ignored v2 evidence.
+
 All 71 human reviews and twelve additional reference maps are now preserved
 and indexed locally; use USER_REVIEW_WORKFLOW.md and BATCH_89/90 before older
 historical acceptance labels. Source-only cached-component retry after alias

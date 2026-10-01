@@ -53,8 +53,8 @@ from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .terrain_material import (
-    distributed_cell_edges, learn_complementary_terrain,
-    learn_single_rectangular_terrain,
+    cell_quad, distributed_cell_edges, learn_complementary_terrain,
+    learn_single_rectangular_terrain, pack_textured_rectangles,
 )
 
 
@@ -2239,6 +2239,7 @@ def scan_image(
     )
     repeated_terrain_room = False
     deferred_phase_free_profile: _RepeatedTerrainProfile | None = None
+    deferred_outlined_blocks: list[Detection] = []
     particle_water_room = False
     dense_miniblock_room = False
     mini_blocks: list[Detection] = []
@@ -2473,6 +2474,7 @@ def scan_image(
                 detections,
                 image,
                 box,
+                deferred_blocks=deferred_outlined_blocks if _apply_shape_refits else None,
             )
         elif _looks_like_neutral_terrain_room(image, box):
             detections = _replace_neutral_terrain_geometry(detections, image, box)
@@ -2826,6 +2828,13 @@ def scan_image(
             )
             detections = _prune_paired_mini_full_spike_conflicts(
                 detections, image, box,
+            )
+        # Missing half-phase solids must not change the terrain support used
+        # by earlier spike/marker arbitration. Merge only source-established
+        # complete rectangles after those decisions, retaining existing objects.
+        if _apply_shape_refits and deferred_outlined_blocks:
+            detections = _merge_source_supported_terrain_blocks(
+                detections, deferred_outlined_blocks,
             )
     detections.sort(key=lambda det: (det.type_id, det.y, det.x))
     if source_translation is not None:
@@ -3864,6 +3873,11 @@ def _scan_lattice_normalized_room(
             detections, source_image, normalization.source_room,
         )
         detections = _prune_paired_mini_full_spike_conflicts(
+            detections, source_image, normalization.source_room,
+        )
+        # Inner scans intentionally leave recovery deferred: their blocks can
+        # still affect capture consensus and source-space marker arbitration.
+        detections = _recover_phase_free_outlined_terrain_blocks(
             detections, source_image, normalization.source_room,
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
@@ -5522,10 +5536,7 @@ def _outlined_terrain_cell_stats(
         value for value in brightness.values() if value < room_value - 12
     )
     dark_value = median(dark_values) if dark_values else room_value
-    threshold = min(
-        room_value - 18,
-        dark_value + max(8, (room_value - dark_value) * 0.38),
-    )
+    threshold = _outlined_terrain_threshold(room_value, dark_value)
     positions = {
         position
         for position, value in brightness.items()
@@ -5538,17 +5549,30 @@ def _outlined_terrain_cell_stats(
     return room_value, dark_value, brightness, positions
 
 
+def _outlined_terrain_threshold(room_value: float, dark_value: float) -> float:
+    return min(
+        room_value - 18,
+        dark_value + max(8, (room_value - dark_value) * 0.38),
+    )
+
+
 def _looks_like_outlined_terrain_room(image: RGBImage, room: Box) -> bool:
     """Identify dark cell sprites enclosed by a brighter repeated outline."""
 
     room_value, dark_value, _brightness, positions = (
         _outlined_terrain_cell_stats(image, room)
     )
+    return _outlined_terrain_profile_supported(room_value, dark_value, len(positions))
+
+
+def _outlined_terrain_profile_supported(
+    room_value: float, dark_value: float, cell_count: int,
+) -> bool:
     return (
         65 <= room_value <= 100
         and dark_value <= 42
         and dark_value <= room_value - 35
-        and 55 <= len(positions) <= 190
+        and 55 <= cell_count <= 190
     )
 
 
@@ -6244,6 +6268,8 @@ def _replace_outlined_terrain_room_geometry(
     detections: list[Detection],
     image: RGBImage,
     room: Box,
+    *,
+    deferred_blocks: list[Detection] | None = None,
 ) -> list[Detection]:
     """Anchor an outlined room to its cell interiors, then reconcile silhouettes."""
 
@@ -6253,9 +6279,13 @@ def _replace_outlined_terrain_room_geometry(
         if detection.type_id
         not in {*GEOMETRY_TYPES, OBJ_PLATFORM, OBJ_SAVE}
     ]
-    _room_value, _dark_value, brightness, block_positions = (
+    room_value, dark_value, brightness, block_positions = (
         _outlined_terrain_cell_stats(image, room)
     )
+    if deferred_blocks is not None:
+        deferred_blocks.extend(_detect_phase_free_outlined_blocks(
+            image, room, _outlined_terrain_threshold(room_value, dark_value),
+        ))
     block_detections = [
         _geometry_detection(
             "outlined_terrain_block",
@@ -6316,6 +6346,82 @@ def _replace_outlined_terrain_room_geometry(
     result.extend(mini_spikes)
     result.extend(markers)
     return _dedupe_exact_detections(result)
+
+
+def _recover_phase_free_outlined_terrain_blocks(
+    detections: list[Detection], image: RGBImage, room: Box,
+) -> list[Detection]:
+    """Use the same profile after the complete capture-consensus pipeline."""
+    room_value, dark_value, _brightness, positions = _outlined_terrain_cell_stats(image, room)
+    if not _outlined_terrain_profile_supported(room_value, dark_value, len(positions)):
+        return detections
+    candidates = _detect_phase_free_outlined_blocks(
+        image, room, _outlined_terrain_threshold(room_value, dark_value),
+    )
+    return _merge_source_supported_terrain_blocks(detections, candidates)
+
+
+def _detect_phase_free_outlined_blocks(
+    image: RGBImage, room: Box, threshold: float,
+) -> list[Detection]:
+    """Pack complete dark rectangles on the 16px lattice, not one 32px phase.
+
+    Called only after the existing outlined-room gate establishes dark terrain
+    and its room-relative threshold. Each quadrant needs distributed interior
+    material, not a dark centroid borrowed from a triangle. Packing must remain
+    within that observed mask; incomplete residual corners are not inferred.
+    """
+    cells: set[tuple[int, int]] = set()
+    for y in range(0, ROOM_HEIGHT - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+        for x in range(0, ROOM_WIDTH - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE):
+            colors = _sample_map_patch_colors(image, room, x, y, MINI_BLOCK_SIZE)
+            material_count = sum(
+                sum(colors[row * 16 + column]) / 3 <= threshold
+                for row in range(3, 13) for column in range(3, 13)
+            )
+            if material_count >= 90:
+                cells.add((x, y))
+    return [
+        _geometry_detection(
+            "phase_free_outlined_block", OBJ_BLOCK, x, y, 0.90,
+            image, room, GRID_SIZE,
+        )
+        for x, y in sorted(pack_textured_rectangles(cells), key=lambda p: (p[1], p[0]))
+    ]
+
+
+def _merge_source_supported_terrain_blocks(
+    detections: list[Detection], candidates: list[Detection],
+) -> list[Detection]:
+    """Add missing supported strips without moving solids or other objects.
+
+    Candidates already passed complete source-mask packing. Existing full and
+    mini solids count as coverage only where a complete 16px cell fits inside
+    them. A new rectangle must add at least a half-block strip, not an isolated
+    residual corner. Late merging never revises spike or marker decisions.
+    """
+    covered: set[tuple[int, int]] = set()
+    for detection in detections:
+        if detection.type_id not in (OBJ_BLOCK, OBJ_MINI_BLOCK):
+            continue
+        size = GRID_SIZE if detection.type_id == OBJ_BLOCK else MINI_BLOCK_SIZE
+        left = math.ceil(detection.x / MINI_BLOCK_SIZE) * MINI_BLOCK_SIZE
+        top = math.ceil(detection.y / MINI_BLOCK_SIZE) * MINI_BLOCK_SIZE
+        covered.update(
+            (x, y)
+            for y in range(top, detection.y + size - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+            for x in range(left, detection.x + size - MINI_BLOCK_SIZE + 1, MINI_BLOCK_SIZE)
+        )
+    remaining = {(d.x, d.y): d for d in candidates}
+    additions: list[Detection] = []
+    while remaining:
+        origin = max(remaining, key=lambda p: (len(cell_quad(p) - covered), -p[1], -p[0]))
+        candidate = remaining.pop(origin)
+        if len(cell_quad(origin) - covered) < 2:
+            break
+        additions.append(candidate)
+        covered.update(cell_quad(origin))
+    return [*detections, *additions] if additions else detections
 
 
 def _detect_outlined_terrain_spikes(

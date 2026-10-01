@@ -6,6 +6,22 @@ branch, clone or worktree.
 
 ## New human-review intake (BATCH_89)
 
+BATCH_91 supersedes the terrain baseline below. Source-only half-phase rectangle
+recovery improves CN3_7 missing solid area 62,976 → 1,536, with zero extra area
+and all prior terrain retained. Strict matching rises 181/299 → 234/299;
+spikes/minis/markers are unchanged and major room errors remain. CN3_8's first
+integration exposed outer-consensus coupling and was rejected. The successor
+defers recovery past that outer pipeline too. Read the latest progress and
+ignored BATCH91_EXPERIMENT.md, batch91-v2-candidate/ and batch91-v2-controls/.
+Do not claim all71 certification or interpret solid IoU as whole-room accuracy.
+Final v2 validation: 399 tests/170 subtests, all sixteen exact controls identical;
+three changed maps contain only block additions (68/39/42), no removals or
+metadata changes. Updated ignored audit is
+`.artifacts/user-review-20261001/71-screen-after-phase-free-solids.md`.
+It has 14 final-code canonical cases and 57 older-code cases. Dense serial timing
+adds 1.203s (+2.94%); sparse timing is unchanged within variance. The wider
+GOAL_PLAN remains active and its all71 final-current gate is not yet satisfied.
+
 BATCH_90 now ships the source-only deferred-component retry. Read the latest
 DEVELOPMENT_PROGRESS.md and USER_REVIEW_WORKFLOW.md. Say_7 improves 275/302 →
 302/302 exact, 47 → 3 errors, with no missing/wrong-direction full spikes.

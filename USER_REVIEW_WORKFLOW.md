@@ -151,3 +151,27 @@ polarity room, one hollow/touching-triangle room, and one translucent-water
 room, with a complete structure and explicit negative/distractor markings.
 Prefer those to many more near-identical already-good maps. Full room JMaps
 are welcome but small precise regions can be sufficient and cheaper to author.
+
+### Second shared repair: phase-independent solid recovery
+
+CN3_7's independent map exposes a 32px-lattice assumption: long columns and
+ledges at half-cell offsets are omitted even when their dark material is visible.
+The outlined-room path now samples complete 16px interior material quadrants,
+packs supported 32px rectangles without a global 32px origin phase, and merges
+missing strips without removing existing solids. The material threshold and
+room eligibility are unchanged and room-relative; this is not universal palette
+invariance. Existing rectangle packing prevents speculative residual corners.
+
+Recovery runs after the complete spike/marker pipeline, including outer capture
+consensus. The first integration changed other objects in CN3_8 and was rejected;
+the successor preserves all non-block objects. Cached candidates are merged
+without another pixel pass. No reference map, room ID or fixed answer origin is
+read by the detector.
+
+CN3_7 gains 61,440 solid pixels: missing area falls from 62,976 to 1,536, IoU
+0.626140 to 0.990881, with zero extra solid area and no loss of prior terrain.
+Strict matching improves 181/299 to 234/299. Alternate overlapping block origins
+still count as strict tuple discrepancies; do not describe 99.1% terrain coverage
+as 99.1% whole-room accuracy. Hollow-spike clusters, missing minis, floor-label
+aliases and false vines remain. Keep full source/JTool/blend review and the
+independent area comparison together.

@@ -9548,3 +9548,88 @@ Loaded-source fingerprint matches local source:
 `4b45a300f959d68a7df0e78e3c524531eebebcd2954d9a664c9378fe23c39ffa`.
 The actual HTTP scan/export map and metadata equal the ordinary CLI result;
 ignored `app-parity.json` records the check. No stale server is being relied on.
+
+### BATCH_91 phase-independent outlined solid recovery (2026-10-01)
+
+The new independent CN3_7 reference separates real terrain loss from valid
+overlapping-block decomposition. A complete ordinary-output-equivalent trace
+shows the outlined profile emits 103 blocks, sampling only the global 32px
+lattice. Source-visible half-cell shafts/ledges cannot appear on that lattice.
+Freeze the whole 800x608 viewport and its 168,448 expected solid pixels before
+tuning; require substantial recovery, zero extra solid area and all prior
+terrain/non-solid objects protected. Reference tuples remain evaluation-only.
+
+The detector reuses the unchanged room-relative dark-material threshold, samples
+distributed 16px interior material, and packs only complete 32px rectangles.
+Reuse the existing phase-free rectangle packer; no unsupported residual corners
+or convenient gaps are inferred. Merge missing half-block strips while retaining
+existing full/mini solids. No screen names, reference inputs or answer origins
+enter production. The existing outlined-profile brightness/count eligibility
+remains a scope limitation; this is not universal appearance invariance.
+
+The first integration ran after inner-scan arbitration but before outer capture
+consensus in CN3_8. That changed eight spikes and a save/start anchor as well as
+terrain. Reject it without claiming those effects as gains. Defer recovery past
+the entire outer pipeline too, and add a test proving marker/spike guards finish
+before the new blocks appear. CN3_8 became diagnostic/development before that
+correction; CN3_9 supplied the original no-tuning geometry result, not a freshly
+blind successor evaluation. CN3_21 was added as an unexamined integration
+evaluation case and is unchanged. Original reserved CN3_30/NANG_138 remain
+unchanged; no threshold was tuned from their outcomes.
+
+Final ordinary results: CN3_7 adds 68 blocks, recovers 61,440 solid pixels,
+reduces missing area 62,976 -> 1,536, and improves IoU 0.626140 -> 0.990881.
+There are zero extra solid pixels and all prior solid area remains. Strict
+matching improves 181/299 -> 234/299 (156 -> 106 errors). Alternative overlapping
+block origins still count as strict discrepancies; never equate 99.1% terrain
+coverage with whole-room accuracy. CN3_8 adds 39 source-reviewed blocks and
+CN3_9 adds 42. All three complete changed Source/JTool/blend views were reviewed;
+existing spike, mini, marker, vine and other non-block tuples and all metadata
+are identical. All three retain major errors, including hollow/touching triangle
+aliases, missing minis, floor-number spikes and false vines.
+
+Fifteen ordinary cases completed at the final scanner fingerprint
+`2b1f537661d6ddd90e185c797a6a1d76b4219f0f29101f2a68e51da70a3f7d21`.
+All source/options/artifact identities are verified. Only the three neon rooms
+change. Entrance1/2, Halls4, Bathhouse1, Dotkid4, NR2, CN3_30, CN3_21, NANG_138,
+Say_7 and both Lap Backwards are unchanged. This preserves the rail/mini/solid
+gains and the confirmed NR2 visual-effect negatives. Sixteen exact controls were
+separately regenerated: full typed maps, metadata and exact reports are identical.
+FTFA remains 926/928 with zero extras/shifts/wrong directions; Flames remains
+252 exact with 42 extras/21 misses/20 shifts/two wrong directions.
+
+The affected suite passes 399 tests and 170 subtests. Portable mechanism tests
+cover three capture scales, three hue/brightness combinations, complete mixed-
+phase shafts/ledges, triangle-centroid impostors, unsupported narrow/corner
+residuals, existing 8px-phase solids, retained partial spikes/markers, cached
+merging and outer capture ordering. No full duplicate grayscale scan is added.
+
+Quiet serial ABBA timing against c14e887, with no other Python test/scan workers,
+reproduces each corresponding ordinary map and all metadata in all eight runs.
+Dense CN3_7 median 40.931s -> 42.134s (+1.203s, +2.94%); sparse NANG128
+36.917s -> 36.754s (-0.164s, -0.44%, treat as variance). The dense overhead is
+real and bounded, not concealed. A separate one-call breakdown measures 0.650s
+for the new field: 1,900 quadrant samples take 0.421s and rectangle packing
+0.204s. Additional output/arbitration bookkeeping can contribute to the rest;
+the breakdown is not a complete attribution or an end-to-end replacement.
+
+Ignored evidence: BATCH91_EXPERIMENT.md, batch91-traces/, batch91-v2-candidate/,
+batch91-v2-controls/, batch91-v2-verification.json, batch91-v2-review/ and
+batch91-quiet-runtime/ under `.artifacts/user-review-20261001/`. Updated
+`71-screen-after-phase-free-solids.md` retains all human findings and ranks the
+remaining causes. Fourteen canonical rooms have final-code outputs; 57 have
+older-code evidence, not current certification. No new acceptance labels.
+
+The wider goal stays active: final-current all71 regeneration/review and a full
+completion-gate audit remain required. Continue with source-backed hollow/full/
+mini configuration errors across visual styles, plus foreground/background
+polarity evidence. Human region labels and hard-room JMaps would be useful;
+they must not be injected into scanning. ATK2 native600 clipping and unfamiliar
+water/sprite semantics remain unresolved. Raw intake and historical artifacts
+stay local/ignored; only public code, tests and summarized progress are published.
+
+Restarted the verified app process after controlled timing. Root, health, real
+CN3_7 scan and JMap export return HTTP200. The exported typed map and every
+JMap metadata field equal the ordinary result. Loaded-source fingerprint is
+`23752cc28cdc79c16acd945fba84f7656ab29eeff51a64a3424390ebd1696998`,
+matching local source; ignored batch91-app-parity.json records the evidence.
