@@ -9488,3 +9488,63 @@ shipped on aspect ratio alone. Establish cell-lattice/native clipping evidence
 before altering coordinates. Next test source-component morphology against
 inflated hypotheses rather than merely lower a coverage threshold. This
 checkpoint improves evaluation, not detection; the wider milestone remains open.
+
+### BATCH_90 retry cached source components after alias pruning (2026-10-01)
+
+The Say_7 trace identifies a timing failure, not absent source proposals:
+84 source components versus 110 early full-spike hypotheses fail the unchanged
+0.775 coverage test. Later arbitration reduces the competing list to 87.
+Keep a deferred field only when excess current hypotheses caused rejection
+and the source field otherwise satisfies the existing count/mask conditions.
+Retry that same gate after ordinary source/material recovery and pruning, before
+the final exterior and paired-mini safeguards. Already accepted fields retain
+their old path. Cache the detected components; no additional pixel pass, new
+palette threshold, reference input, screen name or coordinate rule is added.
+
+Ordinary grid-8/color+geometry/OCR-off Say_7 improves 275/302 → 302/302 exact,
+47 → 3 exact errors: extras 20 → 3, misses 14 → 0, wrong directions 13 → 0,
+with zero shifts. All 82 reference full spikes match. Two extra down triangles
+at (352,32)/(320,64) visibly exist in the source but are missing from the user
+reference; keep them and await human confirmation rather than delete them to
+match a provisional answer. One unwanted minispike remains. Complete changed
+Source/JTool/blend views were reviewed; this is not whole-room acceptance.
+
+Thirteen ordinary cases completed, with all source/options/artifact hashes
+verified. Only Say_7 changes (27 additions/30 removals); all JMap metadata is
+unchanged. CN3_7/30/Entrance2/Golden7/NR2, NANG_138, Say_1/4/9, and both Lap
+Backwards controls are unchanged. ATK2 also remains unchanged and unresolved.
+CN3_NR2's user-confirmed false down shapes at (16,512)/(48,512) stay absent.
+All sixteen exact controls were separately rescanned, then compared to the
+latest protected baseline: typed maps, metadata and complete exact reports
+are identical. FTFA remains 926/928 with no extras/shifts/wrong directions.
+
+Tests pass: 329 geometry/arbitration tests and 90 subtests; 50 app/correction/
+comparison/corpus tests and 34 subtests. Real connected-component fixtures test
+two capture scales and two background/brightness combinations, unchanged early
+acceptance, rejected broad backgrounds, retained non-full objects, and strict
+late gating. A mocked pixel-pass test proves the retry uses cached evidence.
+The list-only helper averages ~22 microseconds over 10,000 local calls; this
+is not controlled whole-scanner timing. No broad grayscale second pass exists.
+
+Ignored evidence: `.artifacts/user-review-20261001/verification.json`, ordinary
+and protected corpus reports, changed-review/, and
+`71-screen-after-intake-and-deferred-fix.md`. The all-71 table retains the
+human observations and states which eleven canonical rooms were regenerated;
+the other sixty have preceding-code snapshots, not final-code certification.
+No renewed “accepted” labels were assigned. The multi-family/positive reserved
+transfer milestone and all-71 accuracy remain open: this is one real recovery
+gain plus protected no-effect transfers, not proof of arbitrary new tilesets.
+
+Preservation was additionally checked against the original 71 source/history/
+blend triples: all 213 files are present. An ignored
+`local_corpus/user-reviewed-20261001-backup.zip` preserves this new intake,
+including all sixteen verified asset hashes and all 71 human reviews. It is a
+local backup bundle, not an off-machine backup. Keep raw intake, generated
+output and private notes out of Git.
+
+Restarted the app with current code after verifying the old server's process
+identity. Root, health, real Say_7 scan and JMap export all return HTTP 200.
+Loaded-source fingerprint matches local source:
+`4b45a300f959d68a7df0e78e3c524531eebebcd2954d9a664c9378fe23c39ffa`.
+The actual HTTP scan/export map and metadata equal the ordinary CLI result;
+ignored `app-parity.json` records the check. No stale server is being relied on.

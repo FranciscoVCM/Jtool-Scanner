@@ -87,6 +87,38 @@ acceptance labels, but is not a fresh independent whole-corpus visual audit.
 
 ## Efficient, generalizable development
 
+### First shared detector repair: deferred source components
+
+The first bounded implementation preserves source components rejected only
+because the early full-spike hypothesis count is inflated. It retries the
+same acceptance test after source/material pruning, using the cached field.
+No thresholds, palettes, room IDs or coordinates were added. Early accepted
+fields stay on their existing path; final exterior/paired-mini safeguards still
+run. The retry does not scan image pixels again.
+
+The ordinary Say_7 scan improves from 275/302 to 302/302 exact, with strict
+errors falling from 47 to three: zero misses/shifts/wrong directions, three
+extras. Two are source-visible down spikes absent from the provisional user
+map, at (352,32)/(320,64); confirmation is pending and the map is unmodified.
+One unwanted mini remains. The entire changed source/JTool/blend was reviewed;
+this room is not declared perfect.
+
+Thirteen source-only ordinary cases were regenerated: eleven canonical rooms
+and ATK2/LapBackwards_2. Only Say_7 changes (27 added/30 removed tuples); all
+metadata stays equal. All sixteen separately regenerated protected maps and
+exact reports are unchanged, including FTFA's known 926/928 baseline. Tests:
+329 geometry/arbitration tests with 90 subtests, and 50 integration/evaluation
+tests with 34 subtests. The cached list-only retry costs about 22 microseconds
+per call in a local 10,000-call probe; this is not an end-to-end latency claim.
+
+Updated ignored audit:
+`.artifacts/user-review-20261001/71-screen-after-intake-and-deferred-fix.md`.
+It explicitly distinguishes the eleven freshly regenerated canonical rooms
+from the sixty preceding-code snapshots. The latter are not current-code
+certification. Most previously reported water, terrain, marker, hollow-spike
+and unfamiliar-sprite failures remain. This ordering fix does not replace the
+existing bright/low-chroma component predicate with universal color invariance.
+
 Trace proposal, shape classification, coordinate normalization and arbitration
 separately. Establish full contiguous source-backed structures with positives
 and nearby negatives. Measure recovery and false detections, not object totals.

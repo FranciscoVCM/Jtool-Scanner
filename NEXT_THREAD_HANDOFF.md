@@ -6,6 +6,18 @@ branch, clone or worktree.
 
 ## New human-review intake (BATCH_89)
 
+BATCH_90 now ships the source-only deferred-component retry. Read the latest
+DEVELOPMENT_PROGRESS.md and USER_REVIEW_WORKFLOW.md. Say_7 improves 275/302 →
+302/302 exact, 47 → 3 errors, with no missing/wrong-direction full spikes.
+Its two source/reference omissions remain pending and one mini alias remains;
+do not call it perfect. Thirteen ordinary cases were regenerated, only Say_7
+changes, and all sixteen regenerated exact-control maps/reports are identical.
+The new ignored `71-screen-after-intake-and-deferred-fix.md` under
+`.artifacts/user-review-20261001/` contains all human notes with conservative
+current evidence. Sixty canonical rooms still have older-code snapshots, not
+new certification. The paragraphs below describe the intake baseline/probe;
+their “not shipped” wording is historical and superseded by BATCH_90.
+
 All 71 reviews, twelve JMaps and four new images have arrived. Do not ask the
 user to repeat them or reopen the archive. Read USER_REVIEW_WORKFLOW.md and
 ignored `local_corpus/user-reviewed-20261001/USER_REVIEWS.md`; the same directory

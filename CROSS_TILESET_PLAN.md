@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest evidence and bounded repair (2026-10-01)
+
+All 71 human reviews and twelve additional reference maps are now preserved
+and indexed locally; use USER_REVIEW_WORKFLOW.md and BATCH_89/90 before older
+historical acceptance labels. Source-only cached-component retry after alias
+pruning improves Say_7 from 275/302 to 302/302 exact (47 to three errors), with
+all sixteen exact-control maps/reports protected. This fixes hypothesis-count
+inflation hiding already-detected source geometry, without another image pass
+or screen-specific answers. It is not a universal palette/tileset fix or the
+required multi-family positive-transfer completion. Current priorities are
+CN3_7's independently measured missing solid area, hollow/touching triangle
+configuration errors, and retained real partial spikes/marker negatives. Keep
+no-tuning cases and measure full changed structures, not warning totals. The
+all-71 human-review table explicitly separates new outputs from older snapshots.
+
 The current milestone is **generalized native geometry and positive-object
 recovery**, starting from `a087d6d`. The full-corpus revalidation milestone below
 is complete; its conservative findings and protected controls are the baseline,

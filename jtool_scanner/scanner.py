@@ -2185,6 +2185,7 @@ def scan_image(
                 _apply_shape_refits=_apply_shape_refits,
             )
     source_translation: tuple[int, int] | None = None
+    deferred_neutral_fields: list[tuple[tuple[Detection, ...], float]] = []
     compact_room = normalized_grid == (19, 13)
     if normalized_grid is not None and normalized_grid != (25, 19):
         normalization = _normalize_room_to_jtool(
@@ -2526,6 +2527,7 @@ def scan_image(
             image,
             box,
             grid_step,
+            deferred_fields=deferred_neutral_fields,
         )
         detections = _arbitrate_minispikes_against_blocks(detections)
         if not mini_blocks:
@@ -2809,6 +2811,14 @@ def scan_image(
                 detections, image, box,
                 profile=deferred_phase_free_profile, already_learned=True,
                 blocks_only=True,
+            )
+        # The early coverage denominator can contain geometry aliases that
+        # later source/material arbitration removes. Retry only a source field
+        # rejected for that inflation, with identical gates and cached evidence.
+        # Keep the final exterior/paired-mini guards authoritative afterwards.
+        for components, mask_share in deferred_neutral_fields:
+            detections = _retry_deferred_bright_neutral_spike_components(
+                detections, components, mask_share,
             )
         if _apply_shape_refits:
             detections = _prune_source_exterior_block_aliases(
@@ -21130,6 +21140,8 @@ def _reconcile_bright_neutral_full_spike_components(
     image: RGBImage,
     room: Box,
     grid_step: int,
+    *,
+    deferred_fields: list[tuple[tuple[Detection, ...], float]] | None = None,
 ) -> list[Detection]:
     """Rebuild a coherent bright-neutral spike field from source components.
 
@@ -21235,12 +21247,38 @@ def _reconcile_bright_neutral_full_spike_components(
         )
     )
     if not use_ordinary_profile and not use_oversized_profile:
+        # Preserve eligible source evidence, not an alternate threshold or an
+        # expected map. Only excess current hypotheses may defer a profile:
+        # too few/too many source components or a broad bright background
+        # remain rejected. No second connected-component/image pass is needed.
+        count = len(component_by_key)
+        mask_share = mask_pixels / max(1, room.area)
+        if (
+            deferred_fields is not None
+            and count < len(full_spikes) * BRIGHT_NEUTRAL_SPIKE_MIN_CURRENT_COVERAGE
+            and _should_use_bright_neutral_spike_components(count, count, mask_share)
+        ):
+            deferred_fields.append((tuple(component_by_key.values()), mask_share))
         return detections
     return [
         detection
         for detection in detections
         if detection.type_id not in FULL_SPIKE_TYPES
     ] + list(component_by_key.values())
+
+
+def _retry_deferred_bright_neutral_spike_components(
+    detections: list[Detection],
+    components: tuple[Detection, ...],
+    mask_share: float,
+) -> list[Detection]:
+    """Retry a source field after hypothesis pruning, without changing gates."""
+    full_count = sum(d.type_id in FULL_SPIKE_TYPES for d in detections)
+    if not _should_use_bright_neutral_spike_components(
+        len(components), full_count, mask_share,
+    ):
+        return detections
+    return [d for d in detections if d.type_id not in FULL_SPIKE_TYPES] + list(components)
 
 
 def _bright_neutral_triangle_direction(dx: float, dy: float) -> str | None:
