@@ -2,6 +2,20 @@
 
 ## Latest evidence and bounded repair (2026-10-01)
 
+BATCH_93 associates all twelve preserved Lap Around user JMaps without detector
+changes. OrdinalN is historical test(N+5)/tracked screen-NN. The source-only
+baseline is2,657/2,660 exact,22 strict extras/three misses; source review shows
+omitted real objects and room12 right-edge reference disagreements. Keep raw
+scores, originals and separate metadata. Known-style controls strengthen
+measurement, not new cross-family transfer. Read the ignored Lap baseline
+and association review; do not tune away correct source objects for a score.
+
+ATK2's native800x600 viewport is user-confirmed. Source pitch evidence and
+FTFA favor a longer virtual vertical extent than captured. Preserve native
+y576 bottom origins,24 visible versus32 full pixels, Source/Blend projection
+and default608. No automatic viewport/grayscale rewrite has shipped. Prefer
+a single cached transform over duplicated complete scans if later validated.
+
 BATCH_92 closes the current-output/review audit, not the geometry goal. All71
 ordinary outputs now use BATCH91's tested code; 57 were newly scanned and14
 checksummed compatible cases reused. All16 exact controls remain identical.

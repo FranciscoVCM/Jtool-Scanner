@@ -1,5 +1,9 @@
 # JTool Scanner Project Handoff
 
+This migration-era handoff is not a live Git status report. Consult
+`DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
+The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
+
 ## 1. Purpose and target workflow
 
 JTool Scanner turns screenshots of *I Wanna Be the Guy* fangame rooms into
@@ -370,10 +374,19 @@ phase, and normal start-save selection. Local structural reviews exist for
 rooms 01, 02, 03, 05, and 11. Local save crops and montages are preserved
 under `.artifacts`.
 
-Lap Around is not yet a strict exact benchmark because corrected JMaps are
-still missing for all twelve rooms. Do not present its visual regressions as
-exact scores. The tracked follow-up-2 Lap triplet cannot safely be assigned to
-a specific Lap Around ordinal.
+On 2026-10-01, twelve independent user JMaps were preserved locally under
+`local_corpus/lap-around-references-20261001/`. Complete source/reference
+review confirms `lapAroundN.jmap` -> Lap Around-NN -> historical test(N+5).
+The source-only baseline matches 2,657/2,660 reference objects, with 22 strict
+extras and three misses; six rooms have zero strict discrepancies. Source
+crops establish omitted real objects and room12's right-edge reference
+disagreement. Keep raw scores and originals; metadata differences are separate.
+
+Tracked screenshots remain visual fixtures. These supplied maps and generated
+baseline are ignored/local-only, not an already promoted permanent exact gate.
+Validate reference completeness before promotion. FTFA remains the committed
+strict golden-room corpus. The follow-up-2 Lap triplet still cannot safely be
+assigned to a specific Lap Around ordinal.
 
 ## 11. Other verified real-image cases
 
@@ -549,7 +562,8 @@ address binding so a second process fails instead of splitting requests.
   selection.
 - Bullet blockers, mini killer blocks, and flipped saves are editable/exportable
   types but are not established automatic-scanner corpora.
-- Lap Around cannot be used as an exact gate until corrected JMaps exist.
+- Lap Around's twelve local references support provisional exact comparisons;
+  resolve source/reference disagreements before promoting a permanent gate.
 - Ignored baseline reports are not durable CI gates unless intentionally
   preserved.
 - The scanner is large and rule-dense. Changes should be localized,
@@ -558,8 +572,9 @@ address binding so a second process fails instead of splitting requests.
 
 ## 16. Remaining work and recommended next steps
 
-1. Create hand-corrected JMaps for Lap Around-01 through Lap Around-12, then
-   add a manifest and promote the set to an exact benchmark.
+1. Validate the supplied Lap Around-01 through Lap Around-12 references and
+   completeness/metadata disagreements without altering originals, then
+   deliberately select permanent fixtures and an exact manifest.
 2. Choose and preserve a known-good FTFA benchmark report for
    `--baseline --fail-on-regression`; generated `out` directories alone are
    not durable.

@@ -34,9 +34,12 @@ python -m jtool_scanner.cli benchmark fixtures\regressions\unseen-rooms\ftfa\man
 ```
 
 The runner produces a self-contained HTML dashboard and exact coordinate/type
-metrics. Lap Around and follow-up rooms need one hand-corrected `.jmap` each
-before they can join the exact gate; their saved screenshots remain useful
-visual regression references until then.
+metrics. Twelve Lap Around user JMaps arrived on2026-10-01 and are preserved
+in the ignored local corpus, not this tracked directory. Their associations
+and provisional exact baseline are verified; source/reference completeness
+disagreements need resolution before permanent exact-gate promotion. Follow-up
+rooms still need independent corrected references. Historical scan screenshots
+are not reference answers.
 
 ## Follow-up
 

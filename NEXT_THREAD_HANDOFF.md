@@ -6,6 +6,22 @@ branch, clone or worktree.
 
 ## New human-review intake (BATCH_89)
 
+BATCH_93 adds twelve local Lap Around user JMaps. Complete source/reference
+review confirms ordinalN -> test(N+5) -> tracked screen-NN. Read ignored
+`.artifacts/lap-reference-intake-20261001/BASELINE.md`, `ASSOCIATION_REVIEW.md`
+and `verification.json`. Source-only run `80e00c8ba02540e5973ffba1367f8e50`
+is COMPLETE; do not restart session5500. Scores are2,657/2,660 exact,22 extras/
+three misses, with separate metadata. Source crops support omitted real objects
+and room12's right-edge reference disagreement. Do not delete correct source
+objects to optimize incomplete references. Originals are unchanged, ignored
+and ZIP-preserved; user confirmation of completeness is pending.
+
+ATK2 is user-confirmed native800x600 despite its997x762 attachment. A cheap
+source pitch probe fits y extent770 versus762 captured; FTFA also favors longer
+vertical extents. This is diagnostic evidence, not an implemented clipping
+fix. Default608, Source/Blend projection and FTFA remain protected. No code
+changed for BATCH92/93; the current71 audit remains applicable.
+
 BATCH_92 is the latest completed audit checkpoint; it supersedes the partial
 coverage statements below. Read recent DEVELOPMENT_PROGRESS.md and ignored
 `.artifacts/user-review-20261001/71-screen-final-current-successor-audit.md`.
@@ -127,10 +143,10 @@ checksummed outputs and review only where evidence requires it.
 
 - FTFA-1–4 have tracked source images, corrected JMaps and JTool reference
   renders; FTFA remains a strict exact control.
-- Lap Around-01–12 have sources, historical scans and ignored current
-  scanner-generated reconstructions, but no per-ordinal corrected JMaps or
-  verified reference JTool renders. A few Lap source/JTool/Blend triplets exist
-  but cannot safely be assigned to those twelve ordinals.
+- Lap Around-01–12 now have preserved per-ordinal local user JMaps, verified
+  reference renders and a source-only exact baseline (BATCH93). They are not
+  yet a published golden corpus; source/reference disagreements and separate
+  metadata remain. The follow-up-2 Lap triplet still has no safe ordinal.
 - Many other exact reference/JTool fixtures exist, including Irkara,
   CN3-16/18, NANG-128/135/138, F189, CN2-5 and Partysu3. The CN3_27/CN3_92
   panels in the BATCH_88 review are renders of current detections, not

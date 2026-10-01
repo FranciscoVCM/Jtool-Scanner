@@ -199,3 +199,27 @@ positive-recall and negative-configuration examples. Removing an inaccurate
 proposal can lose a real object entirely; adding a plausible gap-shaped triangle
 can create a hazard that does not exist. These labels guide shared mechanism
 tests, never fixed-coordinate repairs. The wider geometry goal remains active.
+
+### Lap Around references and synthetic screen meaning
+
+Twelve Lap Around JMaps are preserved byte-for-byte in ignored
+`local_corpus/lap-around-references-20261001/references/`, with original names,
+SHA-256 provenance and a verified ZIP asset backup. Complete source/reference
+review and a12x12 exact-match matrix confirm ordinalN -> test(N+5)/screen-NN.
+Source-only baseline:2,657/2,660 non-start objects,22 strict extras/three misses.
+Six rooms have zero strict errors; eleven have equivalent solid occupancy.
+Source omissions and room12 right-edge differences remain documented, not
+silently corrected. Separate metadata; completeness confirmation is pending.
+
+Synthetic screens are deterministic renders with known object types, sizes,
+directions and origins. Vary controlled/real textures, brightness, palette,
+polarity, scale, clipping and occlusion while retaining valid exact labels.
+Include negative gaps/decorations as well as positives. Use them now to isolate
+mechanisms, not only after all71 are solved. AI-generated pictures do not
+guarantee geometry. Validate synthetic gains on independent real sources;
+they cannot certify arbitrary tilesets. Human labels guide supervised
+engineering, not answer lookup or unsupervised detector training.
+
+ATK2 is native800x600 despite the resized attachment. FTFA is a protected
+comparison. Keep bottom origins/missing8px distinct from a stretched full608
+viewport. Source pitch is promising; no new clipping correction is validated.

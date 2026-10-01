@@ -9721,3 +9721,78 @@ fingerprint `23752cc28cdc79c16acd945fba84f7656ab29eeff51a64a3424390ebd1696998`.
 The prior actual CN3_7 HTTP scan/export parity remains valid. Raw human intake,
 generated audits/images/maps, private notes and transcript remain ignored and
 untracked; only this public summarized checkpoint is intended for publication.
+
+### BATCH_93 Lap Around reference intake and capture diagnosis
+
+BATCH92's reviewed audit/trace checkpoint was committed and pushed as
+`5d7c0d1318878cab7c0957f4746e43b671478b4f` before proceeding. Twelve newly
+supplied Lap Around JMaps were then copied byte-for-byte to ignored
+`local_corpus/lap-around-references-20261001/references/`. Downloads originals
+are untouched. Copies, parser results, sources and ZIP asset entries verify by
+SHA-256. Same-disk ZIP is not independent backup. Raw maps/images remain private.
+
+Complete source/reference views were individually reviewed in small batches.
+User order, tracked ordinal filenames, distinct whole-room structures and a
+12x12 exact-match matrix with unique diagonal winners confirm
+`lapAroundN.jmap` -> Lap Around-NN -> test(N+5), for N=1..12. This establishes
+identity, not reference completeness. Follow-up-2 Lap remains unassigned.
+
+Source-only run `80e00c8ba02540e5973ffba1367f8e50` completed all12. References
+enter only post-scan evaluation. Package remains
+`2b1f537661d6ddd90e185c797a6a1d76b4219f0f29101f2a68e51da70a3f7d21`.
+All source/reference/artifact hashes and comparison recomputations verify.
+No detector, threshold, fixture image or original JMap changed.
+
+| Lap Around | Exact / expected | Strict extras | Misses |
+|---|---:|---:|---:|
+| 01 | 220 / 220 | 6 | 0 |
+| 02 | 210 / 210 | 2 | 0 |
+| 03 | 212 / 212 | 0 | 0 |
+| 04 | 210 / 210 | 2 | 0 |
+| 05 | 282 / 282 | 0 | 0 |
+| 06 | 261 / 261 | 2 | 0 |
+| 07 | 219 / 219 | 0 | 0 |
+| 08 | 186 / 186 | 0 | 0 |
+| 09 | 231 / 231 | 0 | 0 |
+| 10 | 141 / 141 | 3 | 0 |
+| 11 | 213 / 213 | 0 | 0 |
+| 12 | 272 / 275 | 7 | 3 |
+
+Total2,657/2,660,22 strict extras/three misses, zero shifts/wrong directions.
+Comparator excludes player start and checks infinite jump. Separate metadata
+includes start/session state and some1.4.0 versus1.3.5 version strings; zero
+object errors are not all-metadata equality. Eleven solid unions are identical;
+12 has4,096 extra solid pixels against its supplied map. Keep raw scores.
+
+Whole current Source/JTool/Blend review covers all six discrepancy cases; the
+other six carry independently reviewed reference geometry through full non-start
+typed-map equality, not metadata certification. Faithful crops support omitted
+real source objects: four of01's six upper downs, its middle save/portal, downs
+in02/04/10, two silhouettes in06, and right-edge terrain/lower up in12. The
+three misses in12 reflect source-inconsistent supplied right-edge geometry.
+Preserve original maps; confirmation of completeness is pending. Never delete
+correct source objects or inject reference coordinates to inflate a score.
+
+Ignored evidence: `.artifacts/lap-reference-intake-20261001/BASELINE.md`,
+`ASSOCIATION_REVIEW.md`, `verification.json`, complete immutable run and
+Source/Reference/Current/Blend renders/crops. Local provenance and verified
+asset ZIP remain ignored. The unchanged-code71 audit remains applicable.
+Known-style Lap controls do not certify unresolved CN3 rooms or new no-tuning
+cross-family transfer. Tests/controls from BATCH91 remain applicable; no new
+full-suite pass is claimed for this measurement/documentation checkpoint.
+
+ATK2 is user-confirmed native800x600, although its attachment is997x762.
+Cheap source-only edge-pitch diagnosis fits y extent770 against captured762,
+near772.16px expected virtual608 extent for clipped600. FTFA fits738/829/738/773
+against729/817/726/761 captured, corroborating the related issue. This is not
+a validated automatic viewport decision or correction. Preserve default608,
+bottom native origins, Source/Blend projection and FTFA controls. No grayscale
+duplicate or extra complete detector pass was introduced.
+
+Next bounded repair remains CN3_30's marker-adjacent positive, Halls6's false
+opposite gap and Say7 mini alias, using complete frozen structures/no-tuning
+roles in BATCH92_NEXT_PLAN. Improve cached material/polarity/configuration
+evidence, not room answers. Deterministic synthetic scenes isolate mechanisms
+now with texture/brightness/scale/clipping variants and real transfer tests.
+Human reviews/JMaps are supervised engineering/evaluation evidence, not an
+unsupervised learning pipeline. Wider goal stays ACTIVE.
