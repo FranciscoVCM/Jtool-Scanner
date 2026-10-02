@@ -2,6 +2,47 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_103 rejected: protected recovery does not replace reserved transfer
+
+Production remains B95. The isolated v2 separates same-native-size ink evidence
+from larger-sprite appearance, retains independent original geometry/material
+proof, and rejects NEW mini hypotheses only when an actual source rectangle
+owns them. It never emits a block, deletes an existing mini, or treats simple
+bounding-box overlap as ownership. This restores all six previously reviewed
+development outcomes, including CN3-29 3/3, while excluding the FTFA refit and
+six Irkara art negatives. Portable64 and affected271 tests pass (overlapping).
+
+All23 exposed ordinary-path shadow cases finish with strict input/artifact,
+ALLmetadata, nongeometry and duplicate checks. All16 exact controls pass:
+15 maps/comparisons equal B95; Arcfox corrects one full direction and removes
+two false rights, independently verified against whole source and all deltas.
+Six development maps equal already source-reviewed B101 geometry, metadata
+and render bytes; that is hash-verified review carry, not six fresh reviews.
+CN3-29 also receives fresh whole Source/JTool/Blend plus all six delta crops.
+CN3-31's unrelated left correction still does not recover its frozen triforce.
+
+The separately sealed, byte-identical reserved CN3-9 scan fails: its declared
+six-object rail remains2/6, with all four minis missing and one false full.
+All4096 visible solid pixels remain. Seven real new minis elsewhere have fresh
+source review but do NOT satisfy the fixed rail denominator. Reject the
+candidate; do not launch the additional15 controls, runtime or final71 sweep
+on failed code. Twenty-four completed shadow outputs remain preserved.
+
+An ordinary-map/ALLmetadata-equivalent CN3-9 context now isolates the misses.
+Every missing mini is searched, unmasked and unambiguous, with both signed
+source-material sides and base support. Both geometry channels score only
+10/12 localized slope samples; there is no coherent outline witness. The
+first failure is geometric sampling, not cross-size ink matching. The false
+full also retains one conservative RGB side-presence protection. Trace those
+source samples before implementing a successor; do not lower11/12 for a room
+or remove RGB protection indiscriminately. CN3-9 is now exposed. Freeze a NEW
+historically exposed reserve before further tuning, preserving all old gains.
+
+The audit remains18 current B95/53 older, with no acceptance upgrade. App/root
+and health are200 on unchanged packagece89/app418a. Native600 handling and
+whole-room block/full/mini conflicts remain unresolved; the goal and every
+original completion gate stay ACTIVE.
+
 ### BATCH_102 rejected: coherent outline ink is also native-size dependent
 
 Production is still B95. Separate immutable source-material sides protect the

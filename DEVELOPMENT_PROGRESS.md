@@ -10534,3 +10534,69 @@ Lap copies/associations remain verified and local-only. Goal/all six gates
 ACTIVE. Next investigate size-calibrated source appearance and independent
 source ownership/geometry, preserving BOTH real outlined minis and the new
 FTFA/background-art negatives. All prototypes/contexts/reports stay ignored.
+
+## 2026-10-02 — BATCH_103 development/controls pass, reserved rail fails
+
+Start1f09/B95. Preserve frozen B102 full structures/annotation85655785 and
+seven exposed development roles; CN3-9's six-object rail remains the reserve.
+Read-only free blurred-line fitting yields unstable/unphysical ink estimates;
+reject it. Half-native-size attenuation v1 still loses two real CN3-29 minis.
+No original coherent native16 witness exists nearby in CN3-29 or Irkara-89;
+larger witness radius cannot prove a missing same-size appearance model.
+
+Ignored v2 retains same-size foreground evidence, but abstains from absolute
+ink parity when only larger coherent original sprites are available. Closed
+source geometry, exterior evidence and full-sprite ambiguity checks remain.
+Four actual rectangular source faces, or three plus one truly source-clipped
+face, veto only NEW contained minis. No block emission/existing-mini deletion,
+new-proposal witnesses, screen/palette/hash/coordinate/reference rules or
+second scanner. Pure original gradients license real full-direction refits;
+FTFA's ink-only false refit fails. Original caches are shared scan-locally.
+
+Six actual equivalent-input context screens preserve all CN3-7/CN3-29 deltas
+and exclude FTFA's false refit plus all six Irkara art negatives. Portable64
+PASS26.235s; affected271 unique selected tests PASS165.605s. These overlap,
+not335 unique or the full suite. Native width2/1 diagnostics now retain real
+minis at both scales; source-rectangle/open-face/protruding-mini guards pass.
+
+Upfront manifest/options/partition validation seals all39 cases. Exposed
+worker65920 endsEXIT0:23 complete full-path shadow cases, runffbc178c... .
+Strict verification retains ALLmetadata/nongeometry, input/artifact identity
+and no new duplicates. All16 controls PASS:15 maps/comparisons equal B95;
+Arcfox replaces left25632 with real down25632 and removes false rights416256/
+544384. Fresh whole Source/JTool/Blend and ALL4delta crops support those changes.
+FTFA926/928/no extras/shifts/wrong directions, Flames252/current errors unchanged.
+
+Six development whole maps/ALLmetadata/options/nativecrop/JTool/Blend bytes
+exactly equal independently reviewed B101 outputs, and all prior review PNG
+hashes verify. This is equality-backed carry, not six fresh reviews. CN3-29
+additionally has fresh whole/all6delta source review. Complete frozen outcomes:
+CN3-7 20/21,same1extra; NANG13018/25,6extras; CN3-8 5/9,5extras; CN3-25 2/5,
+same7extras; CN3-29 3/3,same2extras; CN3-30 2/2,no extras. All declared solid
+unions remain. CN3-31 stays0/3; its unrelated real left refit is not region gain.
+Whole-room block/miniblock/spike/vine/warp issues remain MAJOR, no upgrades.
+
+After all23 exposed criteria pass and detector bytes freeze, separate reserved
+worker89367 endsEXIT0, runacfd042a... . Its sealed runtime exactly equals the
+exposed candidate. CN3-9 rail STILL2/6, four minis missing, false full64,448
+retained; all4096 solid pixels unchanged. Fixed >=3/6/zero-extra gates FAIL.
+Seven real new minis outside that ROI have fresh whole/all7delta source review,
+but cannot replace the denominator. B103v2 REJECTED; all24 complete outputs
+preserved. Do not run extra15, quiet runtime/final71 or promote failed code.
+
+Correct ordinary B95 CN3-9 capture endsEXIT0 and matches whole map/ALLmetadata;
+traceSHAad8a8a31. An earlier wrong-report request fails before mkdir/no scan,
+then read-only inventory finds the actual B95 report; no live worker restarted.
+Decision-equivalent observer proves all four missing minis searched/unmasked,
+with no conflicting closed geometry, both signed source-material sides/base,
+but only10/12 localized slope samples; coherent stroke0. Geometric sampling
+fails before appearance. The false full's old RGB absence proof is false on
+one side. Trace those samples and dense neighbor context before implementing;
+do not lower11/12 for this room or broadly erase RGB-presence protections.
+CN3-9 is now EXPOSED, so freeze a NEW reserve before further tuning.
+
+Production/app unchanged B95/packagece89/fingerprint418a; HTTP200/parity checked
+for publication. Public checkpoint documents measured rejection, not detector
+promotion. Audit remains18 current/53 older, no acceptance upgrades. All workers
+terminal; original goal/all six gates ACTIVE, native600 and shared terrain
+conflicts still unresolved. Private refs/indexes/images/artifacts stay ignored.

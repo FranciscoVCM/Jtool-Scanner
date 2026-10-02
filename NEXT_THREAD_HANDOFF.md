@@ -4,7 +4,46 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: B102 REJECTED; native16/full32 appearance is not identical
+## Latest checkpoint: B103 REJECTED; diagnose localized slope sampling next
+
+Read ENTIRE ignored original GOAL_PLAN, current CROSS_TILESET_PLAN/progress,
+`.artifacts/user-review-20261001/BATCH103_RESUME.md` and BATCH103_PLAN.md.
+All workers are terminal. Production remains B95/packagece89/app418a; no failed
+detector deployed. Goal/all six gates ACTIVE. Do not restart completed scans.
+
+Ignored B103v2 separates same-native-size ink from cross-size appearance and
+requires actual source-closed rectangular ownership to veto NEW minis. It
+retains all six real development gains, FTFA's real partial left and all six
+Irkara art negatives. Portable64/affected271 PASS (overlap). All23 exposed
+full-path scans complete, ALLmetadata/nongeometry/input/artifact/duplicates
+verified. All16 controls PASS:15 equal B95; Arcfox one direction/two false
+right corrections have fresh whole-source/all-delta review. Six development
+whole maps/metadata/JTool/Blend bytes exactly equal source-reviewed B101;
+previous review PNG hashes verified. CN3-29 additionally reviewed fresh.
+
+Separately sealed reserved CN3-9 FAILS fixed rail: still2/6, four minis missing,
+one false full, all4096 solid pixels retained. Seven real new minis OUTSIDE
+the rail are source-reviewed but cannot replace its denominator. B103 rejected;
+do NOT run extra15, quiet runtime or final71 on this failed candidate. Preserve
+all24 complete outputs/seals/prototypes, never overwrite B101/B102/B103 files.
+
+New ordinary CN3-9 stage capture at `b95-CN39-stage-context-v1/trace.json` has
+SHA256ad8a8a3185e32cb09df8780475e9fdb2cf98184c83f75a094504f1c80066c45d
+and whole-map/ALLmetadata equivalence. `batch103-cn39-failure-trace-v1.json`
+proves every missing mini is searched/unmasked/unambiguous with signed material
+and base, but localized slopes score10/12 instead of11/12; coherent stroke0.
+The false full retains one RGB side-presence protection. Inspect failed samples
+and shared geometry cause before changing thresholds. CN3-9 is NOW EXPOSED;
+freeze a NEW reserve before any successor implementation. No holdout claim.
+
+Current interim audit18 B95/53 older, all statuses conservative. App/root and
+health200, disk/loaded parity rechecked for publication. Twelve local Lap maps
+and N=test(N+5) mappings retained; native600/default608 remains unresolved.
+No whole-room acceptance/universal/quiet-runtime certificate. Protect original
+ALL goal facts, six development positives, new width/frame/RGB/art negatives
+and all16 controls. Block selection/masking still needs shared causal repair.
+
+## Previous checkpoint: B102 REJECTED; native16/full32 appearance is not identical
 
 Read ENTIRE original ignored GOAL_PLAN, latest CROSS_TILESET_PLAN/progress and
 ignored BATCH102_RESUME plus CN329-positive-loss-trace-v1.json. B95production
