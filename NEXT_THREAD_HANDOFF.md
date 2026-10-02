@@ -4,7 +4,41 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: B104 REJECTED; distinguish diffuse RGB from real weak edges
+## Latest checkpoint: B105 REJECTED; trace outlined full proposal evidence
+
+Read ENTIRE original GOAL_PLAN/current CROSS_TILESET_PLAN/recent progress and
+ignored BATCH105_PLAN/RESUME. All workers terminal. Production unchanged B95;
+goal/all six gates ACTIVE. No failed detector or new scan is in the app.
+
+One-side full-vs-closed-mini-pair experiment fixes the old CN3-9 false full in
+seven same-input contexts, but deletes a true weak full on gradient background
+at1.25 scale. V1 REJECTED. V2 possible affine+full model safeguards that case,
+passes65 inherited/3 explicit tests and32 affine/remote-edge subcases, but loses
+7/64 true weak fulls on curved/wave/checker/noise backgrounds (prior keeps64/64).
+V2 REJECTED. No full pipeline/control/reserve/timing launched for either.
+Do not drop weak RGB protection or widen affine-fit error to hide these losses.
+
+New public test/test renderer preserves64 on B95 and independently catches both
+failed candidates (7 subtest failures each). All64 pixel hashes exactly equal
+the preserved probe. Public49 focused tests PASS7.021s, not a full-suite claim.
+
+New `batch105-CN39-proposal-trace-v1.json` and
+`b95-CN39-proposal-context-v1/trace.json` prove whole typed map/ALLmetadata equals
+ordinary B95. Observer worker3839 COMPLETEEXIT0;59 target events. False full
+Down64,448 is emitted by `_detect_outlined_terrain_spikes` at0.7540740740740741;
+late RGB arbitration only preserves it. Inspect original three-segment max
+brightness, actual full-side support and the original mini-size alternative.
+Next repair source-qualified proposal evidence, not late blind suppression.
+Observer timings are NOT ordinary runtime evidence. No public scanner edit yet.
+
+Preserve immutable B104 gains/structures and all exact/negative controls. Halls1
+reserve remains candidate-unrun/unopened with unchanged3/3/zero-extra/terrain
+criterion; freeze next experiment before tuning. Audit18 B95/53 older without
+upgrades. All12 Lap original/copy/source hashes freshly match; private copies,
+ZIP and indexes stay ignored. Native600/default608 and shared terrain conflicts
+remain unresolved. Do not relabel a safe checkpoint as goal completion.
+
+## Previous checkpoint: B104 REJECTED; distinguish diffuse RGB from real weak edges
 
 Read ENTIRE original ignored GOAL_PLAN, current CROSS_TILESET_PLAN/progress and
 ignored BATCH104_RESUME plus BATCH104_V2_PLAN. All workers are terminal. Public

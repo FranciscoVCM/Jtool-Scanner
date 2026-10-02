@@ -2,6 +2,38 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_105 rejected: a missing side cannot erase weak textured geometry
+
+Production remains B95. Quantization-coupled aggregate RGB bounds still admit
+the false CN3-9 direction; do not call them absence. An isolated one-side
+mini-pair alternative removes that false in seven equivalent-input contexts
+and retains all known changes, but deletes a real weak scalar full on a gradient
+at1.25 scale. The preceding candidate retains it. Reject v1 before full scans.
+
+V2 adds possible affine-background/full-coverage ambiguity, not new absence.
+Inherited65 and the explicit weak/hidden/strong three tests pass; all32 affine/
+remote-edge subcases pass. Broader curved/wave/checker/noise64 cases expose seven
+NEW real-full losses: prior64/64 retained, v2 only57/64. Reject v2 too; do not
+widen a fit threshold for these examples. A new public deterministic guard
+preserves all64 on B95 and independently catches BOTH rejected candidates.
+All64 public/probe input pixel hashes agree. Public49 focused tests pass;
+none of these results is a full-scanner, all16-control or runtime certificate.
+
+An ordinary-map/ALLmetadata-equivalent upstream observer now locates the false
+full's creation in `_detect_outlined_terrain_spikes` (score0.754074), not in late
+reconciliation. That classifier samples maximum brightness near three segments;
+joined minis/background detail can lend brightness without owning full slopes.
+Next inspect original per-segment evidence and independent size/direction before
+adding a source-qualified proposal safeguard. Keep late weak RGB/occlusion
+protections intact. The new Halls1 candidate reserve remains unrun/unopened;
+all fixed structures/criteria remain, as do the original goal gates.
+
+No failed detector deployed, no all71 resweep or acceptance upgrade; audit18
+B95/53 older. Shared terrain repair/native600 remain unfinished. All twelve
+Lap originals/copies/source hashes reverify with zero failures; N=test(N+5),
+local-only originals preserved. Synthetic scenes are known-geometry evaluation,
+not answer injection, automatic learning, or a substitute for real transfer.
+
 ### BATCH_104 rejected: corner recovery still needs RGB-safe conflict reduction
 
 Production remains B95. A separate native-coordinate corner-exclusive geometry

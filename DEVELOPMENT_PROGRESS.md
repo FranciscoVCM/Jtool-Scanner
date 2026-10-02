@@ -10647,3 +10647,50 @@ displaced RGB response versus true weak/isoluminant/occluded/superposed boundari
 before changing negative proof. Retain portable controls and full pipeline gates.
 Native600, shared block/mask repair, required reserved success/runtime/final71
 remain unfinished; ACTIVE goal, not a completion or universal accuracy claim.
+
+## 2026-10-02 — BATCH_105 rejects one-side absence; upstream proposal traced
+
+Start e7c0bf4/B95. Retain all B104 full structures/criteria, new Partysu3negative
+and unopened Halls1 reserve. Exact aggregate quantization-coupled RGB projection
+bounds still compatible on both exposed false-full sides; not absenceproof.
+
+Ignored v1 changes ONLY additional corner mini-pair size conflict: permit one
+existing-proven absent necessary side if both leading corridors unmasked>=10,
+neither>1/4 strong compatible RGB, no4 coherent partial color-only samples.
+Original two channels/all other absence/refit/mini-veto calls intact. Inherited65
+PASS44.169s. Three new counterexample tests explicitly PASS4.346s; inherited
+harness exits before them, so separate runner necessary (never claim unrun).
+Seven actual contexts retain all B104 gains/negatives and remove CN39falsefull.
+However gray+3 truefull on gradient at1.25 is deleted; oldB104v2 keeps all32
+affine/remote-edge subcases. V1 REJECTED before full scans.
+
+V2 possible weak-full affine+blurred-coverage model is additional abstention,
+not absence/positive geometry. Only416 localpixels/smallmask; no duplicatefull
+normalization. Inherited65PASS44.881s, explicit3PASS4.607s, affine/remote32subcases
+PASS3.372s. Broader64 known realfulls vary curved/wave/checker/noise backgrounds,
+scalar/RGB contrast and scales. Prior keeps64/64; v2 keeps57/64: SEVEN new losses.
+V2 REJECTED. No v2contextscreen/fullcase/all16control/reserve/runtime/final71.
+Preserve both variants/results; no residual widening or benchmark relaxation.
+
+New public deterministic source generator/negative-loss guard uses only existing
+full hypothesis, not the missing-mini answer coordinates. B95 retains all64.
+All64 generated public pixels exactly equal preserved probe hashes. Actual
+public test independently rejects v1 ANDv2, seven subtest failures each; its
+diagnosticEXIT0 asserts expected failure, not a passing detector. Public selection
+spike-size/color/stage-context/appearance:49PASS7.021s, not full-suite/all16 proof.
+
+Read-only observer3839 endsEXIT0 after normal scan; wholetypedmap/ALLmetadata
+equals current ordinaryB95, source/artifact/code identities reverified.59 target
+events locate falseFullDown64,448 creation in `_detect_outlined_terrain_spikes`,
+score.7540740740740741, kindoutlined_terrain_spike_down. Max-neighbor brightness
+on three nominal segments can borrow mini/background detail; inspect actual
+per-segment samples and independent full-source sides before next implementation.
+One preliminary observer parse error fails before scan/mkdir, repaired harness
+only; no live worker restarted. No observer timing is an ordinary benchmark.
+
+Allworkers terminal. Publiccheckpoint onlytest/docs; appB95/http200/parity,
+audit18current/53older unchanged/noaccepted-room upgrade. Lap12 originals,
+copies andsources rehashzero failures; all ordinalN=test(N+5), local ZIPpresent.
+Synthetic images are deterministic known-geometry tests; answers score outputs
+only, not automatic ML or replacement for real cross-family transfer. Native600
+and sharedblock selection unresolved. Goal/all6 originalgates ACTIVE.

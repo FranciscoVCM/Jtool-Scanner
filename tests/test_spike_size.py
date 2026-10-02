@@ -1,4 +1,6 @@
 import unittest
+from math import sin
+from random import Random
 
 from PIL import Image, ImageDraw
 
@@ -42,6 +44,40 @@ def pair(d, x=320, y=320):
 
 def changes(image, keys, solids=()):
     return contour_size_changes(image, Box(0, 0, image.width, image.height), keys, list(solids))
+
+
+def weak_full_with_strong_pair(direction, style, delta, scale):
+    """Known weak geometry over nuisance texture; labels never enter scanning."""
+    raster = Image.new('RGB', (800, 608), (100, 100, 100))
+    rng = Random(105)
+    for y in range(304, 369):
+        for x in range(304, 369):
+            dx, dy = x - 320, y - 320
+            if style == 'quadratic':
+                extra = .008 * (dx - 16) ** 2
+            elif style == 'wave':
+                extra = 3 * sin((dx + dy) / 6)
+            elif style == 'checker':
+                extra = 2 * ((x // 4 + y // 4) % 2)
+            else:
+                extra = rng.uniform(-2, 2)
+            level = round(100 + dx * .6 + dy * .2 + extra)
+            raster.putpixel((x, y), (level, level, level))
+    mask = Image.new('L', (800, 608))
+    ImageDraw.Draw(mask).polygon(
+        [(320 + a, 320 + b) for a, b in VERTICES[direction]], fill=255)
+    for y in range(320, 353):
+        for x in range(320, 353):
+            if mask.getpixel((x, y)):
+                color = raster.getpixel((x, y))
+                raster.putpixel((x, y), tuple(c + d for c, d in zip(color, delta)))
+    draw = ImageDraw.Draw(raster)
+    for _, x, y in pair(direction):
+        draw.polygon([(x + a / 2, y + b / 2) for a, b in VERTICES[direction]],
+                     fill=(25, 25, 25))
+    raster = raster.resize((round(800 * scale), round(608 * scale)),
+                           Image.Resampling.BILINEAR)
+    return RGBImage(raster.width, raster.height, raster.tobytes())
 
 
 class SpikeSizeTests(unittest.TestCase):
@@ -151,6 +187,21 @@ class SpikeSizeTests(unittest.TestCase):
                 )
                 image = RGBImage(800, 608, variant.tobytes())
                 self.assertEqual(changes(image, [full, mini]), (set(), set()))
+
+    def test_weak_full_on_nonuniform_background_survives_strong_mini_pair(self):
+        # One apparently absent side is not enough to delete an existing weak
+        # full when a real boundary is obscured by nuisance texture/resampling.
+        # Supplying only the existing full permits independently supported
+        # mini recovery without injecting the generated missing-mini answers.
+        for direction in VERTICES:
+            for style in ('quadratic', 'wave', 'checker', 'noise'):
+                for delta in ((3, 3, 3), (4, 0, -10)):
+                    for scale in (1, 1.25):
+                        with self.subTest(direction=direction, style=style,
+                                          delta=delta, scale=scale):
+                            image = weak_full_with_strong_pair(direction, style, delta, scale)
+                            full = (direction, 320, 320)
+                            self.assertNotIn(full, changes(image, [full])[1])
 
     def test_existing_mini_pair_does_not_get_readded_or_supply_a_chain(self):
         full, real = (3, 320, 320), pair(3)
