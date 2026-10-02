@@ -59,3 +59,56 @@ class TriangleAppearanceProbeTests(unittest.TestCase):
         for style, scale in (('unknown', 1), ('uniform-filled', 0)):
             with self.subTest(style=style, scale=scale), self.assertRaises(ValueError):
                 create_scene(style, scale)
+
+    def test_explicit_original_widths_preserve_default_pixels(self):
+        for style in STYLES:
+            for scale in (1, 1.25):
+                width = 2 if style == 'shaded-thick' else 1
+                with self.subTest(style=style, scale=scale):
+                    original = create_scene(style, scale)
+                    explicit = create_scene(style, scale, full_outline_width=width,
+                                            mini_outline_width=width)
+                    self.assertEqual(original[0].data, explicit[0].data)
+                    self.assertEqual(original[1:], explicit[1:])
+
+    def test_native_size_width_change_alters_pixels_not_labels_or_inputs(self):
+        for scale in (1, 1.25):
+            first = create_scene('shaded-thick', scale)
+            second = create_scene('shaded-thick', scale, full_outline_width=2,
+                                  mini_outline_width=1)
+            self.assertNotEqual(first[0].data, second[0].data)
+            self.assertEqual(first[1:], second[1:])
+
+    def test_palette_variants_preserve_known_geometry(self):
+        for scale in (1, 1.25):
+            original = create_scene('shaded-thick', scale)
+            for transform in ('invert', 'dim', 'bright', 'channel-permutation'):
+                with self.subTest(scale=scale, transform=transform):
+                    changed = create_scene('shaded-thick', scale, palette_transform=transform)
+                    self.assertNotEqual(original[0].data, changed[0].data)
+                    self.assertEqual(original[1:], changed[1:])
+                    self.assertEqual(changed[0].data, create_scene(
+                        'shaded-thick', scale, palette_transform=transform)[0].data)
+
+    def test_variant_configuration_is_preserved_without_supplying_answers(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with patch('scripts.triangle_appearance_probe.contour_size_changes',
+                       return_value=(set(), set())) as detector:
+                report = run_probe(Path(folder) / 'variant', [('shaded-thick', 1)],
+                                   full_outline_width=2, mini_outline_width=1,
+                                   palette_transform='invert')
+            options = dict(full_outline_width=2, mini_outline_width=1,
+                           palette_transform='invert')
+            self.assertEqual(report['definition']['render_options'], options)
+            self.assertEqual(report['rows'][0]['render_options'], options)
+            self.assertNotIn((7, 352, 336), detector.call_args.args[2])
+
+    def test_invalid_variant_is_rejected_before_creating_an_evidence_folder(self):
+        for options in (dict(full_outline_width=0), dict(mini_outline_width=5),
+                        dict(mini_outline_width=True), dict(full_outline_width=1.5),
+                        dict(palette_transform='unknown')):
+            with self.subTest(options=options), tempfile.TemporaryDirectory() as folder:
+                output = Path(folder) / 'invalid'
+                with self.assertRaises(ValueError):
+                    run_probe(output, **options)
+                self.assertFalse(output.exists())

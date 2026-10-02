@@ -10456,3 +10456,81 @@ progress/plan/handoff docs, NOT failed detector code. Goal/all six gates ACTIVE.
 Next separate signed source material from ink for destructive refits and trace
 terrain/background impostors; retain actual outlined-mini gains and independent
 old proofs. Reuse structured/context workflows instead of rebuilding hooks.
+
+## 2026-10-02 — BATCH_102 protections pass, cross-size appearance veto fails
+
+Start bed04f8/B95. Freeze inherited full development structures and CN3-31 now
+exposed, plus source-only new CN3-9 lower-left rail: two full downs/four mini
+downs,4096 visible solid pixels. Existing ordinary baseline finds2/6 with one
+false full and all four minis missing. Source/native8px axes and all input/
+artifact identities are sealed before tuning (`85655785...`). No hidden block
+decomposition is guessed. Private original maps/images remain unchanged.
+
+Capture ordinary-map/ALLmetadata-equivalent late contexts for Flames, Partysu3
+and Irkara-89. Observational B101 replay proves that filled original witnesses
+with stroke score0 were supplying an outline-style background model. The false
+minis' ink is unrelated to source objects. Ignored scan-local B102 uses only
+coherent original outline witnesses plus separate foreground/exterior fits;
+destructive full refits retain raw signed source sides. No labels/room/hash/
+palette/coordinate rules, new-proposal witnesses or second full scanner.
+
+Five same-input context screens preserve ALL CN3-7 additions/removals, prevent
+FTFA-4 wrong-direction replacement and eliminate six Irkara mini impostors.
+Portable59 pass25.695s;266 selected affected tests pass169.636s, overlapping.
+All16 exact controls complete: no lost exact or new reference errors, no new
+duplicates, ALLmetadata/nongeometry retained. Fifteen maps/comparisons equal
+B95; Arcfox removes one extra right(544,384), not B101's two removals. Its fresh
+whole-source review is not claimed here. These are UNSHIPPED controls.
+
+Complete development outcomes before rejection: CN3-7 20/21/same1extra,
+NANG-13018/25/extras6, CN3-8 5/9/extras5, CN3-25 2/5/same7extras and terrain.
+CN3-29 is ENTIRELY unchanged2/3, failing the frozen3/3 positive-preservation
+criterion. Candidate REJECTED even though all16 protections pass. CN3-30,
+CN3-31 and CN3-9 results are generated but not inspected/used for tuning at
+this checkpoint. The reserve is not unrun. No quiet runtime/final71/promotion.
+
+Run272b6ea7... naturally exits1 on a known late harness partition='remaining'
+error after24 valid cases;15 extra protected cases are unrun. Do not edit its
+sealed entrypoint/manifest, pretend39 completed, or restart completed scans.
+An attempted scoped stop after CN3-29 failure finds no matching process because
+it had already ended; nothing else is stopped. Separate correct extra-case
+entrypoint is prepared but must NOT run this rejected detector. Future harnesses
+need upfront metadata validation. All24/partial outputs and identities preserved.
+
+New ordinary B95 CN3-29 capture matches whole typed map/ALLmetadata. SAME-context
+trace proves the true missing up624304 is searched/unmasked/closed/base1 and
+newstroke localized1.0, but its foreground-fit fails. Native16 ink sides113/136
+are substantially lighter than native32 witness94/111 despite real same-family
+geometry. Another true mini256496 has118 median versus full93 and is likewise
+lost. Merely demanding identical foreground ink across sizes confuses capture/
+sprite-width/shader behavior with an impostor. Do not lower one scalar to force
+this room. Separately, true full ups352128/736224 have pure localized/sides/base
+scores1.0 but weak raw material on one side; B102's refit gate blocks them.
+FTFA's false down has pure localized0.1667. Independent geometry and appearance
+must remain separate; never forge signed material from ink to recover these.
+
+Additional fixed-geometry synthetic palette diagnostics recover18/20 omitted
+minis, zero NEW geometry extras. Both inverted thick-shading misses are also
+B101 misses on identical pixels/inputs: known limitation, not new loss or
+universal recognition. Public appearance workflow now accepts independent
+full/mini outline widths and palette transforms. Default pixels remain exactly
+the original defaults at both scales; rendering options/labels/input separation
+are tested and persisted. Final PUBLIC selection40 tests PASS3.501s. Real CLI
+runs on B95; its scores remain helper-only, not a shipped scanner improvement.
+
+Actual public CLI emits all10 rows with explicit full-width2/mini-width1 and
+inverted palette. Independent read-only execution of the HEAD renderer confirms
+all10 default pixel buffers, labels and coarse inputs are byte/equality unchanged.
+The frozen B101/B102 comparison with native full-width2/mini-width1 reproduces
+NEW B102 positive loss on all6 rows: B101 recovers6, B1020, at both capture
+scales. Explicit widths make shaded-thin/thick rows byte-identical, so these
+are not six independent styles. This supports a width/blur cause rather than
+an excuse to weaken a cutoff for CN3-29 alone. Both engines remain unshipped.
+
+Published app/source staysB95, HTTP200 and parity checked before publication.
+Interim audit stays18 current/53 older, with no acceptance upgrades. Update it
+with rejected experiment evidence, not candidate rows labeled current. All12
+Lap copies/associations remain verified and local-only. Goal/all six gates
+ACTIVE. Next investigate size-calibrated source appearance and independent
+source ownership/geometry, preserving BOTH real outlined minis and the new
+FTFA/background-art negatives. All prototypes/contexts/reports stay ignored.

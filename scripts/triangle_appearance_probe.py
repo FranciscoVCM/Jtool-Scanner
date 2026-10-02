@@ -15,7 +15,7 @@ from pathlib import Path
 import sys
 from time import perf_counter
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from jtool_scanner.corpus import implementation_identity
@@ -26,10 +26,22 @@ from jtool_scanner.spike_size import contour_size_changes
 
 STYLES = ('uniform-filled', 'uniform-outlined', 'shaded-thin', 'shaded-thick', 'empty-gap')
 SCALES = (1.0, 1.25)
+PALETTE_TRANSFORMS = ('identity', 'invert', 'dim', 'bright', 'channel-permutation')
 
 
-def create_scene(style: str, scale: float = 1.0):
+def _validate_render_options(full_outline_width, mini_outline_width, palette_transform):
+    for width in (full_outline_width, mini_outline_width):
+        if width is not None and (isinstance(width, bool) or not isinstance(width, int)
+                                  or not 1 <= width <= 4):
+            raise ValueError('outline width must be an integer from 1 to 4')
+    if palette_transform not in PALETTE_TRANSFORMS:
+        raise ValueError('unsupported palette transform')
+
+
+def create_scene(style: str, scale: float = 1.0, *, full_outline_width=None,
+                 mini_outline_width=None, palette_transform='identity'):
     """Return pixels, independent truth, coarse hypotheses and solid masks."""
+    _validate_render_options(full_outline_width, mini_outline_width, palette_transform)
     if style not in STYLES or scale <= 0:
         raise ValueError('unsupported style or nonpositive capture scale')
     raster = Image.new('RGB', (800, 608), (140, 165, 163))
@@ -54,16 +66,26 @@ def create_scene(style: str, scale: float = 1.0):
             raster.paste(shaded, (0, 0), mask)
             draw = ImageDraw.Draw(raster)
         if style != 'uniform-filled':
+            width = mini_outline_width if size == 16 else full_outline_width
             draw.line(points + [points[0]], fill=(45, 48, 53),
-                      width=2 if style == 'shaded-thick' else 1)
+                      width=width if width is not None else (2 if style == 'shaded-thick' else 1))
+    if palette_transform == 'invert':
+        raster = ImageOps.invert(raster)
+    elif palette_transform == 'dim':
+        raster = raster.point(lambda channel: round(.65 * channel + 20))
+    elif palette_transform == 'bright':
+        raster = raster.point(lambda channel: round(.65 * channel + 80))
+    elif palette_transform == 'channel-permutation':
+        red, green, blue = raster.split()
+        raster = Image.merge('RGB', (blue, red, green))
     raster = raster.resize((round(800 * scale), round(608 * scale)),
                            Image.Resampling.BILINEAR)
     return (RGBImage(raster.width, raster.height, raster.tobytes()), truth,
             hypotheses, [(304, 352, 112, 32)])
 
 
-def measure_spec(style: str, scale: float):
-    image, truth, hypotheses, solids = create_scene(style, scale)
+def measure_spec(style: str, scale: float, **render_options):
+    image, truth, hypotheses, solids = create_scene(style, scale, **render_options)
     started = perf_counter()
     added, removed = contour_size_changes(
         image, Box(0, 0, image.width, image.height), hypotheses, solids)
@@ -80,12 +102,18 @@ def measure_spec(style: str, scale: float):
                mini_recovered=(7, 352, 336) in added if style != 'empty-gap' else None,
                added=sorted(added), removed=sorted(removed),
                misses=sorted((expected - seen).elements()),
-               extras=sorted((seen - expected).elements()), helper_seconds=seconds)
+               extras=sorted((seen - expected).elements()), helper_seconds=seconds,
+               render_options=render_options)
     return image, row
 
 
-def run_probe(out_dir: Path, specs=None):
+def run_probe(out_dir: Path, specs=None, *, full_outline_width=None,
+              mini_outline_width=None, palette_transform='identity'):
     """Require a fresh destination; never replace previous evidence."""
+    _validate_render_options(full_outline_width, mini_outline_width, palette_transform)
+    render_options = dict(full_outline_width=full_outline_width,
+                          mini_outline_width=mini_outline_width,
+                          palette_transform=palette_transform)
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=False)
     specs = list(specs) if specs is not None else [
@@ -94,11 +122,11 @@ def run_probe(out_dir: Path, specs=None):
     definition = dict(implementation=identity, ordinary=False, helper_only=True,
                       probe_source_sha256=sha256(Path(__file__).read_bytes()).hexdigest(),
                       coordinates_used_for_evaluation_only=True,
-                      fixed_geometry=True, specs=specs)
+                      fixed_geometry=True, specs=specs, render_options=render_options)
     (out_dir / 'definition.json').write_text(json.dumps(definition, indent=2), encoding='utf-8')
     rows = []
     for style, scale in specs:
-        image, row = measure_spec(style, scale)
+        image, row = measure_spec(style, scale, **render_options)
         image_path = out_dir / f'{style}-{scale}.png'
         Image.frombytes('RGB', (image.width, image.height), image.data).save(image_path)
         row['image_png_sha256'] = sha256(image_path.read_bytes()).hexdigest()
@@ -114,8 +142,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out-dir', required=True, type=Path,
                         help='new ignored directory for reproducible generated evidence')
+    parser.add_argument('--full-outline-width', type=int,
+                        help='native full-sprite border width, 1 to 4; default preserves the style')
+    parser.add_argument('--mini-outline-width', type=int,
+                        help='native mini border width, 1 to 4; independent of full sprites')
+    parser.add_argument('--palette-transform', choices=PALETTE_TRANSFORMS, default='identity',
+                        help='controlled appearance change; geometry labels are unchanged')
     args = parser.parse_args()
-    run_probe(args.out_dir)
+    run_probe(args.out_dir, full_outline_width=args.full_outline_width,
+              mini_outline_width=args.mini_outline_width,
+              palette_transform=args.palette_transform)
 
 
 if __name__ == '__main__':

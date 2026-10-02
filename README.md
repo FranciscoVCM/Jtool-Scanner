@@ -266,6 +266,18 @@ identity and exact typed misses/extras. Coordinates only score outputs, never
 supply the missing object to the detector. It deliberately starts with incomplete
 coarse proposals, so scores measure the source-size helper, NOT the full scanner.
 The coarse false full spike may remain even when the missing mini is recovered.
+You can independently vary full/mini border widths and a controlled palette:
+
+```powershell
+python scripts/triangle_appearance_probe.py --out-dir .artifacts/triangle-width-palette-run-1 --full-outline-width 2 --mini-outline-width 1 --palette-transform invert
+```
+
+Widths are native pixels, 1 through 4; omitted widths preserve the original
+style and default pixels. Filled variants remain filled. Palette choices are
+`identity`, `invert`, `dim`, `bright` and `channel-permutation`. Every variant
+retains the same geometry/coarse inputs and records its rendering options.
+This can expose a mistaken assumption that native16 and native32 outlines have
+the same measured ink brightness after capture blur. It is not a scanner fix.
 These cheap diagnostics help explain appearance sensitivity but do not replace
 ordinary real-room scans, reserved transfer, Source/JTool/Blend review, exact
 controls or end-to-end latency measurements. Generated outputs stay ignored.

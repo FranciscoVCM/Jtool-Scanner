@@ -2,6 +2,49 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_102 rejected: coherent outline ink is also native-size dependent
+
+Production is still B95. Separate immutable source-material sides protect the
+FTFA-4 partial left spike; original coherent same-polarity outline witnesses
+and a separate foreground-ink fit eliminate all six B101 control impostors.
+The five actual equivalent-input context screens retain CN3-7's real gains.
+All 16 exact controls complete with no newly lost exact objects or new errors;
+Arcfox loses one extra right spike. Portable59 and affected266 tests pass
+(overlapping). These are UNSHIPPED measurements, not app improvements.
+
+Full-path development preserves CN3-7 20/21, NANG-130 18/25, CN3-8 5/9 and
+CN3-25 2/5, but CN3-29 remains 2/3 rather than the required3/3. Reject it;
+do not relax the denominator because controls pass. Same actual ordinary inputs
+prove the missing mini is searched, unmasked, closed and stroke-localized1.0.
+Foreground ink matching vetoes it: native16 sides are113/136 while nearby
+native32 witnesses are roughly94/111. Mini and full outline samples are not
+interchangeable under capture blur/shading. Another real mini has the same
+issue. Strict raw material also blocks source-supported full-direction refits:
+their pure localized gradients/base score1.0 despite one weak material side.
+FTFA's false refit instead has pure localized score0.1667. Preserve both facts;
+do not restore unconditional ink-as-material or loosen a room-specific cutoff.
+
+The worker naturally exits1 on a known late manifest-partition error after24
+valid cases (16 controls,7 development and the reserve); the fifteen additional
+protections did not run. A scoped stop attempt found no remaining process and
+stopped nothing. All outputs remain intact. CN3-9 reserved output was generated
+but not inspected or used for tuning at this checkpoint; never call it unrun.
+No quiet runtime, final-current71 or detector promotion. Goal/all gates ACTIVE.
+
+Public appearance diagnostics now allow separate native full/mini border widths
+and controlled palette transforms, with fixed geometry and answer/input
+separation. Default pixels remain identical; 40 final public tests pass.
+The separate20-variant palette diagnostic recovers18 minis without new extras;
+both inverted thick-shading misses also occur in B101. It is helper evidence,
+not universal color/tileset proof. A fixed full-width2/mini-width1 probe instead
+reproduces the NEW B102 loss: B101 recovers all six rows, B102 none, at both
+scales. Shaded-thin/thick rows share identical pixels under explicit widths;
+do not claim six independent visual families. All ten default scenes are also
+byte/input/label equal to the committed HEAD renderer, checked independently.
+Next use size-calibrated source appearance
+and independent geometric ownership, retaining genuine minis and all new
+negative controls. Reuse actual contexts instead of rescanning the archive.
+
 ### BATCH_101 rejected: ink is not a signed material boundary
 
 Production remains B95. A source-size ambiguity guard removes all four B100

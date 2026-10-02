@@ -4,6 +4,51 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B102 REJECTED; native16/full32 appearance is not identical
+
+Read ENTIRE original ignored GOAL_PLAN, latest CROSS_TILESET_PLAN/progress and
+ignored BATCH102_RESUME plus CN329-positive-loss-trace-v1.json. B95production
+packagece89/app418a stays unchanged. No failed detector deployed; originalgoal
+and all six gates ACTIVE. All B102 workers are TERMINAL; don't restart scans.
+
+Five same-actual-input context screens eliminate FTFA4's refit and all six
+B101 Irkara mini impostors while retaining all true CN37 deltas. New coherent
+outline witness/foreground gate and raw-source full-refit sides are isolated
+ignored code. Portable59/affected266 PASS (overlap). All16 exact controls pass
+without lost exact/new errors/duplicates/metadata or nongeometry changes;
+Arcfox loses ONE false right544384. No fresh Arcfox whole-source approval.
+
+Fullpath development CN37 20/21,NANG13018/25,CN385/9,CN3252/5 holds. CN329 is
+ENTIRELY unchanged2/3 vsrequired3/3, so REJECT. Sameactualordinarycontext shows
+real mini624304 searched/unmasked/closed/newstroke1.0, but foreground gate
+fails: native16 ink113/136 vs nearbyfull32 roughly94/111. Realmini256496 also
+fails. Do NOT assume same ink brightness across sizes; use source-calibrated
+width/shader/appearance evidence rather than a room-specific cutoff. Two real
+fullup refits also blocked: puregradient/sides/base1.0 but one raw material
+side weak; FTFAfalseDown instead puregradient0.1667. Keep independent geometry
+and material, not ink-amplitude substitution. Reuse capture/context workflows.
+
+Worker41387 naturally exits1 on known late invalid partition='remaining' after
+24valid cases (16controls,7dev,CN39reserve), not39complete. A scoped stop attempt
+finds no matchingprocess and kills nothing. Preserve24/partial artifacts.
+CN330/CN331/CN39 outcomes GENERATED but not inspected/used for tuning at this
+checkpoint. Never claim reserve unrun. Fifteen extra protected cases unrun;
+doNOTlaunch prepared extra runner on rejected code. Future preflight metadata.
+No quietruntime/final71/promotedscanner. B102 source/seals must remain intact.
+
+Public appearance-probe CLI now varies native full/mini outline widths and
+palette transforms, fixed labels/coarse inputs and preserved default pixels.
+40 PUBLIC tests pass; actual CLI on B95 works. Separate20palettevariants recover
+18minis/no NEWextras; both invertedthickshade misses also occur in B101.
+Diagnostic scope only, not universal tileset/whole-room/runtime proof.
+Native full-width2/mini-width1 comparison recovers6/6 in B101 but0/6 in B102;
+this NEW loss reproduces across both scales. Explicit shaded-thin/thick rows
+are byte-identical, not separate families. All10 default scenes are independently
+byte/input/label equal to HEAD's renderer. New CLI emits all10 configured rows.
+Current audit18B95/53older, no upgrades. All12 Lap originals/copies/source hashes
+remain matched with confirmed N=test(N+5); ignored/local-only. Native600/default
+608 remains separate unresolved work; protectFTFA. Keep app200/source parity.
+
 ## Latest checkpoint: B101 REJECTED; signed material is not outline ink
 
 Continue the ACTIVE goal after reading ENTIRE ignored original GOAL_PLAN,
