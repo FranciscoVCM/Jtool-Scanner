@@ -10866,3 +10866,43 @@ the failed local-material assumptions reproducible in fresh workspaces, but
 does not deliver a recognition gain or justify accepting a room. Original goal
 and all6 recognition gates remain ACTIVE; continue independent shared source
 evidence rather than tightening colors to fit known rooms.
+
+## 2026-10-02 — BATCH_112–114 source-interior diagnosis and ordinary rejection
+
+Public production remains B108-equivalent. Read-only contour observations
+reproduce all original profiles for85 real and19 localized material calls.
+Raising ink-only slope coverage to11/12 would lose genuine partially completed
+contours, so that shortcut is rejected. Independent six-position native RGB
+interior sampling separates Halls6 player art from the differently outlined
+CN3-29 real minis without requiring their outline inks to be equal.
+
+A frozen no-same-size stroke-witness prototype then requires source-local
+interior agreement with an independently localized original larger triangle.
+It passes104 recorded material calls and72 COMPLETE helper comparisons:
+eight real contexts,48 localized sources and16 distinct uniform sources.
+All33 real additions/six rejections and seven localized/eight uniform true-mini
+recoveries remain; Halls6 false player mini and five actual localized impostors
+are removed. Seventeen localized baseline misses remain misses, not successes.
+This promising helper evidence does not substitute for ordinary whole-room tests.
+
+Four fresh ordinary-path shadow scans complete: NANG130, CN3-29, Halls6 and
+Halls1. NANG130 and CN3-29 preserve rejected-B106 whole map/complete Detection
+records/warnings/render bytes. Halls6 false mini is gone, but Halls1 LOSES the
+independently source-confirmed miniUp(608,96). Strict verification catches that
+loss; the original verifier and failed outputs remain intact. Separate complete
+four-case diagnostics verify every input/crop/grid, all9 metadata fields and
+nongeometry behavior. B114 is REJECTED before all16, reserve, timing or deployment;
+no source-specific exception or band widening is made to force a pass.
+
+Native source QA confirms the Halls1 mini is real and filtered differently from
+nearby full sprites. Absolute interior-color similarity across native sizes is
+not a safe universal assumption, even when earlier texture/noise scenes pass.
+Any successor needs this known positive and source-derived capture/size evidence,
+not merely a larger acceptance band or another same-palette special case.
+
+An independently frozen96-source nonzero local-mean-shift extension completes
+ORIGINAL-helper baseline outputs and positive eligibility before candidate
+testing. Its B114 candidate phase is intentionally unrun after the real loss.
+No NANG140 reserve helper/diagnostic is exposed. All workers terminal; original
+goal/all6 recognition gates remain ACTIVE. Audit18 current-recognition/53 older
+and conservative whole-room statuses are unchanged. No failed rule is in the app.

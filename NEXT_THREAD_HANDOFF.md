@@ -6,14 +6,28 @@ branch, clone or worktree.
 
 ## Latest checkpoint: B108 exact mask cache; recognition goal still ACTIVE
 
+B112–114 private source-interior diagnosis is COMPLETE and B114 REJECTED.
+All104 recorded material calls and72 complete helper comparisons preserve
+known positives and remove the Halls6 player/five portable impostors, but FOUR
+ordinary-path scans reveal loss of real Halls1miniUp60896. NANG130/CN329 remain
+exactly equal to rejectedB106 complete maps/Detection records/render bytes;
+that cannot excuse the Halls1 loss. Frozen rules/failed verifier/results are
+preserved, no band retuning or deployment. All85+19 original profile observations
+reproduce exactly. Interior colors differ under capture/native sprite size;
+seek physically justified source/scale evidence, not palette identity.
+The96 nonzero local-mean-shift ORIGINAL baseline/eligibility is now complete;
+B114 candidate96/all16/reserve/runtime/final71 were intentionally NOT run after
+failure. No recognition helper on NANG140. See recent progress and ignored
+`BATCH114_RESULT.md`/`BATCH114_RESUME.md`; workers all terminal, original goal ACTIVE.
+
 Reusable local-background stress renderer is now public in
 `scripts/local_material_scenes.py`, with five scene-semantics tests and README
 usage. All48 default source pixels/truth/options match the preserved diagnostic
 ledger; three independent migration checks pass. A27-test workflow selection
 passes (five new,22 overlapping old tests), not27 new detector tests. This is
 evaluation infrastructure only; production package/app fingerprints and the
-verified all16 outputs remain unchanged. Optional local mean shifts have not
-been tested against a detector; freeze their full ledger before such a probe.
+verified all16 outputs remain unchanged. Local mean shifts have only the frozen
+original-helper baseline above, not a candidate or whole-scanner transfer pass.
 No missing-mini answers enter recognition; retain full positives/empty negatives.
 
 Production recognition remains B95-equivalent, now with an exact immutable
