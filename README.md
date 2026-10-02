@@ -282,6 +282,28 @@ These cheap diagnostics help explain appearance sensitivity but do not replace
 ordinary real-room scans, reserved transfer, Source/JTool/Blend review, exact
 controls or end-to-end latency measurements. Generated outputs stay ignored.
 
+For localized rather than global background variation, the reusable
+`scripts.local_material_scenes` renderer provides a fixed 48-scene lattice:
+24 with a real mini and 24 empty-gap negatives, varying checker/noise/gradient
+backgrounds, outline widths, capture scale and polarity. It returns pixels,
+room, separate authored truth, incomplete coarse hypotheses, solids and options.
+Use truth only for scoring; never pass it as recognition input or manually
+repair generated maps. The intentional false coarse full remains an error
+unless the detector actually removes it.
+
+```python
+from scripts.local_material_scenes import create_local_material_scene, local_material_specs
+
+specs = local_material_specs()  # Freeze the complete lattice before comparing rules.
+image, room, truth, coarse, solids, options = create_local_material_scene(**specs[0])
+```
+
+`mean_shift` can vary the local background mean without changing native authored
+geometry. Freeze the complete chosen specs, pixel hashes and baseline eligibility
+before evaluating an alternative. Report all true-source misses and false extras,
+not only a postselected subset of recovered objects. These synthetic sources
+do not certify unfamiliar real sprites or replace whole-room/transfer review.
+
 ### Equivalent triangle-stage contexts
 
 ```powershell

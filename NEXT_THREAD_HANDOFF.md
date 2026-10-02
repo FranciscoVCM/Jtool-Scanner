@@ -6,6 +6,16 @@ branch, clone or worktree.
 
 ## Latest checkpoint: B108 exact mask cache; recognition goal still ACTIVE
 
+Reusable local-background stress renderer is now public in
+`scripts/local_material_scenes.py`, with five scene-semantics tests and README
+usage. All48 default source pixels/truth/options match the preserved diagnostic
+ledger; three independent migration checks pass. A27-test workflow selection
+passes (five new,22 overlapping old tests), not27 new detector tests. This is
+evaluation infrastructure only; production package/app fingerprints and the
+verified all16 outputs remain unchanged. Optional local mean shifts have not
+been tested against a detector; freeze their full ledger before such a probe.
+No missing-mini answers enter recognition; retain full positives/empty negatives.
+
 Production recognition remains B95-equivalent, now with an exact immutable
 four-mask cache. Package identity at verification:
 `dae34409d2c707c6aadb1410d50d0ad849b703f19cf45110b8daea52ca0d6bf2`;
@@ -28,8 +38,8 @@ HTTP200 and loaded/disk parity verified. Recheck availability rather than assume
 that an old PID or saved note proves a live app. Keep local generated logs ignored.
 
 PrivateB107 own-noise removal loses all7 true-mini recoveries in48 frozen
-localized-background scenes; REJECT. Public-generator proposal is prepared but
-unpublished, with all48 source hashes/truth/options matched; it is infrastructure,
+localized-background scenes; REJECT. The generator is now the public reusable
+renderer above, with all48 source hashes/truth/options matched; it is infrastructure,
 not a detector or recall pass. PrivateB109 uses existing cross-size attenuation
 envelope:112 recorded material decisions reproduce the originals; eight complete
 stage contexts remove Halls6 false mini but LOSE two real CN3-29 minis. REJECT;

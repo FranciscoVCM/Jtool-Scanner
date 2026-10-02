@@ -10835,3 +10835,34 @@ current-cache-version all71 sweep; no acceptance upgrades. All original goal
 gates remain ACTIVE. Next improve shared material/shape reasoning without
 trading known real geometry for fewer false detections. Native600, wider terrain
 conflicts, protected old gain coverage and final-current71 remain unfinished.
+
+## 2026-10-02 — BATCH_111 durable localized-background source infrastructure
+
+Start6a97761; public production package remainsdae34409/appb360e51a. Export the
+private deterministic renderer into public `scripts/local_material_scenes.py`
+without changing its source-generation semantics. Default48-source lattice
+has24 real minis and24 empty negatives, three local background variations,
+two full/mini outline pairs, two capture scales and two polarities. Parameters
+also support independently predeclared local mean shifts; no detector has yet
+been evaluated on nonzero shifts. Authored truth stays separate from pixels/
+room/coarse/solids. The missing mini is never in the coarse hypotheses; the
+intentional false enclosing full must count as an extra until actually removed.
+
+New public five tests cover the complete fixed roles, reproducibility, local
+nuisance preserving native object interiors, invalid parameters and mean-shift
+source semantics. With existing appearance/context tests,27 pass1.866s (five
+new,22 overlap), not a full-suite or27 additional recognition tests. The96
+nonzero-shift specs are generator checks, not detector evaluations. Independent
+migration QA three
+pass0.580s, matching all48 original RGB hashes, authored truths/options and
+89,740,800 rendered bytes. No detector/helper runs in this migration QA and no
+private artifact dependency exists in published generator/tests. Private QA
+retains provenance, not published images or transcript data.
+
+README documents correct scoring/freeze/use boundaries. Source library/tests/
+docs do not change any production package bytes:dae34409 remains exactly the
+all16-tested implementation; no unnecessary all16 or all71 rescan. This makes
+the failed local-material assumptions reproducible in fresh workspaces, but
+does not deliver a recognition gain or justify accepting a room. Original goal
+and all6 recognition gates remain ACTIVE; continue independent shared source
+evidence rather than tightening colors to fit known rooms.
