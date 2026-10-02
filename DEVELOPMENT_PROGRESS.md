@@ -10694,3 +10694,65 @@ copies andsources rehashzero failures; all ordinalN=test(N+5), local ZIPpresent.
 Synthetic images are deterministic known-geometry tests; answers score outputs
 only, not automatic ML or replacement for real cross-family transfer. Native600
 and sharedblock selection unresolved. Goal/all6 originalgates ACTIVE.
+
+## 2026-10-02 — BATCH_106 reserved recovery succeeds; player-sprite alias blocks publication
+
+Start2ca63f9/B95. Frozen B106 retains B104v2 corner/tip ownership and late
+weak-RGB guards, adding source-size qualification ONLY to newly outlined full
+proposals. Actual original CN3-9 false-full score.754074 is reproduced; its
+full slopes fail while both real miniature contours close independently.
+First full-path rail2/6->6/6 with no triangle extras and all4096 solid pixels.
+All12 additions/one false removal have fresh whole/all13-delta source review.
+
+Remaining23 complete and verify, including all16 exact controls. Fifteen maps/
+comparisons equal B95; Arcfox retains the previously source-reviewed direction
+and false-right corrections. FTFA926/928/zero extras/shifts/wrong; Flames252/
+42extras/21misses/20shifts/2wrong retained. All273 unique selected affected
+tests pass763.199s; inherited66 overlap, not339 tests or a full-suite run.
+Seven whole reviews carry by complete input/map/ALLmetadata/render-byte equality.
+NANG130 differs from B103: fresh whole/all52-delta review supports45 adds/seven
+removals, while frozen18/25/sixextras and10752 solid pixels remain. Major errors
+persist; no room acceptance upgrades. CN3-31 frozen triforce still0/3.
+
+Unchanged no-tuning Halls1 reserve completes and verifies1/3->3/3 exact, zero
+triangle extras. Terrain1792/2048 matched,256 missing/zero excess unchanged.
+Fresh whole Source/JTool/Blend/all7 deltas support five additions/two removals.
+Halls1 is still major and now exposed for future tuning, not a reusable holdout.
+
+During extra14, fresh whole Halls6 source review finds NEWFALSE miniDown360264
+on the kid, without source geometry. This FAILS the changed-object gate and
+REJECTS B106 regardless of regional/control scores. Fresh Halls2 source supports
+Down128288 replacing wrongRight; Entrance1 three false enclosing down fulls and
+Entrance2 realminiUp336160 also have whole/every-delta review. Seven extra cases
+completed,32 total; worker7700 deliberately stopped after exact PID identity
+verification, not a usage/network interruption. Completed caches and strict
+partial7 snapshot preserved. No remaining extra7, final runtime or final71.
+
+New ordinary B95 Halls6 capture80747 reproduces wholemap/ALLmetadata. Helper
+observer reproduces complete added/rejected sets and isolates the failed player
+mini to STROKE channel: localized11/12, background164.69/noise46.02/ink30.64.
+Legacy localized.4167/corner.5 do not add it. Larger original coherent sprites
+supply witnesses, but cross-size fallback omits foreground parity; candidate
+noise also widens background acceptance. Trace this shared causal calibration
+weakness; do not add screen coordinates, blind sprite overlap or equal-ink rules.
+
+Quiet serial original B95/B106/B95 denseCN39 times120.590/135.995/121.429s show
++14.985s/+12.38%. Sparse initial repeat788.728s is anomalous/INVALID, kept intact.
+Separate bounded CPU+wall retry55.733/66.118/56.095s is stable and shows
++10.204s/+18.25%, all maps/ALLmetadata/Detectionrecords equal ordinary outputs.
+Cache prototypes preserve3392 bounds, normalized gray/gradient/native metric/
+color distinctions and seven OLD actual-context outputs; timings are helper-
+only/concurrent, NOT full scanner speed proofs. Original candidate unshipped.
+
+Independent ignored prior-key/pixel-SET checker validates32 completed cases:
+no prior achieved key/pixel loss, Entrance1 all45 minis/36rail/3072solid pixels,
+Entrance2 all6 gains, NANG130r28/28 and nine real occlusions held. Eleven older
+protection IDs remain uncovered, including rooms outside all39; a39-case pass
+alone cannot certify ALL goal facts. Older CN3-31 raw options drift is recorded,
+not mislabeled strict review carry. Equal counts cannot conceal substituted keys.
+
+Exact static production-module extraction prepared without public edits or
+ignored runtime imports; small AST/synthetic/Detection-record checks pass but
+retain the known semantic failure and are not full-path approval. App remains
+B95/HTTP200/fingerprint418a; audit18 current/53 older, all statuses conservative.
+Private originals/indexes/artifacts stay ignored. All original goal gates ACTIVE.

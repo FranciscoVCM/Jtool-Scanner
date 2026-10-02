@@ -4,7 +4,53 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: B105 REJECTED; trace outlined full proposal evidence
+## Latest checkpoint: B106 REJECTED; stroke calibration admits player geometry
+
+Read ENTIRE original ignored GOAL_PLAN/current CROSS_TILESET_PLAN/recent progress
+and BATCH106_PLAN/RESUME. Public production remains B95, no failed code deployed;
+goal/all six gates ACTIVE. No need to repeat the baseline or open the archive.
+
+B106 firstCN39/remaining23/all16 controls and no-tuning Halls1 reserve complete
+and verify. CN39 rail6/6/zeroextras/all4096solids; Halls1 structure3/3/zeroextras,
+1792/2048solid pixels (256 old missing unchanged). All273 selected affectedtests
+pass; inherited66 overlap/notfullsuite. Fresh CN39/NANG130/Halls1 whole/every-
+delta reviews; seven other reviews carry through strict equality, not acceptance.
+
+Extra14 SOURCE review discovers NEWFALSE miniDown360264 on Halls6's player.
+REJECT B106. Stop worker7700 after reverified exact pythonPID26208; terminalEXIT1
+is intentional cancellation, not lost work. All7 completed extra cases/caches
+preserved,32 total. Remaining7 extra, final runtime/all71/promotion UNRUN.
+Fresh Halls2/Entrance1/Entrance2 changes supported, whole rooms still MAJOR.
+
+Read `batch107-Halls6-channel-trace-v1.json` and actual ordinary-map/ALLmetadata-
+equivalent `b95-Halls6-player-context-v1/trace.json`. Complete helper sets equal
+unobserved B106. Culprit is STROKE, not corner: score11/12, exterior noise46.02
+and ink30.64; legacy.4167/corner.5 both fail. Original larger sprites calibrate
+it while cross-size fallback bypasses foreground parity; candidate exterior
+noise also widens background agreement. Diagnose true miniature/nonuniform
+background cases before changing calibration. No per-screen/player-coordinate
+exclusion, blanket overlap removal or equal cross-size ink brightness assumption.
+Halls1 result is now EXPOSED; freeze a new evaluation role before successor tuning.
+
+Unoptimized quiet dense +12.38%, valid sparse retry +18.25%; first sparse788s
+repeat comparison INVALID. Exact-cache helper prototypes and static integration
+preparation are ignored/unshipped; neither proves quiet full-path speed or fixes
+the player alias. Preserve immutable successful and failed results, not just
+summary scores. Never run costly remaining phases on this known failed code.
+
+Ignored `b106_protected_inventory_v2.md` / `b106_protected_partial_v2.json` and
+`b106_protected_check.py` add exact prior-key/pixel-set checks beyond old region
+count gates. No achieved prior loss among32 completed cases, but eleven older
+protection ids uncovered. Include all old goal facts in future final gates.
+`b106_static_HANDOFF.md` prepares five static modules and exact scanner wrapper
+provenance; do not ship dynamic artifact builders or infer approval from ASTs.
+
+App B95 remainsHTTP200/fingerprint418a; audit18B95/53older/noacceptance upgrade.
+All twelve local Lap maps/source mappings/indexes remain preserved and ignored.
+Native600/default608 and shared terrain conflicts remain unresolved. Continue
+the active goal after a reviewed checkpoint; do not call rejection completion.
+
+## Previous checkpoint: B105 REJECTED; trace outlined full proposal evidence
 
 Read ENTIRE original GOAL_PLAN/current CROSS_TILESET_PLAN/recent progress and
 ignored BATCH105_PLAN/RESUME. All workers terminal. Production unchanged B95;

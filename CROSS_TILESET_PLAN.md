@@ -2,6 +2,53 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_106 rejected by whole-source review, despite successful frozen structures
+
+Production remains B95. An upstream outlined-proposal qualifier distinguishes
+two independently closed native16 contours from a borrowed native32 outline;
+it leaves late weak-RGB/occlusion protections unchanged. The CN3-9 frozen rail
+improves2/6 to6/6 with the false full removed and all4096 solid pixels retained.
+All24 exposed cases, including all16 exact controls, pass strict verification.
+FTFA remains926/928 with no extras/shifts/wrong directions; Flames remains252
+with42 extras/21 misses/20 shifts/2 wrong directions. The273 selected affected
+tests pass; overlapping66 contracts are not a full-suite certificate.
+
+The unchanged reserved Halls1 candidate then passes1/3->3/3 with zero triangle
+extras. All1792/2048 matched solid pixels remain;256 old missing pixels are
+unchanged, not recovered. Fresh whole Source/JTool/Blend and all7 changes support
+the five additions/two removals. It is successful reserved structure transfer,
+not an accepted whole room. Halls1 is now exposed for subsequent experiments.
+
+Wider source review finds a NEW false miniDown(360,264) on the Halls6 player.
+Reject B106. The equivalent ordinary B95 stage capture and decision-identical
+helper observer locate it in the stroke/material channel: legacy and corner
+geometry both fail, while stroke scores11/12. Cross-size fallback bypasses
+foreground parity; the candidate's noisy exterior also widens background
+agreement. Investigate those shared calibration assumptions with positive
+miniature and nuisance counterexamples, not a player-coordinate exclusion,
+fixed palette, blanket overlap deletion or restored cross-size ink equality.
+
+The additional14-case worker was deliberately stopped after7 completed cases;
+all32 complete candidate outputs are preserved, no remaining extra/runtime/
+final71 phase is claimed. Fresh reviews also support the Halls2 direction
+refit, three Entrance1 false-full removals and one real Entrance2 miniature.
+An independent prior-key/pixel-SET checker finds no lost protected gains in
+completed cases, but eleven older protection-case IDs remain uncovered. Simple
+regional minima or occupancy counts cannot certify individual retained keys.
+
+Unoptimized quiet serial timings show +14.985s/+12.38% on dense CN3-9 and
++10.204s/+18.25% on a stable sparse FTFA retry. An earlier sparse baseline of
+788.728s invalidates its comparison and is not averaged into a speedup claim.
+Pure cache prototypes retain exact helper outputs on seven old contexts and
+preserve channel/native-size state distinctions; these are not full-path or
+quiet-runtime proofs. Static integration preparation likewise is not adoption.
+
+Do not deploy or rerun all71 on the rejected candidate. Preserve the new
+source-negative, fixed structures, exact controls and prior gains; freeze a
+new evaluation role before successor tuning. Audit remains18 current B95/53
+older with no acceptance upgrades. All six original goal gates remain ACTIVE;
+shared terrain repair, native600 handling and universal transfer remain open.
+
 ### BATCH_105 rejected: a missing side cannot erase weak textured geometry
 
 Production remains B95. Quantization-coupled aggregate RGB bounds still admit
