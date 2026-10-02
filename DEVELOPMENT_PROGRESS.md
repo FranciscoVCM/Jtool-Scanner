@@ -10600,3 +10600,50 @@ for publication. Public checkpoint documents measured rejection, not detector
 promotion. Audit remains18 current/53 older, no acceptance upgrades. All workers
 terminal; original goal/all six gates ACTIVE, native600 and shared terrain
 conflicts still unresolved. Private refs/indexes/images/artifacts stay ignored.
+
+## 2026-10-02 — BATCH_104 rail recovered, frozen false-extra gate still fails
+
+Start e9b37ea/B95. Preserve all B103 structures/criteria; CN3-9 now exposed.
+NEW historically exposed Halls1 reserve frozen before implementation: complete
+ROI448,336,64,64, fullUp448,336 + miniUps480,352/496,352, solidunion448,368,64,32.
+Baseline1/3/falseFullUp480,336; fixed3/3/zero-extra/no-terrain-regression criterion.
+Fresh whole source/native-axis crops and current B95 JTool/Blend viewed first.
+Candidate reserve never run/opened. All original goal gates retained.
+
+CN3-9 missed native16 samples lie near joined corners. Additional corner channel
+uses4 native pixels of endpoint exclusion, unchanged sample count/11-of12/.95
+alignment/calibrated strength, independently retaining original channels and
+shared pure caches. All four minis gain closed geometry. Affine RGB background
+diagnostic residuals4.85–10.79 disprove quantization-exact absence; no such fit
+threshold enters the detector. Weak coherent RGB protects the old false full.
+
+V1 seven context screens retain old gains/known negatives but NEW Partysu3
+miniRight112,200 lies inside a real fullRight96,192. Fresh source confirms the
+error. The full's10/12 and12/12 slopes miss strict ownership; no solid mask.
+Reject v1. Public tracked-fixture regression independently catches its false
+addition; public41 PASS3.729s. V1 portable64 first fails only obsolete two-channel
+structural count, preserved; explicit three-channel contract64 PASS44.284s.
+
+V2 ambiguity only for NEW corner-channel minis: same direction/tip, actual
+triangle containment, both longer slopes>=.75 and both independently signed
+raw-material medians>=.5 agreeing. No full emission/existing-mini deletion,
+ink-as-material, screen/hash/palette/coordinate/reference rules. Seven equivalent
+contexts preserve gains and reject Partysu3 impostor. Inherited65 PASS45.240s;
+four mocked necessary-feature checks PASS.144s, not independent transfer proof.
+All39 input/options/partition identities validated upfront; phase/code seals
+preserved, no edits/HEAD changes while first worker runs.
+
+Worker30752 terminalEXIT0; full-path shadow CN3-9 runa1da0021d51e414ca3ad936d2e0f5d3c
+COMPLETE. Strict input/artifact/ALLmetadata/nongeometry/duplicate checks PASS.
+Frozen rail2/6 ->6/6, all4096 solid pixels unchanged; old falseFullDown64,448
+persists. ZERO-EXTRA criterion FAILS. ALL12 additions freshly source-reviewed
+with whole Source/JTool/Blend and both delta atlases; all real, room still MAJOR.
+B104v2 REJECTED/unshipped. No remaining23/all16 candidate controls, Halls1 reserve,
+extra14, quiet timings or final71 launched. Do not shrink ROI/raise extra ceiling.
+
+Publish only original-source regression and measured docs. App remains B95;
+audit18 current/53 older without acceptance upgrades. Next isolate diffuse or
+displaced RGB response versus true weak/isoluminant/occluded/superposed boundaries
+before changing negative proof. Retain portable controls and full pipeline gates.
+Native600, shared block/mask repair, required reserved success/runtime/final71
+remain unfinished; ACTIVE goal, not a completion or universal accuracy claim.

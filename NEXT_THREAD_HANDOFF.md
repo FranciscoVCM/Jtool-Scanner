@@ -4,7 +4,42 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: B103 REJECTED; diagnose localized slope sampling next
+## Latest checkpoint: B104 REJECTED; distinguish diffuse RGB from real weak edges
+
+Read ENTIRE original ignored GOAL_PLAN, current CROSS_TILESET_PLAN/progress and
+ignored BATCH104_RESUME plus BATCH104_V2_PLAN. All workers are terminal. Public
+production is unchanged B95/packagece89/app418a. Goal/all six gates ACTIVE.
+
+Corner-exclusive source geometry recovers all four CN3-9 rail minis without
+lowering11/12, alignment or strength thresholds. V1 creates a NEW Partysu3 mini
+inside a real full's tip; the new public original-source regression catches it.
+V2 abstains on NEW contained same-tip minis using actual longer slopes and both
+signed raw-material sides. Seven equivalent-input contexts retain prior gains
+and negatives; public41 and isolated65 tests pass (not a full-suite claim).
+
+Full-path first-case worker30752 endsEXIT0, runa1da0021d51e414ca3ad936d2e0f5d3c.
+The fixed CN3-9 rail becomes6/6 versus2/6, all4096 solid pixels retained, ALL
+metadata/nongeometry and no-new-duplicates verified. Old false fullDown64,448
+remains, so frozen zero-extra criterion FAILS. Whole Source/JTool/Blend and ALL
+12 additions freshly reviewed: additions real, whole room still MAJOR. Reject
+B104v2. Do NOT run remaining23, Halls1 reserve, extra14, timing or final71 on it.
+Preserve all old files/seals/results. Nothing failed was put in the app.
+
+Read batch104-CN39-samples/RGB-samples/affine-diagnostic-v1.json. The false full
+has coherent WEAK RGB responses but no strong localized side. An affine fit
+is not quantization-exact (4.85–10.79 residuals), so is not safe absence proof.
+Next investigate localization/diffuse or displaced edge response with portable
+true weak-RGB/isoluminant/occlusion/superposed-edge counterexamples. No blanket
+RGB deletion, full grayscale scan, coordinate/palette rule or relaxed labels.
+
+Halls1 NEW historically exposed reserve remains unrun/unopened: ROI448,336,64,64,
+true fullUp448,336 and miniUps480,352/496,352; all2048 solid pixels at448,368,64,32.
+Baseline1/3 with false fullUp480,336. Retain fixed3/3/zero-extras/no-terrain-loss
+criterion and freeze any successor BEFORE tuning. CN3-9 is exposed, not holdout.
+Audit stays18 B95/53 older without upgrades. Lap originals/associations preserved
+locally. Shared terrain conflicts/native600 remain unresolved. Continue goal.
+
+## Previous checkpoint: B103 REJECTED; diagnose localized slope sampling next
 
 Read ENTIRE ignored original GOAL_PLAN, current CROSS_TILESET_PLAN/progress,
 `.artifacts/user-review-20261001/BATCH103_RESUME.md` and BATCH103_PLAN.md.

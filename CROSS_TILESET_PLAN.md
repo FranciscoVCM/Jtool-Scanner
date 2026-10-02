@@ -2,6 +2,37 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_104 rejected: corner recovery still needs RGB-safe conflict reduction
+
+Production remains B95. A separate native-coordinate corner-exclusive geometry
+channel retains the original channels and their thresholds. It recovers the
+four actual CN3-9 rail minis whose original samples failed near joined corners.
+A new tracked Partysu3 regression catches a false mini made from the tip half
+of a real full spike. An isolated successor abstains on NEW contained same-tip
+minis using longer source slopes and independent signed material; it neither
+emits a full nor deletes existing minis. Seven equivalent-input contexts retain
+the prior gains and negatives. Public41 and isolated65 tests pass; these are
+different selections, not a full-suite or runtime certificate.
+
+The sealed full-path CN3-9 successor scan completes and verifies input/artifact,
+ALLmetadata, nongeometry and duplicate protections. Its fixed rail improves
+2/6 to6/6 exact, with all4096 solid pixels unchanged. However, the old false
+fullDown(64,448) persists: the unchanged zero-extra criterion FAILS. Fresh whole
+Source/JTool/Blend and ALL12 addition crops support every new mini, but the room
+still has major older block/spike/vine errors. Reject B104v2; do not launch its
+remaining23, reserve, extra controls, runtime or final71 sweep. No failed
+detector is deployed and no audit status is upgraded.
+
+The false full is protected by coherent but weak RGB gradient responses on one
+side, not strong localized geometry. A simple affine background fit has
+4.85–10.79 RGB-unit residuals and cannot prove absence at quantization precision.
+Next distinguish displaced/diffuse responses from real weak RGB boundaries,
+protecting isoluminant, occluded and superposed true edges. Do not discard RGB
+protection wholesale or loosen the frozen region/extra ceiling. The new Halls1
+reserved candidate outcome is still unrun/unopened. Freeze the successor before
+tuning, preserving all prior structures and protections. Shared terrain repair,
+native600 handling and every original goal gate remain unfinished/ACTIVE.
+
 ### BATCH_103 rejected: protected recovery does not replace reserved transfer
 
 Production remains B95. The isolated v2 separates same-native-size ink evidence

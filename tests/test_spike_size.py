@@ -211,6 +211,26 @@ class SpikeSizeTests(unittest.TestCase):
                 self.assertNotIn(target, added)
 
 
+    def test_textured_full_tip_is_not_additional_mini_geometry(self):
+        from pathlib import Path
+        from jtool_scanner.image import load_png
+        image = load_png(Path(__file__).resolve().parents[1]
+                         / 'fixtures/block_spike/irkara-nr-partysu3-game.png')
+        # These are existing late-stage hypotheses in a bounded neighborhood,
+        # not missing-object answers. The source/reference has a real textured
+        # full right(96,192). Its tip half can resemble a closed native16
+        # contour when geometry sampling ignores the full's noisy endpoints.
+        # That is not an additional mini right(112,200). Other legitimate
+        # direction/size corrections in this neighborhood remain permitted.
+        hypotheses = [(8, 64, 160), (8, 64, 176), (4, 96, 192), (8, 96, 192),
+                      (3, 160, 192), (8, 96, 208), (8, 176, 208), (5, 128, 224),
+                      (4, 192, 224), (8, 192, 224), (8, 192, 240), (5, 128, 256),
+                      (7, 48, 144), (6, 144, 192)]
+        added, _ = contour_size_changes(
+            image, Box(0, 0, image.width, image.height), hypotheses, [])
+        self.assertNotIn((8, 112, 200), added)
+
+
     def test_ftfa_partial_left_full_is_not_refitted_from_unrelated_ink_sides(self):
         from pathlib import Path
         from jtool_scanner.image import load_png
