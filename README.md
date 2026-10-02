@@ -304,6 +304,18 @@ before evaluating an alternative. Report all true-source misses and false extras
 not only a postselected subset of recovered objects. These synthetic sources
 do not certify unfamiliar real sprites or replace whole-room/transfer review.
 
+The portable recognition regression covers all144 configurations at local mean
+shifts0/-30/+30. It protects existing true anchors and forbids new objects in
+authored negative space, including unwanted opposing minis beside real minis:
+
+```powershell
+python -m unittest tests.test_local_material_recognition
+```
+
+This is a helper-level protection, not a144-room exact benchmark or a claim
+that every omitted mini is recovered. The intentional old coarse full alias
+is still counted as an error in evaluation; the test permits its correction.
+
 ### Equivalent triangle-stage contexts
 
 ```powershell

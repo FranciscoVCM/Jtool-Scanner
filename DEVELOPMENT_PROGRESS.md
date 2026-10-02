@@ -10906,3 +10906,65 @@ testing. Its B114 candidate phase is intentionally unrun after the real loss.
 No NANG140 reserve helper/diagnostic is exposed. All workers terminal; original
 goal/all6 recognition gates remain ACTIVE. Audit18 current-recognition/53 older
 and conservative whole-room statuses are unchanged. No failed rule is in the app.
+
+## 2026-10-03 — BATCH_118 rejected by source-background gap stress
+
+A same-native-size witness policy retains the new native/corner channels but
+disallows licensing a new outline mini from a larger sprite's ink alone. All452
+selected public contracts pass219.740s, not the full suite. Six ordinary-path
+shadow scans complete with every input/crop/grid/all9 metadata/nongeometry and
+frozen achieved-key/pixel protection checked. CN3-7 improves11/21->20/21 with
+one old extra; CN3-9 improves2/6->6/6 with no extras; NANG130 improves11/25->18/25,
+with wrong-direction extras13->6. All3584/4096/10752 respective solid pixels
+remain. Halls1's region improves1/3->3/3, but retains256 old missing solid pixels.
+CN3-29 corrects two full directions while its frozen structure remains2/3.
+Four real unshipped cross-size-only minis in CN3-29/Halls1 remain missing.
+
+These gains are UNSHIPPED. Three whole-map/complete-Detection/project/render
+review carries and three fresh whole Source/JTool/Blend reviews support the
+changed geometry; every whole room remainsMAJOR. The new Halls6 player mini
+is prevented, but its older public false full remains. A static-module version
+matches all8 recorded complete stage outputs with only the same-size policy
+AST change; it is preparation, not ordinary integration or adoption.
+
+Independent fixed144-source local-background stress then fails. The public
+helper retains288 true full anchors, misses all72 omitted minis and retains144
+intentional old coarse full aliases. Candidate recovers10 real minis, retains
+all anchors, but adds SIX false downward minis beside real minis in checker
+backgrounds with local mean-30; extras rise144->150. Empty controls are not the
+failed rows. Positive recovery does not excuse this. REJECT before deployment;
+do not retune to the mean, polarity, coordinates or known sources.
+
+An output-identical observer reproduces all16 failed/positive source outputs:
+two new aliases originate in the corner channel, four in expanded native-gradient
+search, none in stroke calibration. All six have only.5 base support and borrow
+slopes around existing source geometry. Next diagnose independent base ownership/
+continuity and source-local material context; another stroke-color tweak alone
+does not explain this failure. Preserve weak RGB edges, true joins/occlusions
+and all fixed-region positives. Do not require generic background or mini/full
+interiors to have identical colors.
+
+The broader protection panel is47unique, the old39 union8 omitted prior-gain
+cases—not39 or50. Eight public B108 baselines complete. The candidate worker
+is deliberately stopped after12 of41 additional scans when the stress fails:
+18 candidate outputs total including FIRST6,12 completed exact controls verified,
+four exact controls still unrun. FTFA stays926/928 without extras/shifts/wrong
+directions in those completed controls; Flames stays252/42extras/21misses/20shifts/
+2wrong. This is NOT an all16,47-prior, reserved, quiet-runtime, static-ordinary
+or final71 certificate. NANG140 remains recognition-unopened. All outputs,
+sources and original failed scripts/plans remain ignored and intact.
+
+Stress v1 failed a tuple/list source-ledger preflight before any helper call.
+Separate v2 decodes the original frozen JSON and uses new output filenames;
+no detector/environment workaround or weakened gate. First worker-stop attempt
+failed; success was not assumed from its printed message. Exact PID/command
+was reverified, scoped termination/exit confirmed, app left untouched.
+
+A new public regression checks all144 source configurations using separate
+authored truth, without passing missing-mini answers into detection. It protects
+anchors and prohibits new unsupported geometry while allowing genuine recovery;
+it does not certify complete scans or preserve known misses. Public selection
+10 tests passes5.974s (one new recognition guard, five source semantics, four
+mask tests). Independently binding the unchanged rejected candidate makes the
+guard catch all six false cases. Production package/app staydae34409/b360e51a;
+goal and all six recognition gates remain ACTIVE. No room acceptance upgrades.

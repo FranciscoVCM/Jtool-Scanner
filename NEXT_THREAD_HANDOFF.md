@@ -1,10 +1,36 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-02. Continue in the existing repository at
+Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
 ## Latest checkpoint: B108 exact mask cache; recognition goal still ACTIVE
+
+B118 same-native-size outline calibration REJECTED. FIRST6 shadow gains are
+real (CN3711/21->20/21,CN392/6->6/6,NANG13011/25->18/25,13->6wrong extras;
+all solid pixels/prior achieved keys retained) but fixed144-source local-mean
+stress introduces six false down minis beside real minis. Public0/72 omitted
+minis recovered, candidate10/72; anchors all retained, extras144->150. All
+whole rooms remainMAJOR. Four B106-only real CN329/Halls1 minis remain missing;
+new Halls6 mini prevented but OLD public false player full remains.
+
+Observer exactly reproduces all16 failed/positive outputs:2corner/4expanded
+native-gradient aliases, NOstroke cause. Every false has.5base support. Next
+trace independent base ownership/continuity and local source material before
+any successor; do not blindly change background/ink thresholds or delete overlaps.
+New public test_local_material_recognition covers all144 fixed configurations,
+passes on public and independently catches ALL6 unchanged candidate failures.
+Public10-test selection passes5.974s;452 earlier selected candidate contracts
+pass, not full suite. New static8-stage equality is preparation, NOTadoption.
+
+Protection panel47(old39 UNION8 omitted prior cases);8 public B108 baselines
+complete, candidate additional worker84936/PID31128 intentionally stopped after
+12/41. All12 completed controls verified,4UNRUN;18total inclFIRST6. Preserve
+partial9d9871fdb2884c4b84461b7b41276990; do not call it complete/restart rejected
+scans. NANG140 still recognitionUNOPENED. No all47/prior/all16/reserve/runtime/
+staticordinary/final71/deployment approval. ALLworkers terminal; appB108 unchanged.
+Read ignoredBATCH118_RESULT/RESUME and B119 output-identical observer. Failed
+preflight/first stop preserved; repaired-only harness and scoped exit verified.
 
 B112–114 private source-interior diagnosis is COMPLETE and B114 REJECTED.
 All104 recorded material calls and72 complete helper comparisons preserve
