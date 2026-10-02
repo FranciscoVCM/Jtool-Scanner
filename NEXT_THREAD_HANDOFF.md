@@ -4,6 +4,54 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B98 rejected; appearance diagnostic workflow published
+
+Read the ENTIRE original ignored GOAL_PLAN and recent DEVELOPMENT_PROGRESS;
+`.artifacts/user-review-20261001/BATCH98_RESUME.md` and BATCH98_REVIEW_NOTES have
+the final state. All workers are COMPLETE; do not restart 35884 (38-case corpus),
+20601 (246 tests) or 96009 (reserve baseline). Candidate run
+`92ace094fea44fdfb351929c75b3ccef`, package `ff0bedb2...`, is preserved/rejected,
+not deployed. Production remains B95.
+
+Real candidate development gains retain CN3-7 20/21, NANG-130 18/25 with 6
+extras, and CN3-8 5/9 with 5 extras. They add one real CN3-25 mini (1/5 to 2/5)
+plus NR2's 16px up spike at (752,336). All 16 exact controls are protected.
+Arcfox removes a false right without duplicating the existing correct up;
+errors drop from 22 to 21. No nongeometry/metadata change or new duplicate.
+Six changed maps carry fully verified B97 source findings; three have fresh
+whole Source/JTool/Blend/crops. These are UNSHIPPED results, not room approval.
+
+Reserved CN3-29 remains ENTIRELY unchanged at 2/3 with 2560/2560 real solid
+pixels; it FAILS positive transfer. Now exposed, not a retuned B98 reserve.
+The actual mini is searched/unmasked but weak/mixed directional-material
+evidence fails. Source samples and 10 synthetic variants reproduce appearance
+dependence: filled positives recover, outlined/shaded positives do not at
+1 and 1.25 scales.
+Do not call this shading alone, solve it by lowering a scalar cutoff, change
+source labels, or generalize a cheap helper probe into whole-scanner accuracy.
+
+Important correction: B97 NR2's up at (288,224) ALREADY existed, so its added
+copy was not a positive recovery. B98 retains it and removes the false right.
+Original records remain immutable; new duplicate checking covers visual-only
+cases too. Confirmed NR2 false effect downs at (16,512)/(48,512) stay protected.
+
+After all workers ended, only our three candidate files returned via apply_patch
+to B95; package `ce89a6c8...` / app `418a7a...` parity and HTTP 200 hold. No rejected code
+was deployed. Public scripts/triangle_appearance_probe.py + five tests/README
+and one additional duplicate-target regression are safe workflow progress;
+the final 21 tests pass. Actual CLI runs on B95 but its narrow helper recovers none
+of the omitted isolated minis; these are helper inputs, not full-app scans.
+Reports/raw pixels/maps/indexes remain ignored. The 71-screen interim remains
+17 current outputs / 54 older, with no acceptance upgrades. All six goal gates
+remain ACTIVE.
+
+Next freeze NEW roles/complete structures/no-tuning reserve before exploring
+source-relative stroke/body and neighboring-edge evidence. Keep owned size/
+direction, RGB/occlusion/internal-art/gap negatives, cached cheap screens and
+ordinary/control/source/runtime/final 71-screen gates. Twelve Lap maps remain original
+byte-identical copies with confirmed ordinal N = test(N + 5) association. ATK2
+native 800x600 clipping and default 608px projection remain separate unresolved work.
+
 ## Latest checkpoint: BATCH_97 REJECTED; detection remains B95
 
 Read the ENTIRE ignored GOAL_PLAN, recent DEVELOPMENT_PROGRESS and

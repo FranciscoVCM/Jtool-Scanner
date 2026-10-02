@@ -253,6 +253,23 @@ code, while retaining both the original scan revision and current run revision.
 Damaged results are regenerated into a new attempt directory without removing
 the old evidence. Keep these outputs ignored; do not publish private images.
 
+### Cheap appearance diagnostics
+
+```powershell
+python scripts/triangle_appearance_probe.py --out-dir .artifacts/triangle-appearance-run-1
+```
+
+Use a fresh output directory. This deterministic probe keeps a known triangle
+layout fixed while varying fill, outline, shading and capture scale; an empty-
+gap variant checks unsupported additions. It preserves generated pixels, package
+identity and exact typed misses/extras. Coordinates only score outputs, never
+supply the missing object to the detector. It deliberately starts with incomplete
+coarse proposals, so scores measure the source-size helper, NOT the full scanner.
+The coarse false full spike may remain even when the missing mini is recovered.
+These cheap diagnostics help explain appearance sensitivity but do not replace
+ordinary real-room scans, reserved transfer, Source/JTool/Blend review, exact
+controls or end-to-end latency measurements. Generated outputs stay ignored.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

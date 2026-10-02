@@ -175,5 +175,19 @@ class SpikeSizeTests(unittest.TestCase):
         self.assertNotIn((8, 328, 328), added)
 
 
+    def test_existing_full_target_is_not_reemitted_for_a_competing_alias(self):
+        # Returning a correct existing target as an addition creates a duplicate
+        # at the scanner boundary. Allow future removal of the false direction;
+        # do not require that current abstention or incorrect labels persist.
+        for direction in VERTICES:
+            target = (direction, 320, 320)
+            alias = ({3: 4, 4: 5, 5: 4, 6: 5}[direction], 320, 320)
+            for scale in (1, 1.25):
+                with self.subTest(direction=direction, scale=scale):
+                    added, _ = changes(scene([target], outlined=True, scale=scale),
+                                       [target, alias])
+                    self.assertNotIn(target, added)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -10126,3 +10126,95 @@ eligibility from masks governing absence/emission, retaining real occlusions,
 internal-art/gap/RGB negatives. Fix existing-target correction semantics before
 another full refit batch. Twelve preserved Lap references keep ordinalN=testN+5;
 ATK2 native600 versus default608 remains separate unresolved work.
+
+### BATCH_98, 2026-10-02: rejected transfer; reproducible appearance workflow
+
+Started from published `1f3474e` / B95. Frozen development CN3-7 / NANG-130 /
+CN3-8 / CN3-25 retains complete 21/25/9/5 source structures. Reserved,
+historically exposed CN3-29 has three complete triangle origins plus its entire
+2560px visible solid union. Hidden uniform-terrain editor decomposition is uncertain, not silently
+treated as exact cell labels. No source, original map, region or denominator
+was changed to improve a candidate outcome. Seal `5251535b...` precedes outcomes.
+
+Candidate separates source-only LOCATION/MATERIAL witnesses from masks still
+protecting emissions/negative absence; no reference/room/palette/answer/radius
+rules enter the detector. It retains B97 source-owned full/mini/base/RGB guards
+and prevents re-emitting surviving correct targets at helper/scanner boundaries.
+Cheap exposed CN3-25 replay (1.068s) recovers the unmasked small up while its
+masked neighbor remains; this is not whole-scanner equivalence or latency.
+Actual production-path 44 and deduplicated affected 246 tests PASS (196.508s);
+44 are INCLUDED in 246. Five new public workflow tests are separate. Times
+under corpus contention are not quiet ordinary performance.
+
+Ordinary run `92ace094fea44fdfb351929c75b3ccef`, package `ff0bedb2...`, completes
+38 cases / all 16 exact controls. Final verifier checks source/options/grid/runtime,
+all artifacts and ALL metadata; every case additionally checks introduced
+duplicate typed keys, even without a reference. No protection failure/new
+duplicate/nongeometry/metadata change. Fifteen control maps/comparisons fully
+equal B95. Arcfox 262/269 exact retained, errors 22 to 21 / extras 15 to 14 by removing
+one false right while preserving its existing correct up (not duplicating it).
+FTFA 926/928 with no extras/shifts/wrong directions; Flames 252/295 with 42
+extras, 21 misses, 20 shifts and two wrong directions; Partysu 255/265 with 71
+errors remain unchanged.
+
+| Complete source structure | B95 | Rejected B98 | Interpretation |
+|---|---|---|---|
+| CN3-7, 21 |11 exact / 1 extra|20 exact / 1 extra|Prior candidate real minis retained; true partial full still missing|
+| NANG-130, 25 |11 exact / 13 extras|18 exact / 6 extras|Seven actual miniature directions corrected; many whole-room misses remain|
+| CN3-8, 9 |3 exact / 6 extras|5 exact / 5 extras|Full right/shared-base mini restored; false inner art not emitted|
+| Exposed CN3-25, 5 |1 exact / 7 extras|2 exact / 7 extras|One real unmasked mini recovered; 2048 true solid pixels / 1536 excess unchanged|
+| Reserved CN3-29, 3 plus solid union |2 exact / 2 extras|ENTIRELY unchanged|FAILS positive transfer; 2560/2560 true solid pixels unchanged|
+
+Nine changed maps have independent source evidence: six carry B97 reviewed
+source/options/grid/typed-map/ALL metadata equality; CN3-25, NR2 and Arcfox have
+fresh whole RAW Source/standalone JTool/Blend plus delta crops. NR2 adds genuine
+16px up at (752,336) on its narrow right orange column alongside the previously
+reviewed 16px up at (464,80). Its up at (288,224) ALREADY existed in B95:
+B97's addition was a DUPLICATE, not new true geometry. B98 keeps the original
+and removes false right. Correct
+that interpretation without rewriting B97 history. Confirmed false effect
+downs at (16,512)/(48,512) remain absent. Major whole-room errors persist; no room approval.
+
+Reserved CN3-29 fails the predeclared positive criterion. Exposed raw-source
+diagnosis (final proposals, NOT late-input-equivalent trace) finds its real
+mini searched/unmasked with base score 1 but localized sides 0.667, per-side
+contrasts +0.143/-0.326 and aggregate -0.113. Separate sample evidence finds 8/12 accepted
+points each side: both weak normal strength and near-base directional conflict.
+Do not shift truth, lower thresholds to force this room, or call it reserved
+after tuning. Source/body/shader/neighbor evidence needs a separate experiment.
+
+Ten predeclared synthetic variants preserve known geometry across fill, narrow/
+thick outline, shading and scales 1/1.25, plus empty-gap negatives. Candidate
+recovers the TWO filled positives but misses all SIX outlined/shaded positives.
+Neither empty-gap negative emits new objects; a pre-seeded false full remains
+in all ten. Thus this demonstrates appearance sensitivity, not complete
+accuracy or shading alone. No production threshold was tuned from the probe.
+
+Published reusable workflow: `scripts/triangle_appearance_probe.py` generates a
+fresh ignored evidence directory with renderer/engine/RGB/PNG hashes, fixed
+truth/coarse proposals and exact typed misses/extras. Missing-mini coordinates
+score output and NEVER enter helper inputs. Five tests verify deterministic
+appearance variation/invariant geometry, scoring-input separation, output
+preservation and invalid configurations. README documents the real CLI and
+helper-only scope. It is not an ordinary scan, held-out proof or latency test.
+
+B98 is rejected despite development gains/protected controls. No quiet runtime
+or final 71-screen sweep is claimed. Exact helper/scanner/tests and all evidence
+remain under ignored `batch98-rejected-v1` and other `user-review-20261001` artifacts.
+All workers finish before only our three experimental files return via
+apply_patch to B95. One new public full-target non-reemission regression allows
+future true correction but forbids duplicate additions; it does not freeze
+incorrect labels/abstention. Final 21 helper/workflow tests PASS (2.489s). Real CLI
+also runs on B95: its narrow helper adds none of the omitted isolated minis;
+helper stress scores are not whole-screen accuracy. Production package `ce89a6c8...`
+and app loaded/disk fingerprint `418a7a...` match; root/health HTTP 200, no candidate deployed.
+
+Public checkpoint contains ONLY workflow/test/README/progress/handoff work.
+The 71-screen interim remains 17 current B95 / 54 older, not a final-current certificate.
+Goal ACTIVE/all six original gates unchanged. Next improve source-relative
+stroke/body evidence under neighbor interference without losing RGB, true
+occlusions, internal-art/gap negatives or adding a duplicate grayscale scan.
+Freeze NEW reserve/complete labels before tuning. All 12 Lap copies reverified
+byte-identical to originals; N = test(N + 5) association remains. ATK2 native
+600px / default 608px clipping remains separate unresolved work, with FTFA
+behavior protected.

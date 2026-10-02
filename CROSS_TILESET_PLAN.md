@@ -2,6 +2,49 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_98 rejected; reusable appearance diagnostics published
+
+Production detection remains B95. In the rejected candidate, source-only
+location witnesses recover one real CN3-25 mini and one additional NR2 mini
+while preserving emission/absence masks. Duplicate-safe corrections remove a
+false Arcfox direction without duplicating its existing correct target.
+Development gains from B97 remain, but reserved CN3-29 stays entirely unchanged
+at 2/3. This FAILS positive transfer: the composite is preserved/rejected, not
+deployed. All 38 ordinary cases and all 16 exact controls finish; 246 affected
+tests pass. No lost exact control, new reference error, nongeometry/metadata
+change or new duplicate is observed. Fifteen controls equal B95; Arcfox errors
+drop from 22 to 21. These detection gains are UNSHIPPED. No quiet runtime or
+final-current 71-screen certificate is claimed.
+
+Strict tuple review also corrects an earlier interpretation: NR2's up spike at
+(288,224) was already present, so B97's extra copy was not a positive recovery.
+B98 retains the original and removes the false right spike. Original outputs
+and history remain preserved. Every room, including visual-only cases, now
+has a check for newly increased duplicate typed keys in the local verifier.
+
+The reserved small contour is searched and unmasked, but has weak directional
+samples and inconsistent aggregate polarity near neighboring triangles.
+Ten deterministic variants reproduce a style-dependent helper gap: the filled
+mini is recovered; outlined/shaded variants are not, at 1 and 1.25 scales.
+This does not isolate shading alone or certify a whole screen. Public
+`scripts/triangle_appearance_probe.py` makes these diagnostics reproducible
+with fixed geometry, renderer/engine/pixel hashes, coarse proposals and exact
+typed misses/extras. Labels only score results. Five workflow tests plus a
+new non-reemission regression pass; the final 21 helper/workflow tests pass on
+B95. The actual CLI also runs on B95; its narrow helper recovers none of these
+omitted isolated minis. Public tools/tests/docs do not alter the scanner.
+
+All candidate files were verified and preserved before only our experimental
+changes returned via apply_patch to B95, after every worker ended. The app
+returns HTTP 200 and loaded-source parity holds. The 71-screen interim remains
+17 current outputs and 54 older outputs, with no acceptance upgrades. The goal
+and all six gates remain ACTIVE. Next investigate local stroke/body and
+neighboring-edge evidence; retain gap/artwork/occlusion/RGB negatives and freeze
+new roles, complete structures and a reserve before tuning. CN3-25/CN3-29 are
+exposed, not reusable blind reserves. The 12 Lap maps remain exact original
+copies with confirmed N = test(N + 5) association. Native 600px clipping is
+separate unresolved work. Read BATCH98_RESUME/REVIEW_NOTES and recent progress.
+
 ### BATCH_97 rejected: masks/anchors and duplicate correction targets
 
 Published detection remains B95; a new actual-source regression guard protects
