@@ -10374,3 +10374,85 @@ Final production regression/workflow selection: 34 tests PASS (4.255s). Rejected
 B100 counterproof catches all four artwork additions using the same bounded
 fixture hypotheses, with forbidden target keys absent from detector inputs.
 All 12 original/preserved Lap JMaps reverified byte-identical before publication.
+
+## 2026-10-02 — BATCH_101 size ownership works, material refits still fail
+
+Start public5caaf254/B95. All candidate detector work stays ignored; production
+source, fixtures and original references are unchanged. Freeze complete inherited
+development structures, CN3-31 reserve and four source-reviewed inner-art
+negatives before tuning; annotation identity `5bc782e5...`. Preserve B100 bytes
+and failed experiments, not just the latest successful helpers.
+
+Actual same-context traces disprove the proposed diffuse-glow cause: all four
+enclosing native32 slopes score1.0 with no solid masks, while joined bases are
+0/0/0/0.333. Independent full-source slopes/material and actual triangular
+containment now guard NEW mini hypotheses, without inferring hidden fulls,
+deleting existing minis or vetoing rectangular overlap alone. Shared and
+uncached complete deltas agree; all four B100 inner-art false additions disappear
+and the two B99 lost true minis remain. Portable54 pass after correcting only
+one harness triangle that was contained rather than protruding; failed evidence
+is preserved and no detector threshold or source label changes to pass it.
+
+| Entire frozen structure | B95 | Rejected B101 | Source review / limitation |
+|---|---|---|---|
+| CN3-7, 21 =4 blocks +17 triangles |11 exact /1 extra|20 exact /1 extra|All15 new minis real;3584 real solid pixels retained; major whole-room errors remain|
+| NANG-130, 25 |11 exact /13 extras|18 exact /6 extras|21 adds/7 removals reviewed;10752 real solid pixels retained|
+| CN3-8, 9 |3 exact /6 extras|5 exact /5 extras|Full direction/shared-base minis corrected;2048 real solid pixels retained|
+| CN3-25, 5 |1 exact /7 extras|2 exact /7 extras|True mini added;2048 matched/1536 excess solid pixels unchanged|
+| CN3-29, 3 plus solid union |2 exact /2 extras|3 exact /2 extras|True mini corrections/additions;2560 real solid pixels retained|
+| CN3-30, 2 plus solid union |0 exact /0 extras|2 exact /0 extras|Both minis recovered;2048 real solid pixels retained; now development evidence|
+| Reserved CN3-31, 3 full ups |0/3|0/3 unchanged|FAILS positive transfer; a correct left refit elsewhere does not count toward this denominator|
+
+Six development maps have fresh whole RAW Source/standalone JTool/Blend and ALL
+changed-tuple crops, with correct small-room source-grid padding. All their
+changes are source-supported, not room acceptance. The reserve's unrelated
+full up-to-left correction also has fresh source evidence, but the complete
+upper-left triforce is still missed. CN3-31 is exposed now; freeze a NEW reserve
+before tuning its successor. No detector source reads labels or reference maps.
+
+Full-path shadow run88f1480d... stops after six completed development cases;
+the observation handle becomes missing and exact-command process inventory
+confirms no process. Terminal exit code is unknown: do not invent one. Preserve
+completed and partial outputs. A sealed manifest also has a control partition
+bug; repair only the entrypoint for the remaining17 cases, not the detector or
+completed cases. Identical frozen detector bytes run under d15f9d64... .
+The reserve plus12 exact controls finish. Strict tuple checks prove FTFA-4
+loses correct left(5,208,384) and adds false down(6,208,384): FTFA925/928 fails
+the926 minimum. Irkara-89 adds2 false minis, Flames1 and Partysu3 adds3. Fresh
+whole source/JTool/Blend plus all control delta crops confirm background/terrain
+art, not new mini objects. Arcfox removes2 extra rights without reference loss,
+but is not independently whole-source recertified in this checkpoint.
+All completed-case input/artifact/ALLmetadata/nongeometry/new-duplicate checks
+hold. Stop the uniquely verified remaining worker after failure; terminalEXIT1,
+not timeout. Combined19 cases complete, NOT all23 or all16 controls. Preserve
+the partial next case; four exact controls and extra protected rooms are unrun.
+
+An ordinary B95 FTFA-4 context capture reproduces the whole typed map/ALL
+metadata. On the SAME inputs, legacy changes nothing; new stroke alone erases
+the left and emits down. Its native32 localized gradient score is0.1667 and
+source-side material(+0.1224,-0.6381) disagrees. Stroke score1.0 substitutes
++0.4911 for BOTH signed material sides. Outline ink amplitude is not an
+inside/outside boundary: this is the causal defect in the destructive refit,
+not native600 clipping. The public original1001x761 source and ONLY the existing
+correct left hypothesis reproduce it; another cropped variant does not.
+New public test passes B95 and experimentally catches rejected B101. Authoritative
+corrected JMap confirms the existing left, but does not enter detector inputs.
+
+Ignored scan-local structured equivalent avoids global monkey-patches, sharing
+pure source buffers/caches with separate stroke evidence. It preserves exact
+candidate deltas, original input records and class identities under reentrancy.
+52 focused/equivalence tests pass32.640s;265 unique selected affected tests
+pass173.619s. These selections overlap; do not claim317 unique. Both test the
+UNSHIPPED equivalent, not current-app accuracy. Final PUBLIC production helper/
+workflow selection passes35 tests in3.213s, including the new actual-source guard.
+
+B101 REJECTED. No quiet ordinary runtime, final-current71 or candidate app
+certificate. Production package remains `ce89a6c8...`, app fingerprint `418a7a...`.
+The app was restarted after interruption; root/health return200 and parity is
+verified before publication. Audit stays18 currentB95/53 older with no upgrades.
+All12 Lap original/copy/source hashes again match provenance; associations
+N=test(N+5) unchanged, maps local-only. Public checkpoint is one regression plus
+progress/plan/handoff docs, NOT failed detector code. Goal/all six gates ACTIVE.
+Next separate signed source material from ink for destructive refits and trace
+terrain/background impostors; retain actual outlined-mini gains and independent
+old proofs. Reuse structured/context workflows instead of rebuilding hooks.

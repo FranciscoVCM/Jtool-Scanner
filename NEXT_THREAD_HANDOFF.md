@@ -4,6 +4,52 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B101 REJECTED; signed material is not outline ink
+
+Continue the ACTIVE goal after reading ENTIRE ignored original GOAL_PLAN,
+current CROSS_TILESET_PLAN and latest DEVELOPMENT_PROGRESS. Read ignored
+`.artifacts/user-review-20261001/BATCH101_RESUME.md` and BATCH101_REVIEW_NOTES;
+their final-state entries supersede old RUNNING notes. Production remains B95
+packagece89a6c8/app418a7a. No rejected detector/refactor was deployed.
+
+B101 guards new native16 artwork with independent native32 slopes/material
+and actual triangle containment, without inventing hidden fulls or deleting
+existing minis. Six complete development structures pass: CN37 20/21/same1extra,
+NANG13018/25/extras6, CN385/9/extras5, CN3252/5, CN3293/3/same2extras,
+CN3302/2/noextras. Whole Source/JTool/Blend and ALL delta crops reviewed;
+ALLmetadata/nongeometry/newduplicate checks pass. These are UNSHIPPED, not room
+approval. Reserved CN331 still0/3; its correct left refit elsewhere is not
+transfer under the frozen denominator. CN331 is exposed; freeze a NEW reserve.
+
+The reserve plus12/16 controls complete before rejection: FTFA4 loses a correct
+partial left and adds false down (FTFA925/928); Irkara89 adds2 false minis,
+Flames1 and Partysu3 adds3. Fresh whole-source reviews confirm those impostors.
+Arcfox removes2 extras but does not excuse failure. Combined19 cases complete,
+NOT all23/all16. Shadow68202 missing/no exact matching process, terminalcode
+unknown; remaining39289 deliberately stopped on verified failure, terminalEXIT1.
+Structured workers93540/79045 and actual-context3667 COMPLETE. Do not restart
+completed cases/workers or overwrite their immutable reports.
+
+Actual ordinary FTFA4 capture matches whole typed map/ALLmetadata. SAME-input
+trace isolates newstroke-only refit: source-side material(+.1224,-.6381)
+disagrees, but inkcontrast+.4911 replaces BOTH sides and forges closure.
+Separate source material from ink amplitude, especially before deleting/refitting
+an existing full. Public original-source single-hypothesis test catches B101
+and passes B95; no missing replacement answer enters inputs. Also trace the
+six background/terrain mini impostors rather than suppressing all new strokes.
+
+Reuse ignored batch101_structured*.py/load_batch101_structured.py: scan-local
+pure caches/separate evidence, no global mutation, exact sealed-helper equality
+and reentrancy tested. Focused52 and selected265 tests PASS (overlapping, not317
+unique); public35 PASS. An equivalent of a FAILED detector still cannot ship.
+Quiet ordinary runtime/final-current71 unproved. Current audit remains18 B95 /
+53 older, no status upgrades. All six original gates remain ACTIVE.
+
+Twelve Lap copies/source/original hashes remain identical; ordinalN=test(N+5)
+confirmed and refs local-only. Native600/default608 is separate unfinished work;
+protect FTFA. App restarted after interruption, root/health200 with B95 parity.
+Stage only public test/docs; private maps/images/artifacts/indexes remain ignored.
+
 ## Latest checkpoint: B100 rejected for glowing full-sprite inner artwork
 
 Public workflow7585aaa is pushed. Read ENTIRE original GOAL_PLAN and latest

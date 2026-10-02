@@ -2,6 +2,53 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_101 rejected: ink is not a signed material boundary
+
+Production remains B95. A source-size ambiguity guard removes all four B100
+inner-art mini additions without deleting existing geometry or inventing a
+larger object. Same-context evidence shows the enclosing native32 slopes are
+strong, but their joined bases are invisible; this is not a diffuse-glow
+localization failure. Triangular containment and independent source material
+can justify abstaining on a NEW mini, not emitting an unproved full spike.
+
+Six complete development structures pass their declared criteria: CN3-7
+20/21 with 1 extra, NANG-130 18/25 with 6 extras, CN3-8 5/9 with 5 extras,
+CN3-25 2/5, CN3-29 3/3 with 2 extras, and CN3-30 2/2 without triangle extras.
+All changed geometry in those six maps has fresh whole Source/JTool/Blend and
+delta review; ALL metadata/nongeometry and duplicate protections hold. These
+are UNSHIPPED results, not whole-room approval. Reserved CN3-31 stays 0/3.
+Its source-supported correction elsewhere does not meet the frozen denominator;
+CN3-31 is now exposed and cannot be reused as a blind reserve.
+
+The reserve plus 12 of 16 exact controls complete before rejection. FTFA-4
+loses a correct partial left spike and gains a false downward spike, reducing
+FTFA to 925/928. Six additional false minis appear across Irkara-89, Flames
+and Partysu3. Fresh whole source reviews confirm terrain/background-art
+impostors. Arcfox's two false removals do not excuse those losses. Preserve the
+19 completed shadow cases and partial outputs; do not restart completed work.
+The other four controls, quiet runtime and final-current71 were not completed.
+
+An ordinary-map/ALLmetadata-equivalent FTFA-4 context isolates the cause: the
+new channel replaces disagreeing source-side material values (+0.1224, -0.6381)
+with the same positive ink amplitude on both sides. That creates false proof
+for a destructive direction refit. Keep signed inside/outside material separate
+from outline strength. The public original-source regression supplies only the
+existing correct hypothesis, passes B95 and catches rejected B101; no missing
+answer coordinates enter detection. Final public focused selection: 35 pass.
+
+A scan-local, reentrant structured equivalent of the prototype passes 52
+focused and 265 selected affected tests (overlapping, not 317 unique). It avoids
+global field/factory mutations and shares pure cached source features. Passing
+tests do not license shipping the equivalent of a failed detector: it remains
+ignored and unshipped. Next address material/ink conflation and background-art
+impostors while preserving real outlined minis, independent legacy evidence,
+RGB/occlusions and prior gains; freeze a NEW reserve before tuning.
+
+The app is unchanged B95. The interim audit remains 18 current /53 older,
+without acceptance upgrades. All six original goal gates remain ACTIVE.
+Twelve Lap maps retain original hashes and confirmed N = test(N + 5) identities;
+native600 clipping/default608 protection remains separate unresolved work.
+
 ### BATCH_100 rejected: complete-region gains do not excuse sprite-art extras
 
 Production stays B95. Independent legacy gradient/material proof OR independently

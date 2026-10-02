@@ -211,5 +211,23 @@ class SpikeSizeTests(unittest.TestCase):
                 self.assertNotIn(target, added)
 
 
+    def test_ftfa_partial_left_full_is_not_refitted_from_unrelated_ink_sides(self):
+        from pathlib import Path
+        from jtool_scanner.image import load_png
+        image = load_png(Path(__file__).resolve().parents[1]
+                         / 'fixtures/regressions/unseen-rooms/ftfa/screen-4-source.png')
+        # The corrected reference and ordinary baseline contain this left full.
+        # Nearby overlapping contours/water can draw a closed downward ink
+        # outline without coherent inside/outside material on both its sides.
+        # A stroke extremum must not forge two agreeing material boundaries or
+        # erase an uncertain existing contour. Only the real old hypothesis,
+        # not its rejected replacement answer, is a detector input here.
+        target = (5, 208, 384)
+        added, rejected = contour_size_changes(
+            image, Box(0, 0, image.width, image.height), [target], [])
+        self.assertNotIn(target, rejected)
+        self.assertNotIn((6, 208, 384), added)
+
+
 if __name__ == '__main__':
     unittest.main()
