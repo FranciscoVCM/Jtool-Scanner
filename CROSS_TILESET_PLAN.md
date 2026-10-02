@@ -2,6 +2,41 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_99 rejected: preserve independent evidence channels
+
+Production remains B95. An ignored source-relative normal-profile experiment
+recovers all eight filled/outlined/shaded synthetic minis across two scales
+(two empty-gap negatives add nothing), but those are helper diagnostics only.
+Its full-scanner-path shadow run completes six cases before rejection: CN3-7
+18/21 rather than the required 20/21; NANG-130 18/25, CN3-8 5/9, CN3-25 2/5,
+CN3-29 3/3. Reserved CN3-30 recovers both actual minis, 0 to 2/2 with no triangle
+extras and all 2048 visible solid pixels retained. This is real but UNSHIPPED
+transfer evidence, not whole-room approval. The reserve is now exposed.
+
+The 252 selected affected tests and overlapping 48 focused tests pass. Six
+completed cases retain ALL metadata/nongeometry with no new typed duplicates;
+zero of 16 exact controls ran before rejection. No candidate all16, quiet runtime
+or final-current 71-screen certificate is claimed. The scoped worker was stopped
+after failure, with completed/partial artifacts preserved; no production edit.
+
+An output-equivalent trace proves both missing CN3-7 minis are searched,
+unmasked and geometrically unambiguous. Old material-boundary evidence accepts
+them on the SAME actual stage inputs; the new affine-background gate vetoes
+them. The new channel must SUPPLEMENT independently valid older evidence,
+not overwrite its contrast/polarity or become a new mandatory veto. Preserve
+RGB, owned size/direction, true occlusion, internal-art and gap negatives.
+Freeze a new reserve before tuning a successor; do not relabel CN3-30 as blind.
+
+Public `scripts/triangle_stage_context.py` now makes complete-record context
+capture/replay reusable, with fresh destinations and strict pixel/source/code/
+runtime/artifact identities. An actual CN3-7 capture matches the ordinary B95
+whole typed map/ALL metadata; unchanged-code replay matches every detection
+record. Twelve workflow tests plus the existing 21 focused tests pass (33 total).
+Replay is stage-only, never whole-scanner/transfer/runtime proof. Read ignored
+BATCH99_RESUME/EXPERIMENT, six-case verifier and same-context comparison.
+The app is unchanged B95; audit stays 17 current / 54 older without upgrades.
+All six original goal gates remain ACTIVE; pursue the causal repair next.
+
 ### BATCH_98 rejected; reusable appearance diagnostics published
 
 Production detection remains B95. In the rejected candidate, source-only

@@ -270,6 +270,28 @@ These cheap diagnostics help explain appearance sensitivity but do not replace
 ordinary real-room scans, reserved transfer, Source/JTool/Blend review, exact
 controls or end-to-end latency measurements. Generated outputs stay ignored.
 
+### Equivalent triangle-stage contexts
+
+```powershell
+python scripts/triangle_stage_context.py capture --report .artifacts/cross-tileset/report.json --case example-room --out-dir .artifacts/triangle-context-1
+python scripts/triangle_stage_context.py replay --trace .artifacts/triangle-context-1/trace.json --out-dir .artifacts/triangle-replay-1
+```
+
+Use fresh directories and a completed ordinary `scan-corpus` case with matching
+source, implementation, runtime and artifact checksums. Capture observes the
+real late triangle-reconciliation inputs while rerunning the original scanner,
+then requires equality of the complete typed multiset and ALL JMap metadata.
+It preserves full detection records, room geometry and checksummed input pixels.
+Documentation-only Git commits do not invalidate identical implementation bytes.
+
+Replay runs only that stage on the saved inputs. It records both the captured
+and current implementation identities, complete-record equality and typed
+additions/removals, including duplicates. A changed candidate can be screened
+cheaply here, but replay is NOT a full scan, accuracy/transfer certificate or
+end-to-end runtime measurement. Later stages and candidate-dependent upstream
+inputs still require ordinary scans. Output files stay ignored; reference JMaps
+are never stage inputs. Existing output directories are never overwritten.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

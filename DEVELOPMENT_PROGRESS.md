@@ -10218,3 +10218,79 @@ Freeze NEW reserve/complete labels before tuning. All 12 Lap copies reverified
 byte-identical to originals; N = test(N + 5) association remains. ATK2 native
 600px / default 608px clipping remains separate unresolved work, with FTFA
 behavior protected.
+
+## 2026-10-02 — BATCH_99 normal-profile prototype rejected; real stage contexts reusable
+
+Started at `1c63a84` / production B95. All candidate code stayed ignored and
+in-memory: no implementation file, source, original JMap or app changed.
+Before tuning, freeze complete development CN37/NANG130/CN38/CN325/CN329 and
+new reserved CN330 lower-left two-mini ledge plus its entire 2048px visible
+solid union. Annotation hash `b786e0ef...`; source independently reviewed with
+native axes. CN329 is explicitly exposed B98 evidence, not a reserve. Hidden
+editor decomposition remains uncertain; use visible occupancy, not guessed cells.
+
+The prototype adds cached native normal profiles, locally normalized coherent
+ink and separately closed bases, keeping size/source ownership and absence/
+emission masks. Synthetic geometry stays fixed: all eight filled/outlined/
+shaded positives recover at1/1.25, neither empty gap adds objects, and a seeded
+false full remains. These are helper-only diagnostics, not whole accuracy.
+Early exit is a necessary coherent-stroke bound counting every unseen sample
+as a possible hit; it preserves all five development addition/removal sets
+while reducing profiled CN37 stroke calls22344->1004 and patch stats5589->377.
+Profiled time26.048->7.574s is NOT quiet ordinary end-to-end latency evidence.
+An initial tuple-vs-JSON-list assertion was a harness bug; preserve its failed
+report and the normalized successful repeat, never change truth to pass it.
+
+Full-scanner-path SHADOW run `677b2e83c29548a8b08e1e04bf2991da` uses B95 on disk
+plus explicitly hashed override/helper/wrapper bytes (`ordinary=false`). Six
+completed cases retain ALL metadata/nongeometry with no new typed duplicates:
+
+| Entire frozen structure | B95 | B99 full-path shadow | Verdict |
+|---|---|---|---|
+| CN3-7, 21 triangles |11 exact /1 extra|18 exact /1 extra|FAIL: predeclared target20/21; two prior recoverable real minis lost|
+| NANG-130, 25 |11 exact /13 extras|18 exact /6 extras|Development gain retained; major whole-room misses remain|
+| CN3-8, 9 |3 exact /6 extras|5 exact /5 extras|Development gain retained|
+| Exposed CN3-25, 5 |1 exact /7 extras|2 exact /7 extras|Development gain retained; excess1536 solid pixels unchanged|
+| Exposed CN3-29, 3 |2 exact /2 extras|3 exact /2 extras|One real miniature recovered;2560/2560 solid pixels retained|
+| Reserved CN3-30, 2 |0 exact /0 extras|2 exact /0 extras|Real reserved gain;2048/2048 solid pixels retained|
+
+The CN330 positive does NOT excuse CN37's failed criterion or certify its whole
+map; broader shadow changes are not fully source-reviewed. CN330 is now exposed.
+The worker is deliberately stopped after failure (terminal EXIT1, not timeout),
+preserving all six cases and partial seventh artifacts. No exact controls
+have run for B99 (0/16); do not reuse B98's controls as a B99 certificate.
+252 unique selected affected tests PASS227.552s; focused48 PASS20.031s overlap
+them, not300 unique. No quiet runtime, final-current71 or detector promotion.
+
+An observer trace reproduces the shadow CN37 whole typed multiset/ALL metadata.
+Missing ups(528,352)/(544,368) are searched/unmasked, closed, signature1.0,
+without competing mini/full ownership. Direct OLD/NEW material comparison on
+the SAME actual late-stage inputs: B98 accepts both (boundary contrast roughly
+-0.646/-0.635 with all nearby witness signs agreeing); B99 rejects both through
+its new affine-background gate despite strong ink geometry. Causal conclusion:
+supplement independent valid old material/gradient evidence with a separately
+guarded stroke route, instead of overwriting its contrast/polarity or imposing
+a new veto. Do not loosen one scalar or blame size/masks without this evidence.
+
+Published workflow `scripts/triangle_stage_context.py` makes ordinary-equivalent
+late input capture and cheap replay reusable. Capture validates current package/
+runtime/source/artifact identities, reruns the original scan under a restored
+observer, then requires complete typed map and ALL metadata equality. It stores
+FULL Detection kind/type/origin/score/source box, room, PNG/RGB hashes and tool
+identity. It rechecks source/artifacts after scanning. Replay records both
+implementation identities, complete detection-record equality, typed multiset
+deltas and input hashes, explicitly stage-only/not ordinary. It rejects tampered
+pixels/RGB/path escapes/unverified or empty traces and existing output folders;
+no reference answers enter the stage. Tests cover code/runtime/input races,
+ALL metadata failures, duplicate multiplicity, observer restoration on errors,
+candidate identity changes and in-place stage list mutation.12 new tests plus
+21 previous helper/appearance tests PASS (33 in3.485s). Actual B95 CN37 capture
+matches the ordinary entire map/metadata; unchanged replay matches all records.
+README documents CLI, cheap screening scope and required full-path follow-up.
+
+Production package `ce89a6c8...` / app `418a7a...` remain unchanged. Private
+prototype/code/evidence stays ignored; public checkpoint is workflow/tests/docs.
+The 71-screen interim remains17 currentB95/54 older without status upgrades.
+All original goal gates remain ACTIVE. Next freeze a NEW no-tuning reserve,
+then implement supplement-not-veto with exact real contexts, protected negatives,
+ordinary scans/all16/source reviews/quiet runtime/final-current71 before shipping.

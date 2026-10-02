@@ -4,6 +4,52 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B99 evidence-channel veto found; stage replay published
+
+Read the ENTIRE original ignored GOAL_PLAN and recent DEVELOPMENT_PROGRESS.
+Ignored BATCH99_RESUME/EXPERIMENT and same-context-material-comparison preserve
+the final experimental state. Production remains B95, package `ce89a6c8...` /
+app fingerprint `418a7a...`. No implementation file changed during B99.
+
+Source-relative stroke profiles recover all eight filled/outlined/shaded
+synthetic minis at 1/1.25, while two empty gaps add nothing; coarse false full
+proposals remain. The full-path SHADOW run `677b2e83c29548a8b08e1e04bf2991da`
+completes six cases before predeclared CN3-7 failure: 18/21 instead of 20/21.
+Other complete frozen structures are NANG13018/25(extras6), CN385/9(extras5),
+CN3252/5, CN3293/3(same2extras), and reserved CN3300->2/2(no triangle extras,
+2048/2048 solids). These are UNSHIPPED gains, not room approval. CN330 is now
+exposed, not a reusable no-tuning reserve. 252 selected affected tests pass;
+focused48 overlap them, do not claim300 unique. No exact controls ran (0/16),
+quiet runtime or final71 proof. Six checksummed cases have no new duplicates
+or nongeometry/ALL metadata changes. Preserve the partial seventh artifacts.
+
+Workers15740/67243/43310 are TERMINAL. 15740 EXIT1 follows scoped verified stop
+after failure, not a timeout; 67243 passes252tests, 43310 trace passes output
+equivalence. Do not restart these. Latest public CLI context/replay handles
+and terminal results are in BATCH99_RESUME.
+
+The trace reproduces CN3-7's full typed output/ALL metadata. Both missing real
+ups(528,352)/(544,368) are searched/unmasked/closed, not rejected by size or
+geometry. On the SAME actual late inputs B98 accepts both with coherent
+material-boundary signs; B99's new background-fit check rejects them. Next
+SUPPLEMENT valid old gradient/material evidence with independently guarded
+stroke evidence; do not replace old polarity/material channels or lower a
+cutoff to force a room. Freeze NEW reserve/complete structures before tuning.
+Keep RGB/occlusion/full-inner-art/gap controls and all original goal gates.
+
+Public `scripts/triangle_stage_context.py` captures/replays full Detection
+records and pixels, requiring source/code/runtime/artifact identities and whole
+ordinary typed-map/ALLmetadata equality at capture. Unchanged B95 CN3-7 capture
+and complete-record replay succeed;12 new workflow tests plus21 existing
+focused tests pass (33 total). A candidate replay is only a cheap screening
+stage, not ordinary accuracy/transfer/end-to-end time proof. README has CLI.
+
+App stays tested B95; no rejected detector deployed. Interim audit still
+17 current /54 older; no acceptance upgrades or final-current71 claim.
+All six original gates remain ACTIVE. Twelve Lap maps retain original hashes
+and verified N=test(N+5) association. ATK2 native600/default608 projection is
+separate unresolved work; FTFA behavior remains protected.
+
 ## Latest checkpoint: B98 rejected; appearance diagnostic workflow published
 
 Read the ENTIRE original ignored GOAL_PLAN and recent DEVELOPMENT_PROGRESS;
