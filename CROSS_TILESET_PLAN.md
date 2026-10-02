@@ -2,6 +2,45 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_108 exact mask cache: faster dense scans, unchanged recognition
+
+An ordinary B95 profile reproduced the complete map and detections while
+showing 255,195 rebuilds of the same four16x16 triangle masks. These depend
+only on direction, not on a source image. Production now shares four immutable
+ordered masks; arithmetic, thresholds, scores and the historical left fallback
+are unchanged. Both callers are read-only. Independent legacy/AST equivalence,
+every-pixel and deterministic edge-score checks protect this exact optimization.
+
+All431 unique affected public tests pass (126 focused plus305 geometry; not a
+full-suite claim). All16 ordinary controls preserve whole JMap bytes, all nine
+metadata fields, object order, complete Detection records, correction-project
+semantics and Source/JTool/Blend bytes. FTFA stays926/928 without extras/shifts/
+wrong directions; Flames stays252/42extras/21misses/20shifts/2wrong.
+
+Quiet serial dense cn3-16 A/B/A takes43.978/23.226/44.186 seconds: baseline
+mean44.082, cached23.226, a47.31% reduction (1.90x), with complete ScanResult
+equality and stable baseline clocks. Sparse FTFA1 takes19.369/19.450/18.898:
+cached+0.316s/+1.65%, smaller than baseline variation; no sparse speedup claim.
+The first dense attempt overlapped control preparation and is retained as
+non-quiet evidence, not used for the reported improvement. Neither profiling
+time nor older sessions are treated as a speed baseline.
+
+Recognition remains B95-equivalent; no room is upgraded or newly accepted.
+The71-room audit retains18 B95-recognition outputs/53 older, explicitly not a
+final-current all71 cache-version sweep. The tested app is available with
+loaded/disk source parity. All original recognition-goal gates remain ACTIVE.
+
+Two further private calibration hypotheses are rejected. Removing candidate
+exterior noise loses all seven original true-mini recoveries in48 fixed local
+background scenes. Reusing the existing cross-size attenuation envelope removes
+the Halls6 player alias but also two real CN3-29 minis in complete stage output.
+Background uncertainty and mini/full ink cannot be restricted blindly. Preserve
+these losses and seek independent local-material/shape evidence, not threshold
+tuning, coordinate exclusions or equal-ink assumptions. A newly source-reviewed
+NANG140 shaft is frozen before successor recognition testing:4/5 baseline,
+fixed5/5/zero-extra criterion and all13,312 solid pixels protected. It is
+historically exposed, candidate-unrun—not a truly unseen game or accepted room.
+
 ### BATCH_106 rejected by whole-source review, despite successful frozen structures
 
 Production remains B95. An upstream outlined-proposal qualifier distinguishes

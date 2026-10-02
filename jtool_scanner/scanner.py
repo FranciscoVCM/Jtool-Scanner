@@ -16,6 +16,7 @@ from dataclasses import dataclass, field
 from itertools import combinations
 from pathlib import Path
 from statistics import median
+from types import MappingProxyType
 
 from .binary_components import dilated_ink_components
 from .constants import (
@@ -22672,7 +22673,7 @@ def _outline_block_score(candidate: _GeometryPatchCandidate) -> float | None:
     )
 
 
-def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
+def _build_triangle_masks(direction: str) -> tuple[tuple[int, ...], tuple[int, ...]]:
     sample = 16
     center = (sample - 1) / 2
     outline: list[int] = []
@@ -22700,7 +22701,21 @@ def _triangle_masks(direction: str) -> tuple[list[int], list[int]]:
                 outline.append(pos)
             elif not inside:
                 outside.append(pos)
-    return outline, outside
+    return tuple(outline), tuple(outside)
+
+
+# These masks depend only on direction, not on the screenshot or patch. Keep
+# both the table and its ordered indices immutable so every caller can share it.
+_TRIANGLE_MASKS = MappingProxyType({
+    direction: _build_triangle_masks(direction)
+    for direction in ("up", "down", "right", "left")
+})
+
+
+def _triangle_masks(direction: str) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    # Preserve the original builder's fallback: every other direction is left.
+    canonical = direction if direction in ("up", "down", "right") else "left"
+    return _TRIANGLE_MASKS[canonical]
 
 
 def _triangle_side_coverage(patch: _PatchFeatures, direction: str) -> float:

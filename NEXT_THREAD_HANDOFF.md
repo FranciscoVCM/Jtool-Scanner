@@ -4,7 +4,50 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest checkpoint: B106 REJECTED; stroke calibration admits player geometry
+## Latest checkpoint: B108 exact mask cache; recognition goal still ACTIVE
+
+Production recognition remains B95-equivalent, now with an exact immutable
+four-mask cache. Package identity at verification:
+`dae34409d2c707c6aadb1410d50d0ad849b703f19cf45110b8daea52ca0d6bf2`;
+app/disk fingerprint:
+`b360e51a3c2c63d8995cb41f381b8ea8741e1984c012fcbf8c6764dcfbb7a344`.
+Read original GOAL_PLAN in full; all six recognition gates remain ACTIVE.
+
+431 unique affected public tests pass; all16 ordinary controls strictly equal
+B95 whole JMaps/ALL9 metadata/order/complete Detection records/projects/renders.
+Quiet dense cn3-16 mean44.082->23.226s (-47.31%,1.90x); sparseFTFA1+0.316s/+1.65%
+within observed baseline variation, not a speedup. Original dense attempt was
+concurrent with control preparation and is NOT the quiet certificate; use the
+separate uncontended dense_v2 result. Profile165s is not ordinary scan time.
+The ignored BATCH108_RESUME and sealed controls/timing/results preserve worker
+handles and all outputs. Do not restart completed workers or rerun all71 for
+this behavior-equivalent optimization. Audit statuses remain conservative.
+
+App was found down on an actual recheck, then restored hidden onPID14408;
+HTTP200 and loaded/disk parity verified. Recheck availability rather than assume
+that an old PID or saved note proves a live app. Keep local generated logs ignored.
+
+PrivateB107 own-noise removal loses all7 true-mini recoveries in48 frozen
+localized-background scenes; REJECT. Public-generator proposal is prepared but
+unpublished, with all48 source hashes/truth/options matched; it is infrastructure,
+not a detector or recall pass. PrivateB109 uses existing cross-size attenuation
+envelope:112 recorded material decisions reproduce the originals; eight complete
+stage contexts remove Halls6 false mini but LOSE two real CN3-29 minis. REJECT;
+no further raster/full candidate/control/reserve/runtime/final71 phase launched.
+Keep original plans/results immutable; recorded material decisions are not
+whole-helper or ordinary-scan proof. No failed recognition rule is in the app.
+
+New historically exposed/candidate-unrun NANG140 reserve frozen separately:
+ROI544,160,160,224; five spikes, baseline4/5; fixed5/5/zero triangle extras,
+all13,312 solid pixels/13 protected block keys and refreshers/warp retained.
+Main actually viewed whole Source/JTool/Blend and native-axis/source crops.
+Do not run helper diagnostics on this source during successor tuning. Halls1
+is already exposed. Next seek independent local source evidence that preserves
+legitimate local backgrounds and differing mini/full artwork. Protect all old
+gain keys/pixel sets, not only regional counts; eleven older IDs lie outside
+the rejected B106 completed32. Native600 and terrain conflicts remain unfinished.
+
+## Previous checkpoint: B106 REJECTED; stroke calibration admits player geometry
 
 Read ENTIRE original ignored GOAL_PLAN/current CROSS_TILESET_PLAN/recent progress
 and BATCH106_PLAN/RESUME. Public production remains B95, no failed code deployed;

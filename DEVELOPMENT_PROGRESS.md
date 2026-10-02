@@ -10756,3 +10756,82 @@ ignored runtime imports; small AST/synthetic/Detection-record checks pass but
 retain the known semantic failure and are not full-path approval. App remains
 B95/HTTP200/fingerprint418a; audit18 current/53 older, all statuses conservative.
 Private originals/indexes/artifacts stay ignored. All original goal gates ACTIVE.
+
+## 2026-10-02 — BATCH_108 exact four-mask cache and failed material hypotheses
+
+Startc452a69/B95. A complete ordinary cn3-16 profile reproduces JMap/ALLmetadata/
+order/Detection records/crop/grid/warnings/reference result. It attributes
+54.264 exclusive/88.319 cumulative seconds under profiling to255,195 rebuilds
+of four constant16x16 masks. Eight ShapeField constructions total0.094s; field
+normalization is not the principal cost here. Profile165.620s is diagnostic,
+not an ordinary quiet benchmark or a speedup denominator.
+
+Production preserves the original builder's arithmetic/order and precomputes
+four immutable tuple masks in a read-only table. Only direction selects them;
+historical else/unknown=left behavior remains. Both production callers merely
+iterate/count indices. Independent complete scanner AST comparison verifies
+that every other production node and package asset/module is unchanged.
+New four tests compare all ordered indices, immutability/reuse and1590 exact
+scores across every single-pixel mask, extremes and seeded random densities.
+Public focused126 PASS32.933s and ordinary geometry305 PASS162.365s:431 unique
+affected tests, not a full-suite run; initial standalone4 overlap that126.
+
+All16 ordinary control worker9981 completes run6f9f6ccc20b84b9ab234d835dc4e46f7.
+Strict verifier passes complete map bytes, all9 metadata fields, object order,
+confidence/kind/score/image boxes in complete Detection records, crop/grid/
+warnings/reference result, full project semantics except verified snapshot
+path, source/reference/JTool/Blend bytes. No benchmark result changes; FTFA
+926/928/zero extras/shifts/wrong, Flames252/42extras/21misses/20shifts/2wrong.
+
+Quiet serial dense cn3-16 retry takes43.978/23.226/44.186s for old/cache/old,
+CPU43.844/23.219/44.156. Baseline mean44.082, cached23.226:20.856s/47.31%
+reduction,1.90x faster; wall repeat spread0.473%, everyCPU/wall>.996. All entire
+ScanResults and serialized JMaps equal. Sparse FTFA1 takes19.369/19.450/18.898s:
+cached+0.316s/+1.65% versus19.134 baseline, less than baseline variation;
+no sparse speedup claim. Original dense attempt overlapped preparation of the
+control verifier; preserved but excluded from quiet evidence. Independent
+dense-only retry restores the quiet gate rather than concealing concurrency.
+All validation workers terminal; their concurrent test/control durations are
+not ordinary performance measurements.
+
+Initial runtime preflight failed before scans because report-only id/family/
+partition/source/reused fields are absent from cached records; corrected only
+ignored validator to compare every actual cached field while preserving all
+artifact/input/identity checks. The all16 preflight also rejected its own tool
+module name; an exact self-module exemption repaired only the ignored harness.
+No production implementation or environment fix was used to mask these errors.
+
+The old app PID was absent/HTTP refused on actual availability recheck. Hidden
+tested cache app restored asPID14408, new ignored logs preserved; both root and
+healthHTTP200, loaded/disk fingerprintb360e51a equal. No unrelated process killed.
+
+Independent privateB107 material diagnosis rejects removing candidate noise:
+48 fixed localized scenes/24 true/24 empty. Original10 stroke-material positives
+yield7 true-mini emissions; alternative loses all7. Seventeen original misses
+are not successful retention. Five false extras removed do not offset recall
+loss. Default generator-only export matches all48 pixels/truth/options, but
+has not been published or used to claim current B95 recall. Mean-shift extension
+is still unrun; preserve complete source ledger, not a postselected subset.
+
+PrivateB109 tests the existing attenuation-aware foreground envelope for
+larger-native witnesses, without thresholds or source-specific filters. All112
+recorded material calls reproduce original decisions. Eight complete source-
+stage comparisons reproduce original B106 sets and remove Halls6 false mini,
+but also LOSE source-real CN3-29 Up256496/Up624304. REJECT before further raster,
+ordinary/full controls/reserve/runtime/final71. Keep the original plan, code
+and failed outputs immutable; no failed recognition rule deployed.
+
+Source-only NANG140 preparation freezes a historically exposed successor
+reserve after main manual whole Source/JTool/Blend/native-axis/source review.
+Complete right shaft has5 real spikes, B95 retains4/missesminiRight640224, no
+triangle extras. All13 aligned block keys/13,312 solid pixels retained. Fixed
+success is5/5, zero extras/no terrain loss, preserve refreshers/warp/ladder and
+icon negatives. No successor recognition helper/candidate executed on it.
+Whole room still has errors; this is neither acceptance nor an unseen game.
+
+Public recognition remains B95-equivalent with this independent exact speed
+change. The71-room audit retains18 B95-recognition outputs/53 older, not a final
+current-cache-version all71 sweep; no acceptance upgrades. All original goal
+gates remain ACTIVE. Next improve shared material/shape reasoning without
+trading known real geometry for fewer false detections. Native600, wider terrain
+conflicts, protected old gain coverage and final-current71 remain unfinished.
