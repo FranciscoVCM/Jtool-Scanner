@@ -2,6 +2,38 @@
 
 ## Latest evidence and bounded repair (2026-10-02)
 
+### BATCH_100 rejected: complete-region gains do not excuse sprite-art extras
+
+Production stays B95. Independent legacy gradient/material proof OR independently
+guarded stroke/material proof restores the two CN3-7 minis lost by B99. Cached
+and uncached field views produce identical helper deltas without a second full
+scan; pure-gradient scores remain intact. All 48 portable tests pass. Actual
+full-path shadow CN3-7 reaches 20/21 (4 blocks +17 triangles), NANG-130 18/25 with
+6 extras, and CN3-8 5/9 with 5 extras. Three cases retain ALL metadata/nongeometry
+and introduce no duplicate keys. These are UNSHIPPED complete-region results.
+
+Fresh whole CN3-7 Source/JTool/Blend and four independent crops reveal FOUR new
+minis inside full-sprite artwork, outside the frozen structure. The old channel
+does not add them; the new stroke channel does. This FAILS whole-map protection
+despite region gains. Stop the uniquely verified experiment worker, preserve
+three completed/partial fourth artifacts, reject the candidate. New reserved
+CN3-31 was not run/opened. No exact controls ran (0/16), quiet performance or
+final-current71 proof; no failed code deployed. Do not conceal broader errors
+by moving a region, changing truth or adding a coordinate/palette exception.
+
+An existing tracked floor07 source is byte-identical to canonical CN3-7. A new
+fixture regression uses ten bounded existing hypotheses (not missing-object
+answers) and catches ALL four rejected-candidate additions. No new/private image
+is published. Next investigate why glowing full-sprite boundaries fail native32
+ownership while their sharp interior holes pass native16 stroke localization;
+keep independent material channels and real embedded/RGB mini protections.
+
+New current B95 CN3-31 has a complete fresh ordinary Source/JTool/Blend review
+and independent native-axis labels. Its entire upper-left triforce is 0/3;
+major missing/misplaced terrain and triangle errors persist. Audit is now
+18 current /53 older, not a final 71-screen certificate or room acceptance. Three source labels and
+new reserve remain frozen/unmodified. Goal/all six gates stay ACTIVE.
+
 ### BATCH_99 rejected: preserve independent evidence channels
 
 Production remains B95. An ignored source-relative normal-profile experiment

@@ -9,3 +9,7 @@ Regression screenshots for floors 7, 8, and 9.
 These rooms use dark block interiors and hollow spikes enclosed by bright
 colored outlines. Tests intentionally identify that representation through
 brightness contrast and geometry rather than the green hue.
+
+Floor 7 also protects against emitting miniature objects from the sharp
+triangular holes inside glowing full-spike sprites. Existing coarse locations
+bound source tests; they are not reference answers or blanket overlap vetoes.

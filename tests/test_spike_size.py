@@ -189,5 +189,27 @@ class SpikeSizeTests(unittest.TestCase):
                     self.assertNotIn(target, added)
 
 
+    def test_glowing_full_spike_inner_art_is_not_additional_mini_geometry(self):
+        from pathlib import Path
+        from jtool_scanner.image import load_png
+        image = load_png(Path(__file__).resolve().parents[1]
+                         / 'fixtures/regressions/unseen-rooms/cn3-neon/floor-07-source.png')
+        # These hollow, glowing 32px sprites contain sharply drawn triangular
+        # holes. A source-relative stroke must not turn those holes into new
+        # 16px objects. Existing coarse full hypotheses only locate source
+        # tests; they do not make every overlapped miniature invalid.
+        fulls = [(4, 304, 48), (6, 320, 208), (6, 432, 192), (6, 544, 288)]
+        # Nearby existing source hypotheses provide calibration/search anchors,
+        # as in a real late stage. The four forbidden minis are NOT inputs.
+        neighbors = [(6, 336, 32), (6, 320, 144), (3, 320, 240),
+                     (5, 400, 256), (10, 496, 352), (10, 512, 352)]
+        artwork = [(8, 312, 56), (10, 328, 216), (10, 440, 200), (10, 552, 296)]
+        added, _ = contour_size_changes(
+            image, Box(0, 0, image.width, image.height), fulls + neighbors, [])
+        for target in artwork:
+            with self.subTest(target=target):
+                self.assertNotIn(target, added)
+
+
 if __name__ == '__main__':
     unittest.main()

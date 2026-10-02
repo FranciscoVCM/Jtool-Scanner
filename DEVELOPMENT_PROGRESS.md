@@ -10247,7 +10247,7 @@ completed cases retain ALL metadata/nongeometry with no new typed duplicates:
 
 | Entire frozen structure | B95 | B99 full-path shadow | Verdict |
 |---|---|---|---|
-| CN3-7, 21 triangles |11 exact /1 extra|18 exact /1 extra|FAIL: predeclared target20/21; two prior recoverable real minis lost|
+| CN3-7, 21 objects (4 blocks +17 triangles) |11 exact /1 extra|18 exact /1 extra|FAIL: predeclared target20/21; two prior recoverable real minis lost|
 | NANG-130, 25 |11 exact /13 extras|18 exact /6 extras|Development gain retained; major whole-room misses remain|
 | CN3-8, 9 |3 exact /6 extras|5 exact /5 extras|Development gain retained|
 | Exposed CN3-25, 5 |1 exact /7 extras|2 exact /7 extras|Development gain retained; excess1536 solid pixels unchanged|
@@ -10294,3 +10294,83 @@ The 71-screen interim remains17 currentB95/54 older without status upgrades.
 All original goal gates remain ACTIVE. Next freeze a NEW no-tuning reserve,
 then implement supplement-not-veto with exact real contexts, protected negatives,
 ordinary scans/all16/source reviews/quiet runtime/final-current71 before shipping.
+
+## 2026-10-02 — BATCH_100 legacy proof repaired; broader full-sprite artwork fails
+
+Start public7585aaa/B95, no production/app file edit. Preserve byte-identical B99
+code/seal in ignored batch99-rejected-v4. Freeze inherited ENTIRE CN37/NANG130/
+CN38/CN325/CN329/CN330 development structures, plus new historically exposed
+CN331 reserve top-left triforce. Independent raw source/native8px axes confirm
+three full ups(96,64),(80,96),(112,96) and no terrain in[80,64,64,64]. Initial
+wider source-only crop included a separate boundary sliver; clarify scope BEFORE
+seal/baseline score/implementation, preserve the original view and all3origins.
+Annotationsb817aa43...; ordinary B95 baseline0/3/no extras, not candidate output.
+Hidden source geometry is not guessed to manufacture new benchmark truth.
+
+The isolated prototype evaluates complete legacy gradient/material proof and
+independent coherent-stroke/exterior proof on IDENTICAL inputs, never chaining
+new additions. New stroke fallback borrowing legacy material is disabled; old
+polarity/material remains independent. Union proof additions; don't reject an
+independently added key. Source ownership/size/closed bases/RGB/occlusion masks
+remain inside both evaluators. Exact shared pixels/gradient/patch/pure-legacy
+score caches match uncached entire helper deltas. This is not a second whole
+scanner or candidate end-to-end performance certificate.
+
+Actual B95 late-context replay restores ups528352/544368. An initial20/21 stage
+assertion was invalid: stage16/21 includes16 true triangles, while4 benchmark
+blocks are added LATER. Correct that interpretation and preserve failed output;
+never lower the whole20/21 target. An archived-test import bound old B95 rather
+than the prototype, creating70 subtest failures/1error; preserve that failed
+harness output and bind the actual candidate cleanly. Compare shared-cache
+VALUES to uncached fields, not necessarily identical key sets (the other
+channel legitimately visits more keys). Corrected48tests PASS26.952s, including
+old proof despite new material veto, independent new outline/shading proof,
+two-scale empty-gap negatives, source ownership/RGB/occlusion and cache equality.
+
+Sealed full-path SHADOW runb1739c89e0bd49feb277ed868ca5ac42 completes3 cases:
+CN37 11->20/21, same1extra and3584/3584 real solids; NANG13011->18/25,
+extras13->6 with10752/10752 solids; CN383->5/9, extras6->5 with2048/2048 solids.
+All metadata/nongeometry and newly increased typed-duplicate checks pass.
+These are UNSHIPPED complete-region results, not whole-room approval. Clarify
+CN37's fixed21-object denominator =4blocks+17triangles; original labels unchanged.
+
+Fresh whole RAWSource/standaloneJTool/Blend plus four native source/JTool crops
+reveal new false minispikes(8,31256),(10,328216),(10,440200),(10,552296): these
+are triangular holes inside glowing full-spike artwork, not extra game objects.
+SAME real late-input channel diagnosis shows legacy addsNONE, new stroke adds
+ALLfour. Region20/21 does NOT excuse new errors elsewhere. Reject candidate;
+stop uniquely verified PythonPID31680 (84356 terminalEXIT1, not timeout), leaving
+all3completed and partial4th artifacts intact. First sandbox CIM access denied;
+scoped escalated identity check/stop succeeds, terminal handle confirms. New
+CN331 reserved candidate outcome NOTRUN/UNOPENED. No exact controls ran(0/16),
+quiet runtime/final71/promotion. Production stays B95.
+
+Tracked floor07-source.png is byte-identical to canonicalCN37, SHA256ab35206a...
+so no new/private image is needed. New public regression supplies ten bounded
+existing full/mini source hypotheses, never the four missing/forbidden answers.
+It forbids those inner-art additions while allowing future genuine nearby
+objects and correction. Verify the guard actually catches ALLFOUR on rejected
+B100 before reporting it as protective; B95 remains green. Fixture README
+documents the negative. No implementation hue/coordinate rule is introduced.
+
+Fresh ordinary current B95 CN331 full Source/JTool/Blend review confirms major
+missing triforces/partial triangles, incorrect terrain/sloped boundaries and
+false left diagonal step-downs. Its upper-left3ups remain0/3. Three saves and
+vines present do not certify origins/extent. Current interim audit row moves
+from old-code evidence to fresh ordinary review:18current/53older, NO room
+acceptance upgrades or final-current71 claim. Explicit25x19/source/artifact
+identities retained, no strict input-equality review carry asserted.
+
+Next trace source-native32 ownership: do diffuse glowing outer boundaries fail
+localization while their sharp native16 interior holes pass? The stroke-channel
+false additions are proved; this detailed ownership cause still needs tracing.
+Do not remove overlaps blindly, loosen a scalar or add room/palette answers.
+Keep independent material channels, true embedded/weakRGB minis and all source
+facts/controls. New frozen CN331 reserve remains candidate-unopened. All six
+original goal gates remain ACTIVE; public checkpoint is a fixture test/docs,
+not rejected detector code. App/source fingerprint remains418a7a.../ce89a6c8...
+
+Final production regression/workflow selection: 34 tests PASS (4.255s). Rejected
+B100 counterproof catches all four artwork additions using the same bounded
+fixture hypotheses, with forbidden target keys absent from detector inputs.
+All 12 original/preserved Lap JMaps reverified byte-identical before publication.

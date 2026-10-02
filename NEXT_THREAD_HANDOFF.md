@@ -4,6 +4,49 @@ Updated 2026-10-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B100 rejected for glowing full-sprite inner artwork
+
+Public workflow7585aaa is pushed. Read ENTIRE original GOAL_PLAN and latest
+DEVELOPMENT_PROGRESS plus ignored BATCH100_RESUME/EXPERIMENT/DESIGN. No production
+source changed: B95packagece89a6c8/app418a7a. All experiment workers TERMINAL.
+
+B100 separates complete legacy proof from separately guarded stroke/material
+proof, with exact shared pixel/gradient/patch/legacy-score caches. 48 portable
+tests pass; shared/uncached ALLhelperdeltas equal. Actual full-path shadow run
+b1739c89e0bd49feb277ed868ca5ac42 completes 3 cases: CN3-7 11->20/21 with 1 extra,
+NANG-130 11->18/25, extras 13->6; CN3-8 3->5/9, extras 6->5. Metadata/nongeometry/new-
+duplicate checks pass. These are UNSHIPPED fixed-structure measurements.
+CN3-7 denominator 21 includes 4 blocks +17 triangles. Stage-only 16/21 is NOT a final
+map because 4 blocks are added later. Preserve failed stage-assertion evidence;
+labels and the whole20/21 target were never changed.
+
+Whole raw Source/standalone JTool/Blend and 4 independent native crops show NEW
+false minis (8,312,56), (10,328,216), (10,440,200), (10,552,296) inside full-sprite art.
+New stroke channel adds them; legacy channel does not. Candidate REJECTED even
+though frozen region counts pass. Worker 84356 is terminal EXIT1 after scoped verified PID
+31680 stop; completed 3/partial 4th preserved. 0/16 controls, no quiet runtime/
+final71/promotion. Never deploy it or call this room approval.
+
+Current public floor07 fixture is BYTEIDENTICAL to canonicalCN37 (ab35206a...);
+new bounded ten-hypothesis regression catches all FOUR rejected additions and
+passes B95. Inputs locate source tests, never include the forbidden mini answers.
+No private images/maps/reference coordinates added to detector or published.
+Next source-causal native32 sprite ownership under diffuse glow vs sharp inner
+native16 contours, keeping independent channels/trueembedded/RGB/artwork guards.
+
+New CN331 reserve source reviewed before tuning/seal, annotationb817aa43...:
+native[80,64,64,64], three complete ups(96,64),(80,96),(112,96), no solids.
+Ordinary B95 baseline 0/3/no extras. Preliminary larger source-only ROI included
+an unrelated boundary sliver; clarified BEFOREseal/outcomes/implementation,
+original larger view preserved/all 3 origins unchanged. B100 RESERVED OUTCOME
+NOTRUN/UNOPENED because worker stopped first. Do not inspect/tune it until a
+successor is frozen/sealed. Existing ordinary baseline whole Source/JTool/Blend
+review still finds major issues. Audit now 18 current/53 older, no upgrades.
+
+Other durable facts: twelve Lap maps unchanged/confirmed N=test(N+5), ignored
+local-only originals. ATK2 native600/default608 unresolved, protectFTFA. All six
+goal gates stay ACTIVE. Do not restart completed84356/59791/3848/94540 workers.
+
 ## Latest checkpoint: B99 evidence-channel veto found; stage replay published
 
 Read the ENTIRE original ignored GOAL_PLAN and recent DEVELOPMENT_PROGRESS.
