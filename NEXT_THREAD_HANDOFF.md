@@ -4,6 +4,23 @@ Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest diagnostic: B143 outer-source ownership
+
+Public recognition remains the B139/B142 checkpoint below. Read the ignored
+BATCH143_OUTER_SLOPE_OBSERVATION_PLAN/RESULT and complete JSON observations.
+Source-only observation retained five B133 rows/all25 parents and reproduced
+every original pure score after trace/source/RGB/crop checks. In the five cyan
+native32 boxes,66 of69 failed samples lack a strong nominal edge;3 are strong
+but misaligned. Removing blur adds support at only one failed sample. Widening
+the normal window to6px still yields NO two-sided11/12 owner. These are fixed
+diagnostic counterfactuals, not detector settings or recovery claims.
+CN3-9 inner art remains rejected; Halls1 size/occlusion remains uncertain.
+Investigate independent source extent/scan-local appearance next, not threshold
+loosening or color-only ownership. Freeze a different reserved role and whole
+positive/negative structures before any new recognition mechanism. No source,
+JMap, implementation or prior evidence changed; audit/status remain unchanged.
+NR2miniUp96,368's existing human confirmation was verified and remains protected.
+
 ## Latest checkpoint: B139/B142 normal source-owned geometry
 
 Read the original ignored GOAL_PLAN and BATCH142_RESULT_AND_RESUME in full.

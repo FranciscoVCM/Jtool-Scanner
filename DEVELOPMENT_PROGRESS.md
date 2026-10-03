@@ -11230,3 +11230,32 @@ form the reviewed checkpoint; verify its publication receipt/live HEAD/app.
 Original goal stays ACTIVE: positive no-tuning reserved transfer, shared terrain/
 filled/source-size limitations, remaining efficiency and final-current all71
 review are unfinished. Do not call this universal recognition or goal completion.
+
+## 2026-10-03 — B143 source-only outer slope diagnosis
+
+The human-confirmed NR2miniUp96,368 remains REAL and protected; the original
+durable confirmation was checked, not re-created or generalized to other effects.
+No scanner, fixture, JMap or prior report changes. B139/B142 recognition and
+the31-current-compatible/40-older conservative audit remain unchanged.
+
+Frozen-before-observer source-only diagnosis retains all five B133 rows/all25
+containing parents. Trace/source PNG/RGB/crop identities pass; current ordinary
+fields exactly reproduce every old pure localized score. Complete unchanged
+12-sample/two-side/-6..6-offset current and unblurred gradient evidence is saved
+locally. This is not a new whole scan or runtime/accuracy qualification.
+
+For the five cyan native32 boxes,66/69 failed sample positions lack a gradient
+above the unchanged strength cutoff;3 have strong but misaligned gradients.
+Removing blur adds support at only one failed sample. Wider windows still
+produce NO two-sided11/12 owner. Neither counterfactual is a detector change.
+The three CN3-9 inner-art proposals remain rejected; two Halls1 proposals remain
+uncertain. RGB possibility does not certify an object, nor do these observations
+establish hidden hitboxes or prove an exact glyph-margin cause.
+
+Next causal recognition work needs independent source extent/scan-local
+appearance evidence for weak logical boundaries, complete positive/negative
+structures and a different no-tuning role frozen before implementation. Do not
+force closure by lowering thresholds, dropping blur or borrowing another size's
+ink. Original real-recovery, precision, protection, runtime and final71 gates
+remain ACTIVE. Evidence is ignored BATCH143_OUTER_SLOPE_OBSERVATION_RESULT and
+batch143-outer-slope-observations-v1.json; no room acceptance upgrade.
