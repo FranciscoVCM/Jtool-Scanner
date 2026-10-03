@@ -4,6 +4,45 @@ Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest experiment: B127 own-outline gains, Bathhouse criterion still fails
+
+Read original GOAL_PLAN and ignored BATCH127_RESULT_AND_RESUME in full. Production
+remains B108/B95-recognition-equivalent; all prototype work is local and ignored.
+Independent pure geometry AND candidate's own source ink, with connected base,
+original witnesses and ownership guards, improves both complete576 panels:
+vector21/15/21/21 versus12/0/6/0, bitmap21/21/0/0 versus12/12/0/0 of72 per
+direction. No new unsupported additions/lost anchors; old144 aliases remain.
+458 affected contracts pass393.217s, not the full suite or controlled runtime.
+
+Seven complete whole scans: five strict full source/map/all9/order/Detection/
+project/render review carries. Fresh CN3-29/Halls1 whole Source/JTool/Blend and
+every delta support one/two new minis. CN3-29 ledge now3/3 but two OLD false
+spikes remain; Halls1 still has256 missing solid pixels in its fixed structure.
+Original verifier list/tuple false failure preserved; separate v2 corrects only
+representation/output names, no scans or criteria changed. No room upgrades.
+
+Source-frozen Bathhouse no-tuning evaluation FAILS2/3:miniUp432,368 still missing,
+solids768/2304 with1536 missing/256 excess. Nine other down minis are real under
+whole/delta/native-axis review, including six covered by water; they do NOT
+replace the failed reserve requirement. Bathhouse is now exposed development,
+never a reusable holdout. All fixed failed regions/denominators remain intact.
+
+B128 read-only capture reproduces full B127 map/all9/order/Detection/crop/grid/
+warnings; helper observer reproduces complete addition/rejection sets. Target
+has geometry1.0, connected base12/12, no skip/rival/full/rectangle ownership.
+Its weaker signed side is.117 of whole-box spread64; own-side spread36.5 is
+smaller. Own ink0 means outline-only recovery cannot help this filled sprite.
+Next test consistent own-profile signed normalization with unchanged geometry/
+base/ownership/negative gates. Freeze DIFFERENT evaluation roles before tuning;
+Bathhouse/NANG140/NANG138 are exposed. Never pass reference answers to recognition.
+
+All recognition/test/observer workers terminal; observation-handle recovery
+avoided duplicate tests. Preserve sealed B127 identities pinnedfca2434; new HEAD
+needs a new successor contract, not retroactively rewritten seals. No B127
+all47/all16/static ordinary adoption/quiet runtime/final71 certificate. Public
+audit26 current/45 older, all six goal gates ACTIVE. App root/api-health200,
+fingerprintb360e51a; reverify availability/parity at continuation.
+
 ## Latest experiment: B125 local-contrast recovery, transfer still incomplete
 
 Read original GOAL_PLAN and ignored BATCH125_RESULT_AND_RESUME in full. Production

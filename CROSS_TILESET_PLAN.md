@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest experiment (B127, 2026-10-03): outline recovery, filled-boundary gap
+
+Private independent geometry AND own outline evidence recovers real minis
+without borrowing another object's size/ink. Both complete576 panels introduce
+no new unsupported additions/anchor losses; vector recall21/15/21/21 of72 per
+direction, bitmap21/21/0/0. Old144 coarse aliases per direction remain errors.
+458 affected tests pass, not a full-suite or quiet-runtime claim.
+
+Seven whole scans retain previous gains. Fresh whole Source/JTool/Blend and all
+deltas support CN3-29's new mini (ledge2/3->3/3, two OLD false spikes remain) and
+two Halls1 minis. Five other complete maps/metadata/projects/renderers strictly
+equal reviewed B125. No whole room is upgraded or accepted.
+
+Frozen-before-helper Bathhouse evaluation FAILS original3/3:target remains
+missing2/3, solids768/2304 with1536 missing/256 excess. Nine other new down minis
+are independently source-supported, including water-covered ones, but cannot
+replace that failed criterion. Bathhouse is now exposed for successors.
+Equivalent observation shows the missing filled mini has geometry/base1.0,
+no rival/owner and no usable own ink; one signed side loses to whole-box contrast.
+Next test its own profile-relative signed boundary evidence, retaining negative
+and ownership safeguards. Do not lower broad thresholds or erase old failures.
+
+No B127 all47/all16/static adoption/runtime/final71 certificate. Production B108,
+audit26 current/45 older. Goal and all six gates ACTIVE. See latest progress,
+handoff and ignored BATCH127_RESULT_AND_RESUME for exact evidence and next batch.
+
 ## Latest development experiment (B125, 2026-10-03)
 
 Source-local slope normalization recovers NANG140's right mini in a complete

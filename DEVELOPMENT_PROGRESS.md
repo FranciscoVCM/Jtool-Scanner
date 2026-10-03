@@ -11088,3 +11088,57 @@ No B125 all47/all16, static ordinary adoption, quiet runtime or final71 certific
 is claimed. Production/app remain B108; public audit26 current-recognition rows/
 45 older, no acceptance upgrades. All local prototypes/images/JMaps/reviews and
 failed results stay ignored. Original goal and all six gates remain ACTIVE.
+
+## 2026-10-03 — BATCH_127 own-outline recovery; filled-boundary reserve misses
+
+A private positive-only successor handles cancelled signed steps using BOTH
+independent pure geometry>=11/12 AND candidate-owned coherent outline>=11/12.
+It preserves connected own base, original source witnesses, native-size/tip/
+rectangle/solid and rival-origin checks, weak RGB/occlusion and old negative/
+refit/full policy. No reference/coordinate/palette rules or production changes.
+
+Both complete576 challenge panels preserve all anchors and add no unsupported
+geometry. Vector true-mini recovery21/15/21/21 of72 by0/90/180/270deg, previously
+12/0/6/0; bitmap21/21/0/0, previously12/12/0/0. All144 old coarse aliases per
+direction remain, and bitmap latter rotations retain known one-pixel mask
+overlap. Rotations are related challenges, not independent unseen games.
+458 affected contracts pass393.217s, not full-suite or quiet runtime evidence.
+The lost test observation handle was recovered by exact process/result checks,
+without launching duplicate work. All workers finish normally.
+
+Seven complete shadow development scans retain reviewed prior gains. Five have
+strict full input/map/all9/order/Detection/project/render equality to B125.
+CN3-29 adds real miniUp624,304:complete ledge2/3->3/3 with two OLD extra full
+spikes still counted and all2560 source solid pixels retained. Halls1 adds real
+miniUps608,96 and720,384 outside its original structure; that region stays3/3
+with1792/2048 solids and256 old missing. Fresh WHOLE Source/JTool/Blend and
+every delta support both changed rooms. NANG140 original5/5/13,312-pixel SET
+holds as exposed development. Neither room is accepted or called exact.
+
+Original development checker v1 measured3/3 but falsely flagged the CN3-29 key:
+list membership against tuple keys. Original script/failed JSON preserved.
+Separate v2 changes only representation and output names; same whole scans,
+source truth, frozen regions and protections. No environment/scanner workaround.
+
+Bathhouse's complete source structure was frozen BEFORE B127:three triangles,
+entire2304-pixel solid union and full nongeometry/metadata protection. No-tuning
+whole scan FAILS original3/3:miniUp432,368 still missing2/3, zero triangle extras,
+solids768/2304 with1536 missing/256 excess unchanged. Nine new down minis outside
+the fixed region are individually source-supported under full views/all-nine
+crops/native16 boxes and axes, including six under water. They are genuine
+private gains, not a substituted reserved success. Bathhouse is now exposed for
+any successor; do not tune against it and retain a holdout claim.
+
+B128 read-only observation reproduces complete B127 map/all9/order/Detection/
+crop/grid/warnings and helper addition/rejection sets. The missing filled mini
+is searched, has geometry1.0 and connected base12/12, no skip/rival/full/
+rectangle owner. Signed sides normalize to.117/.464 using whole-patch spread64;
+its own side-profile spreads are36.5/59. Own outline score0, so outline-only
+recovery cannot solve this sprite. Next independently test consistent own-profile
+signed boundary normalization with existing geometry/base/ownership/negative
+safeguards; do not globally lower thresholds or erase the failed frozen criterion.
+
+No B127 all47/all16/static ordinary adoption/quiet timing/final-current71 claim.
+Production/app B108 with HTTP200 and unchanged fingerprint; current audit26
+production-recognition rows/45 older, no room upgrades. Prototype/images/JMaps/
+reviews/failed evidence remain ignored. Original goal and all six gates ACTIVE.
