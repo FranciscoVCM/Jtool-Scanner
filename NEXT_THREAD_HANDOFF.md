@@ -4,6 +4,46 @@ Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest qualification checkpoint: B121 reserved recovery fails; not deployed
+
+Production is still B108/B95-recognition-equivalent. Read original GOAL_PLAN in
+full and the latest DEVELOPMENT_PROGRESS entry. The private B121 connected-base
+successor retains FIRST6 real gains, passes458 affected contracts, excludes the
+six B118 portable false gaps, and completes47 whole-path shadow cases/all16 exact
+controls. No achieved object/pixel protection or exact-control truth regresses.
+Original absolute checker retains a Halls4 failure: four false up interstices
+already exist in byte-identical pinned/public/candidate maps. Do not hide these
+or turn a no-new-regression finding into perfect source accuracy.
+
+All15 changed maps have strict full prior review carry or fresh Source/JTool/
+Blend/all-delta review; the human confirms NR2miniUp(96,368) is real. Down(16,512)
+and(48,512) remain confirmed false effects and absent. Do not generalize the new
+positive to all translucent source art. All canonical statuses stay conservative.
+
+The frozen NANG140 reserve FAILS unchanged4/5: real miniRight(640,224) still missed,
+zero extras/all13 blocks/all13,312 solid pixels retained. Its original5/5 criterion
+and failed result are intact. NANG140 is NOW EXPOSED, not a reusable no-tuning
+holdout. Mask-clear vector576 also shows directional limitations:12/0/6/0 of72
+minis at0/90/180/270deg, no new unsupported additions/anchor loss. Do not claim
+universal geometry or qualify B121 merely because the first regions improved.
+
+Next inspect per-side/source-local contrast and owned contours. Equivalent
+whole-path contexts expose NANG140's strong unlocalized sides but insufficient
+localized scores, and Halls4's borrowed slopes/absent base. Do not simply lower
+thresholds, equate mini/full colors or delete every baseless/overlapping spike.
+Freeze a different historically exposed/current-successor-unrun evaluation case
+before any new rule. Preserve all original annotations and failed gates.
+
+Ignored BATCH121_RESUME, BATCH121_RESERVED_EVALUATION_PLAN, complete reports,
+protection v2/adjudication, source-review v2-confirmed and B124 equivalent contexts
+are authoritative detailed evidence. Earlier B118/B107 'reserve unopened' notes
+below are historical and superseded by the actual B121 run. Public production
+audit is26 current-recognition outputs/45 older, NOT final-current all71.
+All recognition workers terminal at this checkpoint; app restored hiddenPID30196
+with root/api-health200 and fingerprintb360e51a. Recheck app availability, not
+only the saved PID. Static ordinary integration, quiet runtime, final71 audit,
+publication of a qualified shared repair and all goal completion gates stay open.
+
 ## Latest checkpoint: B108 exact mask cache; recognition goal still ACTIVE
 
 B118 same-native-size outline calibration REJECTED. FIRST6 shadow gains are

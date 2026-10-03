@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Latest qualification evidence (2026-10-03)
+
+Private B121 connected-base precision is promising but NOT deployed/qualified:
+FIRST6 gains retained,458 affected tests,47 whole-path shadow cases/all16 exact
+controls and every previously achieved key/pixel protection checked. The original
+absolute checker still flags four inherited Halls4 interstices, not a new loss.
+All15 changed maps have strict full source-review carry or fresh complete QA;
+human confirms NR2miniUp96,368. No canonical whole-room acceptance upgrade.
+
+Frozen NANG140 reserved recovery FAILS4/5 versus fixed5/5; missing right mini,
+zero new errors/all13,312 solid pixels retained. It is now exposed, never still
+unrun or a tunable holdout. Mask-clear vector576 retains precision but exposes
+12/0/6/0 true-mini recoveries of72 across four directions. Diagnose per-side
+contrast and independent contour/material ownership; do not lower broad
+thresholds or restore unsafe cross-size ink licensing to force known cases.
+Use a fresh frozen evaluation role for successors. Production remains B108;
+audit26 current-recognition/45 older, all six original completion gates ACTIVE.
+See latest DEVELOPMENT_PROGRESS and NEXT_THREAD_HANDOFF for precise scope.
+
 ## Latest evidence and bounded repair (2026-10-02)
 
 ### BATCH_108 exact mask cache: faster dense scans, unchanged recognition

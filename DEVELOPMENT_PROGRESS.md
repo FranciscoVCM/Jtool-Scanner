@@ -10968,3 +10968,70 @@ it does not certify complete scans or preserve known misses. Public selection
 mask tests). Independently binding the unchanged rejected candidate makes the
 guard catch all six false cases. Production package/app staydae34409/b360e51a;
 goal and all six recognition gates remain ACTIVE. No room acceptance upgrades.
+
+## 2026-10-03 — BATCH_121 qualified precision, but fails reserved recovery
+
+A private successor requires connected middle-base support for NEW neighborhood
+miniatures and their competitors. The six B118 false gaps have disconnected
+support (longest2/12), while a genuine joined CN3-7 miniature has7/12 consecutive
+samples. Existing hit thresholds, opposite-full joins, weak RGB/occlusion
+protections and original witness/refit behavior are retained. All8 recorded real
+helper outputs and FIRST6 whole outputs preserve the source-reviewed B118 gains.
+Fixed CN3-7 remains11/21->20/21, CN3-9 2/6->6/6, NANG13011/25->18/25 with
+extras13->6, and Halls1 1/3->3/3. These are UNSHIPPED regional improvements;
+older whole-room errors and four omitted cross-size-only minis remain.
+
+The original576 bitmap stress completes with no new false additions or anchor
+loss. The original0deg144 improves12/72 omitted minis, with all six false gaps
+removed;90deg also12/72,180/270deg0/72. Source-only diagnosis shows a one-pixel
+solid-mask overlap in those latter rotations. Keep those boundary challenges,
+not a clean direction-only interpretation. A separately frozen576 vector panel
+has mask-clear continuous boundaries and byte-identical original0deg144 inputs.
+The unchanged candidate scores12/0/6/0 of72 across0/90/180/270deg, respectively,
+with no new false additions/anchor loss. All144 old coarse aliases per direction
+remain. This exposes LIMITED directional recall, not universal transfer.
+
+All47 ordinary-path shadow cases complete, covering16 exact controls and40 prior
+definition groups. No previously achieved object key, source solid-pixel SET,
+nongeometry behavior or reference truth is lost; no new reference error appears.
+FTFA remains926/928 without extras/shifts/wrong directions; Flames remains252
+with42 extras/21 misses/20 shifts/2wrong. Arcfox improves262->263 exact,
+extras15->13 and wrong directions2->1. The full absolute verifier nevertheless
+FAILS four Halls4 upward interstices: they are byte-identical in pinned87,
+publicB95 and candidate maps. Separate adjudication preserves that failure and
+proves achieved-protection retention. Do not call Halls4's old negatives fixed:
+its declared structure remains24/25 and visible blocks62/63 with zero extra
+blocks. Six old prospective NANG130 wrong-down minis also remain. The sealed
+worker actually ran12 controls first and four last, not all16 first as planned.
+
+A checker format error is preserved: the compact pinned index lacks comparison
+records. A separate v2 validates/hydrates complete original cached results and
+runs the same exact-key/pixel criteria, without inventing defaults or suppressing
+the inherited failure. The458 affected contracts pass, not a full-suite claim.
+All15 changed maps have full prior input/map/all9/order/Detection/project/render
+review carry or fresh whole Source/JTool/Blend and every delta inspection.
+Four fresh rooms are CN3-27/30/8/NR2. The human confirms the exact translucent
+NR2miniUp(96,368) is real; preserve that fact separately from already rejected
+down(16,512)/(48,512), and do not classify all translucent art as geometry.
+Canonical room statuses remain conservative; no new whole-room acceptance.
+
+The originally frozen NANG140 no-tuning evaluation then FAILS its5/5 requirement:
+unchanged4/5, missing miniRight(640,224), zero extras and all13 blocks/13,312
+solid pixels/nongeometry retained. Do not shrink its criterion or call it still
+unopened; it is now exposed and cannot be reused as a holdout while tuning.
+B121 is NOT qualified for deployment or goal completion. No static ordinary
+adoption, quiet runtime or final-current all71 certificate is claimed.
+
+Read-only observations reproduce the complete B121 maps/all9/order/Detection/
+crop/grid/warnings for NANG140 and Halls4. The right-mini miss has an intact base
+and no solid overlap, but only9/12 native and10/12 corner localized support;
+unlocalized corner sides are12/12. Inspect per-side contrast versus whole-box
+spread, rather than lowering all thresholds. The Halls4 false interstices have
+strong borrowed slopes but0/12 base support, versus12/12 for real downs. Missing
+closure alone is not universal absence: preserve true joins/occlusions and
+require independent ownership/negative evidence before deleting anything.
+
+Production remains B108. The stopped app was restored with HTTP200 and the
+unchanged loaded-source fingerprint. All source images, failed prototypes,
+reviews, annotations and generated artifacts remain ignored; original goal
+and all six completion gates remain ACTIVE.
