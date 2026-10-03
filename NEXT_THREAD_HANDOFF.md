@@ -4,6 +4,40 @@ Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest experiment: B125 local-contrast recovery, transfer still incomplete
+
+Read original GOAL_PLAN and ignored BATCH125_RESULT_AND_RESUME in full. Production
+remains B108/B95-recognition-equivalent. The privately implemented per-side slope
+normalization recovers real NANG140 miniRight640,224 in a whole scan: original
+4/5->5/5, zero extras/all13 blocks/13,312 source solid pixels/all9/nongeometry
+retained. Main freshly viewed full Source/JTool/Blend and only delta. NANG140
+was exposed after B121; this is DEVELOPMENT, never a new no-tuning reserve pass.
+
+Development stage10 passes; both complete576 vector/bitmap panels have no new
+false addition/anchor loss but limited12/0/6/0 and12/12/0/0 recall.458 affected
+tests pass410.546s, not full-suite/runtime evidence. FIRST6 whole outputs strictly
+equal reviewed B121 source/input/map/all9/order/Detection/project/render results.
+Do not attribute all prior combined gains to the new local-strength channel.
+
+Frozen-before-implementation NANG138 no-tuning region FAILS:24/24 true objects,
+four old false full spikes unchanged. Golden2 keeps10/10, three old false blocks.
+Whole-source review supports two false removals OUTSIDE these fixed regions;
+never shrink criteria or claim the new positive-only channel caused them without
+ablation. Both cases now exposed for successors. Failed enum preflight preserved;
+separate legal-partition v2 changes no scanner/source/options/criteria.
+
+Read-only B126 own-outline diagnosis: real lateral minis have closed geometry
+and coherent ink but nearly cancelled signed steps. Player alias has strong ink
+but fails independent geometry. Test geometry AND own-source ink, with existing
+connected-base/ownership/rival guards; never restore unsafe cross-size licensing.
+Borrowed full/mini contours still need separate source-ownership work. Freeze a
+different evaluation role before new rule implementation. All workers terminal;
+private files/outputs retained, not staged. No B125 all47/all16/static adoption/
+quiet timing/final71 certificate. Audit26 current/45 older, no room upgrades.
+Old B125 seals pin4bc8833; a docs commit changes HEAD, not recognition. Preserve
+those old identities; future full runs need an explicit successor seal. Original
+goal and all six completion gates ACTIVE. Recheck app root/health/parity.
+
 ## Latest qualification checkpoint: B121 reserved recovery fails; not deployed
 
 Production is still B108/B95-recognition-equivalent. Read original GOAL_PLAN in

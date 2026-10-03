@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest development experiment (B125, 2026-10-03)
+
+Source-local slope normalization recovers NANG140's right mini in a complete
+private scan:4/5->5/5, zero extras/all13,312 solid pixels/nongeometry retained.
+It is exposed DEVELOPMENT, not a new reserved success.458 affected tests and
+both complete576 challenges pass; FIRST6 whole maps/metadata/render review carry
+strictly from B121. Directional recall is still limited, not universal.
+
+New frozen no-tuning NANG138 region FAILS zero-extra repair:24/24 true keys but
+four old full-spike conflicts remain. Golden2 retains10/10 with three old false
+blocks. Both now exposed; keep criteria/results intact. Independent own geometry
+plus own coherent ink is a plausible next outlined-object positive mechanism;
+do not restore cross-size ink licensing. Borrowed contours need ownership repair.
+No B125 all47/all16/static adoption/quiet runtime/final71 claim. Production B108,
+audit26 current/45 older; original goal/gates ACTIVE. See latest progress/handoff.
+
 ## Latest qualification evidence (2026-10-03)
 
 Private B121 connected-base precision is promising but NOT deployed/qualified:

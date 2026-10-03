@@ -11035,3 +11035,56 @@ Production remains B108. The stopped app was restored with HTTP200 and the
 unchanged loaded-source fingerprint. All source images, failed prototypes,
 reviews, annotations and generated artifacts remain ignored; original goal
 and all six completion gates remain ACTIVE.
+
+## 2026-10-03 — BATCH_125 source-local recovery; transfer conflicts still open
+
+The private positive-only successor normalizes each slope's strength from its
+own normal profiles, not unrelated bounding-box detail. Existing .25/.15 strength
+coefficients,11/12 geometry, corner sampling, connected base, signed boundary,
+neighborhood and source-size/rectangle/rival-origin guards remain. Cached image
+and gradient buffers are shared; no duplicate full grayscale scan, fixed palette,
+screen identity, coordinate exclusion or reference lookup. No new negative or
+full-direction policy is adopted.
+
+NANG140's original frozen structure now improves4/5->5/5 in a complete shadow
+scan, zero extras, all13 source blocks/13,312 solid-pixel SET and complete
+nongeometry/all9 metadata/crop/options retained. Only new whole-map key is the
+real rightMini(640,224). Fresh whole Source/JTool/Blend and delta inspection
+support it. This is EXPOSED DEVELOPMENT after B121's failed reserve, not a new
+no-tuning success. Ten development helper contexts preserve every B121 result;
+only NANG140 changes. The known Halls6 player alias remains absent.
+
+Both complete576 vector/bitmap panels pass no-new-false/no-anchor-loss checks;
+true-mini recoveries remain12/0/6/0 and12/12/0/0 across four directions. Old144
+coarse aliases per direction remain. All458 affected tests pass410.546s (not the
+full suite or a quiet benchmark). FIRST6 whole scans and independent verification
+prove full input/map/all9/order/Detection/project/render equality to reviewed
+B121 outputs. Their regional gains carry, not whole-room acceptance.
+
+Two different source-reviewed complete regions were frozen BEFORE this successor
+was written. No-tuning canonical NANG138 retains24/24 true keys but all four
+false full-spike conflicts remain: Up256,416 and Downs288/320/352,432. Its required
+zero-extra repair FAILS; do not shrink the criterion. Golden2 retains10/10 with
+three old false blocks. Both are now exposed for future rules. Outside these
+regions, combined shadow removes one source-supported false Golden2 block and
+one false NANG138 full up; complete fresh source review supports removals, but
+their attribution to the new positive-only channel is NOT established.
+
+A runner preflight used an unsupported partition enum before recognition.
+Original failed script/manifest/seal retained; separate v2 uses the legal
+evaluation partition with new output names and unchanged criteria. No scanner
+or environment workaround, no missing cases. Both scans/verifier are terminal;
+the failed reserved result remains authoritative.
+
+Read-only paired-source diagnosis shows why strength normalization alone cannot
+fix all outlined objects: two real lateral minis retain>=11/12 geometry and own
+ink but signed edge steps nearly cancel (.02/.01 even locally normalized).
+The old player alias has ink11/12 but independent geometry only.5/.583 and fails
+the angular bound. Test independently closed geometry AND own source ink as a
+next positive hypothesis, not unsafe cross-size ink licensing or lowered broad
+thresholds. Borrowed full/mini contours still need a separate ownership repair.
+
+No B125 all47/all16, static ordinary adoption, quiet runtime or final71 certificate
+is claimed. Production/app remain B108; public audit26 current-recognition rows/
+45 older, no acceptance upgrades. All local prototypes/images/JMaps/reviews and
+failed results stay ignored. Original goal and all six gates remain ACTIVE.
