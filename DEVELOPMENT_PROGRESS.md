@@ -11142,3 +11142,91 @@ No B127 all47/all16/static ordinary adoption/quiet timing/final-current71 claim.
 Production/app B108 with HTTP200 and unchanged fingerprint; current audit26
 production-recognition rows/45 older, no room upgrades. Prototype/images/JMaps/
 reviews/failed evidence remain ignored. Original goal and all six gates ACTIVE.
+
+## 2026-10-03 — B139/B142 normal source-owned recovery qualification
+
+The source-safe successor is integrated as ordinary public modules, without
+ignored detector imports or runtime overrides. Separate cached source channels
+retain native geometry, coherent candidate-owned ink, local slope contrast,
+connected bases and independent source-size/rectangle ownership. Upstream
+outlined proposals are qualified before late reconciliation; full-direction
+refits retain complete existing Detection provenance when a correct target
+already survives. No reference JMap, case/hash, fixed palette or screen-coordinate
+exception enters recognition. This is not a duplicate full grayscale scan.
+
+Whole-source qualification first rejected B134's NEW NR2 down-mini(688,496):
+it is decoration inside a larger source triangle, whose coarse rectangles were
+mistaken. Source ownership may not treat those rectangles as source absence.
+The initial B136 ambiguity veto also failed88/144 closed-source portable cases.
+B138 retains strict pure source slopes/signed material/spread/containment and
+requires independent connected middle-base support when coarse masks overlap.
+It passes144/144 closed plus144/144 open counterexamples across four directions,
+three polarity/brightness styles, three capture scales and four false masks.
+It abstains on NEW interior art, not deletes established real mini detections.
+The human-confirmed NR2miniUp(96,368) remains real; prior down-effects stay absent.
+
+All48 ordinary B139 scans exactly reproduce the source-safe private candidate:
+complete input/map/ALL9/order/Detection/warnings/project/render checks. The47
+original protection cases and40 achieved key/pixel-SET groups remain intact.
+An absolute Halls4 checker still FAILS four inherited false ups present in
+pinned/public/candidate whole maps; separate adjudication proves retention,
+not repair of those negatives. Halls4 remains24/25 and62/63 visible blocks,
+zero extra blocks. FTFA stays926/928 without extras/shifts/wrong directions;
+Flames252 exact/42 extras/21 misses/20 shifts/2wrong. Arcfox262->263 exact,
+extras15->13 and wrong directions2->1; the other control matches/errors remain.
+
+Retained regional gains include CN3-7 11/21->20/21, CN3-9 rail2/6->6/6,
+NANG130 11/25->18/25 with13->6 extras, CN3-29 ledge2/3->3/3, and NANG140's
+exposed development4/5->5/5 with all13,312 source-solid pixels retained.
+Do not attribute all combined earlier gains to the last ownership qualifier,
+or confuse frozen structures with whole rooms. Bathhouse's nine supported
+down minis outside its failed region do not replace the original2/3 result;
+its1536 missing/256 excess solid pixels remain. B132's complete-closure
+alternative remains rejected for three false CN3-9 inner-art minis and two
+uncertain Halls1 proposals. RGB possibility alone does not establish ownership.
+
+Ordinary B139 affected460 tests pass. Its initial timing costs are material:
+stable dense baseline29.659s versus35.493s (+19.67%), sparse25.054 versus29.222s
+(+16.64%). The dense first sample overlapped final audit hashing, not another
+scan; preserve that caveat and every original result. An equivalent observational
+CN3-16 profile measures legacy/stroke/corner/local channels0.827/1.875/1.773/
+1.574s, locating repeated extra-channel slope checks. It is not quiet timing.
+
+B142 changes ONLY the corner necessary-condition method: exactly the same
+12 samples, both-side11/12 requirement, thresholds, margins, bounds and normal
+offsets. Two misses prove failure; eleven hits prove success. No recognition
+policy or localized score is loosened. All17,920 direct predicate comparisons
+pass; both576 full panels and all14 recorded helper contexts match. The462
+ordinary affected tests pass377.572s, not the full suite. All24 actual current
+ordinary outputs exactly equal same-input pre-optimization B139, with actual
+16 controls first and eight canonical rooms. The other24 archived B139 cases
+are exact source-compatible carry with rehashed full artifacts/QA, NOT rescans.
+
+CN3-31 exposes an important input distinction: its previously qualified scan
+had explicit[25,19], while pinned default uses auto(None). The actual default
+map differs from the hinted one, so two checker assumptions were preserved as
+failures rather than changing the scanner. Separate ordinary B108/B139 DEFAULT
+scans and fresh main whole Source/JTool/Blend/every-delta review prove the only
+same-input recognition change is a real left-vs-up refit at(480,512). Existing
+large geometry/vine errors remain MAJOR. The successor audit covers31/71
+current-compatible defaults:8 actual scans+23 exact carried normal outputs,
+40 older/pending. No room is upgraded. CN3-7/Say-7/LapBackwards-1's supplied
+post-scan references are now explicitly separated from unchanged recognition
+inputs; do not manufacture retrospective accuracy gains from added references.
+
+Clean serial ordinary B108/B142/B108 timing: CN3-16 29.941/33.347/29.999s,
+FTFA1 25.027/28.062/24.972s. Dense mean29.970->33.347 (+3.377s/+11.27%);
+sparse mean25.000->28.062 (+3.063s/+12.25%). All six complete ScanResults/maps
+equal corresponding ordinary outputs and each other; baseline wall/CPU spreads
+are below0.6%, CPU/wall above0.99. This is a remaining genuine cost, NOT noise
+or an overall speedup against shipped B108. The source-bound optimization and
+observational profile investigate it; further exact caching work remains useful.
+No qualification/test/profile/render/audit job overlapped this six-sample run;
+idle app CPU increased only roughly0.05s, not evidence of a concurrent scan.
+
+All local failure evidence, copied sources, JMaps, audits, timing attempts and
+worker recovery notes remain ignored. Normal source/tests and public summaries
+form the reviewed checkpoint; verify its publication receipt/live HEAD/app.
+Original goal stays ACTIVE: positive no-tuning reserved transfer, shared terrain/
+filled/source-size limitations, remaining efficiency and final-current all71
+review are unfinished. Do not call this universal recognition or goal completion.

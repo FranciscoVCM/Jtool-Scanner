@@ -55,6 +55,7 @@ from .platform_shape import default_platform_shape_score
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .interstitial_geometry import interstitial_triangle_aliases
 from .spike_size import contour_size_changes
+from .spike_outline_qualification import mismatched_outline_pairs
 from .terrain_material import (
     cell_quad, distributed_cell_edges, learn_complementary_terrain,
     learn_single_rectangular_terrain, pack_textured_rectangles,
@@ -6496,7 +6497,9 @@ def _detect_outlined_terrain_spikes(
             tolerance=9,
         )
     ]
-    return _dedupe_detections(supported, min_distance=20)
+    proposals = _dedupe_detections(supported, min_distance=20)
+    aliases = mismatched_outline_pairs(image, room, proposals, block_positions)
+    return [d for d in proposals if (d.type_id, d.x, d.y) not in aliases] if aliases else proposals
 
 
 def _outlined_triangle_score(
@@ -34652,9 +34655,15 @@ def _reconcile_source_triangle_sizes(
     added, rejected = contour_size_changes(image, room, spikes, solids)
     if not added and not rejected:
         return detections
-    return [d for d in detections if (d.type_id, d.x, d.y) not in rejected] + [
-        _grid_detection('source_closed_mini', t, x, y, .9, image, room, MINI_BLOCK_SIZE)
-        for t, x, y in sorted(added)
+    retained = [d for d in detections if (d.type_id, d.x, d.y) not in rejected]
+    # An alias can be rejected while its correct target already survives.
+    # Preserve that Detection's provenance/score/box rather than duplicate it.
+    surviving = {(d.type_id, d.x, d.y) for d in retained}
+    return retained + [
+        _grid_detection('source_closed_mini' if t in MINI_SPIKE_TYPES else 'source_direction_full',
+                        t, x, y, .9, image, room,
+                        MINI_BLOCK_SIZE if t in MINI_SPIKE_TYPES else GRID_SIZE)
+        for t, x, y in sorted(added - surviving)
     ]
 
 

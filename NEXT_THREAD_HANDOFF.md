@@ -4,6 +4,64 @@ Updated 2026-10-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest checkpoint: B139/B142 normal source-owned geometry
+
+Read the original ignored GOAL_PLAN and BATCH142_RESULT_AND_RESUME in full.
+The source-safe private work is now normal public source: spike_source_stroke,
+spike_source_corner, spike_source_local, spike_source_ownership and
+spike_outline_qualification, coordinated by spike_size and scanner. No ignored
+imports/runtime installation, reference answers, case/palette rules or blanket
+overlap deletion. Normal qualification package is00fd8582; qualification HEAD
+is9426d4d. A publication commit changes HEAD, not those immutable old seals.
+Verify the final publication receipt/live Git/app before starting another run.
+
+Normal B13948 source QA/47 original cases/40 achieved protections qualify the
+recognition; B142 changes ONLY an exact11-of12 slope-bound short circuit.
+All24 actual same-input ordinary outputs equal pre-optimization B139, including
+an independent DEFAULT CN3-31 scan. Both576 complete panels/14 recorded stage
+contexts agree,17920 direct bound comparisons and288 closed/open source-mask
+subcases pass;462 affected tests pass377.572s, NOT a full-suite claim. All16
+actual exact controls preserve achieved matches/errors/nongeometry/ALL9.
+FTFA926/928, Flames252/42extras/21misses/20shifts/2wrong; Arcfox263 exact.
+
+Keep source-backed regional improvements separate: CN3-7 20/21 from11/21;
+CN3-9 6/6 from2/6; NANG130 18/25 from11/25, extras6 from13; CN3-29 ledge3/3;
+NANG140 exposed development5/5 with13,312 solid pixels retained. Not whole-room
+certification. NR2 miniUp96,368 is HUMAN-CONFIRMED REAL. Do not reask or remove
+it; down16,512/down48,512 are confirmed false effects. The rejected new NR2
+miniDown688,496 is interior artwork and is not emitted by qualified code.
+
+Default31 differs from the older hinted[25,19] scan; both outputs are preserved.
+Fresh main whole Source/JTool/Blend/every-delta review supports ONLY left-vs-up
+refit480,512 against actual shipped B108; older MAJOR errors remain. Two wrong
+checker equality assumptions are preserved; v3 uses actual SAME-input B108/
+B139 baseline scans, not criterion laundering or output repair. Audit v1 also
+stopped on new reference context; v2 explicitly separates the three supplied
+post-scan JMaps from strict source/crop/options equality. They are not detector
+inputs or retroactive gain claims.
+
+Ignored audit71-screen-batch142-interim-audit-v2.md:31 current-compatible default
+inputs (8 actual canonical scans+23 exact-compatible archived normal outputs),
+40 older/pending; separate16 actual controls and supplementalLapBackwards2.
+No room promotion. Carry is mathematically exact and checksummed, NOT a claim
+that those23 were freshly scanned or visually reviewed on new code.
+
+Quiet A/B/A dense29.941/33.347/29.999s, sparse25.027/28.062/24.972s: remaining
+overhead+11.27%/+12.25%, stable baselines and complete ScanResult parity. Source
+channel profile plus exact bound optimization investigate the cost; they do
+not remove it. Preserve original B139 slower/non-quiet caveats and every failure.
+Future improvements must not discard useful channels just to conceal latency.
+
+Next causal work: source-size/filled-boundary diagnosis with independently frozen
+real minis/inner-art negatives and DIFFERENT evaluation roles before tuning.
+B132's full-closure alternative remains REJECTED despite useful real gains;
+RGB possibility alone cannot certify outer ownership. Do not lower broad gates
+or guess logical hitboxes from visual similarity. Bathhouse/NANG138/NANG140/
+Halls1 are exposed, not fresh holdouts. Preserve Halls4's inherited absolute
+FAIL, every prior achieved key/pixel set and original frozen denominators.
+At stable code qualify40 remaining defaults and review all changed maps.
+All original completion gates remain ACTIVE; no universal/all71 accuracy claim.
+
 ## Latest experiment: B127 own-outline gains, Bathhouse criterion still fails
 
 Read original GOAL_PLAN and ignored BATCH127_RESULT_AND_RESUME in full. Production

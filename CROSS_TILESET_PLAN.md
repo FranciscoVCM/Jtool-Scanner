@@ -1,5 +1,56 @@
 # Cross-tileset milestone
 
+## Latest qualified checkpoint (B139/B142, 2026-10-03)
+
+Normal source modules now integrate the previously private source-owned mini
+recovery, corner/local slope evidence, connected-base safeguards and upstream
+outlined-proposal qualification. They use image evidence, not case identities,
+fixed palettes, reference answers or blanket overlap deletion. Separate native
+geometry/material channels share bounded scan-local pixel/gradient buffers.
+The scanner preserves an existing correct Detection rather than duplicating it
+when refitting an alias. Original weak RGB and occlusion protections remain.
+
+Source-safe normal48 qualification preserves all47 original protection cases,
+40 achieved protection groups and all16 exact controls. B142 changes only an
+exact slope-bound short circuit: two misses disprove11-of12; eleven hits prove
+it. All24 new ordinary same-input outputs equal pre-optimization B139, all14
+recorded helper contexts and both576 panels match, and462 affected tests pass.
+These are affected tests, not a full-suite certificate or universal accuracy.
+FTFA remains926/928 without extras/shifts/wrong directions; Flames remains252
+exact/42 extras/21 misses/20 shifts/2 wrong. Arcfox retains263 exact, up from262.
+
+Measured regional gains retained for adoption include CN3-7's11/21->20/21,
+CN3-9's2/6->6/6 and NANG130's11/25->18/25 with extras13->6. CN3-29's ledge is
+3/3; NANG140's exposed development structure is5/5. These different structures
+are not whole-room accuracy scores or new no-tuning evaluation passes. The
+confirmed NR2miniUp(96,368) remains real; two false down-effects remain absent.
+Source-native ownership rejects the NEW NR2 decorative miniDown(688,496)
+without using mistaken coarse rectangles to erase genuine source structure.
+
+The audit is31/71 current-compatible default inputs:8 newly scanned canonical
+rooms and23 immutable normal outputs carried through exact equivalence and
+rehashing;40 remain older/pending. All16 controls were actually rescanned.
+CN3-31's DEFAULT scan was freshly reviewed and matches pre-optimization B139;
+its only change versus shipped B108 is a source-supported leftward refit.
+It does NOT equal the differently grid-hinted scan. No room is promoted.
+Three newly supplied reference JMaps change post-scan evaluation context, not
+recognition inputs; do not claim retrospective accuracy gains from that change.
+
+Quiet serial ordinary A/B/A: dense CN3-16 29.941/33.347/29.999s, sparse FTFA1
+25.027/28.062/24.972s. Remaining costs are+3.377s/+11.27% and+3.063s/+12.25%.
+All six complete ScanResults/maps match their corresponding ordinary outputs;
+baseline spreads are below0.6%. Material overhead is NOT noise or a speedup
+over shipped B108. An equivalent profile locates repeated extra-channel slope
+checks; exact short-circuiting reduces their cost, but further efficiency work
+remains. Preserve the original slower B139 attempt and observational timings.
+
+Rejected filled-boundary alternatives and failed reserves remain rejected.
+The absolute Halls4 contract still fails four inherited false interstices;
+achieved keys/pixel sets are separately retained, not an absolute-green claim.
+Original goal remains ACTIVE: reserved positive transfer, remaining terrain/
+source-size issues, controlled efficiency and final-current all71 review stay
+open. Read the latest progress/handoff and ignored BATCH142_RESULT_AND_RESUME.
+
 ## Latest experiment (B127, 2026-10-03): outline recovery, filled-boundary gap
 
 Private independent geometry AND own outline evidence recovers real minis
