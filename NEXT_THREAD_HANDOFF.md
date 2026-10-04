@@ -4,7 +4,47 @@ Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest: B153 source coverage, phase failures and private v4 checkpoint
+## Latest: B154 actual candidate qualification and source-label conflict
+
+Read ignored BATCH154_RESULT_AND_RESUME and original GOAL_PLAN IN FULL. All
+B154 workers are TERMINAL; no private candidate deployed. Public recognition
+unchanged B139/B142/package00fd8582. A docs publication changes HEAD, not the
+old HEAD437224 worker seals. Never rewrite old seals, failed results or sources.
+
+Human clarification: BOTH numbered CN3_Halls1 shapes32px RIGHT,24px exposed/
+8px wall-hidden, NOT16px minis. Exact full coordinates still not confirmed.
+Separate NR2 real up-mini and two false down-effects remain protected.
+
+Immutablev4 actual vector576/bitmap576 preserve prior true keys/no new false
+objects. Vector33/35/42/35 mini exact of72 per direction; bitmap33/33/0/0.
+Actual whole default development5 and independent whole/every88 delta source
+QA support CN3-9+9,NANG130+56,Bathhouse+17,Dotkid1+6,Halls1+0. Original ordered
+maps/Detection/ALL9/source/crop/grid/project/nongeometry preserved. Dotkid1
+complete triangle region6/11->11/11,zero extras;terrain still1792missing and
+5248excess. Rooms remain MAJOR, not accepted. Halls1 full map/bothSVGs unchanged.
+
+CRITICAL: Halls4 reserved candidate is unchanged, original numeric0/4 retained.
+Its256 alleged false terrain pixels actually belong to verified real block
+(448,288), already protected by the63-visible-block/62-achieved source audit.
+The zero-terrain criterion is inconsistent; do NOT delete the block or count
+this as an accuracy certificate. Read the complete ignored adjudication-v2.
+Hourglass native sizes/origins/occlusions need independent source adjudication.
+Every original query actually fails slope-bound BEFORE coarse-mask rejection;
+stronger upwardy272 source hypotheses are observations, not new ground truth.
+Original failed annotation/result unchanged; Halls4 now EXPOSED for future work.
+
+Ignored batch154-checkpoint-evidence-v1.json and ALL71 conservative interim
+audit preserve current public32=10actual+22strictcarry,39older. Private results
+kept separate from app outputs. No whole-room upgrade or goal completion.
+
+Next: validate annotation/known-positive consistency and freeze a DIFFERENT
+no-tuning role before recognition tuning; follow actual weak/partial source
+geometry rather than broad mask/threshold relaxation. Efficient normal-module
+integration,all47/40groups/all16,broader affected tests,quiet runtime and final
+current71 review remain due. Existing app qualified code/HTTP200/source parity.
+Keep the full original goal ACTIVE; no archive or redundant pinned87 sweep.
+
+## Previous: B153 source coverage, phase failures and private v4 checkpoint
 
 Read ignored BATCH153_RESULT_AND_RESUME and original GOAL_PLAN IN FULL. All
 B153 workers are TERMINAL. Public recognition is unchanged B139/B142/package

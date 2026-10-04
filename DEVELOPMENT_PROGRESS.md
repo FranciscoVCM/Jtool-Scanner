@@ -11415,3 +11415,59 @@ has full input/map/Detection/ALL9/crop/grid/warnings/project/SVG equality to its
 preceding reviewed output; whole review is equality-carried, NOT freshly accepted.
 No room upgrade or private app gain claimed. Read BATCH153_RESULT_AND_RESUME
 and batch153-checkpoint-evidence-v1.json; all six original goal gates stay ACTIVE.
+
+## 2026-10-04 — B154 actual whole gains and source-annotation integrity
+
+Public recognition/tests/fixtures/JMaps remain unchanged B139/B142. Both human-
+confirmed Halls1 shapes are ordinary32px RIGHT,24px exposed/8px wall-hidden,
+NOT16px minis; exact full coordinates not supplied. Candidate map/sourcePNG/
+bothSVGs equal ordinary Halls1 baseline; wrong-size proposals remain absent.
+
+Actual immutablev4 ALL576 vector/ALL576 bitmap panels preserve prior true keys
+and introduce no unsupported additions. Vector mini33/35/42/35 of72/dir;
+bitmap33/33/0/0. Conservative no-witness abstention loses16 speculative private-
+v3 vector gains in each90/270direction. All144 inherited coarse aliases/dir and
+many misses remain; these authored variants are not universal recognition.
+
+Five actual whole default development scans preserve original ordered maps,
+complete Detection/ALL9/source/crop/grid/project/nongeometry. MAIN independently
+reviewed full Source/JTool/Blend and EVERY88 actual four-panel delta crop:
+CN3-9+9,NANG130+56,Bathhouse+17,Dotkid1+6,Halls1+0;all additions supported.
+Dotkid1 original11 triangles improve6/11->11/11 withzero extras;five new true
+keys in that region plus one separately supported outside. Terrain remains
+4480/6272matched,1792missing/5248excess. Older full-spike aliases, missing/wrong
+terrain and markers remain MAJOR. No room promotion or app-current gain.
+
+After development QA, unchanged Halls4 candidate adds/removes0. Whole map/
+bothSVGs/sourcePNG exactly equal baseline. Original frozen numeric0/4 and256
+terrain pixels are retained, but further source adjudication exposes a critical
+annotation conflict:ALL256 alleged intrusion pixels are part of verified real
+blue block(448,288), already protected in the63-source-visible/62-achieved audit.
+The new region extends8px into that block. Its zero-terrain requirement is
+inconsistent; do NOT remove a real block to satisfy it or call this an accuracy
+certificate. Original annotation/failure/review preserved with explicit successor
+adjudication; exact hourglass sizes/origins/occlusions require independent review.
+No reserved success or adoption claimed. Halls4 is now EXPOSED for successors.
+
+An actual ordinary forward-only capture reproduces full map/ALL9/order/Detection/
+source/crop/grid/warnings/project/SVG. Decision-identical immutable-v4 logging
+finds all4 old query positions searched, each failing the slope necessary bound
+BEFORE coarse-mask arbitration. Original upy280 local scores.1667/.0833 and0base;
+downy264 .75/.8333 with1base. A separate source-only localization probe finds
+upy272 stronger (.8333/1base),not authoritative revised truth. Do not presume
+masking alone is causal or lower thresholds to fit questionable origins.
+
+Two observer-only schema errors are preserved with separate successful reports;
+no detector/environment workaround, fixture/JMap/source edit or hidden test
+expectation change. All B154 workers terminal. Earlier original20 actually bound
+tests/48queries/phase24 remain immutable compatible candidate receipts; no new
+all47/all16/full-suite/quiet-runtime certificate or candidate deployment.
+
+Ignored batch154-checkpoint-evidence-v1.json and ALL71 successor audit preserve
+PUBLIC32compatible=10actual+22strict archived carry,39older. Private88 gains and
+the evaluation-label correction are separate, no acceptance upgrades. Next add
+annotation/known-positive consistency to evaluation,freeze a DIFFERENT no-tuning
+role before recognition tuning and diagnose real weak/partial source geometry.
+Efficient normal-module integration,all47/40groups/all16,broader tests,quiet
+dense/sparse runtime and final-current71 review remain due. Read ignored
+BATCH154_RESULT_AND_RESUME; all six original GOAL_PLAN gates remain ACTIVE.

@@ -1,6 +1,43 @@
 # Cross-tileset milestone
 
-## Current direction (B153, 2026-10-04): calibrated source proposal coverage
+## Current direction (B154, 2026-10-04): actual gains and annotation integrity
+
+Public recognition remains B139/B142/package00fd8582; private v4 is not deployed.
+Read ignored BATCH154_RESULT_AND_RESUME and original GOAL_PLAN in full. Both
+Halls1 questioned shapes remain human-confirmed32px RIGHT,24px exposed/8px
+wall-hidden, NOT minis; exact full origins were not supplied.
+
+Actual full v4 vector576 and bitmap576 retain prior true matches and add no
+unsupported objects. Vector mini33/35/42/35 of72 per direction; bitmap33/33/0/0.
+No-calibration abstention loses16 speculative private-v3 vector gains in each
+of90/270degrees. Inherited144 coarse aliases per direction and many misses
+remain. This is mechanism qualification, not universal detection.
+
+Five actual whole development scans preserve original ordered detections/maps,
+ALL9/source/crop/grid/project/nongeometry. Independent whole Source/JTool/Blend
+and every88 changed-object crop support CN3-9+9/NANG130+56/Bathhouse+17/Dotkid1+6;
+Halls1 is unchanged. Dotkid1 triangles improve6/11->11/11,zero extras; terrain
+remains1792missing/5248excess pixels. All rooms remain MAJOR; private gains are
+not app-current gains or removal of inherited full-spike/terrain errors.
+
+Unchanged Halls4 evaluation emits no new objects. Its original numeric0/4 is
+preserved, but the zero-terrain criterion is invalid:ALL256 alleged intrusion
+pixels belong to verified real blue block(448,288), already protected in the
+earlier63-block source audit. Never delete that real block to satisfy a faulty
+annotation. Exact hourglass labels need independent size/origin/occlusion
+adjudication. Actual source/path tracing shows every original query fails the
+slope bound before coarse-mask arbitration; do not presume masking is causal.
+Halls4 is now exposed, not a continuing no-tuning role. No reserved success.
+
+Next enforce source-annotation/known-positive consistency, freeze a DIFFERENT
+no-tuning role before recognition tuning and follow weak/partial native source
+geometry. Preserve all real occlusions and source-size/inner-art negatives.
+Candidate adoption still needs normal-module/efficient integration, all47/
+40groups/all16, broader tests, quiet runtime and final-current71 review.
+Public audit remains32 compatible=10actual+22strict carry,39older; no promotions.
+All six original goal gates remain ACTIVE.
+
+## Previous direction (B153, 2026-10-04): calibrated source proposal coverage
 
 Public recognition remains B139/B142; no B153 prototype is deployed. Read the
 ignored BATCH153_RESULT_AND_RESUME and original GOAL_PLAN in full. Both Halls1
