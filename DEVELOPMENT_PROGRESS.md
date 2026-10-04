@@ -11337,3 +11337,81 @@ for this diagnosis. No acceptance upgrades. Read ignored BATCH152_RESULT_AND_RES
 Original goal ACTIVE:freeze a different reserve, repair shared source proposals/
 joined shapes, retain all protections, investigate efficiency and finish final
 current71 review before adoption/completion.
+
+## 2026-10-04 — B153 source-seed coverage, edge ownership and native phase
+
+Public implementation/tests/fixtures/JMaps remain unchanged B139/B142. Human
+Halls1 correction stays durable:both shapes32px RIGHT,24px exposed/8px hidden
+in the wall, NOT16px minis; exact full coordinates were not supplied. No claim
+that their current full placement is fixed. Separate NR2 confirmations hold.
+
+A private candidate reuses the exact public function's scan-local fields and
+ownership caches. Independent native8 source seeds widen search beyond local
+witness neighborhoods; four external opposing-mini slopes with consistent
+material can close a real same-material join without its internal base edge.
+No newly emitted object becomes a witness; no case/hash/palette/coordinate/
+reference lookup, public detector rewrite or blanket overlap removal.
+
+All48 fixed source positives/negatives remain, including known inner-art/full-
+size aliases/player and true underwater/occluded evidence. Complete exposed
+Dotkid1 triangle queries improve6/11->11/11. Main viewed EVERY89 extra source
+proposal in four real rooms:88 supported/one new top-edge CN3-9 inner-full
+alias. The failed v1 is retained, not deployed. Its containing full has pure/
+corner/RGB1.0 but was entirely excluded by a4px parent-origin margin. V2 tests
+complete in-frame native32 boxes with the UNCHANGED pure strict full-source
+owner, signed material and middle base where coarse terrain overlaps. The new
+alias is excluded; ALL88 supported extras survive. No border blanket exclusion,
+full emission, old-mini deletion or guessed hidden geometry. Source-query
+review is NOT whole Source/JTool/Blend candidate QA or current app accuracy.
+
+Full v1 vector576 passes33/51/42/51 mini exact of72 per orientation, preserving
+prior anchors and introducing no unsupported additions. V2 vector576 is equal.
+V1 bitmap576 FAILS86 scenes:29/27/30 one-pixel aliases in90/180/270degree
+sources, while prior exact true matches remain. A hard zero-phase global seed
+grid disagrees with the pixel-center native phase of qualified originals.
+Preserve the failure; more detections are not accuracy.
+
+V3 uses phase(s) from source-qualified ORIGINAL witness origins, never new
+objects. Its actual complete vector576/bitmap576 panels add no unsupported
+objects or lost prior true keys. Vector mini exact33/51/42/51; bitmap33/33/0/0.
+ALL144 inherited coarse aliases per direction remain. These authored variants
+are useful mechanism controls, not independent unseen-game transfer or proof
+of general precision. A separate fixed phase24 probe exposes8 shifted false
+objects under the no-witness phase0 fallback. Twelve calibrated probes are
+exact; this failure shows why source evidence for location matters.
+
+V4 abstains on uncalibrated NEW source seeds, keeping original public channels,
+splits/neighborhoods and all original add/reject sets. ALL88 source-supported
+queries/all48/complete11 remain. All20 ORIGINAL candidate-bound size tests pass
+52.609s, unchanged; includes weak RGB, real occlusions, neon, Partysu3 and FTFA
+partial full. Phase24 has12 exact calibrated probes and12 no-witness misses,
+zero extras. This deliberately does NOT solve bootstrap without an independent
+source anchor, and is not a universal-accuracy claim. Multiple phases/approximate
+witnesses remain risks. V4 complete portable and whole qualification still due.
+
+The original v2 raw28-test run160.298s had ONE clipped-pair assertion failure
+and is preserved. It emitted only the explicitly authored, independently
+visible right mini, with closure pixels strictly in-frame, not its clipped
+neighbor or a deletion of the full. No test expectation/failure was overwritten.
+The later no-calibration abstention is backed by eight actual phase negatives,
+not an environment workaround, coordinate rule or border suppression. Keep
+the newly missing no-witness positives explicit.
+
+Halls4's new historically exposed evaluation role/four-mini hourglass was
+frozen BEFORE any successor implementation. One actual ordinary baseline is
+0/4,zero triangle extras,256 terrain intrusion. Candidate reserve remains
+unevaluated; add-only work cannot alone fix that terrain conflict. Retain the
+whole fixed criterion and earlier blue-block/negative protections. Do not tune
+the reserve and continue calling it no-tuning, or shrink it to easy positives.
+
+All B153 workers are terminal. Quiet end-to-end performance, candidate whole
+development/source deltas, no-tuning transfer, all47/40groups/all16 and broader
+qualification remain due. Field timings are observational, not controlled
+runtime. Public exact controls on unchanged source are not rerun for docs.
+
+New ignored conservative audit preserves ALL71 findings:32 public compatible=
+10 actual+22 exact archived carry,39 older. The new actual Halls4 default output
+has full input/map/Detection/ALL9/crop/grid/warnings/project/SVG equality to its
+preceding reviewed output; whole review is equality-carried, NOT freshly accepted.
+No room upgrade or private app gain claimed. Read BATCH153_RESULT_AND_RESUME
+and batch153-checkpoint-evidence-v1.json; all six original goal gates stay ACTIVE.

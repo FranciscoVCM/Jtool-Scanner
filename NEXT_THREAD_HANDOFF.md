@@ -4,7 +4,55 @@ Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest: B151 development gain, failed reserve, B152 source-coverage diagnosis
+## Latest: B153 source coverage, phase failures and private v4 checkpoint
+
+Read ignored BATCH153_RESULT_AND_RESUME and original GOAL_PLAN IN FULL. All
+B153 workers are TERMINAL. Public recognition is unchanged B139/B142/package
+00fd8582; no prototype deployed. A docs publication changes HEAD, not the old
+HEAD258fde0-pinned worker seals. Create a new seal for a successor; do not edit
+old failed results, thresholds, truth, source images, JMaps or test expectations.
+
+Human truth: BOTH numbered Halls1 shapes32 RIGHT,24px exposed/8px wall-hidden,
+NOT16px minis. Exact full origins not supplied; separate NR2 truth protected.
+
+Private source-owned proposal seeds plus paired external closure yield all11
+exposed Dotkid1 triangles versus6, retaining all original48 queries. EVERY89
+new source proposal viewed:88 supported/one new top-edge inner-full alias.
+V2 uses unchanged pure strict full ownership on complete in-frame boxes to
+exclude that alias, retaining all88. This is source-query review, NOT a whole
+ordinary candidate map or app update. Terrain/older errors are not repaired.
+
+V1 fixed phase0 fails86 of576 bitmap scenes with one-pixel aliases. V3 uses
+only source-qualified ORIGINAL witness phases:actual full vector576/bitmap576
+panels pass no-new-false/anchor-loss. Vector33/51/42/51 mini exact of72/dir;
+bitmap33/33/0/0. All144 inherited coarse aliases per direction remain.
+
+V3's separate phase24 exposes8 false shifted objects without a witness. V4
+abstains on uncalibrated NEW source seeds rather than guessing phase0. All88
+real-source positives/all48/all11 retained. All20 ORIGINAL size tests pass
+52.609s unchanged and actually candidate-bound. Phase24 has12 exact calibrated
+probes,12 no-witness misses,zero extras. Bootstrap for completely unrecognized
+rooms remains OPEN. Original v2 raw28 had one failed legacy clipped-pair
+assertion and is preserved; no failure/expectation hidden or environment fix.
+
+Halls4 new historically exposed reserve frozen before any successor:complete
+four-mini hourglass. Actual ordinary baseline0/4,zero triangle extras,256
+terrain intrusion; candidate evaluation still NOT performed/tuned. Keep the
+whole criterion and original Halls4 protections. Add-only work cannot by itself
+resolve false terrain. Do not change its role/denominator to force a success.
+
+Ignored batch153-checkpoint-evidence-v1.json and 71-screen-batch153-interim-audit-v1.md
+preserve evidence and ALL71 conservative room findings. Public32 compatible=
+10 actual+22 strict carry,39 older. Halls4 one new actual ordinary/default
+output matches previous complete map/Detection/ALL9/crop/grid/warnings/project/
+SVGs, carrying whole review, NOT freshly accepted. Private results kept separate.
+
+Next: v4 complete portable qualification, whole default development5/each
+actual delta, then unchanged reserve and all47/40groups/all16/broader tests,
+quiet dense/sparse runtime and final-current71 audit. No public adoption or
+goal completion yet. Keep app on qualified public code/HTTP200/source parity.
+
+## Previous: B151 development gain, failed reserve, B152 source-coverage diagnosis
 
 Read ignored BATCH152_RESULT_AND_RESUME and original GOAL_PLAN in full. Public
 recognition remains B139/B142/package00fd8582; NO new candidate is deployed.

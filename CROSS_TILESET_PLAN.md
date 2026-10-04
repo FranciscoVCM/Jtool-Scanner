@@ -1,6 +1,39 @@
 # Cross-tileset milestone
 
-## Current direction (B152, 2026-10-04): coverage and joined-shape evidence
+## Current direction (B153, 2026-10-04): calibrated source proposal coverage
+
+Public recognition remains B139/B142; no B153 prototype is deployed. Read the
+ignored BATCH153_RESULT_AND_RESUME and original GOAL_PLAN in full. Both Halls1
+questioned shapes remain human-confirmed32px RIGHT spikes,24px exposed/8px
+wall-hidden, NOT minis; exact full origins were not supplied.
+
+Private source-owned seeds and independently closed opposing-mini structures
+recover the complete exposed Dotkid1 triangle query set6/11->11/11. All original
+48 positive/negative queries hold. Independent review of every89 new source
+proposal finds88 supported and one inner-full alias at the viewport edge.
+An unchanged strict pure full-source owner, extended only to complete in-frame
+boxes, excludes that alias without suppressing valid border-adjacent objects.
+Source-query review is not whole Source/JTool/Blend or app accuracy.
+
+A fixed native8 phase creates86 failed bitmap scenes with one-pixel aliases.
+Source-qualified ORIGINAL witness phases remove those failures: complete v3
+vector576 and bitmap576 preserve prior true matches and add no unsupported
+objects. Inherited coarse aliases and many miniature misses remain. A separate
+phase24 probe exposes eight wrong-origin additions when phase is guessed
+without a witness. V4 abstains on those uncalibrated NEW seeds, retains all88
+real-source additions and passes all20 original size tests unchanged. All12
+calibrated probes are exact; all12 no-witness probes are misses, with zero
+extras. This does NOT solve unfamiliar-room bootstrap or universal detection.
+
+Next qualify v4 portable/whole development outputs and every actual delta,
+then the frozen no-tuning evaluation and all protected/exact/runtime gates.
+Halls4's ordinary frozen hourglass is0/4 with256 terrain intrusion; add-only
+mini work cannot alone repair that complete structure. Do not shrink its
+criterion or silently weaken masking/real occlusion protections. Public audit
+remains32/71 compatible (10 actual+22 exact carry),39 older, no room upgrades.
+All original goal gates remain ACTIVE; private gains are not shipped gains.
+
+## Previous direction (B152, 2026-10-04): coverage and joined-shape evidence
 
 Public recognition remains qualified B139/B142; private B151 is NOT deployed.
 It adds41 source-supported minis across3 development rooms and excludes known
