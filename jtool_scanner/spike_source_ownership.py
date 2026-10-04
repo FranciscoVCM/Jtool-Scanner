@@ -13,11 +13,13 @@ def triangle_contains(vertices, points):
             return False
     return True
 
-def source_size_owns(observed, mini, parent):
+def source_size_owns(observed, mini, parent, *, allow_viewport_edge=False):
     """Abstain on NEW inner art; does not emit or certify an open full."""
     t, mx, my = mini
     direction, x, y = parent
-    if t - 4 != direction or not (4 <= x <= 764 and 4 <= y <= 572):
+    in_bounds = (0 <= x <= 768 and 0 <= y <= 576) if allow_viewport_edge else (
+        4 <= x <= 764 and 4 <= y <= 572)
+    if t - 4 != direction or not in_bounds:
         return False
     f = observed['field'](32)
     outer = tuple((x+vx, y+vy) for vx, vy in f.vertices[direction])

@@ -4,7 +4,49 @@ Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest: B154 actual candidate qualification and source-label conflict
+## Latest: B156 static checkpoint; B157 source-QA repair still needed
+
+Read original GOAL_PLAN IN FULL, ignored BATCH156_RESULT_AND_RESUME,
+BATCH157_SOURCE_QA_REPAIR_PLAN and 71-screen-batch156-interim-audit-v3.md.
+Keep original goal ACTIVE; no archive reopening or redundant pinned87 sweep.
+Normal source-growth modules are saved but NOT bound to scanner.py/app.
+The app keeps its original four channels plus tested exact cached fast paths.
+
+Default470 and explicitly candidate-bound470 affected tests pass (not full
+suite). Candidate49 actual cases preserve all47 original cases/all40 achieved
+groups/all16 exact controls. Fixed59/phase24/full vector576/bitmap576 sets match
+prior candidate. F189 new inner-full mini excluded by unchanged strict source
+ownership within two pixels of ORIGINAL full hypothesis; no emitted parent.
+
+Private97 supported additions include CN3_7 two (complete minis25/27->27/27),
+CN3_8 four, Entrance1 two and NR2 RIGHT mini directly human-confirmed REAL16px.
+NR2 confirmation is durable ignored truth, separate from the two false down
+effects. CN3_7 first integration was reserved; NOW EXPOSED, not a fresh successor
+reserve. Both Halls1 shapes remain full32 RIGHT,24px visible/8px wall-hidden,
+exact origins unknown. Dotkid1 whole candidate strictly equals reviewed prior
+result/render/project; triangles11/11 but terrain/whole room still major.
+
+SOURCE QA BLOCKS ADOPTION: CN3_27 inverse-material Up mini and Zero_Final partial
+larger-glow Down mini are false despite numerical green. Original whole/delta
+reviews remain immutable. Private opposing-material probe excludes only CN3_27,
+retains original88; NOT production code. A no-local-anchor shortcut loses36
+real additions and is REJECTED. Zero_Final forward-only capture reproduces
+actual full map/ALL9/Detection/crop/grid/warnings; local32 gradients reveal a
+larger weak contour, but strict base/material/independent ink does not qualify.
+Next follow independently measured larger source extent and material, not a
+palette/coordinate/reference-answer filter or relaxed ownership.
+
+Quiet dense36.551s vs35.744s (+2.26%); valid sparse repeat22.273s vs21.936s
+(+1.53%), all results equal. Original sparse16.5% spread retained. Helper costs
+hold other modules fixed; earlier whole B108-to-B142 overhead remains distinct.
+Dual audit separates1 current-default canonical/70 older default findings
+from33 private canonical actual outputs (49 cases with controls), no promotions.
+Coverage reset is not an accuracy regression. Before growth adoption still
+need both QA repairs/all97 retention, affected whole/protected/exact/runtime
+checks, final-current71 source review and reviewed publication/app parity.
+Do not substitute a compatible-only checkpoint for the original causal goal.
+
+## Previous: B154 actual candidate qualification and source-label conflict
 
 Read ignored BATCH154_RESULT_AND_RESUME and original GOAL_PLAN IN FULL. All
 B154 workers are TERMINAL; no private candidate deployed. Public recognition

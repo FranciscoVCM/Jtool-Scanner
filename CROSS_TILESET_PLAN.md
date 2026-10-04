@@ -1,6 +1,56 @@
 # Cross-tileset milestone
 
-## Current direction (B154, 2026-10-04): actual gains and annotation integrity
+## Current direction (B156/B157, 2026-10-04): preparation qualified, source QA blocks adoption
+
+The app retains its original four recognition channels. B156 prepares normal
+source-growth modules with shared scalar evidence, channel-local closure caches
+and exact pixel/gradient fast paths. The additional source-growth entry point
+is experimental and NOT bound to scanner.py/app detection. Its private gains
+are not shipped accuracy; all six original GOAL_PLAN gates remain ACTIVE.
+
+Actual candidate49 cases preserve all47 original protection inputs/all40
+achieved groups/all16 exact controls. FTFA926/928 without extras/shifts/wrong
+directions; Flames252 exact with42 extras/21 misses/20 shifts/2 wrong directions.
+Fixed59/phase24/full vector576/bitmap576 sets hold. Default470 and explicitly
+candidate-bound470 affected tests pass, not the complete unittest suite.
+
+Private97 supported additions: original88 plus two CN3_7, four CN3_8, two
+Entrance1 and one NR2 RIGHT miniature now DIRECTLY human-confirmed REAL16px.
+CN3_7 complete reference mini population25/27->27/27, no new errors/loss; first
+integration was reserved before evaluation, but the case is now EXPOSED.
+Dotkid1 actual complete candidate strictly equals prior reviewed output:
+6/11->11/11 frozen triangles, zero extras, terrain still major. No room promotion.
+
+CRITICAL whole-source QA finds TWO false NEW minis outside older annotations:
+CN3_27 inverse-material gap and Zero_Final partial larger-glow representation.
+Green exact/protection counts DO NOT override those failures. F189's new inner-
+full alias is excluded using unchanged strict ownership in a bounded pixel
+neighborhood of the original hypothesis, not guessed parent emission/deletion.
+
+Quiet dense candidate36.551s vs held-module legacy35.744s (+2.26%); valid sparse
+repeat22.273s vs21.936s (+1.53%), complete ScanResults/maps/ALL9 equal. Original
+sparse16.5% baseline variation is preserved, not used for timing certification.
+These are helper comparisons with other modules fixed, not resolution of the
+earlier B108-to-B142 whole-scanner latency increase.
+
+Next B157: source-local material/size ambiguity while retaining all97 positives.
+CN3_27's perfect closure overrides three unanimously opposite local source
+witnesses; a private opposing-material probe removes only that gap, retaining
+original88. NOT adopted normal code. A no-nearby-anchor shortcut removes both
+errors but loses36 real additions across four rooms: REJECTED. Zero_Final
+local32 gradients expose a larger weak contour, but strict material/base/
+independent-ink ownership is not established. Do not weaken thresholds, guess
+a parent, impose palette/coordinate rules or blanket-remove overlaps.
+
+Read ignored BATCH156_RESULT_AND_RESUME, BATCH157_SOURCE_QA_REPAIR_PLAN and
+71-screen-batch156-interim-audit-v3.md. Dual audit retains ALL71 findings:
+1 current-package canonical DEFAULT output with strict whole evidence,
+33 private canonical actual outputs (49 cases including controls),70 older
+default findings. Evidence-coverage reset is NOT an accuracy regression;
+final-current71/adoption remain open. Historical/private findings are not app
+certificates. Original sources/JMaps and every failed probe remain intact.
+
+## Previous direction (B154, 2026-10-04): actual gains and annotation integrity
 
 Public recognition remains B139/B142/package00fd8582; private v4 is not deployed.
 Read ignored BATCH154_RESULT_AND_RESUME and original GOAL_PLAN in full. Both

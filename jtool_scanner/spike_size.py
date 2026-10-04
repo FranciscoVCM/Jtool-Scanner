@@ -8,6 +8,7 @@ contours abstain. No reference, palette or room identity enters detection.
 """
 
 from array import array
+from functools import lru_cache
 from math import hypot, sqrt
 from statistics import median
 
@@ -40,15 +41,28 @@ class _CachedShapeField(SpikeShapeField):
             return super().gradient(x, y)
         index = y * 800 + x
         if self._gx[index] == 32767:
-            gx, gy = super().gradient(x, y)
-            self._gx[index], self._gy[index] = int(gx * 2), int(gy * 2)
+            if 0 < x < 799 and 0 < y < 607:
+                # Exact twice-central differences. Avoid four clamping pixel
+                # calls for the common interior case; retain original border
+                # and out-of-frame semantics.
+                self._gx[index] = self.pixels[index + 1] - self.pixels[index - 1]
+                self._gy[index] = self.pixels[index + 800] - self.pixels[index - 800]
+            else:
+                gx, gy = super().gradient(x, y)
+                self._gx[index], self._gy[index] = int(gx * 2), int(gy * 2)
         return self._gx[index] / 2, self._gy[index] / 2
+
+    def pixel(self, x, y):
+        if 0 <= x < 800 and 0 <= y < 608:
+            return self.pixels[y * 800 + x]
+        return super().pixel(x, y)
 
 def _contour_channel(
     image: RGBImage, room: Box,
     spikes: list[tuple[int, int, int]],
     solids: list[tuple[int, int, int, int]],
     *, field_factory=None, stroke_mode=False, owns=None, rectangle_owner=None,
+    source_seed_fn=None, joined_closure=None, source_evidence=None,
 ) -> tuple[set[tuple[int, int, int]], set[tuple[int, int, int]]]:
     """Return source-supported additions and unsupported size hypotheses.
 
@@ -64,11 +78,14 @@ def _contour_channel(
     rgb = None
     added: set[tuple[int, int, int]] = set()
     rejected: set[tuple[int, int, int]] = set()
-    bases: dict[tuple[int, int, int, int], float] = {}
-    base_runs = {}
-    polarities: dict[tuple[int, int, int, int], float] = {}
-    boundary_sides: dict[tuple[int, int, int, int], tuple[float, float]] = {}
-    source_boundary_sides = {}
+    # Only identical field views share these scalar facts. Closure/rival
+    # decisions remain channel-local: a joined contour changes their meaning.
+    evidence = {} if source_evidence is None else source_evidence
+    bases = evidence.setdefault('bases', {})
+    base_runs = evidence.setdefault('base_runs', {})
+    polarities = evidence.setdefault('polarities', {})
+    boundary_sides = evidence.setdefault('boundary_sides', {})
+    source_boundary_sides = evidence.setdefault('source_boundary_sides', {})
 
     def field(size):
         if size not in fields:
@@ -121,6 +138,7 @@ def _contour_channel(
         bases[key] = hits / 12
         return bases[key]
 
+    @lru_cache(maxsize=None)
     def closed(k, *, size=16, cutoff=11 / 12, source_only=False, independent_base=False):
         t, x, y = k
         d = t - 4 if size == 16 else t
@@ -137,6 +155,8 @@ def _contour_channel(
             return True
         if size != 16:
             return False
+        if joined_closure is not None and joined_closure(k):
+            return True
         # A miniature's base can join the opposite full's independently
         # closed base. Its two visible slopes still own its size and origin.
         # Nothing inside a larger triangle or merely near it is a join.
@@ -367,6 +387,8 @@ def _contour_channel(
     positions = {(sx + dx, sy + dy) for sx, sy, _ in witnesses
                  for dx in range(-64, 65, 8) for dy in range(-64, 65, 8)
                  if 4 <= sx + dx <= 780 and 4 <= sy + dy <= 588}
+    if source_seed_fn is not None:
+        positions.update(source_seed_fn(field(16), witnesses))
     for x, y in sorted(positions):
         if any(abs(x - mx) <= 8 and abs(y - my) <= 8 for _, mx, my in minis):
             continue
@@ -391,6 +413,11 @@ def _contour_channel(
             elif ((min(abs(s) for s in sides) < .2 or sides[0] * sides[1] <= 0
                     or abs(contrast) < .2 or not nearby
                     or sum(sign == (contrast > 0) for _, _, _, sign in nearby) / len(nearby) < .8)
+                    and not (joined_closure is not None and (
+                        (f.localized_score(x, y, direction) == 1.0
+                            and base_score(x, y, direction, 16) == 1.0
+                            and base_runs[16, x, y, direction] == 1.0)
+                        or joined_closure(candidate)))
                     and not (isinstance(f, _LocalField) and nearby
                         and f.localized_score(x, y, direction) >= 11 / 12
                         and base_score(x, y, direction, 16) >= .5
@@ -432,7 +459,8 @@ def _bind_corner_slopes(corner_class, old_bound):
 
 _could_have_strong_slopes = _bind_corner_slopes(_CornerField, _legacy_could_have_strong_slopes)
 
-def contour_size_changes(image, room, spikes, solids):
+def contour_size_changes(image, room, spikes, solids, *,
+                         _context_callback=None, _local_evidence=None):
     fields, strokes, corners = {}, {}, {}
     def field(size):
         if size not in fields:
@@ -486,10 +514,53 @@ def contour_size_changes(image, room, spikes, solids):
     corner_r = {k for k in corner_r if not any(
         abs(k[1]-m[1])<=32 and abs(k[2]-m[2])<=32 for m in denied)}
     local_a, _ = _contour_channel(image, room, spikes, solids,
-        field_factory=local_field, owns=owns_tip, rectangle_owner=rect)
+        field_factory=local_field, owns=owns_tip, rectangle_owner=rect,
+        source_evidence=_local_evidence)
     local_safe = {k for k in local_a if k[0] > 6
         and not any(t > 6 and (sx, sy) == k[1:] for t, sx, sy in spikes)
         and not rect(k) and not any(owns_tip(k, (k[0]-4, k[1]+dx, k[2]+dy))
             for dx in (-16,-8,0) for dy in (-16,-8,0))}
     added = old_a | ink_a | safe | local_safe
+    if _context_callback is not None:
+        _context_callback((field, stroke_field, local_field, ownership, tip_state))
     return added, (old_r | ink_r | corner_r) - added
+
+
+def source_seed_size_changes(image, room, spikes, solids):
+    """Candidate shared-source recovery; not wired into the scanner yet.
+
+    Preserve every original channel decision and qualify only extra minis.
+    Original and extended local channels reuse scalar source measurements,
+    but their closure/rival decisions deliberately remain independent.
+    """
+    from .spike_source_growth import LargerSourceOwner, JoinedMiniClosure, native_source_seeds
+
+    context = []
+    evidence = {}
+    base_added, base_rejected = contour_size_changes(
+        image, room, spikes, solids, _context_callback=context.append,
+        _local_evidence=evidence)
+    field, stroke, local, ownership, tip_state = context[0]
+    rgb = None
+
+    def color():
+        nonlocal rgb
+        if rgb is None:
+            rgb = QuantizedColorSlopeField(image, room)
+        return rgb
+
+    owns = lambda mini, parent: _tip_owner(tip_state, mini, parent)
+    rect = lambda mini: rectangle_owns(ownership, mini)
+    joined = JoinedMiniClosure(local, solids)
+    extra, _ = _contour_channel(
+        image, room, spikes, solids, field_factory=local,
+        owns=owns, rectangle_owner=rect, source_seed_fn=native_source_seeds,
+        joined_closure=joined.closed, source_evidence=evidence)
+    owner = LargerSourceOwner(spikes, field, stroke, color, ownership)
+    original_mini_origins = {(x, y) for t, x, y in spikes if t > 6}
+    eligible = {k for k in extra - base_added if k[0] > 6
+                and k[1:] not in original_mini_origins
+                and not rect(k) and not any(owns(k, (k[0] - 4, k[1] + dx, k[2] + dy))
+                    for dx in (-16, -8, 0) for dy in (-16, -8, 0))}
+    new = {k for k in eligible if not owner.owns(k)}
+    return base_added | new, base_rejected - new

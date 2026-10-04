@@ -11471,3 +11471,69 @@ role before recognition tuning and diagnose real weak/partial source geometry.
 Efficient normal-module integration,all47/40groups/all16,broader tests,quiet
 dense/sparse runtime and final-current71 review remain due. Read ignored
 BATCH154_RESULT_AND_RESUME; all six original GOAL_PLAN gates remain ACTIVE.
+
+## 2026-10-04 — B155/B156 normal preparation; exact preservation is not source accuracy
+
+Normal modules now hold source-calibrated seeds/independent joined closure,
+shared local scalar facts, channel-local closure memoization and exact cached
+pixel/gradient fast paths. Extra source growth is NOT bound to scanner.py/app;
+this is an implementation/qualification checkpoint, not deployed recognition.
+No source/reference/hash/palette identity enters the detector modules.
+
+Candidate49 actual cases preserve all47 original protection inputs/all40
+ACHIEVED groups/nongeometry/source/crop/grid/ALL9 and all16 exact controls.
+FTFA926/928 without extras/shifts/wrong directions; Flames252 exact with
+42 extras/21 misses/20 shifts/2 wrong directions. Candidate-bound470 pass
+410.384s; unchanged-default470 pass250.353s. These are affected-test runs, not
+a full suite or quiet speed comparison. Fixed59/all88 prior additions,
+phase24/full vector576/bitmap576 sets hold; inherited aliases/misses remain.
+
+B155 exact qualification exposed one NEW F189 mini inside a real full. Frozen
+source/path evidence falsified weaker RGB and interleaved4px hypotheses.
+Unchanged strict source ownership succeeds within two pixels of ORIGINAL full
+hypothesis. B156 uses only that bounded pixel neighborhood, retains all old
+objects and excludes the NEW error. No parent emission/origin fix or blanket
+overlap suppression. All16/all47/40 pass after repair.
+
+B155 first reserved integration on historically exposed CN3_7 recovers BOTH
+remaining minis: complete27 population25/27->27/27, zero new errors/loss,
+original objects/metadata retained; whole/everydelta source review supports
+the gains. Original criterion demanding four recoveries with only two missing
+was impossible; revised entire-denominator v2 was preregistered BEFORE candidate
+evaluation, original v1 retained. CN3_7 is now EXPOSED; still a MAJOR room.
+
+All original88 private positives survive, plus CN3_8 four, Entrance1 two and
+CN3_7 two. NR2 RIGHT mini(96,240) is now directly human-confirmed REAL16px,
+bringing supported private additions to97. Durable ignored truth supersedes
+only its uncertainty, not the separately false down effects. Actual Dotkid1
+candidate strictly equals prior reviewed whole map/Detection/ALL9/crop/grid/
+project/bothSVGs/source: frozen triangles6/11->11/11, zero extras; terrain still
+1792missing/5248excess. All rooms remain conservative; no private app gain.
+
+CRITICAL independent whole/everydelta review finds TWO NEW errors outside old
+annotations: CN3_27 inverse-material gap and Zero_Final partial larger glowing
+shape. Numeric green does NOT certify these areas. Actual forward-only path
+captures reproduce full map/order/Detection/ALL9/crop/grid/warnings. CN3_27
+perfect closure overrides three unanimously opposite local source witnesses;
+PRIVATE opposing-material probe removes only that false key, retains original
+fixed sets, NOT normal code. A no-nearby-anchor probe removes both false keys
+but loses36 real additions across four rooms: REJECTED. Local32 Zero_Final
+geometry exposes a larger weak contour; strict base/material/independent-leading
+ink ownership does not qualify. Preserve failures; don't weaken it until the
+room fits, guess a full origin or add palette/coordinate rules.
+
+Quiet serial dense legacy35.744s/default36.048s/candidate36.551s (+2.26%,
+spread2.09%); first sparse16.5% baseline spread INVALID, retained. Separate
+quiet sparse repeat legacy21.936s/default21.373s/candidate22.273s (+1.53%,
+spread2.39%,CPU/wall>.99). Complete ScanResults/maps/ALL9 equal. Other modules
+held fixed; these do NOT erase earlier B108-to-B142 whole-scanner overhead.
+
+Ignored B156 evidence and dual71 audit retain every historical finding:
+1 current-default canonical with strict whole evidence,33 private canonical
+actual outputs (49 cases with controls),70 older default findings. Coverage
+reset after package change is NOT a measured accuracy regression; no old
+accepted label promoted from warnings/counts. Two observer-only schema errors
+are preserved with successful v3 reports; no code/environment workaround.
+Next B157: material/size ambiguity while protecting all97 positives, then
+affected whole/protected/exact/runtime, final-current71 QA and reviewed
+publication/app parity before binding growth. All six GOAL_PLAN gates ACTIVE.
