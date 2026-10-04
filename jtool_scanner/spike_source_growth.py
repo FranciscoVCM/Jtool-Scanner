@@ -142,11 +142,106 @@ def _strict_rgb_slopes(rgb, key):
     return min(coverages)
 
 
+def source_material_conflicts(contrast, nearby):
+    """Strong unanimous ORIGINAL local contradiction, not a foreground hue.
+
+    Mixed materials, too few witnesses and weak polarity cannot supply this
+    veto. Only the extra growth channel uses it; existing detections and all
+    original channel decisions remain independent of the qualifier.
+    """
+    return (abs(contrast) >= .2 and len(nearby) >= 3
+            and all(sign != (contrast > 0) for _, _, _, sign in nearby))
+
+
+def _edge_profile(field, x, y, tx, ty, q, nx, ny):
+    px, py = x + q * tx, y + q * ty
+    values = [field.pixel(round(px + j * nx), round(py + j * ny))
+              for j in range(-4, 5)]
+    gradients = [field.gradient(round(px + j * nx), round(py + j * ny))
+                 for j in range(-2, 3)]
+    return values, gradients
+
+
+def _profile_score(profiles, nx, ny):
+    """Geometry and signed material normalized on this edge's own samples."""
+    if not profiles:
+        return 0., 0., 0.
+    spread = median(max(v) - min(v) for v, _ in profiles)
+    if spread < 12:
+        return 0., 0., 0.
+    scale = max(1., _percentile([hypot(*g) for _, gs in profiles for g in gs], .9))
+    minimum = max(scale * .25, spread * .15)
+    hits = run = longest = 0
+    for values, gradients in profiles:
+        found = any(hypot(gx, gy) >= minimum
+                    and abs(gx * nx + gy * ny) >= hypot(gx, gy) * .95
+                    for gx, gy in gradients)
+        hits += found
+        run = run + 1 if found else 0
+        longest = max(longest, run)
+    material = median((sum(v[6:9]) - sum(v[2:5])) / 3 for v, _ in profiles) / spread
+    return hits / len(profiles), longest / len(profiles), material
+
+
+def independent_extent_owns(field, mini, parent):
+    """NEW-size ambiguity only, requiring a complete independent larger frame.
+
+    A brighter neighboring artwork patch must not set the threshold for the
+    larger contour. Both sides still need strong geometry AND coherent signed
+    source material outside the child's entire4px band, plus a connected base.
+    This neither certifies/emits a parent nor deletes any existing object.
+    """
+    t, mx, my = mini
+    direction, x, y = parent
+    if t - 4 != direction or not (4 <= x <= 764 and 4 <= y <= 572):
+        return False
+    tip, first, second = field.vertices[direction]
+    child = tuple((mx + vx / 2, my + vy / 2) for vx, vy in field.vertices[direction])
+    if not triangle_contains(tuple((x + vx, y + vy) for vx, vy in field.vertices[direction]), child):
+        return False
+    if (not field.could_have_strong_slopes(x, y, direction)
+            or field.localized_score(x, y, direction) < 11 / 12):
+        return False
+    cx = sum(v[0] for v in field.vertices[direction]) / 3
+    cy = sum(v[1] for v in field.vertices[direction]) / 3
+    materials = []
+    for end in (first, second):
+        tx, ty = end[0] - tip[0], end[1] - tip[1]
+        nx, ny = -ty, tx
+        if nx * (cx - (tip[0] + end[0]) / 2) + ny * (cy - (tip[1] + end[1]) / 2) > 0:
+            nx, ny = -nx, -ny
+        length = hypot(nx, ny)
+        nx, ny = nx / length, ny / length
+        profiles = []
+        for i in range(12):
+            q = .15 + .70 * i / 11
+            px, py = x + tip[0] + q * tx, y + tip[1] + q * ty
+            if _distance(px, py, child) <= 4:
+                continue
+            profiles.append(_edge_profile(field, x + tip[0], y + tip[1], tx, ty, q, nx, ny))
+        if len(profiles) < 10:
+            return False
+        score, _, material = _profile_score(profiles, nx, ny)
+        if score < 11 / 12 or abs(material) < .2:
+            return False
+        materials.append(material)
+    if materials[0] * materials[1] <= 0:
+        return False
+    tx, ty = second[0] - first[0], second[1] - first[1]
+    length = hypot(tx, ty)
+    nx, ny = -ty / length, tx / length
+    profiles = [_edge_profile(field, x + first[0], y + first[1], tx, ty,
+                              .3 + .4 * i / 11, nx, ny) for i in range(12)]
+    score, run, _ = _profile_score(profiles, nx, ny)
+    return score >= .5 and run >= .5
+
+
 class LargerSourceOwner:
     """Abstain only on newly proposed minis; never delete an existing object."""
-    def __init__(self, spikes, field, stroke, color, ownership):
+    def __init__(self, spikes, field, stroke, color, ownership, *, normalized_full=None):
         self.spikes, self.field, self.stroke = spikes, field, stroke
         self.color, self.ownership = color, ownership
+        self.normalized_full = normalized_full
         self.anchors = None
         self.signatures, self.rgb_scores, self.results = {}, {}, {}
 
@@ -217,6 +312,16 @@ class LargerSourceOwner:
                         if self.rgb_scores[parent] >= 2 / 3:
                             self.results[mini] = True
                             return True
+        # A locally normalized larger contour must independently establish
+        # BOTH side materials/geometry outside this child's source band and a
+        # connected base. Original global/pure ownership is unchanged.
+        if self.normalized_full is not None:
+            for dx in (-16, -8, 0):
+                for dy in (-16, -8, 0):
+                    if independent_extent_owns(self.normalized_full(), mini,
+                                              (direction, mx + dx, my + dy)):
+                        self.results[mini] = True
+                        return True
         # The same strict pure-source owner, extended only to complete in-frame
         # full boxes at the viewport edge. Not a blanket border exclusion.
         for dx in (-16, -8, 0):

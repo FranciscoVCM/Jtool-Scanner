@@ -11537,3 +11537,61 @@ are preserved with successful v3 reports; no code/environment workaround.
 Next B157: material/size ambiguity while protecting all97 positives, then
 affected whole/protected/exact/runtime, final-current71 QA and reviewed
 publication/app parity before binding growth. All six GOAL_PLAN gates ACTIVE.
+
+## 2026-10-04 — B157 shared source-QA repair and actual whole candidate71
+
+The normal extra-channel successor now rejects strong unanimous ORIGINAL local
+material contradiction and independently measures larger source contours with
+locally normalized sides outside the child's entire4px band plus a connected
+base. Both side materials must agree; all original thresholds/ownership remain.
+Only NEW extra proposals abstain; original channel decisions and existing objects
+are preserved. No guessed parent, answer/palette/room/coordinate exception.
+Six authored extent controls across polarity/direction/scale and four material
+counterexamples join the original eight growth tests:18 portable tests pass.
+
+All12 captured normal source contexts retain complete predecessor sets except
+the two independently reviewed false additions, CN3_27 inverse gap and Zero_Final
+partial larger glow. All97 supported additions, including the directly human-
+confirmed NR2 RIGHT mini, survive. Original four-channel sets exactly equal in
+all12 contexts. Fixed59/phase24/vector576/bitmap576 pass unchanged. An observer
+KeyError used B156 count-only rows as if they contained B153 queries; original
+failure retained, newv2 reads immutable original queries. No code/truth workaround.
+
+Actual candidate controls16, protection32, additional canonical41 and Dotkid1
+produce90 whole cases, covering ALL71 exact canonical source/options identities
+plus16 separate controls and variant/input contexts. Same-named different
+captures are NOT reused. All47 original cases/all40 achieved groups and all16
+references pass; FTFA926/928 with no extras/shifts/wrong directions, Flames252
+with42 extras/21 misses/20 shifts/2 wrong. Candidate480 pass329.652s and default
+480 pass297.555s; affected contracts only, not full suite or speed comparison.
+Whole preceding49 candidate outputs remain completely identical except the two
+false mini removals. Complete current-candidate71 audit saved ignored; old
+default findings retained, no room approvals. Changed views reviewed against
+whole Source/JTool/Blend and every delta, or strict full-output source-review carry.
+
+SOURCE QA OVERRULES NUMERIC GREEN AGAIN: NANG_137 adds a false Down mini inside
+existing killblock X artwork. The wrong object is hidden by rendering; pixel
+appearance cannot certify map equivalence. Redcube2's new isolated Up miniature
+is uncertain, pending a specific human answer. Neither is counted as a gain.
+Therefore the growth entry point remains NOT bound to scanner.py/app detection.
+Additional reviewed orientation/alias corrections in older canonical audit
+contexts are not all attributed to this last change; major inherited issues remain.
+
+Valid quiet serial B156/B157/B156 dense-positive NANG13024.311/24.901/24.268s,
+mean24.290->24.901 (+0.612s/+2.52%); sparse FTFA122.922/22.415/22.651s,
+mean22.787->22.415 (-1.63%). Complete ScanResults/maps/ALL9/Detection/crop/grid/
+warnings equal corresponding ordinary outputs. Baseline spreads0.18%/1.19%,
+CPU/wall above required threshold. Other modules held fixed; previous whole-
+scanner overhead remains unresolved/distinct. No qualification or scan overlapped
+quiet measurements; an input-read diagnostic may have overlapped one sample
+and consumed about0.15s, so this caveat is retained rather than erased.
+
+Next B158 has actual-map-equivalent forward-only captures for NANG_137 and
+Redcube2, all metadata/provenance preserved. Eight original killer_block_cross
+detections score0.95 are already present before geometry reconciliation; their
+semantic identity never reaches its block/miniblock-only arguments. Follow this
+causal evidence with source-backed ownership for NEW internal art, not blanket
+overlap suppression, palette filters, existing-mini removal or duplicated scans.
+All workers terminal; every failed observer/probe/source report remains intact.
+The complete original six-gate goal stays ACTIVE; this checkpoint is not adoption,
+all71 accuracy, universal recognition or completion.

@@ -4,6 +4,53 @@ Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B157 source-QA repairs saved; complete candidate71 reveals another failure
+
+Keep original GOAL_PLAN ACTIVE and read it IN FULL. Read the new ignored
+71-screen-batch157-candidate-audit-v1.md, batch157-candidate71-audit-v1.json
+and batch157-independent-source-review-v1.json. No archive or pinned87 re-sweep.
+Normal source-growth entry point is STILL NOT bound to scanner.py/app scanning.
+
+Shared extra-channel material contradiction and independent larger-source
+extent remove the two known CN3_27/Zero_Final false additions while retaining
+all97 supported private gains. Normal all12 source contexts preserve original
+channel decisions; fixed59/phase24/full vector576/bitmap576 pass. Both affected
+480-test runs pass (candidate and default), not a full-suite claim. Actual
+all47 original cases/all40 achieved groups/all16 controls hold; FTFA926/928,
+Flames252 with unchanged42 extras/21 misses/20 shifts/2 wrong directions.
+
+All71 EXACT canonical source/options inputs have actual current candidate whole
+outputs, plus16 separate exact controls;90 total cases include variants/context
+inputs. Never alias a different same-named capture. Strict complete equality
+carries preceding source findings; all changed views reviewed conservatively.
+No whole room accepted/promoted; this is NOT current-default71 evidence.
+
+ADOPTION STILL FAILS: NANG_137 NEW Down mini(264,320) follows killblock X artwork
+and is hidden by the killblock in the render, but remains a wrong map object.
+CN3_Redcube2 Up mini(680,224) is uncertain; specific async human question sent.
+Do not count it as positive/negative from similarity or a contour score.
+Preserve the earlier resolved NR2 RIGHT(96,240) REAL16px positive and false
+down-effects separately; Halls1 two32 RIGHT/24px visible facts unchanged.
+
+Next actual cause: batch158-ownership-contexts-v1 has FORWARD-ONLY actual whole
+map/ALL9/order/Detection/crop/grid/warnings parity for NANG_137 and Redcube2.
+NANG_137 before-state already contains eight killer_block_cross detections,
+score0.95; owning killblock(256,320) survives before/after. Geometry arguments
+carry only block/miniblock rectangles, losing this independent semantic fact.
+Investigate source-backed NEW-art ownership, not blanket overlap deletion or
+red/color exceptions. No B158 production edit yet; freeze evidence before tuning.
+
+All qualification/capture/audit workers are TERMINAL. Sessions45174 (observer
+schema failure, preserved),5038,51078,24079,37834,31775,69521,79197,13696,
+90549,13896,74695 are closed. No restart from an old lock/receipt. One page
+consumer ran before its render-manifest existed; producer continued intact,
+then the same consumer succeeded. Existing detector/source files were untouched.
+
+Quiet A/B/A dense-positive24.290->24.901s (+2.52%), sparse22.787->22.415s
+(-1.63%), full results equal and valid spreads0.18%/1.19%. Earlier whole-project
+overhead remains distinct. Reviewed static code/tests/docs checkpoint and app
+parity do not complete the original goal or deploy97 experimental gains.
+
 ## Latest: B156 static checkpoint; B157 source-QA repair still needed
 
 Read original GOAL_PLAN IN FULL, ignored BATCH156_RESULT_AND_RESUME,

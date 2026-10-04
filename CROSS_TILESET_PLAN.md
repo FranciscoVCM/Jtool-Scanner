@@ -1,5 +1,47 @@
 # Cross-tileset milestone
 
+## Current direction (B157, 2026-10-04): actual candidate71; source ownership still blocks adoption
+
+The extra source-growth channel remains experimental, NOT bound to scanner.py
+or app detection. B157 adds two shared qualifiers: strong unanimous ORIGINAL
+local-material contradiction for the extra channel only, and independently
+normalized larger contours with both side materials outside the child's entire
+4px band plus a connected base. Existing channels/detections are not erased;
+no parent, reference answer, palette or screen-coordinate rule is injected.
+
+Actual normal-module checks retain all97 supported additions and remove only
+the two known CN3_27/Zero_Final false additions from the preceding49-case
+candidate. Original channel sets remain exactly equal in all12 captured source
+contexts. Fixed59, phase24, complete vector576/bitmap576 and all16 exact controls
+pass; all47 original cases/all40 achieved groups hold. Candidate-bound480 and
+unchanged-default480 affected tests pass, NOT the complete unittest suite.
+
+All71 exact canonical source/options identities now have actual whole candidate
+outputs, plus16 separate exact controls:90 actual cases include variant/input
+contexts. Same-named tracked fixtures with different captures are not borrowed.
+New ignored 71-screen-batch157-candidate-audit-v1.md carries earlier findings
+only through strict complete equality or independently reviewed changed views.
+This is candidate coverage, NOT current-default71 or a room-acceptance claim.
+
+SOURCE QA STILL FAILS: NANG_137 has a new Down mini inside killblock X artwork,
+hidden in the JTool render but present in the map. Redcube2's isolated Up mini
+is uncertain; a specific human question is pending, not an assumed positive.
+Two repaired errors and green regression counts cannot override these findings.
+
+Quiet serial dense-positive B156/B157/B156 mean24.290->24.901s (+2.52%);
+sparse22.787->22.415s (-1.63%). All complete results/maps/metadata equal their
+corresponding ordinary candidate outputs; baseline spreads0.18%/1.19%.
+This incremental cost is distinct from earlier whole-scanner overhead.
+
+Next B158: actual-map-equivalent observation finds eight original
+killer_block_cross detections, score0.95, upstream of the false mini. Their
+semantic identity is absent from the geometry-stage arguments. Investigate
+source-backed ownership of NEW interior art using this existing evidence;
+do not blanket-delete overlaps, erase existing minis, suppress water spikes
+or impose red/palette rules. Preserve all97 positives and independent source
+counterexamples before another whole/protected/exact/runtime qualification.
+Original six-gate GOAL_PLAN remains ACTIVE; growth is not yet adopted.
+
 ## Current direction (B156/B157, 2026-10-04): preparation qualified, source QA blocks adoption
 
 The app retains its original four recognition channels. B156 prepares normal

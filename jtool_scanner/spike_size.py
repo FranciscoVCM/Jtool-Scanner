@@ -62,7 +62,7 @@ def _contour_channel(
     spikes: list[tuple[int, int, int]],
     solids: list[tuple[int, int, int, int]],
     *, field_factory=None, stroke_mode=False, owns=None, rectangle_owner=None,
-    source_seed_fn=None, joined_closure=None, source_evidence=None,
+    source_seed_fn=None, joined_closure=None, source_evidence=None, material_conflict=None,
 ) -> tuple[set[tuple[int, int, int]], set[tuple[int, int, int]]]:
     """Return source-supported additions and unsupported size hypotheses.
 
@@ -424,6 +424,11 @@ def _contour_channel(
                         and base_runs[16, x, y, direction] >= .5
                         and _own_outline_score(f, x, y, direction) >= 11 / 12)):
                 continue
+            # Strong closure can trace a background gap. Only the extra
+            # channel uses independently qualified ORIGINAL local material
+            # contradiction; never apply this veto to existing/old channels.
+            if material_conflict is not None and material_conflict(contrast, nearby):
+                continue
             if any(closed((other + 4, x + dx, y + dy), independent_base=True)
                    for dx in (-8, 0, 8) for dy in (-8, 0, 8) for other in VERTICES
                    if (dx, dy, other) != (0, 0, direction)):
@@ -533,7 +538,8 @@ def source_seed_size_changes(image, room, spikes, solids):
     Original and extended local channels reuse scalar source measurements,
     but their closure/rival decisions deliberately remain independent.
     """
-    from .spike_source_growth import LargerSourceOwner, JoinedMiniClosure, native_source_seeds
+    from .spike_source_growth import (
+        LargerSourceOwner, JoinedMiniClosure, native_source_seeds, source_material_conflicts)
 
     context = []
     evidence = {}
@@ -555,8 +561,21 @@ def source_seed_size_changes(image, room, spikes, solids):
     extra, _ = _contour_channel(
         image, room, spikes, solids, field_factory=local,
         owns=owns, rectangle_owner=rect, source_seed_fn=native_source_seeds,
-        joined_closure=joined.closed, source_evidence=evidence)
-    owner = LargerSourceOwner(spikes, field, stroke, color, ownership)
+        joined_closure=joined.closed, source_evidence=evidence,
+        material_conflict=source_material_conflicts)
+    normalized_full = None
+
+    def full_local_field():
+        nonlocal normalized_full
+        if normalized_full is None:
+            view = _LocalField.__new__(_LocalField)
+            view.__dict__.update(field(32).__dict__)
+            view.edge_local_scores, view.edge_local_statistics = {}, {}
+            normalized_full = view
+        return normalized_full
+
+    owner = LargerSourceOwner(spikes, field, stroke, color, ownership,
+                              normalized_full=full_local_field)
     original_mini_origins = {(x, y) for t, x, y in spikes if t > 6}
     eligible = {k for k in extra - base_added if k[0] > 6
                 and k[1:] not in original_mini_origins
