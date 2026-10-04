@@ -11698,3 +11698,45 @@ Original goal ACTIVE: next settle source uncertainty, qualify actual ordinary
 binding and final stable audit/protections/publication/app parity, then continue
 ranked terrain/full-spike/occlusion/marker/water/vine/platform failures. All
 B158/B159 qualification workers are terminal, with no checkpoint work lost.
+
+## 2026-10-05 — B160 confirmed-mini protection and rejected unchanged-decision memo
+
+The repeated human answer confirms CN3_NR2 RIGHT(96,240) as REAL16px, already
+saved in the immutable B156 truth/protection set. No duplicate label, fixture,
+reference or recognition edit. False downs(16,512)/(48,512) and real Up(96,368)
+remain distinct. This answer does not settle the separate Redcube2 question.
+
+Main-agent inspection of the exact Redcube2 delta and whole source is followed
+by source-only measurement on the checksummed ordinary-equivalent captured
+context. No full-scan replay claim: source/geometry field bytes are unchanged.
+Full slopes11/12 and child horizontal-base score/run1.0 coexist. Same-tip
+containment leaves only4 independent larger-side samples versus the required10
+in every direction. A containing outline alone cannot establish a false mini;
+reject threshold lowering and preserve semantic uncertainty. No suppressed
+object, positive count or whole-room acceptance was invented.
+
+Independent runtime diagnosis reproduces the COMPLETE frozen NANG130 candidate
+addition/rejection sets. Of64,282 corner-bound calls,23,682 repeat immutable
+field/size/origin/direction keys; local16 alone has50,992 calls/28,210 keys.
+Profiling attributes1.799s within10.302s profiled stage; this is NOT quiet timing.
+A private per-field byte memo, no changed sample/angle/threshold, is then tested
+in a preregistered quiet whole-candidate serial A/B/A on dense NANG130 and sparse
+FTFA1. All6 complete ScanResults, ordered maps/ALL9/Detection/crop/grid/warnings
+exactly equal both their original run and qualified B158 ordinary output.
+
+Dense A34.396/B36.334/A36.711s: mean35.553 ->36.334(+2.19%), baseline spread
+6.51% FAILS the fixed5% usable gate; no causal slowdown or saving established.
+Sparse A33.263/B33.340/A33.724s: mean33.494 ->33.340(-0.46%),0.154s saving below
+the0.461s baseline range. CPU/wall>=0.994; memo uses1,945,600bytes across4 separate
+views. It FAILS the predefined worth-implementation criteria and is REJECTED.
+No production implementation or speed claim; do not selectively rerun/discard
+the inconvenient denominator. Earlier whole-scanner overhead remains unresolved.
+
+Ignored B160 unchanged-candidate71 audit rechecks ALL71 original source,
+expected-map and output-artifact pins against B159 plus unchanged qualified B158
+package files. ZERO new corpus outputs/resweep/room promotions. B159 generation
+facts/findings and both486 affected tests/all47 inputs/40 groups/16 exact controls
+retain their original evidence; no redundant tests for identical code. All B160
+workers TERMINAL. Source growth remains NOT bound to app/default, no current-
+default71/100% accuracy certificate. Original goal ACTIVE, independent causal
+work and the pending Redcube2 human/source adjudication still remain.

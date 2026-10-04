@@ -4,6 +4,25 @@ Updated 2026-10-05. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B160 source ambiguity preserved; exact-bound memo rejected
+
+Read ignored BATCH160_RESULT_AND_RESUME.md and the unchanged-candidate71 audit.
+No production edits or binding changes. Current qualified package files remain
+B158-identical; all71 canonical source/reference/artifact pins rechecked without
+any corpus resweep. B159 whole output/findings carry unchanged, no room promotion.
+NR2 RIGHT(96,240) is confirmed REAL16px; existing B156 truth is not rewritten.
+Its answer is NOT a Redcube2 answer. Redcube2 has an internal edge and a larger
+outline; full slopes11/12, child base/run1.0, only4 outside-child samples/side.
+Do not lower ownership thresholds or infer semantic truth from nesting.
+
+Private exact angular-bound memo: all6 full ScanResults/ordered maps/ALL9/
+Detection/crop/grid/warnings unchanged. Dense timing spread6.51% exceeds the
+fixed5% gate and observed no saving; sparse saving0.154s is below baseline
+range0.461s. Rejected, not deployed. No speed/accuracy gain, source-growth
+adoption, current-default71 or goal completion. All B160 workers TERMINAL.
+Verify latest publication/app receipt. Continue independent shared-cause work
+and the earlier pending specific human source question; no repeated archive.
+
 ## Latest: B159 all71 current candidate outputs; no binding or acceptance yet
 
 Read original GOAL_PLAN IN FULL, ignored BATCH159_RESULT_AND_RESUME and

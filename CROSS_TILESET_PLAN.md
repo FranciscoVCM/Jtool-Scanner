@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Current direction (B160, 2026-10-05): confirmed mini protected; runtime shortcut rejected
+
+NR2 RIGHT(96,240) is directly human-confirmed REAL16px and already preserved
+in the immutable truth/protection set. Its answer does not adjudicate Redcube2.
+Fresh Redcube2 source-only measurements find both an internal horizontal edge
+and a larger outline: child base/run1.0, full slopes11/12, only4 independent
+outside-child samples per full side. Keep its semantic identity uncertain;
+do not relax ownership or remove it merely because the silhouettes nest.
+
+The exact-bound cache probe retained all6 complete scan results but FAILED its
+preregistered timing criteria. Dense baseline spread6.51% invalidates timing;
+the sparse0.154s observed saving is below its0.461s baseline range. NO production
+memo, speed claim, code/binding change or room acceptance. Ignored B160 audit
+rechecks all71 source/reference/artifact pins through unchanged qualified B158
+package files; B159 output/review evidence remains current candidate only.
+Original goal ACTIVE; growth remains unbound and source adjudication is pending.
+Continue independent causal work rather than force an unmeasured shortcut.
+
 ## Current direction (B159, 2026-10-05): all71 current candidate inputs verified
 
 Unchanged qualified B158 package now has actual whole candidate outputs for
