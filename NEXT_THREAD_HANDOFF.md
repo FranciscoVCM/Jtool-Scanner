@@ -1,8 +1,56 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-03. Continue in the existing repository at
+Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B151 development gain, failed reserve, B152 source-coverage diagnosis
+
+Read ignored BATCH152_RESULT_AND_RESUME and original GOAL_PLAN in full. Public
+recognition remains B139/B142/package00fd8582; NO new candidate is deployed.
+All workers through B152 are terminal. A docs checkpoint changes HEAD, not old
+sealed source/worker identities; do not rewrite old seals to conceal that.
+
+Human confirmation resolves BOTH numbered Halls1 shapes:32px RIGHT spikes,
+8px wall-hidden/24px exposed, NOT16px minis. Exact full origins were not supplied.
+The two old mini proposals are negatives, not recovered objects. Their original
+uncertainty report remains immutable; the successor record is ignored locally.
+This is NOT the NR2 miniUp96,368 confirmation, which remains separately protected.
+
+Private B151 source-only larger-extent/appearance ambiguity checks retain all41
+supported closed-mini additions while excluding3 CN3-9 art aliases and both
+Halls1 wrong-size proposals. Full576 vector/bitmap panels introduce no new
+unsupported additions or lost anchors;20 candidate-bound tests pass. Four whole
+development scans retain all existing ordered maps/Detection/nongeometry/ALL9/
+source contracts. Actual whole Source/JTool/Blend and ALL41 change crops support
++3 CN3-9/+35 NANG130/+3 Bathhouse; Halls1 map/SVGs unchanged. MAJOR old errors
+remain, including incorrect full spikes overlapping genuine recovered minis.
+No full-suite/all47/all16/adoption or universal-accuracy claim.
+
+Dotkid1's source-frozen BEFORE-candidate reserve FAILS:unchanged6/11 true
+triangles,zero extras,zero new minis; solids4480/6272,1792missing/5248excess.
+Complete map and both SVGs equal actual current ordinary baseline. Keep the11
+denominator/whole structure and failed result. Dotkid1 is now exposed; do not
+tune it and continue calling it a holdout. No failed candidate is published.
+
+Equivalent B152 ordinary capture and decision-identical neighborhood trace
+locate three real missing minis OUTSIDE generated witness neighborhoods despite
+slopes/base1.0; two other real joined minis ARE searched but have no internal
+base edge. Neither is coarse-block masking here. Test independent source-owned
+seed coverage and paired external closure, not a coordinate/palette exception.
+Freeze a DIFFERENT reserved role before future recognition tuning.
+
+Helper profiling reproduces exact outputs and locates14.871 profiled seconds
+in a fifth duplicate channel, versus0.360s for final source-size arbitration.
+Observed whole scan times are concerning but NOT quiet matched comparisons.
+Shared caching/one-pass consolidation and controlled runtime remain necessary.
+
+New ignored conservative audit:71-screen-batch152-interim-audit-v1.md and
+batch152-interim-audit-v1.json. PUBLIC32/71 current-compatible=9 actual+23 exact
+carry;39 older. Dotkid1 has a fresh public full-view/frozen-region review but
+individual pinned-delta crop QA remains pending. Private B151 evidence is
+separate and NOT app-current. Prior16 exact controls on identical public code
+were not rerun for this diagnosis; no room promotion. Original goal ACTIVE.
 
 ## Latest diagnostic: B143 outer-source ownership
 

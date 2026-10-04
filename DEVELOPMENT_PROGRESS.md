@@ -11259,3 +11259,81 @@ force closure by lowering thresholds, dropping blur or borrowing another size's
 ink. Original real-recovery, precision, protection, runtime and final71 gates
 remain ACTIVE. Evidence is ignored BATCH143_OUTER_SLOPE_OBSERVATION_RESULT and
 batch143-outer-slope-observations-v1.json; no room acceptance upgrade.
+
+## 2026-10-04 — B144–B152 source-size evidence, real gains, failed transfer
+
+Public scanner/fixtures/JMaps are unchanged B139/B142. Source-only appearance,
+RGB and larger-extent observations retain the complete48 positive/negative
+cohort. RGB correlation alone cannot positively certify all real minis, and
+strong local RGB alone admits inner sprite art. A partial full's independent
+leading ink can establish larger extent even when middle profiles borrow its
+child contour. These diagnostics do not identify arbitrary unfamiliar sprites.
+
+Human confirmation resolves BOTH numbered Halls1 shapes:ordinary32px RIGHT
+spikes,8px hidden in the wall/24px exposed, NOT16px minis. No exact full origins
+were supplied. Preserve real full silhouettes and exclude the two wrong-size
+mini proposals from successful recovery counts; no full-placement fix claimed.
+The original uncertainty/failure report remains unchanged. NR2's separate real
+up-mini and false down-effects remain protected.
+
+A private successor combines fully closed local mini slopes/base with source-
+owned larger extent and original same-direction full appearance/RGB ambiguity
+checks. It retains every ordinary base addition/rejection; no case/hash/palette/
+coordinate/reference answer enters recognition. All48 fixed queries preserve
+41 true extra minis, exclude3 inner-art aliases/2 Halls full-size aliases and
+the player negative, and retain the separate underwater true miniature.
+
+Both complete576 portable panels retain prior anchors and introduce no new
+unsupported additions. Vector mini recall33/35/42/35 of72 per orientation,
+previously21/21/21/21; bitmap33/33/0/0 versus21/21/0/0. ALL144 inherited coarse
+aliases per orientation remain. Twenty candidate-bound tests pass72.542s,
+including weak RGB, real occlusions, FTFA partial full, neon and Partysu3 cases.
+Not a full-suite or complete all47/all16 qualification.
+
+Four actual private whole scans add3 CN3-9,35 NANG130 and3 Bathhouse minis;
+Halls1 is unchanged. Strict complete ordered map/Detection/nongeometry/ALL9/
+crop/grid/project-source checks retain existing detections. Main fresh whole
+Source/JTool/Blend and EVERY41 individual delta crop support the new tips.
+Major older wrong/missing terrain, opposing/full-spike aliases and markers
+remain; a true mini can coexist with an OLD wrong full. No whole-room promotion.
+
+Dotkid1 was reserved with a complete source-visible structure BEFORE this
+candidate:11 triangles,10mini/1full and6272 solid pixels. Actual current ordinary
+baseline is6/11,zero triangle extras,solids4480/6272,1792missing/5248excess.
+The no-tuning candidate FAILS unchanged6/11 and zero new recovery. Complete map
+and both SVGs exactly equal baseline; whole source review carries only through
+that equality. Dotkid1 is now exposed; the fixed failure/denominator stays.
+Do not deploy this candidate or substitute development successes for transfer.
+
+Current-input helper profiling retains exact outputs and locates14.871
+profiled seconds in a fifth duplicated contour pass, versus0.360s for its final
+extra source-size decision. The candidate helper totals36.749 profiled seconds
+including21.356 in its original base. These are profiler attribution, NOT quiet
+end-to-end timing. Whole development observations89.565/72.991/82.775/85.684s
+and reserve44.053s are concerning, not controlled regression percentages.
+Reuse shared evidence/avoid duplicate passes; quiet qualification is still due.
+
+An actual ordinary Dotkid1 observation reproduces full map/ALL9/order/Detection/
+crop/grid/warnings/project/SVG. All11 source-feature rows and a decision-identical
+neighborhood trace reveal three missing minis with slopes/base1.0 that are
+ACTUALLY outside generated witness neighborhoods. Two other missing minis are
+searched and have slopes1.0 but equal-material joined bases yield zero base
+hits/run. None of the five is blocked by coarse rectangles or nearby existing
+minis here. This distinguishes proposal coverage and joined-base evidence from
+an assumed color or overlap problem. Source-owned seed coverage/paired external
+closure are next hypotheses, not implemented rules or proven future transfer.
+
+Original terminal partition/path-length baseline failures and observer-only
+native32/mini16 reporting failures are preserved with separate corrected
+attempts. No production/environment workaround, truth change or output repair.
+All private sources/prototypes/images/annotations/failed results remain ignored.
+
+The new conservative audit has32/71 current-public-compatible defaults:
+9 actual public scans+23 exact-compatible archived outputs;39 older/pending.
+Dotkid1 is freshly whole/frozen reviewed; individual pinned-delta crop QA is
+still pending. Private candidate outcomes stay separate, NOT app-current gains.
+The prior16 actual exact controls run identical public code and are not rerun
+for this diagnosis. No acceptance upgrades. Read ignored BATCH152_RESULT_AND_RESUME.
+Original goal ACTIVE:freeze a different reserve, repair shared source proposals/
+joined shapes, retain all protections, investigate efficiency and finish final
+current71 review before adoption/completion.

@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current direction (B152, 2026-10-04): coverage and joined-shape evidence
+
+Public recognition remains qualified B139/B142; private B151 is NOT deployed.
+It adds41 source-supported minis across3 development rooms and excludes known
+larger-source aliases, but FAILS the frozen Dotkid1 reserve unchanged6/11. No
+development score or low-warning count replaces that failure. The human confirms
+both Halls1 questioned shapes are32px right spikes with8px in the wall, not minis;
+exact full placement remains separate. Read latest progress/handoff and ignored
+BATCH152_RESULT_AND_RESUME before new work.
+
+Exact actual ordinary capture and decision-identical source trace identify
+three Dotkid1 real minis never searched despite perfect local slopes/base, and
+two searched true minis lacking a visible internal base at an equal-material
+join. Coarse masks are NOT their cause. The next bounded experiment should
+test independent source-owned proposal seeds and paired external closure across
+different appearances, not a color threshold, coordinate repair or universal
+grayscale rewrite. Freeze another no-tuning role before implementing a successor.
+
+Preserve all previous exact/source/occlusion/negative protections. A fifth
+duplicate channel has substantial profiled cost; future work must reuse shared
+features and prove exact parity/quiet runtime, not hide the cost by dropping
+useful detection. PUBLIC audit32/71 current-compatible,39 older; no acceptance
+upgrades. All original goal gates remain ACTIVE and universal recognition open.
+
 ## Latest qualified checkpoint (B139/B142, 2026-10-03)
 
 Normal source modules now integrate the previously private source-owned mini
