@@ -1,8 +1,44 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-04. Continue in the existing repository at
+Updated 2026-10-05. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B159 all71 current candidate outputs; no binding or acceptance yet
+
+Read original GOAL_PLAN IN FULL, ignored BATCH159_RESULT_AND_RESUME and
+71-screen-batch159-current-candidate-audit-v2.md/JSON. Original goal ACTIVE.
+Qualified B158 recognizer/test files are unchanged. Only40 missing canonical
+inputs scanned,31 already-current canonical/49 actual cases reused;89 actual
+cases cover ALL71 exact canonical inputs and16 separate controls/variants.
+No pinned87 re-sweep, archive load or same-name/different-capture substitution.
+
+ALL new40 complete outputs strictly equal B157 in source/options/reference/
+runtime/ordered maps/Detection/ALL9/crop/grid/warnings/project/render/comparison.
+Previous conservative source findings carry only through full equality; no room
+accepted. B158 NANG_137 false-art mini removal remains the only canonical map
+change since B157, independently whole/everydelta reviewed. All97/all47 inputs/
+40 achieved groups/16 controls/phase24/vector576/bitmap576/both486 suites/quiet
+runtime hold against identical package files. No test rerun for docs alone.
+
+ALL B158/B159 workers terminal. Exec3152/PID29380 completed40; do not restart.
+Incremental adapter terminal-flag failure preserved and repaired locally, no
+producer restart/recognition change. V1 Markdown Windows encoding retained,
+v2 explicitly UTF-8; use v2. All source/truth/manifest pins verified at terminal.
+
+Growth remains NOT bound to scanner.py/app. This is complete candidate coverage,
+NOT current-default71, perfect rooms or goal completion. Redcube2 Up mini
+(680,224) is STILL uncertain pending human evidence; do not invent a label/gain.
+Source ancillary NANG137 SAVE-like/orange marks remain semantically uncertain.
+NR2 human REAL16px right/fixed false downs and Halls1 full32 RIGHT facts hold.
+
+Next resolve Redcube2 independently, decide ordinary binding only with actual
+pipeline/source parity and original protection/audit/publication/app gates.
+Don't use candidate-only evidence to claim deployed gains. Continue inherited
+terrain/full-spike/occlusion/object error families without palette/origin rules.
+Tested default app PID25604 HTTP200 fingerprint1ae68454...be5f462 at B158
+publication; verify current health/live Git rather than trust old PIDs. New
+B159 publication receipt records latest docs-only checkpoint and unchanged app.
 
 ## Latest: B158 qualified crossed-art repair; candidate still unbound
 

@@ -1,5 +1,32 @@
 # Cross-tileset milestone
 
+## Current direction (B159, 2026-10-05): all71 current candidate inputs verified
+
+Unchanged qualified B158 package now has actual whole candidate outputs for
+ALL71 exact canonical source/options inputs:49 completed cases reused and only
+40 missing inputs scanned,89 actual cases including16 separate controls and
+variants. No pinned87 baseline re-sweep, source/reference mutation or archive
+reload. Every new40 complete output STRICTLY equals B157 in source/options/
+reference/runtime/ordered map/Detection/ALL9/crop/grid/warnings/project/render/
+comparison. Earlier conservative source findings are carried only by full
+equality; no room accepted. NANG_137's independently reviewed false-art removal
+remains the sole B158-versus-B157 canonical map change. All97 positives and
+original47/40groups/16controls/tests/portable/runtime qualifications hold.
+
+Read ignored71-screen-batch159-current-candidate-audit-v2.md and its JSON.
+V1 Windows-default Markdown encoding is preserved; v2 explicitly writes UTF-8.
+An incremental adapter's missing terminal-field error was preserved/corrected
+without modifying recognition or restarting its producer. Incremental receipts
+never certify full40; terminal comparison independently verifies all40.
+
+Growth remains NOT bound to scanner.py/app. Complete candidate coverage is
+NOT current-default71 or100% accuracy. Redcube2 Up mini(680,224) remains
+uncertain pending direct source evidence, not an assumed gain. Original goal
+stays ACTIVE. Next resolve that uncertainty, then decide ordinary binding with
+actual pipeline parity/protections/final stable audit and publication/app gates.
+Continue inherited terrain/full-spike/occlusion/marker/water/vine/platform
+errors across styles; existing major findings have not disappeared.
+
 ## Current direction (B158, 2026-10-04): crossed-source art repair qualified; growth still experimental
 
 Source growth remains NOT bound to scanner.py/app detection. The new extra-

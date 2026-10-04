@@ -11657,3 +11657,44 @@ canonical checks are next; don't repeat pinned87 or reload the archive.
 Static code/tests/docs publication and tested default app parity do not deploy
 97 experimental gains. Original six-gate goal stays ACTIVE. Final stable all71,
 source uncertainty, binding and ranked remaining error work are still required.
+
+## 2026-10-05 — B159 complete current-candidate71, unchanged qualified B158 code
+
+Only40 exact canonical inputs missing from the interim audit were rescanned;
+31 already-current canonical inputs/49 actual cases were reused through verified
+package-file/input/artifact identity. Combined89 actual cases cover ALL71
+canonical inputs plus16 separate exact controls and variants. Different
+same-named captures/options were not borrowed. No original87 baseline re-sweep,
+archive reload, recognizer/test/fixture/source/reference change or new holdout.
+
+Every new40 complete output STRICTLY equals the reviewed B157 predecessor:
+source/options/reference/Python/Pillow/platform, ordered maps/Detection/ALL9,
+crop/grid/warnings/project/render bytes and exact comparison all match. Only
+verified source snapshot paths normalize in projects; implementation identities
+are explicitly different. Source review carries solely through this complete
+equality, not counts or warning labels. Incremental16/22/33 checks agreed; final
+terminal40 comparison independently passes. No reader error restarted the
+producer. Its optional incremental adapter expected a terminal flag absent from
+live run JSON; failed version/diagnostic preserved, missing flag means false,
+consumed input bytes frozen. Full40 terminal guards were not weakened.
+
+Ignored current-candidate71 auditv2 preserves EVERY conservative per-room
+finding and all checksums; no room accepted/promoted. Original v1 Markdown used
+Windows-default encoding for an em dash; preserved intact, v2 explicitly UTF-8.
+The sole B158-versus-B157 canonical typed-map change remains the independently
+source-reviewed NANG_137 false Down mini removal. Hidden render pixel equality
+never substitutes for map accuracy. All97 source additions, original47 inputs/
+40 achieved groups/16 exact controls, phase24/full vector576/bitmap576, both
+actual486 affected suites and quiet complete-result parity remain qualified
+against identical package files. Documentation-only progress needs no redundant
+test or timing re-run. Older worker HEADs/results remain immutable.
+
+Growth STILL NOT bound to scanner.py/app; this is NOT current-default71, all71
+accuracy, arbitrary-sprite generalization or goal completion. Redcube2 Up mini
+(680,224) remains uncertain pending the human question, not a counted gain.
+NANG137 ancillary SAVE-like/orange marks require separate semantic adjudication.
+NR2 RIGHT(96,240) REAL16px/false down-effects and Halls1 full32 RIGHT facts hold.
+Original goal ACTIVE: next settle source uncertainty, qualify actual ordinary
+binding and final stable audit/protections/publication/app parity, then continue
+ranked terrain/full-spike/occlusion/marker/water/vine/platform failures. All
+B158/B159 qualification workers are terminal, with no checkpoint work lost.
