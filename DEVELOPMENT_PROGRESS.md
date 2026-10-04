@@ -11595,3 +11595,65 @@ overlap suppression, palette filters, existing-mini removal or duplicated scans.
 All workers terminal; every failed observer/probe/source report remains intact.
 The complete original six-gate goal stays ACTIVE; this checkpoint is not adoption,
 all71 accuracy, universal recognition or completion.
+
+## 2026-10-04 — B158 crossed-art source ownership; hidden-map error repaired
+
+Upstream killer_block_cross labels/0.95 confidence are not independently proved
+X contours: their classifier uses colored occupancy/patch edges. B158 therefore
+qualifies source extent itself, without labels, fixed hues, room/native origins,
+hashes, answers or blanket overlap suppression. Only NEW extra-channel minis
+can abstain; every original channel decision/existing object is preserved.
+
+Local column median background and joint-RGB deviation isolate continued crossed
+ink under broad lighting. Each arm must continue outside the entire child band;
+outer frames/central junction may not set its evidence scale. Independent weak
+coherent ORIGINAL RGB modes on both child sides protect real overlaid/colored/
+isoluminant triangles. Small local caches share already normalized RGB; there
+is no duplicate whole-image pass or emitted hypothetical parent.
+
+Actual whole NANG_137 removes ONLY false Down mini(264,320); eight killblocks,
+all other typed objects/order/ALL9/source/options/crop/grid are unchanged.
+Main whole Source/JTool/Blend and every sole four-panel delta support the repair.
+Rendered JTool pixel hashes are identical before/after because killblock art hid
+the bad map object. Pixel appearance never overrides typed-map source accuracy.
+Green SAVE-like/orange source marks still require separate supported-object
+adjudication. No perfect/accepted-room claim. Redcube2 Up mini(680,224) remains
+uncertain pending human evidence; no similarity-derived positive/negative.
+
+All97 prior supported additions, including directly human-confirmed NR2
+RIGHT(96,240), survive in all12 complete normal-module source contexts;59
+original queries and original four-channel sets hold. Complete phase24,
+vector576/bitmap576 pass unchanged. Focused24 tests pass; actual candidate486
+and default486 affected runs pass409.788s/395.517s, zero failures/errors, including
+328 authored artwork controls. These are NOT the complete unittest suite or
+quiet speed comparisons. Protected actual48 retain all47 original inputs and
+all40 ACHIEVED groups; all16 exact controls retain truths/errors. FTFA926/928,
+no extras/shifts/wrong directions; Flames252 with42 extras/21 misses/20 shifts/
+2 wrong. Every one of48 complete control/protection outputs STRICTLY equals
+B157 in source/options/reference/runtime/order/Detection/ALL9/crop/grid/warnings/
+project/render. Only implementation identity changes; old worker heads intact.
+
+Early prototypes falsely suppressed5/3/4/1 of the same144 controls and were
+rejected. Coherent weak RGB modes retained all144 but failed actual illuminated
+X extent. Scalar column subtraction lost seven of272 controls; joint RGB
+deviation protected them. All328 portable roles passed before final real-source
+qualification. The first328-passing version still failed an actual arm; keeping
+its entire band clear of frame/crossed center solved that measured failure.
+Every failed receipt/denominator remains, with no test/fixture/truth workaround.
+
+Quiet serial B157/B158/B157 NANG13033.542/34.724/34.388s: baseline mean33.965,
+observed+0.759s/+2.23%; FTFA133.288/32.985/32.391s: mean32.840,+0.145s/+0.44%.
+Full ScanResult/map/ALL9/order/Detection/crop/grid/warnings equality holds to
+ordinary outputs. Baseline spreads2.49%/2.73% limit precision; CPU/wall gates
+pass. No other project worker or active app scan overlapped. Both old/new absolute
+times differ from older sessions; do not attribute that historical difference
+to this change. Earlier whole-scanner overhead remains distinct/unresolved.
+
+Ignored B158 evidence and interim71 audit preserve all71 findings:49 actual
+current cases/16 controls,31 exact canonical inputs current and40 explicitly
+OLDER B157 candidate findings. Same-named different-capture fixtures are not
+substituted. No room promoted or complete current-default71 claim. The remaining
+canonical checks are next; don't repeat pinned87 or reload the archive.
+Static code/tests/docs publication and tested default app parity do not deploy
+97 experimental gains. Original six-gate goal stays ACTIVE. Final stable all71,
+source uncertainty, binding and ranked remaining error work are still required.

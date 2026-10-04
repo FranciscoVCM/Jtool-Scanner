@@ -1,5 +1,56 @@
 # Cross-tileset milestone
 
+## Current direction (B158, 2026-10-04): crossed-source art repair qualified; growth still experimental
+
+Source growth remains NOT bound to scanner.py/app detection. The new extra-
+proposal qualifier requires independently continued crossed source strokes,
+outside the child's entire band. Local column background/joint-RGB deviation
+handles broad illumination; coherent ORIGINAL RGB child boundaries protect
+true weak, colored, overlaid or isoluminant triangles. Killblock labels are
+locators, not truth. No red/palette/room/hash/origin/reference rule, parent
+emission, existing-object deletion or duplicate whole-image scan was added.
+
+Actual whole NANG_137 removes ONLY false Down mini(264,320), retaining eight
+killblocks, every other typed object/order/ALL9/crop/grid. Full Source/JTool/Blend
+and the sole delta confirm the repair. JTool pixels are identical before/after:
+the wrong mini was hidden by a killblock. Pixel equality is NOT map accuracy.
+SAVE-like/orange source marks still need supported-object adjudication; no
+perfect-room claim. Redcube2 Up mini(680,224) remains uncertain, not a gain.
+
+All97 supported additions/all12 complete source contexts/59 original queries
+hold; original four-channel sets remain equal. Phase24, full vector576 and
+bitmap576 pass unchanged. Candidate-bound486/default486 affected tests pass,
+including328 authored artwork controls; NOT the complete unittest suite.
+Actual all47 original inputs/all40 achieved groups/all16 exact controls hold.
+All48 control/protection outputs STRICTLY equal B157 in source/options/runtime/
+ordered maps/Detection/ALL9/crop/grid/warnings/project/render, not just counts.
+FTFA926/928, no extras/shifts/wrong directions; Flames252 with unchanged
+42 extras/21 misses/20 shifts/2 wrong directions.
+
+Ignored 71-screen-batch158-interim-audit-v1.md retains every room's finding:
+49 actual B158 cases (16 controls),31 exact canonical inputs current;40 older
+B157 candidate findings explicitly not certified B158. No acceptance upgrades,
+same-named different-capture borrowing, final-current/default71 claim or lost
+historical evidence. This coverage reset is not a measured accuracy regression.
+
+Quiet serial B157/B158/B157: dense33.965->34.724s (+0.759s/+2.23%), sparse
+32.840->32.985s (+0.145s/+0.44%); full ScanResults equal their ordinary outputs.
+Baseline spreads2.49%/2.73% limit precision; observed small costs are not a
+statistically established large regression. Earlier whole-scanner overhead is
+distinct/unresolved. All qualification/timing workers are terminal.
+
+Rejected probes remain preserved: early RGB shortcuts suppressed real triangles;
+scalar column detrending lost seven controls; stronger original-RGB protection
+retained them. Portable success alone still missed actual source extent until
+the arm's entire band excluded outer frames and the crossed central junction.
+No failed denominator was dropped. This native32 artwork grammar is bounded
+evidence, not proof for all unfamiliar sprites, phases, palettes or scales.
+
+Next: finish exact-input current-candidate71 checks without redoing pinned87,
+settle Redcube2 independently, review every actual map change against source,
+then decide binding only after the ORIGINAL six gates. Continue terrain/full-
+spike/occlusion/object error families; all goal gates remain ACTIVE.
+
 ## Current direction (B157, 2026-10-04): actual candidate71; source ownership still blocks adoption
 
 The extra source-growth channel remains experimental, NOT bound to scanner.py

@@ -540,6 +540,7 @@ def source_seed_size_changes(image, room, spikes, solids):
     """
     from .spike_source_growth import (
         LargerSourceOwner, JoinedMiniClosure, native_source_seeds, source_material_conflicts)
+    from .spike_source_artwork import CrossArtworkOwner
 
     context = []
     evidence = {}
@@ -581,5 +582,6 @@ def source_seed_size_changes(image, room, spikes, solids):
                 and k[1:] not in original_mini_origins
                 and not rect(k) and not any(owns(k, (k[0] - 4, k[1] + dx, k[2] + dy))
                     for dx in (-16, -8, 0) for dy in (-16, -8, 0))}
-    new = {k for k in eligible if not owner.owns(k)}
+    artwork = CrossArtworkOwner(color)
+    new = {k for k in eligible if not owner.owns(k) and not artwork.owns(k)}
     return base_added | new, base_rejected - new

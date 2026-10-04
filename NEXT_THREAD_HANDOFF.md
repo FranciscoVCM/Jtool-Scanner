@@ -4,6 +4,56 @@ Updated 2026-10-04. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B158 qualified crossed-art repair; candidate still unbound
+
+Read original GOAL_PLAN IN FULL and new ignored BATCH158_RESULT_AND_RESUME,
+batch158-checkpoint-evidence-v1.json and71-screen-batch158-interim-audit-v1.md.
+No pinned87 re-sweep, archive or transcript reload. Keep original goal ACTIVE.
+All B158 qualification/timing workers have terminated; do not restart them.
+
+Source-only continued crossed ink, locally column-detrended joint RGB and
+independent ORIGINAL RGB child edges remove ONLY false NANG_137 Down mini
+(264,320). Whole/everydelta source review confirms it; eight killblocks/all
+other objects/order/ALL9/crop/grid are unchanged. Render pixels were already
+equal because the wrong object was hidden: map accuracy is not pixel equality.
+No killblock-label/red/room/hash/origin/answer rule or existing-object deletion.
+
+All97 supported additions/all12 complete source contexts/original59 queries
+hold; original four-channel sets equal. Phase24/vector576/bitmap576 pass.
+Candidate486/default486 affected tests pass, including328 authored controls,
+not a full-suite certificate. All47 original inputs/all40 achieved groups/all16
+exact controls hold; all48 complete protected/control outputs strictly equal
+B157, including ordered Detection/ALL9/project/source/render. FTFA926/928;
+Flames252 with42 extras/21 misses/20 shifts/2 wrong, no increases.
+
+Quiet A/B/A dense33.965->34.724s (+0.759/+2.23%), sparse32.840->32.985s
+(+0.145/+0.44%); ordinary complete result equality, spreads2.49%/2.73%.
+These small observed costs have limited precision; historical absolute-session
+differences and earlier whole-scanner overhead are not attributed to B158.
+
+Interim audit retains ALL71 findings:49 actual B158 cases/16 controls,31 current
+EXACT canonical inputs;40 explicitly older B157 candidate findings. No room
+accepted, different same-named captures borrowed or final-current/default71
+certificate. Read any newer completed corpus receipts before launching work.
+
+Growth is STILL NOT bound to scanner.py/app detection; default remains tested
+four-channel recognition. Redcube2 Up mini(680,224) remains uncertain, pending
+the earlier human question. Don't count it as a gain or invent a label.
+NANG137 green SAVE-like/orange source marks need supported-object adjudication.
+NR2 RIGHT(96,240) is directly human-confirmed REAL16px; false Down(16,512)/
+(48,512) and real Up(96,368) are distinct. Halls1 two32 RIGHT/24visible facts
+and unknown exact full origins remain unchanged.
+
+Next finish only missing exact canonical current-candidate inputs, carry prior
+source findings through COMPLETE equality, and review every actual changed map.
+Resolve uncertainty independently before deciding growth adoption/app binding;
+preserve all original goal gates. Early RGB/scalar-detrending failures and every
+frozen denominator are preserved. Native32 crossed-art grammar is bounded,
+not arbitrary-sprite/phase/palette/scale proof. Continue broad causal terrain/
+full-spike/occlusion/object work, not room-specific answers or blanket deletion.
+Reviewed commit/live origin/clean Git/tested default app parity are recorded in
+the B158 publication receipt; never rewrite old qualification worker heads.
+
 ## Latest: B157 source-QA repairs saved; complete candidate71 reveals another failure
 
 Keep original GOAL_PLAN ACTIVE and read it IN FULL. Read the new ignored
