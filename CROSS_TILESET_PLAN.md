@@ -1,5 +1,41 @@
 # Cross-tileset milestone
 
+## Current direction (B165-B168, 2026-10-05): private shaded-gap gain; mixed-size terrain cause
+
+NR2 RIGHT(96,240) is human-confirmed REAL16px and remains protected; its answer
+does not settle Redcube2. No production/default/app binding or fixture change.
+B165 actual Halls5 stage observer equals the qualified complete output. Private
+per-edge RGB matching avoids collapsing differently shaded slopes into one hue,
+but an any-variation raw-base guard fails on harmless source ringing. B166
+localized-base guard passes portable controls but still fails real development.
+
+B167 requires coherent original-source base geometry at four distinct tangent
+positions, both halves and sufficient extent, preserving weak/outlined/covered
+triangles without an absolute contrast floor. All696 fixed portable scenarios
+and12 original interstitial/Apple test methods pass;72 preexisting weak-base
+loss cases are protected,25 extra synthetic false gaps removed. These are not
+real positive-recovery or complete unittest counts. Full private Halls5 removes
+only falseDown32(272,400):4/4 frozen positives and every other map/ALL9/ordered
+Detection/crop/grid retained. Fresh whole Source/JTool/Blend and sole delta
+confirm the change; many inherited room errors remain.
+
+Fixed first reserved Bathhouse evaluation FAILS minimum1 removal: zero changes,
+complete map/metadata/project/render equality, fresh whole review. No deployment
+or cross-family success. It is now exposed diagnostic development, not a holdout.
+B168 forward-only whole trace equals the qualified map. Source-only helper
+replay identifies three distinct barriers: bright-profile routing skips mini
+proposals; eight textured rail cells exceed sparse-center edge-density gates;
+294 grown hypotheses fail the400-cell whole-room gate before topology. The294
+are not294 true blocks, and lowering400 would not recover the excluded rail.
+
+Next target source-local mixed-size rectangle/material evidence, not broad
+profile or threshold relaxation. Freeze complete contiguous structures and a
+different-style evaluation before tuning; distinguish real16px cells, true32px
+quarters, internal X texture, water and partly hidden hazards. Original positive
+recovery/protections/runtime/all71/six goal gates remain. Ignored B168 successor
+audit rechecks every qualified71 input/artifact pin, promotes zero rooms, and
+keeps private results separate. Source growth remains unbound to default/app.
+
 ## Current direction (B161-B164, 2026-10-05): final-only absence evidence; shaded-edge cause
 
 NR2 RIGHT(96,240) remains directly confirmed REAL16px and protected; no new

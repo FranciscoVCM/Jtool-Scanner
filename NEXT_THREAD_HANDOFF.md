@@ -4,6 +4,44 @@ Updated 2026-10-05. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B165-B168 shaded-gap test finished; mixed-size terrain diagnosis
+
+Read ignored BATCH168_RESULT_AND_RESUME.md, batch168-checkpoint-evidence-v1.json
+and original GOAL_PLAN IN FULL. Earlier checkpoint entries below are historical;
+do not restart their producers. Qualified B158 production package/default/app
+unchanged. Human NR2 RIGHT(96,240) REAL16px already immutable/protected; unrelated
+Redcube2 mini uncertainty remains. No image archive or original87 resweep.
+
+B165 ordinary Halls5 interstitial trace equals full qualified map/metadata.
+B165/B166 raw-base guards fail real development despite portable safety: preserve
+negative results. B167 coherent original-source base geometry passes SAME696
+portable scenarios plus12 original interstitial/Apple METHODS, no skipped tests;
+72 old weak-base true-loss scenarios now protected,25 extra synthetic false
+gaps removed. Legacy wrapper fields are clarified by focused verification.
+Actual full Halls5 removes ONLY falseDown32(272,400),4/4 frozen positives,
+every other map/ALL9/order/Detection/crop/grid unchanged. Fresh whole3/sole delta
+review done. Room remains major; no real positive recovery or deployment.
+
+First fixed reserved Bathhouse FAIL0 removals, complete map/metadata/project/
+render equality; fresh whole3 reviewed. Now exposed diagnostic development,
+never reuse its reserve label while tuning. B168 ordinary-equivalent whole
+observer shows miniblock detector never called. Pure source helper replay (NOT
+another scan): bright-profile bypass;294 grown hypotheses below400 whole-room
+gate; inspected8 real textured rail cells excluded by center edge-density
+scores.375-.40625 above.20/.25. Do NOT just lower gates: false internal X/full
+quarter-cell and water controls remain important.
+
+Next freeze a COMPLETE mixed-size rail/adjacent source structure and distinct
+evaluation before source-local rectangle/material prototype (brown Dotkid is a
+possible contrasting source, not evaluated by a successor). No fixed palette,
+screen/hash/origin or reference answers in recognition. Preserve ALL original
+47inputs/40groups/16exact and positive-recovery/runtime/audit/adoption gates.
+All workers terminal (B167 full Exec74740/70943, B168 observer Exec60225).
+Ignored71-screen-batch168-unchanged-qualified-candidate-audit-v1.md/JSON rechecks
+every original source/reference/output pin; zero qualified71 regeneration or
+room promotions. Private2 candidates/2 observers are separate, not default71.
+Original goal ACTIVE; verify batch168-publication-and-app-receipt-v1.json.
+
 ## Latest: B161-B164 final-only private absence; shaded-edge next mechanism
 
 Read ignored BATCH163_RESULT_AND_RESUME.md and original GOAL_PLAN IN FULL.

@@ -11792,3 +11792,50 @@ Prior47inputs/40groups/16controls/both486 affected suites apply to identical
 qualified code, not the new prototypes. No production edits; growth unbound;
 original six-gate goal ACTIVE. Docs-only checkpoint preserves evidence and
 next action; no private/generated/source material published.
+
+## 2026-10-05 — B165-B168 shaded-gap experiment and mixed-size terrain cause
+
+Repeated NR2 RIGHT(96,240) REAL16px fact remains immutable/protected, distinct
+from false downs and pending Redcube2. No production/default/app binding or
+fixture/JMap changes. B165 actual Halls5 stage trace equals qualified whole
+map/ALL9/order/Detection/crop/grid/warnings:45 fulls at stage, not final43.
+B165 any-variation raw-base guard and B166 localized-derivative successor fail
+real development despite fixed portable passes. Preserve their negative results.
+
+B167 geometrically coherent original-source base guard uses four independent
+tangent observations, both halves and sufficient extent, with unknown/covered
+source protection and no hue/absolute-contrast lookup. SAME696 fixed scenarios
+pass;72 preexisting genuine weak-base loss cases protected,25 additional
+synthetic false gaps rejected. Original interstitial/Apple tests pass12 METHODS,
+zero skips; neither count is a complete unittest run or real positive recovery.
+Actual-stage combined112/144/272 contains two old removals and one new one;
+focused receipt corrects stale legacy wrapper labels rather than hiding them.
+
+Actual full Halls5 removes ONLY falseDown32(272,400),4/4 region positives,
+every other map/ALL9/ordered Detection/crop/grid retained. Fresh whole3/sole
+delta source review supports the removal; old full/terrain gains preserved by
+complete survivor equality. Halls5 remains major. First fixed reserved Bathhouse
+FAILS >=1 removal with ZERO changes; complete output/project/source/render
+equality and fresh whole3 review, no retuning under retained reserve label.
+No deployment/cross-family gain or actual positive recovery claim.
+
+B168 actual ordinary-equivalent Bathhouse observer sees no miniblock-detector
+call. Subsequent pure source helper replay equals its uninstrumented result,
+NOT another whole scan. Bright-outlined routing bypasses mini proposals;374
+raw seed candidates/208 neighboring seeds/294 grown hypotheses fail400-cell
+whole-room gate before topology. Eight real textured rail cells in diagnostic
+x128..144,y192..320 are independently excluded by center edge-density scores
+.375-.40625 above seed.20/grow.25; this is not brightness. Source/native-grid/
+JTool/Blend confirms missing16px rail versus erroneous32px lateral spikes.
+The294 are not true-block counts; simple gate lowering cannot fix this cause.
+
+Next freeze COMPLETE mixed-size structures and a distinct evaluation before
+source-local rectangle/material mechanism, preserving internal-texture/full32
+quarter/water/partial-spike negatives. Existing all47/40groups/16exact and both
+486 affected evidence applies to unchanged qualified package only, not private
+probes. No new47/16/broader/runtime qualification or speed claim. Four actual
+whole scans across B165/B167/B168 (two observers/two candidates); all workers
+terminal. Ignored successor71 rechecks every original source/reference/artifact
+pin, carries conservative findings with zero promotions/qualified regeneration.
+Growth still unbound/default71 not certified; original six-gate goal ACTIVE.
+Only reviewed public progress/handoff docs published; private outputs excluded.
