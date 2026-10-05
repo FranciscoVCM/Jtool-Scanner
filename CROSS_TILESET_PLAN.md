@@ -1,5 +1,32 @@
 # Cross-tileset milestone
 
+## Current direction (B161-B164, 2026-10-05): final-only absence evidence; shaded-edge cause
+
+NR2 RIGHT(96,240) remains directly confirmed REAL16px and protected; no new
+label/code edit. Private full-spike absence test retains original raw RGB as
+well as normalized RGB, protecting weak/colored/outlined/covered boundaries.
+401 portable checks pass. Early placement FAILS the frozen gate despite15
+source-supported false removals: seven outside allowance and altered surviving
+Detection provenance/confidence. Preserve the failed result, not a deployment.
+
+Final-only placement of the same pixel rule removes8 independently reviewed
+CN3_92 false fulls: five frozen floor hazards and three wall hazards;10/10
+region positives and all surviving map/ALL9/order/Detection/crop/grid retained.
+Reserved Halls5 FAILS >=2-removal criterion with zero changes/full output and
+render equality. Halls5 shares the artwork family, not a distinct/unseen tileset.
+Both whole Source/JTool/Blend views and every changed key inspected; both rooms
+retain major inherited errors. No production or default binding change.
+
+Next causal batch targets shaded/multicolor edges, not looser rejection: in a
+remaining Halls5 gap the combined RGB direction rejects one side at cosine0.883,
+while corresponding physical-edge signed RGB matches are exactly opposite.
+This is source-only final-snapshot diagnosis, not intermediate trace or repaired
+geometry. Reserve another-style case before tuning; preserve independent bases,
+true occlusions/weak/isoluminant/outlined sprites and all original protections.
+Halls5 is now exposed development. Original positive-recovery and all six goal
+gates remain; suppression alone is insufficient. Qualified71 audit/code remain
+unchanged and private probe outputs are kept separate. Growth still unbound.
+
 ## Current direction (B160, 2026-10-05): confirmed mini protected; runtime shortcut rejected
 
 NR2 RIGHT(96,240) is directly human-confirmed REAL16px and already preserved

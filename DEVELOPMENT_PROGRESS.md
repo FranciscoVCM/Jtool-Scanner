@@ -11740,3 +11740,55 @@ retain their original evidence; no redundant tests for identical code. All B160
 workers TERMINAL. Source growth remains NOT bound to app/default, no current-
 default71/100% accuracy certificate. Original goal ACTIVE, independent causal
 work and the pending Redcube2 human/source adjudication still remain.
+
+## 2026-10-05 — B161-B164 private absence placement and shaded-edge diagnosis
+
+Repeated NR2 RIGHT(96,240) human REAL16px confirmation already saved/protected;
+no implementation/fixture/truth rewrite. B161 forward-only ordinary-equivalent
+CN3_92 scan reproduces full current candidate map/ALL9/Detection/order/crop/
+grid/warnings. Complete89 early/53 late full proposals profiled: none has12/12
+exactly uniform RGB bands on both slopes; eight have >=9/12 fully observable.
+
+B162 private source-absence gate uses exact normalized AND original RGB bands,
+not a contrast/hue threshold; clipped/solid-covered/varying samples abstain.
+401 portable counterexamples pass, including one-byte color, isoluminant,
+outlined, textured/gradient, opposite pairs, scale/crop and hidden real32px.
+Early placement FAILS original gate:15 actual false fulls removed, seven outside
+frozen allowance and surviving true-full provenance/confidence altered. Main
+whole Source/JTool/Blend/all15 crops support every removal; no additions,
+all10 frozen positives retained. Keep the failure, not a passing release.
+
+B163 identical rule applied only after final ordinary geometry passes removes
+eight CN3_92 false fulls:5 frozen floor hazards ->0,3 false wall hazards removed;
+10/10 region positives retained. All surviving Detection fields/order and map/
+ALL9/crop/grid unchanged. Fresh whole views/all8 changed keys source-reviewed.
+Remaining false/embedded/terrain errors keep the room major. Reserved Halls5
+fails minimum2-removal criterion: zero changes; full output/warnings/project/
+render equality verified. Its fresh source shares CN3_92 artwork, not a different
+tileset family. No holdout tuning, acceptance, positive-recall or universal claim.
+
+Three actual private whole scans; report-only dict/grid-representation errors
+repaired with completed development cache reuse, not producer restart. Nested
+project source.image schema checked; only verified snapshot path normalized.
+All scan workers terminal. These private experiments are NOT deployed, and
+their401 checks are not a full unittest or new all47/16control qualification.
+
+B164 source-only FINAL-snapshot observation, not ordinary intermediate trace:
+all43 Halls5 full hypotheses;41 fail exact-peer presence,1 localization,1
+combined-RGB side consistency. Tracing equals original pure helper return.
+Gate-specific receipt avoids stale locals on early-skipped candidates. False
+Down(272,400) between trueUp(256,400)/(288,400): peer strength108.86, unmasked
+base max6 vs threshold43.54/no samples above, candidate side-to-aggregate cosine
+0.973/0.883; matching physical-edge RGB polarities -1.0/-1.0. Multishaded edge
+averaging is a concrete next mechanism; no threshold or recognition edits yet.
+Halls5 now exposed development, never an unseen reserve. Freeze a different-style
+evaluation before testing per-edge signed evidence, preserving base/occlusion/
+weak/outline safeguards and original positive geometry/protection gates.
+
+Ignored successor71 audit rechecks every canonical source/reference/artifact
+pin through unchanged qualified B158 code; zero new qualified71 outputs/no
+promotions/default71 certificate. Private outputs and limited gains separate.
+Prior47inputs/40groups/16controls/both486 affected suites apply to identical
+qualified code, not the new prototypes. No production edits; growth unbound;
+original six-gate goal ACTIVE. Docs-only checkpoint preserves evidence and
+next action; no private/generated/source material published.

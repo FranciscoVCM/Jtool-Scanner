@@ -4,6 +4,31 @@ Updated 2026-10-05. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B161-B164 final-only private absence; shaded-edge next mechanism
+
+Read ignored BATCH163_RESULT_AND_RESUME.md and original GOAL_PLAN IN FULL.
+No production/default/binding/source/fixture edits. NR2 RIGHT(96,240) repeated
+REAL16px confirmation already protected; Redcube2 uncertainty remains separate.
+B161 ordinary-equivalent source observer terminal. B162401 portable checks
+pass but early placement FAILED gate/provenance; preserve failure. B163 same
+rule final-only removes8 independently source-reviewed CN3_92 false fulls,
+10/10 frozen positives, retained map/ALL9/order/Detection/crop/grid equal.
+Halls5 reserved FAIL0changes/full output equality; same artwork family, NOT
+different-tileset/unseen transfer. All whole/all changed-key views reviewed,
+major errors remain. Three actual whole scans; two report-only cache reuses;
+all workers terminal. No new all47/16control/broader/runtime qualification or
+deployment. Qualified71 output/pins unchanged; private output kept separate.
+
+Next causal test: per-edge signed RGB rather than averaging differently shaded
+edges. B164 FINAL-snapshot (not ordinary intermediate) diagnosis: false Halls5
+Down(272,400) side-to-aggregate cosines0.973/0.883; corresponding physical-edge
+RGB polarities -1/-1; base unmasked/max6<43.54. Do not weaken base/occlusion/
+weak/outline safeguards. Halls5 exposed development now; freeze a different-
+style reserve and complete positive/negative structures before implementation.
+Positive recovery remains mandatory, not replaced by suppression or reports.
+Original six-gate goal ACTIVE; follow new publication/app receipt, don't restart
+completed corpus producers or reopen historical archive.
+
 ## Latest: B160 source ambiguity preserved; exact-bound memo rejected
 
 Read ignored BATCH160_RESULT_AND_RESUME.md and the unchanged-candidate71 audit.
