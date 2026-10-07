@@ -4,6 +4,54 @@ Updated 2026-10-07. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B171 corrected complete source recovery; texture seeding next
+
+Read ignored BATCH171_RESULT_AND_RESUME.md, batch171-checkpoint-evidence-v7.json,
+71-screen-batch171-unchanged-qualified-candidate-audit-v7.md/JSON and original
+GOAL_PLAN IN FULL. Measurement HEAD166a1a8; B158 production/default unchanged.
+Do not reopen archive/resweep87. Earlier entries below historical; goal ACTIVE.
+
+Actual v7 Dotkid1:510adds/219full removals vs B158;33fresh minis/16full removals
+vs B170. Frozen9728matched/0missing/1536excess, all348 prior source minis held.
+Whole map/ALL9/Detection/warnings/render equality with v1 carries all49 source
+delta review. Huge left background false-full field/triangle errors remain MAJOR.
+Actual v7 Bathhouse unchanged253 additions/24regional minis;1536 solid pixels
+missing and source96,304 shifted96,320/144,176 absent. Complete equality carries QA.
+
+Actual v7 Dotkid5:79adds/50full removals vs B158,82 removals vs B170 (60 redundant
+tilings/22 green-hole repairs). Ladder30720matched/0missing/0excess versus3584
+old excess. ALL139 earlier full recovery footprints retained through equivalent
+solid occupancy; whole3/every82delta reviewed. Already exposed, NOT new reserve
+success. Source-spike/marker/other terrain mistakes remain MAJOR, not accepted.
+
+IMPORTANT: early v1 had perfect ladder but lost5 real full recoveries/4096pixels
+outside ROI. Narrow v1 QA claim superseded by explicit failure-correction receipt;
+old files preserved. Final v7 restores those and ALL139 full footprints plus601
+prior minis. Never promote ROI success without prior whole-source recovery checks.
+V7 global complete32 source recovery and union redundancy suppression are shared;
+no unrestricted global mini emission/reference lookup. Ineffective spike-absence
+v4/v5 prototypes omitted, not claimed as real gains. No implementation binding.
+
+SAME36 original size sources/36 additional quarter/overlay sources pass. SAME16
+source-helper controls0extras/losses; NOT whole benchmarks, compact19x13 unsupported.
+Separate v2 glyph ownership4/8 false cells rejected,601/601 retained. Still FAIL4
+remaining Up/Right extras and four near-X0/18; not bound into whole v7 candidates.
+Equivalent read-only v3 trace preserves exact16 input hashes/proposals. Near-X
+foreground2/background0/3anchors valid, but primitive/model0/0: geometry seeding
+fails before texture learning. Near-dot Up/Right faces8/9/9 vs9closure; exterior
+BG8/8 both slopes. Next cached material-boundary+raw RGB evidence, not blindly
+lowering thresholds or full grayscale rescan. Preserve weak/texture/occlusion/
+phase/source601/139/NR2/Halls1 facts and original multi-family/reserve/all47/
+40groups/16exact/affected tests/runtime/current71/adoption gates.
+
+Six actual whole workers terminal: v1 28645/70893/9231; v7 4002/4614/74768.
+V5 wrapper development preflight failed before producer creation due old v4
+output suffix; v6 only corrects routing. Misnamed controls-source-probe-v4.json
+was v5 predicate, preserved; final v7 receipts unambiguous. Do not restart old
+workers/reconnect outputs. Verify latest publication/app receipt; qualified71
+pins rechecked, zero regeneration/status upgrade. Public progress docs only;
+private images/maps/experiments/indexes ignored. Redcube2 uncertainty separate.
+
 ## Latest: B170 real terrain size gain; fixed reserve and exact-input safety failed
 
 Read ignored BATCH170_RESULT_AND_RESUME.md, batch170-checkpoint-evidence-v1.json,

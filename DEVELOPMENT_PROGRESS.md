@@ -11946,3 +11946,66 @@ room promotion. New ignored audit separates private results from qualified app
 state. Next source/control footprint ownership diagnosis then fresh reserved
 evaluation; original3-room/2-family and all other goal gates remain ACTIVE.
 Only reviewed public progress/handoff docs published; private material excluded.
+
+## 2026-10-07 — B171 quarter-gap repair with complete source-recovery protection
+
+Read-only all175 prior control proposal crops reviewed:100 FTFA fulls duplicate
+existing/reference solid union,9 Flames minis lie in real solids but wrong typed
+representation,66 other minis misread triangle bodies. Material is not identity.
+Frozen earlier structures/gates kept, Dotkid1/Dotkid5 exposed development,
+Bathhouse support; no invented new holdout or implementation/default/fixture edit.
+
+V1 quarter-background proof repairs connected source foreground; actual Dotkid5
+ladder reaches30720matched/0missing/0excess versus3584 old excess. But whole-source
+review rejects its narrower emission:5 previously source-reviewed full recovery
+footprints lose4096pixels outside the ROI. All five individual source crops
+confirm real brown solids. Preliminary QA whole-coverage claim superseded by
+explicit failure-correction receipt, old evidence preserved. Perfect ROI was
+insufficient, not promoted. Preserve ALL139 earlier full footprints, not five
+selected keys; evaluation-only annotations never enter production recognition.
+
+Corrected v7 recovers complete independently source-supported32 rectangles
+globally, suppresses duplicate surviving-terrain union, and reconstructs residual
+minis only within affected source components. New objects not witnesses; no
+case/hash/origin/hue/reference-answer rules. Ineffective v4/v5 spike-absence
+prototypes changed zero real spikes and are omitted, not claimed as improvement.
+
+Six actual whole scans completed (three v1,three corrected v7). V7 Dotkid1
+510adds/219full removals vs B158,33 new minis/16 wrong full replacements vs B170;
+9728matched/0missing/1536excess versus original9472/256/11008, all348 source minis
+retained. Actual whole map/ALL9/ordered Detection/warnings/render equality with
+v1 carries all49 fresh source delta review. Major background-full field at left,
+triangle/marker/other terrain mistakes remain. No whole-room approval.
+
+V7 Dotkid5 79adds/50full removals vs B158,82 removals vs B170;60 are fully redundant
+tilings and22 expose green holes, NOT82 false source objects. ALL139 full recovery
+footprints retained, including5 restored outside-ROI solids. Fresh whole Source/
+JTool/Blend/every82delta inspected.30720matched/0missing/0excess regional occupancy;
+major triangle/marker/other terrain errors remain, not new reserved success.
+V7 Bathhouse strict B170/v1 complete equality carries253 earlier source minis,
+24/24 regional,6656matched/1536missing/0excess; shifted/missing fulls unresolved.
+All601 source minis and survivor ordinary metadata/crop/grid/options preserved.
+
+SAME36 original portable size sources and36 additional quarter/overlay scenes
+pass, with old input RGB hashes unchanged; polarity/channel/scales/padding/
+known-water parents held. SAME16 source-helper replay0extra keys/known losses;
+NOT complete unittest/whole16/all47 or quiet timing,19x13 mapping unsupported.
+
+Separate source-polarity glyph qualifier requires original RGB source closure
+and background exterior on BOTH slopes, vetoes NEW core-owned mini proposals
+only.601/601 prior source positives retained, wrong close-fill dot cells8->4.
+Still FAILS four Up/Right extras and four near-X0/18, no adoption. Equivalent
+read-only v3 observation preserves all16 source hashes/proposal sets: foreground
+cluster2/background0/3anchors valid, primitive/model0/0 for near-X. Geometry
+seeding fails before texture learning. Up/Right8/9/9 faces miss9/12 closure even
+with8/8 exterior BG slopes. Next source-relative material-boundary evidence plus
+raw RGB, not threshold relaxation/full grayscale scan. Actual false source spikes
+and pure-background false solids remain, with a fresh reserve/adoption still due.
+
+All workers/renderers/helpers terminal. Private v5 development wrapper preflight
+fails old-output collision BEFORE producer creation; v6 fixes routing only,
+no overwrite/restart/app workaround. Misnamed v4 control receipt was v5 predicate;
+preserved explicitly. Final v7 receipts unambiguous. Qualified B158/default code
+unchanged; all71 source/reference/artifact pins revalidated without rescan/status
+upgrade. Original six-gate goal ACTIVE. Only public docs publish; private material
+excluded. Verify source-matched app HTTP200 and clean pushed main in final receipt.

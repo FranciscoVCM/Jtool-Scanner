@@ -1,5 +1,41 @@
 # Cross-tileset milestone
 
+## Current direction (B171, 2026-10-07): corrected source recovery; geometry seeding remains unsafe
+
+Private quarter-background arbitration repairs the previously missed Dotkid5
+ladder:30720 source-solid pixels retained, excess3584->0. Dotkid1 keeps the
+earlier physical gain9728matched/0missing/1536excess, with33 additional source
+minis/16 wrong full replacements versus B170. All601 earlier source minis hold.
+Bathhouse retains its253 source additions but full terrain errors remain.
+All three remain major; no whole-room acceptance or deployment.
+
+Whole-source review rejected the first component-limited variant: it lost4096
+real foreground pixels outside the perfect ladder ROI. All five source crops
+confirmed this; preliminary narrow QA whole-coverage claim is superseded and
+preserved on file. Corrected v7 recovers complete source-supported32 rectangles
+globally, suppresses already-covered terrain union, and retains ALL139 earlier
+full recovery footprints. Residual-mini correction stays in affected source
+components; unrestricted material-only miniature emission is still unsafe.
+Actual new whole scans/every fresh delta reviewed; no answer/case/palette rules.
+
+Original36 size sources plus36 quarter/overlay cases pass unchanged contracts.
+Source-only16 replay proposes0 extras/losses, not full benchmarks; compact19x13
+mapping unsupported. Separate source-polarity glyph ownership reduces8 false
+textured-triangle cells to4 without losing601 true source minis, but remaining
+Up/Right extras and four near-X0-recall cases still prohibit adoption.
+Read-only equivalent trace: near-X has valid foreground2/background0/3anchors,
+but zero geometry primitives/models. Source silhouette seeding, not merely
+unknown palette, blocks recognition. Up/Right8/9/9 source faces miss9/12 closure
+despite8/8 background exterior on both slopes. Do not simply lower thresholds.
+
+Next source-relative material-boundary evidence alongside raw RGB, preserving
+internal-texture negatives/weak and occluded shapes; no duplicate grayscale
+scan. Pure-background false full fields and actual spike conflicts also remain.
+Source-absence prototypes changed zero real spikes and are omitted from v7.
+No new reserve success/all47/whole16/broad tests/quiet latency or default binding
+claim. All workers terminal, qualified71 pins revalidated with zero promotions.
+Original six goal gates remain ACTIVE; public docs only, private artifacts ignored.
+
 ## Current direction (B170, 2026-10-07): real size correction; reserve/control gates failed
 
 Private source-local terrain arbitration now improves physical layout, not just
