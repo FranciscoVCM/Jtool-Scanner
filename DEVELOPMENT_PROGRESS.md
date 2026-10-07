@@ -11889,3 +11889,60 @@ behavior. Ignored successor71 rechecks every original source/reference/artifact
 pin, promotes zero rooms and separates private successes/failures. App restarted
 hidden after computer shutdown, tested source parity verified. No new full
 unittest, whole-control or latency claim. Goal ACTIVE; publish public docs only.
+
+## 2026-10-07 — B170 physical terrain correction; reserve/control failures preserved
+
+Canonical inputs/options and complete Dotkid1 development, Bathhouse support,
+Dotkid5 reserved ladder frozen before tuning. Historically exposed same brown
+family reserve is not an unseen tileset. No implementation/default/app/fixture/
+JMap changes. All prior601 source positives protected; no archive/87 resweep.
+
+Shared cause: material identity used8px interiors but full12px membership mixed
+real16px strip boundaries with source antialias/background. V1 flat-model gate
+changes nothing; v2 source labels recover only512 excess pixels, FAIL fixed4096.
+V3 consistent8px identity/membership achieves actual occupancy gain without
+relaxing95% membership/25% separation. V4 exact per-call RGB memo preserves
+proposal/rejection sets; single-helper10.80->7.13s is NOT whole latency gain.
+V5 abstains from newly nested solid replacements inside retained full parents,
+never deletes existing minis. Source full rejection requires known background
+and replacement foreground coverage; unknowns/semantic anchors/water protected.
+No case/hash/origin/hue/reference-answer detection or overlap-only deletion.
+
+Actual whole Dotkid1 v5:477 additions/203 full removals vs qualified B158;
+129 fresh additions/203 removals vs B169. Frozen matched/missing/excess changes
+9472/256/11008 -> 9728/0/1536; all348 old source positives retained, every
+survivor ALL9/ordered Detection/crop/grid equal. Fresh whole Source/JTool/Blend
+and all332 four-panel deltas reviewed in seven bounded pages. Hidden editor
+decomposition not exact-certified; source triangle/marker errors remain MAJOR.
+
+Actual Bathhouse support v5 retains complete B169 map/metadata/warnings/render
+and all253 source mini positives;24/24 frozen regional minis. Source physical
+6656matched/1536missing/0excess, source full96,304 shifted to96,320 and144,176
+missing. Equality carries prior source QA, not a new terrain size improvement.
+
+First fixed Dotkid5 reserve:139 source-supported additions/28 wrong full removals;
+30720 matched/0missing retained, excess3584->3072. FAIL512<2048 required reduction.
+Whole3 and all167 deltas reviewed in four pages; MAJOR remains. Now exposed
+development, not reusable holdout. Terminal read-only complete24-full replay
+matches actual helper:12 retained false fulls contain one known background
+quarter but no complete16x32/32x16 background strip. Not an unknown-source failure
+or a new map/scan; preserve source positives and real occlusions when addressing it.
+
+Same36 portable size scenarios pass polarity/channel/scale/padding/true-full/
+known-water protections, with v5 avoiding newly nested parent-contained solids.
+But all16 source-only corrected-input preflight FAILS175 new reference keys:
+CN3-18:12; FTFA1..4:43/21/33/3; Flames9; Partysu3:3; Hades51. Zero known exact
+losses does not neutralize extras. NOT whole benchmarks; compact19x13 NANG
+mapping explicitly unsupported. Inherited B169 raw-addition texture safety also
+still failed. No deployment or broader affected/unittest/latency qualification.
+
+Four actual whole scans completed (Dotkid1v4/v5, Bathhousev5, Dotkid5v5).
+Initial private v5 wrapper import failure before producer source scan fixed
+by private sys.path bootstrap only. All workers terminal, including reserve
+observation38174 and controls70420; reconnect UI did not erase saved evidence.
+Scanner health HTTP200 with unchanged source fingerprint. Qualified B158/default
+unchanged; all71 original source/reference/artifact pins revalidated, no rescan/
+room promotion. New ignored audit separates private results from qualified app
+state. Next source/control footprint ownership diagnosis then fresh reserved
+evaluation; original3-room/2-family and all other goal gates remain ACTIVE.
+Only reviewed public progress/handoff docs published; private material excluded.

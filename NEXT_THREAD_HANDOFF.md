@@ -4,6 +4,54 @@ Updated 2026-10-07. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B170 real terrain size gain; fixed reserve and exact-input safety failed
+
+Read ignored BATCH170_RESULT_AND_RESUME.md, batch170-checkpoint-evidence-v1.json,
+71-screen-batch170-unchanged-qualified-candidate-audit-v1.md/JSON and original
+GOAL_PLAN IN FULL. Measurement HEAD d9333cc; production B158 code unchanged.
+Earlier entries below are historical. No implementation/default/app/fixture/
+JMap edits. Do not reopen archive or resweep87; no fresh room acceptance.
+
+Private source_size_repair learns source material from independent geometry,
+consistent8px mean/membership, original RGB retained. No screen/palette/hash/
+reference answers. V3 real size repair; v4 exact per-call RGB memo; v5 abstains
+from new replacements inside retained full parents, never removes prior minis.
+Same36 portable size scenes pass true/full/water/polarity/scale protections;
+single-helper timing is NOT quiet whole-runtime or speed certification.
+
+Actual Dotkid1 v5:477adds/203removes vs qualified B158;129freshadds/203removes
+vs B169, all332 fresh four-panel deltas and whole3 views inspected. Frozen
+matched/missing/excess9472/256/11008 -> 9728/0/1536; all348 prior source positives
+and survivor ALL9/ordered Detection/crop/grid retained. MAJOR remains. Bathhouse
+253adds/0removes, complete B169 equality carries253 source review;24/24 regional
+minis, but1536 source solid pixels missing, source full96,304 shifted96,320 and
+144,176 absent. This is a carried positive gain, not another size improvement.
+
+First fixed Dotkid5 reserve:139adds/28removes, all167 source deltas/whole3 reviewed;
+30720matched/0missing retained, excess3584->3072. FAIL512<2048 required reduction.
+Do not retune under reserve label; now exposed development. Read-only24-full
+gate replay is terminal, exact helper parity:12 wrongly phased fulls cover one
+known green quarter but lack the required full background strip. No new scan.
+
+All16 source-only size-helper preflight is TERMINAL FAIL175 new reference extras,
+0 known exact losses: CN3-18:12; FTFA1..4:43/21/33/3; Flames9; Partysu3:3;
+Hades51. NOT whole benchmarks; compact19x13 NANG unsupported, not certified.
+Combined prototype also inherits B169 raw-addition texture failure. NOT deployed.
+Next inspect actual source/control footprint ownership, protect all601 earlier
+positives/true occlusions, then freeze another evaluation; don't merely raise
+counts or change truth. Need3 rooms/2 families/successful reserve plus original
+47inputs/40groups/16exact/affected tests/quiet timing/stable71 adoption gates.
+
+Four actual whole scans, all handles terminal:26464/98374/50675/1514. Observation
+38174 and control70420 terminal exit0. Private wrapper initial import failure
+occurred before scanning; private sys.path bootstrap fixed, no app code workaround.
+Reconnecting UI did not lose completed files; do not restart these producers.
+Current app healthy/source unchanged; verify latest publication/app receipt,
+not stale PID. Qualified71 pins rechecked, zero regeneration/promotion. Private
+code/images/maps/reports/indexes ignored; only reviewed public docs published.
+NR2 real RIGHT16/UP16 and false downs protected; Redcube2 uncertainty separate.
+Original goal ACTIVE, not complete or blocked.
+
 ## Latest: B169 local material learning, real additions and failed adoption gates
 
 Read ignored BATCH169_RESULT_AND_RESUME.md, batch169-checkpoint-evidence-v1.json,

@@ -1,5 +1,39 @@
 # Cross-tileset milestone
 
+## Current direction (B170, 2026-10-07): real size correction; reserve/control gates failed
+
+Private source-local terrain arbitration now improves physical layout, not just
+mini-object counts: frozen Dotkid1 matched/missing/excess solid pixels change
+9472/256/11008 -> 9728/0/1536. All348 previous source mini positives survive.
+Actual whole Source/JTool/Blend and all332 fresh changes inspected; room remains
+major. Supporting Bathhouse retains complete B169 output/all253 positives,
+with source full-block omissions/shifts still unresolved. No room accepted.
+
+Source identity and membership use the same8px interior, retaining original RGB
+and source-derived foreground/background separation rather than fixed palettes.
+Remove wrong full32 only with source background evidence and preserved solid
+coverage; protect unknowns, semantic anchors and legitimate occlusions. New
+replacements inside retained full parents abstain; no overlap-only deletion.
+Same36 portable size scenes pass polarity/channel/scale/padding and true-parent
+protections, but these are not global qualification or a whole-runtime claim.
+
+First fixed Dotkid5 reserved evaluation FAILS:30720 source solid pixels retained,
+excess3584->3072, only512 reduction versus required2048. All167 changes reviewed;
+room remains major and is now exposed development. Read-only replay identifies
+12 retained wrong full hypotheses with one background quarter, not unknown
+source: requiring a whole16x32 background strip misses these corners. Preserve
+the failed target; do not loosen it or infer removal from overlap alone.
+
+Source-only replay on all16 corrected controls FAILS:175 proposed keys absent
+from reference JMaps, zero known exact losses. It is not a full benchmark;
+19x13 compact NANG mapping remains explicitly unsupported. Inherited B169
+raw-addition texture safety also still fails. Neither prototype is deployed.
+Next diagnose actual source footprint/size ownership on these control additions
+before another frozen evaluation, preserving all601 earlier source positives.
+All workers terminal; reconnect did not erase receipts. Qualified B158/default
+unchanged. All71 original pins revalidated, zero status promotions/rescans.
+Original multi-family positive recovery, protection/runtime/adoption gates hold.
+
 ## Current direction (B169, 2026-10-07): source material learning; adoption still unsafe
 
 Private source-backed rectangle/pattern learning recovers253 blue Bathhouse
