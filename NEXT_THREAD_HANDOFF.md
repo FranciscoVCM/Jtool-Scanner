@@ -1,8 +1,50 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-05. Continue in the existing repository at
+Updated 2026-10-07. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B169 local material learning, real additions and failed adoption gates
+
+Read ignored BATCH169_RESULT_AND_RESUME.md, batch169-checkpoint-evidence-v1.json,
+71-screen-batch169-unchanged-qualified-candidate-audit-v1.md/JSON and original
+GOAL_PLAN IN FULL. Earlier entries below are historical. No implementation,
+default/app binding, fixtures or JMaps edited; do not reopen archive/resweep87.
+NR2 real RIGHT16 and false downs protected; separate Redcube2 uncertainty holds.
+
+Frozen canonical Bathhouse development has24 mini cells/2full/6triangles and
+adjacent negatives; minimum20. Initial erroneous hand total26 corrected BEFORE
+feature measurement, no key removed/minimum lowered. Dotkid1 reserve38 cells,
+minimum12 new exact. V5 source-local8px material identity/12px pattern learning
+adds253/348 actual whole objects, no removals or survivor metadata changes;
+0/24->24/24 and first reserved0/38->31/38, no new regional mini extras. Whole3
+views and ALL601 four-panel changes reviewed in bounded pages. Both remain
+major; Dotkid occupancy9472/9728/256miss/11008excess is UNCHANGED. Old full-size
+terrain must be corrected, not counted as resolved by duplicate mini objects.
+
+Original36 portable forced-mini criterion remains FAIL;12 flat sources proven
+pixel-identical with6 overlapping fulls versus18 minis. Additional48 protocol
+preserves old hashes/labels/failures and passes36 visible scenes648/648 plus12
+ambiguous abstentions. All16 source-only exact-input preflight proposes0; NOT
+new whole benchmarks. Compact19x13 frame normalization remains a limitation.
+
+V5 safety FAIL8 wrong cells on same-texture close-fill dot32 spikes; scaled
+one-byte and near-fill X recall failures retained. V9/v10 fixes8false but loses
+52/50 independently confirmed real cells:201/203 of253, not release candidates.
+Do not promote24/24 narrow-region pass. Next source-proven complete footprint
+visibility/registration and original full-size conflict arbitration, protecting
+actual occlusions/weak RGB/whole source601 truth. Dotkid now exposed, not a new
+holdout for later qualifiers. New reserve/47inputs/40groups/16exact/broad tests/
+quiet runtime/stable71/changed-map/publication gates still required.
+
+Two actual whole scans only; all other probes source helpers/rendering. Worker
+handles terminal: Bath48536, reserve28666, controls65007, RGB3197, qualifiers
+60259/54110. Old reserved v5 complete:false is terminal preflight exit1, no scan
+started; v6 adapter only fixes corpus partition schema. Never restart it.
+App restarted hidden after shutdown; verify latest publication/app receipt,
+not PID29772. Default detector unchanged; private additions NOT in app yet.
+Only reviewed public docs published; private code/images/maps/reports ignored.
+Original goal ACTIVE and all71 conservative qualified findings remain.
 
 ## Latest: B165-B168 shaded-gap test finished; mixed-size terrain diagnosis
 

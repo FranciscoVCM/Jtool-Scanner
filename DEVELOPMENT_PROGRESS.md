@@ -11839,3 +11839,53 @@ terminal. Ignored successor71 rechecks every original source/reference/artifact
 pin, carries conservative findings with zero promotions/qualified regeneration.
 Growth still unbound/default71 not certified; original six-gate goal ACTIVE.
 Only reviewed public progress/handoff docs published; private outputs excluded.
+
+## 2026-10-07 — B169 source-local material learning; adoption safety still failed
+
+Canonical source/options/artifact identities and complete structures frozen
+before tuning: Bathhouse24 minis plus2full/6triangles/adjacent negatives;
+Dotkid1 reserved38-cell brown maze/gaps. Hand total26 was arithmetic error,
+corrected before any feature measurement with no key/minimum20 reduction.
+No implementation/fixture/JMap/app-default edits, archive or87/71 resweep.
+
+Private v1 fails8/24 plus2wrong full-block quarters. Pattern v2 reaches24/24;
+portable failures expose inconsistent sampling: source-back probes cross seams,
+cell clusters use8px interiors, appearance uses12px means and individual pixels.
+V5 consistently uses8px material identity and separate plane-normalized12px
+texture, source-backed geometry/polarity and independent original witnesses.
+This is per-image learning, not a fixed tileset/palette or reference lookup.
+
+Original36 synthetic contract remains FAIL:24 textured sources18/18/no extras,
+12 flat0/18. Exact source equivalence proves seamless32x48 regions have18-mini
+or6-overlapping-full decompositions; old labels/results/hashes unchanged.
+Additional12 genuinely16-wide flat sources18/18;48 source-evidence protocol
+passes36 visible sources648/648 and12 ambiguous abstentions. Not retroactive
+36-test success. RGB12 additional tests retain four scaled-one-byte0-recall
+failures, no extras; native weak2/all6 isoluminant cases18/18.
+
+Actual whole v5 Bathhouse adds253 source-supported minis,0/24->24/24/no region
+extras. First Dotkid1 reserve adds348,0/38->31/38/no region extras. Every existing
+map/ALL9/ordered Detection/crop/grid/options retained, warnings recomputed.
+Main fresh whole3views and ALL601 four-panel deltas inspected in6/8 pages.
+Both rooms remain major. Dotkid occupancy9472/9728 matched,256miss/11008excess
+is UNCHANGED: old wide full blocks persist. Typed gain is not layout repair.
+
+Reserve adapter initially fails partition validation before source read/scan;
+terminal exit1 preserved. Immutable v6 changes only schema/output names, not
+detector; no producer restart. Two actual whole scans total. Source-only16
+exact-input control preflight proposes0 with pins verified, NOT full benchmarks;
+19x13 mapping limitation explicitly listed, not silently certified.
+
+V5 same-texture true32 spike safety tests find8wrong mini cells on four close-
+fill dot triangles; four near-fill X cases0 recall. V9/v10 complete/source-visible
+footprints eliminate8wrong cells but lose52/50 confirmed true Bathhouse cells,
+retaining201/203 of253 despite24/24 region success. These FAIL recall; no adoption
+or scope shrinking. All probes terminal. Next source visibility/registration
+and independent old full-size conflict correction, with a new frozen reserve,
+all47/40groups/16exact/broad tests/controlled timing/final71 qualification.
+
+Qualified B158 package/default app unchanged; prior tests apply only to that
+behavior. Ignored successor71 rechecks every original source/reference/artifact
+pin, promotes zero rooms and separates private successes/failures. App restarted
+hidden after computer shutdown, tested source parity verified. No new full
+unittest, whole-control or latency claim. Goal ACTIVE; publish public docs only.

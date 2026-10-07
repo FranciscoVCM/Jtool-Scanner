@@ -1,5 +1,37 @@
 # Cross-tileset milestone
 
+## Current direction (B169, 2026-10-07): source material learning; adoption still unsafe
+
+Private source-backed rectangle/pattern learning recovers253 blue Bathhouse
+miniblocks and348 brown Dotkid1 miniblocks without modifying earlier objects.
+Complete frozen structures improve0/24->24/24 and0/38->31/38; the latter is the
+first reserved evaluation of v5, not an unseen room. Fresh whole Source/JTool/
+Blend and all601 changes reviewed. Both rooms remain major: Dotkid's physical
+occupancy is unchanged because oversized original full blocks still dominate.
+Typed-origin recovery is not repaired layout or full-size conflict removal.
+
+Shared cause: source-back, cell and appearance material identity must use the
+same sampling statistic. A pixel color is not an8px patch mean, and interior
+texture is not a separate material simply because its strokes are darker.
+Learn source-local appearance from independent geometric witnesses, retain RGB
+and illumination-relative shape; no room/palette/reference answers in detection.
+
+All16 exact-input SOURCE/helper controls propose0, not a new full benchmark.
+An original36 synthetic contract remains failed:12 seamless flat sources are
+pixel-identical under mini versus overlapping-full decompositions. Preserve
+that result, prove ambiguity, add genuinely16-wide sources; the48 source-evidence
+protocol passes without rewriting old inputs/labels/results. Extra RGB tests
+retain scaled one-byte failures; isoluminant cases succeed.
+
+Adoption is NOT justified: close-fill dot-textured32px spikes yield8 false
+miniblocks. Complete-footprint v9/v10 removes those but loses52/50 real Bathhouse
+cells despite24/24 region passes. Preserve these failures; do not narrow the
+whole-room recall contract or delete objects from overlap alone. Next resolve
+source visibility/registration and independently arbitrate wrong full-size
+terrain. Dotkid is now exposed; freeze another evaluation before tuning.
+Production/default/app unchanged; source growth still unbound. Qualified71
+pins/finding audit carried with zero promotions. Original six goal gates remain.
+
 ## Current direction (B165-B168, 2026-10-05): private shaded-gap gain; mixed-size terrain cause
 
 NR2 RIGHT(96,240) is human-confirmed REAL16px and remains protected; its answer
