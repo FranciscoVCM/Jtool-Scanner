@@ -4,6 +4,45 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-08 — B176 recovered worker, completed delta QA, rejected precision regression
+
+The interrupted actual Golden7 v6 producer had finished; its complete receipt,
+maps and worker state were recovered without restarting. Fresh Source/JTool/Blend
+and every62 new delta panels reviewed against B175:55 additions occupy visible
+patterned terrain,7 prior hazard aliases are absent, and704 prior supported
+additions remain. Common detection metadata, source/crop/grid/options and9 map
+header fields equal. Actual/helper addition sets equal. Frozen boundary gains
+41,584 ->49,504/54,880 with zero previous pixel loss;5,376 missing and4,608 sampled
+background excess remain. Golden7 stays MAJOR with severe old geometry/water
+errors. This private gain is not deployed or whole-room acceptance.
+
+All16 new CN3-16/18 v6 control cells independently inspected: hazard aliases,
+not intrinsic-stage bypasses. Each has one weak source edge that the prior
+qualifier cannot prove. Exterior-reference RGB experiment retains9/12 support,
+all3 edges and raw rectangle competition, and removes all16 source-helper aliases
+without existing exact loss. But it drops Golden7 matches to36,976 and loses
+11,056 previously verified positive pixels. REJECTED despite its local control
+pass and loose original ROI target. It also qualifies conflicting directions
+on actual glyphs and tile texture; edge support/body inequality is not sufficient
+semantic ownership. Tip-background and repeated-corner envelope observations
+do not provide a qualified alternative. No threshold relaxation or answer lookup.
+
+Cold original-input v6/v7 retains all601 prior source minis and explicitly all139
+terrain footprints (138 full+1 mini), with B171 geometry equality in three earlier
+development rooms. Separate four REAL Hades fills are lost; those1024 pixels
+remain a recall protection, not a suppression success. Same72 source size/overlay
+contracts pass;26 public contour/terrain tests pass7.546s. None overrides the
+real-source failure. No new full701-green suite, whole16/47 benchmark, quiet
+runtime, reserve success, scanner binding or deployment claim.
+
+Ignored BATCH176_RESULT_AND_RESUME.md records terminal handles and concrete next
+actions; completed jobs must not be restarted after output loss. Successor71 audit
+rechecks unchanged source/reference/artifact pins with0 new qualified outputs or
+status promotions, not a fresh current-default rescan. Next bounded discriminator:
+joint source shape/material and competing rectangular terrain, preserving ALL
+frozen positives, genuine occlusions and Hades gains before reserve evaluation.
+Original six goal gates remain ACTIVE. Private prototypes/maps/images stay ignored.
+
 ## 2026-10-08 — B175 real patterned-source gain rejected by complete QA
 
 First locked Golden7 B172 transfer fails and becomes exposed development.

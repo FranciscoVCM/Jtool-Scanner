@@ -4,6 +4,45 @@ Updated 2026-10-08. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B176 actual QA complete; unsafe exterior-reference precision rejected
+
+Read ignored BATCH176_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEAD52411ec; scanner/default/app package unchanged. B176 producers are TERMINAL,
+not stuck. Lost tool output did not lose actual v6 scan or edits; do not restart
+those producers, reopen the archive, or resweep87. Original six gates ACTIVE.
+
+Actual Golden7 v6 adds759 versus original baseline. Against fully reviewed B175,
+55 new cells are visible terrain and7 hazard aliases disappear;704 prior supported
+keys remain. All62 new panels/3 whole views reviewed, common detection metadata
+and9 header fields/source/crop/options equal. Boundary49,504/54,880 with5,376
+missing and4,608 sampled background excess; retains ALL prior41,584 true pixels.
+Room stays MAJOR with severe existing background-full/spike/water mistakes.
+Private result is not deployed or accepted; no reserve success.
+
+All16 CN3-16/18 v6 additions are source-confirmed aliases, each with a weak edge.
+V7 exterior-reference RGB experiment eliminates them locally, but Golden7 falls
+to36,976 matches and loses11,056 prior positive pixels. REJECTED. Its proof also
+qualifies conflicting directions in one box; gradient/texture semantic ambiguity
+is unresolved. Separate tip-background/corner-envelope observations are failures,
+not working fixes. Do not suppress uncertain overlaps or reduce a denominator.
+
+Cold all601 minis/all139 terrain footprints (138 full+1 mini) explicitly retained,
+three old development geometry sets equal B171. V6/v7 nevertheless lose the four
+REAL Hades fills/1024 pixels; no-growth in Hades is not precision success. Same72
+size/overlay controls pass,26 public focused tests pass7.546s. No new full701-green
+suite/whole16/47/quiet-runtime/source adoption. Qualified71 pins rechecked with0
+new outputs/0 promotions, not fresh default71. App last verified root/health200
+with unchanged loaded fingerprint; reverify at continuation/publication.
+
+Use batch176-checkpoint-evidence-v1.json and71-screen-batch176-unchanged-qualified-
+candidate-audit-v1.md. Next action: source32 rectangle competition and genuinely
+directed shape/material evidence on COMPLETE frozen failures/positives, preserving
+Hades and old gains before new producer/reserve. Avoid adding more opaque wrapper
+layers; pin the actual effective stage and its transitive code. Model reasoning
+is not a running test: execute a bounded discriminating check, persist pass/fail
+and next action, and report progress at least once per minute. All private/generated
+material stays ignored; only reviewed public checkpoint docs are published.
+
 ## Latest: B175 source-role recovery and whole-QA failure; read-only probe shipped
 
 Read ignored BATCH175_RESULT_AND_RESUME.md and original GOAL_PLAN in full.

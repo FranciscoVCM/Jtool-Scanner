@@ -1,5 +1,36 @@
 # Cross-tileset milestone
 
+## Current direction (B176, 2026-10-08): real boundary gain; unsafe ownership proof rejected
+
+Recovered completed actual Golden7 v6 without restarting. All55 new source-visible
+terrain cells and7 hazard removals reviewed, plus3 whole views;704 supported prior
+keys retained. Complete frozen boundary41,584 ->49,504/54,880, zero old positive
+loss;5,376 missing and4,608 sampled background excess remain. Major old errors
+remain; private output is not deployed and the room is not accepted.
+
+V6 has16 source-confirmed CN3 hazard aliases and loses4 real Hades terrain fills.
+V7 exterior-reference RGB proof removes16 local aliases without exact loss, but
+fails Golden7 recall:36,976 matches and11,056 previously verified pixels lost.
+It wrongly qualifies several directions in the same box. REJECTED, not a shared
+repair. Raw edge support and different corner/body colors cannot alone establish
+object identity under gradients, glow and repeated tile texture. Additional
+background/corner-role observations are not qualified alternatives.
+
+Same72 size/overlay contracts pass; cold all601 minis/all139 footprints held in
+the three earlier development rooms. Hades's separate1024 real pixels remain
+unprotected by this candidate; do not hide them behind0 typed additions. Public
+26 focused tests pass; production/app package unchanged. All71 qualified pins
+rechecked without rescan or promotion. No new full-suite/16/47/runtime/reserve
+or adoption claim. Original six gates remain ACTIVE.
+
+Next bounded test must jointly compare source-supported rectangular terrain and
+directed shape/material evidence, rather than broad overlap deletion or another
+edge-only veto. Keep the complete16 alias set,55 new positives,7 hazard negatives,
+Hades real fills,54,880/4,608 masks and ALL prior41,584 positives fixed. Only after
+source protections/whole QA pass should CN3_7's locked reserve be evaluated.
+Use terminal receipts and one discriminating tool action at a time; do not restart
+finished workers, resweep87 or spend hours repeating untested hypotheses.
+
 ## Current direction (B175, 2026-10-08): alternating materials recovered; whole-source QA fails
 
 Locked B172 transfer to Golden7 fails: no boundary recovery. Exposed diagnosis
