@@ -1,10 +1,54 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-07. Continue in the existing repository at
+Updated 2026-10-08. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest: B171 corrected complete source recovery; texture seeding next
+## Latest: B172 material-boundary qualification; no production adoption
+
+Read ignored BATCH172_RESULT_AND_RESUME.md and original GOAL_PLAN in full.
+Measurement HEAD26c9cf1; production/default/app unchanged. Earlier entries
+below are history, not current completion. Do not restart completed workers
+or reopen the archive/resweep87. Original goal remains ACTIVE.
+
+SAME16 texture scenes288/288/noextras and SAME12 weak/isoluminant216/216/
+noextras, original RGB hashes unchanged. Source-tip RGB distributions supplement
+raw geometry; a verified original spike base may bound terrain whose exterior
+is occluded. No threshold relaxation/gray second scan/answer lookup. Hoisted
+base verification out of each container loop; strict proposal/diagnostic parity
+on48 original source-discriminable scenes,648/648 visible positives,12 ambiguous
+abstentions. Original36 forced-mini ambiguity remains failed, never relabelled.
+
+V7 joint size evidence fails52/72 typed-parent cases with hidden flat mini
+duplicates under water-occluded fulls. V8 unconditional parent abstention passes
+72 but loses4 source-reviewed Bathhouse textured minis FROM ORIGINAL inputs;
+rejected. Already-improved input retention alone masked this loss. V9 exposes
+existing source-pattern flatness, keeps repeated16 texture evidence, and
+abstains only on flat hidden-size identity. Original-input generation retains
+all601 minis/all139 terrain footprints and reproduces B171 geometry in three rooms.
+SAME72 size/overlay gates and16 source-helper controls pass. These are NOT
+full exact benchmarks or new real-room gains. Actual reserved Dotkid4 scan
+and fresh three-view QA completed with zero changes and full map/ordered
+detections/warnings/crop/options/render equality. Preservation PASS, improvement
+FAIL; moderate unresolved shapes remain. See resume, checkpoint evidence-v10
+and unchanged-qualified-candidate71-audit-v10. No new reserve success or tuning.
+
+IMPORTANT count correction: B170139 recovery additions are138 full+1 mini,
+not139 full as historical labels claimed. Old full-only loops checked138.
+New denominator-correction-v10 receipt explicitly proves ALL139 physical
+footprints retained, including the mini; no narrowed protection/erased evidence.
+
+Next lock another appropriate source-material-miss reserve and evaluate v9
+without tuning from its result; do not confuse a near-correct terrain transfer
+control with positive recovery. Consolidate private wrappers and fully qualify
+real transfer/benchmarks/affected tests/runtime before production integration.
+
+All previous false effects/true occlusions/semantic controls and multi-family/
+reserve/all47/40groups/whole16/affected tests/runtime/final-current71/adoption
+gates still hold. No room acceptance or implementation deployment inferred.
+Private scripts/maps/masks/images remain ignored; public technical docs only.
+
+## Historical: B171 corrected complete source recovery; texture seeding next
 
 Read ignored BATCH171_RESULT_AND_RESUME.md, batch171-checkpoint-evidence-v7.json,
 71-screen-batch171-unchanged-qualified-candidate-audit-v7.md/JSON and original

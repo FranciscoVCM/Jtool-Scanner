@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-08 — B172 material-boundary mechanism and original-input regeneration
+
+Recovered intact private receipts after an interrupted reasoning loop; no live
+test was stuck and no production edits lost. App healthy on unchanged source.
+Original-source tip distributions supplement geometry overwhelmed by internal
+texture, using source RGB and independent verified actor bases. SAME16 textured
+triangle scenes288/288 positives/noextras, SAME12 weak/isoluminant216/216/
+noextras; original RGB hashes verified. No unknown-style perfection claim.
+
+Hoisted immutable spike-base verification out of every material-container
+iteration. All48 original source-discriminable scenes have identical accepted
+cells AND complete diagnostics:648 visible positives,12 ambiguous abstentions.
+Original36 forced-mini criterion still failed on pixel-equivalent layouts;
+new evidence protocol does not replace or relabel the old failure.
+
+Joint v7 initially fails26 original-size and26 additional-quarter cases despite
+zero physical solid error:156 typed-mini duplicates per suite inside retained
+full parents under known water. V8 abstention passes72 controls but ORIGINAL
+baseline replay loses4 real Bathhouse textured minis; rejected. Retention from
+already-added inputs had hidden this new-growth regression. All future checks
+must regenerate prior source additions from the original inputs as well.
+
+V9 uses existing pattern flatness diagnostics, preserving independently
+source-supported repeated16 texture while abstaining on flat occluded-size
+identity. No threshold/case/hash/coordinate/palette/reference rule. Original
+inputs regenerate253 Bathhouse plus348 Dotkid1 minis and preserve139 Dotkid5
+terrain footprints (138 full+1 mini). Complete development geometry keysets equal B171 corrected
+whole outputs; no new physical real-room gain claimed. SAME72 size/known-overlay
+contracts and16 source-helper controls pass, compact19x13 mapping unsupported.
+No new full unittest/whole16/all47/quiet timing or default/app binding claim.
+
+Actual first reserved Dotkid4 whole scan completed. Fresh main Source/JTool/
+Blend review and exact complete map/ordered detections/warnings/crop/options/
+render equality: zero additions/removals. Preservation PASS, required512-pixel
+gain FAIL. Projected visible brown-source mask unchanged194684matched/1251missing/
+23684excess, NOT exact JMap errors; clipped/embedded shapes and approximate
+terrain edges remain. Moderate prior finding retained, no whole-room approval.
+No tuning from reserved result. All three development rooms remain major.
+Original six completion gates active; private generated material excluded.
+
+Checkpoint count audit corrects earlier "139 full footprints" labels: original
+B170 additions contain138 fulls plus1 mini. Earlier full-only protection loops
+checked138, not139. New explicit union check protects ALL139 terrain recovery
+footprints, including the mini, with zero losses. Original evidence preserved;
+this supersedes the label, not the source data or protection denominator.
+
 ## Checkpoint: water hidden beneath SAVE in full-water fields (2026-08-19)
 
 The Irkara-54 source/JMap pair is a nearly full native water field.  Its only

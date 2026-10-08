@@ -1,5 +1,43 @@
 # Cross-tileset milestone
 
+## Current direction (B172, 2026-10-08): material boundaries and explicit size uncertainty
+
+Original-source background distributions can supply missing outer geometry
+when internal texture overwhelms raw edge energy. SAME16 textured-triangle
+inputs now retain288/288 true cells with zero extras; SAME12 weak/isoluminant
+inputs retain216/216 with zero extras. Original RGB hashes verified unchanged.
+This is mechanism evidence, not unknown-tileset or whole-scanner certification.
+
+Hoisted repeated source spike-base verification outside the container loop;
+all48 source-discriminable scenes retain identical proposals/diagnostics.
+All648 visible positives survive;12 pixel-ambiguous flat layouts abstain.
+The original36 forced-mini contract remains failed, not silently relabelled.
+
+Combined geometry initially failed52/72 typed-parent checks: flat mini rails
+were proposed inside retained full blocks partly hidden by water. Unconditional
+occlusion abstention passed those controls but lost4 real Bathhouse textured
+minis when regenerated from ORIGINAL inputs; rejected. Already-improved-input
+retention alone had concealed this loss. Test new growth from original scans.
+
+Corrected v9 exposes the existing pattern flatness decision, preserving
+independent repeated16 texture evidence while abstaining on flat, occluded
+hidden-size identity. Source-only replay from original scans regenerates all601
+reviewed minis and retains139 prior terrain footprints; complete geometry keysets
+equal corrected B171 across the three exposed rooms. Same72 size/overlay
+contracts and16 source controls pass. No new real-room gain or app adoption
+implied. Actual first reserved Dotkid4 scan and fresh Source/JTool/Blend review
+finish with complete map/ordered detections/warnings/crop/options/render equality,
+zero changes. Preservation PASS, required improvement FAIL; moderate clipped/
+embedded-shape issues remain. No tuning from that result, no acceptance upgrade.
+
+Count correction: the139 B170 recovery additions are138 full blocks and1 mini,
+not139 full blocks as older receipt labels stated. All139 physical footprints
+are now explicitly checked and preserved, including the miniature; no protection
+denominator reduced. Preserve older receipts and supersede their count label.
+
+No implementation/default/fixture changes, no status promotions, no full-suite/
+whole16/all47/quiet-runtime claim. Original six goal gates remain ACTIVE.
+
 ## Current direction (B171, 2026-10-07): corrected source recovery; geometry seeding remains unsafe
 
 Private quarter-background arbitration repairs the previously missed Dotkid5
