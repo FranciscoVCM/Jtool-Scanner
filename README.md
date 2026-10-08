@@ -338,6 +338,26 @@ end-to-end runtime measurement. Later stages and candidate-dependent upstream
 inputs still require ordinary scans. Output files stay ignored; reference JMaps
 are never stage inputs. Existing output directories are never overwritten.
 
+### Read-only source contour probes
+
+```powershell
+python scripts/source_contours.py --source fixtures/block_spike/cn3-18-game.png --result PATH_TO_CACHED_RESULT_JSON --query 3,80,384 --query 1,80,384
+python -m unittest tests.test_source_contours
+```
+
+Point `--result` at a completed corpus case's `result.json`, not its summary
+report. The probe verifies the source-image SHA-256 and uses that case's room
+transform. Queries are `object_type,x,y` in native top-left coordinates;
+X increases rightwards and Y downwards. Terrain/spike IDs 1–10 are supported.
+JSON is printed to stdout; no detections, maps, fixtures or app state are changed.
+
+The cached RGB measurement subtracts local illumination gradients, preserves
+chromatic/one-byte contrast and counts independent source pixels rather than
+duplicate samples. A supported contour is NOT proof of object identity or room
+accuracy: texture and neighboring geometry can explain the same edge. Clipped
+evidence remains unknown. Compact/nonstandard source-grid mappings are explicitly
+unqualified rather than silently normalized with the 25×19 transform.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

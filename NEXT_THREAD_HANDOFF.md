@@ -4,7 +4,53 @@ Updated 2026-10-08. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
-## Latest: B172 material-boundary qualification; no production adoption
+## Latest: B175 source-role recovery and whole-QA failure; read-only probe shipped
+
+Read ignored BATCH175_RESULT_AND_RESUME.md and original GOAL_PLAN in full.
+Measurement HEAD c05000b; scanner package/default/app unchanged. B173–B175
+workers are terminal; don't restart them or resweep87/archive images.
+Use batch175-checkpoint-evidence-v1.json and unchanged-qualified-candidate71
+audit-v1. Original six gates ACTIVE, not complete.
+
+Actual Golden7 coupled source-role model: 711 additions,0 removals; boundary
+0->41,584/54,880 matched,13,296 missing,4,608 sampled background excess unchanged.
+Original same-appearance adjacency had 562 supported cells but zero models.
+Whole source/three views/ALL711 deltas independently reviewed: FAIL seven
+hazard-painted cells become terrain. Major background/spike/water errors remain;
+no room promotion/deployment. Regional gain is not whole-room correctness.
+
+43 control typed additions initially:39 hazard aliases +4 Hades real terrain
+recoveries with incorrect representation beside 16px-shifted fulls. Local source
+triangle/corner/body proof removes36; independent occlusion context removes1
+without lowering9/12, while rectangle competition stays RAW. Two partial/adjacent
+aliases and4 Hades repairs remain: focused controls FAIL6. Don't label the four
+Hades cells phantom or suppress real coverage. RGB/whole32 appearance alternatives
+remain observations, not qualified corrections. No reference-driven recognition.
+
+Cold original-input all601/all139 retained, complete geometry equals B171 on
+three old rooms. Complete corrected-reference CN3_7 reserve frozen UNEVALUATED;
+do not use until protections pass. NR2 boundary reserve unsuitable before any
+candidate evaluation; freeze/failed-to-be-useful target retained as protection.
+
+Public scripts/source_contours.py is READ-ONLY, not scanner binding. Source SHA/
+room checks, RGB-preserving gradient-normalized edges, distinct pixel witnesses,
+unknown clipped/compact cases; README/11 probe tests, plus15 terrain tests pass.
+Raw parity33 real glyphs. Sandbox temp IO error resolved by running same tests
+outside sandbox, not hiding it. Next repair source role calibration across full
+recovery and new mini roles: hazard paint at spike backs must not become terrain
+merely because it repeats. Resolve contour-context and source size/origin evidence,
+then real reserve, full qualification, quiet runtime and final-current71 adoption.
+Private corpus/prototypes/references/transcript remain ignored and unpublished.
+
+TEST FOLLOW-UP: full default-code suite701 ran with2 stale neon-count subcase
+failures,0 errors. Isolated reproduction/history/source crops verify current
+pruning is correct (two16 spikes, not one enclosing32). Corrected expectations
+and semantic source checks;27 affected tests pass. Preserve failed full receipt;
+do NOT claim a fresh all701-green rerun. Read ignored B175_TEST_AUDIT_AND_RESUME.md
+and batch175-affected-unittest-receipt-v3.json. No scanner/fixture modification.
+Stopped app was restarted hidden; verify final root/health/source receipt.
+
+## Historical: B172 material-boundary qualification; no production adoption
 
 Read ignored BATCH172_RESULT_AND_RESUME.md and original GOAL_PLAN in full.
 Measurement HEAD26c9cf1; production/default/app unchanged. Earlier entries

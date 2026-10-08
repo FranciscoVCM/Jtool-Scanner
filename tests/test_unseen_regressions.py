@@ -66,6 +66,8 @@ from jtool_scanner.scanner import (
     scan_png,
     structural_scan_warnings,
 )
+from jtool_scanner.spike_shape import SpikeShapeField
+from jtool_scanner.spike_source_corner import mixin as source_corner_mixin
 
 
 FIXTURES = Path("fixtures/regressions")
@@ -76,9 +78,15 @@ class OutlinedTerrainRegressionTests(unittest.TestCase):
     def test_neon_rooms_use_hue_independent_terrain_geometry(self) -> None:
         fixture_dir = UNSEEN_FIXTURES / "cn3-neon"
         expected = {
-            "07": (103, 48, 4),
+            "07": (103, 47, 4),
             "08": (83, 57, 3),
-            "09": (85, 63, 3),
+            "09": (85, 62, 3),
+        }
+        # These regions contain two real16 silhouettes, not one enclosing32.
+        # Keep source geometry evidence as well as the filtered count snapshot.
+        mini_pairs = {
+            "07": ((OBJ_SPIKE_UP, 256, 128), ((256, 144), (272, 144))),
+            "09": ((OBJ_SPIKE_DOWN, 64, 448), ((64, 448), (80, 448))),
         }
 
         for floor, expected_counts in expected.items():
@@ -103,6 +111,15 @@ class OutlinedTerrainRegressionTests(unittest.TestCase):
                         for detection in spikes
                     )
                 )
+                if floor in mini_pairs:
+                    enclosing, positions = mini_pairs[floor]
+                    self.assertNotIn(
+                        enclosing,
+                        {(detection.type_id, detection.x, detection.y) for detection in spikes},
+                    )
+                    field = source_corner_mixin(SpikeShapeField)(image, room, native_size=16)
+                    for x, y in positions:
+                        self.assertGreaterEqual(field.localized_score(x, y, enclosing[0]), 11 / 12)
 
 
 class CaptureLatticeRegressionTests(unittest.TestCase):

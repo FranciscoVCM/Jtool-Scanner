@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-08 — B175 real patterned-source gain rejected by complete QA
+
+First locked Golden7 B172 transfer fails and becomes exposed development.
+562 source geometric witnesses produced zero appearance models: alternating
+quadrants cannot form the previous same-appearance adjacency groups. Revised
+geometry components learn multiple repeated source roles without emitted-object
+witnesses or palette names. Actual whole Golden7 scan adds 711 objects; frozen
+three-sided boundary changes 0/54,880 -> 41,584 matched, with 13,296 missing and
+4,608 sampled background excess unchanged. No whole-room approval from that ROI.
+
+Source-reference controls initially gain 43 typed extras. All inspected: 39 lie
+inside genuine full/mini hazards. Four Hades minis fill real missing terrain
+beside two full blocks shifted 16px right; earlier false-edge interpretation is
+superseded. Their type/origin reconciliation remains incomplete, not suppressed.
+Source-local geometric glyph validation removes 36 aliases. Independently
+source-verified occlusion context removes one more while keeping 9/12 closure,
+raw rectangle competition and no new context witnesses. Focused three controls
+still FAIL: two glyph aliases plus four Hades typed additions. Color-correlation
+and source32 appearance observations did not establish a qualified fix; retained
+on file, not adopted. No threshold relaxation or reference-answer injection.
+
+Actual three-view/full15-page/every711-delta review finds seven Golden7 additions
+inside real hazards. Whole-source QA FAIL overrides the passing boundary target.
+Existing background-full inversion, other geometry and water errors remain
+severe; room stays major. Cold ORIGINAL replay retains all601 earlier minis
+and139 terrain recovery footprints (138 full+1 mini); three keysets equal B171.
+No new reserve success, full16/47, quiet timing or deployment.
+
+Public read-only contour probe consolidates the raw RGB measurement into one
+reproducible script, documenting source SHA/transform verification, X-right/
+Y-down coordinates, independent pixels and nonstandard-frame uncertainty.
+26 focused probe/terrain tests PASS (2.776s); private/public raw support parity
+on33 real glyphs. Windows sandbox temp-file IO failed initially; same tests
+pass outside sandbox, without changing code to hide an environment error.
+App/scanner package unchanged. Private prototypes/maps/reports/images stay
+ignored. All71 qualified pins rechecked without rescan or acceptance upgrades.
+Original six goal gates ACTIVE; source role/shape calibration is the next repair.
+
+Complete default-code suite subsequently ran701 tests (2105.790s), with2 failures
+and0 errors. Both are stale neon full-count snapshots, isolated without the new
+probe: existing f65d2ab removes enclosing full hypotheses that source crops show
+are actually pairs of16 spikes. July expectations had not followed that change.
+Source-audited counts corrected and explicit mini-support/enclosing-full-negative
+assertions added;27 affected tests pass18.225s. No scanner/fixture changes and
+no fresh all701-green rerun claimed; failed full log preserved. App independently
+stopped during testing and was restarted with source-matched root/health200.
+
 ## 2026-10-08 — B172 material-boundary mechanism and original-input regeneration
 
 Recovered intact private receipts after an interrupted reasoning loop; no live

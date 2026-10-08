@@ -1,5 +1,40 @@
 # Cross-tileset milestone
 
+## Current direction (B175, 2026-10-08): alternating materials recovered; whole-source QA fails
+
+Locked B172 transfer to Golden7 fails: no boundary recovery. Exposed diagnosis
+finds 562 supported cells but zero appearance models because same-appearance
+adjacency fragments alternating quadrants. Geometry components with multiple
+independently repeated appearance roles recover 41,584 of 54,880 frozen boundary
+pixels. The actual whole scan confirms that gain; 13,296 remain missing and
+4,608 sampled background pixels remain blocked. This is not room acceptance.
+
+Broader roles initially add 39 real spike-body aliases plus four wrong-sized
+Hades terrain repairs to exact-source controls. Source-local triangle/corner/
+body evidence removes 36 aliases; independently verified occlusion context
+removes one more, preserving 9/12 closure and raw competing-rectangle evidence.
+Two partial/adjacent aliases and four Hades type/origin repairs remain. Hades
+minis fill real missing coverage beside 16px-shifted fulls; do not suppress them
+as phantom terrain. Whole-object texture observations are not confident enough
+for automatic replacement and are not adopted.
+
+Fresh Golden7 Source/JTool/Blend and all 711 additions reviewed: seven new
+terrain hypotheses occupy actual hazards. Whole-source QA FAILS despite the
+boundary target passing. Existing background inversion and spike/water errors
+remain major. Cold replay preserves all 601 minis and 139 terrain recoveries,
+but this cannot substitute for complete precision or a successful reserve.
+
+Source role calibration must distinguish rectangular terrain from hazard paint
+at spike backs; repeated appearance alone is insufficient. CN3_7's complete
+corrected-reference reserve is still unevaluated. NR2's boundary freeze was
+unsuitable for positive recovery and is now protected, not claimed successful.
+No candidate deployment, room-status promotion, full16/47 or runtime claim.
+
+New public scripts/source_contours.py supplies reproducible read-only RGB edge
+diagnostics with input SHA checks, gradient subtraction, independent witnesses
+and explicit mapping/clipping limits. 26 focused tests pass; raw parity holds
+on 33 real glyphs. Scanner package/app unchanged; original six goal gates ACTIVE.
+
 ## Current direction (B172, 2026-10-08): material boundaries and explicit size uncertainty
 
 Original-source background distributions can supply missing outer geometry
