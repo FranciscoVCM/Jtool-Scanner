@@ -4,6 +4,24 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B183 source review after preserved B182 checkpoint
+
+B182 published as c6f622adda07216ece45e0b1f3a892be8b2556fd; local/live main equality
+and clean Git verified. All saved work preserved.98 affected tests PASS26.055s;
+source47/39 protections PASS0 failures. App root/health200 and loaded/disk parity.
+
+Read ignored batch183-CN3_31-independent-source-review-v1.json and
+71-screen-batch183-unchanged-qualified-candidate-audit-v1.md. Independently inspected
+whole source/JTool/blend and ALL315 windows/7 pages for saved helper309adds/6refits.
+Visible source support, but159 additions duplicate old union;62,208 new occupied
+pixels are not exact ground-truth pixels. Inherited missing/opposing/misplaced
+spikes remain MAJOR. No ordinary scan/app adoption or whole-room acceptance.
+
+All producers in this checkpoint TERMINAL; do not restart completed replay/scans.
+Maintainable source-stage integration, remaining changed-map QA, ordinary47/40/16,
+reserved CN3_7, quiet runtime and final-current71 still due. Six original gates
+ACTIVE. Resume concrete bounded implementation/checks, not repetitive analysis.
+
 ## Latest: B182 public size agreement; durable protection replay complete
 
 Read ignored BATCH182_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement

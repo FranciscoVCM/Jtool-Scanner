@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Current direction (B183, 2026-10-09): source review closes one precision gap
+
+CN3_31's saved-helper whole views and all315 delta windows independently reviewed.
+New terrain placements and six16px full refits have source support; inherited spike
+errors remain MAJOR.309 typed additions are not309 unique objects:159 duplicate old
+union;62,208 added occupied pixels are not exact ground-truth pixel accuracy.
+This review is not a new ordinary scan or default adoption. Source-stage47/39 pass
+still needs remaining changed-map precision, maintainable integration, ordinary
+qualification, reserved transfer and quiet runtime. Conservative71 updated with
+no qualified regeneration/promotion. All original six gates ACTIVE.
+
 ## Current direction (B182, 2026-10-09): maintained source-size rule; durable qualification
 
 Source_terrain_agreement.py extracts B181's positive source-identity/full-size rule

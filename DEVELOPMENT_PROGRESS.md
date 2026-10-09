@@ -4,6 +4,25 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B183 independent CN3_31 delta review; no accuracy inflation
+
+After preserving/pushing B182, independently inspected original Source, whole
+JTool/Blend and ALL315 delta windows/7 pages for the largest remaining source-stage
+change. Saved helper78full/231mini additions and six16px original-full refits have
+visible white-terrain/alternative full-frame support. This is a saved-helper
+render, NOT a new ordinary scan, default rollout or room approval.
+
+Additional solid union62,208 pixels;159 additions duplicate old coverage. Do not
+claim309 unique recovered objects or exact ground-truth pixels.3,072 withdrawn old
+occupancy pixels are not automatically true pixel losses. New poses have independent
+full-frame source texture and old-margin background evidence. Major missing left/
+lower-left spike formations, opposing/misplaced spikes within terrain and redundant
+block decomposition remain. Conservative71 successor records fresh private review
+separately from equality-carried qualified findings;0 regeneration/0 promotions.
+Next remains maintainable source-stage integration, independent QA for remaining
+changed cases, ordinary47/40/16, reserved transfer, quiet runtime and final71.
+Original six goal gates ACTIVE. Private review images/maps/results stay ignored.
+
 ## 2026-10-09 — B182 size rule extracted; replay durability failure repaired
 
 Public source_terrain_agreement.py now contains the tested new-full source identity/
