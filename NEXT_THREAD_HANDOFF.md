@@ -4,6 +4,37 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B182 public size agreement; durable protection replay complete
+
+Read ignored BATCH182_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEAD504dc12; scanner/default unchanged. Public scripts/source_terrain_agreement.py
+has no private imports/answers; all3 full geometry/proof outputs equal B181v2,
+cold601/ALL139 held,98 affected PASS25.220s. Not app-bound or full737/ordinary pass.
+
+CORRECTION TO B181 LIVE NOTE: PID22620/session38821 is TERMINAL exit1 afterALL31
+case calculations. Final identity assertion included changed Git HEAD; code/assets
+unchanged, combined result never saved. Preserve failure; no qualifying source rows
+can be inferred from stdout. Initial checkpoint-wrapper attempt also failed to
+activate and was intentionally stopped only after its exact process was verified.
+
+Direct durable replacement PID26820/session92189 is TERMINAL success. All31
+source/result/code-pinned complete case rows and combined output are saved. Read
+batch182-protected-source31-replay-v2.json selectively; it is large. Complete
+checker receipt batch182-protection-check-v2.json PASSES47 non-reserve source
+inputs/39 achieved groups/zero failures. Git provenance is separate from strict
+code/assets/runtime/transitive source hashes. Do not poll/restart terminal workers
+or repeat87. Read 71-screen-batch182-unchanged-qualified-candidate-audit-v1.md:
+all71 existing source/options/reference/artifact pins rechecked, not new scans.
+Independent affected98 rerun PASS26.055s. App restarted; root/health200 with
+loaded/disk fingerprint parity. Experimental detector remains unbound.
+
+CN3_7 reserve UNEVALUATED. Actual Entrance2 source gains/major remaining errors
+and earlier72/source16/Golden7 evidence unchanged within their stated scopes.
+Source-stage protections are verified, NOT ordinary47 or whole-source precision.
+All changed-map QA/ordinary16/final40th reserve group/runtime/production integration/
+final71 still due. Original six gates ACTIVE. Avoid unbounded analysis;
+execute a discriminating check and save its complete result before the next case.
+
 ## Latest: B181 actual source-size gain and maintainable block evidence; producer still live
 
 Read ignored BATCH181_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement

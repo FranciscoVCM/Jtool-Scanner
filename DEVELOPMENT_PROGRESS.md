@@ -4,6 +4,44 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B182 size rule extracted; replay durability failure repaired
+
+Public source_terrain_agreement.py now contains the tested new-full source identity/
+size rule with no private imports, reference answers or app binding. Complete
+LapBackwards/Entrance2/Hades geometry AND all diagnostic proofs equal private B181v2.
+Cold601 minis/ALL139 terrain footprints retained. Eight direct safeguards cover
+unknown-not-negative, explicit owner, rectangle/full priority, original objects,
+input/teacher immutability, duplicate coverage and already-qualified quarters.
+98 affected tests PASS25.220s, independently rerun PASS26.055s after resumption;
+no full737-suite or new ordinary benchmark claim.
+
+B181 protected31 reached ALL31 calculations but failed before saving combined rows:
+its final implementation_identity equality included Git HEAD, changed by our
+mid-run publication. Scanner code/assets did not change. Count-only status output
+cannot certify completed protection rows. Original terminal failure/stale worker
+receipt retained; the missing result is not relabelled as a pass.
+
+An initial nested-wrapper checkpoint injection did not activate; stopped only its
+verified owned worker, preserving that failed attempt. Direct replacement separates
+Git provenance from code/assets/runtime identity, pins the effective source DAG,
+and writes immutable complete case rows with source/result hashes before continuing.
+Strict source/code checks remain; completed matching checkpoints support resume.
+Replacement31 is TERMINAL success: every complete case and the combined result
+were saved. The saved-output checker PASSES all47 non-reserve source inputs and
+39 achieved protection groups, with zero failures. No87 baseline/archive/full
+scanner resweep. Do not restart or poll the terminal92189/38821 handles.
+
+Actual B181 Entrance2 source QA/25,344 positive pixels/5120 ROI and remaining major
+errors are unchanged. Source16/72 portable/601/139/Golden7 evidence applies only
+within stated scopes. Source-stage protection is now verified; this is NOT an
+ordinary47 benchmark or whole-source precision certification. Final40th reserve
+group, independent changed-map QA, ordinary16/runtime, production integration and
+final-current71 remain. CN3_7 locked UNEVALUATED; original six goal gates ACTIVE.
+The B182 conservative71 successor rechecks source/reference/artifact pins and
+carries qualified findings unchanged: zero output regeneration or room promotion.
+App restarted after connection refusal; root/health HTTP200 and loaded/disk
+fingerprint parity verified. No experimental detector default was enabled.
+
 ## 2026-10-09 — B181 source-size competition fixes new conflicts; full qualification pending
 
 Source-only trace finds Entrance2 scalar calibration classifying a blue spike

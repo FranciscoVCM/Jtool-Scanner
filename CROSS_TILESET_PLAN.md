@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Current direction (B182, 2026-10-09): maintained source-size rule; durable qualification
+
+Source_terrain_agreement.py extracts B181's positive source-identity/full-size rule
+without private imports or reference answers. All three focused geometry/proof
+outputs equal private code; cold601/all139 and98 affected tests pass. Not default-
+bound: protected whole-source/ordinary/runtime/reserve gates are still required.
+
+The previous source31 worker is TERMINAL FAIL after31 case calculations because
+Git HEAD changed mid-run. No combined result rows were saved; stdout is insufficient
+for qualification. Its source/code content was unchanged. New direct replay persists
+each complete source/result/code-pinned case and separates content identity from
+Git provenance. Replacement31 is TERMINAL success, with every case saved. The
+saved-output checker PASSES47 non-reserve source inputs/39 achieved protection
+groups/zero failures. Do not restart terminal workers or the completed87 baseline.
+Preserve failed attempts; unknown is not a negative.
+
+Source-stage protections are verified, not ordinary47 or whole-source precision.
+Next: independent changed-map QA and maintainable shared-feature integration,
+then ordinary qualification, reserved transfer and quiet runtime. Private actual
+gains/remaining major errors are not room approvals or deployment. Conservative71
+findings carry only through rechecked pins, with no regeneration/promotion.
+Original six gates ACTIVE; no narrower substitute completion.
+
 ## Current direction (B181, 2026-10-09): explicit source identity before new full packing
 
 New fulls must not treat scalar foreground colour as solid truth. Entrance2's blue

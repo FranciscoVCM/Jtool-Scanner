@@ -404,6 +404,18 @@ terrain evidence is not evidence of empty space: an ambiguous query abstains.
 The module returns appearance evidence, not object emission or hidden block-size
 truth, and is **not bound to the application's detector**.
 
+`scripts/source_terrain_agreement.py` extracts the experimental new-full agreement
+rule. It requires positive source-glyph competition before an unsupported quarter
+can disprove a proposed full; independent rectangular source evidence and matching
+whole32 appearance retain priority. Supported quarters can be repacked without
+deleting original objects or treating unknown source pixels as empty space.
+Inputs must be original detections and independently source-qualified cells, not
+reference answers or newly generated teachers. It is not an app/default binding.
+
+```powershell
+python -m unittest tests.test_source_terrain_agreement
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source
