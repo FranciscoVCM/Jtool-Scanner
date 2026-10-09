@@ -4,6 +4,33 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B186 complete material generator consolidated; cold protections retained
+
+Three public explicit modules replace compiled material wrapper layers: raw
+backing/shadow/source-container evidence, intrinsic/local/distributed appearance,
+and raw/context/prototype ownership. No private imports/FunctionType/exec/answers
+in public code. Source context shares material contour/color field and exact native
+RGB, without new output teachers. One contour sampling kernel retains material
+sqrt versus existing glyph hypot arithmetic for strict floating-tie parity.
+
+Complete native/container/boundary and all4 pattern-mode diagnostics equal old code
+on LapBackwards1/Entrance2/Hades. Final material cold/shared ENTIRE diagnostic parity
+also passes:552/499/212 accepted cells. These counts are parity, NOT room accuracy.
+Private test-only adapter keeps preceding size/joint stages unchanged, then calls
+public material/pose/agreement. Cold replay retains ALL601 reviewed minis and ALL139
+terrain footprints; all3 Dotkid1/Bathhouse/Dotkid5 output keysets equal B179.
+
+Nineteen new safeguards cover backing rectangle/glyph competition, shade geometry,
+independent tips despite rejected FG backs, unknown/clipped/single-distribution BG,
+context/source-body/RAW-rectangle priority, immutable teachers and eight isolated-
+glyph palette/scale negatives.148 affected tests PASS52.694s. Not a full-suite or
+fresh ordinary16/47 claim. All replay/test workers terminal; saved original results
+preserved. Default production package unchanged; no app adoption/room promotion.
+
+Next: consolidate preceding sizing/joint assembly into the explicit source pipeline,
+then independent remaining changed-map QA, ordinary47/40/16, locked CN3_7, controlled
+runtime, final-current71 and tested rollout. Original six completion gates ACTIVE.
+
 ## 2026-10-09 — B185 full-pose/background consolidation and retirement arbitration fix
 
 Public source_full_pose.py/source_local_background.py extract the effective tested

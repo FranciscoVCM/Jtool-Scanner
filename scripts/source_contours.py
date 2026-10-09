@@ -11,7 +11,7 @@ import argparse
 from dataclasses import asdict, dataclass
 import hashlib
 import json
-from math import hypot
+from math import hypot, sqrt
 from pathlib import Path
 from statistics import median
 import sys
@@ -35,10 +35,11 @@ class SourceContours:
     """Cache coherent RGB edge support after local-gradient subtraction."""
 
     def __init__(self, image: RGBImage, room: Box,
-                 native_size: tuple[int, int] = (800, 608)):
+                 native_size: tuple[int, int] = (800, 608), *, squared_norm=False):
         if min(room.width, room.height, *native_size) <= 0:
             raise ValueError("Room and native dimensions must be positive")
         self.image, self.room, self.native_size = image, room, native_size
+        self._squared_norm = squared_norm
         self._edges: dict[tuple, EdgeEvidence] = {}
 
     def edge(self, first: tuple[float, float], second: tuple[float, float]) -> EdgeEvidence:
@@ -77,7 +78,8 @@ class SourceContours:
             gradient = tuple(median(derivatives[j][c] for j in (0, 1, 6, 7))
                              for c in range(3))
             def departure(value):
-                return hypot(*(value[c] - gradient[c] for c in range(3)))
+                delta = tuple(value[c] - gradient[c] for c in range(3))
+                return sqrt(sum(v*v for v in delta)) if self._squared_norm else hypot(*delta)
             reference = max(departure(derivatives[j]) for j in (0, 1, 6, 7))
             phases = {j - 3.5 for j in (2, 3, 4, 5)
                       if departure(derivatives[j]) > reference}

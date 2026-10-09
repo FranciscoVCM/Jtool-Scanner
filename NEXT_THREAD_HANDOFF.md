@@ -4,6 +4,24 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B186 full material generator explicit, source/cold parity complete
+
+Previous4b881b1 preserved. Read ignored BATCH186_RESULT_AND_RESUME.md. Public source
+material evidence/pattern/ownership modules have no private imports/compiled wrappers/
+answers. Explicit context shares material field/colors/native RGB. One sampler keeps
+material sqrt and glyph hypot arithmetic for exact ties. Native/container/boundary,
+all4 pattern modes and final cold/shared ENTIRE diagnostics equal on Lap/Entrance2/
+Hades (final552/499/212 cells, parity not accuracy). Cold601/all139 retained; all3
+Dotkid1/Bathhouse/Dotkid5 maps equal B179.148 affected PASS52.694s;19 new safeguards.
+
+All B186 workers70874/33698/28282/64616 and tests73937 TERMINAL. No new ordinary16/47,
+reserved success, default binding or room approval. Prior conservative findings held.
+Next actual integration: source sizing and joint proposal assembly, currently the
+only preceding adapter FunctionType layers. Use batch186_public_material_adapter_v1.py
+as test wiring reference ONLY; do not ship it. Then full pipeline parity/cold/source
+protections, changed-map QA, ordinary47/40/16, locked CN3_7, runtime/final71/rollout.
+Original six GOAL_PLAN gates ACTIVE. No baseline87 or archive reload.
+
 ## Latest: B185 pose/background stages consolidated; all4 parity complete
 
 Previous208c943 remains preserved. Read ignored BATCH185_RESULT_AND_RESUME.md and

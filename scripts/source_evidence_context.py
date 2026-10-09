@@ -43,6 +43,7 @@ class SourceEvidenceContext:
         self._spikes = _locators(spikes)
         self._pixel_cache_limit = pixel_cache_limit
         self._contours = self._glyphs = None
+        self._rectangles = self._native_pixels = None
         self.glyph_builds = self.glyph_reuses = 0
 
     def validate(self, image: RGBImage, room: Box, spikes=None):
@@ -77,3 +78,21 @@ class SourceEvidenceContext:
             pixel_hits=glyphs.pixel_cache_hits if glyphs else 0,
             pixel_misses=glyphs.pixel_cache_misses if glyphs else 0,
             pixel_cache_peak=glyphs.pixel_cache_peak if glyphs else 0)
+
+    def rectangles(self, image, room, spikes):
+        """Reuse the material kernel with its original sqrt arithmetic."""
+        self.validate(image, room, spikes)
+        if self._rectangles is None:
+            from scripts.source_material_evidence import SourceRectangles
+            self._rectangles = SourceRectangles(self._source, self._room)
+        return self._rectangles
+
+    def native_pixels(self, image, room):
+        """One exact original RGB crop/normalization for material consumers."""
+        self.validate(image, room)
+        if self._native_pixels is None:
+            from PIL import Image
+            source = Image.frombytes('RGB', (self._source.width, self._source.height), self._source.data)
+            self._native_pixels = source.crop((room.x, room.y, room.right, room.bottom)).resize(
+                (800, 608), Image.Resampling.BILINEAR).tobytes()
+        return self._native_pixels

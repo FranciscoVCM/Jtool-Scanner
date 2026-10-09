@@ -447,6 +447,23 @@ original minis and unrelated objects are preserved. Neither module is default-bo
 python -m unittest tests.test_source_full_pose tests.test_source_full_pose_portable tests.test_source_local_background
 ```
 
+The experimental source material generator is explicit in
+`scripts/source_material_evidence.py`, `source_material_patterns.py` and
+`source_material_ownership.py`. It combines raw backing/shadow roles, source
+containers/background boundaries, intrinsic/local/distributed appearance and
+competing glyph ownership. Newly accepted cells never become teachers; unknown
+background, flat-water and source-rectangle priority remain separate safeguards.
+
+Material consumers can share original color/contour evidence and exact native RGB
+through `SourceEvidenceContext`. The material contour kernel retains its original
+sqrt arithmetic; the existing glyph kernel keeps hypot arithmetic. Both use the
+same sampling implementation. These modules are not default-bound; sizing/proposal
+assembly and whole-scanner qualification are still required before deployment.
+
+```powershell
+python -m unittest tests.test_source_material_evidence tests.test_source_material_ownership
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

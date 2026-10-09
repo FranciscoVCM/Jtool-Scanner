@@ -1,5 +1,19 @@
 # Cross-tileset milestone
 
+## Current direction (B186, 2026-10-09): complete material stage, assembly still pending
+
+Raw roles/containers/BG boundaries, intrinsic/local/distributed patterns and final
+glyph/context/prototype arbitration are now explicit public functions, not compiled
+wrapper layers. ENTIRE old/new/cold/shared diagnostics equal on three exposed sources;
+all601 reviewed minis/all139 terrain footprints and3 old output keysets retained.
+148 affected tests pass, including19 new safeguards. Material sqrt/glyph hypot
+arithmetic retained in one sampler to prevent floating-tie drift.
+
+No default detector binding or room promotion. Remaining sizing/joint assembly must
+be consolidated and full ordinary/precision/reserve/runtime qualification completed
+before rollout. Do not replace the original repair objective with tooling alone;
+all six original gates ACTIVE. Use saved results, not another baseline87 sweep.
+
 ## Current direction (B185, 2026-10-09): explicit pose repair and retirement precedence
 
 Full-block pose and local-background source stages now have public explicit APIs,
