@@ -17,7 +17,8 @@ def _footprint(key):
     return {(px, py) for py in range(y, y+size) for px in range(x, x+size)}
 
 
-def agree_new_fulls(image, room, detections, proposed, rejected, cells, flat_cells=()):
+def agree_new_fulls(image, room, detections, proposed, rejected, cells, flat_cells=(), *,
+                   source_context=None):
     """Return proposals and source proofs, without mutating original detections.
 
     ``cells``/``flat_cells`` must come from independent original-source evidence.
@@ -27,12 +28,15 @@ def agree_new_fulls(image, room, detections, proposed, rejected, cells, flat_cel
     """
     proposed, rejected, cells, flat = set(proposed), set(rejected), set(cells), set(flat_cells)
     existing = {(d.type_id, d.x, d.y) for d in detections}
+    spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
+    if source_context is not None:
+        source_context.validate(image, room, spikes)
     fulls = {k for k in proposed-existing if k[0] == 1}
     disagreement = {k for k in fulls if not cell_quad(k[1:]) <= cells}
     if not disagreement:
         return proposed, dict(new_full_source_disagreement=[], original_source_size_preserved=True)
-    spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
-    library = SourceGlyphLibrary(image, room, spikes)
+    library = (SourceGlyphLibrary(image, room, spikes) if source_context is None else
+               source_context.glyph_library(image, room, spikes))
     owner_cache = {}
 
     def quarter_owners(x, y):

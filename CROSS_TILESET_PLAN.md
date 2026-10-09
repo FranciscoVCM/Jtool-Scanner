@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Current direction (B184, 2026-10-09): explicit sharing, no speculative speed claim
+
+Scan-local source context now shares contours/glyph evidence without constructor
+patching, private imports or new-object teachers. Whole real proofs and B182 geometry
+equal for Lap/Entrance2/Hades;110 affected tests pass, including64positive/64negative
+context variants. Exact bounded pixel memo slowed Lap's serial helper by about4.9%,
+so it remains opt-in, default0. Library/contour sharing remains explicit.
+
+No new default scan/detector rollout, reserved result or room promotion. Integrate
+the remaining full-pose/background and material source stages maintainably, then
+complete changed-map/ordinary/runtime/holdout qualification. Do not replace the
+goal with read-only tools alone; all six original completion gates remain ACTIVE.
+
 ## Current direction (B183, 2026-10-09): source review closes one precision gap
 
 CN3_31's saved-helper whole views and all315 delta windows independently reviewed.

@@ -4,6 +4,33 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B184 explicit source-feature sharing; costly memo stays opt-in
+
+Public SourceEvidenceContext replaces constructor-level reuse with explicit
+per-source injection. Immutable RGB/original-locator snapshot, lazy shared glyph
+library and contour field; added teachers/changed source/crop rejected. New-full
+agreement accepts the context without changing existing API defaults or thresholds.
+Twelve safeguards include64 positives/64 negatives across palette/polarity/size/
+capture scale.110 broader affected tests PASS33.966s, not a full-suite claim.
+
+Complete real teacher/model/signature/query/arbitration proof parity and saved B182
+geometry retained on LapBackwards_1, Entrance2 and Hades:1312 glyph queries and497
+block queries. One library built per source, reused by independent consumers.
+No constructor monkeypatches/private imports/reference maps/new output teachers.
+
+Initial bounded32768 pixel LRU has only768hits/1,203,456misses on Lap. Serial same-
+proof ablation repeats32.352/33.203s with no memo versus34.290/34.491s with it:
+roughly4.9% helper overhead. Pixel memo is therefore OPT-IN, default0; explicit
+library/contour sharing retained. Final shared-helper observations32.557/12.834/
+16.352s against saved standalone32.718/13.996/19.124s, NOT quiet end-to-end/app speed.
+Final complete proofs reverified after default change; original slower receipts kept.
+
+Production package/default detector unchanged; no fresh ordinary16/47, reserved
+evaluation or current71 regeneration. Conservative audit carries B183 source review
+and qualified findings with0 promotions. Original six gates ACTIVE. Next: consolidate
+source full-pose/background repair into explicit shared stages, finish remaining
+changed-map QA and ordinary qualification, then reserved transfer/runtime/rollout.
+
 ## 2026-10-09 — B183 independent CN3_31 delta review; no accuracy inflation
 
 After preserving/pushing B182, independently inspected original Source, whole

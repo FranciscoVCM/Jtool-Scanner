@@ -4,6 +4,26 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B184 explicit context ready; pixel memo off by default
+
+Read ignored BATCH184_RESULT_AND_RESUME.md. Public scripts/source_evidence_context.py
+shares source contours/glyph library explicitly; original frame/bytes/teacher
+snapshot guards, no constructor patch/private imports/default app binding.
+110 affected tests PASS33.966s;12 new safeguards include64positive/64negative source
+variants. All teacher/model/signature/query/arbitration proofs and saved B182 maps
+equal on LapBackwards1/Entrance2/Hades (1312 glyph/497 block queries).
+
+32768-pixel memo is opt-in: serial Lap repeats32.352/33.203s without versus34.290/
+34.491s with,~4.9% helper slowdown. Default context0; all real proofs reverified
+with it. Helper observations are not quiet ordinary/app timing. Production package
+unchanged; source47/39 remains B182 evidence, not a fresh B184 whole benchmark.
+All B184 workers/tests TERMINAL. No room promotion, rollout or reserved success.
+
+Next concrete integration: public full-pose/local-background source repair with
+explicit shared context, exact private-source parity and Hades/CN3_31 checks.
+Material-generation stages also still need consolidation. Then remaining changed-
+map QA, ordinary47/40/16, locked CN3_7, quiet runtime and final71. Six gates ACTIVE.
+
 ## Latest: B183 source review after preserved B182 checkpoint
 
 B182 published as c6f622adda07216ece45e0b1f3a892be8b2556fd; local/live main equality

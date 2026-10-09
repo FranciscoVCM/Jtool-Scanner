@@ -8,6 +8,7 @@ No reference maps, stored tilesets, palettes or room identities enter learning.
 from __future__ import annotations
 
 import argparse
+from collections import OrderedDict
 from copy import deepcopy
 from dataclasses import asdict
 import hashlib
@@ -56,8 +57,13 @@ def _fits(rgb, model):
 class _RawContours:
     """Share the existing public RGB contour kernel, without duplicating it."""
 
-    def __init__(self, image, room):
-        self.field = SourceContours(image, room)
+    def __init__(self, image, room, contour_field=None):
+        if contour_field is not None and (
+            contour_field.image is not image or contour_field.room != room
+            or contour_field.native_size != (800, 608)
+        ):
+            raise ValueError("Shared contours must match the original image/room/native frame")
+        self.field = contour_field if contour_field is not None else SourceContours(image, room)
 
     def edge(self, first, second):
         evidence = self.field.edge(first, second)
@@ -70,9 +76,9 @@ class _RawContours:
 class SourceGlyphEvidence:
     """Independent raw geometry, competing rectangle and RGB body/corner proof."""
 
-    def __init__(self, image: RGBImage, room: Box):
+    def __init__(self, image: RGBImage, room: Box, *, contour_field=None):
         self.image, self.room = image, room
-        self.raw = _RawContours(image, room)
+        self.raw = _RawContours(image, room, contour_field)
         self.cache = {}
 
     def sample(self, cx, cy, size=2):
@@ -206,12 +212,18 @@ class FilledSourceEvidence:
 class SourceGlyphLibrary:
     """Transient native-size prototypes; outputs are evidence, never map edits."""
 
-    def __init__(self, image: RGBImage, room: Box, spikes):
+    def __init__(self, image: RGBImage, room: Box, spikes, *,
+                 contour_field=None, pixel_cache_limit=0):
         if room.width <= 0 or room.height <= 0:
             raise ValueError("Room dimensions must be positive")
         if room.x < 0 or room.y < 0 or room.x + room.width > image.width or room.y + room.height > image.height:
             raise ValueError("The room must lie inside the original source image")
-        self.raw = SourceGlyphEvidence(image, room)
+        if not isinstance(pixel_cache_limit, int) or isinstance(pixel_cache_limit, bool) or pixel_cache_limit < 0:
+            raise ValueError("Pixel cache limit must be a nonnegative integer")
+        self._pixel_cache_limit = pixel_cache_limit
+        self._pixel_results = OrderedDict()
+        self.pixel_cache_hits = self.pixel_cache_misses = self.pixel_cache_peak = 0
+        self.raw = SourceGlyphEvidence(image, room, contour_field=contour_field)
         self.filled = FilledSourceEvidence(self.raw)
         raster = Image.frombytes("RGB", (image.width, image.height), image.data)
         self.pixels = raster.crop((room.x, room.y, room.x + room.width, room.y + room.height)).resize(
@@ -259,6 +271,22 @@ class SourceGlyphLibrary:
                                     independent_regions=len(regions), all_source_pairs_mutually_correlated=True))
 
     def pixel(self, x, y):
+        if not self._pixel_cache_limit:
+            return self._measure_pixel(x, y)
+        key = x, y
+        if key in self._pixel_results:
+            self.pixel_cache_hits += 1
+            self._pixel_results.move_to_end(key)
+            return self._pixel_results[key]
+        self.pixel_cache_misses += 1
+        answer = self._measure_pixel(x, y)
+        self._pixel_results[key] = answer
+        if len(self._pixel_results) > self._pixel_cache_limit:
+            self._pixel_results.popitem(last=False)
+        self.pixel_cache_peak = max(self.pixel_cache_peak, len(self._pixel_results))
+        return answer
+
+    def _measure_pixel(self, x, y):
         u, v = x - .5, y - .5
         ix, iy = floor(u), floor(v)
         dx, dy = u - ix, v - iy

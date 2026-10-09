@@ -416,6 +416,21 @@ reference answers or newly generated teachers. It is not an app/default binding.
 python -m unittest tests.test_source_terrain_agreement
 ```
 
+`scripts/source_evidence_context.py` provides explicit scan-local sharing for these
+experimental source stages. Freeze the original image, crop and spike locators once;
+geometry, appearance and `agree_new_fulls(..., source_context=context)` reuse one
+contour field and glyph library. Changed source bytes/crops or added teacher poses
+are rejected. No global cache or constructor patch is required.
+
+Pixel memoization is opt-in (`pixel_cache_limit`, default `0`): a bounded32768-entry
+LRU preserved exact evidence but caused a repeatable helper slowdown on Lap Backwards.
+Library/contour sharing remains enabled when a context is supplied. This is not
+bound to the default detector and is not an end-to-end app speed claim.
+
+```powershell
+python -m unittest tests.test_source_evidence_context
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source
