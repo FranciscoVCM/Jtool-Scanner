@@ -386,6 +386,24 @@ an emitted object, edited map or accuracy certificate. The tool is experimental
 and **is not bound to the application's detector**. Insufficient source examples,
 occlusion, hidden size identity and unfamiliar styles can still require abstention.
 
+### Experimental source-taught full-block evidence
+
+`scripts/source_block_prototypes.py` provides the read-only `SourceBlockLibrary`
+API for the same qualified25×19 native transform. Teachers are original full-block
+poses with four independently source-qualified16px quarters, excluding pixels
+owned by source-confirmed glyphs. Three mutually matching witnesses in independent
+32px regions teach a full-RGB model; queries retain the one-source-pixel phase
+allowance. Bounding-box pruning skips only impossible pixel/polygon intersections.
+
+```powershell
+python -m unittest tests.test_source_block_prototypes
+```
+
+No reference map, stored tileset or new output object is used as a teacher. Missing
+terrain evidence is not evidence of empty space: an ambiguous query abstains.
+The module returns appearance evidence, not object emission or hidden block-size
+truth, and is **not bound to the application's detector**.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

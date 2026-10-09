@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Current direction (B181, 2026-10-09): explicit source identity before new full packing
+
+New fulls must not treat scalar foreground colour as solid truth. Entrance2's blue
+spike quarter is scalarFG1.0 but lacks matching source terrain. V1 blanket agreement
+loses18 real Dotkid5 footprints and is rejected. V2 requires positively confirmed
+competing source glyph identity, raw rectangle priority and source-whole32 appearance
+competition; unknown remains unknown, with no original overlap-only deletion.
+
+Cold601/all139, Lap84/Hades refits, SAME72 portable cases and source-input16 pass.
+Golden7 complete masks/gains unchanged. Actual Entrance2 ALL439 deltas/whole views
+source-reviewed:25,344 new solid pixels/no old loss;295 typed additions are old-union
+duplicates. Complete5120-positive ROI held/new256 false spike-solid pixels absent.
+Inherited2304 ROI excess and major whole-room errors remain; no acceptance/rollout.
+Protected31 replay LIVE, reserve CN3_7 UNEVALUATED, ordinary qualification and quiet
+runtime incomplete. Do not reinterpret source-input checks as whole benchmarks.
+
+Public full32 source-block evidence module has exact235-teacher/68-model/495-query
+parity and90 affected tests passing. It is not default-bound. Profile indicates
+substantial source-stage cost; private scoped-cache observations preserve all proof
+data but do not establish app latency. Next qualified integration needs explicit
+shared-feature architecture, not public constructor monkeypatches or another
+opaque wrapper layer. All original six goal gates remain ACTIVE.
+
 ## Current direction (B180, 2026-10-09): teacher eligibility improves; sizing still unsafe
 
 Recovered completed B179 outputs without restarting. Actual16 controls pass:

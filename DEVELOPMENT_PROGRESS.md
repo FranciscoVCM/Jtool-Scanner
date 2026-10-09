@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B181 source-size competition fixes new conflicts; full qualification pending
+
+Source-only trace finds Entrance2 scalar calibration classifying a blue spike
+quarter as foreground with100% membership. Full packing bypasses later source
+geometry/appearance: four scalar quarters versus three qualified quarters, .657
+whole32 texture support versus .969/.983 for solid neighboring poses. No reference
+answers enter recognition. V1 broad agreement gate fixes the new conflict but
+loses18 of139 verified Dotkid5 terrain footprints: REJECTED, original evidence kept.
+
+V2 requires POSITIVE competing original-source glyph identity before questioning
+a new full, preserving raw16 rectangle priority and whole32 appearance competition.
+Unknown source is not a negative. All601 minis/all139 terrain footprints retained,
+old three development keysets unchanged; Lap84 false additions absent; Hades two
+refits preserved. SAME72 portable size/quarter/known-water/parent scenarios pass.
+All16 source-input controls pass, NOT a fresh ordinary16 benchmark. Golden7 complete
+759/0 helper and49,504/54,880 masks unchanged; reserved CN3_7 remains unevaluated.
+
+Actual Entrance2 scan equals helper and preserves ALL9/header/crop/options/surviving
+metadata/nonterrain. Fresh Source/JTool/Blend and ALL439 additions/10 pages reviewed:
+45 full/394 mini source-supported placements,25,344 new solid pixels/no old coverage
+loss.295 additions are redundant with old solid union, NOT439 unique recoveries.
+Complete corrected20-cell/5120-positive ROI retains every prior true pixel and
+eliminates the new256-pixel down-spike solid conflict. Inherited2304 excess pixels,
+many spurious/opposing spikes, water/vine/platform/start issues remain MAJOR.
+No room approval/default rollout. Legacy18-cell mask/failure preserved; the two
+omitted white source cells were explicitly added by independent source review.
+
+Public source_block_prototypes.py consolidates original-source full32 appearance
+learning with exact polygon pruning and isolated query proofs. Complete real235
+teachers/68 models/495 queries match private source code exactly. Nine portable/
+training/clipping/negative/polygon tests;90 affected tests PASS47.097s. Read-only
+evidence module, not detector binding or a replacement for the original goal.
+
+Candidate observed whole173.7s versus old75.6s is NOT quiet timing; overhead remains
+unqualified. Worker-scoped feature reuse preserves the ENTIRE delta/proof; one
+unprofiled helper observation51.7s versus57.9s is not an app speed claim. Profile
+shows repeated pixel/edge/polygon/library work; bounded32768 pixel memo tested
+privately. Do not ship constructor monkeypatches as production architecture.
+
+Non-reserve protected31 source replay is still LIVE; reuse its worker/session,
+do not restart. Full47/40/ordinary16/changed-map QA/reserve/quiet runtime and final
+current71 still required. Original six gates ACTIVE. Private images/prototypes/
+reference maps/outputs remain ignored. Next: close protection replay, independently
+review changed maps, integrate maintainable shared source features only after
+qualification, then reserved evaluation and measured production rollout.
+
 ## 2026-10-09 — B180 resumed execution, protection failure, bounded teacher repair
 
 Recovered B179 protected31 terminal output, not lost work or a stalled worker.

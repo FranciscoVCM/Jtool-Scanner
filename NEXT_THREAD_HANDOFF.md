@@ -4,6 +4,35 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B181 actual source-size gain and maintainable block evidence; producer still live
+
+Read ignored BATCH181_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEAD c62338a. Do not reopen archive/resweep87/restart completed scans. Source-size
+V1 loses18 prior Dotkid5 footprints despite a good Entrance2 ROI: REJECTED. V2 needs
+positive original-source glyph competition, not mere absence of terrain evidence.
+All601/all139 held; Lap84/Hades unchanged; SAME72 portable/source-input16 pass;
+Golden7 complete759/0 and49,504/54,880 unchanged. CN3_7 reserve UNEVALUATED.
+
+Actual Entrance2 preserves header ALL9/crop/options/survivors/nonterrain and equals
+helper. Whole3views/ALL439 source panels inspected.25,344 new source-solid pixels,
+zero old coverage loss;295/439 proposals duplicate old union. Corrected complete
+20-cell/5120-positive mask held,new256 spike-solid pixels absent. Legacy mask/failure
+kept; inherited2304 excess and major spike/water/placement errors remain, NOT accepted.
+
+Public scripts/source_block_prototypes.py is read-only/full32 source learning,
+no private imports/default binding.235 real teachers/68models/495queries EXACT
+parity;9 new safeguards/90 affected PASS47.097s. No full729-suite or new ordinary16
+claim. Observed173.7s whole vs old75.6s not quiet timing. Scoped source-cache profile/
+51.7s helper observation preserves ALL proofs, not app-speed qualification. Do not
+ship constructor monkeypatches; shared source features need maintainable integration.
+
+IMPORTANT: batch181-protected-source31-worker-v2.json PID22620/session38821 LIVE
+at checkpoint. Poll that handle/state; completion must be verified, not assumed.
+Other B181 focus/cold/actual/portable/control/profile/parity/test workers TERMINAL.
+Use batch181-Entrance2-independent-source-QA-v2.json and physical-gain-v2. Protected
+47/40, all changed-map QA, ordinary16, reserve, runtime, final71 and adoption still
+due. Original six gates ACTIVE. Update conservative audit without room promotion.
+
 ## Latest: B180 bounded execution restored; teacher repair, sizing failure remains
 
 Read ignored BATCH180_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
