@@ -8,6 +8,7 @@ No reference maps, stored tilesets, palettes or room identities enter learning.
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 from dataclasses import asdict
 import hashlib
 import json
@@ -216,6 +217,7 @@ class SourceGlyphLibrary:
         self.pixels = raster.crop((room.x, room.y, room.x + room.width, room.y + room.height)).resize(
             (800, 608), Image.Resampling.BILINEAR).tobytes()
         self.signatures, self.anchors = {}, []
+        self._support_results = {}
         hypotheses = set()
         for type_id, x, y in spikes:
             size, _ = _dimensions(type_id)
@@ -292,6 +294,18 @@ class SourceGlyphLibrary:
         return answer
 
     def support(self, type_id, x, y):
+        """Memoize source-local queries without sharing mutable proof results.
+
+        Models are fixed at construction; queries never add training examples.
+        The cache belongs to this image/room instance, not a global tileset store.
+        """
+        _dimensions(type_id)
+        key = type_id, x, y
+        if key not in self._support_results:
+            self._support_results[key] = self._measure_support(type_id, x, y)
+        return deepcopy(self._support_results[key])
+
+    def _measure_support(self, type_id, x, y):
         size, _ = _dimensions(type_id)
         models = [m for m in self.models if m["native_size"] == size]
         best = dict(passed=False, model=None, correlation=None, query_phase=None,

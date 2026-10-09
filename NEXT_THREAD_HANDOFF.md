@@ -4,6 +4,34 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B180 bounded execution restored; teacher repair, sizing failure remains
+
+Read ignored BATCH180_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEAD e381f50; production package/default unchanged. Completed B17931 worker
+recovered without restart. B179 actual16 passes:15 identical comparisons/Hades
+two exact shifts corrected. Non-reserve47-input/39-group saved-output check
+FAILS84 false LapBackwards_1 minis (21,504 pixels) and Entrance2 mask512 discrepancy.
+Fresh Entrance2 source image separates256 omitted REAL terrain from256 false
+terrain over a down spike; preserve failed receipt, not a512-false-pixel claim.
+
+Private teaching-only eligibility removes all84 Lap aliases, Hades refits held,
+cold601/all139 held and three old development keysets unchanged. Entrance2 new
+full sizing remains unsafe; no deployment, room approval or reserve success.
+CN3_7 reserve/one remaining group UNEVALUATED. All B180 workers TERMINAL. Reuse
+batch180-protection-check-v1.json, teacher-focus3/cold-v1, cache-parity-v1 and
+71-screen-batch180-unchanged-qualified-candidate-audit-v1.md. Do not restart,
+reopen the archive or repeat87. All71 original pins rechecked/0 promotions.
+
+Public read-only glyph support now caches queries with deep-copy proof isolation:
+six new cache tests,81 affected PASS27.030s; complete82-item/92-direction source
+anchor/model/phase/proof parity. Diagnostic repeats are faster, NOT whole scan
+latency; no new full720-suite claim. App fingerprint unchanged; verify HTTP/parity.
+Next bounded repair: NEW full-size proposals need source glyph/material competition,
+not pattern-only teaching filters or blanket overlap deletion. Retain true occlusions,
+all601/139/Hades/Golden7/all47/40/16; require changed-map source QA and quiet runtime
+before rollout. Original six gates ACTIVE. Execute concrete discriminating checks
+with persisted workers/terminal receipts; hours of repetitive analysis are not work.
+
 ## Latest: B178 public source-glyph learner, exact consolidation parity
 
 Read ignored BATCH178_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement

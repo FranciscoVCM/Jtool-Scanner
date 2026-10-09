@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B180 resumed execution, protection failure, bounded teacher repair
+
+Recovered B179 protected31 terminal output, not lost work or a stalled worker.
+Actual16 private-candidate benchmark passes:15 comparisons unchanged, Hades two
+full shifts corrected (exact332->334, shifts14->12); prior1024 real pixels held.
+The additional47 non-reserve-input/39 achieved-group check finds no old positive
+loss but FAILS LapBackwards_1:84 unwanted minis/21,504 new false solid pixels,
+and Entrance2's512-pixel frozen-mask discrepancy. Independent source QA identifies
+256 omitted real-terrain pixels and256 genuinely false pixels covering a down
+spike. Failed receipt/mask retained; no retrospective precision or room approval.
+
+Source-only tracing explains every84 Lap addition through five texture teachers
+contaminated by partial glyph/background patches. Private teacher-only exclusion
+uses original source-local glyph evidence with all directions competing; it neither
+deletes existing objects nor uses reference coordinates/tilesets as recognition.
+Lap helper becomes0add/0remove; Hades two refits preserved. Cold all601 source
+minis/all139 terrain footprints held, all three development keysets equal B179.
+Entrance2 remains unchanged/unsafe: its new full-sizing path needs the same
+source size/material competition rather than a blanket overlap filter.
+
+Public SourceGlyphLibrary now memoizes image-local support queries, with isolated
+returned proofs so mutation cannot poison training or later queries. Six new tests;
+82 frozen real-item/92 directional-query complete exact anchor/model/cold/hot/
+private proof parity. Repeated-query timing improves on three nonempty real cases,
+but is NOT end-to-end scan latency. 81 affected tests PASS27.030s. Earlier24-test
+sandbox attempt had4 temporary-file errors; SAME24 passed outside sandbox2.860s.
+No code workaround for environment restrictions; no new full720-suite claim.
+
+Ignored71 successor rechecks original source/reference/options/artifact pins,
+regenerates0 qualified outputs/promotes0 rooms. Prototype remains unbound;
+production package/app unchanged. All workers terminal. CN3_7/its final protection
+group stay UNEVALUATED. Complete source QA, ordinary47/40/16, reserved transfer,
+controlled runtime and production integration still required. Six gates ACTIVE.
+Next: new source-sized full must not override independently verified glyph evidence
+at its partial boundary, while retaining true embedded/occluded solids and all gains.
+
 ## 2026-10-09 — B178 source-taught appearance consolidated and parity verified
 
 Frozen B177 prototype learner is now one public read-only tool, sharing existing

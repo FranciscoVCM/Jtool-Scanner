@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current direction (B180, 2026-10-09): teacher eligibility improves; sizing still unsafe
+
+Recovered completed B179 outputs without restarting. Actual16 controls pass:
+15 comparisons unchanged, Hades exact332->334/shifts14->12 with old real fills
+retained. Non-reserve47-input/39-group saved-output protection check nevertheless
+fails: LapBackwards_1 gains84 false minis/21,504 false pixels; Entrance2 adds512
+pixels outside the old frozen mask. Fresh source review splits the latter into
+256 real terrain pixels omitted by that mask and256 false pixels over a down
+spike. Preserve original failure; do not call all512 false or certify the room.
+
+Five partial-glyph/background pattern teachers explain all84 Lap aliases. Private
+teacher-only exclusion using original source-local glyph prototypes removes all84
+without deleting existing objects; cold601 minis/all139 terrain footprints and
+Hades two refits remain. Entrance2's NEW full-sizing path still covers the spike;
+teaching-only filtering cannot resolve it. Next bounded repair must address that
+source-size/identity competition while protecting genuine embedded geometry.
+CN3_7 reserve stays locked. Full changed-map QA/47/40/16/runtime and adoption remain.
+
+Public source-query memoization reduces repeated diagnostic work with82-item/92-
+direction exact source/model/phase/proof parity, six cache safeguards and81 affected
+tests passing. It is read-only tooling, not a default detector change or scan-speed
+claim. All71 input/artifact pins rechecked; no regenerated qualified output or room
+promotion. Original six gates ACTIVE; no broad candidate rollout.
+
 ## Current direction (B178, 2026-10-09): maintainable source learning; no detector rollout
 
 Source-taught full-RGB prototypes are consolidated in a public read-only tool with

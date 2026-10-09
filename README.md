@@ -363,6 +363,7 @@ unqualified rather than silently normalized with the 25×19 transform.
 ```powershell
 python scripts/source_glyph_prototypes.py --source fixtures/block_spike/cn3-16-game.png --result PATH_TO_CACHED_RESULT_JSON --query 7,240,192
 python -m unittest tests.test_source_glyph_prototypes
+python -m unittest tests.test_source_glyph_prototype_training tests.test_source_glyph_query_cache
 ```
 
 This read-only tool learns a transient full-RGB sprite model from independently
@@ -372,6 +373,11 @@ as answers. It uses no reference JMap, stored tileset, palette or room-name rule
 Models require three mutually matching source witnesses in distinct native32px
 regions. Canonical rotations and a one-source-pixel phase allowance support
 within-image appearance variation while retaining the complete sprite rim.
+
+Repeated support queries are memoized within that source/room instance; complete
+evidence is returned as an isolated copy. Queries cannot add training witnesses,
+and no learned sprite or cache is shared across images. This saves repeated
+diagnostic calculations, not a promised default-app scan-speed improvement.
 
 The input image SHA-256 and cached room transform are verified. Queries are
 `type_id,x,y` in native top-left coordinates; only spike IDs3–10 are supported.
