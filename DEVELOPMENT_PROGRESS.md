@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B187 complete source pipeline explicit; ordinary adoption pending
+
+source_occupancy.py and source_geometry_pipeline.py replace the final compiled
+sizing/joint assembly layers. One explicit original SourceEvidenceContext connects
+calibration/material, source sizing, growth, flat-water/occluded-full uncertainty,
+pose/background repair and full-size agreement. Public pipeline has no private
+imports/FunctionType/exec/reference-map inputs or generated-object teachers.
+
+Seven exposed source outputs match saved keys: Lap/Entrance2/Hades/CN3_31 and cold
+Dotkid1/Bathhouse/Dotkid5. ENTIRE diagnostics match on the first four; cold cases
+preserve ALL601 reviewed minis/ALL139 terrain footprints and exact prior keysets.
+Nine new guards cover source-BG contradiction, unknown quarters, known positive
+coverage, nonterrain/original minis, independent full recovery, joint evidence tiers,
+flat-water versus texture and input immutability.157 affected PASS77.534s.
+
+All16 source-input controls PASS with reference evaluation only AFTER generation:
+saved keys and ENTIRE diagnostics equal, zero new reference extras/exact losses.
+The durable receipt is terminal success, not an ordinary benchmark claim.
+Per-case complete results/source/baseline/code pins saved immediately. Source helper
+observations are NOT quiet whole-scanner/app latency. No ordinary16/47/default
+binding, reserved result, current71 regeneration or room promotion yet.
+
+Next: ordinary scanner integration at final source-coordinate hypotheses, respecting
+capture recursion and compact-frame uncertainty, then ordinary47/40/16, remaining
+changed-map QA, locked CN3_7 transfer, controlled runtime/final71 and tested rollout.
+The repository runs directly from its root; no wheel/install-package assumption.
+Original six GOAL_PLAN gates ACTIVE, not completed by tooling parity.
+
 ## 2026-10-09 — B186 complete material generator consolidated; cold protections retained
 
 Three public explicit modules replace compiled material wrapper layers: raw

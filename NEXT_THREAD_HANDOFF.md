@@ -4,6 +4,22 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B187 complete source pipeline explicit
+
+Previous58e77fd preserved. Public source_occupancy.py/source_geometry_pipeline.py
+remove remaining sizing/joint wrapper layers. One context; no private imports,
+answers or new teachers. Seven source keysets match; four full diagnostic matches,
+cold601 minis/all139 footprints retained.157 affected tests PASS77.534s;9 new guards.
+Read ignored BATCH187_RESULT_AND_RESUME.md and durable replay/control receipts.
+
+Source16 verification is TERMINAL PASS: saved keys/ENTIRE diagnostics equal and
+zero new reference extras/exact loss. Separate, NOT ordinary benchmark/app binding.
+All B187 workers/tests TERMINAL. Source pipeline
+helpers still not default-bound; no room promotions/current71 generation. Next
+ordinary integration at final source coordinates, respecting lattice recursion/
+compact transforms, then full47/40/16/QA/reserve/runtime/final71 qualification.
+Original six GOAL_PLAN gates ACTIVE. Do not restart completed7/baseline87/archive.
+
 ## Latest: B186 full material generator explicit, source/cold parity complete
 
 Previous4b881b1 preserved. Read ignored BATCH186_RESULT_AND_RESUME.md. Public source

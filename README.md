@@ -464,6 +464,18 @@ assembly and whole-scanner qualification are still required before deployment.
 python -m unittest tests.test_source_material_evidence tests.test_source_material_ownership
 ```
 
+`scripts/source_geometry_pipeline.py` assembles the complete experimental source
+pipeline explicitly: source occupancy sizing, joint material growth, flat-water
+uncertainty, whole-frame pose repair and new-full agreement. Its sizing stage lives
+in `scripts/source_occupancy.py`. Both use original source evidence and preserve
+known positive coverage; new outputs never become teachers. No private wrapper
+imports or reference-map inputs are required. The pipeline is not default-bound;
+whole-scanner qualification remains necessary before deployment.
+
+```powershell
+python -m unittest tests.test_source_geometry_pipeline
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Current direction (B187, 2026-10-09): explicit complete pipeline, qualify integration
+
+Source sizing and joint assembly now join the public material/pose/agreement stages
+without private wrappers, answers or generated teachers. Seven source keysets held;
+four ENTIRE diagnostic matches plus cold601/all139 protection.157 affected tests
+pass. All16 source-input controls have a separate durable verification receipt,
+not an ordinary benchmark or default rollout. No whole-room promotion.
+
+Next actual detector integration must apply once to final source-coordinate results,
+preserve capture consensus/compact mapping and protect full ordinary controls/QA/
+reserved/runtime gates. Source-only parity is not sufficient for completion.
+All six original gates remain ACTIVE; no baseline87/archive resweep.
+
 ## Current direction (B186, 2026-10-09): complete material stage, assembly still pending
 
 Raw roles/containers/BG boundaries, intrinsic/local/distributed patterns and final
