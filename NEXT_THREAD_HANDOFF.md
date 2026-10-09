@@ -1,8 +1,49 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-08. Continue in the existing repository at
+Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B177 source-supervised prototypes; actual Hades partial correction
+
+Read ignored BATCH177_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEADfc7924b; production package/default/app unchanged. All B177 producers are
+terminal. Reuse batch177-checkpoint-evidence-v14.json; do not restart scans,
+reopen archive327, resweep87 or claim new qualified71 outputs. Goal ACTIVE.
+
+SourceGlyphLibrary v12 learns canonical full-RGB signatures from independently
+source-verified original hypotheses, not detection type assumptions or answers.
+Three mutual .9 witnesses in independent32 regions qualify a source-only model;
+query .9 at one source-pixel phase. All16 CN3 aliases discriminated,0/59 declared
+terrain false owners; portable64 positive/64 negative decisions pass. Earlier
+unsigned/edge/corner alternatives rejected. No stored cross-room sprite library.
+
+Cold v12/v14 retains all601 minis/all139 terrain footprints (138 full+1 mini),
+three old development geometry sets equal B171. Golden7 helper equals complete
+B176 v6 output759/0 and49504/54880,5376 missing/4608 sampled excess. No fresh
+ordinary Golden7 scan from that equality. All16 source-input helpers terminal:
+15 unchanged; Hades has2 new typed minis/0 exact losses, STRICT FAIL2.
+
+V13 geometry-qualified foreground attenuation restores four Hades REAL fills.
+V14 source texture plus visible empty patch refits one existing full16px left.
+Actual scan+3/-1 matches helper, all4 changes/whole source views reviewed:
+exact332->333, shifts14->13, typed extras20->22, typed errors38->39. Reference
+solid matched223232->224256, missing1536->512, excess10240->9728. ALL prior1024
+real pixels retained. Second full partly hidden: four-quarter proof abstains;
+two minis remain, not accepted or deployed. No geometry answer was copied.
+
+Preserved runner failures: invalid partition preflight then immutable v14b actual;
+expected versus expected_jmap omitted automatic reference reporting. Original
+reference separately pinned/evaluated by v14c, no output rewrite. Tuple/list
+source_grid incorrectly caused structural_false; serialized input/header/ordered
+detection equality proves semantic parity. See explicit QA, do not conceal failure.
+
+Next bounded step: consolidate proven source learning into maintainable tested
+code, then masked source32 texture/size and competing glyph extent for the
+occluded full. Preserve complete source masks/gains and true overlays; no arbitrary
+packing, source/reference answers or room rules. CN3_7 reserve UNEVALUATED; full
+ordinary16/47, broad affected tests, quiet runtime and final-current71 still
+required before adoption. All private source/maps/prototypes remain ignored.
 
 ## Latest: B176 actual QA complete; unsafe exterior-reference precision rejected
 

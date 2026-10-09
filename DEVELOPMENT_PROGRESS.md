@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B177 source-supervised sprite transfer and partial texture-pose recovery
+
+New scan-local full-RGB prototypes learn only from independently source-verified
+triangles, with all directions competing. Three mutually .9-correlated source
+witnesses in distinct32px regions qualify a model; query correlation remains .9,
+with capture-phase uncertainty bounded by one original source pixel. No fixed
+palette, room/hash/coordinate answer, JMap training or new emitted witnesses.
+Complete82-item probe discriminates all16 CN3-16/18 terrain aliases with no false
+ownership among59 declared terrain positives. Portable64 positives/64 negatives
+pass across16/32 sizes, four palettes including isoluminant/reversed contrast,
+four directions and1x/1.25x captures; incorrect locator direction cannot teach an
+incorrect sprite. Earlier edge-only/body/corner alternatives remain rejected.
+
+Cold original-input replay preserves all601 recovered minis and explicitly139
+terrain footprints (138 full+1 mini), with B171 geometry equality in three old
+development rooms. Golden7 helper retains759 additions/0 removals and complete
+49,504/54,880 boundary coverage,5,376 missing/4,608 sampled excess. No new ordinary
+Golden7 scan or room acceptance claimed from equal helper output.
+
+Geometry-qualified contrast attenuation restores Hades's four REAL lost terrain
+fills without restoring CN3 aliases. A unique source-textured32 candidate plus
+visible8x8 empty-source proof corrects one existing full block's16px horizontal
+shift, retaining known foreground and semantic/occlusion protections. Existing
+minis are never deleted; only new duplicate fills under the proved full retire.
+Actual Hades+3/-1 exactly equals helper; all4 changed source panels/whole views
+reviewed. Source/crop/headers/nonterrain/surviving detection order are unchanged.
+Reference exact332->333, shifts14->13; two new mini representations raise typed
+extras20->22 and exact errors38->39. Solid pixels223232/1536/10240 matched/missed/
+excess ->224256/512/9728. All1024 prior Hades source-positive pixels restored.
+The partly occluded second full still needs size/pose reconciliation. NOT accepted.
+
+All16 source-input helpers finish:15 unchanged, Hades strict FAIL2 new minis with
+zero exact losses. Not an ordinary16 benchmark; no reserve/runtime/deployment.
+Actual runner schema/reference omission and tuple/list verifier failure are
+preserved; separate pinned-reference evaluation corrects verification without
+rewriting outputs. Checkpoint source/evidence remain ignored. Production unchanged,
+qualified71 statuses unchanged; no fresh71 rescan or full-suite claim. Next:
+consolidate proven source learning, then masked source32/competing-glyph evidence
+for the occluded case; protect all source gains before reserve/ordinary qualification.
+Original six goal gates ACTIVE.
+
 ## 2026-10-08 — B176 recovered worker, completed delta QA, rejected precision regression
 
 The interrupted actual Golden7 v6 producer had finished; its complete receipt,

@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Current direction (B177, 2026-10-09): source-supervised appearance; typed qualification incomplete
+
+Scan-local, geometry-taught full-RGB sprite prototypes now discriminate all16
+CN3 alias cells without falsely owning59 declared terrain positives. Models need
+three mutually .9-correlated original witnesses in independent32px regions;
+query remains .9 and phase allowance is one source pixel. No stored tileset,
+palette/coordinate/JMap lookup or output-as-teacher. Portable64 positive/64 negative
+cases pass across directions, sizes, contrast/color and capture scale. This is
+mechanism evidence, not arbitrary-tileset perfection or source-proposal recall.
+
+Cold original601 minis/139 terrain footprints hold; three earlier development
+geometry sets equal B171. Golden7 complete source-helper output equals B176 v6:
+49,504/54,880,5,376 missing,4,608 sampled excess. All16 source-input controls are
+unchanged except Hades. Its attenuated foreground tone needs source rectangle
+evidence, not a blanket color-role exclusion. Restored real fills plus texture/
+empty-patch proof refit one16px-shifted full. Actual Hades source QA confirms
+exact332->333, missing solids1536->512, excess10240->9728, all prior1024 pixels
+retained. Two minis for a partly occluded full remain: typed errors38->39, FAIL2.
+
+No candidate app/default binding or room promotion. Preserve source/reference
+and runner failures; do not report helper tests as ordinary benchmarks. Next:
+maintainable source-learning consolidation and masked native32 texture/size versus
+competing glyph evidence for the partial full. No speculative hidden fill or
+reference-coordinate correction. Only then reserve, full ordinary16/47/protections,
+quiet runtime and final-current71 changed-map QA. Original six gates ACTIVE.
+
 ## Current direction (B176, 2026-10-08): real boundary gain; unsafe ownership proof rejected
 
 Recovered completed actual Golden7 v6 without restarting. All55 new source-visible
