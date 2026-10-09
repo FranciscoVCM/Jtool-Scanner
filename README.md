@@ -431,6 +431,22 @@ bound to the default detector and is not an end-to-end app speed claim.
 python -m unittest tests.test_source_evidence_context
 ```
 
+`scripts/source_full_pose.py` consolidates the experimental full-block position
+repair. A refit needs a unique nearby whole-frame texture match, retention of all
+known solid pixels, and independently supported empty old-margin patches. Source-
+confirmed glyphs and nonterrain anchors cannot be used as empty-space evidence.
+`scripts/source_local_background.py` predicts local RGB illumination from original
+glyph-exterior witnesses; insufficient or ambiguous evidence causes abstention.
+
+The stage accepts an explicit source context and source-derived material evidence,
+never reference answers or newly emitted teachers. Source-proved retired fulls are
+also removed from proposals so they cannot re-enter through proposal merging;
+original minis and unrelated objects are preserved. Neither module is default-bound.
+
+```powershell
+python -m unittest tests.test_source_full_pose tests.test_source_full_pose_portable tests.test_source_local_background
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

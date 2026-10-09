@@ -4,6 +4,26 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B185 pose/background stages consolidated; all4 parity complete
+
+Previous208c943 remains preserved. Read ignored BATCH185_RESULT_AND_RESUME.md and
+batch185-v2-full-pose-parity-v1.json. Public source_full_pose.py and
+source_local_background.py use explicit source inputs/context, no private imports
+or answers. ALL private/public/cold/shared proof fields and B182 geometry/diagnostics
+equal on Lap/Entrance2/Hades/CN3_31. Two Hades/six CN3_31 refits and230 background
+prediction records held.129 affected tests PASS35.099s;19 new tests/8 raster variants.
+
+Actual generalized defect fixed: a proved-retired full also present in proposals
+could re-enter final merge. Subtract only source-proved retired full keys; no overlap
+filter. All8 raster variants verify adversarial input. It does not trigger in these
+four saved cases; no new room gain or approval. No default binding/ordinary rollout.
+
+v1 worker78172 TERMINAL serialization failure, saved Lap input retained. v2 worker
+77857 TERMINAL success; all4 preceding inputs/case rows saved. Do not restart completed
+jobs. Next source material-generation/sizing consolidation, then remaining changed-
+map QA, ordinary47/40/16, locked CN3_7, quiet runtime/final71 and tested deployment.
+All original six GOAL_PLAN gates ACTIVE; no archive/baseline87 reload.
+
 ## Latest: B184 explicit context ready; pixel memo off by default
 
 Read ignored BATCH184_RESULT_AND_RESUME.md. Public scripts/source_evidence_context.py

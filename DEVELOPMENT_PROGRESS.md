@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B185 full-pose/background consolidation and retirement arbitration fix
+
+Public source_full_pose.py/source_local_background.py extract the effective tested
+pose stage without private imports, compiled wrapper layers or reference answers.
+Explicit shared context; unique whole32 appearance, known-solid retention, source
+empty old margins/local affine RGB, glyph/nonterrain exclusions and original minis
+remain protected. Whole private/public/cold/shared source proofs and final B182
+geometry/diagnostics equal on LapBackwards1/Entrance2/Hades/CN3_31. Preserves two
+Hades/six CN3_31 refits and all230 original background prediction records.
+
+Found an independent arbitration defect: a source-proved retired full could remain
+in proposals and re-enter during merge. New causal regression fails before fix;
+subtract ONLY exact source-proved retired keys, not overlaps or unknown objects.
+All eight real-raster palette/polarity/capture variants test this adversarial input.
+The defect does not trigger in the four saved cases: no new claimed screen gains.
+Nineteen new causal/affine/portable guards;129 affected tests PASS35.099s.
+
+v1 parity driver failed on JSON serialization of sets after saving Lap source input,
+not a detector mismatch. Failure retained; v2 compares typed sets directly and
+normalizes only persisted diagnostic tuples/lists. Reused validated preceding input
+without repeating it; all four complete input/results now saved, worker TERMINAL.
+Runtime numbers are helper observations, NOT ordinary/quiet/app latency.
+
+No default binding, new ordinary16/47, reserved result or room approval. Conservative71
+carries unchanged qualified geometry and independent source findings. Next: source
+material-generation/sizing consolidation, remaining changed-map QA, ordinary47/40/16,
+reserved transfer, quiet end-to-end runtime and tested rollout. Six gates ACTIVE.
+
 ## 2026-10-09 — B184 explicit source-feature sharing; costly memo stays opt-in
 
 Public SourceEvidenceContext replaces constructor-level reuse with explicit

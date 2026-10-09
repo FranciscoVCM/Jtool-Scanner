@@ -1,5 +1,19 @@
 # Cross-tileset milestone
 
+## Current direction (B185, 2026-10-09): explicit pose repair and retirement precedence
+
+Full-block pose and local-background source stages now have public explicit APIs,
+shared-context support and no private imports/reference teachers. All four exposed
+cases retain ENTIRE source proofs/final geometry; two Hades and six CN3_31 refits
+held.129 affected tests pass, including eight real-raster palette/scale refits.
+Exact source-proved retired keys must also leave proposals to prevent re-entry;
+the new adversarial regression proves this defect/fix without overlap deletion.
+It does not change the four saved room results; no new accuracy claim.
+
+Material generation/sizing still needs consolidation and full ordinary/precision/
+reserved/runtime qualification. No default adoption or room promotion; all six
+original gates ACTIVE. Keep failure receipts and durable frozen source inputs.
+
 ## Current direction (B184, 2026-10-09): explicit sharing, no speculative speed claim
 
 Scan-local source context now shares contours/glyph evidence without constructor
