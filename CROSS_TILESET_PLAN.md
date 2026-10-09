@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Current direction (B178, 2026-10-09): maintainable source learning; no detector rollout
+
+Source-taught full-RGB prototypes are consolidated in a public read-only tool with
+no private-code imports, source-wrapper layers or answer lookup. Exact82 real-item
+anchor/model/signature/query parity and67 affected/training tests pass. Cold
+601/139, complete Golden7 helper and16 source-input outcomes equal B177. Hades
+still has two wrong-size representations; strict qualification remains FAIL2.
+
+This is a tested implementation building block, not a new app/default scanner,
+ordinary benchmark pass, room approval or narrower replacement objective.
+Next focus remains independent masked source32 size/pose and competing glyph
+evidence for the partially hidden full, followed by remaining source-stage
+consolidation and qualified production integration. Source proposals must still
+deliver cross-family positive recovery and reserved transfer, preserving all
+gains/occlusions. Ordinary16/47/protections, quiet runtime and final-current71
+source audit remain necessary. Original six gates ACTIVE.
+
 ## Current direction (B177, 2026-10-09): source-supervised appearance; typed qualification incomplete
 
 Scan-local, geometry-taught full-RGB sprite prototypes now discriminate all16

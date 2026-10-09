@@ -358,6 +358,28 @@ accuracy: texture and neighboring geometry can explain the same edge. Clipped
 evidence remains unknown. Compact/nonstandard source-grid mappings are explicitly
 unqualified rather than silently normalized with the 25×19 transform.
 
+### Experimental source-taught glyph prototypes
+
+```powershell
+python scripts/source_glyph_prototypes.py --source fixtures/block_spike/cn3-16-game.png --result PATH_TO_CACHED_RESULT_JSON --query 7,240,192
+python -m unittest tests.test_source_glyph_prototypes
+```
+
+This read-only tool learns a transient full-RGB sprite model from independently
+source-verified triangle hypotheses in the same image. Cached detections locate
+hypotheses; all directions compete, so their nominal directions are not treated
+as answers. It uses no reference JMap, stored tileset, palette or room-name rules.
+Models require three mutually matching source witnesses in distinct native32px
+regions. Canonical rotations and a one-source-pixel phase allowance support
+within-image appearance variation while retaining the complete sprite rim.
+
+The input image SHA-256 and cached room transform are verified. Queries are
+`type_id,x,y` in native top-left coordinates; only spike IDs3–10 are supported.
+Compact/nonstandard mappings remain unqualified. Output is JSON evidence, not
+an emitted object, edited map or accuracy certificate. The tool is experimental
+and **is not bound to the application's detector**. Insufficient source examples,
+occlusion, hidden size identity and unfamiliar styles can still require abstention.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

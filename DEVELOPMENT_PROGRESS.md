@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-09 — B178 source-taught appearance consolidated and parity verified
+
+Frozen B177 prototype learner is now one public read-only tool, sharing existing
+RGB contour measurement. Source geometry teaches canonical full-frame signatures;
+three mutually correlated witnesses/independent32px regions and .9 query support
+remain unchanged. No private-source imports, reference answers, stored tilesets,
+palette/room rules or application/detector binding. README states limitations.
+
+Complete82 real-item private/public parity proves exact source-anchor signatures,
+models and92 directional query results/proofs/phases/correlations. Portable64
+positive/64 negative decisions pass; training tests reject correlated chains,
+duplicate witnesses and query-as-teacher, with input-order determinism. Combined
+67 source geometry/artwork/ownership/arbitration/terrain tests pass24.856s.
+Real CLI query succeeds read-only; no fresh full714-suite claim.
+
+Public-code adapter cold replay equals B177 V14:all601 old minis/all139 terrain
+footprints explicitly held, three development geometry sets equal B171. Golden7
+complete helper remains49,504/54,880,5,376 missing/4,608 sampled excess and identical
+keys. All16 source-input replay outcomes equal prior:15 unchanged, Hades retains
+partial+3/-1 and2 typed mini errors. Strict FAIL2 preserved, not ordinary16 or
+deployment. A tuple/list-only frozen JSON verifier failure is preserved and
+corrected through exact live parity plus serialized roundtrip, not relaxed proof.
+
+No production package scan change, new71 qualified output or room approval.
+All workers terminal. Remaining source-role/partly occluded size/pose work,
+ordinary controls, reserve, runtime and final-current71 gates remain ACTIVE.
+Consolidation supports future integration; it is not a substitute completion.
+
 ## 2026-10-09 — B177 source-supervised sprite transfer and partial texture-pose recovery
 
 New scan-local full-RGB prototypes learn only from independently source-verified

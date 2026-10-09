@@ -4,6 +4,34 @@ Updated 2026-10-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B178 public source-glyph learner, exact consolidation parity
+
+Read ignored BATCH178_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
+HEAD2696f60; production scanner package/default unchanged. Public code is a
+READ-ONLY tool, not detector-bound: scripts/source_glyph_prototypes.py. It uses
+public SourceContours, original source geometry teachers, canonical RGB features,
+mutual3-region models and one-source-pixel phase. No private imports/answers.
+
+All82 real-item source-anchor/model/signature/query parity EXACT;92 directional
+decisions/proofs retained.67 combined unit tests PASS24.856s, portable64 positives/
+64 negatives and training-chain/duplicate/query-not-teacher safeguards. CLI real
+query tested. No full714-suite claim. Failed tuple/list frozen-proof verifier
+preserved; serialized roundtrip correction does not change live exact comparison.
+
+Public adapter cold601/139/three development geometry and complete Golden7 helper
+equal B177 V14. SAME16 source-input control outcomes equal; Hades partial+3/-1,
+two new typed minis/0 exact loss, STRICT FAIL2. No ordinary16/47/runtime/reserve/
+default71/room approval/new deployment. All B178 producers TERMINAL, not stuck.
+Use batch178-consolidation-evidence-v2.json; no archive/resweep/restart.
+
+Next: source-masked native32 texture/size and competing glyph extent for partly
+hidden full, then remaining source-stage consolidation and qualified integration.
+Do not infer hidden geometry or use reference coordinates as detector answers.
+CN3_7 reserve UNEVALUATED; original six goal gates ACTIVE. Keep prototype teaching
+strictly original source, source/header/metadata parity, foreground/occlusion
+protections and runtime checks. Public tooling is progress toward, not a narrower
+replacement for, the requested scanner repair. Private corpus/material stays ignored.
+
 ## Latest: B177 source-supervised prototypes; actual Hades partial correction
 
 Read ignored BATCH177_RESULT_AND_RESUME.md and original GOAL_PLAN. Measurement
