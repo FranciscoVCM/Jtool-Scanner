@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Current direction (B190, 2026-10-11): sparse reuse gain, then two-style BG repair
+
+Bounded original-source primitive/pattern sharing preserves complete ordered7-room
+proofs/cold601/139 and all fresh16 ordinary controls;151 affected tests pass. Initial
+native-set deepcopy ordering failure retained/fixed structurally. No geometry gain
+or room approval from caching. Standard unchanged; original goal remains intact.
+
+Mixed-power timings excluded; AC normal runs show standard drift, so no absolute
+cross-run speed claim. Paired public-context0/4 ablation reproduces ENTIRE normal
+outputs: sparse85.854->78.170s (~9% lower), dense101.011->100.428s (neutral within
+variation). Remaining overhead/default rollout unqualified. Next causal accuracy
+batch: independent whole-BG/rectangle/texture/glyph/marker evidence for retained
+false full blocks in Dotkid1 and CN3_29. Protect unknown/real full/minis/overlays,
+all601/139/39/16 and locked CN3_7. Source QA/reserved success/final71 still due;
+all six original gates ACTIVE, not completed by this performance checkpoint.
+
 ## Current direction (B189, 2026-10-11): close compact regression, then shared repair
 
 Actual29 qualification exposes56 lost reviewed NANG_130 minis: opt-in seed dispatch

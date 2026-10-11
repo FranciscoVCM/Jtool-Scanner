@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-11 — B190 bounded original-source material reuse; accuracy unchanged
+
+Shared SourceEvidenceContext now reuses complete eligible-primitive and intrinsic/
+local/distributed pattern proofs for original image/frame/locators and copied water
+coordinates. Bound4; full capacity computes unchanged results without truncation.
+Independent returned proof copies, immutable overlay snapshot and no new teachers;
+recognition rules, numeric order and pixel-LRU default0 remain unchanged.
+
+Initial deepcopy rebuilt native sets and reordered17 Bathhouse exclusion records.
+Maps/all record values stayed equal, but ordered proof qualification FAILED and was
+preserved. Structural copies of immutable coordinate sets plus nested diagnostic
+deepcopies restore ENTIRE ordered equality; the605-cell causal test fails before
+the fix. Final151 affected tests PASS75.861s, not a full-suite claim. Seven original
+source replays match ALL diagnostic values/order and map keys, preserving601 reviewed
+minis/all139 terrain. Fresh ordinary16 comparisons/ordered Detections/warnings/crop/
+grid/JMap bytes all equal B189. No room approvals or default-mode change.
+
+First timing run was invalid for speed claims: battery to AC mid-run; data retained.
+Fresh AC-only eight normal scans keep ENTIRE old map/project/metadata equality, but
+unchanged standard controls remain16-18% slower than prior conditions. Absolute
+cross-run cache speedup is NOT established. A separate serial counterbalanced
+ablation supplies ONLY public context cache limit0/4 inside the ordinary path;
+all8 ENTIRE outputs equal normal scans, AC checked before/after, no production
+recognition patch/reference answers. Dense101.011->100.428s (0.6%, within run spread;
+report NEUTRAL), sparse85.854->78.170s (9.0% lower). Two inputs/two repeats per mode,
+not universal speed or a reliable dense gain. Material overhead/default qualification
+still unresolved; caching alone does not satisfy the original accuracy milestone.
+
+Next accuracy cause independently checked in two appearances:63 Dotkid1 and8 CN3_29
+retained background fulls pass whole margin-BG checks with no confirmed glyph pixels,
+raw rectangle/full-texture/marker positives. No removal yet: unknown/real terrain/
+water/occlusions and all prior gains must remain protected. CN3_7 locked reserve,
+remaining changed-map QA and final-current71 still due. All six goal gates ACTIVE.
+
 ## 2026-10-11 — B189 compact source-seed gain restored; whole-room errors remain
 
 Completed actual remaining29 scans without restarting the live worker. Combined

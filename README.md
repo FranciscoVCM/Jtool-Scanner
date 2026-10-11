@@ -493,6 +493,10 @@ python -m jtool_scanner.cli project-create screen.png out\source.jscan.json --so
 ```
 
 Correction projects retain the selected mode; it is not an accuracy certification.
+Experimental material stages reuse at most four scan-local proof results, guarded
+by the original source, frame, object locators, stage and water-overlay coordinates.
+Returned proofs are isolated; this is computation reuse, not a stored tileset or
+reference-answer cache. It does not certify accuracy on unfamiliar screens.
 The app/corpus fingerprints include all transitive source-geometry runtime files.
 Corpus manifests may specify `"source_geometry": true` in their options. References
 still evaluate only after scanning and never enter the detector.

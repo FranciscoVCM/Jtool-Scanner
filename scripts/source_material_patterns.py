@@ -15,6 +15,13 @@ from scripts.source_material_evidence import (
 
 
 def eligible_primitives(image, room, spikes, *, source_context=None):
+    if source_context is not None and isinstance(spikes, (list, tuple)):
+        return source_context.material_result(image, room, spikes, 'eligible', (),
+            lambda: _eligible_primitives(image, room, spikes, source_context=source_context))
+    return _eligible_primitives(image, room, spikes, source_context=source_context)
+
+
+def _eligible_primitives(image, room, spikes, *, source_context=None):
     primitive, diag = boundary_primitives(image, room, spikes, source_context=source_context)
     library = (SourceGlyphLibrary(image, room, spikes) if source_context is None else
                source_context.glyph_library(image, room, spikes))
@@ -47,6 +54,17 @@ def pattern_cells(image, room, spikes, water_boxes=(), *, mode='intrinsic', sour
     """
     if mode not in ('intrinsic', 'local', 'distributed'):
         raise ValueError('Pattern mode must be intrinsic, local or distributed')
+    # Stateful iterables retain their uncached behavior. Original pipeline inputs
+    # are snapshots; copying overlay coordinates prevents later list mutation
+    # from relabelling an already-computed water-sensitive proof.
+    if source_context is not None and isinstance(spikes, (list, tuple)) and isinstance(water_boxes, (list, tuple)):
+        settings = tuple(tuple(box) for box in water_boxes)
+        return source_context.material_result(image, room, spikes, mode, settings,
+            lambda: _pattern_cells(image, room, spikes, settings, mode=mode, source_context=source_context))
+    return _pattern_cells(image, room, spikes, water_boxes, mode=mode, source_context=source_context)
+
+
+def _pattern_cells(image, room, spikes, water_boxes=(), *, mode='intrinsic', source_context=None):
     intrinsic = mode == 'intrinsic'
     provider = container_primitives if intrinsic else eligible_primitives
     primitive, diagnosis = provider(image, room, spikes, source_context=source_context)
