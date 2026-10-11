@@ -40,6 +40,13 @@ dense Entrance2 standard62.370s/opt-in89.948s (+27.579s,44.2%); sparse Say2 stan
 29.782s/opt-in72.089s (+42.307s,142.1%). ENTIRE map/project/metadata equal within
 each mode. Material overhead is real and requires profiling/repair; these are
 two-input observations, not universal latency. Default rollout is still unqualified.
+An actual ordinary opt-in cProfile scan retains ENTIRE quiet map/project/metadata.
+Profiled216.852s is NOT latency; it attributes65.285s to the material pipeline,
+including four pattern calls53.189s and two eligible-primitive calls28.365s.
+The two block-prototype constructors total3.71s under profiling: the isolated pair
+memo is useful but cannot explain/remove the dominant dense overhead. Next shared
+work should reuse identical original primitive/pattern evidence with explicit
+source/locator/overlay guards and isolated proofs, without changing recognition.
 Source-BG retention diagnosis extends from Dotkid1 to a second
 appearance, and repeated prototype pair-dot cost has an exact-proof candidate, but
 neither further repair/optimization is adopted in this checkpoint. Original six

@@ -13,7 +13,9 @@ not relabelled current-hash caches. Inherited six NANG ceiling negatives/major e
 remain. Conservative71:5 fresh canonical/26 carried/40 historical,0 promotions.
 Quiet serial overhead is material: dense62.370->89.948s, sparse29.782->72.089s,
 with complete within-mode output parity. Profile dominant real costs before
-default rollout; source-BG/constructor work follows. CN3_7 locked,
+default rollout. Actual-output-equal profile identifies repeated material-pattern/
+glyph evidence as dominant; prioritize explicit guarded evidence sharing, not
+block pair memo alone, alongside the source-BG accuracy repair. CN3_7 locked,
 remaining source QA/reserved transfer/final71 still due. All six gates ACTIVE.
 
 ## Current direction (B188, 2026-10-11): real opt-in mode; default qualification due
