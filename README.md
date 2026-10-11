@@ -482,7 +482,10 @@ The integrated mode is opt-in while whole-corpus precision and latency qualifica
 continue. In the app's Scan tab, select **Experimental source geometry (slower)**
 and rescan. Standard scanning remains the default. The mode combines source-seeded
 shape reconciliation with the explicit material/occupancy/pose pipeline, once after
-capture consensus. Nonstandard compact source mappings abstain from the new stage.
+capture consensus. Compact 19x13 rooms retain source-seeded shape recovery in their
+already-padded canonical working image. Their original, unpadded source still
+abstains from the whole-frame material/occupancy/pose stage; the two coordinate
+stages must not be confused. Other unqualified source mappings remain unchanged.
 
 ```powershell
 python -m jtool_scanner.cli scan-image screen.png out\source.jmap --include-color-objects --include-geometry --source-geometry --no-ocr

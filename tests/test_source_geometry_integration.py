@@ -54,6 +54,31 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertEqual(out.detections, before)
         self.assertTrue(out.source_geometry)
 
+    def test_compact_normalized_shape_stage_keeps_source_seed_recovery(self):
+        # Compact originals are padded to canonical working pixels BEFORE the
+        # shape stage. The later original-source material stage must still abstain.
+        image = RGBImage(608, 416, bytes(608*416*3))
+        with patch.object(scanner, '_reconcile_source_triangle_sizes', side_effect=lambda d,*a,**k:d) as size, \
+             patch('scripts.source_geometry_pipeline.source_proposals', side_effect=AssertionError('Compact source is not full-frame qualified')):
+            result = scanner.scan_image(image, room_box=Box(0,0,608,416), source_grid=(19,13),
+                include_geometry=True, include_color_objects=False, source_geometry=True)
+        size.assert_called_once()
+        self.assertTrue(size.call_args.kwargs.get('source_seed', False))
+        self.assertEqual((size.call_args.args[1].width,size.call_args.args[1].height),(800,608))
+        self.assertEqual(size.call_args.args[2], Box(0,0,800,608))
+        self.assertEqual(result.source_grid,(19,13))
+        self.assertTrue(result.source_geometry)
+
+    def test_compact_standard_shape_stage_does_not_enable_source_seed(self):
+        image = RGBImage(608, 416, bytes(608*416*3))
+        with patch.object(scanner, '_reconcile_source_triangle_sizes', side_effect=lambda d,*a,**k:d) as size:
+            result = scanner.scan_image(image, room_box=Box(0,0,608,416), source_grid=(19,13),
+                include_geometry=True, include_color_objects=False)
+        size.assert_called_once()
+        self.assertFalse(size.call_args.kwargs.get('source_seed', False))
+        self.assertEqual(result.source_grid,(19,13))
+        self.assertFalse(result.source_geometry)
+
     def test_standard_no_geometry_never_calls_source_pipeline(self):
         with patch.object(scanner, '_apply_source_geometry', side_effect=AssertionError('Not requested')):
             result = scanner.scan_image(self.image, room_box=self.room, source_grid=(25, 19))

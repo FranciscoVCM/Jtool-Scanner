@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-11 — B189 compact source-seed gain restored; whole-room errors remain
+
+Completed actual remaining29 scans without restarting the live worker. Combined
+47/source expectations FAIL only NANG_130:56 previously source-reviewed minis lost.
+The39-group preservation checker also FAILS one achieved mini. Both failure
+receipts retained. The compact working image was already padded to800x608, but
+opt-in shape dispatch excluded its19x13 grid. This is distinct from the correctly
+abstaining later original-source material stage.
+
+Compact-only opt-in dispatch now retains that qualified shape recovery; default,
+capture consensus, original-source compact material abstention and other mappings
+remain unchanged. The new compact recovery test fails before the fix, while its
+standard-mode control passes;
+13 integration,46 source-size/recovery/ownership and17 compact protections PASS.
+76 focused tests total, not a full-suite claim.
+
+Fresh actual21 PASS: five compact cases and ALL16 exact controls. NANG_130 restores
+ALL56,229 ordered Detections/warnings/crop/grid/JTool SVG equal qualified old output.
+Fresh whole Source/JTool/Blend inspected; exact source/JTool pixel equality carries
+ALL56 earlier independent delta reviews. Still MAJOR: inherited missing/mis-sized
+triangles, star-region false blocks and six declared false ceiling minis remain.
+No room/default promotion. FTFA926/928/0extra, Flames252 with42extra/21miss/20shift/
+2wrong, Hades334 exact/12shift unchanged; full comparison fields match.
+
+Guarded47/39 preservation PASS through fresh21 plus explicitly branch-invariant26
+full-frame outputs. Whole scanner-source equality proves ONLY compact dispatch
+changed. Older output hashes/provenance are intact, NOT forged current-code scans
+or compatible-cache claims. Absolute inherited deficits are not hidden. Conservative
+71 audit:5 fresh canonical IDs,26 branch-carried,40 historical;0 approvals. Locked
+CN3_7/final40th group UNEVALUATED, final-current71 and remaining source QA still due.
+
+Controlled counterbalanced serial timing completes after all scan/test producers:
+dense Entrance2 standard62.370s/opt-in89.948s (+27.579s,44.2%); sparse Say2 standard
+29.782s/opt-in72.089s (+42.307s,142.1%). ENTIRE map/project/metadata equal within
+each mode. Material overhead is real and requires profiling/repair; these are
+two-input observations, not universal latency. Default rollout is still unqualified.
+Source-BG retention diagnosis extends from Dotkid1 to a second
+appearance, and repeated prototype pair-dot cost has an exact-proof candidate, but
+neither further repair/optimization is adopted in this checkpoint. Original six
+goal gates remain ACTIVE, not completed by restoring this regression.
+
 ## 2026-10-11 — B188 real opt-in scanner integration and ordinary16 qualification
 
 Integrated source_geometry=True in scanner API, CLI, corpus and app, defaultFalse.

@@ -2852,7 +2852,10 @@ def scan_image(
             )
             detections = _reconcile_source_triangle_sizes(
                 detections, image, box,
-                **({'source_seed': True} if source_geometry and normalized_grid == (25, 19) else {}),
+                # Compact rooms have already been padded to canonical working
+                # pixels here. Keep their qualified mini recovery; only the
+                # later ORIGINAL-source material stage must abstain on them.
+                **({'source_seed': True} if source_geometry and normalized_grid in ((25, 19), (19, 13)) else {}),
             )
         # Missing half-phase solids must not change the terrain support used
         # by earlier spike/marker arbitration. Merge only source-established

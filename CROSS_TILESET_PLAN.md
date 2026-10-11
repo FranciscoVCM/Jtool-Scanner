@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Current direction (B189, 2026-10-11): close compact regression, then shared repair
+
+Actual29 qualification exposes56 lost reviewed NANG_130 minis: opt-in seed dispatch
+incorrectly excluded its already-canonical padded19x13 working image. Compact-only
+dispatch restores ALL56/entire229 detections and prior source/JTool pixel review;
+whole original-source material still abstains, default unchanged.76 focused tests
+and fresh actual21 including ALL16 controls PASS; FTFA926/928/0extra, Hades334exact.
+
+47/39 preserved gains qualify through fresh21 plus explicitly branch-invariant26,
+not relabelled current-hash caches. Inherited six NANG ceiling negatives/major errors
+remain. Conservative71:5 fresh canonical/26 carried/40 historical,0 promotions.
+Quiet serial overhead is material: dense62.370->89.948s, sparse29.782->72.089s,
+with complete within-mode output parity. Profile dominant real costs before
+default rollout; source-BG/constructor work follows. CN3_7 locked,
+remaining source QA/reserved transfer/final71 still due. All six gates ACTIVE.
+
 ## Current direction (B188, 2026-10-11): real opt-in mode; default qualification due
 
 Scanner/API/CLI/corpus/app now support explicit source geometry, defaultoff. One
