@@ -82,7 +82,7 @@
       "documentName", "newButton", "openButton", "saveProjectButton", "exportButton",
       "mobilePaletteButton", "mobileInspectorButton",
       "fileInput", "emptyOpenButton", "rescanButton", "gridStep",
-      "geometryScan", "colorScan", "ocrScan", "paletteSearch", "objectPalette",
+      "geometryScan", "colorScan", "ocrScan", "sourceGeometryScan", "paletteSearch", "objectPalette",
       "objectsTab", "scanTab", "inspectorTab", "layersTab",
       "undoButton", "redoButton", "snapSelect", "zoomOut", "zoomIn", "zoomFit",
       "zoomLabel", "stageViewport", "stage", "emptyState", "sourceLayer", "mapLayer",
@@ -251,6 +251,7 @@
         grid_step: elements.gridStep.value,
         color: String(elements.colorScan.checked),
         geometry: String(elements.geometryScan.checked),
+        source_geometry: String(elements.geometryScan.checked && elements.sourceGeometryScan.checked),
         ocr: String(elements.ocrScan.checked),
         start_policy: "auto",
       });
@@ -273,6 +274,7 @@
 
   function setProject(project, name) {
     state.project = project;
+    elements.sourceGeometryScan.checked = !!project.scanner?.source_geometry;
     state.selectedId = null;
     state.undo = [];
     state.redo = [];

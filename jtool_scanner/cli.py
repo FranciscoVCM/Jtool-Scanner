@@ -77,6 +77,7 @@ def main(argv: list[str] | None = None) -> int:
     inspect_parser.add_argument("--grid-step", type=int, default=8)
     inspect_parser.add_argument("--include-color-objects", action="store_true")
     inspect_parser.add_argument("--include-geometry", action="store_true")
+    inspect_parser.add_argument('--source-geometry', action='store_true', help='experimental source geometry; requires --include-geometry')
     inspect_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
     inspect_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
     inspect_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
@@ -99,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     scan_parser.add_argument("--grid-step", type=int, default=8)
     scan_parser.add_argument("--include-color-objects", action="store_true")
     scan_parser.add_argument("--include-geometry", action="store_true")
+    scan_parser.add_argument('--source-geometry', action='store_true', help='experimental source geometry; requires --include-geometry')
     scan_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
     scan_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
     scan_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
@@ -220,6 +222,7 @@ def main(argv: list[str] | None = None) -> int:
         help="enable or disable geometry scanning",
     )
     project_create_parser.add_argument("--start-policy", default="auto")
+    project_create_parser.add_argument('--source-geometry', action='store_true', help='experimental source geometry; requires geometry scanning')
     project_create_parser.add_argument("--source-grid", default=None, help="source room grid as COLSxROWS")
     project_create_parser.add_argument("--ocr-text", default=None, help="recognized screen text override")
     project_create_parser.add_argument("--no-ocr", action="store_true", help="disable optional OCR")
@@ -344,6 +347,7 @@ def main(argv: list[str] | None = None) -> int:
             not args.no_ocr,
             args.overlay,
             args.overlay_labels,
+            source_geometry=args.source_geometry,
         )
     if args.command == "scan-image":
         return _scan_image(
@@ -360,6 +364,7 @@ def main(argv: list[str] | None = None) -> int:
             args.start_policy,
             args.overlay,
             args.overlay_labels,
+            source_geometry=args.source_geometry,
         )
     if args.command == "scan-fixtures":
         return _scan_fixtures(
@@ -421,6 +426,7 @@ def main(argv: list[str] | None = None) -> int:
             args.preview,
             args.diagnostic_preview,
             args.blend_preview,
+            source_geometry=args.source_geometry,
         )
     if args.command == "project-import":
         return _project_import(args.input, args.output)
@@ -623,6 +629,7 @@ def _inspect_image(
     enable_ocr: bool,
     overlay_path: str | None,
     overlay_labels: bool,
+    *, source_geometry: bool = False,
 ) -> int:
     result = scan_png(
         input_path,
@@ -633,6 +640,7 @@ def _inspect_image(
         source_grid=_parse_source_grid(source_grid_text),
         recognized_text=recognized_text,
         enable_ocr=enable_ocr,
+        **({'source_geometry': True} if source_geometry else {}),
     )
     print(f"image: {result.image_width}x{result.image_height}")
     print(
@@ -671,6 +679,7 @@ def _scan_image(
     start_policy: str,
     overlay_path: str | None,
     overlay_labels: bool,
+    *, source_geometry: bool = False,
 ) -> int:
     result = scan_png(
         input_path,
@@ -681,6 +690,7 @@ def _scan_image(
         source_grid=_parse_source_grid(source_grid_text),
         recognized_text=recognized_text,
         enable_ocr=enable_ocr,
+        **({'source_geometry': True} if source_geometry else {}),
     )
     jmap = result.to_jmap(start_policy=start_policy)
     jmap.to_file(output_path)
@@ -868,6 +878,7 @@ def _project_create(
     preview_path: str | None,
     diagnostic_preview_path: str | None,
     blend_preview_path: str | None,
+    *, source_geometry: bool = False,
 ) -> int:
     result = scan_png(
         input_path,
@@ -878,6 +889,7 @@ def _project_create(
         source_grid=_parse_source_grid(source_grid_text),
         recognized_text=recognized_text,
         enable_ocr=enable_ocr,
+        **({'source_geometry': True} if source_geometry else {}),
     )
     project = CorrectionProject.from_scan(
         result,

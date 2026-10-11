@@ -157,6 +157,21 @@ class CorpusTests(unittest.TestCase):
                     self.run_scan()
         self.scan.assert_not_called()
 
+    def test_explicit_source_geometry_option_forwarded_and_invalidates_cache(self):
+        self.run_scan()
+        self.write_manifest([dict(self.case, options={'source_geometry': True})])
+        current=self.run_scan()['cases'][0]
+        self.assertFalse(current['reused'])
+        self.assertTrue(self.scan.call_args.kwargs['source_geometry'])
+        self.assertTrue(current['inputs']['options']['source_geometry'])
+
+    def test_source_geometry_corpus_option_requires_actual_boolean(self):
+        for value in ('true', 1, None):
+            self.write_manifest([dict(self.case, options={'source_geometry': value})])
+            with self.assertRaisesRegex(ValueError,'boolean'):
+                self.run_scan()
+        self.scan.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

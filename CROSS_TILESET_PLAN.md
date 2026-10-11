@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Current direction (B188, 2026-10-11): real opt-in mode; default qualification due
+
+Scanner/API/CLI/corpus/app now support explicit source geometry, defaultoff. One
+final-source pass/seeded size repair, preserved capture consensus/survivor metadata/
+compact abstention and transitive runtime identity. Ordinary API16 full comparisons
+equal qualified B179; FTFA926/928/0extra, Flames252/no error increases, Hades334exact.
+208 affected+48 standard tests pass. No private detector monkeypatches or answers.
+
+Fresh actual3-room views still show major errors: Dotkid1 green BG false solid,
+CN3_31 missing/opposing spikes, Entrance2 spike/water problems. No room approval or
+default rollout. Next ordinary protected47/40/other QA and controlled runtime;
+CN3_7 stays reserved until guards pass. Six original goal gates ACTIVE.
+
 ## Current direction (B187, 2026-10-09): explicit complete pipeline, qualify integration
 
 Source sizing and joint assembly now join the public material/pose/agreement stages

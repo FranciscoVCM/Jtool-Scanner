@@ -18,6 +18,7 @@ from .constants import OBJECT_NAMES
 from .correction import CorrectionProject, render_correction_svg
 from .jmap import JMap
 from .scanner import scan_png
+from .runtime_sources import source_geometry_files
 
 
 WEB_ROOT = Path(__file__).with_name("web")
@@ -30,6 +31,9 @@ def _source_fingerprint() -> str:
     digest = sha256()
     for path in sorted(package_root.glob("*.py")):
         digest.update(path.name.encode("utf-8"))
+        digest.update(path.read_bytes())
+    for path in source_geometry_files():
+        digest.update(path.relative_to(package_root.parent).as_posix().encode('utf-8'))
         digest.update(path.read_bytes())
     return digest.hexdigest()
 
@@ -63,6 +67,7 @@ def scan_image_bytes(
     source_grid: tuple[int, int] | None = None,
     recognized_text: str | None = None,
     use_ocr: bool = True,
+    source_geometry: bool = False,
 ) -> CorrectionProject:
     """Scan uploaded PNG bytes into the existing correction-project model."""
 
@@ -79,6 +84,7 @@ def scan_image_bytes(
             source_grid=source_grid,
             recognized_text=recognized_text,
             enable_ocr=use_ocr,
+            **({'source_geometry': True} if source_geometry else {}),
         )
     return result.to_correction_project(
         filename,
@@ -203,6 +209,7 @@ class _AppHandler(BaseHTTPRequestHandler):
             source_grid=source_grid,
             recognized_text=_first(query, "ocr_text", "") or None,
             use_ocr=_parse_bool(_first(query, "ocr", "true")),
+            source_geometry=_parse_bool(_first(query, 'source_geometry', 'false')),
         )
         self._send_json({"project": project.to_dict()})
 

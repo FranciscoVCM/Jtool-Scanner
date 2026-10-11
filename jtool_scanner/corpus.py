@@ -19,6 +19,7 @@ from .correction import render_correction_svg, render_source_blend_svg
 from .geometry import Box
 from .jmap import JMap
 from .scanner import scan_png
+from .runtime_sources import source_geometry_files
 
 
 DEFAULTS = dict(grid_step=8, include_color_objects=True, include_geometry=True,
@@ -50,6 +51,8 @@ def implementation_identity() -> dict:
         if path.is_file() and "__pycache__" not in path.parts
         and path.suffix in {".py", ".png", ".js", ".css", ".html"}
     }
+    files.update({path.relative_to(package.parent).as_posix(): _digest(path.read_bytes())
+                  for path in source_geometry_files()})
     try:
         head = subprocess.check_output(
             ["git", "-c", f"safe.directory={package.parent.as_posix()}",
@@ -115,8 +118,10 @@ def run_corpus(manifest_path: str | Path, out_dir: str | Path, *, resume=False) 
         if case.get("partition") not in {"development", "evaluation", "control"}:
             raise ValueError("Partition must be development, evaluation or control")
         options = {**DEFAULTS, **manifest.get("defaults", {}), **case.get("options", {})}
-        if set(options) != set(DEFAULTS) or options["enable_ocr"] is not False:
+        if not set(DEFAULTS) <= set(options) <= set(DEFAULTS) | {'source_geometry'} or options["enable_ocr"] is not False:
             raise ValueError("Unknown corpus option or nondeterministic OCR enabled")
+        if 'source_geometry' in options and not isinstance(options['source_geometry'], bool):
+            raise ValueError('source_geometry must be a boolean')
         source = (manifest_path.parent / case["source"]).resolve()
         source_bytes = source.read_bytes()
         expected_path = case.get("expected_jmap")

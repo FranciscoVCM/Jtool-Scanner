@@ -476,6 +476,24 @@ whole-scanner qualification remains necessary before deployment.
 python -m unittest tests.test_source_geometry_pipeline
 ```
 
+### Experimental source-geometry scans
+
+The integrated mode is opt-in while whole-corpus precision and latency qualification
+continue. In the app's Scan tab, select **Experimental source geometry (slower)**
+and rescan. Standard scanning remains the default. The mode combines source-seeded
+shape reconciliation with the explicit material/occupancy/pose pipeline, once after
+capture consensus. Nonstandard compact source mappings abstain from the new stage.
+
+```powershell
+python -m jtool_scanner.cli scan-image screen.png out\source.jmap --include-color-objects --include-geometry --source-geometry --no-ocr
+python -m jtool_scanner.cli project-create screen.png out\source.jscan.json --source-geometry --no-ocr
+```
+
+Correction projects retain the selected mode; it is not an accuracy certification.
+The app/corpus fingerprints include all transitive source-geometry runtime files.
+Corpus manifests may specify `"source_geometry": true` in their options. References
+still evaluate only after scanning and never enter the detector.
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

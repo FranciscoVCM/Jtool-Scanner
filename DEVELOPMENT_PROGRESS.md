@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-11 — B188 real opt-in scanner integration and ordinary16 qualification
+
+Integrated source_geometry=True in scanner API, CLI, corpus and app, defaultFalse.
+Uses source-seeded shape repair and complete public pipeline once on final source
+coordinates; capture inner scans unchanged and compact mappings abstain. Survivor
+Detection scores/provenance/boxes preserved; retired keys cannot re-enter. Projects
+retain requested mode without JMap header changes. Unchecked experimental/slower
+Scan checkbox; fingerprints now include all12 transitive script dependencies.
+
+ACTUAL ordinary API16 PASS: full comparisons/keys/source deltas equal qualified
+B179 and all survivor metadata equal. FTFA926/928 exact/0extra, Flames252 exact
+with42extra/21miss/20shift/2wrong (no increases), Hades334 exact/12shift.208 affected
+tests PASS114.855s;48 additional standard/compact-coordinate PASS272.434s. No full-
+suite claim. Actual API upload/export200,9headers/exact duplicate-sensitive object
+multiset equal corpus. Initial byte-text failure reproduced on old project ordering;
+failure retained and all fields/multiplicities checked, no coordinate tolerance.
+
+Actual Entrance2/CN3_31/Dotkid1 outputs equal source-stage keys/crop/grid. Fresh whole
+Source/JTool/Blend inspected; ALL MAJOR. Entrance2 prior439-delta source QA carried
+through multiset/source/crop/render equality; CN3_31 pixels differ, so no full old
+visual carry. Dotkid1 inherited green BG slabs remain false terrain, CN3_31 missing/
+opposing spikes and Entrance2 spike/water issues remain. No room/default promotion.
+
+App root/health200 and loaded/disk transitive fingerprint parity. All workers
+terminal, outputs durable. Concurrent scan observations are NOT controlled latency.
+Remaining ordinary47/40/other QA, locked CN3_7, quiet runtime/final-current71/default
+qualification required. Original six GOAL_PLAN gates ACTIVE.
+
 ## 2026-10-09 — B187 complete source pipeline explicit; ordinary adoption pending
 
 source_occupancy.py and source_geometry_pipeline.py replace the final compiled

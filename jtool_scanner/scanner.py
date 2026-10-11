@@ -2076,6 +2076,7 @@ class ScanResult:
     source_grid: tuple[int, int] | None = None
     structural_warnings: list[dict[str, object]] = field(default_factory=list)
     dense_miniblock_room: bool = False
+    source_geometry: bool = False
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
@@ -2119,10 +2120,14 @@ def scan_png(
     source_grid: tuple[int, int] | None = None,
     recognized_text: str | None = None,
     enable_ocr: bool = True,
+    source_geometry: bool = False,
 ) -> ScanResult:
+    if not isinstance(source_geometry, bool):
+        raise ValueError('source_geometry must be a boolean')
     image = load_png(path)
     if recognized_text is None and enable_ocr:
         recognized_text = _extract_text_with_tesseract(path)
+    source_options = {'source_geometry': True} if source_geometry else {}
     return scan_image(
         image,
         room_box=room_box,
@@ -2131,6 +2136,7 @@ def scan_png(
         include_geometry=include_geometry,
         source_grid=source_grid,
         recognized_text=recognized_text,
+        **source_options,
     )
 
 
@@ -2144,7 +2150,12 @@ def scan_image(
     recognized_text: str | None = None,
     *,
     _apply_shape_refits: bool = True,
+    source_geometry: bool = False,
 ) -> ScanResult:
+    if not isinstance(source_geometry, bool):
+        raise ValueError('source_geometry must be a boolean')
+    if source_geometry and not include_geometry:
+        raise ValueError('Source geometry requires geometry scanning')
     _PATCH_FEATURE_CACHE.clear()
     source_image = image
     source_box = room_box or detect_room_box(image)
@@ -2187,6 +2198,7 @@ def scan_image(
                 include_color_objects=include_color_objects,
                 recognized_text=recognized_text,
                 _apply_shape_refits=_apply_shape_refits,
+                **({'source_geometry': True} if source_geometry else {}),
             )
     source_translation: tuple[int, int] | None = None
     deferred_neutral_fields: list[tuple[tuple[Detection, ...], float]] = []
@@ -2840,6 +2852,7 @@ def scan_image(
             )
             detections = _reconcile_source_triangle_sizes(
                 detections, image, box,
+                **({'source_seed': True} if source_geometry and normalized_grid == (25, 19) else {}),
             )
         # Missing half-phase solids must not change the terrain support used
         # by earlier spike/marker arbitration. Merge only source-established
@@ -2880,6 +2893,30 @@ def scan_image(
         dense_miniblock_room=dense_miniblock_room,
     )
     _PATCH_FEATURE_CACHE.clear()
+    if source_geometry and _apply_shape_refits:
+        result = _apply_source_geometry(result, source_image)
+    return result
+
+
+def _apply_source_geometry(result: ScanResult, image: RGBImage) -> ScanResult:
+    """Apply once to final source coordinates; compact mappings remain unqualified."""
+    result.source_geometry = True
+    if result.source_grid != (25, 19):
+        return result
+    from scripts.source_geometry_pipeline import source_proposals
+
+    proposed, rejected, _ = source_proposals(image, result.room_box, result.detections)
+    # Retired keys must not re-enter from a proposal set. Preserve every surviving
+    # original Detection (score/provenance/image box), including legitimate overlap.
+    retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
+    surviving = {(d.type_id, d.x, d.y) for d in retained}
+    added = proposed-rejected-surviving
+    if rejected or added:
+        new = [_geometry_detection('source_material_size', t, x, y, .9, image,
+            result.room_box, 16 if t == OBJ_MINI_BLOCK else 32)
+            for t, x, y in sorted(added, key=lambda k: (k[0], k[2], k[1]))]
+        result.detections = sorted(retained+new, key=lambda d: (d.type_id, d.y, d.x))
+        result.structural_warnings = structural_scan_warnings(result.detections)
     return result
 
 
@@ -3754,6 +3791,7 @@ def _scan_lattice_normalized_room(
     include_color_objects: bool,
     recognized_text: str | None,
     _apply_shape_refits: bool = True,
+    source_geometry: bool = False,
 ) -> ScanResult:
     """Merge stable source-space objects with canonical geometry evidence.
 
@@ -3892,6 +3930,7 @@ def _scan_lattice_normalized_room(
         )
         detections = _reconcile_source_triangle_sizes(
             detections, source_image, normalization.source_room,
+            **({'source_seed': True} if source_geometry else {}),
         )
         # Inner scans intentionally leave recovery deferred: their blocks can
         # still affect capture consensus and source-space marker arbitration.
@@ -3900,7 +3939,7 @@ def _scan_lattice_normalized_room(
         )
     detections.sort(key=lambda detection: (detection.type_id, detection.y, detection.x))
     _PATCH_FEATURE_CACHE.clear()
-    return ScanResult(
+    result = ScanResult(
         image_width=source_image.width,
         image_height=source_image.height,
         room_box=normalization.source_room,
@@ -3915,6 +3954,9 @@ def _scan_lattice_normalized_room(
             or canonical_result.dense_miniblock_room
         ),
     )
+    if source_geometry and _apply_shape_refits:
+        result = _apply_source_geometry(result, source_image)
+    return result
 
 
 def _capture_lattice_consensus_enabled(
@@ -34646,13 +34688,18 @@ def _prune_source_interstitial_triangle_aliases(
 
 def _reconcile_source_triangle_sizes(
     detections: list[Detection], image: RGBImage, room: Box,
+    *, source_seed: bool = False,
 ) -> list[Detection]:
     spikes = [(d.type_id, d.x, d.y) for d in detections
               if d.type_id in FULL_SPIKE_TYPES or d.type_id in MINI_SPIKE_TYPES]
     solids = [(d.x, d.y, MINI_BLOCK_SIZE, MINI_BLOCK_SIZE)
               if d.type_id == OBJ_MINI_BLOCK else (d.x, d.y, GRID_SIZE, GRID_SIZE)
               for d in detections if d.type_id in {OBJ_BLOCK, OBJ_MINI_BLOCK}]
-    added, rejected = contour_size_changes(image, room, spikes, solids)
+    if source_seed:
+        from .spike_size import source_seed_size_changes
+        added, rejected = source_seed_size_changes(image, room, spikes, solids)
+    else:
+        added, rejected = contour_size_changes(image, room, spikes, solids)
     if not added and not rejected:
         return detections
     retained = [d for d in detections if (d.type_id, d.x, d.y) not in rejected]

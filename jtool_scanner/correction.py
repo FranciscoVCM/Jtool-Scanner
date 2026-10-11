@@ -129,6 +129,7 @@ class CorrectionProject:
     player_gravity: int = 1
     objects: list[CorrectionObject] = field(default_factory=list)
     history: list[dict[str, Any]] = field(default_factory=list)
+    source_geometry: bool = False
 
     @classmethod
     def from_scan(
@@ -180,6 +181,7 @@ class CorrectionProject:
             include_color_objects=include_color_objects,
             include_geometry=include_geometry,
             source_grid=getattr(result, "source_grid", None),
+            source_geometry=bool(getattr(result, 'source_geometry', False)),
             recognized_text=getattr(result, "recognized_text", ""),
             structural_warnings=list(getattr(result, "structural_warnings", [])),
             start_policy=start_policy,
@@ -257,6 +259,7 @@ class CorrectionProject:
             grid_step=int(scanner.get("grid_step", 8)),
             include_color_objects=bool(scanner.get("include_color_objects", True)),
             include_geometry=bool(scanner.get("include_geometry", True)),
+            source_geometry=bool(scanner.get('source_geometry', False)),
             source_grid=(
                 (int(scanner["source_grid"][0]), int(scanner["source_grid"][1]))
                 if scanner.get("source_grid") is not None
@@ -297,6 +300,7 @@ class CorrectionProject:
                 "source_grid": list(self.source_grid) if self.source_grid is not None else None,
                 "recognized_text": self.recognized_text,
                 "structural_warnings": list(self.structural_warnings),
+                **({'source_geometry': True} if self.source_geometry else {}),
             },
             "start": {
                 "policy": self.start_policy,

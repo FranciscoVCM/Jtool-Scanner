@@ -1,8 +1,29 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-09. Continue in the existing repository at
+Updated 2026-10-11. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B188 real opt-in scanner mode; ordinary16 and actual3 complete
+
+Read ignored BATCH188_RESULT_AND_RESUME.md, batch188-actual16-verification-v1.json
+and batch188-actual-development3-verification-v1.json. Source_geometry=True now uses
+real API/CLI/corpus/app, no detector monkeypatch. Defaultfalse/unchecked Scan checkbox
+experimental/slower. Seeded size + public pipeline once after final hypotheses;
+capture inner scans unchanged/compact abstention. Project mode/transitive12 files
+included in code fingerprints.
+
+Ordinary API16 PASS full comparisons/keys/source deltas/survivor metadata against
+B179. FTFA926/928/0extra, Flames252/42extra/21miss/20shift/2wrong, Hades334/12shift.
+208 affected PASS114.855s;48 standard/compact PASS272.434s. Actual upload/export200
+with9headers/exact duplicate-sensitive multiset corpus parity. All B188 workers
+63243/46933/84188/19159/22584 terminal. App PID31304/root-health200/source parity.
+
+Actual Entrance2/CN3_31/Dotkid1 map/crop/grid equal stage and fresh whole views
+inspected; ALL MAJOR. Dotkid1 green BG slabs still false solid, CN3_31 missing/
+opposing spikes, Entrance2 spike/water errors. CN3_31 render mismatch prevents full
+old visual carry. No default rollout. Next ordinary47/40/other QA, quiet serial
+runtime, locked CN3_7 after guards and final71/default qualification. Six gates ACTIVE.
 
 ## Latest: B187 complete source pipeline explicit
 
