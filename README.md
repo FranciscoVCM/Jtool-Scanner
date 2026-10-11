@@ -497,6 +497,10 @@ Experimental material stages reuse at most four scan-local proof results, guarde
 by the original source, frame, object locators, stage and water-overlay coordinates.
 Returned proofs are isolated; this is computation reuse, not a stored tileset or
 reference-answer cache. It does not certify accuracy on unfamiliar screens.
+Full blocks occupying independently calibrated empty source can be retired only
+after terrain, actual glyph pixels, raw outline, whole-frame texture and nonterrain
+guards. Unknown evidence and real occlusions are not blanket deletion triggers;
+original minispikes/miniblocks and standard-mode behavior remain protected.
 The app/corpus fingerprints include all transitive source-geometry runtime files.
 Corpus manifests may specify `"source_geometry": true` in their options. References
 still evaluate only after scanning and never enter the detector.

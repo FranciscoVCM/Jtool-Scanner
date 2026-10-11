@@ -1,15 +1,17 @@
 """Experimental original-source full-block pose repair; no default app binding.
 
-Requires a unique nearby whole-frame texture match, preservation of known solid
-pixels, source-proved empty old margins and protected glyph/nonterrain exclusions.
-Material inputs must be independent original-source evidence, never answer maps.
+Pose correction requires a unique nearby whole-frame texture match and preservation
+of known solids. Separately, wholly source-empty fulls may be retired only after
+terrain/glyph/contour/texture/nonterrain exclusions. Independent source evidence
+is mandatory; unknown evidence is not empty space and answer maps never enter.
 """
 from __future__ import annotations
 
 from math import sqrt
 
 from jtool_scanner.spike_shape import VERTICES
-from scripts.source_block_prototypes import SourceBlockLibrary
+from scripts.source_block_prototypes import SourceBlockLibrary, _glyph_pixels_in_frame
+from scripts.source_contours import SourceContours
 from scripts.source_glyph_prototypes import SourceGlyphLibrary, _contains
 from scripts.source_local_background import SourceLocalBackground
 
@@ -20,13 +22,15 @@ def _footprint(key):
     return {(px, py) for py in range(y, y+size) for px in range(x, x+size)}
 
 
-def refit_full_poses(image, room, detections, proposed, rejected, source_material, *, source_context=None):
+def refit_full_poses(image, room, detections, proposed, rejected, source_material, *, source_context=None,
+                    source_empty_candidates=()):
     """Return source-supported proposals, removals and isolated diagnostics.
 
     Original detections are only source locators, not a declaration of truth.
     Newly proposed objects never teach appearance or background. Preserve all
-    original minis/nonterrain; remove only source-disproved full poses with a
-    unique positively supported alternative. Unknown evidence causes abstention.
+    original minis/nonterrain. Correct a disproved pose only with a unique positive
+    alternative; retire a sizing-proved wholly empty full only with independent
+    negative/positive guards. Unknown source evidence causes abstention.
     """
     proposed, rejected = set(proposed), set(rejected)
     terrain = set(map(tuple, source_material.get('accepted', [])))
@@ -93,6 +97,14 @@ def refit_full_poses(image, room, detections, proposed, rejected, source_materia
     def anchor_overlap(x, y):
         return any(max(x, a.x) < min(x+32, a.x+32) and max(y, a.y) < min(y+32, a.y+32) for a in anchors)
 
+    # Candidate collection has a complete known-BG source proof. Other material
+    # stages can still contradict it. Reuse this existing whole-frame library
+    # rather than teaching from generated objects or building another detector.
+    empty_candidates = set(map(tuple, source_empty_candidates))
+    bounded_polygons = [(p, min(x for x, y in p), min(y for x, y in p),
+                         max(x for x, y in p), max(y for x, y in p)) for p in polygons]
+    contours = None
+    empty_proofs = []
     proofs, new, retired = [], set(), set()
     for old in sorted(existing-rejected):
         if old[0] != 1:
@@ -107,6 +119,19 @@ def refit_full_poses(image, room, detections, proposed, rejected, source_materia
         old_proof = texture.support(x, y)
         if old_proof['passed']:
             continue
+        if old in empty_candidates and not old_positive and not _glyph_pixels_in_frame(x, y, bounded_polygons):
+            if contours is None:
+                contours = SourceContours(image, room) if source_context is None else source_context.contours()
+            faces = contours.rectangle(x, y, 32)
+            if not all(face.support >= 9 and not face.unknown for face in faces):
+                retired.add(old)
+                empty_proofs.append(dict(key=old, complete_known_source_background=True,
+                    independent_terrain_pixels=0, source_confirmed_glyph_pixels=False,
+                    old_unmasked_source_full_texture=old_proof,
+                    raw_rectangle_faces=[dict(support=f.support, unknown=f.unknown) for f in faces],
+                    no_raw_rectangle_closure=True, no_nonterrain_overlap=True,
+                    no_replacement_or_original_mini_deletion=True))
+                continue
         candidates = []
         for dx in (-16, 0, 16):
             for dy in (-16, 0, 16):
@@ -149,6 +174,7 @@ def refit_full_poses(image, room, detections, proposed, rejected, source_materia
     # A positively disproved old pose must not re-enter through the proposal set.
     # This removes only the exact fulls proved retired above, not overlaps/minis.
     return (proposed-redundant-retired) | new, rejected | retired, dict(texture_pose_proofs=proofs,
+        source_empty_full_proofs=empty_proofs,
         original_source_full_texture_teachers=texture.teachers,
         original_source_full_texture_model_count=len(texture.models),
         only_new_mini_duplicates_removed=sorted(redundant), local_original_background_proofs=background_proofs,

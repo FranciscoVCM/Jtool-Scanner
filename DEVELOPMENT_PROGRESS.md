@@ -4,6 +4,54 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B191 shared known-empty full-block repair; three rooms remain major
+
+Source sizing previously required some foreground inside a full block before it
+could consider a background contradiction. Wholly empty false fulls survived.
+It now supplies only original16-aligned, wholly known-BG/whole-interior candidates
+to the existing full-pose stage. Retirement also requires zero independently
+accepted terrain pixels, no confirmed glyph pixels, no closed raw32 rectangle,
+no full-frame source texture and no nonterrain overlap. No new texture library,
+scan, source-ID/palette rule, replacement guessing or original-mini deletion.
+Standard mode unchanged; this is the existing experimental opt-in path.
+
+Actual normal scans remove63 independently source-reviewed false fulls in Dotkid1
+and8 in CN3_29, with exact survivor metadata/order. Dotkid5 removes13 more against
+an explicitly instrumented pristine previous-public pipeline snapshot; current
+output is unpatched ordinary API, all139 recovered terrain footprints retained.
+ALL84 deltas source-reviewed, all three current Source/JTool/Blend views inspected.
+All three remain MAJOR: inherited spike/layout/material errors are not solved.
+Fixed96-cell Dotkid1 empty ROI retained; no whole-room acceptance or pixel-perfect
+claim about resampling fringe/hidden editor decomposition.
+
+Source8 initially FAILS its strict 'only preregistered negatives' gate because of
+Dotkid5's13 unanticipated changes. Failure preserved, followed by independent QA
+and ordinary transfer validation, not retroactive preregistration. CN3_29's old
+warning-equality gate also FAILS: deleting false solids legitimately changes its
+derived review list. Exact surviving object data regenerates the new warning list;
+separate v2 validation passes without rewriting v1 or weakening geometry checks.
+
+159 affected source tests PASS89.371s on final files, not a complete-suite claim.
+The causal empty-full test fails before repair; palette/polarity/brightness/scale,
+whole-interior contamination, real outline/texture/glyph, marker/water, unknown and
+original-mini counterexamples pass. Initial sandbox-only temp permission errors
+are retained and resolved by rerunning with filesystem access, not code changes.
+All16 fresh ordinary exact controls keep complete comparison/ordered Detections/
+JMap bytes. Final source docstrings carry only through exact executable-AST and
+other-runtime byte equality; original scan receipts are not relabeled/rescanned.
+Cold601 minis/139 terrain and all39 achieved protections pass. Remaining26 exposed
+canonical source records have no new delta; five are explicitly unchanged compact
+branches, not fresh full scans. No final-current71 or default-rollout certification.
+
+Quiet serial counterbalanced AC pairing completes with ENTIRE prior normal map/
+project/metadata equality on all8 runs. Dense91.830->95.509s (+3.679s,+4.0% observed),
+sparse74.405->74.150s (-0.254s,neutral). Two repeats/mode, not a universal latency
+or speedup claim; dense overhead attribution and broader material cost remain
+unresolved. No duplicate scan/library added. The successor71 audit records3 actual changed canonical rooms,
+68 others not freshly scanned,0 approvals. Locked CN3_7, meaningful reserved
+transfer, final-current71 and material overhead/default qualification remain due.
+Original six completion gates remain ACTIVE; suppression alone cannot finish them.
+
 ## 2026-10-11 — B190 bounded original-source material reuse; accuracy unchanged
 
 Shared SourceEvidenceContext now reuses complete eligible-primitive and intrinsic/

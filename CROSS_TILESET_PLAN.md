@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Current direction (B191, 2026-10-12): shared empty-full repair qualified for accuracy
+
+Wholly source-BG fulls now need final independent terrain/glyph/raw-outline/texture/
+nonterrain arbitration before retirement. Actual Dotkid1/CN3_29/Dotkid5 remove84
+source-reviewed false fulls; survivor metadata,601 source minis,139 recovered terrain,
+39 prior groups and all16 ordinary exact controls protected. No original-mini
+deletion, source-ID/palette rule, extra scan/library or default-mode change.
+159 affected tests pass; final source-docstring compatibility is explicit.
+
+All three rooms still MAJOR,0 approvals. Independent Dotkid5 transfer QA follows
+a preserved preregistration-delta failure; not a reserve success. Current26 other
+protected source records unchanged (five compact branches explicitly carried),
+not a current all71 sweep. AC pairing keeps all8 whole normal outputs equal:
+dense91.830->95.509s (+4.0% observed), sparse74.405->74.150s (neutral); limited
+two-repeat evidence, not a speedup claim. Broader material overhead remains due.
+Keep CN3_7 locked until its no-tuning evaluation; next assess reserve recovery, then final stable
+all71/current changed-map QA. Original six gates ACTIVE, no completion substitution.
+
 ## Current direction (B190, 2026-10-11): sparse reuse gain, then two-style BG repair
 
 Bounded original-source primitive/pattern sharing preserves complete ordered7-room

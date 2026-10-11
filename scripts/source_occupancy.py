@@ -74,6 +74,7 @@ def source_size_repair(image, room, detections, *, source_context=None):
     known_pixels = positive_pixels | bg_pixels
     anchors = [d for d in detections if d.type_id not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20)]
     rejected, proofs, affected_seeds = set(), [], set()
+    empty_full_candidates = []
     for d in detections:
         if d.type_id != 1 or not (0 <= d.x <= 768 and 0 <= d.y <= 576):
             continue
@@ -82,7 +83,15 @@ def source_size_repair(image, room, detections, *, source_context=None):
         extent = footprint(key)
         if any(max(x, a.x) < min(x+32, a.x+32) and max(y, a.y) < min(y+32, a.y+32) for a in anchors):
             continue
-        if not extent <= known_pixels or not extent & positive_pixels:
+        if not extent <= known_pixels:
+            continue
+        if not extent & positive_pixels:
+            # Core-only calibration can miss a thin real glyph/outline. This is
+            # only a candidate, NOT permission to remove: the full-pose stage
+            # must also exclude independent terrain, glyph, contour and texture
+            # evidence using the original source and existing shared library.
+            if x % 16 == 0 and y % 16 == 0 and material(x, y, 32, 32, margin=1) == 'background':
+                empty_full_candidates.append(key)
             continue
         corridors = []
         for offset in (0, 8, 16):
@@ -126,5 +135,6 @@ def source_size_repair(image, room, detections, *, source_context=None):
     assert required <= supplied, 'Cannot retire an object without source-positive coverage'
     return replacements, rejected, dict(source_calibration=diag, source_fg=sorted(source_fg), source_bg=sorted(source_bg),
         proofs=proofs, affected_source_cells=sorted(affected), redundant_solid_union_proposals=sorted(redundant),
+        source_empty_full_candidates=sorted(empty_full_candidates),
         all_disproved_foreground_coverage_retained=True, complete_source32_recovery=True,
         no_unbounded_residual_mini_emission_or_new_objects_as_witnesses=True)

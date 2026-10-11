@@ -48,7 +48,8 @@ def source_proposals(image, room, detections, *, source_context=None):
     diag = {**diag, 'new_flat_mini_identity_under_occluded_full_abstained': sorted(ambiguous),
             'independent_textured16_evidence_preserved': True, 'existing_objects_not_deleted_for_occlusion_alone': True}
     material = diag['source_material']
-    proposed, rejected, pose = refit_full_poses(image, room, detections, proposed, rejected, material, source_context=context)
+    proposed, rejected, pose = refit_full_poses(image, room, detections, proposed, rejected, material,
+        source_context=context, source_empty_candidates=diag.get('source_sizing', {}).get('source_empty_full_candidates', ()))
     cells = set(map(tuple, material.get('accepted', [])))
     flat = set(map(tuple, material.get('source_flat_accepted_cells', [])))
     proposed, agreement = agree_new_fulls(image, room, detections, proposed, rejected, cells, flat, source_context=context)
