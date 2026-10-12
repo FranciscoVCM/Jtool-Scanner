@@ -4,6 +4,29 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B192 no-tuning reserve transfer; block coverage complete, room major
+
+Frozen published B191 code evaluated CN3_7 once through the normal opt-in API.
+Reference used only post-scan. Two source-confirmed full blocks recovered; complete
+visible solid coverage166912/168448->168448/168448, missing1536->0, excess0->0.
+No old exact-key loss, no nongeometry ordered-metadata/crop/grid/header change.
+Original reserve success threshold>=1024 recovered pixels OR4 exact terrain passes
+through the pixel gain, unchanged. Both additions and whole Source/JTool/Blend
+independently inspected. No tuning from the result; reserve is now EVALUATED.
+
+Initial evaluator FAIL counted offscreen boundary-block pixels. Preserved; corrected
+post-scan scorer uses the original freeze's800x608 viewport and exactly reproduces
+its old166912matched/1536missing/0excess before scoring. Reuses the sealed scan,
+no rescan or truth/detector edit. These positive gains demonstrate transfer of the
+previous shared reconstruction pipeline, not empty-full suppression alone.
+
+CN3_7 remains MAJOR: inherited floor-number spike, wrong/extra/shifted triangles,
+vine and marker/sizing issues. Perfect solid coverage is not whole-room acceptance.
+No implementation changes or additional tests required for this evaluation-only
+checkpoint. Next: stable final-current71 with every changed-map source QA/strict
+equality carry and full completion-gate audit; broader performance/default risks
+remain explicitly documented. Goal ACTIVE, not completed by one reserve success.
+
 ## 2026-10-12 — B191 shared known-empty full-block repair; three rooms remain major
 
 Source sizing previously required some foreground inside a full block before it

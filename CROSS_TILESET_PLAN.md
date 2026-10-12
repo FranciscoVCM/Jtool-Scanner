@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Current direction (B192, 2026-10-12): reserve passes; final stable audit next
+
+Frozen public pipeline passes the original no-tuning CN3_7 reserve:1536 missing
+visible solid pixels recovered,0 excess/old exact loss,2 real full additions
+independently source-reviewed; nongeometry/crop/grid/headers unchanged. Initial
+offscreen-counting evaluator failure preserved; original viewport/baseline restored
+without rescan or detector/truth edits. No tuning from this evaluated reserve.
+Whole room still MAJOR, not exact-certified by its block occupancy. This validates
+combined source-pipeline positive transfer, not the empty-full rule alone.
+Next final stable all71/current changed-map QA and explicit full gate audit;
+documented material overhead/default risks remain. Goal ACTIVE.
+
 ## Current direction (B191, 2026-10-12): shared empty-full repair qualified for accuracy
 
 Wholly source-BG fulls now need final independent terrain/glyph/raw-outline/texture/
