@@ -4,6 +4,55 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B196 source-qualified new-mini growth; calibration preserved
+
+The experimental pipeline now separates source texture calibration from evidence
+that permits a NEW mini-block. Original accepted material, full-pose/size evidence,
+intrinsic cells and flat behavior remain intact. Nonflat local/distributed teachers
+need independently witnessed material/rectangle evidence; apparent opposing edges
+also compete with strict source-mini-glyph identity. Hollow rectangles may query
+within one ORIGINAL source pixel only after three nominal sides already pass9,
+and all four queried sides must pass9. No threshold reduction, guessed movement,
+production screen/palette/coordinate rule, reference answer or new-object teacher.
+
+This separation matters: rejected calibration-changing prototypes corrected the
+primary negatives but destabilized hollow-terrain full poses. Unrestricted shifted
+rectangle closure also promoted background brick texture; the three-nominal-side
+prerequisite prevents that tested failure. All rejected results remain preserved.
+
+Actual unpatched public scans remove exactly3 false mini solids in CN3_9 and7 in
+CN3_31,0 additions; ALL survivor Detection metadata/order, nongeometry and map
+headers preserved. Every changed source context and both whole current JTool/Blend
+views independently inspected. CN3_25's entire output remains unchanged, including
+the real hollow block that challenged nominal pixel alignment. Both changed rooms
+remain MAJOR: existing triangle directions/sizes/positions, terrain overlaps and
+marker issues are not solved. Zero acceptance promotions or universal claims.
+
+All16 fresh public exact controls preserve ENTIRE comparisons, ordered Detections,
+warnings, crop/grid/options and JMaps; FTFA926/928/0extra/shift/wrong. Initial19
+verification fails solely tuple/list grid representation, preserved; sealed JSON
+grids/artifact hashes rechecked inV2, without rescan/output/implementation changes.
+All39 prior achieved groups pass with explicit actual/source-replay/unchanged-compact
+provenance, not47 fresh scans. Source replay preserves601 reviewed minis/all139
+terrain footprints. Red old-code causal tests become green;22 focused and163
+discovered source tests pass, followed by7 final certainty/phase safeguards.
+An earlier broad command's nonexistent-module loader error is an invocation issue,
+not a detector fix. Final source discovery passes166 tests in124.237s (not a
+complete-suite claim). The previously evaluated CN3_7 reserve is rechecked as a
+regression guard, not a new holdout: ENTIRE map/Detection/comparison/crop/grid/
+warnings unchanged;168448/168448 source-solid pixels,0missing/0excess retained.
+
+Quiet serial AC old/current/current/old pairs reproduce ENTIRE original normal
+maps/projects/metadata in all8 runs. Dense86.997->87.666s (+0.669s,+0.77% observed),
+sparse67.869->70.158s (+2.289s,+3.37% observed). Two repeats/mode, within overlapping
+run ranges; no speedup or universal no-overhead claim. No duplicated full scan or
+grayscale pass. Broader opt-in overhead/default rollout remains unqualified.
+
+The conservative successor audit uses fresh actual4 canonical outputs plus16
+controls; other67 retain B193/prior/source-only attribution, not a current full71
+certification. Next: remaining changed-map QA, polarity/compound-spike recovery,
+shared feature reuse/performance, and explicit six-gate audit. Goal ACTIVE.
+
 ## 2026-10-12 — B193 current87 complete; source QA exposes weak terrain teaching
 
 All71 canonical rooms and16 controls now have outputs at the pinned published

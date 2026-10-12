@@ -20,7 +20,13 @@ def joint_proposals(image, room, detections, *, source_context=None):
     existing = {(d.type_id, d.x, d.y) for d in detections}
     occupied = {p for key in existing-rejected if key[0] in (1, 2) for p in footprint(key)}
     occupied |= {p for key in sizing if key[0] == 1 for p in footprint(key)}
-    supported_intrinsic, supplemental = material & intrinsic, material-intrinsic
+    # Do not reinterpret uncertain texture calibration as empty source terrain:
+    # pose/size consumers below retain ALL original material evidence. Require
+    # the separate source qualification only for supplemental NEW mini growth.
+    certainty = set(map(tuple, diag.get('source_new_cell_certainty', material)))
+    certainty |= set(map(tuple, diag.get('intrinsic_geometry_appearance_evidence_retained', [])))
+    growth_material = material & certainty
+    supported_intrinsic, supplemental = growth_material & intrinsic, growth_material-intrinsic
     redundant = {p for p in supplemental if footprint((2, *p)) <= occupied}
     growth = {(2, x, y) for x, y in supported_intrinsic | (supplemental-redundant)}
     return sizing | growth, rejected, dict(source_sizing=size_diag, source_material=diag,

@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current direction (B196, 2026-10-12): qualified mini emission, stable calibration
+
+Source texture correlation can calibrate existing pose hypotheses without being
+enough evidence for a NEW solid. Separate channels now avoid self-taught spike
+clusters while retaining real narrow/hollow material. Original geometry witnesses,
+competing mini-glyph proof and three-sided nominal/full queried rectangle closure
+qualify new nonflat growth. One-source-pixel phase tolerance, unchanged9 support;
+no image/palette/coordinate/reference rules or new-output teachers. Defaultoff.
+
+Actual3+16:10 source-reviewed false new minis removed in two distinct appearances,
+CN3_25 entire map unchanged, all16 exact comparisons/metadata unchanged. Both
+changed rooms still MAJOR; no room promotions. All601/139 and39 prior groups hold
+under their explicit actual/source/compact evidence, not a claim47 fresh scans.
+Previously evaluated CN3_7 recheck keeps its entire map and168448/168448 solid
+pixels with0missing/excess; this40th guard is not another no-tuning holdout claim.
+Rejected calibration-changing and loose shifted-background prototypes preserved.
+AC pairing keeps all8 full normal proofs: dense+0.77%, sparse+3.37% observed,
+limited overlapping two-repeat ranges; broader material/default cost still due.
+
+Continue positive geometry/polarity/compound-spike recovery and final-current71
+changed-map QA. Do not equate this precision batch with all screens solved or
+replace the original milestone with suppression. The original six gates and
+longer-term unfamiliar-tileset objective remain intact; goal ACTIVE.
+
 ## Current direction (B193/B195, 2026-10-12): complete outputs, repair teacher contamination
 
 Current71+16 generation is complete at the published opt-in pipeline, including

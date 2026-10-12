@@ -8,10 +8,88 @@ from math import sqrt
 
 from PIL import Image
 from jtool_scanner import scanner
-from scripts.source_glyph_prototypes import SourceGlyphLibrary
+from scripts.source_glyph_prototypes import SourceGlyphEvidence, SourceGlyphLibrary
 from scripts.source_material_evidence import (
     BackingCoreRoles, boundary_primitives, container_primitives, rectangle_field,
 )
+
+
+class _NewCellEvidence:
+    """Higher-confidence original teachers for NEW mini growth, not calibration.
+
+    Keeping these channels separate matters: withdrawing uncertain material from
+    full-pose calibration can undo real narrow/hollow terrain corrections. A
+    correlated texture is still useful calibration, but is not object identity.
+    """
+
+    def __init__(self, field, pixels, nearest, selected):
+        self.field, self.pixels = field, pixels
+        self.nearest, self.selected = nearest, selected
+        self.glyphs = SourceGlyphEvidence(field.image, field.room,
+            contour_field=field.contours)
+        self.membership, self.rectangles = {}, {}
+
+    def majority(self, point):
+        if point not in self.membership:
+            x, y = point
+            values = [tuple(self.pixels[((y+py)*800+x+px)*3:((y+py)*800+x+px)*3+3])
+                      for py in range(2, 14) for px in range(2, 14)]
+            self.membership[point] = sum(self.nearest(v) in self.selected for v in values) > 72
+        return self.membership[point]
+
+    def closed_rectangle(self, point):
+        if point in self.rectangles:
+            return self.rectangles[point]
+        x, y = point
+        result = min(self.field.box_faces(x, y)) >= 9
+        if not result:
+            pitch_x, pitch_y = 800/self.field.room.width, 608/self.field.room.height
+            for ox in (x-16, x):
+                for oy in (y-16, y):
+                    nominal = self.field.contours.rectangle(ox, oy, 32)
+                    # One source-pixel phase may complete ONE weak face. It may
+                    # not turn an otherwise weak background grid into a frame.
+                    if sum(f.support >= 9 and not f.unknown for f in nominal) < 3:
+                        continue
+                    for dx in (0, -pitch_x, pitch_x):
+                        for dy in (0, -pitch_y, pitch_y):
+                            if not (0 <= ox+dx <= 768 and 0 <= oy+dy <= 576):
+                                continue
+                            faces = self.field.contours.rectangle(ox+dx, oy+dy, 32)
+                            if all(f.support >= 9 and not f.unknown for f in faces):
+                                result = True
+                                break
+                        if result:
+                            break
+                    if result:
+                        break
+                if result:
+                    break
+        self.rectangles[point] = result
+        return result
+
+    def rectangular_teacher(self, point):
+        if self.closed_rectangle(point):
+            return True
+        faces = self.field.box_faces(*point)
+        if max(min(faces[0], faces[2]), min(faces[1], faces[3])) < 9:
+            return False
+        # Joined triangles can borrow a neighboring base as an opposing edge.
+        # Existing locators need not identify every constituent for raw source
+        # geometry/body/exterior evidence to disqualify a teacher.
+        return not any(self.glyphs.owner(t, *point) is not None for t in (7, 8, 9, 10))
+
+    def seeds(self, models, pattern, mode):
+        seeds = []
+        for seed, group in models:
+            if pattern(*seed)['flat']:
+                seeds.append(seed)
+                continue
+            witnessed = [p for p in group if self.majority(p) or self.closed_rectangle(p)]
+            enough_regions = mode != 'distributed' or len({(x//32, y//32) for x, y in witnessed}) >= 3
+            if len(witnessed) >= 3 and enough_regions and any(self.rectangular_teacher(p) for p in witnessed):
+                seeds.append(seed if seed in witnessed else min(witnessed))
+        return seeds
 
 
 def eligible_primitives(image, room, spikes, *, source_context=None):
@@ -151,7 +229,10 @@ def _pattern_cells(image, room, spikes, water_boxes=(), *, mode='intrinsic', sou
                 if intrinsic:
                     break
                 modeled.update(qualified)
+    certain_seeds = ([] if intrinsic else
+        _NewCellEvidence(field, raw, nearest, selected).seeds(models, pattern, mode))
     accepted = set()
+    new_certain = set()
     for y in range(0, 593, 16):
         for x in range(0, 785, 16):
             candidate = pattern(x, y)
@@ -162,12 +243,16 @@ def _pattern_cells(image, room, spikes, water_boxes=(), *, mode='intrinsic', sou
                 continue
             if any(matches(candidate, pattern(*seed)) for seed, _ in models):
                 accepted.add((x, y))
+                if intrinsic or any(matches(candidate, pattern(*seed)) for seed in certain_seeds):
+                    new_certain.add((x, y))
     record = {**diagnosis, 'primitive_before_pattern': sorted(primitive),
         'models': [dict(seed=seed, independent_source_witnesses=group,
                         label=pattern(*seed)['label'], flat=pattern(*seed)['flat']) for seed, group in models],
         'accepted': sorted(accepted), 'model_candidates': len(models),
         'no_new_objects_as_texture_witnesses': True, 'model_source_geometry_not_fixed_sprite': True}
     if not intrinsic:
+        record['source_new_cell_certainty'] = sorted(new_certain)
+        record['source_new_cell_certainty_separate_from_calibration'] = True
         record.update(source_flat_accepted_cells=sorted(p for p in accepted if pattern(*p)['flat']),
                       geometry_components_with_independent_appearance_roles=True, source_geometry_component_count=len(groups))
     if roles is not None:
@@ -180,6 +265,9 @@ def combined_patterns(image, room, spikes, water_boxes=(), *, source_context=Non
     distributed, diag = pattern_cells(image, room, spikes, water_boxes, mode='distributed', source_context=source_context)
     accepted = local | distributed
     flat = set(map(tuple, local_diag.get('source_flat_accepted_cells', []))) | set(map(tuple, diag.get('source_flat_accepted_cells', [])))
-    return accepted, {**diag, 'accepted': sorted(accepted), 'source_flat_accepted_cells': sorted(flat),
+    certainty = (set(map(tuple, local_diag.get('source_new_cell_certainty', local))) |
+                 set(map(tuple, diag.get('source_new_cell_certainty', distributed))))
+    return accepted, {**diag, 'accepted': sorted(accepted), 'source_new_cell_certainty': sorted(certainty),
+                      'source_flat_accepted_cells': sorted(flat),
                       'eligible_local_models': local_diag.get('models', []),
                       'local_and_distributed_original_source_evidence=True': True}
