@@ -119,6 +119,61 @@ class SourceRectanglePrototypeTests(unittest.TestCase):
         self.assertEqual(proof['candidates'], 0)
         self.assertEqual(context.statistics()['glyph_builds'], 0)
 
+    def test_two_neighboring_borders_cannot_replace_interior_pattern(self):
+        # Deliberately collide the WHOLE descriptor, not source RGB/contours.
+        # This is a partial mechanism test, not an unstubbed scanner benchmark.
+        for palette in range(4):
+            for scale in (1., 1.25):
+                with self.subTest(palette=palette, scale=scale):
+                    background, ink = PALETTES[palette]
+                    raster = Image.new('RGB', (800, 608), background)
+                    frames = [(168, 160), (264, 160), (360, 160), (200, 192)]
+                    for x, y in frames:
+                        draw = ImageDraw.Draw(raster)
+                        draw.rectangle((x, y, x + 31, y + 31), outline=ink, width=2)
+                        draw.line((x + 4, y + 4, x + 27, y + 27), fill=ink, width=2)
+                        draw.line((x + 4, y + 27, x + 27, y + 4), fill=ink, width=2)
+                    raster = raster.resize((round(800 * scale), round(608 * scale)), Image.Resampling.BILINEAR)
+                    image = RGBImage(raster.width, raster.height, raster.tobytes())
+                    room = Box(0, 0, image.width, image.height)
+                    locators = [SimpleNamespace(type_id=1, x=x, y=y) for x, y in frames]
+                    locators.append(SimpleNamespace(type_id=1, x=168, y=192))
+                    context = SourceEvidenceContext(image, room, [])
+                    library = context.glyph_library(image, room, [])
+                    signature = (1.,) + (0.,) * 767
+                    with patch.object(library, 'signature', return_value=signature):
+                        proposed, _ = source_rectangle_proposals(image, room, locators, source_context=context)
+                    self.assertNotIn((1, 168, 192), proposed)
+                    self.assertTrue({(1, x, y) for x, y in frames} <= proposed)
+
+    def test_real_two_sided_query_retains_matching_interior_across_rgb_and_scale(self):
+        for palette in range(4):
+            for scale in (1., 1.25):
+                with self.subTest(palette=palette, scale=scale):
+                    background, ink = PALETTES[palette]
+                    raster = Image.new('RGB', (800, 608), background)
+                    frames = [(168 + 96 * i, 160) for i in range(4)]
+                    for x, y in frames:
+                        tile = Image.new('RGB', (32, 32), background)
+                        draw = ImageDraw.Draw(tile)
+                        draw.rectangle((0, 0, 31, 31), outline=ink, width=1)
+                        draw.line((0, 0, 31, 31), fill=ink, width=4)
+                        draw.line((0, 31, 31, 0), fill=ink, width=4)
+                        if (x, y) == frames[-1]:
+                            # An occluding surface hides two borders, not the body.
+                            draw.line((31, 0, 31, 31), fill=background)
+                            draw.line((0, 31, 31, 31), fill=background)
+                        raster.paste(tile, (x, y))
+                    raster = raster.resize((round(800 * scale), round(608 * scale)), Image.Resampling.BILINEAR)
+                    image = RGBImage(raster.width, raster.height, raster.tobytes())
+                    room = Box(0, 0, image.width, image.height)
+                    locators = [SimpleNamespace(type_id=1, x=x, y=y) for x, y in frames]
+                    context = SourceEvidenceContext(image, room, [])
+                    faces = context.contours().rectangle(*frames[-1], 32)
+                    self.assertEqual(sum(f.support >= 9 and not f.unknown for f in faces), 2)
+                    proposed, _ = source_rectangle_proposals(image, room, locators, source_context=context)
+                    self.assertEqual(proposed, {(1, x, y) for x, y in frames})
+
 
 class RectangleCoveragePartitionTests(unittest.TestCase):
     """Wiring-only partition checks; independent rectangle evidence is stubbed."""

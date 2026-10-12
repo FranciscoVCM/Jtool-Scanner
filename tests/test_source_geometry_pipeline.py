@@ -108,3 +108,32 @@ class SourceGeometryPipelineTests(TestCase):
         proposed, removed, _ = self.run_size()
         self.assertEqual(self.detections, original)
         self.assertIs(self.image.data, pixels)
+
+    def test_rectangle_supplement_receives_original_inputs_and_shared_context_after_agreement(self):
+        old = (1, 160, 160)
+        new = (1, 168, 152)
+        rejected = {(1, 320, 320)}
+        events = []
+        def agreement(i, r, d, p, x, c, f, **kwargs):
+            events.append('agreement')
+            return {old}, {'prior_agreement': True}
+        def supplement(i, r, d, p, x, labels, *, source_context):
+            events.append('supplement')
+            self.assertIs(i, self.image)
+            self.assertEqual(r, self.room)
+            self.assertEqual(d, tuple(self.detections))
+            self.assertEqual(p, {old})
+            self.assertEqual(x, rejected)
+            self.assertEqual(labels, [])
+            source_context.validate(i, r, [])
+            return {old, new}, {'added': [new]}
+        with patch('scripts.source_geometry_pipeline.joint_proposals', return_value=(set(), rejected, {
+                'source_material': {'accepted': [], 'selected_clusters': []}})), \
+             patch('scripts.source_geometry_pipeline.refit_full_poses', side_effect=lambda i,r,d,p,x,m,**kw:(p,x,{})), \
+             patch('scripts.source_geometry_pipeline.agree_new_fulls', side_effect=agreement), \
+             patch('scripts.source_geometry_pipeline.supplement_source_rectangles', side_effect=supplement):
+            proposed, removed, proof = source_proposals(self.image, self.room, iter(self.detections))
+        self.assertEqual(events, ['agreement', 'supplement'])
+        self.assertEqual(proposed, {old, new})
+        self.assertEqual(removed, rejected)
+        self.assertEqual(proof['rectangle_fallback']['added'], [new])

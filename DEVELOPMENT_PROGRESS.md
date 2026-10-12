@@ -4,6 +4,78 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B202 integrate independent rectangle recovery; reject border-only aliases
+
+The experimental source pipeline now consumes maintained rectangle evidence after
+prior arbitration only when independent foreground material calibration abstains.
+Original poses locate hypotheses; three physically disjoint original frames/two
+closed coherent exteriors teach RGB appearance. Nominal/half-source-pixel contour
+cohorts remain separate. Source calibration, old objects and standard/default
+scanning are unchanged; no source name/hash/palette/coordinate/reference lookup,
+new-output teachers, private runtime factory or duplicate full scan.
+
+First ordinary22 gate catches a real Irkara-89 regression: empty (496,304) becomes
+a full block, raising false positives23->24. Failed gate stays failed. Pass-through
+original-input observation reproduces the ENTIRE ordinary map/metadata and finds
+two neighboring borders (12/12/2/0 faces) matching whole texture0.906–0.921, while
+interior correlations are -0.064–0.044. Two-sided queries now additionally require
+independently learned interior RGB texture under the unchanged0.9 threshold.
+Three-sided teachers, three/four-sided queries and colour calibration stay intact.
+Lazy scan-local interior/model caches prevent repeated descriptor work.
+
+Actual unpatched22v2 passes the SAME frozen outputs: exactly four source-backed
+CN3-27 full additions/zero old removals, all other21 outputs neutral. Every prior
+ordered Detection/metadata, nonterrain, crop/grid, map header and all16 complete
+control comparisons are protected. FTFA926/928 with0extra/shift/wrong; Flames252
+exact,42extras/21misses/20shifts/2wrong; Hades334exact/20extras/4misses/12shifts;
+Irkara-89 entire prior control restored (208exact/23extras/11misses/18shifts/1wrong).
+These controls are not all perfect and are not room acceptance.
+
+CN3-27 frozen4096-positive structure improves2432->4096 matched/1664->0missing,
+old1344 negatives0; complete29696-negative ROI retains2688 pre-existing false
+pixels. Fresh ordinary whole Source/JTool/Blend reviewed: real pale frames align,
+but wrong old block phases, compound spikes and imperfect water/vines/platforms
+remain. Room MAJOR,0promotions. CN3-25 redundant full hypotheses are not emitted.
+
+All41 prior-gain guards pass:39 original groups recomputed from ordinary/source
+evidence, fresh CN3-7 entire-map/source guard holds168448/168448 solid pixels,
+and Golden7 strict whole-output identity retains its39 restored cells/49504
+positive pixels and576 known excess. Source protection has4 fresh active-branch
+replays,23 AST-qualified calibrated bypass carries and5 explicit compact entry
+carries, retaining601 minis/139 terrain. This is not47 fresh ordinary scans.
+
+198 affected source tests PASS202.456s; final38 focused PASS76.792s includes the
+new real-RGB partial-frame positive added after the broad loader. The new partial/
+mock whole-descriptor collision negative fails old code in4 subtests, then passes;
+24 real two-sided variants retain geometry across palette/polarity/capture scale.
+Unstubbed24+24 empty-corner probes did not reproduce the bug; not causal red tests.
+All three maintained functions match the frozen prototype's executable AST with
+only documentation/local-variable alpha renaming excluded. A later doc-only file
+clarification has explicit ENTIRE executable-AST/code identity compatibility;
+old normal/control receipts are not rewritten or mislabeled as new scans.
+
+Preserved checker failures: unsupported manifest partition before CN3-7 scanning,
+an incorrect single-active-branch assumption, and the audit's manual CN3-29 record
+schema. Corrected verifiers retain the original targets/failed artifacts and now
+persist completed rows before later checks. No detector workaround for errors.
+
+Quiet serial AC old/new/new/old completes12 saved proof-equivalent runs. Dense
+106.053->99.963s (-6.090s,-5.74% observed), sparse81.974->80.394s (-1.581s,-1.93%),
+affected CN3-27 104.812->119.907s (+15.095s,+14.40%). Two repeats/mode and a brief
+lightweight audit-generation overlap at the dense/sparse boundary; not a universal
+speedup/no-overhead claim. A separate pass-through full-API cProfile keeps the
+ENTIRE map/metadata: instrumented new branch37.562s, contour edge23.772s cumulative,
+RGB pixel9.824s, whole signature6.810s, exterior checks5.816s (nested, not additive
+or end-to-end timing). The real added latency is retained explicitly for source
+recovery in experimental mode, not accepted as default readiness. Contour/RGB
+work reduction remains a priority; standard scanning is unchanged.
+
+Conservative successor audit contains8 current ordinary canonical
+outputs+16controls,63 not freshly whole-scanned,1 fresh changed whole review and
+7 strict whole-output/render-equality carried findings.0approvals. Reserved CN3-28
+untouched; final stable all71/current changed-map QA and original six goal gates
+remain incomplete. Next safe old-pose correction and compound-spike recovery.
+
 ## 2026-10-12 — B201 qualify nonredundant source-frame recovery; not deployed
 
 Measured against unchanged current ordinary outputs, CN3-25's55 rectangle

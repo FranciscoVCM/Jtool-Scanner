@@ -153,10 +153,12 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),12)
+        self.assertEqual(len(paths),13)
+        rectangle = next(p for p in paths if p.name == 'source_rectangle_prototypes.py')
         self.assertTrue(all(p.is_file() for p in paths))
         original=app._source_fingerprint()
-        path=paths[0]
         read_bytes=Path.read_bytes
-        with patch.object(Path,'read_bytes',lambda p:read_bytes(p)+(b'\n# changed test dependency\n' if p==path else b'')):
-            self.assertNotEqual(app._source_fingerprint(),original)
+        for path in (paths[0], rectangle):
+            with self.subTest(dependency=path.name), \
+                 patch.object(Path,'read_bytes',lambda p:read_bytes(p)+(b'\n# changed test dependency\n' if p==path else b'')):
+                self.assertNotEqual(app._source_fingerprint(),original)

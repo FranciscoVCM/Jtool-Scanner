@@ -8,6 +8,7 @@ from scripts.source_evidence_context import SourceEvidenceContext
 from scripts.source_full_pose import refit_full_poses
 from scripts.source_material_ownership import material_cells
 from scripts.source_occupancy import footprint, source_size_repair
+from scripts.source_rectangle_prototypes import supplement_source_rectangles
 from scripts.source_terrain_agreement import agree_new_fulls
 
 
@@ -59,4 +60,10 @@ def source_proposals(image, room, detections, *, source_context=None):
     cells = set(map(tuple, material.get('accepted', [])))
     flat = set(map(tuple, material.get('source_flat_accepted_cells', [])))
     proposed, agreement = agree_new_fulls(image, room, detections, proposed, rejected, cells, flat, source_context=context)
-    return proposed, rejected, {**diag, **pose, **agreement}
+    # Mean-colour roles can abstain on pale hollow terrain. Independent ORIGINAL
+    # source rectangles provide a separate, nonredundant positive channel without
+    # changing calibration, teaching from outputs, or retiring previous geometry.
+    proposed, rectangle = supplement_source_rectangles(
+        image, room, detections, proposed, rejected, material.get('selected_clusters', ()),
+        source_context=context)
+    return proposed, rejected, {**diag, **pose, **agreement, 'rectangle_fallback': rectangle}

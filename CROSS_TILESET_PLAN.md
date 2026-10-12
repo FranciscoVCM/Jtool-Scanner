@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Current direction (B202, 2026-10-13): qualified positive rectangle recovery
+
+Pale/hollow foreground can lack colour calibration. The experimental pipeline
+now consumes independent original rectangle/RGB evidence after arbitration,
+without changing calibration/default scanning or retiring old poses. Two-sided
+queries additionally need interior texture: neighboring borders caused an empty
+Irkara-89 full-block regression caught by the first ordinary control gate. Failed
+receipt preserved; shared interior qualification restores the whole control.
+
+Unpatched22v2: CN3-27 exactly4 real frames/1664 positive pixels recovered,
+no old positive loss/new declared negatives; old2688 false ROI pixels remain.
+Allother21 maps/ordered metadata and16 full exact comparisons held. All41 groups,
+601 reviewed minis/139 terrain protected with explicit fresh/branch/compact scope.
+198 broader tests and38 final focused tests pass. Real partial frames survive
+RGB/polarity/scale; no reference/room/palette/coordinate rule or output teachers.
+
+Whole current CN3-27 Source/JTool/Blend still MAJOR;0approvals. Eight current
+ordinary canonical outputs/16controls,63 not fresh whole at this runtime; final
+stable all71 changed-map source QA remains due. Serial AC12 paired runs preserve
+all proofs: dense-5.74%, sparse-1.93% observed, but affected CN3-27 +15.095s/+14.40%.
+Two repeats/mode, not a speed claim. Separate equivalent-output profiling identifies
+contours/RGB sampling as the new cost. Keep explicit latency risk/experimental-only
+status; reducing this and broader material overhead remains due before default use.
+Reserved28 untouched. Next safe old-pose correction/compound spike recovery;
+original six gates remain incomplete, not replaced by this one-room gain.
+
 ## Current direction (B201, 2026-10-12): distinguish real recovery from duplicate coverage
 
 CN3-25's27 new full-frame keys add zero solid area: all footprints are already

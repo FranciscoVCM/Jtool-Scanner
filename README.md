@@ -383,7 +383,8 @@ The input image SHA-256 and cached room transform are verified. Queries are
 `type_id,x,y` in native top-left coordinates; only spike IDs3–10 are supported.
 Compact/nonstandard mappings remain unqualified. Output is JSON evidence, not
 an emitted object, edited map or accuracy certificate. The tool is experimental
-and **is not bound to the application's detector**. Insufficient source examples,
+and does not itself emit objects. The experimental caller consumes its evidence;
+standard scanning is unchanged. Insufficient source examples,
 occlusion, hidden size identity and unfamiliar styles can still require abstention.
 
 ### Experimental source-taught full-block evidence
@@ -402,7 +403,8 @@ python -m unittest tests.test_source_block_prototypes
 No reference map, stored tileset or new output object is used as a teacher. Missing
 terrain evidence is not evidence of empty space: an ambiguous query abstains.
 The module returns appearance evidence, not object emission or hidden block-size
-truth, and is **not bound to the application's detector**.
+truth. The opt-in experimental pipeline consumes that evidence; the standard
+scanner remains unchanged.
 
 `scripts/source_rectangle_prototypes.py` adds the read-only
 `source_rectangle_proposals(image, room, original_detections, source_context=...)`
@@ -412,26 +414,33 @@ source frames, including two closed frames with coherent exterior patches, teach
 appearance. Three-sided teachers and two-sided texture queries remain distinct.
 Nominal and jointly inset half-source-pixel contour cohorts preserve independent
 evidence across RGB polarity and capture scale without lowering support thresholds.
-The context reuses source contours/pixels; queries never become teachers.
+The context reuses source contours/pixels; queries never become teachers. A
+two-sided query also needs matching interior RGB texture: neighboring borders
+alone cannot establish a block in an empty corner.
 
 ```powershell
 python -m unittest tests.test_source_rectangle_prototypes
 ```
 
-This API is **diagnostic only, not connected to either app scanning mode**. It
-does not safely replace old poses or establish whole-room identity. Portable
-checks and source-only CN3-27 recovery are not deployed scan accuracy; competing
-glyphs/markers, whole-room transfer, controls and runtime still need qualification
-before adoption. Compact-grid mapping is not qualified by this experiment.
+The API itself returns source hypotheses, not an emitted or certified map.
+`scripts/source_geometry_pipeline.py` now consumes qualified nonredundant results
+in the **opt-in experimental mode only**. Standard/default scanning remains
+unchanged. It does not retire old poses or certify whole-room identity;
+compact-grid mapping is not qualified by this experiment.
 
 The same module's `supplement_source_rectangles(...)` API tests additive recovery
 only when independent foreground material calibration is absent. It preserves
 prior arbitration, skips full/mini coverage already present and cannot resurrect
-a rejected key. It also remains **unbound to the app**. A full scanner trial with
-an explicitly substituted callback preserves CN3-27's previous detection metadata
-and adds four source-supported frames; that is not an unpatched deployment or a
-whole-room accuracy certificate. All16 ordinary controls and controlled timing
-remain prerequisites for integration.
+a rejected key. The current unpatched ordinary scanner preserves all prior
+CN3-27 Detection metadata while adding four independently source-supported frames:
+1,664 missing declared terrain pixels recovered. Existing wrong poses/2,688 false
+pixels in the complete reviewed region remain, so the room is still MAJOR.
+All16 exact control outputs/comparisons and41 prior-gain groups are protected;
+neither a local recovery nor passing controls certifies a whole room.
+The recovery branch has a measured cost: two serial AC pairs on CN3-27 add about
+15.1 seconds (14.4%) over the prior pipeline. Contour/RGB probing dominates its
+profile. Dense/sparse bypass cases did not show an increase in those limited
+pairs; this is not a universal performance claim or readiness for default use.
 
 `scripts/source_terrain_agreement.py` extracts the experimental new-full agreement
 rule. It requires positive source-glyph competition before an unsupported quarter
@@ -439,7 +448,8 @@ can disprove a proposed full; independent rectangular source evidence and matchi
 whole32 appearance retain priority. Supported quarters can be repacked without
 deleting original objects or treating unknown source pixels as empty space.
 Inputs must be original detections and independently source-qualified cells, not
-reference answers or newly generated teachers. It is not an app/default binding.
+reference answers or newly generated teachers. The experimental caller consumes
+its evidence; this is not a standalone object emitter or default-mode switch.
 
 ```powershell
 python -m unittest tests.test_source_terrain_agreement
@@ -486,8 +496,9 @@ background, flat-water and source-rectangle priority remain separate safeguards.
 Material consumers can share original color/contour evidence and exact native RGB
 through `SourceEvidenceContext`. The material contour kernel retains its original
 sqrt arithmetic; the existing glyph kernel keeps hypot arithmetic. Both use the
-same sampling implementation. These modules are not default-bound; sizing/proposal
-assembly and whole-scanner qualification are still required before deployment.
+same sampling implementation. These modules are consumed by the opt-in pipeline,
+not the default scanner; broader precision/generalization and latency qualification
+remain ongoing.
 
 ```powershell
 python -m unittest tests.test_source_material_evidence tests.test_source_material_ownership
@@ -495,11 +506,12 @@ python -m unittest tests.test_source_material_evidence tests.test_source_materia
 
 `scripts/source_geometry_pipeline.py` assembles the complete experimental source
 pipeline explicitly: source occupancy sizing, joint material growth, flat-water
-uncertainty, whole-frame pose repair and new-full agreement. Its sizing stage lives
+uncertainty, whole-frame pose repair, new-full agreement and independent rectangle
+recovery when material calibration abstains. Its sizing stage lives
 in `scripts/source_occupancy.py`. Both use original source evidence and preserve
 known positive coverage; new outputs never become teachers. No private wrapper
-imports or reference-map inputs are required. The pipeline is not default-bound;
-whole-scanner qualification remains necessary before deployment.
+imports or reference-map inputs are required. The pipeline remains experimental
+and opt-in; local improvements and green controls do not certify a whole room.
 
 ```powershell
 python -m unittest tests.test_source_geometry_pipeline

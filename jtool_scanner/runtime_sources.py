@@ -6,6 +6,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_evidence_context', 'source_local_background', 'source_full_pose',
     'source_material_evidence', 'source_material_patterns', 'source_material_ownership',
     'source_occupancy', 'source_geometry_pipeline', 'source_terrain_agreement',
+    'source_rectangle_prototypes',
 )
 
 

@@ -2,8 +2,9 @@
 
 Hollow terrain can resemble background in mean colour. Repeated raw source frames
 can establish a separate appearance hypothesis without changing colour roles.
-This diagnostic is NOT bound to the scanner: its hypotheses do not retire old
-objects, resolve compound spikes, or certify a map. No references or tileset IDs.
+These read-only APIs produce hypotheses, not an emitted or certified map. The
+experimental scanner caller owns qualification/binding; these routines do not
+retire old objects or resolve compound spikes. No references or tileset IDs.
 """
 from __future__ import annotations
 
@@ -11,6 +12,26 @@ from math import sqrt
 
 from scripts.source_evidence_context import SourceEvidenceContext
 from scripts.source_occupancy import footprint
+
+
+def _interior_signature(library, x, y):
+    """RGB pattern inside the border; a flat/linear interior supplies no shape.
+
+    Two neighboring borders can correlate with a whole-frame model in genuinely
+    empty space. Exclude the outer eighth on each side, retaining independently
+    learned original interior artwork rather than letting those borders teach it.
+    """
+    values = [(i - 7.5, j - 7.5,
+               library.pixel(x + 4 + (i + .5) * 1.5, y + 4 + (j + .5) * 1.5))
+              for j in range(16) for i in range(16)]
+    mean = tuple(sum(rgb[c] for _, _, rgb in values) / 256 for c in range(3))
+    dx, dy = sum(u * u for u, _, _ in values), sum(v * v for _, v, _ in values)
+    sx = tuple(sum(u * rgb[c] for u, _, rgb in values) / dx for c in range(3))
+    sy = tuple(sum(v * rgb[c] for _, v, rgb in values) / dy for c in range(3))
+    residual = tuple(rgb[c] - mean[c] - sx[c] * u - sy[c] * v
+                     for u, v, rgb in values for c in range(3))
+    length = sqrt(sum(value * value for value in residual))
+    return tuple(value / max(1e-12, length) for value in residual)
 
 
 def _dot(first, second):
@@ -58,7 +79,8 @@ def source_rectangle_proposals(image, room, detections, *, source_context=None):
     sharper raster evidence must not displace an independently valid nominal
     model. Thresholds are identical. Every model needs three physically disjoint
     original source frames, including two closed frames with coherent exteriors.
-    Three-sided teachers and two-sided whole-texture queries are distinct.
+    Three-sided teachers and two-sided queries are distinct. A two-sided query
+    additionally needs matching interior texture, not just neighboring borders.
     """
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
@@ -124,8 +146,26 @@ def source_rectangle_proposals(image, room, detections, *, source_context=None):
             length = sqrt(sum(value * value for value in mean))
             models.append(dict(teachers=identity,
                                signature=tuple(value / max(length, 1e-12) for value in mean)))
-    proposed = {(1, *row['point']) for row in rows
-                if any(_dot(row['signature'], model['signature']) >= .9 for model in models)}
+    interior, inner_models, proposed = {}, {}, set()
+    def body(point):
+        if point not in interior:
+            interior[point] = _interior_signature(library, *point)
+        return interior[point]
+    for row in rows:
+        for model in models:
+            if _dot(row['signature'], model['signature']) < .9:
+                continue
+            if not row['teacher']:
+                identity = model['teachers']
+                if identity not in inner_models:
+                    mean = tuple(sum(body(point)[i] for point in identity) / len(identity)
+                                 for i in range(768))
+                    length = sqrt(sum(value * value for value in mean))
+                    inner_models[identity] = tuple(value / max(length, 1e-12) for value in mean)
+                if _dot(body(row['point']), inner_models[identity]) < .9:
+                    continue
+            proposed.add((1, *row['point']))
+            break
     return proposed, dict(strong_source_frames=[r['point'] for r in rows if r['strong']],
                           models=[dict(teachers=m['teachers']) for m in models],
                           candidates=len(rows), no_new_outputs_as_teachers=True,
@@ -140,7 +180,7 @@ def supplement_source_rectangles(image, room, detections, proposed, rejected,
 
     Preserve prior arbitration and original teachers. Do not duplicate existing
     full/mini coverage or resurrect a rejected key. This trial does not retire
-    old poses and is NOT wired to the application. Its caller must independently
+    old poses; the experimental caller owns integration. It must independently
     qualify source identity, whole-map deltas, controls and runtime before adoption.
     """
     proposed, rejected = set(proposed), set(rejected)
