@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Current direction (B200, 2026-10-12): source-rectangle diagnostic, not app adoption
+
+CN3-27's pale hollow terrain has no independent colour calibration, so existing
+full-pose repair abstains before real8px-phase frames can be corrected. A separate
+original-source rectangle/whole-RGB appearance diagnostic now finds all four
+reviewed upper-left frames. Positive-only union recovers1664 missing pixels, but
+retains2688 false solid pixels in the complete ROI: no deployed gain or room approval.
+
+Portable tests exposed a sharp-raster boundary phase failure and teacher-pool
+replacement loss. Joint half-source-pixel inset contour evidence uses unchanged
+support9; separate nominal/inset cohorts preserve the real prior source proposal.
+Three physically disjoint original teachers/two closed coherent exteriors are
+required. Eight new tests and59 selected evidence tests pass; five real source-only
+cases reproduce the frozen prototype. No private loader or scanner binding.
+
+CN3-25 has55 hypotheses;19 nominal additions were individually source-inspected,
+but nine inset additions/whole-room precision are unqualified. CN3-92/Dotkid4/CN3-9
+are neutral. Reserved CN3-28 stays untouched. App/runtime/default unchanged;
+existing current71 audit carries with zero promotions. Next qualify every source
+delta and safe pose replacement, marker/glyph competition, controls and quiet
+runtime before integration. Original six gates remain incomplete; goal not complete.
+
 ## Current direction (B199, 2026-10-12): local illumination works; pale terrain still missing
 
 Global mean-colour centres can reject genuinely known-background shade. Sizing

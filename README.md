@@ -404,6 +404,26 @@ terrain evidence is not evidence of empty space: an ambiguous query abstains.
 The module returns appearance evidence, not object emission or hidden block-size
 truth, and is **not bound to the application's detector**.
 
+`scripts/source_rectangle_prototypes.py` adds the read-only
+`source_rectangle_proposals(image, room, original_detections, source_context=...)`
+API for hollow terrain whose mean colour resembles the background. Original full
+poses locate nearby 8px-phase queries. Three physically disjoint, mutually matching
+source frames, including two closed frames with coherent exterior patches, teach
+appearance. Three-sided teachers and two-sided texture queries remain distinct.
+Nominal and jointly inset half-source-pixel contour cohorts preserve independent
+evidence across RGB polarity and capture scale without lowering support thresholds.
+The context reuses source contours/pixels; queries never become teachers.
+
+```powershell
+python -m unittest tests.test_source_rectangle_prototypes
+```
+
+This API is **diagnostic only, not connected to either app scanning mode**. It
+does not safely replace old poses or establish whole-room identity. Portable
+checks and source-only CN3-27 recovery are not deployed scan accuracy; competing
+glyphs/markers, whole-room transfer, controls and runtime still need qualification
+before adoption. Compact-grid mapping is not qualified by this experiment.
+
 `scripts/source_terrain_agreement.py` extracts the experimental new-full agreement
 rule. It requires positive source-glyph competition before an unsupported quarter
 can disprove a proposed full; independent rectangular source evidence and matching

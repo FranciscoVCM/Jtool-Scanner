@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B200 recover independent rectangle evidence; diagnostic only
+
+Resumed the saved shutdown checkpoint without losing previous work. Source-only
+CN3-27 instrumentation reproduces the whole ordinary map/metadata and establishes
+the cause: independent foreground material calibration is absent, so pale/hollow
+terrain cannot reach full-pose repair. Its four visible frames include a genuine 8px placement
+phase. An original-source rectangle/whole-RGB appearance diagnostic finds all four.
+Positive-only union changes the fixed4096-positive mask2432->4096 matched,
+1664->0 misses; old1344 negatives remain0 excess. Additional complete29696-negative
+ROI keeps2688 false pixels from old wrong poses. This is NOT an app/pipeline gain,
+false-conflict correction or whole-room approval; old pose retirement remains due.
+
+Portable frozen tests initially fail six palette/scale positives. Nominal contour
+probes miss sharp two-pixel outlines at exclusive box edges; a jointly inset
+half-source-pixel rectangle resolves that phase without reducing support9. An
+intermediate candidate loses one genuine CN3-25 frame by changing its teacher pool;
+separate nominal/inset cohorts retain nominal evidence. Require three physically
+disjoint original frames, including two closed frames with coherent exterior
+patches; separate three-sided teachers from two-sided whole-texture queries.
+No room/hash/palette/reference-answer rule, mean-colour role changes or new-output
+teachers. Public explicit source_rectangle_prototypes replaces private experiment
+factories for repeatable evidence, with scan-local context reuse and no-locator
+early abstention. It is not imported by the scanner or either app scanning mode.
+
+Eight new tests cover RGB palettes/polarities/scale, joined triangles, open frames,
+gradient/empty negatives, duplicate witnesses, cache/input integrity. Selected59
+evidence tests PASS16.761s. First run has four sandbox temporary-PNG permission
+ERRORS16.614s; identical command with normal access passes, no detector workaround.
+The isolated disjoint-teacher insertion's indentation failure is also preserved
+before correction; no failed receipt is relabeled successful.
+
+Five public source-only runs reproduce all proposed keys, candidate counts,
+strong frames and distinct teacher groups from the frozen experiment. CN3-27:4;
+CN3-25:55; CN3-92/Dotkid4/CN3-9:0. Nineteen nominal CN3-25 new full-frame contexts
+were independently inspected and show real frames, but nine inset additions and
+complete source/glyph/marker arbitration remain unqualified. Counts are NOT
+accuracy or ordinary whole-map gains. Reserved CN3-28 not evaluated/tuned.
+
+App implementation/fingerprint remains B199, so prior audit/control receipts are
+retained, not claimed as new scans. No output changes/room promotions or runtime
+speed claims. Next independently qualify every candidate/source delta, safe old
+pose replacement, complete protected/ordinary controls and serial AC timing before
+pipeline adoption. Final stable all71/current changed-map QA and the original six
+goal gates remain incomplete. This is a durable evidence checkpoint, not completion.
+
 ## 2026-10-12 — B199 local illumination corroboration; source-backed background/phase repair
 
 Known background pixels were insufficient in shaded rooms: the global mean-colour
