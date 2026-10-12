@@ -22,19 +22,27 @@ class _NewCellEvidence:
     correlated texture is still useful calibration, but is not object identity.
     """
 
-    def __init__(self, field, pixels, nearest, selected):
+    def __init__(self, field, pixels, nearest, selected, containers=()):
         self.field, self.pixels = field, pixels
         self.nearest, self.selected = nearest, selected
         self.glyphs = SourceGlyphEvidence(field.image, field.room,
             contour_field=field.contours)
         self.membership, self.rectangles = {}, {}
+        # These containers are independently bounded in the ORIGINAL source;
+        # their cells are not newly emitted terrain or reference-map answers.
+        self.background_bounded = {tuple(point) for container in containers
+            if sum(count >= 9 and not unknown for count, unknown in container['faces']) >= 3
+            for point in container['cells']}
 
     def majority(self, point):
         if point not in self.membership:
             x, y = point
             values = [tuple(self.pixels[((y+py)*800+x+px)*3:((y+py)*800+x+px)*3+3])
                       for py in range(2, 14) for px in range(2, 14)]
-            self.membership[point] = sum(self.nearest(v) in self.selected for v in values) > 72
+            count = sum(self.nearest(v) in self.selected for v in values)
+            # Patterned terrain can split its interior evenly between material
+            # and dark texture. Only independent geometry may corroborate a tie.
+            self.membership[point] = count >= (72 if point in self.background_bounded else 73)
         return self.membership[point]
 
     def closed_rectangle(self, point):
@@ -87,8 +95,23 @@ class _NewCellEvidence:
                 continue
             witnessed = [p for p in group if self.majority(p) or self.closed_rectangle(p)]
             enough_regions = mode != 'distributed' or len({(x//32, y//32) for x, y in witnessed}) >= 3
-            if len(witnessed) >= 3 and enough_regions and any(self.rectangular_teacher(p) for p in witnessed):
-                seeds.append(seed if seed in witnessed else min(witnessed))
+            bounded = {p for p in witnessed if p in self.background_bounded and self.majority(p)}
+            bounded_regions = {(x//32, y//32) for x, y in bounded}
+            # A raw16 rectangle is not required inside every larger patterned
+            # source container. Three independent original peers remain needed.
+            bounded_model = len(bounded) >= 3 and (mode != 'distributed' or len(bounded_regions) >= 3)
+            # The image edge can hide the exterior of one peer. This is not an
+            # interior gap-fill rule: keep three original appearance witnesses,
+            # two independently bounded regions, and refuse unsupported interior
+            # peers. The band is one native full-object width, not a room identity.
+            border_bridge = (len(group) >= 3
+                and len({(x//32, y//32) for x, y in group}) >= 3
+                and len(bounded) >= 2 and len(bounded_regions) >= 2
+                and all(p in bounded or p[0] < 32 or p[1] < 32 or p[0] >= 768 or p[1] >= 576
+                        for p in group))
+            rectangular_model = any(self.rectangular_teacher(p) for p in witnessed)
+            if border_bridge or (len(witnessed) >= 3 and enough_regions and (rectangular_model or bounded_model)):
+                seeds.append(seed if border_bridge or seed in witnessed else min(witnessed))
         return seeds
 
 
@@ -230,7 +253,8 @@ def _pattern_cells(image, room, spikes, water_boxes=(), *, mode='intrinsic', sou
                     break
                 modeled.update(qualified)
     certain_seeds = ([] if intrinsic else
-        _NewCellEvidence(field, raw, nearest, selected).seeds(models, pattern, mode))
+        _NewCellEvidence(field, raw, nearest, selected,
+            diagnosis.get('material_boundary_containers', ())).seeds(models, pattern, mode))
     accepted = set()
     new_certain = set()
     for y in range(0, 593, 16):

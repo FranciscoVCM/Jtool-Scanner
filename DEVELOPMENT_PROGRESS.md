@@ -4,6 +4,54 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B198 restore source-bounded patterned terrain; expose prior recall loss
+
+Rechecking Golden7 exposed a real B196 regression outside its then-current guards:
+39 previously emitted terrain cells disappeared, losing 5,984 reviewed solid
+pixels. The fixed 54,880-positive/4,608-negative pixel masks were not changed.
+Source-qualified patterned containers now corroborate an exact material-colour
+tie. Three original appearance witnesses remain required; a clipped-frame bridge
+requires two independently bounded regions and refuses unsupported interior peers.
+Existing calibration/full-pose evidence, intrinsic/flat behavior and standard mode
+remain unchanged. No room/palette/hash/reference-answer rules or new-output teachers.
+
+Fresh unpatched four-primary plus sixteen-control scans pass. Golden7 restores all
+39 cells and its entire B193 map/ordered Detection data: 43,520 to 49,504 matched
+solid pixels, missing 11,360 to 5,376, unchanged 4,608 known false-background pixels.
+This restores prior recall; it is NOT net-new gain over B193. All changed cells and
+the whole current Source/JTool/Blend were inspected. Golden7 remains MAJOR/unusable:
+many inherited false full blocks, triangle and other-object errors remain.
+CN3-9/CN3-31 retain all ten source-reviewed false-mini removals; CN3-25 is unchanged.
+
+All sixteen complete exact comparisons, ordered detections, map bytes, warnings,
+crop/grid/options remain unchanged. FTFA stays 926/928 with no extras/shifts/wrong
+directions. Flames stays 252 exact with 42 extras/21 misses/20 shifts/2 wrong;
+Hades stays 334 exact with 20 extras/4 misses/12 shifts. Project fields match except
+their distinct, independently checksum-equivalent generated source-image locators.
+An initial raw-project equality failure is preserved, not hidden or relabeled.
+
+All 601 reviewed minis/139 terrain footprints and the original 39 achieved groups
+hold through explicit ordinary/source-replay/unchanged-compact evidence. Fresh
+CN3-7 guard retains 168,448/168,448 terrain pixels and its complete output; not a
+new holdout claim. Golden7 adds guard 41 to prevent the uncovered regression.
+All 175 affected source tests pass in 138.991s; six sandbox temporary-directory
+permission errors are preserved and the identical command rerun with normal access,
+without detector changes. Nine final boundary tests also pass after extending the
+unsupported-interior counterexamples; old recognition semantics fail three causal
+positive assertions. Not a complete-suite claim.
+
+Quiet serial AC old/new/new/old runs preserve all eight ENTIRE prior normal maps,
+projects and metadata. Dense 90.383 to 92.396 seconds (+2.013s, +2.23% observed);
+sparse 70.920 to 72.118 seconds (+1.198s, +1.69%). Two repeats per mode, not a
+universal no-overhead/speed claim. The additional source qualification is retained
+for the measured recall restoration; broader opt-in overhead remains unresolved.
+The current audit must distinguish five current canonical outputs from 66 rooms
+not freshly whole-scanned at this runtime. Zero room approvals. The goal stays
+ACTIVE: net-positive multi-family geometry recovery, final-current 71 changed-map
+QA, runtime/default rollout and all original completion gates still require proof.
+Next cause: independently source-calibrated local illumination in known-background
+classification, not global threshold loosening or a duplicate grayscale scan.
+
 ## 2026-10-12 — B196 source-qualified new-mini growth; calibration preserved
 
 The experimental pipeline now separates source texture calibration from evidence

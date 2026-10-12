@@ -501,6 +501,13 @@ Full blocks occupying independently calibrated empty source can be retired only
 after terrain, actual glyph pixels, raw outline, whole-frame texture and nonterrain
 guards. Unknown evidence and real occlusions are not blanket deletion triggers;
 original minispikes/miniblocks and standard-mode behavior remain protected.
+Source texture correlation alone does not authorize new mini-blocks. Their stronger
+qualification uses original rectangular/material witnesses while retaining the raw
+calibration needed by existing full-block poses. Larger source-bounded patterned
+containers can corroborate colour ties; image-edge clipping still requires three
+original appearance witnesses and two independently bounded regions. Unsupported
+interior peers abstain. This is transient source evidence, not a tileset lookup or
+stored reference answer, and it does not certify whole-room accuracy.
 The app/corpus fingerprints include all transitive source-geometry runtime files.
 Corpus manifests may specify `"source_geometry": true` in their options. References
 still evaluate only after scanning and never enter the detector.

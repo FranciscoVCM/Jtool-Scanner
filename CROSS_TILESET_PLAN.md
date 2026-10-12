@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Current direction (B198, 2026-10-12): restore boundary recall, then local background
+
+B196's certainty gate missed a Golden7 regression: 39 real terrain cells/5,984
+previously recovered solid pixels. Independent original background-bounded source
+containers now corroborate patterned-material ties; retain three original witnesses
+and require two independently bounded regions for image-edge clipping. Interior
+unsupported peers abstain. Raw calibration/full poses and default mode unchanged.
+
+Fresh four-primary plus sixteen-control outputs qualify the complete restoration,
+preserve ten false-mini removals in CN3-9/CN3-31 and retain CN3-25. All 601 minis,
+139 terrain footprints, 39 prior groups and CN3-7 guard hold; Golden7 becomes guard
+41, not a reserve. Source/crop/whole JTool/Blend confirm the restored cells; room
+still MAJOR/unusable, not accepted. This is restored recall, not new gain over B193.
+175 affected tests pass; environment/checker failures remain documented separately.
+
+Controlled serial AC pairing preserves all eight ENTIRE normal map/project proofs:
+dense +2.23%, sparse +1.69% observed with only two repeats per mode, not a speedup
+or universal overhead bound. Final-current71 QA and the original six
+goal gates remain incomplete; never substitute suppression/restoration or green
+controls for the requested broader recovery. Standard remains unchanged, source
+geometry opt-in. A read-only diagnosis finds Golden7's reviewed empty patches pass
+pixel-level background membership but fail a global mean-colour limit; existing
+independent local illumination evidence supports seven of eight patches under the
+same limit. Next test that shared cause, retaining abstention and complete positive/
+glyph/outline/texture/marker protections; no broad overlap deletion or second scan.
+
 ## Current direction (B196, 2026-10-12): qualified mini emission, stable calibration
 
 Source texture correlation can calibrate existing pose hypotheses without being
