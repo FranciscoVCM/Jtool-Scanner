@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Current direction (B193/B195, 2026-10-12): complete outputs, repair teacher contamination
+
+Current71+16 generation is complete at the published opt-in pipeline, including
+checksum reuse after shutdown; all16 exact comparisons/ordered output unchanged.
+Current per-room inventory is saved locally with explicit pending visual QA and
+zero approvals. Ten fresh whole-view reviews expose real remaining errors;
+do not promote historical acceptance or infer precision from added-object counts.
+
+The next causal batch is weak source-pattern teaching: joined spike artwork can
+become a terrain teacher, producing unsupported new mini solids. Require source
+geometry/material/competing-glyph evidence, not fixed palettes or coordinates.
+Portable checks must include genuine narrow and hollow terrain, joined triangles,
+both polarities, RGB contrast, brightness and capture scale. Keep all601/139
+recoveries, prior groups, exact controls and legitimate occlusions protected.
+
+Do not adopt the direct calibration-changing prototype: it can destabilize
+full-block pose repair on hollow material. Evaluate separate certainty for NEW
+mini emission while retaining the original source calibration/pose channel.
+This remains isolated, not a deployed detector or default-mode change. Qualify
+actual API maps/metadata, every changed source region, all protected groups and
+controlled serial runtime before publication. Final-current changed-map QA and
+the original six completion gates remain unproved; goal ACTIVE.
+
 ## Current direction (B192, 2026-10-12): reserve passes; final stable audit next
 
 Frozen public pipeline passes the original no-tuning CN3_7 reserve:1536 missing

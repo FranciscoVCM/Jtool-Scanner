@@ -4,6 +4,46 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B193 current87 complete; source QA exposes weak terrain teaching
+
+All71 canonical rooms and16 controls now have outputs at the pinned published
+pipeline. After shutdown,73 checksummed completed cases were reused and14
+unfinished cases scanned; original caches and interrupted attempts preserved.
+All16 entire exact comparisons, ordered detections, warnings, options, crop and
+grid equal B191. FTFA remains926/928 with0extras/shifts/wrong directions.
+This is experimental source-geometry mode, not default-mode rollout.
+
+The ignored successor audit inventories all71 current outputs. Ten additional
+whole Source/JTool/Blend reviews are explicit; other historical findings are NOT
+current-code certification. No whole-room approvals. Original baseline options
+differ, so identical-looking maps do not justify strict prior-review carry.
+Fine-grained changed-map QA remains incomplete; the goal is still ACTIVE.
+
+Review finds three human-confirmed false mini solids in CN3_9 composite spikes,
+and a source-visible counterpart in CN3_31. A joined spike cluster supplies its
+own three local terrain-pattern teachers. Nonflat membership is unconditionally1,
+despite mixed background pixels; texture correlation alone is not object identity.
+Golden7 still has major foreground/background polarity errors, and CN3_25 still
+has hollow-terrain/cluster/phase conflicts. Counts do not measure improvement.
+
+Isolated teacher experiments retain601 reviewed minis/139 terrain footprints
+across six protected source cases, but are NOT adopted or ordinary-app claims.
+A first geometric teacher gate fails eight joined-triangle synthetic variants;
+independent source-glyph proof fixes that counterexample without losing24 narrow
+textured positive variants. Directly changing calibration also destabilizes some
+full-block poses on hollow terrain. Those variants are held/rejected for rollout,
+not hidden behind green small tests. A separate new-mini-certainty channel is now
+under evaluation to keep original calibration/full-pose evidence intact while
+requiring stronger source evidence for new solids. Actual API/controls/source QA
+and latency qualification remain due before shipping that mechanism.
+
+The private compact review renderer also needed correction: use the public Blend
+source viewport, not a naive19x13-to800x608 stretch. Application renders were
+already correct; inaccurate private pictures are preserved and not used as proof.
+The app was restarted after power-off; HTTP200 and loaded/disk fingerprint match.
+No implementation change in this checkpoint. Next: qualify shared certainty
+arbitration, protect all prior groups, finish changed-map QA and controlled timing.
+
 ## 2026-10-12 — B192 no-tuning reserve transfer; block coverage complete, room major
 
 Frozen published B191 code evaluated CN3_7 once through the normal opt-in API.
