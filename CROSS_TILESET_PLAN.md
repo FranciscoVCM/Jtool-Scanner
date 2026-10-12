@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Current direction (B201, 2026-10-12): distinguish real recovery from duplicate coverage
+
+CN3-25's27 new full-frame keys add zero solid area: all footprints are already
+covered by current full/mini terrain. Do not count or emit redundant representation
+as recall gain. All nine inset-only frame contexts were source-inspected; genuine
+frames, but source identity alone does not establish a needed output change.
+
+Uncalibrated-material additive trial on CN3-27 adds four source-supported frames,
+recovers1664 positive pixels and keeps all old positives/negatives. Full scanner
+API with explicit candidate callback passes complete survivor metadata/crop/grid/
+JMap/project/source/start checks; ten protected source replays neutral. Public
+read-only coverage helper prevents duplicates/rejected-key resurrection;64 selected
+evidence tests pass. Whole Source/JTool/Blend still MAJOR, old2688 false ROI pixels
+retained. No old-pose retirement, all16 new normal controls or quiet timings yet.
+
+This is candidate qualification, NOT an app binding or a reserved success.
+App runtime remains unchanged; audit0 promotions. Next freeze maintained pipeline
+integration, qualify all41 prior groups/16 ordinary controls and possible source
+deltas, then quiet serial AC overhead. Safe replacement and final stable all71
+changed-map QA still due. Original six gates remain incomplete.
+
 ## Current direction (B200, 2026-10-12): source-rectangle diagnostic, not app adoption
 
 CN3-27's pale hollow terrain has no independent colour calibration, so existing

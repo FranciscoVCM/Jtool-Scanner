@@ -10,6 +10,7 @@ from __future__ import annotations
 from math import sqrt
 
 from scripts.source_evidence_context import SourceEvidenceContext
+from scripts.source_occupancy import footprint
 
 
 def _dot(first, second):
@@ -131,3 +132,28 @@ def source_rectangle_proposals(image, room, detections, *, source_context=None):
                           physically_disjoint_teacher_frames=True,
                           nominal_and_raster_centre_cohorts_separate=True,
                           source_only_not_scanner_binding=True)
+
+
+def supplement_source_rectangles(image, room, detections, proposed, rejected,
+                                 material_labels, *, source_context=None):
+    """Read-only additive trial for the uncalibrated foreground-material branch.
+
+    Preserve prior arbitration and original teachers. Do not duplicate existing
+    full/mini coverage or resurrect a rejected key. This trial does not retire
+    old poses and is NOT wired to the application. Its caller must independently
+    qualify source identity, whole-map deltas, controls and runtime before adoption.
+    """
+    proposed, rejected = set(proposed), set(rejected)
+    if material_labels:
+        return proposed, dict(abstained='independent foreground material already available')
+    detections = tuple(detections)
+    rectangles, proof = source_rectangle_proposals(
+        image, room, detections, source_context=source_context)
+    existing = {(d.type_id, d.x, d.y) for d in detections}
+    occupied = {p for key in (existing - rejected) | proposed if key[0] in (1, 2)
+                for p in footprint(key)}
+    additions = {key for key in rectangles - rejected if not footprint(key) <= occupied}
+    return proposed | additions, dict(proof=proof, added=sorted(additions),
+                                     redundant_abstained=sorted((rectangles - rejected) - additions),
+                                     prior_rejected_abstained=sorted(rectangles & rejected),
+                                     no_original_objects_retired=True)

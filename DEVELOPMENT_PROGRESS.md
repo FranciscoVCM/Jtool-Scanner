@@ -4,6 +4,50 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B201 qualify nonredundant source-frame recovery; not deployed
+
+Measured against unchanged current ordinary outputs, CN3-25's55 rectangle
+hypotheses include27 new typedfull keys but zero new solid pixels: every footprint
+is already covered by existing full/mini terrain. The nine inset-only source
+contexts show genuine frames. Do not mistake representation duplication for
+improved recall or emit more overlapping objects merely to match sprite-size labels.
+
+Additive trial uses the original validated source context only when foreground
+material calibration is absent, after existing arbitration. It adds only frames
+with missing solid coverage, does not retire previous objects or resurrect rejected
+keys. Public read-only supplement_source_rectangles is explicit and unbound to
+both app modes. Five partition tests cover calibrated-branch abstention, old/full
+and mini-union redundancy, rejected-key exclusion and partial positive coverage;
+these wiring-only tests stub rectangle evidence, not a full scan. All13 rectangle
+tests PASS4.268s;64 selected source-evidence tests PASS15.896s. Final diagnostic
+separation of rejected keys from redundant coverage passes13 tests in3.861s.
+
+Isolated CN3-27 source pipeline adds exactly4 fulls/0removals: fixed4096-positive
+mask2432->4096 matched/1664->0misses, old1344 negatives0, complete29696-negative
+ROI excess2688 unchanged. Ten protected source replays retain entire keysets/601
+reviewed minis/139 terrain footprints. All have existing foreground calibration,
+so the new branch abstains; transparent branch carry covers rejected-key hardening,
+not a fresh v2 scan or all16 current ordinary control evaluation.
+
+Full scanner API with explicit candidate callback confirms exactly4 additions,
+0previous removals and ENTIRE survivor Detection metadata/order/crop/grid/source.
+Supplementary complete JMap object multiset/all headers/project source/start/options/
+recognized text PASS from sealed artifacts. Public helper replay from reconstructed
+cached post-arbitration occupancy agrees; not another normal pipeline scan.
+Initial full-API verifier incorrectly expected JMap headers at corpus JSON top
+level and fails after scanning. Failure preserved; corrected verifier reads real
+JMap/project headers and persists full ScanResult BEFORE checks. No detector fix
+to conceal an environment/evaluator error.
+
+Whole current candidate Source/JTool/Blend inspected: the four pale frames align,
+but old misplaced blocks, spurious/opposing/shifted triangles and imperfect
+water/vines/platforms remain. Room MAJOR, zero promotion. This is not the live app:
+source code/runtime fingerprint remains B199, with prior controls/audit unchanged.
+Reserved CN3-28 untouched. Controlled runtime, all16 new ordinary controls/all41
+guards and possible changed-map QA are still required before public integration.
+Keep source/fixtures/JMaps untouched. Original six gates/final stable all71 audit
+remain incomplete; candidate recovery does not complete the broader milestone.
+
 ## 2026-10-12 — B200 recover independent rectangle evidence; diagnostic only
 
 Resumed the saved shutdown checkpoint without losing previous work. Source-only

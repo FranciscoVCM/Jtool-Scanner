@@ -1,13 +1,14 @@
 """Real RGB raster evidence; no reference maps or image-specific production rules."""
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from PIL import Image, ImageDraw
 
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from scripts.source_evidence_context import SourceEvidenceContext
-from scripts.source_rectangle_prototypes import source_rectangle_proposals
+from scripts.source_rectangle_prototypes import source_rectangle_proposals, supplement_source_rectangles
 
 
 PALETTES = (((235, 235, 235), (80, 20, 30)),
@@ -117,6 +118,55 @@ class SourceRectanglePrototypeTests(unittest.TestCase):
         self.assertFalse(proposed)
         self.assertEqual(proof['candidates'], 0)
         self.assertEqual(context.statistics()['glyph_builds'], 0)
+
+
+class RectangleCoveragePartitionTests(unittest.TestCase):
+    """Wiring-only partition checks; independent rectangle evidence is stubbed."""
+
+    def setUp(self):
+        self.image = RGBImage(800, 608, bytes(800 * 608 * 3))
+        self.room = Box(0, 0, 800, 608)
+        self.old = SimpleNamespace(type_id=1, x=160, y=160)
+        self.key, self.fresh = (1, 160, 160), (1, 192, 160)
+
+    def run_case(self, labels=(), proposed=(), rejected=(), rectangles=()):
+        original = [self.old]
+        context = SourceEvidenceContext(self.image, self.room, [])
+        def rectangle(image, room, detections, *, source_context):
+            self.assertEqual(tuple(detections), tuple(original))
+            self.assertIs(source_context, context)
+            return set(rectangles), {}
+        with patch('scripts.source_rectangle_prototypes.source_rectangle_proposals', side_effect=rectangle) as method:
+            result = supplement_source_rectangles(self.image, self.room, original,
+                proposed, rejected, labels, source_context=context)
+            if labels:
+                method.assert_not_called()
+            return result
+
+    def test_existing_calibration_skips_fallback(self):
+        proposed, diag = self.run_case(labels=[0], rectangles=[self.fresh])
+        self.assertFalse(proposed)
+        self.assertIn('abstained', diag)
+
+    def test_existing_full_coverage_abstains(self):
+        proposed, diag = self.run_case(rectangles=[self.key])
+        self.assertFalse(proposed)
+        self.assertEqual(diag['redundant_abstained'], [self.key])
+
+    def test_prior_rejected_key_cannot_reenter(self):
+        proposed, diag = self.run_case(rejected=[self.key], rectangles=[self.key, self.fresh])
+        self.assertEqual(proposed, {self.fresh})
+        self.assertEqual(diag['prior_rejected_abstained'], [self.key])
+        self.assertFalse(diag['redundant_abstained'])
+
+    def test_mini_union_does_not_require_another_full(self):
+        minis = {(2, x, y) for x in (192, 208) for y in (160, 176)}
+        proposed, _ = self.run_case(proposed=minis, rectangles=[self.fresh])
+        self.assertEqual(proposed, minis)
+
+    def test_partial_coverage_allows_positive_candidate_without_deleting_mini(self):
+        proposed, _ = self.run_case(proposed=[(2, 192, 160)], rectangles=[self.fresh])
+        self.assertEqual(proposed, {(2, 192, 160), self.fresh})
 
 
 if __name__ == '__main__':

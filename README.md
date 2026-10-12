@@ -424,6 +424,15 @@ checks and source-only CN3-27 recovery are not deployed scan accuracy; competing
 glyphs/markers, whole-room transfer, controls and runtime still need qualification
 before adoption. Compact-grid mapping is not qualified by this experiment.
 
+The same module's `supplement_source_rectangles(...)` API tests additive recovery
+only when independent foreground material calibration is absent. It preserves
+prior arbitration, skips full/mini coverage already present and cannot resurrect
+a rejected key. It also remains **unbound to the app**. A full scanner trial with
+an explicitly substituted callback preserves CN3-27's previous detection metadata
+and adds four source-supported frames; that is not an unpatched deployment or a
+whole-room accuracy certificate. All16 ordinary controls and controlled timing
+remain prerequisites for integration.
+
 `scripts/source_terrain_agreement.py` extracts the experimental new-full agreement
 rule. It requires positive source-glyph competition before an unsupported quarter
 can disprove a proposed full; independent rectangular source evidence and matching
