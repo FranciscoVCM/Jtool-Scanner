@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Current direction (B199, 2026-10-12): local illumination works; pale terrain still missing
+
+Global mean-colour centres can reject genuinely known-background shade. Sizing
+now adds lazy independent local glyph-exterior corroboration only after unchanged
+95% BG pixels; same mean/residual limits, unknown/insufficient prediction abstains.
+Shared original glyph library, no foreground/role-vote changes or new-output
+teachers, and final complete terrain/glyph/outline/texture/marker guards retained.
+
+Golden7 ordinary179 false fulls removed; all49504 prior matched solid pixels/39
+restored cells held, fixed negative coverage4608->576. All changes and whole view
+source-reviewed; still MAJOR. Unexpected CN3-29 neutral guard FAIL preserved;
+fresh old/current normal/source QA proves one false full and one16px phase correction.
+No retroactive reserve claim. All16 ordinary controls/601/139/41 guards protected;
+183 affected tests pass. Material profiling identifies dominant remaining cost;
+quiet AC pairs preserve all8 ENTIRE normal proofs: dense+0.37%, sparse-0.53%,
+two repeats/mode, overlapping ranges/effectively neutral, not a general speed claim.
+Broader material/default overhead still due. Standard unchanged, opt-in only,0 approvals.
+
+CN3-27 frozen pale-column1664 misses remain; reserved Halls7 is neutral, not a
+successful new holdout. Next pursue positive geometry/texture identity when body
+colour resembles background and valid placement phases, alongside compound-spike
+size/direction recovery. No guessed fill, universal claim or threshold loosening.
+Final-current71 source QA/runtime/default readiness and original six gates remain
+incomplete. Lighting correction is one shared cause, not all future tilesets solved.
+
 ## Current direction (B198, 2026-10-12): restore boundary recall, then local background
 
 B196's certainty gate missed a Golden7 regression: 39 real terrain cells/5,984

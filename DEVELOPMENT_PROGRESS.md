@@ -4,6 +4,63 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-12 — B199 local illumination corroboration; source-backed background/phase repair
+
+Known background pixels were insufficient in shaded rooms: the global mean-colour
+limit rejected their local illumination. Source sizing now lazily corroborates a
+failed global mean using independently source-qualified glyph exterior samples.
+The existing >=95% pixel-level background requirement and quarter-separation
+mean/residual limits remain unchanged. Insufficient, degenerate or mismatched
+prediction stays unknown. Shared original glyph evidence, unchanged foreground
+votes/calibration and all terrain/glyph/raw-outline/texture/marker retirement guards;
+no palette/room/hash/reference lookup, broad overlap deletion or duplicate scan.
+
+Fresh ordinary Golden7 removes exactly 179 source-reviewed false full blocks, no
+additions or surviving Detection metadata loss. All 179 source frames and whole
+current JTool/Blend inspected. Fixed 54,880-positive/4,608-negative masks retain all
+49,504 matched solid pixels and all 39 prior restored cells; false coverage falls
+4,608 to 576 (4,032 pixels corrected), missing 5,376 unchanged. Room remains MAJOR:
+incorrect/extra/missing/opposing spikes, imperfect terrain and other objects remain.
+This is a real precision gain, not whole-room acceptance or universal recognition.
+
+Unexpected CN3-29 transfer initially FAILS its neutral-output guard. Independent
+source inspection and pristine previous-public/current ordinary scans establish a
+real empty full at (384,32) and a full-block phase correction (480,256)->(496,256).
+Exactly those three keys change; all survivor metadata, nonterrain, crop/grid and
+headers retained. Source/current whole JTool/Blend reviewed; room still MAJOR.
+The failed neutral receipt stays failed. Separate deliberate transfer QA is not
+retroactive preregistration, a held-out success or candidate tuning.
+
+CN3-27 is neutral; frozen pale upper-left terrain remains 2,432/4,096 pixels,
+1,664 missing. Reserved Halls7 evaluation is also neutral: 40,448 source-visible
+terrain pixels retained, 1,536 frozen false-solid pixels unresolved. No tuning
+after evaluation and no reserve-success claim. Both expose remaining identity,
+phase and triangle errors rather than demonstrating full tileset generalization.
+
+Fresh 22-case corpus plus separate CN3-29 ordinary transfer pass; all 16 ENTIRE
+exact comparisons, map/ordered survivor data/crop/grid/options preserved. FTFA
+926/928/0 extra/shift/wrong, Flames 252 exact with 42 extras/21 misses/20 shifts/
+2 wrong, Hades 334 exact with 20 extras/4 misses/12 shifts unchanged. Public source
+replays retain 601 reviewed minis/139 terrain and all 41 achieved guards; five
+compact branches explicitly carried, not a fresh 47-case normal sweep.
+183 affected source tests PASS157.761s, 22 focused PASS41.392s. All eight new
+RGB/polarity/scale assertions fail on old code; public executable AST exactly
+matches the frozen prototype. Runtime uses explicit public code, not private loaders.
+
+Pass-through nonquiet Golden7 source profiling reproduces current keys: sizing
+6.152s/material42.053s/full-pose3.961s; 1,040 nested local predictions consume
+0.191s. These are overlapping stage/source measurements, not end-to-end timing
+or a speedup. Material remains the dominant source cost. Quiet serial AC old/new/
+new/old pairing preserves all eight ENTIRE prior normal map/project/metadata proofs:
+dense89.339->89.670s (+0.331s,+0.37%), sparse68.935->68.569s (-0.367s,-0.53%).
+Two repeats/mode and overlapping ranges; effectively neutral observations, not a
+universal speedup/no-overhead bound. Broader material/default latency remains due.
+Experimental mode only;
+standard/default unchanged. Eight current ordinary canonical outputs, 63 others
+not freshly whole-scanned at this runtime, zero approvals. Next: source geometry/
+texture recovery for pale/hollow terrain and placement phases, compound spikes,
+then final-current 71 changed-map QA and all original six goal gates. Goal ACTIVE.
+
 ## 2026-10-12 — B198 restore source-bounded patterned terrain; expose prior recall loss
 
 Rechecking Golden7 exposed a real B196 regression outside its then-current guards:

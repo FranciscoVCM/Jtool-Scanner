@@ -501,6 +501,11 @@ Full blocks occupying independently calibrated empty source can be retired only
 after terrain, actual glyph pixels, raw outline, whole-frame texture and nonterrain
 guards. Unknown evidence and real occlusions are not blanket deletion triggers;
 original minispikes/miniblocks and standard-mode behavior remain protected.
+When a local background shade fails the global mean-colour check, independent
+source-glyph exterior samples can corroborate its illumination. The existing
+95% background-pixel proof and mean/residual limits are not relaxed. Insufficient
+or mismatched local evidence stays unknown; all final object/terrain exclusions
+still apply. This does not infer a missing object merely from an empty-looking gap.
 Source texture correlation alone does not authorize new mini-blocks. Their stronger
 qualification uses original rectangular/material witnesses while retaining the raw
 calibration needed by existing full-block poses. Larger source-bounded patterned

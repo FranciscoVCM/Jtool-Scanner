@@ -8,6 +8,8 @@ from math import sqrt
 from jtool_scanner import scanner
 from jtool_scanner.terrain_material import cell_quad, pack_textured_rectangles
 from scripts.source_material_patterns import pattern_cells
+from scripts.source_glyph_prototypes import SourceGlyphLibrary
+from scripts.source_local_background import SourceLocalBackground
 
 
 def footprint(key):
@@ -32,6 +34,7 @@ def source_size_repair(image, room, detections, *, source_context=None):
     foreground, background = [centers[i] for i in labels], [centers[i] for i in bg_labels]
     separation = min(distance(f, b) for f in foreground for b in background)
     cache, rgb_membership = {}, {}
+    local_background, local_mean_proofs = None, []
 
     def membership(value):
         if value not in rgb_membership:
@@ -40,6 +43,7 @@ def source_size_repair(image, room, detections, *, source_context=None):
         return rgb_membership[value]
 
     def material(x, y, w=16, h=16, margin=4):
+        nonlocal local_background
         key = x, y, w, h, margin
         if key in cache:
             return cache[key]
@@ -59,8 +63,25 @@ def source_size_repair(image, room, detections, *, source_context=None):
         fg, bg = sum(membership(v)[0] for v in values)/len(values), sum(membership(v)[1] for v in values)/len(values)
         if fg >= .95 and min(distance(mean, c) for c in foreground) <= .25*separation:
             kind = 'foreground'
-        elif bg >= .95 and min(distance(mean, c) for c in background) <= .25*separation:
-            kind = 'background'
+        elif bg >= .95:
+            limit = .25*separation
+            if min(distance(mean, c) for c in background) <= limit:
+                kind = 'background'
+            else:
+                # A global colour centre is not a local illumination model.
+                # Keep the existing pixel-level BG proof and mean/residual
+                # limits; independently source-qualified glyph exteriors may
+                # corroborate the local shade. Unknown prediction stays unknown.
+                if local_background is None:
+                    library = (SourceGlyphLibrary(image, room, spikes) if source_context is None else
+                               source_context.glyph_library(image, room, spikes))
+                    local_background = SourceLocalBackground(library, lambda value: membership(value)[1])
+                proof = local_background.predict(x+w/2, y+h/2, limit)
+                error = distance(mean, proof['prediction']) if proof['valid'] else None
+                passed = proof['valid'] and error <= limit
+                kind = 'background' if passed else 'unknown'
+                local_mean_proofs.append(dict(box=[x,y,w,h],margin=margin,bg_fraction=bg,
+                    source_proof=proof,mean_error=error,unchanged_mean_limit=limit,passed=passed))
         else:
             kind = 'unknown'
         cache[key] = kind
@@ -133,7 +154,8 @@ def source_size_repair(image, room, detections, *, source_context=None):
     supplied = occupied | {p for key in replacements for p in footprint(key)}
     required = {p for key in rejected for p in footprint(key)} & positive_pixels
     assert required <= supplied, 'Cannot retire an object without source-positive coverage'
-    return replacements, rejected, dict(source_calibration=diag, source_fg=sorted(source_fg), source_bg=sorted(source_bg),
+    return replacements, rejected, dict(local_sizing_background_proofs=local_mean_proofs,
+        source_calibration=diag, source_fg=sorted(source_fg), source_bg=sorted(source_bg),
         proofs=proofs, affected_source_cells=sorted(affected), redundant_solid_union_proposals=sorted(redundant),
         source_empty_full_candidates=sorted(empty_full_candidates),
         all_disproved_foreground_coverage_retained=True, complete_source32_recovery=True,
