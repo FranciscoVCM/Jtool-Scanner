@@ -130,6 +130,7 @@ class CorrectionProject:
     objects: list[CorrectionObject] = field(default_factory=list)
     history: list[dict[str, Any]] = field(default_factory=list)
     source_geometry: bool = False
+    source_extent: Box | None = None
 
     @classmethod
     def from_scan(
@@ -182,6 +183,7 @@ class CorrectionProject:
             include_geometry=include_geometry,
             source_grid=getattr(result, "source_grid", None),
             source_geometry=bool(getattr(result, 'source_geometry', False)),
+            source_extent=getattr(result, 'source_extent', None),
             recognized_text=getattr(result, "recognized_text", ""),
             structural_warnings=list(getattr(result, "structural_warnings", [])),
             start_policy=start_policy,
@@ -256,6 +258,7 @@ class CorrectionProject:
             image_width=int(source.get("image_width", 800)),
             image_height=int(source.get("image_height", 608)),
             room_box=_box_from_dict(source.get("room_box", {"x": 0, "y": 0, "width": 800, "height": 608})),
+            source_extent=_box_from_dict(source['world_extent']) if source.get('world_extent') is not None else None,
             grid_step=int(scanner.get("grid_step", 8)),
             include_color_objects=bool(scanner.get("include_color_objects", True)),
             include_geometry=bool(scanner.get("include_geometry", True)),
@@ -292,6 +295,7 @@ class CorrectionProject:
                 "image_width": self.image_width,
                 "image_height": self.image_height,
                 "room_box": _box_to_dict(self.room_box),
+                **({'world_extent': _box_to_dict(self.source_extent)} if self.source_extent is not None else {}),
             },
             "scanner": {
                 "grid_step": self.grid_step,
@@ -354,6 +358,9 @@ class CorrectionProject:
         return jmap
 
     def validate(self) -> None:
+        if self.source_extent is not None and (self.source_extent.width <= 0
+                or self.source_extent.height <= 0 or self.source_grid != (25, 19)):
+            raise ValueError('Capture world extent requires positive dimensions and a 25x19 grid')
         ids = [obj.object_id for obj in self.objects]
         if len(ids) != len(set(ids)):
             raise ValueError("correction project contains duplicate object IDs")
@@ -614,6 +621,8 @@ def _source_blend_viewports(project: CorrectionProject) -> tuple[Box, Box]:
     """Mirror scanner normalization when positioning a source in a blend."""
 
     room = project.room_box
+    if project.source_extent is not None:
+        return Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT), project.source_extent
     if project.source_grid is None:
         return Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT), room
     columns, rows = project.source_grid

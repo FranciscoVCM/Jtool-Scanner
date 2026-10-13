@@ -5,6 +5,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from hashlib import sha256
+from importlib import import_module
 import json
 import mimetypes
 from pathlib import Path
@@ -38,6 +39,17 @@ def _source_fingerprint() -> str:
     return digest.hexdigest()
 
 
+def _load_source_runtime() -> None:
+    """Freeze lazy detector dependencies in the same startup source snapshot.
+
+    Otherwise a server started before an edit could import newer experimental
+    helpers on its first scan while advertising the older fingerprint.
+    """
+    for path in source_geometry_files():
+        import_module('scripts.' + path.stem)
+
+
+_load_source_runtime()
 PROCESS_SOURCE_FINGERPRINT = _source_fingerprint()
 
 

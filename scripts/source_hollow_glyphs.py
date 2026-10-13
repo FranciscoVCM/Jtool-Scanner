@@ -10,11 +10,51 @@ are not objects. This module does not emit or remove scanner detections.
 from __future__ import annotations
 
 from copy import deepcopy
+from collections import OrderedDict
 from math import dist, hypot
 from statistics import median
 
 from jtool_scanner.spike_shape import VERTICES
-from scripts.source_glyph_prototypes import _bounds, _contains, _fits
+from scripts.source_glyph_prototypes import SourceGlyphEvidence, _bounds, _contains, _fits
+
+
+class _OriginalHollowLibrary:
+    """Only raw full32 teachers; no unused filled/mini/signature learning."""
+    def __init__(self, frame, spikes, pixel_cache_limit, source_field=None):
+        if not isinstance(pixel_cache_limit, int) or isinstance(pixel_cache_limit, bool) or pixel_cache_limit < 0:
+            raise ValueError('Pixel cache limit must be a nonnegative integer')
+        self.source_frame = frame
+        self.pitch = frame.pitch
+        if source_field is not None and (source_field.room != frame.extent
+                or not frame.matches_source(source_field.image, frame.room)):
+            raise ValueError('Shared source field must match the original frame')
+        self.raw = source_field if source_field is not None else SourceGlyphEvidence(
+            frame.original_snapshot(), frame.extent, source_frame=frame)
+        self.anchors = []
+        self._pixel_cache_limit = pixel_cache_limit
+        self._pixels = OrderedDict()
+        positions = sorted({(x, y) for t, x, y in spikes if 3 <= t <= 6})
+        for x, y in positions:
+            if not frame.rectangle_available(x, y, 32, 32, margin=4):
+                continue
+            for direction in VERTICES:
+                key = direction, x, y
+                if self.raw.owner(*key) is not None:
+                    self.anchors.append(dict(key=key, size=32, independent_source_proof='raw'))
+        self.anchors.sort(key=lambda a: a['key'])
+
+    def pixel(self, x, y):
+        if not self._pixel_cache_limit:
+            return self.source_frame.pixel(x, y)
+        key = x, y
+        if key in self._pixels:
+            self._pixels.move_to_end(key)
+            return self._pixels[key]
+        answer = self.source_frame.pixel(x, y)
+        self._pixels[key] = answer
+        if len(self._pixels) > self._pixel_cache_limit:
+            self._pixels.popitem(last=False)
+        return answer
 
 
 class HollowGlyphEvidence:
@@ -25,6 +65,14 @@ class HollowGlyphEvidence:
     samples outside original support are unknown, not repeated-edge votes.
     Signed-edge memoization includes its inward orientation.
     """
+    @classmethod
+    def from_frame(cls, frame, original_spikes, *, pixel_cache_limit=50000, source_field=None):
+        """Reuse a frozen frame without learning unrelated sprite signatures."""
+        spikes = tuple(sorted(set(map(tuple, original_spikes))))
+        if any(len(key) != 3 or not 3 <= key[0] <= 10 for key in spikes):
+            raise ValueError('Original spike locators must be type3..10,x,y triples')
+        return cls(_OriginalHollowLibrary(frame, spikes, pixel_cache_limit, source_field), spikes)
+
     def __init__(self, library, original_spikes):
         self.library = library
         self.frame = library.source_frame
@@ -32,9 +80,11 @@ class HollowGlyphEvidence:
         self.gradients, self.edges, self.cores = {}, {}, {}
         self.ink_edges, self.raw_ink_edges, self.owned_edges = {}, {}, {}
         self.results, self.qualified_results = {}, {}
+        full_origins = {(x, y) for t, x, y in self.original_spikes if 3 <= t <= 6}
         nominal = [(tuple(anchor['key']), library.raw.owner(*anchor['key']))
                    for anchor in library.anchors
-                   if anchor['size'] == 32 and anchor['independent_source_proof'] == 'raw']
+                   if anchor['size'] == 32 and anchor['independent_source_proof'] == 'raw'
+                   and tuple(anchor['key'][1:]) in full_origins]
         self.models = self._models(nominal)
         self.nominal_model_count = len(self.models)
         self.inset_original_owners = self._inset_owners()
@@ -102,19 +152,17 @@ class HollowGlyphEvidence:
         tx, ty = b[0] - a[0], b[1] - a[1]
         length = hypot(tx, ty)
         nx, ny = -ty / length, tx / length
-        rows = []
         for i in range(12):
             q = .15 + .7 * i / 11
             px, py = a[0] + q * tx, a[1] + q * ty
             points = [(px + off * nx, py + off * ny) for off in range(-width, width + 1)]
             if any(not (0 <= x < 800 and 0 <= y < 608) for x, y in points):
-                rows.append((None, None))
+                yield None, None
                 continue
             values = [self.library.pixel(x, y) for x, y in points]
             position = self._position(px, py)
-            rows.append((position, values) if position is not None and all(v is not None for v in values)
-                        else (None, None))
-        return rows
+            yield ((position, values) if position is not None and all(v is not None for v in values)
+                   else (None, None))
 
     def core(self, key, model):
         if key not in self.cores:

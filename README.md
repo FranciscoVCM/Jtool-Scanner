@@ -417,6 +417,19 @@ qualification. Integration, collateral accuracy and scan-time cost remain separa
 gates; neither the standard scan nor the opt-in source pipeline emits these new
 hollow-glyph proposals yet.
 
+The recovery caller in `scripts/source_hollow_pipeline.py` is available for
+isolated development, but normal/app scans do **not** enable it: its first
+integration produced shifted duplicate spikes in exact controls. The explicit
+`source_proposals(..., include_hollow_glyphs=True)` research switch is not an app
+setting or a qualified detector. Original detections never become new teachers.
+
+Capture-aware projects optionally store `source.world_extent`, separately from
+the physical `source.room_box`. Source canvas and Blend use that existing world
+transform; old projects without it keep their previous mapping. This metadata
+does not change JMap coordinates or manually correct geometry. The app loads all
+detector dependencies before announcing its startup fingerprint, preventing a
+first scan from mixing older loaded code with newly edited lazy imports.
+
 ### Experimental source-taught full-block evidence
 
 `scripts/source_block_prototypes.py` provides the read-only `SourceBlockLibrary`

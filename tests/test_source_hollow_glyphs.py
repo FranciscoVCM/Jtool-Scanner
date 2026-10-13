@@ -150,6 +150,41 @@ class HollowGlyphTests(unittest.TestCase):
             evidence.support((7, 416, 256))
         self.assertFalse(evidence.support((3, -8, 256))['passed'])
 
+    def test_frame_factory_preserves_complete_teacher_and_query_proofs(self):
+        image, room, locators, true, false = hollow_scene(closed_void=True)
+        frame = SourceFrame(image, room)
+        original = HollowGlyphEvidence(SourceGlyphLibrary(image, room, locators, source_frame=frame), locators)
+        direct = HollowGlyphEvidence.from_frame(frame, locators, pixel_cache_limit=17)
+        self.assertEqual(original.models, direct.models)
+        self.assertEqual(original.inset_original_owners, direct.inset_original_owners)
+        for key in sorted(true | false):
+            self.assertEqual(original.support(key), direct.support(key))
+        self.assertLessEqual(len(direct.library._pixels), 17)
+
+    def test_out_of_snapshot_library_anchors_cannot_become_teachers(self):
+        image, room, locators, true, _ = hollow_scene()
+        library = SourceGlyphLibrary(image, room, locators)
+        evidence = HollowGlyphEvidence(library, locators[:2])
+        self.assertEqual(evidence.models, [])
+        self.assertFalse(evidence.support(sorted(true)[0])['passed'])
+
+    def test_band_is_lazy_so_impossible_ink_stops_sampling(self):
+        image, room, locators, _, _ = hollow_scene()
+        evidence = self.evidence(image, room, locators)
+        from unittest.mock import patch
+        with patch.object(evidence.library, 'pixel', wraps=evidence.library.pixel) as pixel:
+            rows = evidence.band((416, 256), (432, 288), 2)
+            self.assertEqual(pixel.call_count, 0)
+            next(rows)
+            self.assertEqual(pixel.call_count, 5)
+
+    def test_frame_factory_rejects_invalid_locators_or_cache(self):
+        image, room, locators, _, _ = hollow_scene()
+        frame = SourceFrame(image, room)
+        for keys, cache in (([(12, 96, 96)], 4), ([(3, 96)], 4), (locators, -1), (locators, True)):
+            with self.assertRaises(ValueError):
+                HollowGlyphEvidence.from_frame(frame, keys, pixel_cache_limit=cache)
+
 
 if __name__ == '__main__':
     unittest.main()

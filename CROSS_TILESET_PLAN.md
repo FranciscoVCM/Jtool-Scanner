@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Current direction (B223, 2026-10-13): qualify extent before recovery emission
+
+Ordinary three-room gains11/27/2 are NOT a safe release: full16 controls expose
+138 extra FTFA and19 Arcfox shifted duplicates. Normal/app recovery is detached;
+failed outputs preserved. Do not solve this by excluding games or deleting overlaps.
+True opposing full32 spikes at16px horizontal offset remain protected.
+
+Ridge/whole-appearance/narrow-window gates lose real joined spikes and are rejected.
+Isolated source-background role coherence keeps all213 sealed source proofs and
+removes FTFA's138 additions, but Arcfox duplicates remain. Next follow shared
+source-instance/whole-extent/pose evidence with legitimate joins and occlusions;
+do not declare success from a local RGB role correction. The source-only helper's
+semantic shape is not automatically a unique editor origin.
+
+CN3-28 reserved lower structure is unchanged:3/3 true,2 prior extras and512/512
+terrain miss/excess remain. This is neutral, not holdout success. Corrected capture
+Source/Blend metadata and startup dependency snapshots improve qualification
+infrastructure. All original41/601/139/16 and full goal gates remain mandatory.
+
 ## Current direction (B221, 2026-10-13): maintained coverage-aware evidence
 
 The source/capture contract and hollow-glyph mechanism now have maintained,

@@ -10,6 +10,8 @@ from scripts.source_material_ownership import material_cells
 from scripts.source_occupancy import footprint, source_size_repair
 from scripts.source_rectangle_prototypes import supplement_source_rectangles
 from scripts.source_terrain_agreement import agree_new_fulls
+from scripts.source_hollow_pipeline import recover_source_hollow_glyphs
+from scripts.source_sampling import SourceFrame
 
 
 def joint_proposals(image, room, detections, *, source_context=None):
@@ -36,8 +38,11 @@ def joint_proposals(image, room, detections, *, source_context=None):
         source_supported_full_representation_not_new_witnesses=True, no_existing_mini_deletion_or_new_object_witnesses=True)
 
 
-def source_proposals(image, room, detections, *, source_context=None):
+def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
+                     include_hollow_glyphs=False):
     """Return proposals/removals/full proofs, without touching original objects."""
+    if not isinstance(include_hollow_glyphs, bool):
+        raise ValueError('Hollow recovery research switch must be a boolean')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
@@ -66,4 +71,18 @@ def source_proposals(image, room, detections, *, source_context=None):
     proposed, rectangle = supplement_source_rectangles(
         image, room, detections, proposed, rejected, material.get('selected_clusters', ()),
         source_context=context)
-    return proposed, rejected, {**diag, **pose, **agreement, 'rectangle_fallback': rectangle}
+    frame = SourceFrame(image, room) if source_frame is None else source_frame
+    if not frame.matches_source(image, room):
+        raise ValueError('Hollow source frame does not match the original image/crop')
+    # Research-only opt-in: the first ordinary integration failed exact controls.
+    # Do not emit unqualified poses from normal/app source-geometry scans.
+    # The source/capture contract remains available for isolated qualification.
+    hollow_diag = dict(accepted=[], enabled=False, reason='whole-extent qualification incomplete')
+    if include_hollow_glyphs:
+        # Old material/size/pose retain their physical crop. Only new evidence
+        # uses the existing world frame. Never remap or reteach the old stages.
+        source_field = context.glyph_library(image, room, spikes).raw if frame.extent == room else None
+        hollow, hollow_diag = recover_source_hollow_glyphs(frame, detections, source_field=source_field)
+        proposed |= hollow
+    return proposed, rejected, {**diag, **pose, **agreement, 'rectangle_fallback': rectangle,
+                               'source_hollow': hollow_diag}

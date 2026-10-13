@@ -4,6 +4,55 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B223 reject unsafe recovery; retain correct review infrastructure
+
+Built and ordinary-tested final-stage hollow recovery with the existing capture
+raster and frozen original detections. CN3-9/8/Bathhouse produced exactly11/27/2
+new poses while preserving every original Detection's metadata. The frozen
+CN3-9 corridor gained5/5 correct origins, but its5 old false hypotheses remained.
+Those local gains were insufficient for release: full16 exact qualification
+found138 extra FTFA spikes and19 new Arcfox extras, chiefly shifted duplicates.
+Failed ordinary outputs and measurements remain preserved; never relabeled green.
+
+The unqualified recovery binding is detached from normal/app source-geometry
+scans. The recovery API remains explicitly research-only. No screen/palette/
+coordinate exclusion, blanket overlap suppression, or reference-answer rule was
+added. Source-only tools and a good regional result cannot certify a detector.
+
+Rejected extent checks illustrate the remaining shared cause: joint ridge fitting,
+whole-sprite correlation and tighter sampling reject some false poses but also
+lose genuine joined spikes. They are not adopted. An isolated background-role
+check preserves all213 sealed accepted source proofs and rejects the138 FTFA
+additions: nearest-to-background alone had mislabeled brighter filled gray cores
+as hollow. Arcfox's19 shifted hollow duplicates remain unresolved. This isolated
+partial result is not a shipped fix or universal sprite-recognition claim.
+
+No-tuning CN3-28 lower-structure evaluation is NEUTRAL, not a successful reserve:
+all3 true downward spikes were already exact and stay exact. The two existing
+extras and512 missing/512 excess terrain pixels remain; whole map unchanged.
+Its complete frozen ROI/denominators and failed/neutral receipt are preserved.
+
+Safe infrastructure retained: lazy ink sampling actually stops at the necessary
+bound, raw-only teacher construction avoids unused signature/mini work, and
+source witnesses cannot be introduced outside the frozen original pose snapshot.
+All25240 same real hypotheses preserve the entire213 accepted proof records.
+Project metadata now carries the capture world extent to Source/Blend without
+changing native JMap coordinates. Old project files retain their old defaults.
+App startup loads all16 transitive source modules before fingerprinting, so
+future edits cannot silently change lazy dependencies in an already running app.
+
+Final safe qualification passes254 affected-source/correction/app unittests in
+226.264s. All16 exact controls were freshly ordinary-scanned with unchanged
+complete maps/ordered detections/warnings/input/crop/grid/comparisons; FTFA stays
+926/928 with0extras/shifts/wrong directions. Three safe canonical ordinary scans
+preserve every original object and native map. Fresh whole Source/JTool/Blend
+reviews keep allthree MAJOR; the corrected preview is not geometry recovery.
+
+The larger milestone remains incomplete: safe shape/extent arbitration, protected
+gains, controlled runtime, successful reserved transfer and final-current71
+qualification are still required. No room is newly approved and no sources,
+fixtures, reference JMaps, private archive or local corrections were modified.
+
 ## 2026-10-13 — B221 maintain capture-aware source evidence without app binding
 
 Implemented `SourceFrame` and `HollowGlyphEvidence` as read-only development

@@ -2077,6 +2077,7 @@ class ScanResult:
     structural_warnings: list[dict[str, object]] = field(default_factory=list)
     dense_miniblock_room: bool = False
     source_geometry: bool = False
+    source_extent: Box | None = None
 
     def to_jmap(self, start_policy: str = "auto") -> JMap:
         objects = [JMapObject(det.x, det.y, det.type_id) for det in self.detections]
@@ -2901,22 +2902,28 @@ def scan_image(
     return result
 
 
-def _apply_source_geometry(result: ScanResult, image: RGBImage) -> ScanResult:
+def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=None) -> ScanResult:
     """Apply once to final source coordinates; compact mappings remain unqualified."""
     result.source_geometry = True
     if result.source_grid != (25, 19):
         return result
     from scripts.source_geometry_pipeline import source_proposals
+    from scripts.source_sampling import SourceFrame
 
-    proposed, rejected, _ = source_proposals(image, result.room_box, result.detections)
+    frame = SourceFrame(image, result.room_box) if source_frame is None else source_frame
+    result.source_extent = frame.extent if frame.extent != result.room_box else None
+    proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
+                                                       source_frame=frame)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
     surviving = {(d.type_id, d.x, d.y) for d in retained}
     added = proposed-rejected-surviving
     if rejected or added:
-        new = [_geometry_detection('source_material_size', t, x, y, .9, image,
-            result.room_box, 16 if t == OBJ_MINI_BLOCK else 32)
+        hollow = {tuple(row['key']) for row in diagnostics.get('source_hollow', {}).get('accepted', ())}
+        new = [_geometry_detection('source_hollow_glyph' if (t, x, y) in hollow else 'source_material_size',
+            t, x, y, .9, image, frame.extent if (t, x, y) in hollow else result.room_box,
+            16 if t == OBJ_MINI_BLOCK else 32)
             for t, x, y in sorted(added, key=lambda k: (k[0], k[2], k[1]))]
         result.detections = sorted(retained+new, key=lambda d: (d.type_id, d.y, d.x))
         result.structural_warnings = structural_scan_warnings(result.detections)
@@ -3958,7 +3965,10 @@ def _scan_lattice_normalized_room(
         ),
     )
     if source_geometry and _apply_shape_refits:
-        result = _apply_source_geometry(result, source_image)
+        from scripts.source_sampling import SourceFrame
+        frame = SourceFrame(source_image, normalization.source_room,
+            extent=normalization.source_extent, canonical=canonical_image)
+        result = _apply_source_geometry(result, source_image, source_frame=frame)
     return result
 
 

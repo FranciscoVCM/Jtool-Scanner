@@ -14,6 +14,7 @@ from jtool_scanner.correction import CorrectionProject
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.runtime_sources import source_geometry_files
+from scripts.source_sampling import SourceFrame
 
 
 class SourceGeometryIntegrationTests(TestCase):
@@ -34,7 +35,9 @@ class SourceGeometryIntegrationTests(TestCase):
         proposed = {(1, 160, 160), (1, 176, 160), (2, 176, 160)}
         with patch('scripts.source_geometry_pipeline.source_proposals', return_value=(proposed, {(1, 160, 160)}, {})) as proposal:
             out = scanner._apply_source_geometry(result, self.image)
-        proposal.assert_called_once_with(self.image, self.room, initial.detections)
+        self.assertEqual(proposal.call_count, 1)
+        self.assertEqual(proposal.call_args.args, (self.image, self.room, initial.detections))
+        self.assertTrue(proposal.call_args.kwargs['source_frame'].matches_source(self.image, self.room))
         self.assertIs(out, result)
         self.assertNotIn(self.old, out.detections)
         self.assertTrue(any(d is self.mini for d in out.detections))
@@ -44,6 +47,22 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertEqual(out.dot_kid, initial.dot_kid)
         self.assertEqual(out.recognized_text, initial.recognized_text)
         self.assertTrue(out.source_geometry)
+
+    def test_hollow_emission_and_project_blend_use_capture_world_not_physical_crop(self):
+        result = self.result()
+        extent = Box(-5, -1, 810, 610)
+        frame = SourceFrame(self.image, self.room, extent=extent, canonical=self.image)
+        key = (4, 240, 368)
+        with patch('scripts.source_geometry_pipeline.source_proposals',
+                   return_value=({key}, set(), {'source_hollow': {'accepted': [{'key': key}]}})):
+            out = scanner._apply_source_geometry(result, self.image, source_frame=frame)
+        added = next(d for d in out.detections if (d.type_id, d.x, d.y) == key)
+        self.assertEqual(added.kind, 'source_hollow_glyph')
+        self.assertEqual(added.image_box, Box(238, 368, 32, 32))
+        self.assertEqual(out.source_extent, extent)
+        project = CorrectionProject.from_scan(out)
+        self.assertEqual(project.source_extent, extent)
+        self.assertEqual(CorrectionProject.from_dict(project.to_dict()).source_extent, extent)
 
     def test_compact_mapping_abstains_and_records_requested_mode(self):
         result = self.result()
@@ -113,13 +132,15 @@ class SourceGeometryIntegrationTests(TestCase):
              patch.object(scanner,'_capture_lattice_consensus_enabled',return_value=False), \
              patch.object(scanner,'_resample_capture_lattice_room',return_value=self.image), \
              patch.object(scanner,'_reconcile_source_triangle_sizes',side_effect=lambda d,*a,**k:d) as size, \
-             patch.object(scanner,'_apply_source_geometry',side_effect=lambda r,i:r) as source:
+             patch.object(scanner,'_apply_source_geometry',side_effect=lambda r,i,**kwargs:r) as source:
             scanner._scan_lattice_normalized_room(self.image,normalization,grid_step=8,
                 include_color_objects=False,recognized_text=None,source_geometry=True)
         self.assertEqual(scans.call_count,2)
         self.assertTrue(all(c.kwargs['_apply_shape_refits'] is False for c in scans.call_args_list))
         self.assertTrue(all('source_geometry' not in c.kwargs for c in scans.call_args_list))
         source.assert_called_once()
+        self.assertIsInstance(source.call_args.kwargs['source_frame'], SourceFrame)
+        self.assertEqual(source.call_args.kwargs['source_frame'].canonical_rgb, self.image.data)
         self.assertTrue(size.call_args.kwargs['source_seed'])
 
     def test_project_mode_round_trip_does_not_change_jmap_header_or_objects(self):
@@ -153,12 +174,13 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),13)
+        self.assertEqual(len(paths),16)
         rectangle = next(p for p in paths if p.name == 'source_rectangle_prototypes.py')
         self.assertTrue(all(p.is_file() for p in paths))
         original=app._source_fingerprint()
         read_bytes=Path.read_bytes
-        for path in (paths[0], rectangle):
+        for path in (paths[0], rectangle, *(p for p in paths if p.name in
+                    ('source_sampling.py', 'source_hollow_glyphs.py', 'source_hollow_pipeline.py'))):
             with self.subTest(dependency=path.name), \
                  patch.object(Path,'read_bytes',lambda p:read_bytes(p)+(b'\n# changed test dependency\n' if p==path else b'')):
                 self.assertNotEqual(app._source_fingerprint(),original)

@@ -281,6 +281,24 @@ class CorrectionProjectTests(unittest.TestCase):
         self.assertIn('<svg x="96" y="96" width="608" height="416"', svg)
         self.assertIn('viewBox="0 0 966 726"', svg)
 
+    def test_capture_world_extent_round_trip_aligns_blend_without_editing_jmap(self) -> None:
+        project = CorrectionProject(source_image='fixtures/regressions/unseen-rooms/ftfa/screen-3-source.png',
+            image_width=982, image_height=747, room_box=Box(0, 0, 982, 747),
+            source_grid=(25, 19), source_extent=Box(-5, -1, 988, 750))
+        before = project.to_jmap().to_text()
+        restored = CorrectionProject.from_dict(project.to_dict())
+        self.assertEqual(restored.source_extent, project.source_extent)
+        self.assertEqual(before, restored.to_jmap().to_text())
+        self.assertIn('viewBox="-5 -1 988 750"', render_source_blend_svg(restored))
+        old = CorrectionProject(source_grid=(25, 19))
+        self.assertNotIn('world_extent', old.to_dict()['source'])
+        self.assertIsNone(CorrectionProject.from_dict(old.to_dict()).source_extent)
+
+    def test_invalid_capture_world_extent_is_not_silently_used(self) -> None:
+        for extent, grid in ((Box(0, 0, 0, 608), (25, 19)), (Box(0, 0, 800, 608), (19, 13))):
+            with self.assertRaises(ValueError):
+                CorrectionProject(source_extent=extent, source_grid=grid).validate()
+
     def test_object_type_parser_accepts_names_aliases_and_ids(self) -> None:
         self.assertEqual(parse_object_type("mini-block"), OBJ_MINI_BLOCK)
         self.assertEqual(parse_object_type("vine_right"), OBJ_WALLJUMP_RIGHT)

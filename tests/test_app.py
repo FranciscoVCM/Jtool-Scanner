@@ -28,6 +28,12 @@ class GraphicalAppTests(unittest.TestCase):
         self.assertTrue(health["ok"])
         self.assertRegex(health["source_fingerprint"], r"^[0-9a-f]{64}$")
 
+    def test_startup_loads_all_source_helpers_before_the_snapshot_is_advertised(self) -> None:
+        import sys
+        from jtool_scanner.runtime_sources import SOURCE_GEOMETRY_MODULES
+        for name in SOURCE_GEOMETRY_MODULES:
+            self.assertIn('scripts.' + name, sys.modules)
+
     def test_metadata_exposes_room_and_supported_objects(self) -> None:
         metadata = app_metadata()
 

@@ -17,6 +17,15 @@ def calibration():
 
 
 class SourceGeometryPipelineTests(TestCase):
+    def test_unqualified_hollow_recovery_is_not_bound_to_normal_source_pipeline(self):
+        with patch('scripts.source_geometry_pipeline.recover_source_hollow_glyphs',
+                   side_effect=AssertionError('Unqualified object emission')):
+            source_proposals(self.image, self.room, self.detections)
+
+    def test_hollow_research_switch_requires_boolean(self):
+        with self.assertRaises(ValueError):
+            source_proposals(self.image, self.room, self.detections, include_hollow_glyphs=1)
+
     def setUp(self):
         raster = Image.new('RGB', (800, 608))
         ImageDraw.Draw(raster).rectangle((160, 144, 175, 207), fill=(200, 200, 200))

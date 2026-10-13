@@ -311,7 +311,7 @@
     image.onload = () => {
       const context = elements.sourceLayer.getContext("2d");
       context.clearRect(0, 0, ROOM_WIDTH, ROOM_HEIGHT);
-      const room = state.project.source.room_box;
+      const room = state.project.source.world_extent || state.project.source.room_box;
       const grid = state.project.scanner.source_grid;
       let target = { x: 0, y: 0, width: ROOM_WIDTH, height: ROOM_HEIGHT };
       if (grid && (grid[0] !== 25 || grid[1] !== 19)) {
