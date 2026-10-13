@@ -4,6 +4,62 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B228 source-confirmed phase repair and qualification corrections
+
+The maintained research caller can now replace a unique same-size/direction old
+hollow-spike locator when a nearby pose has complete original-source proof, the
+old base is known unsupported at every bounded phase, and its sides still follow
+directed source edges. Supporting terrain must have an actual coherent RGB face;
+a detected block label alone cannot veto the correction. Unknown source bands,
+real supporting faces, original minis/nonterrain anchors and source-positive
+objects are preserved. No full-block retirement or blanket overlap filter added.
+
+Actual isolated candidate scans repair three shifted Arcfox left spikes and add
+five reference-correct poses overall:263→268/269 exact, total errors19→16. Extras
+13→15 because remaining old wrong hypotheses are still present and reclassified;
+they are not hidden. CN3-9/8/Bathhouse retain11/27/2 source-reviewed additions.
+CN3-7 adds four correct origins:255→259/299 exact, total errors84→83; every prior
+exact origin and all168,448 solid pixels retained. It was historically evaluated,
+not a new reserved success. All changed rooms remain MAJOR.
+
+Two actual same-option source-mode Halls comparisons add seven visible Halls1
+glyphs and correct Halls4's right spike184,64→192,64. Original Source/JTool/Blend
+and every changed-object crop reviewed; all surviving Detection metadata/order
+unchanged. Water-submerged outlines are not rejected merely for their opacity.
+Major existing terrain, opposing-spike and water errors remain in both rooms.
+The first Halls comparison used old standard-mode options and never reached the
+callback; that neutral receipt is preserved, not presented as qualification.
+
+Candidate16 controls pass before the final known-base safety patch. Fixed39-group
+checks retain601 source miniblocks and139 recovered terrain origins, with explicit
+source-stage-replay/compact-carry provenance, not47 fresh ordinary scans. Golden7
+retains39 restorations and49,504 matched terrain pixels. CN3-7's first whole-map
+equality guard failed because of its correct additions; a separate fixed-mask/
+reference/source remeasurement proves preservation without claiming equality.
+Source replay from final detections is not upstream-teacher or app evidence.
+
+The final safety patch explicitly counts the complete original RGB band after
+an early negative ink result, abstaining on unknown samples. It also skips old
+source queries with no nearby alternative. All six actual original-stage trace
+snapshots retain their repaired pairs and positive poses; proofs now record
+known raw counts. Final candidate16 requalification is TERMINAL PASS: no lost
+old exact origin or new false reference origin; FTFA926/928 with no extra/shift/
+wrong direction, Flames252 with42extras/21misses/20shifts/2wrong unchanged. The affected
+suite subsequently passes158 tests in144.103s with normal temp permissions, plus
+two query-order/raw-count checks. The sandbox attempt's37 tests had two temp-file
+PermissionErrors, not detector assertion failures; no app workaround was added.
+
+The ignored B228 interim71 successor preserves every prior per-room finding as
+historical and records candidate changed-map evidence separately:0 newly ordinary
+regenerated canonical rooms,16 candidate controls,0 approvals. Final-current71 is
+not claimed. All workers for this checkpoint are terminal and receipts preserved.
+
+Normal/app hollow recovery remains disabled. This is a mechanism/qualification
+checkpoint, not a deployed geometry gain or completed milestone. Controlled
+runtime, successful reserved transfer, ordinary activation, final-current71 and
+all original goal gates remain due. Battery-period results are accuracy only;
+no room approved and no original fixture/source/JMap/local correction modified.
+
 ## 2026-10-13 — B226 separate genuine phase repairs from recovery aliases
 
 Rechecked the immutable source and exact comparisons rather than treating every

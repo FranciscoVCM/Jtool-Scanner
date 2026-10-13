@@ -1,8 +1,42 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-11. Continue in the existing repository at
+Updated 2026-10-13. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B228 source-backed hollow phase repairs; ordinary rollout pending
+
+Read ignored B227_ACTIVE_RESUME.md and B228_QUALIFICATION_STATE.md. The maintained
+source_hollow_phase helper requires a unique closed same-type/size alternative,
+known unsupported old base and directed old sides. Source-confirmed supporting
+wall interfaces/unknowns/nonterrain anchors protect true occlusions. Explicit raw
+band counts separate early negative ink from unknown coverage. Nearby-alternative
+filter avoids irrelevant old-source queries; no reference/game/palette rules.
+Normal/app hollow recovery remains DISABLED, opt-in research callback only.
+
+Actual candidate Arcfox263→268/269 exact/errors19→16, CN3-7 four additions255→259
+exact/errors84→83. Existing wrong hypotheses remain; extras-category rises are
+reported. Source-mode Halls1+7/Halls4 one8px shift and CN3-9/8/Bathhouse+11/+27/+2
+have actual Source/JTool/Blend plus changed-object source review. All MAJOR,0room
+approvals. Source32 replays are not upstream-teacher or ordinary-output evidence.
+First Halls actual run used old standard-mode options and never called pipeline;
+neutral receipt retained, corrected same-option source-mode comparison complete.
+
+Fixed39 groups retain601 source miniblocks/139 terrain origins with explicit
+replay/compact-carry provenance; special Golden7 and direct CN3-7 fixed-mask guards
+pass. CN3-7 whole-output-equality verifier failed due correct additions; failed
+receipt preserved, new exact/mask/source evidence is NOT map-equality carry.
+Known-base patch retains all six actual original-stage repair/positive sets.
+158 affected tests PASS144.103s with normal temp permissions, plus2 new checks.
+Final candidate16 requalification is TERMINAL PASS, all prior exact origins held,
+no new false reference keys. Runtime code7d5294d854f9c720d6a082a342be9db351c71078ebf1b6829c31fbc77c3ec2a0.
+All B228 workers terminal. Ignored interim71 audit records historical ordinary
+findings separately from candidate gains,0 approvals; final-current71 still due.
+
+Next ordinary activation/protection/changed-map qualification, real cost profile,
+new successful reserved transfer and final-current71; original six GOAL_PLAN gates
+remain ACTIVE. No87baseline/wholearchive resweep. Battery accuracy only, no speed
+claims. Private/generated material stays ignored; commit only reviewed public paths.
 
 ## Latest: B188 real opt-in scanner mode; ordinary16 and actual3 complete
 

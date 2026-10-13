@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current direction (B228, 2026-10-13): source-backed phase replacement
+
+Unique same-type/size closed alternatives can repair an old unsupported base,
+but only with known original RGB coverage, directed side evidence and no real
+supporting wall/semantic-anchor conflict. Detected terrain is not automatically
+a source-confirmed wall face. True24-visible/8-wall sprites remain protected.
+The fast ink API's early negative is not unknown-source absence; complete raw
+band qualification now separates them. Irrelevant old poses skip extra work.
+
+Actual candidate Arcfox improves263→268 exact/errors19→16, CN3-7 gains four exact
+poses/errors84→83, Halls1 gains seven source glyphs and Halls4 corrects one8px
+shift. CN3-9/8/Bathhouse keep11/27/2 additions. All rooms still MAJOR; old false
+conflicts remain. No new reserved success or ordinary/app activation yet.
+All16 candidate controls and mixed-provenance39/601/139/special terrain guards
+pass at the earlier draft. Final-known-base158 affected tests plus2 new checks and
+all16 actual candidate controls pass; no fresh ordinary/default qualification is
+claimed. Preserve failed output-equality/incorrect-mode receipts and distinguish
+actual original-stage traces from final-detection helper replay.
+
+Next profile real overhead, then enable/validate the
+ordinary source-mode path with independent changed-map QA and prior protections.
+The full reserve, controlled-runtime and final71 gates remain mandatory. Do not
+repeat the87 baseline, tune against a reserved result, or declare all tilesets solved.
+
 ## Current direction (B226, 2026-10-13): qualify repairs, not just additions
 
 The failed Arcfox run added 14 aliases AND five real corrections, not 19 false

@@ -423,6 +423,30 @@ integration produced shifted duplicate spikes in exact controls. The explicit
 `source_proposals(..., include_hollow_glyphs=True)` research switch is not an app
 setting or a qualified detector. Original detections never become new teachers.
 
+`scripts/source_hollow_phase.py` provides research-only origin repair for an
+existing full-size hollow spike. A unique nearby source-positive pose must keep
+the same size and direction. The old base cannot meet the ink bound at any
+bounded source phase, while its sides must still follow directed source edges.
+An early negative ink result is rechecked against the complete original RGB
+sample band: unknown pixels cannot establish base absence. Poses without a
+nearby alternative skip this extra qualification work.
+Original source-positive objects, nonterrain anchors, unknown coverage and
+source-confirmed supporting wall faces are preserved. A detected block label
+alone is not proof of a supporting wall: its actual RGB interface must qualify.
+This protects real 32px spikes with 24px visible and 8px inside a wall; it is not
+blanket overlap removal or reference-coordinate copying. The research caller
+consumes explicit repair proofs; normal/app hollow recovery remains disabled.
+
+```powershell
+python -m unittest tests.test_source_hollow_phase tests.test_source_geometry_integration
+```
+
+Qualification must use the actual original detector-stage snapshot, not feed
+the final reconstruction back as fresh teachers. Corpus comparisons must also
+pin the scan mode: a standard-mode scan that never calls the source pipeline
+cannot qualify a source-mode change. Keep failed and neutral receipts separate
+from actual candidate gains, and inspect every changed map against its source.
+
 Capture-aware projects optionally store `source.world_extent`, separately from
 the physical `source.room_box`. Source canvas and Blend use that existing world
 transform; old projects without it keep their previous mapping. This metadata

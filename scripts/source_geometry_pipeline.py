@@ -84,5 +84,8 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         source_field = context.glyph_library(image, room, spikes).raw if frame.extent == room else None
         hollow, hollow_diag = recover_source_hollow_glyphs(frame, detections, source_field=source_field)
         proposed |= hollow
+        # Only source-proved SAME type/size phase replacements can retire old
+        # locators. Unverified terrain labels cannot act as coordinate answers.
+        rejected |= {tuple(p['old']) for p in hollow_diag.get('phase_repairs', ())}
     return proposed, rejected, {**diag, **pose, **agreement, 'rectangle_fallback': rectangle,
                                'source_hollow': hollow_diag}

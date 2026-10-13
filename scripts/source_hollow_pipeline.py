@@ -1,13 +1,15 @@
 """Source-proven hollow full-spike recovery from frozen original locators.
 
-No existing object is retired here. Failed source evidence is not evidence of
-absence: true touching and occluded spikes must survive. All new objects need
-the complete source predicate; references and generated proposals cannot teach.
+Only a uniquely source-proved same-type/size phase repair can replace an old
+locator. Failed source evidence alone is not absence: true touching and occluded
+spikes survive. All new objects need the complete source predicate; references
+and generated proposals cannot teach.
 """
 from math import dist
 
 from jtool_scanner.spike_shape import VERTICES
 from scripts.source_hollow_glyphs import HollowGlyphEvidence
+from scripts.source_hollow_phase import refit_source_hollow_phases
 
 
 def respect_original_terrain_anchors(proposed, original_detections, evidence):
@@ -98,8 +100,11 @@ def recover_source_hollow_glyphs(frame, original_detections, *, source_field=Non
                 cache.clear()
     proposed, abstained = respect_original_terrain_anchors(proposed, original, evidence)
     proofs = [row for row in proofs if tuple(row['key']) in proposed]
+    phase_repairs = refit_source_hollow_phases(evidence, original, proposed)
     return proposed, dict(accepted=proofs, original_anchor_abstentions=abstained,
+        phase_repairs=phase_repairs,
         original_teachers_only=True,
         original_source_coverage_checked=True, hypotheses=len(hypotheses),
         nominal_models=evidence.nominal_model_count, inset_models=evidence.inset_model_count,
-        no_existing_object_retirement=True)
+        no_existing_object_retirement=not phase_repairs,
+        no_original_mini_nonterrain_or_source_positive_retirement=True)
