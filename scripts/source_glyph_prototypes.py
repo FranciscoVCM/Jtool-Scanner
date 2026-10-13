@@ -57,13 +57,16 @@ def _fits(rgb, model):
 class _RawContours:
     """Share the existing public RGB contour kernel, without duplicating it."""
 
-    def __init__(self, image, room, contour_field=None):
+    def __init__(self, image, room, contour_field=None, source_frame=None):
         if contour_field is not None and (
-            contour_field.image is not image or contour_field.room != room
+            (contour_field.image is not image and (source_frame is None or
+             (contour_field.image.width, contour_field.image.height, contour_field.image.data)
+             != (image.width, image.height, image.data))) or contour_field.room != room
             or contour_field.native_size != (800, 608)
+            or contour_field.source_frame is not source_frame
         ):
             raise ValueError("Shared contours must match the original image/room/native frame")
-        self.field = contour_field if contour_field is not None else SourceContours(image, room)
+        self.field = contour_field if contour_field is not None else SourceContours(image, room, source_frame=source_frame)
 
     def edge(self, first, second):
         evidence = self.field.edge(first, second)
@@ -76,12 +79,15 @@ class _RawContours:
 class SourceGlyphEvidence:
     """Independent raw geometry, competing rectangle and RGB body/corner proof."""
 
-    def __init__(self, image: RGBImage, room: Box, *, contour_field=None):
+    def __init__(self, image: RGBImage, room: Box, *, contour_field=None, source_frame=None):
         self.image, self.room = image, room
-        self.raw = _RawContours(image, room, contour_field)
+        self.source_frame = source_frame
+        self.raw = _RawContours(image, room, contour_field, source_frame)
         self.cache = {}
 
     def sample(self, cx, cy, size=2):
+        if self.source_frame is not None:
+            return self.source_frame.original_patch(cx, cy, size)
         values = []
         for dy in range(size):
             for dx in range(size):
@@ -213,7 +219,7 @@ class SourceGlyphLibrary:
     """Transient native-size prototypes; outputs are evidence, never map edits."""
 
     def __init__(self, image: RGBImage, room: Box, spikes, *,
-                 contour_field=None, pixel_cache_limit=0):
+                 contour_field=None, pixel_cache_limit=0, source_frame=None):
         if room.width <= 0 or room.height <= 0:
             raise ValueError("Room dimensions must be positive")
         if room.x < 0 or room.y < 0 or room.x + room.width > image.width or room.y + room.height > image.height:
@@ -223,16 +229,27 @@ class SourceGlyphLibrary:
         self._pixel_cache_limit = pixel_cache_limit
         self._pixel_results = OrderedDict()
         self.pixel_cache_hits = self.pixel_cache_misses = self.pixel_cache_peak = 0
-        self.raw = SourceGlyphEvidence(image, room, contour_field=contour_field)
+        self.source_frame = source_frame
+        if source_frame is not None and not source_frame.matches_source(image, room):
+            raise ValueError('Source frame must match the original image and physical room')
+        raw_room = room if source_frame is None else source_frame.extent
+        raw_image = image if source_frame is None else source_frame.original_snapshot()
+        self.raw = SourceGlyphEvidence(raw_image, raw_room, contour_field=contour_field,
+                                       source_frame=source_frame)
         self.filled = FilledSourceEvidence(self.raw)
-        raster = Image.frombytes("RGB", (image.width, image.height), image.data)
-        self.pixels = raster.crop((room.x, room.y, room.x + room.width, room.y + room.height)).resize(
-            (800, 608), Image.Resampling.BILINEAR).tobytes()
+        if source_frame is None:
+            raster = Image.frombytes("RGB", (image.width, image.height), image.data)
+            self.pixels = raster.crop((room.x, room.y, room.x + room.width, room.y + room.height)).resize(
+                (800, 608), Image.Resampling.BILINEAR).tobytes()
+        else:
+            self.pixels = source_frame.canonical_rgb
         self.signatures, self.anchors = {}, []
         self._support_results = {}
         hypotheses = set()
         for type_id, x, y in spikes:
             size, _ = _dimensions(type_id)
+            if source_frame is not None and not source_frame.rectangle_available(x, y, size, size, margin=4):
+                continue
             for direction in (3, 4, 5, 6):
                 hypotheses.add((direction + (4 if size == 16 else 0), x, y))
         for key in sorted(hypotheses):
@@ -242,7 +259,7 @@ class SourceGlyphLibrary:
             self.anchors.append(dict(key=key, size=_dimensions(key[0])[0],
                                      signature=self.signature(*key),
                                      independent_source_proof="raw" if strict else "filled"))
-        self.pitch = 800 / room.width, 608 / room.height
+        self.pitch = (800 / room.width, 608 / room.height) if source_frame is None else source_frame.pitch
         self.models, self.pair_scores = [], {}
         seen = set()
         def matches(a, b):
@@ -287,6 +304,8 @@ class SourceGlyphLibrary:
         return answer
 
     def _measure_pixel(self, x, y):
+        if self.source_frame is not None:
+            return self.source_frame.pixel(x, y)
         u, v = x - .5, y - .5
         ix, iy = floor(u), floor(v)
         dx, dy = u - ix, v - iy
@@ -341,6 +360,8 @@ class SourceGlyphLibrary:
         for dx in (0, -self.pitch[0], self.pitch[0]):
             for dy in (0, -self.pitch[1], self.pitch[1]):
                 if not (0 <= x+dx <= 800-size and 0 <= y+dy <= 608-size):
+                    continue
+                if self.source_frame is not None and not self.source_frame.rectangle_available(x+dx, y+dy, size, size):
                     continue
                 query = self.signature(type_id, x+dx, y+dy)
                 for model in models:

@@ -387,6 +387,36 @@ and does not itself emit objects. The experimental caller consumes its evidence;
 standard scanning is unchanged. Insufficient source examples,
 occlusion, hidden size identity and unfamiliar styles can still require abstention.
 
+### Read-only capture-aware hollow glyph evidence
+
+`scripts/source_sampling.py` provides `SourceFrame`: a frozen physical RGB crop,
+its logical 800x608 world extent, and explicit original-pixel coverage. A capture
+transform must supply its **already-computed** canonical raster; this API does
+not infer another transform or run another scan. Raw ink samples use original
+pixels through that transform. Filtered pixels with any out-of-crop interpolation
+tap are unknown, even when the displayed canonical raster repeats an edge color.
+Coverage is reused per axis; RGB is retained rather than converted to grayscale.
+
+`SourceGlyphLibrary(..., source_frame=frame)` opts into this coordinate contract.
+Existing callers without a frame retain their original behavior.
+`scripts/source_hollow_glyphs.py` provides `HollowGlyphEvidence(library, original_spikes)`
+and `support((type_id, x, y))` for ordinary 32px spikes only. It requires three
+disjoint original source teachers, coherent RGB ink, a hollow core, localized
+directed edges, and inward foreground ownership at one source-pixel-bounded
+phase. Independent opposing source glyphs can explain a closed empty gap;
+query results never become training witnesses. Returned proof data is copied.
+
+```powershell
+python -m unittest tests.test_source_sampling tests.test_source_hollow_glyphs
+```
+
+These are read-only development APIs, **not a new app detector or object emitter**.
+Positive proposal checks do not certify whole rooms. Partly captured objects,
+ambiguous border shapes, absent teachers and unfamiliar sprite styles still need
+qualification. Integration, collateral accuracy and scan-time cost remain separate
+gates; neither the standard scan nor the opt-in source pipeline emits these new
+hollow-glyph proposals yet.
+
 ### Experimental source-taught full-block evidence
 
 `scripts/source_block_prototypes.py` provides the read-only `SourceBlockLibrary`

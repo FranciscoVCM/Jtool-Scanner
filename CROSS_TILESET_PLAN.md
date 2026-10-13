@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Current direction (B221, 2026-10-13): maintained coverage-aware evidence
+
+The source/capture contract and hollow-glyph mechanism now have maintained,
+read-only APIs and regression tests. Original RGB fallback samples the physical
+crop through the world transform; no edge padding counts as a source vote.
+Canonical capture pixels are reused, not rescanned. Three original disjoint
+teachers, localized directed contours, shared phase, inward ownership and
+independent opposing-neighbor explanations remain mandatory.
+
+Same frozen real-room hypothesis sets retain11 reviewed CN3-9 proposals,26
+CN3-8 proposals and2 Bathhouse proposals, with no known pose aliases retained.
+One additional CN3-8 left-edge shape is human-confirmed as a real downward
+full spike, not a cut-off sprite; its exact native origin is still unverified.
+Opposing full32 spikes commonly touch at the same height with16px horizontal
+offset; preserve this genuine pattern, already covered by rotated portable tests.
+Same72 original
+portable RGB inputs retain180/180 plus108/108 positives, with0/4788 alternatives
+and0/36 closed voids. Final affected-source suite219 tests passes.
+
+This is a development-tooling checkpoint, NOT deployed object recovery. Next
+qualify actual final-stage integration, independent changed-map source QA,
+preservation of old objects/41/601/139/16, reserved transfer and controlled cost.
+The full source-only hypothesis sweep is not a scan-speed benchmark. No whole
+room is approved; final-current71 and every original goal gate still apply.
+
 ## Current direction (B219, 2026-10-13): source coordinates and pixel coverage
 
 Original-RGB thin-base sampling plus independent source-neighbor explanations

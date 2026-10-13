@@ -35,10 +35,16 @@ class SourceContours:
     """Cache coherent RGB edge support after local-gradient subtraction."""
 
     def __init__(self, image: RGBImage, room: Box,
-                 native_size: tuple[int, int] = (800, 608), *, squared_norm=False):
+                 native_size: tuple[int, int] = (800, 608), *, squared_norm=False, source_frame=None):
         if min(room.width, room.height, *native_size) <= 0:
             raise ValueError("Room and native dimensions must be positive")
         self.image, self.room, self.native_size = image, room, native_size
+        if source_frame is not None and (room != source_frame.extent or native_size != (800, 608)
+                or not source_frame.matches_source(image, source_frame.room)):
+            raise ValueError('Contour frame must match the source extent and native size')
+        if source_frame is not None:
+            self.image = source_frame.original_snapshot()
+        self.source_frame = source_frame
         self._squared_norm = squared_norm
         self._edges: dict[tuple, EdgeEvidence] = {}
 
@@ -61,9 +67,15 @@ class SourceContours:
             if any(not (0 <= x < width and 0 <= y < height) for x, y in native):
                 unknown = True
                 break
-            points = [(int(self.room.x + x * self.room.width / width),
-                       int(self.room.y + y * self.room.height / height))
-                      for x, y in native]
+            if self.source_frame is None:
+                points = [(int(self.room.x + x * self.room.width / width),
+                           int(self.room.y + y * self.room.height / height))
+                          for x, y in native]
+            else:
+                points = [self.source_frame.original_position(x, y) for x, y in native]
+                if any(point is None for point in points):
+                    unknown = True
+                    break
             if any(not (0 <= x < self.image.width and 0 <= y < self.image.height)
                    for x, y in points):
                 unknown = True

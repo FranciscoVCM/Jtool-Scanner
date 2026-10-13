@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B221 maintain capture-aware source evidence without app binding
+
+Implemented `SourceFrame` and `HollowGlyphEvidence` as read-only development
+APIs. Physical source crop and logical world extent are separate. Original RGB
+samples floor coordinates before checking coverage; negative fractions cannot
+truncate into pixel zero. Filtered samples reject any non-original interpolation
+tap. Capture rasters must already exist, and coverage is cached per axis. Frozen
+RGB snapshots and shared raw contours protect evidence from caller mutation.
+Optional frame arguments leave existing callers on their unchanged path.
+
+The maintained hollow mechanism consolidates original nominal/inset teacher
+cohorts, three disjoint witnesses, all-three-edge ink/direction and hollow-core
+proof, inward foreground ownership, signed cache orientation, raw-ink fallback
+and independent neighbor explanations. Queries cannot teach; returned proofs
+are independent copies. No source hashes, room names, reference answers or
+screen coordinates enter production recognition rules.
+
+All72 portable source RGB hashes equal the original frozen producers. Tests
+retain180/180 real spikes with0/4788 alternative detections, and108/108 clipped
+sprite positives with0/36 closed empty gaps. The final affected-source suite
+passes219 tests in213.447s. This is not a full project unittest-suite result.
+
+Complete frozen source-only query sets across CN3-9/8/Bathhouse1 retain all
+11/26/2 previously reviewed proposals. Known false direction/phase alternatives
+are absent. The additional CN3-8 left-edge shape is now human-confirmed as a
+real full32 downward spike, not a cut-off sprite. Its exact native origin remains
+unverified, so it is recorded separately from the39 reviewed-origin proposals.
+Opposing full32 spikes touching at the same height with16px horizontal offset
+are a genuine common pattern, protected by the rotated portable tests.
+These are read-only evidence
+checks, not actual scanner recovery, changed-map approval or reserved transfer.
+Ordinary final-stage emission has not been connected to this new mechanism.
+
+All16 exact controls were freshly scanned through the ordinary API. ENTIRE
+maps, ordered detections, warnings, source/options/crop/grid and reference
+comparisons equal the previous qualified outputs: no protected regressions.
+FTFA remains926/928 with0 extras/shifts/wrong directions. A full-only teacher
+caller also reproduces all213 complete accepted-source proofs and known
+negatives; this avoids unrelated mini appearance work, not a measured scan-speed
+claim. Source helper timings overlapped other work and are not quiet benchmarks.
+
+No source/fixture/JMap/private archive changes. Whole-room statuses stay
+conservative. Actual integration, old-object arbitration, independent whole-map
+QA, prior-gain guards, reserve, controlled latency and final-current71 remain
+required before calling the shared repair shipped or completing the milestone.
+
 ## 2026-10-13 — B219 resolve thin-ink and capture-frame causes before integration
 
 Unchanged failed void inputs expose a sampling loss, not weak shape evidence:
