@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B203 reject an optimization without a measured scan-time gain
+
+An isolated source-evidence optimization skipped exterior checks whose results
+cannot affect two/three-sided rows. All query coverage, thresholds and teachers
+were retained. Complete proposal/proof equality held across seven real source
+cases and10 portable tests. CN3-27 exterior calls fell1005->120, but cold helper
+times were mixed. Work-count reduction alone is not a measured scanner speedup.
+
+Four serial AC full scans (current/lazy/lazy/current) preserve ENTIRE ScanResult,
+project, JMap and metadata. Current119.771/117.917s, candidate119.282/119.563s;
+means118.844->119.422s (+0.578s,+0.486%), overlapping ranges/two repeats per mode.
+No reliable benefit: candidate NOT adopted, published B202 implementation and app
+unchanged. No recognition gain or room promotion claimed from this experiment.
+Return to safe correction of old pale block poses/compound geometry while broader
+contour/material cost remains an investigated limitation. Original six gates
+and final stable all71 audit remain incomplete.
+
 ## 2026-10-13 — B202 integrate independent rectangle recovery; reject border-only aliases
 
 The experimental source pipeline now consumes maintained rectangle evidence after
