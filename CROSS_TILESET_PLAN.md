@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Current direction (B229, 2026-10-14): reduce duplicated sampling before rollout
+
+Lazy256-entry band reuse preserves all six complete original-stage proof outputs
+and30 portable/cache guards. Quiet AC ABBA helper medians improve27.02%dense and
+19.54%sparse; these are not whole-scan timings. A geometry-first predicate-order
+candidate is rejected after a2.225× diagnostic cost regression; production order
+and all recognition thresholds are unchanged. Final165 affected tests pass;
+all16 actual candidate controls pass with entire B228 map/metadata/input equality.
+
+The original milestone already has a genuine B174/B192 frozen no-tuning CN3-7
+reserve success (1536 terrain pixels recovered). Its hashes/source QA/current
+preservation are intact; no new success is claimed by the latest hollow batch.
+Final-code preservation remains mandatory, not another invented reserve target.
+Normal/app hollow still disabled. Next actual source-mode rollout, end-to-end
+cost/protections and stable final71; no broad accuracy or whole-room acceptance.
+
 ## Current direction (B228, 2026-10-13): source-backed phase replacement
 
 Unique same-type/size closed alternatives can repair an old unsupported base,

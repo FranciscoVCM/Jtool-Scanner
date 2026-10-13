@@ -82,6 +82,9 @@ class HollowGlyphEvidence:
         self.original_spikes = tuple(sorted(set(map(tuple, original_spikes))))
         self.gradients, self.edges, self.cores = {}, {}, {}
         self.ink_edges, self.raw_ink_edges, self.owned_edges = {}, {}, {}
+        # Models share the same physical band samples, but never teacher proofs.
+        # Sample lazily so an early negative still avoids unused pixel work.
+        self.bands = OrderedDict()
         self.results, self.qualified_results = {}, {}
         full_origins = {(x, y) for t, x, y in self.original_spikes if 3 <= t <= 6}
         nominal = [(tuple(anchor['key']), library.raw.owner(*anchor['key']))
@@ -152,20 +155,32 @@ class HollowGlyphEvidence:
         return owners
 
     def band(self, a, b, width):
+        key = a, b, width
+        if key not in self.bands:
+            self.bands[key] = {}
+            if len(self.bands) > 256:
+                self.bands.popitem(last=False)
+        self.bands.move_to_end(key)
+        rows = self.bands[key]
         tx, ty = b[0] - a[0], b[1] - a[1]
         length = hypot(tx, ty)
         nx, ny = -ty / length, tx / length
         for i in range(12):
+            if i in rows:
+                yield rows[i]
+                continue
             q = .15 + .7 * i / 11
             px, py = a[0] + q * tx, a[1] + q * ty
             points = [(px + off * nx, py + off * ny) for off in range(-width, width + 1)]
             if any(not (0 <= x < 800 and 0 <= y < 608) for x, y in points):
-                yield None, None
+                rows[i] = None, None
+                yield rows[i]
                 continue
-            values = [self.library.pixel(x, y) for x, y in points]
+            values = tuple(self.library.pixel(x, y) for x, y in points)
             position = self._position(px, py)
-            yield ((position, values) if position is not None and all(v is not None for v in values)
-                   else (None, None))
+            rows[i] = ((position, values) if position is not None and all(v is not None for v in values)
+                       else (None, None))
+            yield rows[i]
 
     def core(self, key, model):
         if key not in self.cores:

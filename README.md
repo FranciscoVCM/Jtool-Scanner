@@ -406,8 +406,14 @@ directed edges, and inward foreground ownership at one source-pixel-bounded
 phase. Independent opposing source glyphs can explain a closed empty gap;
 query results never become training witnesses. Returned proof data is copied.
 
+Its scan-local band sampler reuses identical directed-edge RGB samples across
+models using a bounded 256-entry lazy cache. Only requested sites are evaluated;
+unknown source samples stay unknown. Immutable numerical samples are shared,
+not teacher identities, reference answers, object decisions or stored tilesets.
+This changes computation reuse, not the recognition criteria.
+
 ```powershell
-python -m unittest tests.test_source_sampling tests.test_source_hollow_glyphs
+python -m unittest tests.test_source_sampling tests.test_source_hollow_glyphs tests.test_source_hollow_band_cache
 ```
 
 These are read-only development APIs, **not a new app detector or object emitter**.

@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — B229 lazy source-band reuse; reject blanket geometry-first work
+
+Profiled the original-stage recovery helper on dense CN3-9 and sparse Halls4.
+Repeated model-specific ink and shared numerical sampling dominate; profiler
+times206.507/56.912s include overhead and are not scan-latency measurements.
+The learned numerical models are distinct, so teacher/model merging is not used.
+
+The band sampler now shares only immutable identical edge/width/site RGB data
+in a256-entry scan-local LRU. It remains lazy: early negatives do not force
+unused samples, unknown coverage is cached as unknown, and reversed edges/other
+widths have separate entries. Original teachers and all acceptance predicates
+are unchanged. Five memo guards and25 portable recovery/phase tests pass.
+All six actual original-stage source replays preserve ENTIRE proposals and
+diagnostic proofs, including source joins, empty-gap rejection and phase repairs.
+
+Quiet serial AC ABBA helper comparisons preserve complete results in all8 runs:
+CN3-9 median74.766→54.566s(-27.02%), Halls4 21.845→17.576s(-19.54%). These are
+two samples/mode on two sources, NOT ordinary whole-scanner latency or universal
+speedup. Significant recovery cost remains; ordinary rollout is not certified.
+
+A separate identical-predicate geometry-first experiment preserves its first
+Arcfox proof but costs45.563→101.375s. Rejected and not integrated: gradients
+on hypotheses that cheaper color evidence discards are not automatically faster.
+The owned diagnostic was stopped after its immutable regression receipt;
+remaining five cases were not tested. No six-case or speedup claim for it.
+
+Reconciled original milestone evidence: B174's pre-frozen CN3-7 reserve already
+passed without tuning in B192, recovering1536 pixels under its unchanged1024
+threshold. All freeze hashes, whole/delta source QA and latest preservation are
+intact. Recent wording requiring another successful reserve was too broad;
+preserve the original success at final code, do not repeatedly invent a new one.
+This is not a new reserve result or whole-room approval for hollow recovery.
+
+The complete pre-frozen Arcfox structures improve9/14→14/14 exact typed origins,
+but retain five false hypotheses. Regional errors7→4 and1→1 keep the remaining
+conflicts explicit; matching all positives does not solve the whole structures.
+
+Final affected suite passes165 tests in121.045s. All16 actual candidate controls
+pass, with strict ENTIRE maps/ordered Detection metadata/warnings/source/options/
+crop/grid/comparison equality against B228 candidate outputs. FTFA926/928 and
+Flames252/no increased errors remain. The interim71 audit keeps canonical
+findings historical,16 actual candidate controls and0 approvals; no final-current
+all71 claim. All producers are terminal for this checkpoint. Normal/app
+hollow recovery remains disabled. Final ordinary activation, prior protections,
+end-to-end cost and current all71 audit remain required by the unchanged goal.
+No original sources/fixtures/JMaps/local corrections or private material changed.
+
 ## 2026-10-13 — B228 source-confirmed phase repair and qualification corrections
 
 The maintained research caller can now replace a unique same-size/direction old

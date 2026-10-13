@@ -1,8 +1,35 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-13. Continue in the existing repository at
+Updated 2026-10-14. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Latest: B229 lazy numerical reuse; reserve evidence reconciled
+
+Maintained `source_hollow_glyphs.band` shares immutable directed edge/width/site RGB
+samples in a256-entry lazy LRU; no teacher merging or recognition-rule change.
+Five memo tests/25 portable tests and all6 ENTIRE original-stage proof comparisons
+pass. Quiet AC ABBA helper medians: CN3-9 74.766→54.566s(-27.02%); Halls4
+21.845→17.576s(-19.54%). NOT whole-scanner latency; two samples/mode only.
+Final165 affected tests PASS121.045s; final candidate16 TERMINAL PASS with strict
+ENTIRE map/metadata/warnings/input/comparison equality against B228. All workers
+terminal; read ignored B227_ACTIVE_RESUME.md for the current publication/action.
+Interim71 keeps findings historical,16 actual candidate controls,0 approvals.
+
+Geometry-first ordering was isolated and REJECTED: first full Arcfox proof equal
+but45.563→101.375s. Owned diagnostic stopped after the immutable regression;
+remaining5cases untested, no adoption/restart. Preserve that failed evidence.
+
+Original B174/B192 CN3-7 no-tuning reserve success is genuinely proved and intact:
+1536 terrain pixels recovered under the unchanged1024 threshold, whole/delta
+source QA complete, freeze hashes/latest preservation verified. Do not reset the
+original goal to require another reserve success for each new checkpoint. Final
+code preservation remains mandatory, not whole-room approval or a new holdout.
+
+Next qualify ordinary hollow activation and end-to-end cost, then stable all71/
+protections/changed-map review and original GOAL_PLAN audit. B228's recovery
+baseline is preserved; this cache checkpoint changes numerical reuse only.
+normal/app hollow remains disabled and goal ACTIVE. No archive/87baseline resweep.
 
 ## Latest: B228 source-backed hollow phase repairs; ordinary rollout pending
 
