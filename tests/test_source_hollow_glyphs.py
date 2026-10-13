@@ -131,6 +131,24 @@ class HollowGlyphTests(unittest.TestCase):
             self.assertFalse(evidence.support(key)['passed'])
         self.assertEqual(evidence.models, [])
 
+    def test_filled_core_beyond_background_is_not_a_hollow_role(self):
+        for background, ink, filled in ((192, 92, 213), (63, 163, 42)):
+            with self.subTest(background=background):
+                raster = Image.new('RGB', (800,608), (background,)*3)
+                pen = ImageDraw.Draw(raster)
+                locators = [(4, x, 96) for x in (96,192,288)]
+                for _, x, y in locators:
+                    poly = [(x+u,y+v) for u,v in VERTICES[3]]
+                    pen.polygon(poly, fill=(background+3,)*3)
+                    pen.line(poly+[poly[0]], fill=(ink,)*3, width=3)
+                key = (3,416,256)
+                poly = [(key[1]+u,key[2]+v) for u,v in VERTICES[3]]
+                pen.polygon(poly, fill=(filled,)*3)
+                pen.line(poly+[poly[0]], fill=(ink,)*3, width=3)
+                image = RGBImage(800,608,raster.tobytes())
+                evidence = HollowGlyphEvidence.from_frame(SourceFrame(image,Box(0,0,800,608)),locators)
+                self.assertTrue(evidence.models)
+                self.assertFalse(evidence.support(key)['passed'])
     def test_returned_proofs_are_independent_and_models_stay_frozen(self):
         image, room, locators, true, _ = hollow_scene()
         evidence = self.evidence(image, room, locators)

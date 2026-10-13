@@ -18,6 +18,9 @@ from jtool_scanner.spike_shape import VERTICES
 from scripts.source_glyph_prototypes import SourceGlyphEvidence, _bounds, _contains, _fits
 
 
+MATERIAL_COHERENCE_FRACTION = .1
+
+
 class _OriginalHollowLibrary:
     """Only raw full32 teachers; no unused filled/mini/signature learning."""
     def __init__(self, frame, spikes, pixel_cache_limit, source_field=None):
@@ -174,7 +177,20 @@ class HollowGlyphEvidence:
         values = self.cores[key]
         if any(v is None for v in values):
             return 0
-        return sum(dist(v, model['background']) < dist(v, model['foreground']) for v in values) / 4
+        vector = tuple(f-b for f, b in zip(model['foreground'], model['background']))
+        energy = sum(v*v for v in vector)
+        if energy <= 0:
+            return 0
+        quantum = sum(abs(v) for v in vector) / energy
+        def background_role(rgb):
+            # Nearest-to-background alone also accepts a filled core on the
+            # *far* side of the learned background (e.g. brighter gray). Keep
+            # the original material-coherence allowance and RGB quantization;
+            # neither game colors nor luminance-only thresholds define roles.
+            projection = sum((v-b)*d for v, b, d in zip(rgb, model['background'], vector)) / energy
+            return (dist(rgb, model['background']) < dist(rgb, model['foreground'])
+                    and projection >= -MATERIAL_COHERENCE_FRACTION-quantum)
+        return sum(background_role(v) for v in values) / 4
 
     def _models(self, owners):
         teachers = []
@@ -199,7 +215,7 @@ class HollowGlyphEvidence:
                                      separation=separation))
         def matches(a, b):
             return max(dist(a['foreground'], b['foreground']), dist(a['background'], b['background'])) <= (
-                .1 * min(a['separation'], b['separation']))
+                MATERIAL_COHERENCE_FRACTION * min(a['separation'], b['separation']))
         models, seen = [], set()
         for seed in teachers:
             group = []

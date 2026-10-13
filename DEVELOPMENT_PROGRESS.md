@@ -4,6 +4,57 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B226 separate genuine phase repairs from recovery aliases
+
+Rechecked the immutable source and exact comparisons rather than treating every
+new object in a failed run as false. B223's 19 Arcfox additions comprise 14 false
+aliases and five correct poses (four shifted-spike repairs and one direction
+repair). Safe Arcfox remains 263/269 exact, 13 extras, one miss, four shifts and
+one wrong direction. The rejected addition-only result was 268/269 exact but
+32 extras: it retained old wrong hypotheses as well as adding 14 duplicates.
+This corrects the earlier description of all 19 additions as false duplicates.
+
+The maintained, research-only hollow evidence now checks contrast-relative core
+roles: a filled core beyond the learned background is not hollow merely because
+it is nearer to background than to ink. Both brightness polarities are tested;
+original RGB and the existing material-coherence/quantization bounds are retained.
+New-pose arbitration reuses the existing shared stronger-terrain-attachment rule,
+but requires complete source proof from the same original model for both poses.
+Separate visible source tips and unknown tip coverage prevent suppression.
+No existing object is removed, and nearby/overlapping spikes are not blanket
+filtered. A real-RGB overlapping same-direction pair survives the new guard.
+
+Frozen maintained-code checks retain all 40 CN3-9/8/Bathhouse proposals (39 reviewed
+origins plus one separately confirmed border shape) and all five correct Arcfox
+poses, while rejecting 138 FTFA additions and 14 Arcfox aliases. These are isolated
+candidate checks, not ordinary deployed-map gains. Source teachers and existing
+detections stay frozen; references are used only to verify classifications.
+
+Final affected-source/correction/app/corpus suite passes121 tests in183.996s.
+Portable180/4788 and108/36 positives/negatives remain protected. All213 sealed
+accepted source poses survive;12 Bathhouse proof records change, so complete
+proof equality is not claimed. Sandbox temporary-directory permission errors
+were resolved by running with normal permissions, not by changing app behavior.
+All16 ordinary exact controls pass with entire maps, ordered detections, warnings,
+source/options/crop/grid and comparisons unchanged. A stopped worker's ten
+compatible outputs were retained; only its six unfinished cases were resumed.
+The safe FTFA baseline remains926/928 with no extras/shifts/wrong directions.
+
+Investigated old-hypothesis retirement conservatively. A complete background-face
+veto does not establish the needed Arcfox replacements. A narrower source-base
+phase probe identifies two potential repairs, but is not enabled or certified.
+Further source-independent occlusion/instance evidence is needed before replacing
+old geometry. Stronger slope ownership, direction-only teacher banks and tip-only
+absence do not justify broad adoption. Failed/neutral results remain preserved.
+
+Normal/app recovery remains disabled. This checkpoint improves its qualification
+path, not the app's geometry. The full multi-family/conflict-reduction/reserve,
+prior-gain, runtime and final-current71 gates remain unfinished. No room is approved.
+Battery-period runs are accuracy checks only, not scan-speed measurements.
+The successor71 inventory preserves prior findings as historical, with16 fresh
+controls and0 new whole-room approvals; canonical rooms were not regenerated
+for this inactive recovery change. Final-current71 remains a later required gate.
+
 ## 2026-10-13 — B223 reject unsafe recovery; retain correct review infrastructure
 
 Built and ordinary-tested final-stage hollow recovery with the existing capture
@@ -11,7 +62,9 @@ raster and frozen original detections. CN3-9/8/Bathhouse produced exactly11/27/2
 new poses while preserving every original Detection's metadata. The frozen
 CN3-9 corridor gained5/5 correct origins, but its5 old false hypotheses remained.
 Those local gains were insufficient for release: full16 exact qualification
-found138 extra FTFA spikes and19 new Arcfox extras, chiefly shifted duplicates.
+found138 extra FTFA spikes and19 new Arcfox poses. B226 later established that
+14 are aliases and five are genuine corrections; the addition-only output still
+retains old erroneous poses and fails release qualification.
 Failed ordinary outputs and measurements remain preserved; never relabeled green.
 
 The unqualified recovery binding is detached from normal/app source-geometry
@@ -24,7 +77,8 @@ whole-sprite correlation and tighter sampling reject some false poses but also
 lose genuine joined spikes. They are not adopted. An isolated background-role
 check preserves all213 sealed accepted source proofs and rejects the138 FTFA
 additions: nearest-to-background alone had mislabeled brighter filled gray cores
-as hollow. Arcfox's19 shifted hollow duplicates remain unresolved. This isolated
+as hollow. Arcfox's alias/correction distinction was resolved in B226; safe
+old-hypothesis replacement remains unresolved. This isolated
 partial result is not a shipped fix or universal sprite-recognition claim.
 
 No-tuning CN3-28 lower-structure evaluation is NEUTRAL, not a successful reserve:

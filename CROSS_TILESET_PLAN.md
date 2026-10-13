@@ -1,15 +1,41 @@
 # Cross-tileset milestone
 
+## Current direction (B226, 2026-10-13): qualify repairs, not just additions
+
+The failed Arcfox run added 14 aliases AND five real corrections, not 19 false
+objects. Immutable reference classifications and fresh source-grid review agree.
+Its improved 268/269 exact count still came with 32 extras because old wrong
+poses survived. Safe app remains 263/269, with four shifts and one wrong direction.
+
+Maintained research-only contrast-role qualification plus existing stronger-base
+arbitration retains all 40 CN3/Bathhouse and five correct Arcfox poses, rejecting
+138 FTFA and 14 Arcfox additions. Complete original-source proof for both competing
+poses is mandatory; separate foreground tips and unknown coverage prevent a
+blanket overlap/proximity filter. New real-RGB same-direction overlap test passes.
+Final121 affected tests and all16 ordinary exact controls pass; entire old maps
+and metadata are unchanged. All213 prior accepted poses survive, although12
+Bathhouse proof records differ. No newly certified whole room or scan-speed claim.
+
+Next qualify source-supported old-pose replacement with frozen full structures,
+true occlusions and all prior protections. Negative face/tip probes abstain on
+important cases; a two-pose base-phase lead is not a deployed fix. No source,
+reference, palette, coordinate or game exceptions enter production logic.
+Recovery stays disabled in normal/app scans until actual maps, full16 controls,
+changed-map QA, 41/601/139, reserved transfer and controlled cost pass. No all71
+baseline resweep; final-current71 is still required at a qualified final version.
+
 ## Current direction (B223, 2026-10-13): qualify extent before recovery emission
 
 Ordinary three-room gains11/27/2 are NOT a safe release: full16 controls expose
-138 extra FTFA and19 Arcfox shifted duplicates. Normal/app recovery is detached;
+138 extra FTFA and19 Arcfox additions (B226:14 aliases, five correct poses).
+Normal/app recovery is detached;
 failed outputs preserved. Do not solve this by excluding games or deleting overlaps.
 True opposing full32 spikes at16px horizontal offset remain protected.
 
 Ridge/whole-appearance/narrow-window gates lose real joined spikes and are rejected.
 Isolated source-background role coherence keeps all213 sealed source proofs and
-removes FTFA's138 additions, but Arcfox duplicates remain. Next follow shared
+removes FTFA's138 additions. B226 separates Arcfox aliases from genuine phase
+corrections. Next follow shared
 source-instance/whole-extent/pose evidence with legitimate joins and occlusions;
 do not declare success from a local RGB role correction. The source-only helper's
 semantic shape is not automatically a unique editor origin.
