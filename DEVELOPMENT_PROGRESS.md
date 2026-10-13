@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B204 reject weak retirement; B205 diagnose joined hollow geometry
+
+The strict complete-exclusive background prototype corrects only256 false pixels,
+below its frozen512 target; all six exposed source transfers are neutral. It is
+NOT adopted. Normalization-only ablation leaves the CN3-27 frozen ROI unchanged,
+despite whole-room changes: disabling capture normalization is not a causal fix.
+No thresholds, success targets, existing sources, JMaps or runtime were changed.
+
+Fresh ordinary CN3-9 with pass-through final-stage observation preserves ENTIRE
+unpatched prior source/options/crop/grid/ordered Detection/warnings/JMap output.
+A verifier tuple/list grid mismatch is preserved separately and corrected by
+explicit normalization, not a detector workaround or another scan. Fresh whole
+Source/JTool/Blend remains MAJOR: floor-number alias, incorrect compound-spike
+origins/directions and other geometry errors; zero approvals.
+
+Before probing, freeze a complete joined five-full-spike structure and contiguous
+80x96 ROI. Current scan has0/5 exact typed origins and five wrong full hypotheses.
+No terrain belongs there; overlapping nominal spike boxes are legitimate. Missing
+source-owner/template support is not permission to remove an old object.
+
+Across the SAME240 pose/direction hypotheses, triangle-local RGB appearance finds
+1/5 true and0 competing matches; a learned wider ridge profile finds0/5. Source
+ink alone finds5/5 but50 competing poses; RGB edge direction finds5/5 but11. Their
+joint original-source ink/direction/hollow-core evidence, under ONE model and ONE
+shared bounded source-pixel phase, finds5/5 and0/235 competing matches. Failed
+probes remain preserved. No screen/coordinate/palette/reference rules or output
+teachers; no new geometry yet emitted by the application.
+
+This is regional causal discrimination, not a shipped repair, whole-room accuracy
+or cross-tileset transfer. Next qualify a shared cached candidate on hard real/
+portable joined, filled, mini, ornament, occlusion, RGB and capture-scale cases,
+then actual whole-map/protected/control/reserved/runtime gates. Existing teacher
+qualification can abstain on uniformly hollow artwork; retain that limitation.
+Default/experimental app behavior unchanged; original six gates remain incomplete.
+
+Human CN3-27 spacing clarification corroborates the four recovered frame origins:
+left16,16/16,48; right104px farther right (120,16/120,48), with an8px inter-spike
+gap. A tentative arithmetic discrepancy was explained, not used to alter truth
+targets. This is confirmation of the source-inferred recovery, not a new gain
+or permission to encode those coordinates in detection.
+
 ## 2026-10-13 — B203 reject an optimization without a measured scan-time gain
 
 An isolated source-evidence optimization skipped exterior checks whose results
