@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B219 resolve thin-ink and capture-frame causes before integration
+
+Unchanged failed void inputs expose a sampling loss, not weak shape evidence:
+six true poses have12/12/12 directional support and a valid hollow core, but a
+one-pixel clipped dark base is averaged into background. Original-RGB pixel
+fallback preserves prior normalized successes under unchanged9-site bounds.
+Independent source-qualified neighboring triangles explain closed empty gaps,
+without recursive output teaching or deleting old objects. Same108 positives/
+36 voids now108/108 with0false; prior180/4788 and real11/5negative/240 held.
+
+Whole-source review still rejects premature integration. Strict vertex matching
+removes aliases but loses10 real CN3-8 proposals. A narrower source-edge window
+keeps known real proposals and removes seven low-shifted Bathhouse candidates,
+but five horizontal CN3-8 aliases remain. Background-corner variants are neutral
+or lose recall; failures preserved, not adopted or hidden by new thresholds.
+
+Enlarged source review then identifies a coordinate mismatch: CN3-8's existing
+capture frame is(-5,-1,988,750), while the experimental source sampler/review
+uses the full982x747 rectangle. SAME9264 logical hypotheses in the existing
+canonical derivative remove all five remaining horizontal aliases and retain
+26 source-supported proposals, plus one uncertain cropped-border hypothesis.
+All27 original-image/correct-frame overlays reviewed; no room approval.
+
+This remains isolated evidence, NOT a deployed scanner improvement. The canonical
+resampler edge-extends outside the original capture; those pixels cannot be
+counted as independent original evidence. Next maintain explicit source-frame/
+pixel coverage for new glyph evidence, reuse existing capture work and qualify
+real boundary/occlusion behavior. Existing source sizing/calibration and app
+behavior stay unchanged. Actual protected/control/reserved/runtime/final-current71
+gates remain required; no baseline87 sweep, source/JMap/fixture changes or universal claim.
+
 ## 2026-10-13 — B210 whole-source negatives expose ownership and cache ambiguity
 
 The frozen whole-source candidate is NOT safe for unconditional integration.

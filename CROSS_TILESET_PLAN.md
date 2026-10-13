@@ -1,5 +1,25 @@
 # Cross-tileset milestone
 
+## Current direction (B219, 2026-10-13): source coordinates and pixel coverage
+
+Original-RGB thin-base sampling plus independent source-neighbor explanations
+retain108/108 void-challenge positives with0/36 false gaps; previous180/4788 and
+real11/5negative/240 remain protected. Vertex/background shortcuts lose recall
+and are rejected. Whole-source QA still precedes any app binding.
+
+CN3-8's capture world frame differs from the whole-image review/source frame.
+Using the scanner's existing independently inferred transform on SAME9264 logical
+hypotheses removes five apparent horizontal aliases while retaining26 reviewed
+source proposals. One new cropped-border hypothesis remains uncertain. Do not
+mistake edge-extended canonical pixels for original evidence or change all old
+source material logic without qualification. Maintain explicit original pixel/
+frame coverage and reuse existing capture work for the next bounded batch.
+
+Qualified B202 app unchanged; no whole-room promotions. All41/601/139/16, true
+occlusions, source/reference integrity, reserved/runtime/final-current71 and the
+original six goal gates remain mandatory. No archive/baseline resweep or promise
+that unfamiliar sprites/captures are universally solved.
+
 ## Current direction (B210, 2026-10-13): distinguish owned contours from empty gaps
 
 Whole-source QA defeats unconditional hollow-glyph addition: five of16 new
