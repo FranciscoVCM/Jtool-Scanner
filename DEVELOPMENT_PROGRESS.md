@@ -4,6 +4,71 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-13 — B210 whole-source negatives expose ownership and cache ambiguity
+
+The frozen whole-source candidate is NOT safe for unconditional integration.
+All16 new CN3-9 proposal crops reviewed:11 source-supported full32 spikes and
+five false triangular background gaps bounded by neighboring spikes. A perfect
+regional5/5 and prior180/180 portable result were insufficient. Every failed
+receipt/negative remains preserved; no application detections or JMaps altered.
+
+Original-source foreground-side evidence keeps the11 real proposals and excludes
+the five gaps in a direct test. Whole-room query order then exposes a signed-edge
+cache defect: opposite triangles can share the same ordered endpoints but own
+opposite sides. Including inward normal in the memo key changes no evidence
+thresholds. Unstubbed actual-source tests in four orders retain ENTIRE accepted
+set/11real/0fivegaps; old code has2/3false survivors in whole forward/reverse order.
+Original180-positive/4788-negative portable inputs remain unchanged and pass.
+
+However a new explicit clipped-sprite triangular-void challenge FAILS:102/108
+true retained,34/36 empty gaps accepted. The current positive ownership predicate
+is still insufficient under some sprite/raster layouts. A standalone synthetic
+ownership assertion also failed and is not mislabeled as causal green. Do not
+adopt, reduce denominators or claim future tilesets are solved. Next separate
+actual contour ownership/extent/neighbor explanations from borrowed edge evidence,
+and trace the six new portable losses without palette/coordinate exceptions.
+
+Windows interrupted a saved25-case worker and the old app process exited; verified
+terminal process state before resuming. Checksummed completed cases preserved and
+remaining identical inputs validated under normal process permissions. App restored
+hidden, root/healthHTTP200 and loaded/disk tested-source parity verified. No code
+or test changes to conceal environment failures. Private prototypes stay ignored.
+All other whole-source proposal contexts still need QA; old objects were never
+deleted. Actual API/controls/reserved/runtime/final-current71 gates remain due.
+
+## 2026-10-13 — B207 isolate a source-pixel phase cause in hollow glyph teachers
+
+A generic source-only candidate reproduces ENTIRE240 B205 regional pass/fail
+results, retaining5 source-visible true poses/0 competing matches with physically
+disjoint ORIGINAL teacher frames. Its first frozen9-source portable gate fails:
+35/45 true retained,0 tested extras; two enlarged-capture scenes have no anchors.
+Failure preserved, not a threshold change or claim that every new tileset works.
+
+Hash-identical source observation traces the lost teachers to raster base phase:
+nominal triangle support12/0/12, joint half-source-pixel inset12/12/12 under the
+SAME9-support gate. All four original body/corner checks pass. Separate original
+inset teachers now supplement, never replace, nominal teacher cohorts; no new
+objects/answers teach, no old source calibration or application behavior changes.
+
+The SAME nine portable sources now retain45/45 true positives and0 tested extras.
+An expanded36 full five-spike structures across four orientations, three palettes
+(including RGB-only contrast) and three scales retain180/180 true origins with
+0/4788 nearby wrong-phase/direction, open-V, crossed-frame, filled and mini-pair
+negative candidates. This is synthetic source-helper evidence, not real-world
+transfer, emitted geometry, universal accuracy or permission to delete old objects.
+
+Focused39 public source-evidence tests initially have four sandbox temporary-file
+permission errors; the SAME39 pass with normal temporary-file permissions in
+16.979s. Both results preserved. No code/test edits or skips to hide the error.
+A necessary ink-count bound before costly RGB gradients retains ENTIRE240 proof
+and model equality, without a whole-scanner speed claim.
+
+Next frozen exposed whole-source diagnostic covers every original full-locator
+neighborhood in CN3-9/8/Bathhouse1/27, not just annotated answers. All proposal
+deltas need independent source review before integration or an accuracy claim.
+Actual full-map protections/controls/reserved transfer/runtime/final-current71
+gates still required; source helpers remain isolated, app B202 unchanged.
+
 ## 2026-10-13 — B204 reject weak retirement; B205 diagnose joined hollow geometry
 
 The strict complete-exclusive background prototype corrects only256 false pixels,

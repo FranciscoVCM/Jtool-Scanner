@@ -1,5 +1,43 @@
 # Cross-tileset milestone
 
+## Current direction (B210, 2026-10-13): distinguish owned contours from empty gaps
+
+Whole-source QA defeats unconditional hollow-glyph addition: five of16 new
+CN3-9 hypotheses are empty triangles formed by real neighboring outlines.
+Original-source signed foreground-side evidence separates11 true/five false,
+but signed memo keys must include inward orientation to be query-order invariant.
+Actual four-order red/green and unchanged180/4788 portable checks pass after that
+isolated cache correction. No app binding or existing object deletion.
+
+Explicit clipped-sprite void challenges still FAIL102/108true,34/36false gaps.
+Do not generalize from one region or earlier portable positives. Investigate
+source-owned extent/ink and independent neighbor contour explanations, including
+the six recall losses, with true joins/occlusions/weakRGB preserved. No threshold,
+palette/coordinate/reference exceptions or generated-output teachers. New-source
+proposals across CN3-8/Bathhouse still need full QA and actual protected/control/
+reserved/runtime gates. Qualified B202 app unchanged; all six goal gates ACTIVE.
+
+## Current direction (B207, 2026-10-13): joined glyph evidence, not app adoption
+
+Current CN3-9 whole Source/JTool/Blend remains MAJOR. Frozen joined five-full
+structure has0/5 exact current origins. Original-source RGB ink, directed edges
+and learned hollow interiors jointly distinguish5/5 real poses from235 competing
+poses; neither ink nor direction alone is safe. Keep shared model/query phase,
+original teachers and legitimate overlapping nominal boxes, not answer rules.
+
+Generic extraction retains entire regional proof. Initial portable35/45 FAIL
+isolates enlarged-capture teacher base phase,12/0/12 nominal versus12/12/12 joint
+half-source-pixel inset. Separate original inset cohort preserves nominal evidence,
+unchanged9 support/body/rectangle guards. Same sources45/45; harder four-direction/
+RGB-palette/scale tests180/180 with0/4788 tested negatives. No runtime adoption,
+old deletion, real transfer or universal claim from these isolated helpers.
+
+Frozen exposed whole-source queries across CN3-9/8/Bathhouse1/27 are next; every
+new candidate needs source QA, then actual maps/all41/601/139/16/reserved/runtime
+and final stable71 gates. Uniformly hollow/occluded/weak-source teacher ambiguity
+and actual speed/memory cost remain risks. B202 app/default behavior unchanged,
+CN3-28 reserve untouched; original six goal gates remain incomplete.
+
 ## Current direction (B202, 2026-10-13): qualified positive rectangle recovery
 
 Pale/hollow foreground can lack colour calibration. The experimental pipeline
