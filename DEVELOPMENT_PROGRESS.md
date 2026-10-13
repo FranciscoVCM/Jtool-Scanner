@@ -35,6 +35,13 @@ real boundary/occlusion behavior. Existing source sizing/calibration and app
 behavior stay unchanged. Actual protected/control/reserved/runtime/final-current71
 gates remain required; no baseline87 sweep, source/JMap/fixture changes or universal claim.
 
+A fresh ordinary CN3-8 pass-through trace confirms the actual capture path uses
+the identical canonical RGB derivative while the final source-geometry callback
+receives the original982x747 image. ENTIRE source/options/crop/grid/ordered
+Detection/warnings/JMap equals the prior unpatched output. This validates the
+coordinate-contract diagnosis without modifying the detector; coverage-aware
+new glyph integration remains unqualified, not a completed app fix.
+
 ## 2026-10-13 — B210 whole-source negatives expose ownership and cache ambiguity
 
 The frozen whole-source candidate is NOT safe for unconditional integration.
