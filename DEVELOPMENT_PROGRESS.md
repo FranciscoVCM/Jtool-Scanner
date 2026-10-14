@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — New general source-identity goal: baseline pinned, causes separated
+
+The next bounded milestone starts from published B235, without repeating either
+completed87 baseline. It targets source-object identity across backgrounds,
+textures, palettes, sprite appearances and capture scales, not memorized rooms.
+Initial development: canonical CN3-18 background terrain, Halls3 sky solids and
+Golden2 filled compounds. Halls7 is reserved for the first compatible no-tuning
+evaluation; Golden5/NANG138r are predeclared later reserve candidates, historically
+exposed rather than unseen. Compact NANG130r and floor-text challenges are protected.
+
+The ignored plan freezes milestone minima before tuning: improvements in at least
+three rooms/two visual families including a reserve; eight independent real
+geometry recoveries/corrections across two rooms and four false-conflict repairs;
+at least25% fewer actionable fixed-structure errors/two corrected errors per
+successful room, without source-positive loss/new frozen negatives. Complete
+structure annotation/denominators precede implementation. B235's41 groups,
+601 miniblocks,139 footprints and16 exact-control bounds remain protected.
+Paired quiet AC whole latency, full source QA and final current71 audit remain
+mandatory. Persistent new>5% slowdown is held for investigation, not concealed.
+
+Read-only baseline inventory pins source/crop/grid/options/code/artifact identities
+for ten role cases. It reveals distinct proposal origins: CN3-18's sampled false
+background blocks are `source_material_size`, Halls3's sky blocks are
+`repeated_terrain_block`, and Golden2's candidate compound solids are ordinary
+`block` detections. This is causal-routing evidence, NOT an accuracy gain or a
+complete annotation. Do not force one overlap/confidence filter across these
+different paths. No implementation, source, fixture or map change yet.
+
+Next trace original candidates and retained/recovered geometry through the actual
+ordinary API with complete map/metadata equality, then freeze source-positive/
+negative structures. Goal remains active; no universal/all71-perfection claim.
+
 ## 2026-10-14 — B235 final-current corpus and original-source lookup qualification
 
 This checkpoint enables source-backed hollow recovery only within the existing explicit

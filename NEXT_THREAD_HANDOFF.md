@@ -4,6 +4,23 @@ Updated 2026-10-14. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Active successor goal: general source identity, not room-specific suppression
+
+Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL. The new goal
+starts from a3bef3e05d0883c9e921a42a1fb21ed48e9df324 and reuses B235's completed87
+outputs/conservative71 audit; no baseline/archive resweep. Initial development
+CN3-18/Halls3/Golden2, first reserved Halls7; later reserve pool Golden5/NANG138r,
+protected compact/text challenges. All are historically exposed, not unseen.
+Freeze complete structures/denominators before tuning and retain all B235 gains.
+
+`baseline-inventory-v1.json` in that ignored directory pins ten cases and proves
+distinct wrong-proposal origins: source_material_size, repeated_terrain_block and
+ordinary block. Do not assume all false geometry shares a cause. No detector
+change has been made at this setup checkpoint. Next is ordinary-map/metadata-
+equivalent stage diagnosis and independent source annotation, with no emitted
+teachers/reference copying/blanket overlap removal. Required positive recovery,
+cross-family reserved transfer, controls, latency and final audit are in the plan.
+
 ## Latest: B235 final87, complete protections and conservative all71 review
 
 Read ignored B235_POWER_CHECKPOINT_20261014.md and
