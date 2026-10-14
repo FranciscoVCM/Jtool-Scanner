@@ -642,6 +642,24 @@ The app/corpus fingerprints include all transitive source-geometry runtime files
 Corpus manifests may specify `"source_geometry": true` in their options. References
 still evaluate only after scanning and never enter the detector.
 
+### Filled-glyph research (not enabled in the app)
+
+`scripts/source_filled_pipeline.py` evaluates source-local filled full spikes
+using three disjoint, original-source teachers, RGB appearance and directed
+silhouette evidence. Finite original-spike and terrain-face neighborhoods add
+search coverage without another full-image scan. Close same-type poses require
+separately observed apices to become two objects; unresolved alternatives are
+recorded as repair candidates, not silently emitted or used to delete originals.
+Physical clipping remains unknown, and proposals never become teachers.
+
+This module is deliberately not imported by the scanner or its Experimental
+mode. Real control, reserve, independent source review and whole-runtime
+qualification are required before integration. Its portable tests run with:
+
+```powershell
+python -m unittest tests.test_source_filled_pipeline
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

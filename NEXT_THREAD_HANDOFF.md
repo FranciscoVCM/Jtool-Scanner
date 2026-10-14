@@ -13,6 +13,26 @@ CN3-18/Halls3/Golden2, first reserved Halls7; later reserve pool Golden5/NANG138
 protected compact/text challenges. All are historically exposed, not unseen.
 Freeze complete structures/denominators before tuning and retain all B235 gains.
 
+Latest maintained research: `scripts/source_filled_pipeline.py` and27 portable
+tests, NOT scanner/app-bound.71 focused tests pass in ignored
+filled-affected-tests-v2.json. Initial actual Golden2 four-addition run preserves
+all old metadata/terrain and recovers three frozen-region objects (33->36 exact,
+errors10->7). One other proposal is a same-instance8px correction, not a distinct
+new object. Updated module records those alternatives, never deletes originals.
+filled-control-preflight-v2.json:18 original-stage helper controls,0 new reference
+extras; NOT actual16 or ordinary/app evidence. Fresh current implementation scans,
+every changed-object QA, actual16/protections/reserve and runtime remain due.
+
+Halls3-upper-positive-structure-freeze-v1.json:17 expected/16 exact, one missing
+Left16064 and one false Down22464 over the real flipper. Uniform fill alone fails
+its shaded outlined sprites. Private outlined-filled-source-probe-v1.json using
+three distinct border/core/background roles passes all seven Halls3 positives
+and rejects the down impostor, at query level only. Unknown crops cannot become
+filled cores. Next portable/adversarial/whole-consumer qualification, not a blind
+threshold reduction or source-coordinate fix. Old shadow guard still rejected;
+all numerical goal requirements intact. Workers2598/67921/92827/79352/74520 are
+TERMINAL. Do not repeat the baseline/archive or relabel old-code outputs current.
+
 Read `.artifacts/general-recognition-20261014/NEXT_FILLED_BATCH.md` before earlier
 private candidate notes: its latest18 exact/terrain scan is TERMINAL.17 outputs
 have complete equality, but Hades loses two prior correct16px phase repairs,

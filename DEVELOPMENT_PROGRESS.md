@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — Maintained filled-source research and source-instance ambiguity
+
+New research-only filled-glyph consumer uses original RGB/source coverage,
+three disjoint independently source-proved teachers, directed full32 silhouette,
+appearance and bounded original-spike/terrain-face hypotheses. New source queries
+never teach or retire originals; no room/hash/coordinate/palette/reference rule.
+It is NOT imported by the scanner or app, including Experimental mode.
+
+A complete Halls3 upper structure is source-frozen before tuning:17 expected,
+16 exact, missing one real left spike and an extra down over the real flipper;
+10240 positive terrain pixels intact. Uniform-fill predicates do not recover
+its outlined, variably shaded sprite. Initial actual Golden2 candidate adds
+four source-reviewed real poses with old metadata/terrain unchanged. Three
+independent recoveries improve the frozen37-object region33->36 exact and
+10->7 actionable errors (30%). Its edge spike, existing false solids/opposing
+directions and the old8px phase alias remain; no room approval or deployment.
+
+Initial exact proposal preflight exposes four nearby8px aliases in F189 and
+the tracked CN3-18 control. Whole-shape resemblance does not establish a new
+instance or a correct hitbox origin. A universal apex requirement also rejects
+genuine shaded Golden2 spikes and is rejected. Instead, close same-type/size
+alternatives need two separately supported physical apices to emit two objects;
+otherwise retain the original and record a repair candidate, not a false shape.
+Portable overlapping-apex, wrong-locator, unknown-source and immutability tests
+protect that distinction. Real phase repair remains a separate qualification.
+
+Updated18-case original-stage helper preflight produces no new reference-extra
+keys; two Flames reference-key proposals and two Dotkid1 proposals remain for
+actual/source review. This is NOT a whole16 benchmark or release qualification.
+The four control aliases are withheld; genuine close two-apex instances are not
+blanket overlap-deleted. An initial actual four-addition map is not relabelled
+as the updated three-proposal implementation. Fresh current scans still required.
+
+Final71 focused tests pass;27 are new filled-source tests. The first existing
+tempfile tests hit sandbox permissions; approved rerun passes without code/test
+workarounds. A separate private three-material outline/core/background experiment
+supports all seven Halls3 upper positives, rejects the flipper impostor and
+preserves Golden2's source labels at query level. No consumer/control/runtime
+qualification or adoption of that experiment yet. Original goal/untuned reserve,
+8 real recoveries, conflict reduction, all protections, runtime and final71 gates
+remain open. Shipped scanner stays B235; private/generated artifacts excluded.
+
 ## 2026-10-14 — Exact qualification rejects shadow guard; filled recovery cause isolated
 
 The next actual private run completes all16 exact controls plus Bathhouse1 and
