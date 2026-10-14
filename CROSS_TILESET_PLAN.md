@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Current direction (B231/B232, 2026-10-14): preserve real gains without costly rollout
+
+Actual ordinary16 controls and17 targeted canonical outputs are complete; all17
+fresh whole Source/JTool/Blend reviews remain conservative, with0 approvals.
+The166 affected tests pass. Original601 miniblocks/139 terrain footprints, rails,
+Halls4 blocks, CN3-7 reserve mask and Golden7 restorations remain; full41/current71
+qualification is not yet complete. No completed87 baseline or archive resweep.
+
+Whole-scan AC serial ABBA establishes material hollow-activation overhead:
+CN3-9 +59.845s(+74.44%) and Halls4 +17.836s(+37.11%), with all corresponding
+ordinary maps/metadata equal. Existing source-mode default remains experimental;
+the new activation draft is not published or deployed. Investigate the cost
+before rollout rather than describing faster helper samples as faster scanning.
+
+An isolated raw-sample LRU preserves all six entire source proofs but does not
+show a consistent helper benefit; no adoption. Next bounded numerical experiment
+is identical RGB/model nearest-distance reuse, not new palette rules, threshold
+relaxation or duplicate grayscale scanning. Require exact predicate/proof parity,
+portable negatives, controlled cost and ordinary protected outputs before adoption.
+Preserve original no-tuning reserve success and complete all original goal gates.
+
 ## Current direction (B229, 2026-10-14): reduce duplicated sampling before rollout
 
 Lazy256-entry band reuse preserves all six complete original-stage proof outputs

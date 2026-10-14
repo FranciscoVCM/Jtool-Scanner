@@ -4,6 +4,57 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — B231 ordinary review complete; activation held for measured cost
+
+An uncommitted activation draft routes hollow recovery through the existing
+explicit Source Geometry mode. Standard/unchecked scanning is not changed.
+Actual unpatched ordinary scans completed all sixteen exact controls and seventeen
+targeted canonical rooms. The controls reproduce the complete candidate maps,
+ordered detection metadata, warnings, source/options/crop/grid and comparisons;
+FTFA remains926/928 without extras/shifts/wrong directions and Flames retains252
+exact with no increased errors. The166-test affected selection passes131.302s,
+not a full-project test run.
+
+All seventeen current Source/JTool/Blend sets were freshly reviewed. No room is
+promoted to accepted: major missing, opposing, mis-sized and terrain-overlap
+errors remain visible, including filled compound glyphs outside the hollow
+mechanism. The ignored successor audit explicitly records17/71 current outputs
+and seventeen fresh reviews; the other54 are historical, not current certification.
+Entire equality with the earlier qualified ordinary outputs carries specific
+prior findings for Dotkid1/4/5, Entrance1/2, Golden7, NR2 and CN3-27/30/31/92.
+Seven canonical maps equal their independently reviewed candidate outputs;
+Arcfox is separately covered by the ordinary exact-control run.
+
+Completed fixed protections retain all601 source miniblocks and all139 previously
+source-supported Dotkid5 terrain footprints, Entrance1's complete36/36 rail,
+Halls4's25/25 structure and62/63 visible blocks, and the original CN3-7 reserve
+mask168448/168448. Golden7 keeps all39 restorations but still has5376 missing
+terrain pixels and576 excess pixels in its fixed mask. NR2's two confirmed real
+minis remain; the two confirmed false effects stay absent. Only19/40 original
+typed/structure definitions are currently freshly measured; eleven missing
+protected rooms are prepared for ordinary scanning. Full41 qualification is open.
+
+Quiet serial AC ABBA whole scans reproduce each corresponding ordinary map and
+metadata in all eight samples. CN3-9 median80.391->140.236s adds59.845s(+74.44%);
+Halls4 48.067->65.903s adds17.836s(+37.11%). Two samples per mode/source only.
+The before path is the explicit numerical bypass, fully checked against sealed
+published ordinary outputs; the after path is unpatched ordinary activation.
+These are genuine activation costs, not an extension of B229's helper speedup.
+Deployment is held while the persistent overhead is investigated.
+
+An isolated bounded lazy raw-sample cache preserves entire proposals/proofs on
+six real original-stage snapshots and passes15 RGB/scale plus boundary/eviction/
+snapshot guards. Single helper pairs vary from-21.15% to+179.56%; no consistent
+speed benefit is established. It is not integrated. Next test numerical reuse of
+identical RGB nearest-model decisions while preserving the exact distance test,
+teacher identities, original source coverage and all recognition predicates.
+
+This is a documentation/evidence checkpoint, not shipped activation or goal
+completion. Two implementation/test drafts remain local. Final stable all71,
+full protections, acceptable investigated cost, reviewed implementation publication
+and tested app restart/source parity remain open. The original87 baseline and
+image archive were not rescanned or reopened; no fixtures/JMaps/sources changed.
+
 ## 2026-10-14 — B229 lazy source-band reuse; reject blanket geometry-first work
 
 Profiled the original-stage recovery helper on dense CN3-9 and sparse Halls4.

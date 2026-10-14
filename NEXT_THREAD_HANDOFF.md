@@ -4,6 +4,45 @@ Updated 2026-10-14. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B231 actual qualification and material overhead; no activation publication
+
+Read ignored B231_ACTIVE_RESUME.md, B231_COST_INVESTIGATION_NEXT.md and
+B232_RAW_SAMPLE_EXPERIMENT_RESULT.md. Actual ordinary16 controls and canonical17
+workers are terminal, all complete;17 fresh whole reviews,0 approvals. Actual
+ordinary16 preserves full maps/ordered metadata/warnings/input/comparisons;
+166 affected tests pass. Do not repeat these finished scans or the87 baseline.
+
+Two local tracked drafts remain: source_geometry_pipeline.py defaults hollow=True
+only inside explicit Source Geometry mode, plus its wiring/bypass tests. They
+are NOT staged, committed or deployed by the evidence-only checkpoint. Standard
+mode is unchanged. Before new implementation, inspect status and source identity.
+
+Quiet AC whole-scan ABBA is terminal/equality-PASS but costly: CN3-9
+80.391->140.236s(+74.44%); Halls4 48.067->65.903s(+37.11%). Both have only two
+samples/mode. Do not claim cost neutrality or use helper timings as full scans.
+Activation publication is held pending overhead work and remaining qualification.
+
+Private raw-sample cache trial is terminal, six full proofs equal;15 portable
+RGB/scale+boundary/eviction guards pass, but single helper pairs are inconsistent
+(-21.15% to+179.56%). NOT integrated. Session90864 disappeared after terminal
+completion; final receipt/worker/PID checks proved no lost work, no restart.
+Next investigate exact RGB/model decision reuse; never alter thresholds or
+independent original teachers merely for speed.
+
+Current fixed protection subset19/40 definitions passes; all601 source miniblocks
+and139 terrain footprints retained. Eleven remaining protected cases are prepared,
+not yet scanned. Separate CN3-7 mask/reserve and Golden7 guards pass. The latter
+retains5376missing/576excess pixels; no room approval. Full41 consumer is prepared
+but unrun. Final-current71 is17/71 ordinary outputs+fresh17 reviews,54 historical;
+read 71-screen-B231-current-before-after-v2.md. Do not label the54 as accepted.
+
+No producer or app process remains after shutdown; old HTTP200/source-parity
+receipt is historical. Restore a tested app with loaded/disk parity after safe
+qualification, not an unqualified activation disguised as published code.
+Finish original protections/runtime/current71/publication/app and all six gates.
+Original B174/B192 reserved success remains valid; do not invent a new reserve
+requirement per checkpoint. No new repository/branch/worktree/archive resweep.
+
 ## Latest: B229 lazy numerical reuse; reserve evidence reconciled
 
 Maintained `source_hollow_glyphs.band` shares immutable directed edge/width/site RGB
