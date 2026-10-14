@@ -2770,6 +2770,32 @@ failure but needs aligned source-coordinate annotation before tuning. Keep
 source color evidence, validate mini versus full-size orientation and protect
 the sixteen exact controls, existing saves/portals and true occlusions.
 
+#### Current qualification: source hollow recovery and remaining limits (2026-10-14)
+
+Final stable-code output/review covers all71 canonical rooms plus16 exact controls.
+The protected whole outputs,41 fixed groups,601 source miniblocks and139 terrain
+footprints are retained. Source-backed hollow recovery/unique phase repair is
+confined to explicit Experimental source geometry; standard scanning is unchanged.
+One original physical-coordinate/RGB lookup removes duplicate mapping work without
+changing evidence, teachers or acceptance predicates. Shared numerical reuse is
+not a cached tileset or reference-answer detector.
+
+The conservative audit has54 fresh whole-source reviews,17 strict equality-backed
+carries and no broad room approvals. Filled same-material compounds, source-text
+impostors, background-as-terrain, water/killblock/platform/marker ambiguity and
+unfamiliar partial sprites remain unsolved. Prior no-tuning CN3-7 reserve evidence
+is preserved, not reset per checkpoint. Final quiet AC whole ABBA reproduces all
+maps/metadata but costs51.821->84.302s dense(+62.68%) and31.812->40.891s sparse
+(+28.54%), two samples per mode/source. Existing experimental/slower opt-in stays
+explicit; standard scanning is unchanged. Helper improvements do not erase cost.
+
+Next causal batches should distinguish source material from background and object
+ownership from matching texture, retaining genuine wall-embedded spikes and RGB
+evidence. Freeze complete positive/negative structures before tuning, require
+cross-style/capture transfer, and count source misses/extras/size/direction/phase
+separately. Do not delete all overlaps, teach from proposed outputs, remove color
+wholesale, or claim arbitrary unseen-tileset success from these71 exposed rooms.
+
 #### Backed native mini transfer: seven-room positive recovery (2026-09-23)
 
 The Entrance1 stripe rail did not generate solid16 seeds; its high-edge

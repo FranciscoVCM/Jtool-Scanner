@@ -39,10 +39,10 @@ def joint_proposals(image, room, detections, *, source_context=None):
 
 
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
-                     include_hollow_glyphs=False):
+                     include_hollow_glyphs=True):
     """Return proposals/removals/full proofs, without touching original objects."""
     if not isinstance(include_hollow_glyphs, bool):
-        raise ValueError('Hollow recovery research switch must be a boolean')
+        raise ValueError('Hollow recovery flag must be a boolean')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
@@ -74,10 +74,10 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
     frame = SourceFrame(image, room) if source_frame is None else source_frame
     if not frame.matches_source(image, room):
         raise ValueError('Hollow source frame does not match the original image/crop')
-    # Research-only opt-in: the first ordinary integration failed exact controls.
-    # Do not emit unqualified poses from normal/app source-geometry scans.
-    # The source/capture contract remains available for isolated qualification.
-    hollow_diag = dict(accepted=[], enabled=False, reason='whole-extent qualification incomplete')
+    # The scanner reaches this pipeline only in explicit source-geometry mode.
+    # Preserve a direct numerical ablation switch; standard scanning never enters
+    # this stage. Teachers remain frozen original detections, not these proposals.
+    hollow_diag = dict(accepted=[], enabled=False, reason='explicit hollow recovery bypass')
     if include_hollow_glyphs:
         # Old material/size/pose retain their physical crop. Only new evidence
         # uses the existing world frame. Never remap or reteach the old stages.

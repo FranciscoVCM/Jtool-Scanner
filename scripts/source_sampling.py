@@ -124,6 +124,16 @@ class SourceFrame:
         position = self.original_position(x, y)
         return None if position is None else self._source.pixel(*position)
 
+    def original_sample(self, x, y):
+        """Return physical identity and frozen RGB with one unchanged mapping.
+
+        Callers needing both values must not repeat the coordinate conversion.
+        Unknown native/crop coverage remains ``(None, None)``; no canonical
+        padding, caller-mutable wrapper or alternate rounding supplies evidence.
+        """
+        position = self.original_position(x, y)
+        return position, None if position is None else self._source.pixel(*position)
+
     def original_patch(self, cx, cy, size=2):
         if not isinstance(size, int) or isinstance(size, bool) or size <= 0:
             raise ValueError('Patch size must be a positive integer')

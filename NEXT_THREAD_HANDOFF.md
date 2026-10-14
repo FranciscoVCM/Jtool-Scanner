@@ -4,6 +4,43 @@ Updated 2026-10-14. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
+## Latest: B235 final87, complete protections and conservative all71 review
+
+Read ignored B235_POWER_CHECKPOINT_20261014.md and
+B235_ORIGINAL_GATE_AUDIT_20261014.md for exact worker/evidence paths. The final87
+producer is TERMINAL: all71 canonical and16 controls generated under code
+fingerprint17b98ead1d86fba9ac4f5f7e985e05a85bd71e685dd089277dc6959e63554cea.
+Current16 full output equality and full41/601/139 protections PASS;173 affected
+tests PASS. The final-current audit is71-screen-B235-current-before-after-v6.md:
+54 fresh source reviews,17 strict complete-equality carries,0 broad approvals.
+Do not rescan this completed corpus or confuse canonical CN3-18's major false
+background terrain with the separate near-exact committed CN3-18 control.
+
+This checkpoint contains source-geometry activation only inside explicit
+experimental mode, single original coordinate+RGB lookup, wiring/bypass guards
+and seven sampling guards. Standard
+scanning is unchanged. Earlier failed caches remain rejected. Helper improvements
+10.43% dense/4.80% sparse are NOT whole scan speedups. Sources, human reference
+JMaps, private indexes/projects and the original baseline remain intact.
+
+Quiet AC final-code whole ABBA is TERMINAL, complete/equality-PASS in all8 samples.
+Dense CN3-9 median51.821->84.302s(+32.482s,+62.68%); sparse Halls4
+31.812->40.891s(+9.080s,+28.54%), only two samples per mode/source. Before is
+the explicit hollow bypass, after the unpatched ordinary API. Significant cost
+remains; no standard-mode activation, zero-overhead or universal speedup claim.
+Do not restart session72182/PID35100 or final87; both workers finished and sealed
+their receipts. Docs-only publication does not require a new scan sweep.
+Tested app PID33956 returns root/health HTTP200 with loaded/disk fingerprint
+9c69795988459d533887261ab7269e3066c1985265a26938b0769dc45f0d4b94. Recheck process,
+listener/health and parity after shutdown. Public Git verification and the final
+original six-gate audit are the remaining closure steps at publication time.
+
+Current source evidence explicitly records false lower-background terrain,
+floor-text objects, filled compound/opposing spikes, missing water/platforms,
+safe/kill confusion and marker/mini ownership. Preserve true partial occlusions
+and existing gains; neither warning totals nor good-looking walls certify a room.
+See the latest DEVELOPMENT_PROGRESS entry before older historical sections below.
+
 ## Latest: B231 actual qualification and material overhead; no activation publication
 
 Read ignored B231_ACTIVE_RESUME.md, B231_COST_INVESTIGATION_NEXT.md and

@@ -330,11 +330,13 @@ class HollowGlyphEvidence:
             if position is not None:
                 for off in (-2, -1, 0, 1, 2):
                     x, y = px+off*nx, py+off*ny
-                    source_position = self._position(x, y)
+                    if self.frame is not None:
+                        source_position, rgb = self.frame.original_sample(x, y)
+                    else:
+                        source_position = self._position(x, y)
+                        rgb = None if source_position is None else self.library.raw.image.pixel(*source_position)
                     if source_position is None:
                         continue
-                    rgb = (self.frame.original_pixel(x, y) if self.frame is not None
-                           else self.library.raw.image.pixel(*source_position))
                     if dist(rgb, model['foreground']) < dist(rgb, model['background']):
                         found.add(position)
                         break

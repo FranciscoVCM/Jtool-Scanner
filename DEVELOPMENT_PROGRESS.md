@@ -4,6 +4,65 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — B235 final-current corpus and original-source lookup qualification
+
+This checkpoint enables source-backed hollow recovery only within the existing explicit
+Experimental source geometry mode. Standard/unchecked scanning is unchanged.
+The raw ink fallback now returns frozen RGB and original physical pixel identity
+from one unchanged coordinate conversion. Flooring, crop bounds, unknown coverage,
+distance predicates, original teachers and phase protections are unchanged.
+No screen/hash/origin/palette/reference-answer rule or new grayscale scan is added.
+
+Seven new sampling guards cover single-call conversion, multiple scales, finite/
+crop bounds, negative extents, immutable snapshots and all RGB channels. The173-test
+affected selection passes127.148s, not a full-project suite. Six complete actual
+original-stage replays preserve entire proposals/diagnostic proofs. Limited AC ABBA
+helper medians improve59.390->53.196s for CN3-9 and19.044->18.129s for Halls4;
+these10.43%/4.80% reductions are not ordinary whole-scanner speed claims.
+Earlier raw/RGB/filter-cache experiments did not establish benefit and remain
+rejected; identical numerical evidence is shared without merging teachers.
+
+Actual stable-code ordinary output generation finished all87 cases:71 canonical
+rooms and16 exact controls. The controls reproduce complete maps/ordered metadata/
+warnings/source/options/crop/grid/comparisons. FTFA remains926/928 with no extras,
+shifts or wrong directions; Flames252 exact,42extras/21misses/20shifts/2wrong.
+All41 original fixed protection groups,601 independently source-supported
+miniblocks and139 Dotkid5 terrain footprints pass. Original CN3-7 reserved solid
+mask remains168448/168448,0missing/0excess; NR2 confirmed real minis and false-effect
+negatives remain intact. Golden7 retains39 restorations but still has5376missing/
+576excess pixels in its fixed terrain mask. No denominator or reserve reset.
+
+The ignored final-current all71 audit contains54 fresh whole-source reviews and
+17 strict entire-input/map/metadata equality-carried reviews, zero broad room
+approvals. All six newly unequal latest maps have fresh whole plus complete
+changed-key source QA: CN3-26/29, Entrance3, Redcube1/2 and Secret1. Secret1's
+overlapping real-pillar tiling supports occupancy, not four unique editor origins.
+Supplied human-map omissions/wrong directions remain separate source annotations;
+raw exact denominators and reference files are untouched.
+
+Fresh review rejects old optimistic ratings: CN3-18 has a false lower-background
+terrain carpet, CN3-19/21/93 still emit objects on floor lettering, Golden/Redcube
+filled compounds have wrong/opposing directions, and NANG retains safe/kill,
+platform and miniature-ownership errors. These are existing recognition limits,
+not hidden by passing tests or aligned broad walls. No claim of all71 perfection
+or arbitrary unfamiliar-tileset accuracy is made. The original87 baseline and
+image archive were not rescanned/reopened.
+
+Final quiet AC serial ordinary ABBA finished after all accuracy workers: all eight
+samples reproduce their corresponding complete maps/metadata. Dense CN3-9 median
+51.821->84.302s adds32.482s(+62.68%); sparse Halls4 31.812->40.891s adds9.080s
+(+28.54%). Two samples per mode/source only. This is bypass versus activated
+recovery, not a claim that all changes accelerate the complete scanner. Absolute
+times from older sessions are not directly comparable. Profiling locates remaining
+cost in repeated model-specific ink/edge and raw-source evidence; identical lazy
+bands and one coordinate lookup help, while tested extra caches/orderings did not.
+The material cost remains explicit in the slower experimental mode; standard-mode
+behavior is unchanged. Further profiling/early evidence reuse remains worthwhile.
+
+The tested app returns root/health HTTP200 with loaded/disk source parity. Public
+publication/clean main verification and the original six-gate audit remain the
+final administrative steps; corpus completion does not mean all71 rooms are solved.
+
 ## 2026-10-14 — B231 ordinary review complete; activation held for measured cost
 
 An uncommitted activation draft routes hollow recovery through the existing

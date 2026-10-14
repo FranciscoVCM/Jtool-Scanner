@@ -17,14 +17,30 @@ def calibration():
 
 
 class SourceGeometryPipelineTests(TestCase):
-    def test_unqualified_hollow_recovery_is_not_bound_to_normal_source_pipeline(self):
+    def test_explicit_hollow_bypass_never_calls_recovery(self):
         with patch('scripts.source_geometry_pipeline.recover_source_hollow_glyphs',
-                   side_effect=AssertionError('Unqualified object emission')):
-            source_proposals(self.image, self.room, self.detections)
+                   side_effect=AssertionError('Explicit bypass must remain available')):
+            _,_,proof=source_proposals(self.image, self.room, self.detections,include_hollow_glyphs=False)
+        self.assertFalse(proof['source_hollow']['enabled'])
 
-    def test_hollow_research_switch_requires_boolean(self):
+    def test_hollow_switch_requires_boolean(self):
         with self.assertRaises(ValueError):
             source_proposals(self.image, self.room, self.detections, include_hollow_glyphs=1)
+
+    def test_source_mode_default_merges_recovery_and_only_proved_phase_retirements(self):
+        key=(4,224,224);old=(4,216,224)
+        original=self.detections+[SimpleNamespace(type_id=old[0],x=old[1],y=old[2])]
+        snapshot=deepcopy(original)
+        proof={'accepted':[{'key':key}],'phase_repairs':[{'old':old,'new':key}]}
+        with patch('scripts.source_geometry_pipeline.recover_source_hollow_glyphs',return_value=({key},proof)) as recovery:
+            proposed,removed,diag=source_proposals(self.image,self.room,original)
+        self.assertIn(key,proposed)
+        self.assertIn(old,removed)
+        self.assertEqual(diag['source_hollow'],proof)
+        self.assertEqual(original,snapshot)
+        frame=recovery.call_args.args[0]
+        self.assertTrue(frame.matches_source(self.image,self.room))
+        self.assertEqual(recovery.call_args.args[1],tuple(original))
 
     def setUp(self):
         raster = Image.new('RGB', (800, 608))

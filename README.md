@@ -396,6 +396,9 @@ not infer another transform or run another scan. Raw ink samples use original
 pixels through that transform. Filtered pixels with any out-of-crop interpolation
 tap are unknown, even when the displayed canonical raster repeats an edge color.
 Coverage is reused per axis; RGB is retained rather than converted to grayscale.
+`original_sample(x, y)` returns the original physical pixel identity and frozen
+RGB together with one coordinate conversion. Unknown native/crop coverage returns
+`(None, None)`; flooring, source bounds and the original RGB evidence are unchanged.
 
 `SourceGlyphLibrary(..., source_frame=frame)` opts into this coordinate contract.
 Existing callers without a frame retain their original behavior.
@@ -413,23 +416,31 @@ not teacher identities, reference answers, object decisions or stored tilesets.
 This changes computation reuse, not the recognition criteria.
 
 ```powershell
-python -m unittest tests.test_source_sampling tests.test_source_hollow_glyphs tests.test_source_hollow_band_cache
+python -m unittest tests.test_source_sampling tests.test_source_original_sample tests.test_source_hollow_glyphs tests.test_source_hollow_band_cache
 ```
 
-These are read-only development APIs, **not a new app detector or object emitter**.
+These evidence APIs are read-only; the separate recovery caller emits proposals.
 Positive proposal checks do not certify whole rooms. Partly captured objects,
 ambiguous border shapes, absent teachers and unfamiliar sprite styles still need
-qualification. Integration, collateral accuracy and scan-time cost remain separate
-gates; neither the standard scan nor the opt-in source pipeline emits these new
-hollow-glyph proposals yet.
+qualification. Integration, collateral accuracy and scan-time cost are separate
+gates. Standard scanning does not run hollow recovery.
 
-The recovery caller in `scripts/source_hollow_pipeline.py` is available for
-isolated development, but normal/app scans do **not** enable it: its first
-integration produced shifted duplicate spikes in exact controls. The explicit
-`source_proposals(..., include_hollow_glyphs=True)` research switch is not an app
-setting or a qualified detector. Original detections never become new teachers.
+The recovery caller in `scripts/source_hollow_pipeline.py` is enabled only inside
+the existing **Experimental source geometry (slower)** mode, not standard scans.
+The earlier failed integration is not the current qualification: original-source
+and phase guards protect against shifted duplicates and unsupported empty gaps.
+`source_proposals(..., include_hollow_glyphs=False)` retains an explicit numerical
+bypass for controlled development comparisons; it is not a separate app setting.
+Original detections are frozen as witnesses; proposed objects never become new
+teachers. This remains experimental recognition, not universal accuracy.
+Quiet serial AC tests on two sources found median whole-scan costs of
+51.821 to 84.302 seconds for dense CN3-9 and 31.812 to 40.891 seconds for sparse
+Halls4, comparing the explicit recovery bypass with recovery enabled. Each mode
+has only two samples per source; these are not universal speed predictions.
+Source geometry can recover real objects while still retaining substantial
+errors and latency. Use Source/JTool/Blend review; low warnings are not approval.
 
-`scripts/source_hollow_phase.py` provides research-only origin repair for an
+`scripts/source_hollow_phase.py` provides source-supported origin repair for an
 existing full-size hollow spike. A unique nearby source-positive pose must keep
 the same size and direction. The old base cannot meet the ink bound at any
 bounded source phase, while its sides must still follow directed source edges.
@@ -440,8 +451,8 @@ Original source-positive objects, nonterrain anchors, unknown coverage and
 source-confirmed supporting wall faces are preserved. A detected block label
 alone is not proof of a supporting wall: its actual RGB interface must qualify.
 This protects real 32px spikes with 24px visible and 8px inside a wall; it is not
-blanket overlap removal or reference-coordinate copying. The research caller
-consumes explicit repair proofs; normal/app hollow recovery remains disabled.
+blanket overlap removal or reference-coordinate copying. The experimental source
+pipeline consumes explicit repair proofs; standard scanning remains unchanged.
 
 ```powershell
 python -m unittest tests.test_source_hollow_phase tests.test_source_geometry_integration
