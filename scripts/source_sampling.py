@@ -158,13 +158,33 @@ class SourceFrame:
         """Filtered RGB only when EVERY contributing tap is original-covered."""
         if not (isfinite(x) and isfinite(y) and 0 <= x < 800 and 0 <= y < 608):
             return None
-        values = []
-        for px, wx in _taps(x - .5):
-            for py, wy in _taps(y - .5):
-                if not self._canonical_available(px, py):
-                    return None
-                values.append((wx * wy, self._canonical.pixel(px, py)))
-        return tuple(sum(weight * rgb[c] for weight, rgb in values) for c in range(3))
+        u, v = x - .5, y - .5
+        ix, iy = floor(u), floor(v)
+        dx, dy = u - ix, v - iy
+        if ix < 0 or iy < 0 or ix >= 800 or iy >= 608:
+            return None
+        if not self._covered_x[ix] or not self._covered_y[iy]:
+            return None
+        if dx and (ix + 1 >= 800 or not self._covered_x[ix + 1]):
+            return None
+        if dy and (iy + 1 >= 608 or not self._covered_y[iy + 1]):
+            return None
+        data = self._canonical.data
+        first = (iy * 800 + ix) * 3
+        if not dx and not dy:
+            return tuple(float(data[first + c]) for c in range(3))
+        if not dx:
+            w0, w1 = 1.0 * (1 - dy), 1.0 * dy
+            return tuple(sum((w0 * data[first + c], w1 * data[first + 2400 + c])) for c in range(3))
+        if not dy:
+            w0, w1 = (1 - dx) * 1.0, dx * 1.0
+            return tuple(sum((w0 * data[first + c], w1 * data[first + 3 + c])) for c in range(3))
+        w0, w1, w2, w3 = (1 - dx) * (1 - dy), (1 - dx) * dy, dx * (1 - dy), dx * dy
+        # Keep x-major/y-minor multiplication and builtin compensated-sum order.
+        # Direct byte addressing saves RGB wrappers and repeated coverage checks;
+        # no resampler, rounding, zero-weight tap or unknown-source rule changes.
+        return tuple(sum((w0 * data[first + c], w1 * data[first + 2400 + c],
+                          w2 * data[first + 3 + c], w3 * data[first + 2403 + c])) for c in range(3))
 
     def rectangle_available(self, x, y, width, height, *, margin=0):
         """Conservative full support for teacher/signature footprints."""

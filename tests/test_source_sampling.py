@@ -1,5 +1,7 @@
 """Capture coordinates never promote display padding to original RGB evidence."""
 import unittest
+import random
+from math import floor
 
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
@@ -14,6 +16,52 @@ def raster(width=800, height=608, color=(17, 130, 240)):
 
 
 class SourceSamplingTests(unittest.TestCase):
+    @staticmethod
+    def legacy_pixel(frame, x, y):
+        """Independent original scalar oracle; retain its sum/tap ordering."""
+        from math import isfinite
+        if not (isfinite(x) and isfinite(y) and 0 <= x < 800 and 0 <= y < 608):
+            return None
+        def taps(value):
+            low = floor(value)
+            fraction = value - low
+            yield low, 1 - fraction
+            if fraction:
+                yield low + 1, fraction
+        values = []
+        for px, wx in taps(x - .5):
+            for py, wy in taps(y - .5):
+                if not frame._canonical_available(px, py):
+                    return None
+                values.append((wx * wy, frame._canonical.pixel(px, py)))
+        return tuple(sum(weight * rgb[c] for weight, rgb in values) for c in range(3))
+
+    def test_direct_sampling_is_bit_exact_for_nonuniform_rgb_and_each_tap_case(self):
+        data = bytes((i * 31 + i // 17) % 256 for i in range(800 * 608 * 3))
+        frame = SourceFrame(RGBImage(800, 608, data), Box(0, 0, 800, 608))
+        generator = random.Random(9057)
+        points = [(generator.uniform(-1, 801), generator.uniform(-1, 609)) for _ in range(2000)]
+        points += [(x, y) for x in (-.2, 0, .5, 1, 10.5, 10.75, 799, 799.5, 800)
+                   for y in (-.2, 0, .5, 1, 20.5, 20.75, 607, 607.5, 608)]
+        points += [(float('nan'), 20), (20, float('inf'))]
+        for point in points:
+            self.assertEqual(frame.pixel(*point), self.legacy_pixel(frame, *point), point)
+
+    def test_direct_sampling_retains_partial_source_coverage_and_zero_weight_taps(self):
+        canonical = RGBImage(800, 608, bytes((i * 19) % 256 for i in range(800 * 608 * 3)))
+        frame = SourceFrame(raster(982, 747), Box(0, 0, 982, 747),
+                            extent=Box(-5, -1, 988, 750), canonical=canonical)
+        for x in (0, .5, 1, 3.5, 4.25, 4.5, 10.5, 10.75, 796.5, 797.25, 799.5):
+            for y in (0, .5, 1.5, 10.25, 10.5, 600.5, 606.5, 607.5):
+                self.assertEqual(frame.pixel(x, y), self.legacy_pixel(frame, x, y), (x, y))
+
+    def test_direct_sampling_keeps_widened_resize_coverage_at_fractional_scales(self):
+        for width, height in ((600, 456), (1000, 760)):
+            image = RGBImage(width, height, bytes((i * 7 + i // 11) % 256 for i in range(width * height * 3)))
+            frame = SourceFrame(image, Box(0, 0, width, height))
+            for point in ((.5, .5), (1, 2), (11.5, 17.5), (121.875, 219.375), (799.5, 607.5)):
+                self.assertEqual(frame.pixel(*point), self.legacy_pixel(frame, *point), (width, point))
+
     def test_identity_centers_and_raw_pixels_retain_rgb(self):
         image = raster()
         frame = SourceFrame(image, Box(0, 0, 800, 608))

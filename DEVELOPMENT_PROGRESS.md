@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-15 — Concrete execution plan, failed reserve and exact sampler checkpoint
+
+Read GENERAL_RECOGNITION_GOAL.md for the detailed continuation plan. The active
+goal is unfinished; its six gates and fixed numerical requirements are intact.
+First close the saved sampler checkpoint, then qualify source-backed nearby
+instance identity and competing solid/spike explanations. Existing71 outputs
+are evidence and regression controls, not a production answer dictionary.
+
+The first Halls7 no-tuning outlined evaluation FAILS. Independent source-grid
+review corrects four annotation entries without changing the61-object count or
+39-error baseline. Corrected exact matches50->60, errors39->35 (10.26%) still
+fail the25%/new-negative conditions. All17 proposed deltas reviewed:11 genuine
+poses (ten in scope) and six false8px aliases. Original labels/result and the
+post-evaluation correction remain preserved. Halls7 is exposed regression
+evidence now, not an untouched reserve to retune and relabel successful.
+
+The new private proposal-pair arbiter passes five stub tests, but rendered RGB
+source qualification rejects it:12 isolated alias cases across three palettes/
+four directions pass, while two genuine overlapping spikes with separately visible
+apices are both removed by whole-box appearance qualification. Do not adopt it.
+The next bounded question is visible source-owned instance evidence under mutual
+occlusion, not coordinate priority or blanket deduplication. Filled/outlined
+research remains unbound from the scanner/app; prior14 real recoveries are not
+deployed app gains. These are portable synthetic tests, not real-room transfer.
+General source-conflict removal and reserved transfer remain.
+
+Saved bilinear sampler implementation directly addresses the existing canonical
+RGB bytes while preserving every nonzero tap, coverage decision, weight and
+compensated-sum order. Three new scalar-oracle tests cover nonuniform RGB,
+partial captures, fractional scales and edge/zero-weight/nonfinite queries.
+The74-test affected suite passes; all16 actual unpatched exact controls preserve
+complete maps, ordered metadata, warnings and input/frame facts. Eight quiet AC
+serial whole scans also preserve complete outputs. Two samples per mode/source
+give medians130.094->125.298s dense (-3.7%) and65.399->62.207s sparse (-4.9%)
+against an old scalar oracle ablation, not a historical checkout speed promise.
+Named protections now PASS:29 source/control cases,22 fresh ordinary scans and
+seven compatible current exact/timing carries, all complete output/input equality.
+This preserves every prior41 group,601 source miniblocks,139 terrain footprints
+and the special masks/rails/restorations. Parallel scan times are not performance
+measurements. The fresh sampler-only17 tests also pass. Conservative71 audit v6
+has24 current whole-output/QA equality carries and47 current-runtime pending;
+all87 baseline artifacts/all71 historical QA checksums are reverified,0 approvals.
+Full checksum verification needed instrumented progress through slow SVG opens;
+no failed check was bypassed. Recognition activation and all goal gates remain open.
+
 ## 2026-10-14 — Outlined source identity: full control failure diagnosed, stricter ownership tested
 
 Private outlined consumer recovers the missing Halls3 Left16064 and four

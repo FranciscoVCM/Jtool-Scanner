@@ -1,8 +1,43 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-14. Continue in the existing repository at
+Updated 2026-10-15. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
+
+## Read first: concrete continuation, not an evidence reset
+
+Read GENERAL_RECOGNITION_GOAL.md and DEVELOPMENT_PROGRESS's2026-10-15 section
+before the older chronological checkpoints below. The unfinished active goal's
+original private GOAL_PLAN.md and all six numerical/protection gates remain.
+Do not mark it complete to create a replacement. The detailed public plan makes
+the execution phases and release evidence explicit without lowering requirements.
+
+Halls7's first outlined reserved evaluation is TERMINAL/FAIL. Four source-label
+corrections preserve61 expected/39 baseline errors; corrected50->60 exact and
+39->35 errors (10.26%) still fail, with six false8px copies. Original receipts
+remain. Halls7 is exposed regression evidence, not a fresh untuned success.
+The next compatible experiment uses the predeclared Golden5/NANG138r pool under
+separate frozen eligibility/order/criteria. No cherry-picking after scoring.
+
+New proposal-pair research also FAILS rendered RGB-source qualification:12 isolated
+alias cases pass, but both genuinely neighboring spikes are removed despite
+visible distinct apices. This is synthetic source evidence, not real-room transfer.
+Stub tests were insufficient. No adoption. Investigate
+visible source ownership under mutual occlusion without universal whole-box
+appearance, coordinate priority, new-proposal teachers or blanket overlap deletion.
+
+The saved public sampler edit and three new tests have74 affected passes, all16
+actual exact-output equalities, and eight quiet AC whole timing equalities.
+Sampler-only median changes -3.7%dense/-4.9%sparse are limited old-scalar-oracle
+comparisons, not outlined runtime qualification. Named protections are TERMINAL/
+PASS:29 cases (22 fresh/seven compatible carries), full map/metadata/input equality,
+all41/601/139/special guards preserved. Conservative71 audit v6 has24 current
+strict QA carries/47 pending and0 approvals, all historical checksums reverified.
+Newest ignored resume note: GOAL_EXECUTION_ACTIVE_20261015.md. Publication/app
+loaded/disk parity are recorded there. No live scan/audit producers remain;
+sessions17028/66338 are terminal. Do not restart their completed work.
+No filled/outlined recognition has been app-bound. Preserve all prior14 private
+recoveries but do not label those app improvements or accept a whole room.
 
 ## Active successor goal: general source identity, not room-specific suppression
 
