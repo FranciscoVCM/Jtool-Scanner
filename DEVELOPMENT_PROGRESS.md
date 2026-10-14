@@ -4,6 +4,46 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — Source-role candidate: actual scan, complete delta QA and four challenges
+
+The unadopted CN3-18 shadow-role candidate now has an actual scanner run, not
+only a helper replay. Its private implementation identity is distinct from
+ordinary unpatched output. Original pre-source objects, crop, extent, source
+and options match the frozen ordinary-stage snapshot; final deltas exactly
+match the helper: one addition and81 removals. The fixed region retains all4864
+source-positive pixels while known-negative solid occupancy falls18176->0.
+
+All82 original-source delta crops and whole Source/JTool/Blend were reviewed.
+Additional5376 genuine blue pillar/tile pixels touched by mixed full footprints
+remain covered. This post-candidate safety annotation is NOT a pre-tuning success
+denominator. Across the room, occupied pixels decrease37888 with zero new
+occupancy. The added full tiling remains mixed water/solid, not a recovered real
+object; removals/representation changes must not be counted as eight positive
+recoveries or a whole-room acceptance. Other existing geometry errors remain.
+
+Four actual private challenge scans preserve complete maps, ordered detection
+metadata, warnings and source/options/crop/grid: Halls3, Golden2, compact
+NANG130r and Dotkid5. They preserve the corresponding existing protections,
+but do not substitute for all41 groups/601 minis/139 footprints/16 controls.
+Halls3 and Golden2 do not improve: their distinct original detector causes
+remain separate development work. No reserved room was tuned or evaluated.
+
+Fourteen private portable tests pass, including RGB-isoluminant edges, hue/
+polarity/brightness, genuine low contrast, quantized gradients, multiple capture
+scales, physical padding, unknown crops, teacher exclusions, independent witnesses
+and source-cache fencing. Two diagnostic mistakes were corrected transparently:
+a crop test initially sampled wholly inside the image, and runtime tuple versus
+JSON-list grid comparisons falsely reported drift. Original failed receipts
+remain preserved; no production/environment workaround or repeat scan was used.
+
+The conservative successor71 checkpoint keeps shipped B235 findings, verifies
+all87 output-artifact and all71 source-QA checksums, records Golden2's platform
+review correction and separates private candidates from app behavior. Zero
+new whole-room approvals and zero shipped detector changes. Full protected
+controls, qualified maintained integration, latency, positive recoveries,
+reserved cross-family success and final-current audit are still required.
+The new goal remains ACTIVE; no universal future-tileset accuracy claim.
+
 ## 2026-10-14 — New general source-identity goal: baseline pinned, causes separated
 
 The next bounded milestone starts from published B235, without repeating either

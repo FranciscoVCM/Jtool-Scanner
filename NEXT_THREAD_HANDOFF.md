@@ -38,6 +38,27 @@ SHADOW_ROLE_CANDIDATE_STATE_v1.md. Both workers are TERMINAL; do not restart.
 Candidate code is ignored, not in the app. Do not claim a shipped improvement,
 room acceptance, reserved success or completed goal from this helper result.
 
+Latest private qualification is now complete in that ignored directory:
+`shadow-role-actual-scan-v1.json` reproduces helper deltas via an actual scanner
+with a separate candidate identity;4864 positives retained/18176 regional false
+pixels removed. `shadow-all-deltas-source-qa-v1.json` covers all82 source crops
+and whole views, plus5376 retained blue pixels. The added mixed water/solid full
+is NOT a real positive recovery. No new occupied pixels;37888 removed globally.
+`shadow-role-portable-tests-v3.json`:14 pass. `shadow-role-real-challenges-v2.json`:
+Halls3/Golden2/NANG130r/Dotkid5 entire-output equality, but no new improvements.
+The v1 grid mismatch was tuple/list representation, corrected from checksummed
+saved outputs without rescanning; failed receipts stay intact. All workers are
+TERMINAL (sessions99370/76279); do not restart them or the old baseline.
+
+`71-screen-general-recognition-checkpoint-v1.md`/JSON is an interim shipped-state
+audit, not a new71 scan or candidate adoption: all87 artifact and all71 QA hashes
+reverified, no broad approvals, platform-review correction preserved. Production
+code/app remain B235. Next: complete real16/601/139/41 qualification as relevant,
+then efficient maintained integration only if safe; independently freeze missing
+positive geometry for Golden2/Halls3 and preserve the untouched reserve. Do not
+close the goal with a suppression-only or report-only checkpoint. Runtime and
+reserved transfer remain pending. Consult DEVELOPMENT_PROGRESS for measured scope.
+
 ## Latest: B235 final87, complete protections and conservative all71 review
 
 Read ignored B235_POWER_CHECKPOINT_20261014.md and
