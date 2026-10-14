@@ -32,9 +32,46 @@ background blocks are `source_material_size`, Halls3's sky blocks are
 complete annotation. Do not force one overlap/confidence filter across these
 different paths. No implementation, source, fixture or map change yet.
 
-Next trace original candidates and retained/recovered geometry through the actual
-ordinary API with complete map/metadata equality, then freeze source-positive/
-negative structures. Goal remains active; no universal/all71-perfection claim.
+The first actual CN3-18 ordinary stage trace is complete and reproduces the entire
+baseline map/metadata/warnings/input/crop/grid. It enters source geometry with zero
+full blocks; source-size recovery classifies348 native16 cells as foreground and
+982 as background, packs new full rectangles and introduces the inspected false
+mountain blocks. Later pose/agreement/rectangle checks retain them; hollow recovery
+does not generate them. No old full retirement is involved. This locates a cause,
+not a new detector gain: an overlap-only or hollow-only fix would miss this path.
+
+Separate metadata/export verification corrects an earlier Golden2 qualitative
+review: both brown platforms are present as JTool platform objects, not wholly
+missing. Their fine poses still need localized source checking. Preserve previous
+audit receipts and carry the correction into the successor; do not tune to a
+mistaken visual-review label. Next freeze complete positive/negative structures
+and replay original-stage calibration/boundary evidence. Goal remains active;
+implementation unchanged, no universal/all71-perfection claim.
+
+Three complete development structures are now independently source-frozen.
+CN3-18 retains4864 positive solid pixels but covers18176 known-negative pixels;
+Halls3 retains16384 with2048 excess; Golden2 retains4096 with1312 excess. All
+measured true typed geometry is already present in these regions, so suppression
+alone cannot earn the required real-recovery milestone. Additional complete
+positive-recovery structures remain necessary; no reserve has been tuned.
+
+A private new-full qualification hypothesis is insufficient: original complete
+helper replay matches its ordinary-stage snapshot, but withholding38 fulls causes
+92 new minis downstream; CN3-18 excess18176->16896 is only7.04%, no positive
+recovery. Rejected/unadopted; its sizing-only14080->0 observation is not a final
+map improvement. Follow upstream material roles instead of moving false coverage
+between full and mini representations.
+
+All21 original physical shadow witnesses were source-reviewed. Seventeen are
+real blue tiles; the gray role is taught by SAVE lettering plus three background
+frames. Raw9–12 closure counts alone admit quantized gradient/noise. A second
+private candidate combines original sprite-neighborhood teacher exclusions,
+physical RGB quantization-aware coherent edges and three independent frames;
+it preserves14 valid blue witnesses and rejects the four contaminated witnesses.
+Complete helper replay retains4864/4864 and reduces regional excess18176->0,
+with1 addition/81 removals. NOT adopted: all-delta source QA, portable low-contrast/
+scale cases, real protected/ordinary/reserved results and latency are unproved.
+No production detector, fixture, source or map has changed at this checkpoint.
 
 ## 2026-10-14 — B235 final-current corpus and original-source lookup qualification
 

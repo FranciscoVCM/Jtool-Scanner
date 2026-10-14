@@ -16,10 +16,27 @@ Freeze complete structures/denominators before tuning and retain all B235 gains.
 `baseline-inventory-v1.json` in that ignored directory pins ten cases and proves
 distinct wrong-proposal origins: source_material_size, repeated_terrain_block and
 ordinary block. Do not assume all false geometry shares a cause. No detector
-change has been made at this setup checkpoint. Next is ordinary-map/metadata-
-equivalent stage diagnosis and independent source annotation, with no emitted
-teachers/reference copying/blanket overlap removal. Required positive recovery,
+change has been made at this setup checkpoint. First CN3-18 stage trace is TERMINAL/
+entire-output-equality PASS; false mountain fulls originate in source_size_repair,
+not hollow recovery. Read ACTIVE_RESUME.md and DIAGNOSIS_1.md in that directory;
+do not restart its completed worker. Next freeze independent complete source
+structures and replay calibration/boundary hypotheses from the saved original
+snapshot, without emitted teachers/reference copying/blanket overlap removal.
+Golden2's two platforms are in the actual exported map: correct the earlier
+absence overstatement in the successor audit, not a detector fix. Required recovery,
 cross-family reserved transfer, controls, latency and final audit are in the plan.
+
+Three development structures are source-frozen; all known solid positives are
+already covered, with18176/2048/1312 excess pixels respectively. These cannot
+alone earn the positive-recovery goal. Private full-only guard FAILED:38 fulls
+withheld,92 new minis, only7.04% excess reduction. Read GROWTH_GUARD_REJECTED_v1.md.
+All21 physical shadow witnesses are reviewed: gray role is SAVE text plus three
+background frames, not terrain. Private second shadow-role candidate retains
+4864 positive pixels/0regional excess, but1 addition/81 removals require all-delta
+QA and portable/protected/ordinary/runtime qualification. Read
+SHADOW_ROLE_CANDIDATE_STATE_v1.md. Both workers are TERMINAL; do not restart.
+Candidate code is ignored, not in the app. Do not claim a shipped improvement,
+room acceptance, reserved success or completed goal from this helper result.
 
 ## Latest: B235 final87, complete protections and conservative all71 review
 
