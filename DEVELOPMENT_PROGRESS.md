@@ -4,6 +4,54 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — Outlined source identity: full control failure diagnosed, stricter ownership tested
+
+Private outlined consumer recovers the missing Halls3 Left16064 and four
+Golden2 full spikes, including a newly reviewed Right624128 in a touching
+compound. Three are the already measured Golden2 filled recoveries; only two
+are additional independent source positives beyond the prior14. These are
+complete helper proposal sets, NOT current actual maps or app improvements.
+Eight initial source-delta crops and the new compound's native8px grid were
+reviewed; ambiguous close Halls3 poses are withheld without deleting originals.
+
+The first complete18 original-stage control preflight FAILS with99 new reference
+extras. Inherited any-edge inward ownership can accept internal tile patterns
+or shifted source poses. A local-apex gradient predicate and a distributed-core
+variant fail to solve the observed controls and remain unadopted. Requiring
+source-owned boundaries on BOTH slopes, plus source-local appearance and
+independent apices for nearby same-type pose alternatives, retains all five
+reviewed development positives and passes the same36 portable positives/108
+negatives plus the additional adversarial tests (11 tests total). No palette,
+room identity, reference answer, emitted teacher or lowered9-support threshold.
+
+The revised18-case finite helper qualification completes with0 new reference
+extras. Partysu3 retains two new reference-key proposals and Flames five;
+Dotkid1 adds two visually source-confirmed downward spikes without exact JMaps.
+All nine novel control-helper crops were reviewed; the whole Dotkid1 source
+confirms beige hazards versus green background, not an inverted-role void.
+One Flames full spike is genuinely half-hidden by a wall, not a minispike.
+This is NOT an ordinary full16 benchmark, changed whole-map/metadata QA,
+runtime qualification or adoption. Compact eligibility remains unchanged.
+
+Before reserved evaluation, a complete Halls7 source structure is frozen:
+61 geometry objects,50 baseline exact,11 misses/28 extras/39 errors;33280 solid
+pixels already covered and8640 known-negative excess. Boundary-intersecting
+objects are included, glyph-hidden terrain/orb/player uncertainties explicit.
+The ordinary Halls7 source-stage observer matches the complete B235 map,
+ordered metadata, warnings and source/crop/grid/options. Its original snapshot
+is ready for evaluation. No reserved candidate result or success yet; no
+denominator or goal change.
+
+Runtime remains a release blocker: outlined helper queries take minutes, not
+acceptable whole-scan overhead. An exact bilinear sampling prototype preserves
+35670 RGB/unknown queries across five portable/physical frames, plus128 entire
+source proofs/eight positive proofs. Exact model-value memoization preserves the
+fixed proof sample too. Profiles are diagnostics, not quiet AC whole timings.
+None is scanner/app-bound. Shipped B235 outputs, all previous protections,
+standard/Experimental behavior and app source fingerprint remain unchanged.
+Untuned reserve, baseline conflict repairs, full controls/protections, final71
+audit and controlled whole runtime still required; goal ACTIVE,0 approvals.
+
 ## 2026-10-14 — Current filled consumer:14 real recoveries across two visual families
 
 Research implementation checkpointdf9dceb is now tested through four current

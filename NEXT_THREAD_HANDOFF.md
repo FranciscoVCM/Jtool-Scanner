@@ -13,6 +13,30 @@ CN3-18/Halls3/Golden2, first reserved Halls7; later reserve pool Golden5/NANG138
 protected compact/text challenges. All are historically exposed, not unseen.
 Freeze complete structures/denominators before tuning and retain all B235 gains.
 
+Newest ignored work is summarized in FILLED_ACTIVE_RESUME.md. The first complete
+outlined18 helper FAILS with99 reference extras; do not deploy it. Current
+outlined_consumer_v3.py requires both source-owned slopes and source-only nearby
+instance/appearance qualification. All five source-reviewed development poses
+remain;11 portable/adversarial tests PASS. Revised18 helper is TERMINAL with0
+new reference extras; first version FAILED99. Nine new helper poses (Party2,
+Flames5, Dotkid1 two) independently source-reviewed, receipt
+outlined-control-source-qa-v1.json. These are helpers, not ordinary16/deployed
+maps. No workers currently live; don't restart old46786/88684 sessions.
+
+The first no-tuning Halls7 structure is SOURCE-frozen before candidate scoring:
+Halls7-reserved-positive-structure-freeze-v1.json,61 expected/50 exact/39 errors,
+33280 solid positive pixels covered/8640 excess. Never tune this reserve or
+silently change its denominator after evaluating it. Next actual source-stage
+capture/evaluation only after control qualification, then whole and every-delta
+QA. Halls7-original-stage-observation-v2.json proves entire ordinary B235 map,
+ordered metadata/warnings/frame equality and saves the original stage. The
+candidate has NOT been scored. Two new development-helper positives beyond
+prior14, and nine control-helper positives, are not yet actual outputs.
+Pure bilinear sampler prototype has35670 exact RGB/unknown comparisons and128
+entire/eight positive source-proof equalities; model memo profile also equal.
+No controlled whole runtime/adoption; no new dependency or grayscale scan.
+App remains B235, root/api-health200 last verified, loaded9c697959…;0 approvals.
+
 Read ignored `.artifacts/general-recognition-20261014/FILLED_ACTIVE_RESUME.md`
 for the latest checkpoint before older notes. Current actual worker30688 is
 TERMINAL: Golden2 +3, CN3-19 +8, CN3-21 +3, CN3-93 full equality. All14 source
