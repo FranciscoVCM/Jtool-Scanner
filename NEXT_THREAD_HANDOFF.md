@@ -13,6 +13,23 @@ CN3-18/Halls3/Golden2, first reserved Halls7; later reserve pool Golden5/NANG138
 protected compact/text challenges. All are historically exposed, not unseen.
 Freeze complete structures/denominators before tuning and retain all B235 gains.
 
+Read ignored `.artifacts/general-recognition-20261014/FILLED_ACTIVE_RESUME.md`
+for the latest checkpoint before older notes. Current actual worker30688 is
+TERMINAL: Golden2 +3, CN3-19 +8, CN3-21 +3, CN3-93 full equality. All14 source
+deltas/all three changed whole views reviewed, old metadata/terrain/nongeometry
+preserved. Source QA receipt filled-current-source-qa-v2.json; audit v3. No new
+numeral objects; inherited text and other errors remain.14 real recoveries/two
+families are research gains, not app deployment, complete room error scores or
+the required reserved success. Source consumer committed asdf9dceb.
+
+Private outlined_fill_phase_candidate_v2.py fixes original-teacher sampling at
+compressed captures with bounded one-physical-pixel phases and unchanged raw
+thresholds. Same36 positive/108 negative portable sources PASS; v1 failures
+preserved. Unknown core cannot be inverted into filled evidence. Next whole
+consumer/portable adversaries/real controls, feature sharing/cost, untouched
+Halls7 reserve and safe integration. Shadow guard still FAILS Hades; source
+conflict suppression/edge visibility/actual16/runtime/full goal remain open.
+
 Latest maintained research: `scripts/source_filled_pipeline.py` and27 portable
 tests, NOT scanner/app-bound.71 focused tests pass in ignored
 filled-affected-tests-v2.json. Initial actual Golden2 four-addition run preserves

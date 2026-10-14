@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — Current filled consumer:14 real recoveries across two visual families
+
+Research implementation checkpointdf9dceb is now tested through four current
+actual scanner runs: Golden2 gains3, CN3-19 gains8, CN3-21 gains3, CN3-93 has
+complete output equality. All14 source crops and all three changed whole Source/
+JTool/Blend sets were reviewed. Each addition is a genuine visible full32 spike;
+the11 gray-room additions are textured stone glyphs, not floor numerals. All old
+Detection metadata, object keys, terrain pixels, nongeometry and input/frame
+metadata are preserved. Existing text and major room errors remain,0 approvals.
+
+Golden2's complete pre-frozen37-object region retains the current33->36 exact,
+errors10->7 result (30% reduction), with one capture-edge miss/six inherited
+extras. CN3-19/21 provide untuned real-source transfer, not invented pre-tuning
+whole-room denominators or a substitute for the named reserved evaluation.
+Current consumer adds no duplicate Down6448; that close old-pose alternative
+remains a separately recorded repair candidate. No source-reference correction,
+human map, emitted teacher or per-room exception drives recognition.
+
+Private outlined-fill experiment initially fails seven of the same36 portable
+palette/scale/direction sources: no original source models exist on compressed
+captures even though query directed edges all have12 support. This is a teacher
+sampling-phase failure, not permission to lower9-support criteria. Bounded
+one-physical-pixel source phases qualify existing original locators; no new
+teacher/object origins. The same36 positives/108 negatives now pass, including
+unknown-core/two-teacher abstention. It remains private query evidence, not a
+maintained full consumer or control/runtime-qualified app change.
+
+The conservative71 audit now records14 current research recoveries/two families
+against the unchanged shipped B235 outputs; all87 artifacts/all71 prior QA hashes
+reverified. No broad acceptance. Actual16 controls, all41/601/139, whole runtime,
+named no-tuning reserve, baseline conflict repairs and final app integration are
+still required. Both standard and Experimental app modes remain on tested B235.
+Goal ACTIVE, with all original numerical criteria intact.
+
 ## 2026-10-14 — Maintained filled-source research and source-instance ambiguity
 
 New research-only filled-glyph consumer uses original RGB/source coverage,
