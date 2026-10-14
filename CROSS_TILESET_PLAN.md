@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Current direction (2026-10-14): source identity and filled/compound recovery
+
+Qualified B235 and its completed71+16 outputs are the successor goal baseline;
+do not resweep the old baselines/archive. See DEVELOPMENT_PROGRESS and
+NEXT_THREAD_HANDOFF for the full active plan, protections and current receipts.
+
+The private precision-aware shadow guard improves canonical CN3-18's frozen
+false-terrain region but FAILS actual Hades phase-recovery protection. Seventeen
+of18 exact/terrain outputs stay identical; two Hades exact matches are lost.
+Neither uncertainty-only nor whole32 eligibility-only follow-up restores them.
+No app activation: independent solid/texture teacher qualification remains open.
+
+Move the next bounded investigation to real filled/compound recovery. Corrected
+Golden2 source annotations show complete RGB evidence for two missing filled
+poses already in the finite search; the enabled consumer models hollow shapes
+only. Other misses separate inadequate source seeds from a genuinely cropped
+base. Reuse source-local RGB/material/geometry evidence with original teachers,
+not fixed palettes or an expensive second grayscale scan. Freeze complete Halls3
+positives and leave Halls7 untuned for reserved evaluation. All41/601/139 and16
+control bounds, numerical real-recovery/cross-family goals, whole runtime and
+final71 source audit remain mandatory. No universal or all71-perfection claim.
+
 ## Current direction (B231/B232, 2026-10-14): preserve real gains without costly rollout
 
 Actual ordinary16 controls and17 targeted canonical outputs are complete; all17

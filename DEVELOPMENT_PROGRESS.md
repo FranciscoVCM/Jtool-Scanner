@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-14 — Exact qualification rejects shadow guard; filled recovery cause isolated
+
+The next actual private run completes all16 exact controls plus Bathhouse1 and
+Dotkid1. Seventeen of18 whole maps, ordered detection metadata, warnings and
+source/crop/grid/options remain identical. FTFA retains926/928 with zero extras,
+shifts or wrong directions; Flames retains its current bounds. Together with
+the earlier Dotkid5 equality, the corresponding601 minis/139 footprints remain.
+This is NOT an all41 pass or permission to adopt: Hades regresses334->332 exact,
+with two lost existing16px phase repairs and1024 native positive terrain pixels.
+
+Fresh original-source crops confirm the two correct terrain origins. The ordinary
+pre-source detector starts at the wrong phase; B235's independently source-backed
+full-frame texture repairs fix it. Removing a weak gray-shadow calibration role
+prevents those existing gains. Its only native16 witness is a spike-shaped patch,
+not terrain. An uncertainty-only background veto and a broader whole32 candidate
+eligibility fallback both fail to restore the repairs. All failed evidence is
+preserved; neither prototype is maintained implementation or app behavior.
+Independent real solid/texture teacher eligibility remains a source-role issue.
+
+Before compound tuning, source overlays also correct an annotation mistake:
+Golden2 diamonds have184/232 x origins, not the assumed176/224 coarse-grid origins.
+The second downward spike was already real and detected, never a false extra.
+The complete positive region extends upward to include both entire diamonds:
+37 expected objects,33 exact,4 misses,6 extras;28672 positive solid pixels covered,
+1392 known-negative excess. Old annotations remain but are invalid for exact
+scoring. No predicate was tuned or gain counted against the mistaken labels.
+
+Corrected original-source probes separate three recovery causes. Two missing
+filled full spikes already have complete raw/filled/prototype evidence and are
+in the finite hypotheses, while the enabled recovery accepts hollow models only.
+Another real filled spike is outside that neighborhood; an edge spike has two
+strong visible slopes but an unknown cropped base. These require model eligibility,
+source seed coverage and genuine partial-visibility evidence, not fixed colors,
+reference answers or blanket overlap removal. Prototype similarity alone is not
+semantics. Next bounded batch pursues real filled/compound recovery with source
+freezes, portable adversaries and the still-untuned reserve; source-role repair
+and the full original goal remain unresolved, not silently dropped.
+
+The successor71 audit keeps shipped B235 findings, revalidates all87 artifacts
+and all71 QA checksums, and explicitly marks the shadow candidate rejected.
+Zero shipped changes/whole-room approvals; app remains on qualified B235.
+All workers terminal; no repeated baseline sweep/archive load. Goal ACTIVE.
+
 ## 2026-10-14 — Source-role candidate: actual scan, complete delta QA and four challenges
 
 The unadopted CN3-18 shadow-role candidate now has an actual scanner run, not

@@ -13,6 +13,26 @@ CN3-18/Halls3/Golden2, first reserved Halls7; later reserve pool Golden5/NANG138
 protected compact/text challenges. All are historically exposed, not unseen.
 Freeze complete structures/denominators before tuning and retain all B235 gains.
 
+Read `.artifacts/general-recognition-20261014/NEXT_FILLED_BATCH.md` before earlier
+private candidate notes: its latest18 exact/terrain scan is TERMINAL.17 outputs
+have complete equality, but Hades loses two prior correct16px phase repairs,
+334->332 exact/1024 positive pixels. Shadow guard is NOT adoptable. Unknown-colour
+BG veto and whole32 eligibility fallback also FAIL; do not repeat or activate them.
+Original Hades phase proof is saved with independent unmasked texture witnesses.
+Production/app unchanged; sessions54191/10354/96112/90541 are finished.
+
+Golden2-positive-structure-freeze-v2.json supersedes INVALID v1 coarse-grid labels:
+real diamonds at184/232, not176/224; second Down already present. Region enlarged
+to both complete diamonds,37 expected/33 exact/4 misses/6 extras,28672 positive
+pixels/1392 excess. Corrected source probes show two missing filled poses already
+have complete RGB geometry but the enabled consumer learns hollow models only;
+one other filled spike lacks seed coverage, one has a cropped base. No compound
+predicate changed yet. Next source-verified filled consumer/seed/visibility batch,
+portable tests, Halls3 complete positive freeze and untouched Halls7 reserve.
+No palette/coordinate answers, emitted teachers, blanket overlap deletion or
+new duplicate full scan. Required real recoveries and all original gates remain.
+Latest conservative audit:71-screen-general-recognition-checkpoint-v2.md/JSON.
+
 `baseline-inventory-v1.json` in that ignored directory pins ten cases and proves
 distinct wrong-proposal origins: source_material_size, repeated_terrain_block and
 ordinary block. Do not assume all false geometry shares a cause. No detector
