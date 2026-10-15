@@ -40,6 +40,17 @@ Qualification, maintained per-context integration/cache/thread tests, controlled
 cost and final-current71 are still due. Required positive8/three rooms/two
 families/frozen25%/two fixes/new compatible reserved success remain unchanged.
 
+New follow-up: app is now running after fresh APPROVED startup, root/health200
+and loaded/disk fingerprint equal; no permission bypass or rejected feature.
+Halls2 observer v2 is TERMINAL/PASS entire-V3 parity (v1 harness rejected an
+unsupported partition before scanning; preserved). No expanded shadow role
+exists here: hard cluster labels reject a real bright highlight, while38 old
+full locators yield zero texture teachers/models. Frozen original-RGB probe
+passes10/10 real Halls2 and0/79 false canonical footprints, using old sizing
+arithmetic/thresholds. This is diagnostic only. Read the newest ignored checkpoint
+before implementing additive positive corroboration/replaying Halls2+canonical+
+Hades; no new global threshold, room/palette exception or emitted teacher.
+
 Read GENERAL_RECOGNITION_GOAL.md and DEVELOPMENT_PROGRESS's2026-10-15 section
 before the older chronological checkpoints below. The unfinished active goal's
 original private GOAL_PLAN.md and all six numerical/protection gates remain.

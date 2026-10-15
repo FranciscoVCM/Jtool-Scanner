@@ -72,6 +72,31 @@ health and loaded/disk parity unverified; this is not evidence the app is down.
 No permission bypass or deployment claim. Suppression alone cannot satisfy the
 goal's positive-recovery, multi-family and new reserved-success requirements.
 
+Follow-up: fresh approved observations find no listener, then an approved hidden
+startup restores the app. Root and health both return HTTP200; loaded/disk source
+fingerprints match. Rejected V3 remains disabled. This supersedes the earlier
+unverified app observation without hiding it.
+
+An original-stage Halls2 observer reproduces the entire actual V3 map/metadata/
+warnings/input/frame. Its first harness attempt used an unsupported manifest
+partition and stopped before scanning; the corrected fresh attempt succeeds.
+The causal evidence disproves the initial16-witness-closure hypothesis here:
+there are NO expanded shadow roles. Ten real tiles mix the two approved material
+clusters with a brighter highlight cluster. The hard exact-cluster membership
+gate rejects the highlight, despite the original continuous foreground test.
+There are38 original full locators but zero usable original texture teachers/
+models, so the fallback cannot rescue these tiles.
+
+A pre-frozen finite RGB diagnostic reuses the original sizing thresholds and
+physical sampling, with separately approved foreground centers: foreground
+fraction>=.95, f<.5*b and mean error<=.25*foreground/background separation. It
+supports all ten real Halls2 footprints and none of the79 reviewed false CN3-18
+footprints. This is a diagnostic distinction, NOT a new scanner candidate or
+deployed fix. Next test an additive source-positive corroboration of late growth
+without changing old calibration, thresholds or original teachers; require all
+ten Halls2 footprints, both canonical positive masks/frozen negative gain and
+Hades phase/output preservation in actual source replay before further controls.
+
 ## 2026-10-15 — Concrete execution plan, failed reserve and exact sampler checkpoint
 
 Read GENERAL_RECOGNITION_GOAL.md for the detailed continuation plan. The active

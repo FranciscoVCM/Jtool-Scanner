@@ -87,6 +87,16 @@ port comparisons qualify its pure functions, not app deployment or cache/thread
 integration. Parity with a rejected prototype is not recognition qualification.
 Preserve that distinction when continuing the implementation.
 
+Latest follow-up: approved startup/observations now verify root+healthHTTP200
+and loaded/disk source parity; the rejected candidate remains disabled. Halls2
+ordinary-equivalent source diagnostics find no shadow expansion: a brighter real
+tile highlight falls outside hard cluster membership, and the old texture
+fallback has no teachers. A frozen finite original-RGB diagnostic supports10/10
+real Halls2 footprints and0/79 false canonical footprints using unchanged old
+foreground thresholds. This is not a candidate pass. Next additive original-source
+positive corroboration must preserve the canonical negative/positive masks and
+Hades before actual broad controls or safe integration.
+
 ## Phase 1 — close the intact implementation checkpoint
 
 1. Verify local/live Git state and inspect the two saved sampler edits; do not
