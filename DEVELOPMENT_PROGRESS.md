@@ -4,6 +4,50 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-15 — Explicit per-source integration, qualified behind an off-by-default switch
+
+The maintained source pipeline now has an explicit include_growth_confidence
+boolean, default false. The scanner call is unchanged: this checkpoint does NOT
+activate the new confidence filter in the app. Production functions use no
+global patches, private imports, reference answers or newly emitted teachers.
+
+SourceEvidenceContext records original raw material calibration before pattern
+caches can warm. A separate lazy qualification uses a frozen complete Detection
+snapshot, including semantic exclusion boxes, and validates it on cache reuse.
+Duplicate calibration is not duplicate evidence. Original material roles and
+legacy diagnostics remain unchanged. Actual sizing/joint provenance identifies
+new growth; original/replacement/phase positives stay protected. The existing
+original-only full-pose texture library is reused, not rebuilt or reteaught.
+The new reachable dependency is included in app/corpus runtime fingerprints.
+
+Three real original-stage replays preserve complete legacy diagnostics and the
+qualified V4 decisions. Three fresh WHOLE scans then preserve its entire ordered
+metadata, warnings, JMap bytes, projects (except generated source-cache path),
+source/frame/options and JTool/Blend bytes. CN3-18 retains all79 reviewed false
+removals and both positive masks; Halls2 and Hades retain original baseline
+outputs. Existing source QA carries through strict complete equality; this is
+not a fresh whole-room approval or a new ten-object Halls2 gain.
+
+Real CN3-18/Halls2 checks prewarm material modes BEFORE binding growth originals,
+with cache capacity0 and full capacity4. All four runs preserve complete cold
+diagnostics/proposals/retirements.13 new context tests cover independent parallel
+sources, raw/returned copy isolation, complete original-detection mutation,
+source/frame changes, explicit producer provenance and existing-library reuse.
+99 focused tests pass13.340s; a separate93 affected material/pose/integration/
+corpus tests pass157.853s with approved temporary-file access. These192 relevant
+tests are not a claim of running the entire project suite. Earlier test/harness
+failures are preserved; scanner logic was not changed to hide permission errors.
+
+Conservative71 audit v12 preserves every previous finding and zero approvals.
+Two canonical maintained candidate scans qualify;69 canonical candidate scans
+remain pending. The changed runtime fingerprint means previous24 public strict
+QA carries are historical, not silently relabelled current at the new code.
+All71 default-runtime scans still need compatible qualification for final release.
+Prior prototype16/41/601/139 controls remain valid for THAT prototype, not an
+automatic integrated-context pass. Controlled whole latency and maintained broad
+qualification remain before activation. Positive recovery/multi-family/new
+reserved success and all six original goal gates remain open.
+
 ## 2026-10-15 — Additive source RGB: actual targeted qualification and replayable review workflow
 
 V4 adds an original-RGB positive query for new terrain hypotheses whose nearest

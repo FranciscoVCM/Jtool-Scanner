@@ -163,7 +163,12 @@ def native_cells(image, room, spikes, *, source_context=None):
             support[b].add((x//32, y//32))
             anchor_rows.append(dict(key=[type_id, x, y], back_cluster=b, front_cluster=f))
     selected = {c for c in backs if backs[c] >= 3 and len(support[c]) >= 3 and backs[c]/(backs[c]+tips[c]) >= .75}
+    selected_before_expansion = selected
     selected, shadow_proof = expand_shadows(field, labels, centers, selected, tips, background_backs)
+    if source_context is not None:
+        source_context.record_material_calibration(labels,
+            [(c.avg_r, c.avg_g, c.avg_b) for c in centers], selected_before_expansion,
+            shadow_proof, tips, background_backs)
     candidates = {p for p, c in labels.items() if c in selected}
     face_rows = {p: field.box_faces(*p) for p in candidates}
     closed = {p for p, faces in face_rows.items() if min(faces) >= 9}

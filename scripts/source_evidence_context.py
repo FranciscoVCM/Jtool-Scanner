@@ -61,6 +61,75 @@ class SourceEvidenceContext:
         self._material_results = {}
         self._material_builds = self._material_hits = 0
         self.glyph_builds = self.glyph_reuses = 0
+        self._raw_growth_calibration = self._qualified_growth = None
+        self._growth_originals = self._growth_texture = self._growth_sizing = None
+        self._growth_edges = {}
+
+    def record_material_calibration(self, labels, centers, selected, expanded_proof, tips, backs):
+        """Save ORIGINAL calibration before a material-result cache can warm.
+
+        This sidecar never replaces the old expanded roles or diagnostics. Native
+        calibration depends only on this context's frozen source/spike locators,
+        not pattern mode, water overlays, new proposals or cache capacity.
+        """
+        self.validate(self._original, self._room)
+        value = dict(labels=dict(labels), centers=tuple(tuple(c) for c in centers),
+                     selected=frozenset(selected), proof=deepcopy(expanded_proof),
+                     tips=dict(tips), backs=dict(backs))
+        if self._raw_growth_calibration is None:
+            self._raw_growth_calibration = value
+        elif self._raw_growth_calibration != value:
+            raise ValueError('Original source material calibration changed')
+
+    def begin_growth(self, detections):
+        """Bind every ORIGINAL Detection, including nonterrain exclusion boxes."""
+        self._validate_growth_originals(detections)
+        self._growth_texture = self._growth_sizing = None
+
+    def _validate_growth_originals(self, detections):
+        originals = tuple(detections)
+        spikes = [(d.type_id, d.x, d.y) for d in originals if 3 <= d.type_id <= 10]
+        self.validate(self._original, self._room, spikes)
+        if self._growth_originals is None:
+            self._growth_originals = deepcopy(originals)
+        elif originals != self._growth_originals:
+            raise ValueError('Source growth original detections changed; proposals cannot teach')
+
+    def record_growth_sizing(self, detections, proposed, retired):
+        self._validate_growth_originals(detections)
+        self._growth_sizing = frozenset(proposed), frozenset(retired)
+
+    def record_growth_texture(self, detections, library):
+        # The default/bypass path does not bind a growth consumer or retain a
+        # second library. On the explicit path this is the ALREADY built original
+        # full-pose library, not a constructor callback or generated teacher set.
+        if self._growth_originals is not None:
+            self._validate_growth_originals(detections)
+            self._growth_texture = library
+
+    def growth_evidence(self, detections):
+        """Lazy, scan-local qualification; cache hits still validate originals."""
+        self._validate_growth_originals(detections)
+        if self._qualified_growth is None and self._raw_growth_calibration is not None:
+            from scripts.source_growth_confidence import OriginalForegroundQuery, qualify_source_roles
+            raw = self._raw_growth_calibration
+            field = self.rectangles(self._original, self._room, self._spikes)
+            approved, _, observations = qualify_source_roles(
+                field, raw['selected'], raw['proof'], self._growth_originals,
+                edge_memo=self._growth_edges)
+            query = OriginalForegroundQuery(field, approved, raw['centers'], raw['tips'], raw['backs'])
+            self._qualified_growth = (dict(labels=raw['labels'], approved=approved), query, observations)
+        if self._growth_sizing is None:
+            raise ValueError('Missing original sizing provenance for source growth')
+        if self._qualified_growth is None:
+            calibrations, queries, observations = (), (), []
+        else:
+            calibration, query, observations = self._qualified_growth
+            calibrations, queries = (deepcopy(calibration),), (query,)
+        libraries = () if self._growth_texture is None else (self._growth_texture,)
+        return dict(calibrations=calibrations, original_foreground_queries=queries,
+                    original_texture_libraries=libraries, sizing=self._growth_sizing[0],
+                    sizing_retired=self._growth_sizing[1], observations=deepcopy(observations))
 
     def material_result(self, image, room, spikes, stage, settings, compute):
         """Reuse complete source proofs, never generated cells as teachers.

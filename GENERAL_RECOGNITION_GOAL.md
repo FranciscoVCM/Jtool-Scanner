@@ -24,6 +24,31 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Newest checkpoint: V4 has explicit per-SourceEvidenceContext integration behind
+include_growth_confidence=False; the scanner call/default behavior is unchanged.
+192 relevant tests in two runs pass. Three original-stage replays, three actual
+whole scans and four real prewarm/cache0/full-capacity checks preserve qualified
+V4/legacy outputs. There are no global patches in maintained code. The new
+dependency is fingerprinted. This is targeted integration qualification, not
+broad maintained controls, controlled scan cost, default activation or completion.
+Audit v12 retains all71 findings/0 approvals,2 canonical candidate qualifications/
+69 pending; old public24 strict QA carries are historical at the new fingerprint.
+
+Immediate order: preserve this reviewed off-by-default checkpoint; qualify
+maintained broad outputs through compatible ORIGINAL before-source captures and
+targeted ordinary scans; measure quiet AC dense/sparse whole before/after cost
+using the four frozen pre-integration module bodies; investigate persistent>5%
+cost before activation. Then safely enable/verify the app, carry only complete
+compatible evidence, and continue real filled recovery plus the separately frozen
+compatible Golden5 reserve. Its source proposal is not yet complete or scored;
+freeze occupancy-aware terrain metrics/uncertainty before any candidate scoring.
+Do not count duplicate editor tilings as separate errors/gains, consume a reserve
+on an incompatible mechanism, or replace the positive-recovery goal with filtering.
+Final stable71+16/source QA/publication gates remain unchanged.
+
+The chronology below is retained evidence; use this latest execution order over
+older instructions to restart producers or repeat diagnostic/failed experiments.
+
 Newest V4 research status: original-source and actual three-case qualification
 passes. Additive RGB evidence with unchanged old foreground thresholds preserves
 all canonical79 false removals and both positive masks, while Halls2/Hades match

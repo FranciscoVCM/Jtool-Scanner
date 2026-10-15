@@ -6,6 +6,28 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+LATEST: ignored MAINTAINED_GROWTH_ACTIVE_v1.md supersedes older continuations.
+The explicit per-source integration is saved behind include_growth_confidence
+default FALSE; scanner call unchanged. No maintained global patches/private
+imports/new teachers. Source/material/full-pose/pipeline/fingerprint and context
+tests changed.99 focused+93 other affected tests PASS; all3 maintained source
+replays, all3 fresh whole scans and four real warm/cache0/full runs PASS complete
+parity. All producer sessions3950/30792/87639/37220 are TERMINAL; no restart.
+First broader run had sandbox temporary-file errors and an obsolete17-module
+fingerprint assertion; proper approved rerun passes with18 dependencies tested.
+See DEVELOPMENT_PROGRESS and conservative71 audit v12:0 approvals,2 canonical
+candidate actual qualifications/69 pending,old24 public QA carries historical
+because the fingerprint changed. No app activation or final71 claim.
+
+Next: reviewed checkpoint, then compatible original-before-source replay/targeted
+whole qualification of maintained controls, quiet AC dense/sparse whole cost,
+safe activation and app parity. The four original runtime modules are preserved
+in ignored runtime-before-growth-v1 with AST/hash validation for honest old-code
+timing, not just feature-off after new plumbing overhead. No benchmark executed
+yet. Preserve14 real filled gains and pursue pre-frozen compatible Golden5
+reserve only after complete source labels/occupancy-aware metrics; not scored.
+All six goal gates/required positive gains and reserved success remain unchanged.
+
 LATEST: ignored HIGHLIGHT_GROWTH_ACTIVE_v4.md supersedes older V3 continuation
 instructions below. V4 actual3/source3/strict map+metadata+project+render equality
 qualification passes: canonical79 false removals/masks intact, Halls2 restored to

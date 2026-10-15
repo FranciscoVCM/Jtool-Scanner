@@ -14,10 +14,12 @@ from scripts.source_hollow_pipeline import recover_source_hollow_glyphs
 from scripts.source_sampling import SourceFrame
 
 
-def joint_proposals(image, room, detections, *, source_context=None):
+def joint_proposals(image, room, detections, *, source_context=None, include_growth_confidence=False):
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     water = [(d.x, d.y, 32, 32) for d in detections if d.type_id in (14, 15, 23)]
     sizing, rejected, size_diag = source_size_repair(image, room, detections, source_context=source_context)
+    if include_growth_confidence:
+        source_context.record_growth_sizing(detections, sizing, rejected)
     intrinsic = set(map(tuple, size_diag.get('source_calibration', {}).get('accepted', [])))
     material, diag = material_cells(image, room, spikes, water, source_context=source_context)
     existing = {(d.type_id, d.x, d.y) for d in detections}
@@ -39,15 +41,22 @@ def joint_proposals(image, room, detections, *, source_context=None):
 
 
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
-                     include_hollow_glyphs=True):
+                     include_hollow_glyphs=True, include_growth_confidence=False):
     """Return proposals/removals/full proofs, without touching original objects."""
     if not isinstance(include_hollow_glyphs, bool):
         raise ValueError('Hollow recovery flag must be a boolean')
+    if not isinstance(include_growth_confidence, bool):
+        raise ValueError('Growth confidence flag must be a boolean')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
     context.validate(image, room, spikes)
-    proposed, rejected, diag = joint_proposals(image, room, detections, source_context=context)
+    if include_growth_confidence:
+        context.begin_growth(detections)
+        proposed, rejected, diag = joint_proposals(image, room, detections, source_context=context,
+                                                  include_growth_confidence=True)
+    else:
+        proposed, rejected, diag = joint_proposals(image, room, detections, source_context=context)
     existing = {(d.type_id, d.x, d.y) for d in detections}
     flat = set(map(tuple, diag['source_material'].get('source_flat_accepted_cells', [])))
     water = [(d.x, d.y) for d in detections if d.type_id in (14, 15, 23)]
@@ -87,5 +96,19 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         # Only source-proved SAME type/size phase replacements can retire old
         # locators. Unverified terrain labels cannot act as coordinate answers.
         rejected |= {tuple(p['old']) for p in hollow_diag.get('phase_repairs', ())}
-    return proposed, rejected, {**diag, **pose, **agreement, 'rectangle_fallback': rectangle,
-                               'source_hollow': hollow_diag}
+    diagnostics = {**diag, **pose, **agreement, 'rectangle_fallback': rectangle, 'source_hollow': hollow_diag}
+    if include_growth_confidence:
+        from scripts.source_growth_confidence import qualify_independent_growth
+        evidence = context.growth_evidence(detections)
+        observations = evidence.pop('observations')
+        joint_cells = set(map(tuple, diag.get('intrinsic_source_cells_retained', ())))
+        joint_cells |= set(map(tuple, diag.get('supplemental_source_cells', ())))
+        before_growth = set(proposed)
+        phase_positive = {tuple(p['new']) for p in pose.get('texture_pose_proofs', ())}
+        proposed, growth = qualify_independent_growth(proposed, existing, room=room,
+            phase_positive=phase_positive, joint_cells=joint_cells, **evidence)
+        diagnostics['source_growth_confidence'] = {**growth, 'qualified_shadow_roles': observations,
+            'original_proposals': sorted(before_growth), 'original_retired': sorted(rejected),
+            'protected_phase_positive_keys': sorted(phase_positive),
+            'original_material_evidence_unchanged': True}
+    return proposed, rejected, diagnostics

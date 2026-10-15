@@ -62,6 +62,8 @@ def refit_full_poses(image, room, detections, proposed, rejected, source_materia
         polygons.append([(x+u*size/32, y+v*size/32) for u, v in VERTICES[direction]])
     texture = SourceBlockLibrary(
         library, {(d.x, d.y) for d in detections if d.type_id == 1}, textured, polygons)
+    if source_context is not None:
+        source_context.record_growth_texture(detections, texture)
     known = {p for x, y in terrain for p in _footprint((2, x, y))}
     local_background = SourceLocalBackground(library, lambda value:
         min(distance(value, c) for c in background) < .5*min(distance(value, c) for c in foreground))
