@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Reserved solid bands and explicit candidate-coverage diagnostics
+
+NANG138r's complete inner source region is independently frozen before any
+candidate evaluation:45 solid tile-equivalents,25 full spikes,61 visible minis.
+The user confirms all five striped metal sections are solid terrain,not one-way
+platforms. All46080positive pixels count;106413clear-negative/38995unknown pixels
+remain explicit. Two possible minis behind the yellow star are not invented.
+B235 has nine missing solid tiles/9216pixels(36fixed16cell errors),while all
+25full/61visible minis match and no known-negative terrain is occupied.
+
+A fresh current ordinary scan with transparent ORIGINAL source-stage observation
+preserves the entire B235 map,ordered detection metadata,warnings,input,crop/grid,
+JTool/Blend bytes and project except generated source-image path. Its original
+before-source ScanResult/RGB are sealed. This is an observed whole scan,not an
+unpatched candidate scan or accuracy gain. The unchanged full-spike-base-only
+query mechanism has only two new queries in this room: even assuming both pass,
+it can fix at most8/36errors(22.22%),below the frozen25%minimum. The RGB candidate
+was NOT evaluated; no reserved success/failure,smaller ROI or retuned threshold
+is claimed. Connected-band/minispike-backed terrain needs a distinct cause
+developed on other sources,not reserve-coordinate patches.
+
+A development diagnostic initially led to an incorrect inference:zero failures
+among sixteen enumerated source-positive positions did not mean all nineteen
+true NANG128r tiles were detected. A fresh full ordinary-equivalent trace proves
+the three missing poses are off the initial32px lattice,not later retirements.
+Complete coverage is19expected/16accepted/3NOTqueried/0queried-notaccepted.
+The old receipt and correction remain preserved; retirement guards must not be
+weakened from that inference. The private three-tile recovery remains valid.
+
+New read-only scripts/candidate_coverage.py accounts for every offline expected
+typed pose,including absent query phases;14 portable tests pass. It rejects
+duplicate expected labels and accepted outputs outside the explicit stage query
+set. Queried-but-not-accepted is not source-negative evidence. The CLI accepts
+JSON expected/queried/accepted arrays via python -m scripts.candidate_coverage
+--input PATH. It neither scans nor teaches objects and is not imported by runtime.
+
+Conservative71 audit v15 has30 current-code output qualifications/41pending/
+0whole-room approvals. New128r/138r whole scans are explicitly OBSERVED,not
+unpatched. All runtime files/code fingerprint remain identical to the qualified
+published confidence checkpoint; no scanner implementation or fixture changed. Full
+positive8/three rooms/two visual families/new compatible reserve/final71+16 and
+all six goal gates remain open. Next bounded work is phase-aware query coverage
+with independent source identity,plus separately developed connected-band
+identity; retain all false-conflict,occlusion,nongeometry and runtime protections.
+
 ## 2026-10-16 — Source-frozen compact recovery research; published app verified
 
 The published confidence entry is now loaded after a properly approved scoped

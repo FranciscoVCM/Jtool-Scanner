@@ -24,6 +24,31 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Latest execution refinement (2026-10-16): complete reserved NANG138r source truth
+and an actual original-stage whole observer are now frozen/qualified. All striped
+A-E sections are human-confirmed SOLID,not platforms. The baseline misses nine
+solid tiles/36fixed-cell errors;25full/61visible minis are exact. Full-base-only
+queries can reach at most two missing tiles/eight errors22.22%<25%,even without
+source rejection. No RGB candidate evaluation or reserved success/failure; do
+not shrink this denominator or extend queries by tuning on the reserve.
+
+The next development cause separates candidate availability from identity.
+NANG128r's three missing steel poses are HALF-PHASE locations not queried by its
+initial32px adaptive lattice. A full ordinary-equivalent trace corrects an earlier
+inference based on only16of19 enumerated positives;there is no evidence of later
+retirement of the three. Use the new read-only candidate-coverage tool to require
+complete expected/query/accepted accounting before assigning a failure to shape,
+palette or arbitration. Do not relax a retirement guard to solve absent proposals.
+Preserve qualified source-only half-phase recovery; develop connected-band and
+minispike-backed terrain on other exposed sources as a separate mechanism.
+Audit v15 has30qualified/41pending/0approvals with fresh OBSERVED whole scans
+clearly distinct from unpatched scans and private prototype results. Runtime
+unchanged. All original numerical/minimum positive-recovery/reserve/release gates
+remain; no geometry-only workflow improvement counts as a new app recognition win.
+
+The older "Next: source-freeze NANG138r" action below is completed and historical;
+its eligibility finding above,not a repeated reserve scan,is the next-action basis.
+
 Current execution order (2026-10-16) supersedes historical continuation steps
 below. Published experimental confidence is now really loaded in the app:
 approved scoped restart, root/health HTTP200 and loaded/disk source parity.

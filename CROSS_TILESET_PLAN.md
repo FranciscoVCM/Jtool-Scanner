@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current direction (2026-10-16): query coverage is not object identity
+
+Keep the active original GOAL_PLAN requirements and B235 baseline. The qualified
+published confidence entry/app remains unchanged;private compact recovery is not
+deployed. See latest DEVELOPMENT_PROGRESS/NEXT_THREAD_HANDOFF and auditv15.
+
+Three NANG128r real steel tiles have half-phase origins outside the original
+32px compact candidate lattice. Transparent full ordinary traces preserve entire
+B235outputs and show no later retirement. An initial analysis erroneously checked
+only16of19 source positives;the new complete candidate-coverage diagnostic and
+14portable tests explicitly separate accepted,queried-not-accepted and NOTqueried.
+Do not infer a palette/shape/arbitration failure from a pose never evaluated.
+
+NANG138r provides a DIFFERENT limitation:human-confirmed solid striped bands,
+nine missing tiles/36errors,all25full/61visible minis exact. Its source/metric
+freeze and original-stage whole parity are complete. The declared full-spike-
+base-only recovery can reach at most two tiles22.22%<25%;no RGB candidate run,
+reserved success/failure,threshold tuning or denominator reduction. Investigate
+connected-band/minispike-backed identity on other exposed development sources,
+keeping finite original-source queries,independent shape/interior evidence and
+new queries OUT of teacher cohorts. A single phase or color rule cannot solve
+all causes. Preserve all positive/negative/occlusion/nongeometry controls and
+all original positive8/3rooms/2families/new compatible reserve/final71+16 gates.
+
 ## Current direction (2026-10-14): source identity and filled/compound recovery
 
 Qualified B235 and its completed71+16 outputs are the successor goal baseline;

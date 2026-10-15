@@ -6,6 +6,22 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST: ignored COMPACT_GATE_INFERENCE_CORRECTION_v2.md and conservative71v15.
+All producers TERMINAL (ordinary ORIGINAL138r observer2240,128rtrace90025 PASS
+whole B235map/orderedmetadata/input/frame/JTool/Blend/projectexceptsourcepath).
+Runtime unchanged.138r SOURCE45solid/25full/61mini frozen;user says all striped
+A-E are SOLID terrain. Nine missing tiles=36errors. Declared full-base queries
+can fix at most8/36(22.22%)<25%;RGB candidate NOT evaluated,no reserve claimed,
+no smaller denominator/retuning. Preserve all exposure/freeze receipts.
+IMPORTANT correction:128r V1 gate diagnostic enumerated only16of19 true poses.
+All three missing half-phase poses are NOT QUERIED by the initial32px grid,not
+later retired. Do NOT weaken retirement guards. Complete expected/query/accepted
+tool scripts/candidate_coverage.py now has14portable tests,read-only/unbound.
+Next phase-aware source-query/identity development and independent connected-band/
+minispike-backed cause on other exposed sources;all6fullgoal gates remain open.
+Auditv15:30qualified/41pending/0approvals;new scans OBSERVED,not unpatched;private
+3tile recovery is not app-active. No completed worker/baseline/archive resweep.
+
 NEWEST: ignored COMPACT_ACTIVE_20261016.md supersedes older restart/launch notes.
 All producers TERMINAL. Published confidence code is NOW verified loaded after
 proper approved exact-listener restart: root/health200,loaded==disk. Private
