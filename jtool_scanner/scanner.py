@@ -2913,7 +2913,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
     frame = SourceFrame(image, result.room_box) if source_frame is None else source_frame
     result.source_extent = frame.extent if frame.extent != result.room_box else None
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
-                                                       source_frame=frame)
+                                                       source_frame=frame, include_growth_confidence=True)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]

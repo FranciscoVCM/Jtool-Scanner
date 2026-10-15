@@ -6,7 +6,36 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
-LATEST: ignored MAINTAINED_GROWTH_ACTIVE_v1.md supersedes older continuations.
+LATEST: CONTROL_COST_ACTIVE_v1.md supersedes old launch notes. Maintained broad
+exact16+named24+challenge4 all TERMINAL/PASS, original41/601/139 by complete
+guarded original-stage output equality. Whole timing79992 TERMINAL/PASS all8:
+dense+0.095%/sparse+3.037%medians, all maps/metadata/projects/renders equal. Original
+idle guard stop preserved, no relaxed threshold.192 affected tests pass87+105.
+Saved activation is one explicitTrue keyword at source-stage entry; whole scanner
+AST/core checks pass with only that dispatch and module docstrings changed.
+Unpatched whole activation producer32158 is TERMINAL/PASS all3, including complete
+JMap/metadata/warnings/source/frame/options/project (except cache image path)/
+JTool+Blend bytes. Tests28800 are TERMINAL/PASS. No private wrapper/corpus identity
+in activation scans. Conservative71 v13 has29 canonical qualified/42 pending/
+0approvals; only two canonical plus Hades are fresh unpatched whole scans, other
+qualified outputs use complete replay+literal entry/core AST compatibility.
+All producers TERMINAL; no restart. The qualified entry is enabled only in
+Experimental source geometry. Check the newest CONTROL_COST_ACTIVE_v1.md
+publication receipt for published HEAD/app parity, then continue
+NEXT_GENERALIZATION_CAUSES_v1.md. Full goal stillOPEN.
+Source/callback first verifier encoding and known publication-head harness issues
+are preserved and corrected without weakened output/code comparisons.
+
+NEXT_GENERALIZATION_CAUSES_v1.md explains next work: Golden5 source/metric freeze
+complete, baseline17 errors/only1 missing spike means add-onlymax5.88%<25%; filled
+candidateNOTevaluated, no reserve claimed. Halls3 original repeated-terrain sky
+falsefulls have unknown quarters/no positive texture, but four real solids also
+fail texture: no unknown/texture veto. NANG138r grid19x13 means old source stage
+skips it; generic compact-frame/source-coverage rectangle recovery is promising
+after this qualified confidence checkpoint, protecting NANG130r/unknown padding.
+All original positive8/3rooms/2families/new compatible reserve/final71 gates remain.
+
+HISTORICAL PRE-ACTIVATION: ignored MAINTAINED_GROWTH_ACTIVE_v1.md superseded older continuations.
 The explicit per-source integration is saved behind include_growth_confidence
 default FALSE; scanner call unchanged. No maintained global patches/private
 imports/new teachers. Source/material/full-pose/pipeline/fingerprint and context
@@ -28,7 +57,7 @@ yet. Preserve14 real filled gains and pursue pre-frozen compatible Golden5
 reserve only after complete source labels/occupancy-aware metrics; not scored.
 All six goal gates/required positive gains and reserved success remain unchanged.
 
-LATEST: ignored HIGHLIGHT_GROWTH_ACTIVE_v4.md supersedes older V3 continuation
+HISTORICAL V4 RESEARCH: ignored HIGHLIGHT_GROWTH_ACTIVE_v4.md superseded older V3 continuation
 instructions below. V4 actual3/source3/strict map+metadata+project+render equality
 qualification passes: canonical79 false removals/masks intact, Halls2 restored to
 ordinary baseline, Hades unchanged.74 affected tests/32 maintained component tests

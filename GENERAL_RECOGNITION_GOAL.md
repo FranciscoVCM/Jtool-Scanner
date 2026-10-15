@@ -24,7 +24,31 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
-Newest checkpoint: V4 has explicit per-SourceEvidenceContext integration behind
+Newest qualification: maintained guarded original-stage replay preserves all16
+exact/original41/601/139+four challenges by full output equality. Eight quiet AC
+whole scans retain outputs with limited dense+0.095%/sparse+3.037%median cost,
+two samples/mode/source, actual old-module baseline.192 affected tests pass.
+Activation is entry-only in existing opt-in Experimental source geometry;
+standard scanning remains unchanged. Three genuine unpatched whole activation
+scans now match reviewed outputs completely. Conservative71 v13 has29 qualified
+canonical outputs/42 pending/0 approvals, clearly separating fresh whole scans
+from strict compatible replay carries. Reviewed publication/app parity is recorded
+per checkpoint; it does not establish full-goal completion.
+
+Refined next cause: Golden5's now-complete frozen source structure has17 baseline
+errors but only1 missing spike. Unchanged add-only filled recovery cannot meet
+25%/two fixes; candidate NOT evaluated, no reserve success/failure, no smaller ROI.
+Do not repeat it. Halls3 false sky blocks are original coarse detector outputs
+with unknown source, not new growth; do not delete from unknown/texture failure.
+NANG138r is19x13 and the original-source stage is intentionally bypassed. Consider
+generic source-grid/physical-coverage support with already computed working pixels
+and independent rectangle evidence, preserving compactNANG130r and never teaching
+from padding. Develop on exposed cases, then separately freeze a compatible
+predeclared reserve; no coordinate/room/palette answer rules. Existing14 genuine
+filled gains remain useful research/protection evidence, not app-enabled gains.
+The full positive8/three rooms/two families/new reserve/final71 goal is unchanged.
+
+Historical pre-activation checkpoint: V4 has explicit per-SourceEvidenceContext integration behind
 include_growth_confidence=False; the scanner call/default behavior is unchanged.
 192 relevant tests in two runs pass. Three original-stage replays, three actual
 whole scans and four real prewarm/cache0/full-capacity checks preserve qualified
@@ -49,7 +73,7 @@ Final stable71+16/source QA/publication gates remain unchanged.
 The chronology below is retained evidence; use this latest execution order over
 older instructions to restart producers or repeat diagnostic/failed experiments.
 
-Newest V4 research status: original-source and actual three-case qualification
+Historical V4 research status: original-source and actual three-case qualification
 passes. Additive RGB evidence with unchanged old foreground thresholds preserves
 all canonical79 false removals and both positive masks, while Halls2/Hades match
 their ordinary baseline maps/projects/renders. All16 exact controls and all29

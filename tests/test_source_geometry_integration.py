@@ -38,6 +38,7 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertEqual(proposal.call_count, 1)
         self.assertEqual(proposal.call_args.args, (self.image, self.room, initial.detections))
         self.assertTrue(proposal.call_args.kwargs['source_frame'].matches_source(self.image, self.room))
+        self.assertIs(proposal.call_args.kwargs['include_growth_confidence'], True)
         self.assertIs(out, result)
         self.assertNotIn(self.old, out.detections)
         self.assertTrue(any(d is self.mini for d in out.detections))

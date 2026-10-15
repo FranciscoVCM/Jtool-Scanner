@@ -1,8 +1,8 @@
 """Complete explicit experimental source geometry pipeline.
 
 No private imports, compiled wrappers, references or newly generated teachers.
-This module does not yet bind the default scanner; ordinary qualification is
-required before adoption. All evidence remains local to one original image/frame.
+Used only by explicit source-geometry mode; ordinary standard scans never enter
+this pipeline. All evidence remains local to one original image/frame.
 """
 from scripts.source_evidence_context import SourceEvidenceContext
 from scripts.source_full_pose import refit_full_poses

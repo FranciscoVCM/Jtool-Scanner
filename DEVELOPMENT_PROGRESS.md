@@ -4,6 +4,59 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-15 — Broad confidence qualification, controlled cost and experimental entry
+
+The maintained confidence consumer now passes all16 exact controls and all29
+sources behind the original41 groups/601 miniblocks/139 terrain footprints,
+plus four additional text/filled challenges. The44 evaluations replay sealed
+ORIGINAL before-source ScanResults, with every unchanged upstream file checked,
+complete input/RGB/crop/world identity and complete ScanResult, ordered metadata,
+warnings, JMap/project/JTool/Blend byte equality. These are not44 new whole scans.
+FTFA remains926/928 with0extras/shifts/wrong; Flames252 with42/21/20/2 unchanged.
+Every prior protection definition/checksum is retained. No new room approvals.
+
+Eight quiet AC serial whole scans compare the actual four pre-integration module
+bodies against the maintained consumer, not a feature-off mode that already pays
+new plumbing overhead. Dense CN3-9 medians118.144->118.256s(+0.095%); sparse
+Halls4 59.681->61.494s(+3.037%), two samples/mode/source. Full outputs equal in
+all eight, including projects/renders; these limited numbers are not universal
+speed proof. The first coordinator stopped before sample3 on16.9%background CPU
+against its frozen15%limit. Two valid samples were preserved and six unexecuted
+samples resumed with the same timed child bodies and original limit; no invalid
+sample or relaxed threshold was substituted.
+
+Activation adds exactly include_growth_confidence=True at the existing opt-in
+source-stage call. Whole scanner AST comparison permits only that keyword;
+the two core modules differ only in documentation, with every other runtime
+file identical.192 affected tests pass across87/105-test runs; standard scanning
+and compact original-source bypass remain unchanged. Genuine UNPATCHED whole
+activation scans of canonical CN3-18, Halls2 and Hades now pass complete map,
+ordered metadata, warnings, source/frame/options, project (except cache image
+path) and JTool/Blend byte equality to their source-reviewed qualified outputs.
+There is no private callback or identity override in these production-path scans.
+Conservative71 audit v13 records29 canonical qualified outputs through those
+fresh scans or full protected replay plus literal-entry/core compatibility;
+42 remain pending,0 whole-room approvals. Only two canonical rooms plus Hades
+are fresh whole scans in this activation batch, not29 fresh scans/visual reviews.
+This is qualified activation in Experimental source geometry, not all71 completion.
+
+Golden5's complete source-only reserve annotation is now frozen before scoring:
+33 real terrain tiles/11 full spikes,33792 positive/36096 negative/1792 uncertain
+pixels. A fixed occupancy-cell metric treats equivalent terrain tilings equally;
+seven portable metric tests pass. Baseline has17 errors but only one missing
+spike, with all positive terrain already covered. The declared add-only filled
+consumer can fix at most1/17(5.88%), so it is incompatible with25%/two fixes.
+It was NOT evaluated or retuned; no reserve success/failure is invented.
+
+Separate source diagnosis proves Halls3's two false sky fulls originate in the
+earlier repeated-terrain detector, not late growth. Their quarters are unknown;
+unknown is not empty. Four real frozen solids also lack texture support, so a
+blanket texture veto would be unsafe. NANG138r is19x13 and deliberately bypasses
+the original-source stage: a generic coverage-aware compact-frame extension is
+a promising positive-recovery direction, not a palette exception. Preserve
+NANG130r and do not teach from padded pixels. Required positive gains, compatible
+reserved transfer, final-current71+16 and all six full-goal gates remain open.
+
 ## 2026-10-15 — Explicit per-source integration, qualified behind an off-by-default switch
 
 The maintained source pipeline now has an explicit include_growth_confidence

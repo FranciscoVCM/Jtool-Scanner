@@ -1,4 +1,4 @@
-"""Research-only confidence for independently NEW source terrain.
+"""Source-local confidence for independently NEW source terrain.
 
 Original material calibration remains unchanged. These explicit functions only
 qualify a separate sidecar or withhold new size/material growth; they do not

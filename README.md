@@ -642,6 +642,22 @@ The app/corpus fingerprints include all transitive source-geometry runtime files
 Corpus manifests may specify `"source_geometry": true` in their options. References
 still evaluate only after scanning and never enter the detector.
 
+The source stage now separately qualifies independently **new** size/material
+terrain using original rectangular witnesses, original-only texture, and additive
+RGB material evidence. It preserves legacy calibration, existing objects, required
+replacement coverage and source-proved phase repairs; new hypotheses never become
+teachers. Brighter highlights can agree with the original foreground thresholds
+without sharing an exact cluster ID. Evidence and caches belong to one validated
+source/frame/original-detection snapshot, not process-global patches.
+This remains an experimental mode, not whole-room certification. Original coarse
+detector mistakes and compact-frame material recovery remain separate limitations.
+
+Relevant component/integration tests:
+
+```powershell
+python -m unittest tests.test_source_growth_confidence tests.test_source_growth_context tests.test_source_geometry_integration
+```
+
 ### Filled-glyph research (not enabled in the app)
 
 `scripts/source_filled_pipeline.py` evaluates source-local filled full spikes
