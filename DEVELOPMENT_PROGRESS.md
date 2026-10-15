@@ -4,6 +4,59 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-15 — Additive source RGB: actual targeted qualification and replayable review workflow
+
+V4 adds an original-RGB positive query for new terrain hypotheses whose nearest
+cluster IDs do not explain a real brighter part of the same material. Approved
+foreground/original background centers, original integer physical samples and
+the existing .95/.5/.25 sizing thresholds remain unchanged. This is additional
+material corroboration, not an independent shape detector or new teacher. Old
+calibration, proposals before filtering, retirement/phase/replacement evidence
+and previously passing role/texture paths remain unchanged. V3's Halls2 failure
+is preserved; this is a separate frozen experiment, not a weakened denominator.
+
+All three original-source replays and actual targeted scans qualify. Canonical
+CN3-18 retains37 full32+42 mini16 false-footprint removals with4864/4864 and
+5376/5376 source-positive masks and18176->0 frozen excess. Its complete current
+map, ordered metadata, warnings, project and JTool/Blend render bytes equal the
+previously source-reviewed V3 output, carrying all79 source-delta/whole QA.
+Halls2 and Hades preserve entire original ordinary outputs, including project
+metadata and renders. Halls2's ten real footprints/10240 pixels are restored;
+these are NOT ten new gains above the B235 baseline. All rooms remain unapproved.
+Broad qualification is now complete: all16 exact controls, all29 sources behind
+the original41 groups/601 miniblocks/139 terrain footprints, and four additional
+text/filled-family challenges preserve complete ordinary outputs and source/frame
+metadata. FTFA remains926/928 with0extras/shifts/wrong; Flames remains252 exact
+with42extras/21misses/20shifts/2wrong. No app activation or new room approval.
+
+The maintained research-only component now has32 portable tests;74 affected
+tests pass in13.746s. The query port matches214 entire real-source RGB proofs
+across canonical CN3-18, Halls2 and Hades, plus18 portable query/stage tests.
+Proofs cannot mutate cached inputs; changed image/data/dimensions/crop invalidate
+the query. Unknown evidence cannot become positive, even through an inconsistent
+provider pass flag. This module is not in runtime imports or the dependency list.
+The complete maintained selector also reproduces all three frozen V4 source
+replays, including proposed/held sets and complete source proofs, not only the
+sampled query answers.
+
+The actual control workflow now records the complete ScanResult BEFORE source
+correction, with original RGB/source/frame/runtime identity. Direct replay through
+the real _apply_source_geometry reproduces entire ScanResults, ordered metadata,
+warnings, JMap/project bytes and JTool/Blend bytes for Halls3, FTFA-1 and compact
+NANG130r. Final/generated maps are evaluation only, never replay teachers. This
+can avoid repeating unrelated upstream detection in later experiments, but its
+timing is NOT whole-scan speed evidence. The first helper's raw-string SVG hash
+failed because production write_text performs native Windows newline translation;
+the failure is preserved and the corrected helper uses the identical production
+writer. No comparisons were normalized, dropped or weakened.
+
+The conservative71-row audit v11 keeps24 public strict QA carries/47 pending and
+zero whole-room approvals, separately reporting the qualified private research.
+All broad/port/replay producers are terminal. Next: maintained per-source
+context/cache/thread integration and controlled quiet AC whole latency. Preserve
+the positive8/three-room/two-family/new reserved-success requirements: one terrain
+suppression gain and a repaired control regression do not meet the full goal.
+
 ## 2026-10-15 — Late new-terrain confidence: reviewed research gain, not deployment
 
 A private candidate separates new-object confidence from the original material

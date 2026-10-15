@@ -24,6 +24,23 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Newest V4 research status: original-source and actual three-case qualification
+passes. Additive RGB evidence with unchanged old foreground thresholds preserves
+all canonical79 false removals and both positive masks, while Halls2/Hades match
+their ordinary baseline maps/projects/renders. All16 exact controls and all29
+sources behind41 groups/601 miniblocks/139 terrain footprints, plus four additional
+text/filled challenges, now pass complete equality. No recognition activation or
+new room approval.74 affected maintained tests pass, including32 component tests.
+Complete maintained-selector parity passes all3 source replays. Conservative71
+audit v11 retains24 public strict QA carries/47 pending/0 approvals.
+Three actual before-source snapshots replay complete ScanResults/JMaps/projects/
+renders exactly, providing an inspected source-stage hypothesis workflow, not a scan
+latency claim. All these producers are terminal. Next is explicit per-source
+context integration with warm/cold/cache/thread validation, then controlled whole
+cost and actual maintained-output qualification. See the newest
+DEVELOPMENT_PROGRESS section and ignored V4 note. Older chronological research
+failures below remain historical evidence, not instructions to restart workers.
+
 Keep the completed B235 71-screen plus 16-control outputs as the immutable
 recognition baseline. Its runtime fingerprint is
 `17b98ead1d86fba9ac4f5f7e985e05a85bd71e685dd089277dc6959e63554cea`.

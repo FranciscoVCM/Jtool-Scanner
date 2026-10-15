@@ -6,6 +6,26 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+LATEST: ignored HIGHLIGHT_GROWTH_ACTIVE_v4.md supersedes older V3 continuation
+instructions below. V4 actual3/source3/strict map+metadata+project+render equality
+qualification passes: canonical79 false removals/masks intact, Halls2 restored to
+ordinary baseline, Hades unchanged.74 affected tests/32 maintained component tests
+and214 real RGB port proofs pass. The source_growth_confidence changes remain
+UNBOUND, not app behavior. Conservative71 audit v11 has0 approvals/public24 strict
+QA carries/47 pending. Original positive-recovery/reserved/final71 gates remain.
+
+Frozen broad controls are TERMINAL/PASS: named24 session77272, exact16 session89655
+and challenge4 session47430. Do not restart them. The aggregate receipt confirms
+all16 controls/original41 groups/601 minis/139 footprints and four extra challenges
+by complete output/input equality. First before-source helper attempt
+failed SVG serialization (preserved); corrected production-writer replay matches
+entire outputs for Halls3, FTFA-1 and compact NANG130r. No final-map teachers or
+whole-speed claim. Full maintained-selector source replay32256 is TERMINAL/PASS
+all3 proposed/held sets and entire source proofs. No archive/baseline resweep.
+Next: safely integrate via explicit per-source context with original-only cached
+evidence, cold/warm/thread tests and controlled whole runtime. Never copy the
+prototype's global patches into the app. All six original goal gates still apply.
+
 Newest research checkpoint: read DEVELOPMENT_PROGRESS's late new-terrain section
 and ignored HALLS2_GROWTH_REGRESSION_ACTIVE_v1.md / GOAL_GATE_STATUS_20261015.md in
 .artifacts/general-recognition-20261014. These supersede older live-process

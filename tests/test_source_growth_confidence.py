@@ -8,7 +8,8 @@ from PIL import Image, ImageDraw
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from scripts.source_growth_confidence import (
-    bounded_texture_parents, precision_aware_edge, qualify_independent_growth, qualify_source_roles,
+    OriginalForegroundQuery, bounded_texture_parents, precision_aware_edge,
+    qualify_independent_growth, qualify_source_roles,
 )
 from scripts.source_material_evidence import SourceRectangles
 
@@ -127,10 +128,10 @@ class PrecisionRoleTests(TestCase):
 
 
 class IndependentGrowthTests(TestCase):
-    def apply(self, keys, *, existing=(), sizing=(), joint=(), retired=(), phase=(), roles=(), libraries=()):
+    def apply(self, keys, *, existing=(), sizing=(), joint=(), retired=(), phase=(), roles=(), libraries=(), queries=()):
         return qualify_independent_growth(keys, existing, sizing=sizing, sizing_retired=retired,
             joint_cells=joint, phase_positive=phase, calibrations=roles, room=Box(0, 0, 800, 608),
-            original_texture_libraries=libraries)
+            original_texture_libraries=libraries, original_foreground_queries=queries)
 
     def test_only_new_sizing_or_joint_terrain_is_qualified(self):
         full, mini, unrelated, spike, marker = (1, 32, 32), (2, 96, 32), (2, 128, 32), (3, 160, 32), (12, 192, 32)
@@ -192,3 +193,134 @@ class IndependentGrowthTests(TestCase):
         self.assertEqual(bounded_texture_parents((1, 0, 0), None), [(0, 0)])
         with self.assertRaises(ValueError):
             bounded_texture_parents((3, 32, 32), Box(0, 0, 800, 608))
+
+    def test_additive_original_rgb_can_corroborate_full_without_exact_role_ids(self):
+        key, query = (1, 32, 32), foreground_query(size=32)
+        result, diag = self.apply({key}, sizing={key}, queries=[query])
+        self.assertEqual(result, {key})
+        self.assertFalse(diag['proof'][0]['qualified_source_roles'])
+        self.assertTrue(diag['proof'][0]['original_foreground_positive'])
+
+    def test_one_positive_quarter_cannot_corroborate_a_whole_full_block(self):
+        full, mini, query = (1, 32, 32), (2, 32, 32), foreground_query()
+        self.assertEqual(self.apply({full, mini}, sizing={full}, joint={(32, 32)}, queries=[query])[0], {mini})
+
+    def test_unknown_query_cannot_claim_positive_even_with_an_inconsistent_pass_flag(self):
+        query = SimpleNamespace(support=lambda *a: dict(passed=True, unknown=True))
+        key = (2, 32, 32)
+        self.assertEqual(self.apply({key}, joint={(32, 32)}, queries=[query])[0], set())
+
+
+QUERY_BG, QUERY_FG, QUERY_HIGHLIGHT = (20, 40, 70), (150, 160, 180), (175, 184, 202)
+
+
+def foreground_query(color=QUERY_HIGHLIGHT, *, transform=lambda c: c, background_pixels=0, scale=1, size=16):
+    image = Image.new('RGB', (800, 608), transform(QUERY_BG))
+    ImageDraw.Draw(image).rectangle((32, 32, 32+size-1, 32+size-1), fill=transform(color))
+    for i in range(background_pixels):
+        image.putpixel((36+i%8, 36+i//8), transform(QUERY_BG))
+    if scale != 1:
+        image = image.resize((round(800*scale), round(608*scale)), Image.Resampling.BILINEAR)
+    source = SimpleNamespace(image=RGBImage(image.width, image.height, image.tobytes()),
+                             room=Box(0, 0, image.width, image.height))
+    return OriginalForegroundQuery(source, {1}, [transform(QUERY_BG), transform(QUERY_FG)], {0: 5}, {0: 0})
+
+
+class OriginalForegroundTests(TestCase):
+    def test_brighter_highlight_passes_without_exact_cluster_identity(self):
+        proof = foreground_query().support(32, 32)
+        self.assertTrue(proof['passed'])
+        self.assertEqual(proof['foreground_fraction'], 1.)
+        self.assertLessEqual(proof['mean_error'], proof['unchanged_mean_limit'])
+        self.assertTrue(proof['query_only_no_new_teacher'])
+
+    def test_background_and_excessive_mean_distance_are_not_positive(self):
+        self.assertFalse(foreground_query(QUERY_BG).support(32, 32)['passed'])
+        self.assertFalse(foreground_query((255, 255, 255)).support(32, 32)['passed'])
+
+    def test_original_fraction_threshold_is_not_relaxed(self):
+        self.assertTrue(foreground_query(background_pixels=3).support(32, 32)['passed'])
+        self.assertFalse(foreground_query(background_pixels=4).support(32, 32)['passed'])
+
+    def test_channel_permutation_polarity_and_brightness(self):
+        transforms = (lambda c: c, lambda c: (c[2], c[0], c[1]),
+                      lambda c: tuple(255-v for v in c), lambda c: tuple(round(v*.5) for v in c))
+        for transform in transforms:
+            self.assertTrue(foreground_query(transform=transform).support(32, 32)['passed'])
+            self.assertFalse(foreground_query(QUERY_BG, transform=transform).support(32, 32)['passed'])
+
+    def test_isoluminant_background_and_material_still_use_original_rgb(self):
+        background, foreground, highlight = (80, 120, 40), (150, 80, 65), (155, 85, 70)
+        luminance = lambda color: Image.new('RGB', (1, 1), color).convert('L').getpixel((0, 0))
+        self.assertEqual(luminance(background), luminance(foreground))
+        image = Image.new('RGB', (800, 608), background)
+        ImageDraw.Draw(image).rectangle((32, 32, 47, 47), fill=highlight)
+        source = SimpleNamespace(image=RGBImage(800, 608, image.tobytes()), room=Box(0, 0, 800, 608))
+        query = OriginalForegroundQuery(source, {1}, [background, foreground], {0: 5}, {})
+        self.assertTrue(query.support(32, 32)['passed'])
+        self.assertFalse(query.support(64, 64)['passed'])
+
+    def test_identical_foreground_background_is_unknown_not_positive(self):
+        source = foreground_query().field
+        query = OriginalForegroundQuery(source, {1}, [QUERY_BG, QUERY_BG], {0: 5}, {})
+        proof = query.support(32, 32)
+        self.assertTrue(proof['unknown'])
+        self.assertFalse(proof['passed'])
+
+    def test_original_physical_sampling_at_fractional_capture_scales(self):
+        for scale in (.75, 1., 1.25, 1.5):
+            self.assertTrue(foreground_query(scale=scale).support(32, 32)['passed'])
+
+    def test_unknown_coverage_and_missing_calibration_never_pass(self):
+        query = foreground_query()
+        for point in ((-16, 32), (800, 32), (32, 608)):
+            proof = query.support(*point)
+            self.assertTrue(proof['unknown'])
+            self.assertFalse(proof['passed'])
+        missing = OriginalForegroundQuery(query.field, set(), [QUERY_BG, QUERY_FG], {0: 5}, {})
+        self.assertFalse(missing.support(32, 32)['passed'])
+        self.assertTrue(missing.support(32, 32)['unknown'])
+
+    def test_returned_proof_cannot_poison_cached_source_answers(self):
+        query = foreground_query()
+        expected = query.support(32, 32)
+        actual = query.support(32, 32)
+        actual['native'][0] = -100
+        actual['passed'] = False
+        self.assertEqual(query.support(32, 32), expected)
+
+    def test_image_or_frame_mutation_rejects_even_a_cached_result(self):
+        for mutate in ('data', 'room', 'dimensions'):
+            query = foreground_query()
+            query.support(32, 32)
+            if mutate == 'data':
+                query.field.image.data = bytes(len(query.field.image.data))
+            elif mutate == 'room':
+                query.field.room = Box(0, 0, 768, 608)
+            else:
+                query.field.image.width -= 1
+            with self.assertRaises(ValueError):
+                query.support(32, 32)
+
+    def test_independent_parallel_source_queries_match_serial(self):
+        sources = [foreground_query(), foreground_query(QUERY_BG)]
+        compute = lambda query: query.support(32, 32)
+        expected = list(map(compute, sources))
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            self.assertEqual(list(pool.map(compute, sources)), expected)
+
+    def test_invalid_native_origins_are_not_truncated_into_source(self):
+        query = foreground_query()
+        for point in ((True, 32), (32.5, 32), (32, float('nan'))):
+            with self.assertRaises(ValueError):
+                query.support(*point)
+
+    def test_mutating_input_palette_and_votes_cannot_change_a_query(self):
+        source = foreground_query().field
+        colors, approved, tips, backs = [list(QUERY_BG), list(QUERY_FG)], {1}, {0: 5}, {0: 0}
+        query = OriginalForegroundQuery(source, approved, colors, tips, backs)
+        colors[1][:] = (0, 0, 0)
+        approved.clear()
+        tips.clear()
+        backs[0] = 100
+        self.assertTrue(query.support(32, 32)['passed'])

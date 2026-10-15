@@ -6,7 +6,7 @@ change original objects, retire geometry, build teachers or bind the scanner.
 No global instrumentation or private imports. One edge memo belongs to one scan.
 """
 from copy import deepcopy
-from math import hypot, sqrt
+from math import hypot, isfinite, sqrt
 from statistics import median
 
 from scripts.source_occupancy import footprint
@@ -95,6 +95,77 @@ def qualify_source_roles(field, selected, shadow_proof, original_detections, *, 
     return accepted, deepcopy(qualified), deepcopy(observations)
 
 
+class OriginalForegroundQuery:
+    """Original sizing RGB evidence, queried without exact cluster-ID membership.
+
+    A brighter part of one material may have a different nearest cluster. Retain
+    the original foreground-fraction, dominance and mean-distance thresholds,
+    using separately qualified foreground and original background roles. This is
+    material corroboration for existing source hypotheses, NOT a shape detector.
+    No newly emitted object teaches; source mutation invalidates cached evidence.
+    """
+
+    def __init__(self, field, approved, centers, tips, backs):
+        self.field = field
+        self.image, self.room = field.image, field.room
+        self.data = self.image.data
+        self.dimensions = self.image.width, self.image.height
+        if not isinstance(self.data, bytes) or len(self.data) != self.image.width*self.image.height*3:
+            raise ValueError('Original foreground needs complete immutable RGB bytes')
+        if self.room.width <= 0 or self.room.height <= 0 or self.room.x < 0 or self.room.y < 0 or self.room.right > self.image.width or self.room.bottom > self.image.height:
+            raise ValueError('Foreground source room must be inside the original image')
+        colors = tuple(tuple(c) for c in centers)
+        if any(len(c) != 3 or any(not isfinite(v) for v in c) for c in colors):
+            raise ValueError('Foreground source centers need finite RGB triples')
+        approved = frozenset(approved)
+        background = {int(c) for c, count in tips.items() if count >= 3 and
+                      count/(count+backs.get(c, backs.get(int(c), backs.get(str(c), 0)))) >= .75}
+        self.foreground = tuple(colors[k] for k in sorted(approved))
+        self.background = tuple(colors[k] for k in sorted(background))
+        self.separation = (min(self.distance(f, b) for f in self.foreground for b in self.background)
+                           if self.foreground and self.background else None)
+        self.membership, self.results = {}, {}
+
+    @staticmethod
+    def distance(a, b):
+        return sqrt(sum((x-y)**2 for x, y in zip(a, b)))
+
+    def validate(self):
+        if self.field.image is not self.image or self.field.room != self.room or self.image.data is not self.data or (self.image.width, self.image.height) != self.dimensions:
+            raise ValueError('Original foreground source/frame changed')
+
+    def support(self, x, y):
+        self.validate()
+        if not all(isinstance(v, int) and not isinstance(v, bool) for v in (x, y)):
+            raise ValueError('Original foreground quarter origins must be integers')
+        key = x, y
+        if key in self.results:
+            return deepcopy(self.results[key])
+        if self.separation is None or self.separation <= 0 or not (0 <= x <= 784 and 0 <= y <= 592):
+            return dict(passed=False, unknown=True, native=[x, y])
+        values = []
+        for py in range(y+4, y+12):
+            for px in range(x+4, x+12):
+                sx = int(self.room.x+(px+.5)*self.room.width/800)
+                sy = int(self.room.y+(py+.5)*self.room.height/608)
+                if not self.room.contains(sx, sy):
+                    return dict(passed=False, unknown=True, native=[x, y])
+                values.append(self.image.pixel(sx, sy))
+        for rgb in values:
+            if rgb not in self.membership:
+                f = min(self.distance(rgb, c) for c in self.foreground)
+                b = min(self.distance(rgb, c) for c in self.background)
+                self.membership[rgb] = f < .5*b
+        fraction = sum(self.membership[v] for v in values)/len(values)
+        mean = tuple(sum(rgb[c] for rgb in values)/len(values) for c in range(3))
+        error = min(self.distance(mean, c) for c in self.foreground)
+        self.results[key] = dict(passed=fraction >= .95 and error <= .25*self.separation,
+            unknown=False, native=[x, y], foreground_fraction=fraction, mean_error=error,
+            unchanged_mean_limit=.25*self.separation, original_source_only=True,
+            query_only_no_new_teacher=True)
+        return deepcopy(self.results[key])
+
+
 def bounded_texture_parents(key, room):
     """Query-only original32 frames that physically contain a new16 footprint."""
     t, x, y = key
@@ -118,7 +189,7 @@ def bounded_texture_parents(key, room):
 
 def qualify_independent_growth(proposals, original_keys, *, sizing, sizing_retired,
                                joint_cells, phase_positive, calibrations, room,
-                               original_texture_libraries=()):
+                               original_texture_libraries=(), original_foreground_queries=()):
     """Return a subset of proposals plus explicit proofs; never retire originals.
 
     Every supplied calibration contains ORIGINAL source labels and separately
@@ -135,6 +206,7 @@ def qualify_independent_growth(proposals, original_keys, *, sizing, sizing_retir
                   and not (footprint(key) & retired_pixels)}
     calibrations = tuple(calibrations)
     libraries = tuple(original_texture_libraries)
+    foreground_queries = tuple(original_foreground_queries)
     held, proof = [], []
     for key in sorted(candidates):
         t, x, y = key
@@ -142,14 +214,18 @@ def qualify_independent_growth(proposals, original_keys, *, sizing, sizing_retir
         cells = {(x+dx, y+dy) for dx in range(0, size, 16) for dy in range(0, size, 16)}
         role = any(all(p in s['labels'] and s['labels'][p] in s['approved'] for p in cells)
                    for s in calibrations)
-        parents = [] if role else bounded_texture_parents(key, room)
+        positive = ([] if role else [[query.support(*p) for p in sorted(cells)] for query in foreground_queries])
+        source_positive = any(all(p['passed'] and not p.get('unknown', True) for p in group) for group in positive)
+        parents = [] if role or source_positive else bounded_texture_parents(key, room)
         texture = [dict(parent32=[px, py], **lib.support(px, py))
-                   for lib in libraries for px, py in parents] if not role else []
-        accepted = role or any(p['passed'] for p in texture)
+                   for lib in libraries for px, py in parents] if not role and not source_positive else []
+        accepted = role or source_positive or any(p['passed'] for p in texture)
         proof.append(dict(key=key, native_size=size, qualified_source_roles=role,
                           original_full_texture=texture, independent_growth=accepted,
                           existing_object_not_retired=True, texture_is_query_only=True,
                           sizing_origin=key in sizing, joint_material_origin=key in joint))
+        if foreground_queries:
+            proof[-1].update(original_foreground_evidence=positive, original_foreground_positive=source_positive)
         if not accepted:
             held.append(key)
     return proposals-set(held), deepcopy(dict(held=held, proof=proof))
