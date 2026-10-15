@@ -6,6 +6,40 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+Newest research checkpoint: read DEVELOPMENT_PROGRESS's late new-terrain section
+and ignored HALLS2_GROWTH_REGRESSION_ACTIVE_v1.md / GOAL_GATE_STATUS_20261015.md in
+.artifacts/general-recognition-20261014. These supersede older live-process
+statements below. Public sampler HEAD3e550bf is pushed; app HTTP/loaded parity
+is unverified because process-control approval and loopback checks were denied.
+Do not bypass those restrictions or claim a deployed recognition improvement.
+
+Private late-growth V3 actual canonical CN3-18 removes37 full32+42 mini16 false
+footprints; all79 changed crops/whole view reviewed.4864/4864 frozen solids and
+5376/5376 extra blue-strip pixels retained; frozen excess18176->0, actual union
+occupancy removed37632. Hades and four mini controls have whole-output/input
+equality.39 focused tests pass. This is not a room approval. Generic diagnostic
+kind had misidentified residual minis: they originate in joint material growth.
+Old calibration remains unchanged to preserve phase/size positives.
+
+Two frozen broad producers were started: exact16 session78426/PID34204 and
+named24 session54821/PID29552. Check those live handles and durable
+late-growth-broad-*-v3.json receipts before any restart; current terminal/live
+state belongs in the newest ignored checkpoint. No runtime/candidate/producer
+or HEAD edits while either lives. Source QA required on any changed control.
+Exact16 is TERMINAL/PASS (complete equality). Named24 is TERMINAL/STOP after14
+cases:13 whole equal and Halls2 loses ten real marble footprints (10240->2048
+source pixels,8192 lost). All ten crops/whole view reviewed: V3 REJECTED. Remaining
+ten named cases deliberately unrun. Do not restart the finished78426/54821 handles.
+Next original-stage source diagnostics for this positive loss, not new threshold
+relaxation/room exceptions or deployment. The global-mock private
+prototype must never be copied into the threaded app. An unbound maintained
+source_growth_confidence module now has58 affected passes/16 new tests; exact
+port equality192 RGB edge/24 role/one mixed-provenance selector plus18 portable
+RGB tests. Actual context/cold-warm integration remains due. No runtime changes.
+Qualification, maintained per-context integration/cache/thread tests, controlled
+cost and final-current71 are still due. Required positive8/three rooms/two
+families/frozen25%/two fixes/new compatible reserved success remain unchanged.
+
 Read GENERAL_RECOGNITION_GOAL.md and DEVELOPMENT_PROGRESS's2026-10-15 section
 before the older chronological checkpoints below. The unfinished active goal's
 original private GOAL_PLAN.md and all six numerical/protection gates remain.

@@ -62,6 +62,31 @@ all previous groups and footprints by whole-output equality. The conservative
 with zero whole-room approvals. Publication and app verification are a separate
 receipt; the recognition milestone remains unfinished.
 
+The sampler checkpoint is now published as3e550bf. App HTTP and loaded/disk
+parity remain unverified because environment permissions prevented process
+control and loopback observations; do not bypass or infer the app is down.
+
+Current late-growth research separates new-object confidence from legacy
+material/pose calibration. Canonical CN3-18 actual candidate maps remove37
+full32 and42 mini16 false footprints, with all79 source deltas/whole view
+reviewed,4864/4864 and5376/5376 positive masks intact, frozen excess18176->0.
+Hades and four mini/footprint/compact controls retain complete output equality;
+39 focused prototype tests pass. This is not app activation or room acceptance.
+Broad16 controls preserve complete equality, but the named cohort stops at
+Halls2 with ten real marble footprints removed/8192 positive pixels lost. V3 is
+REJECTED, not awaiting blind adoption. Diagnose source witness availability and
+16-versus32 structure without palette/room exceptions. All41 qualification,
+safe maintained per-source context integration and controlled cost remain.
+The process-local instrumentation is NOT
+thread-safe production integration. See the newest DEVELOPMENT_PROGRESS section
+and ignored gate tracker; no reduced positive-recovery/reserved requirements.
+
+The standalone source_growth_confidence module is a maintained research
+component, not a runtime-bound feature.58 affected tests and exact numerical
+port comparisons qualify its pure functions, not app deployment or cache/thread
+integration. Parity with a rejected prototype is not recognition qualification.
+Preserve that distinction when continuing the implementation.
+
 ## Phase 1 — close the intact implementation checkpoint
 
 1. Verify local/live Git state and inspect the two saved sampler edits; do not

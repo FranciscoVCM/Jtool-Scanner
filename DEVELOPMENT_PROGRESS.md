@@ -4,6 +4,74 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-15 — Late new-terrain confidence: reviewed research gain, not deployment
+
+A private candidate separates new-object confidence from the original material
+calibration used by sizing and full-block pose repair. The earlier global role
+replacement lost two correct Hades repairs and remains rejected. The late
+candidate returns the old evidence unchanged, then qualifies only independently
+new sizing or joint material-growth terrain. Existing geometry, required
+replacement coverage, source-proved phase repairs and nongeometry are protected.
+Original-only full-block texture can corroborate uncertain roles; queries never
+teach. No room names, reference answers, fixed palettes or desired coordinates
+enter the recognition predicate.
+
+Two actual candidate scans complete. Canonical CN3-18 removes37 wrong full32
+and42 wrong mini16 footprints with no added origins. All79 source-delta crops
+and the complete Source/baseline-JTool/candidate-JTool/Blend view are reviewed.
+Frozen source-positive coverage stays4864/4864 and the separate blue-strip mask
+stays5376/5376; known-negative excess falls18176->0. Actual union occupancy
+removed is37632 pixels, not the sum of overlapping object boxes. Nine wrong
+full footprints mix real narrow blue terrain and background; retained geometry
+preserves those true strips. Other geometry, spike and semantic errors remain:
+this is not whole-room approval or perfect CN3-18 recognition.
+
+Hades preserves complete maps, ordered detection metadata, warnings and source/
+frame/options. The actual Bathhouse1, Dotkid1, Dotkid5 and compact NANG130r
+controls also preserve complete outputs, carrying their601 miniblocks,
+139 terrain footprints and compact-rail evidence.39 focused prototype tests pass:
+21 representation/provenance contracts,14 real-RGB role tests and four further
+RGB-gradient/polarity/capture/independent-source adversaries. Half-size captures
+can lack nine distinct physical edge sites; this rule abstains rather than
+lowering its evidence threshold or declaring the object absent.
+
+Broad16 exact qualification is TERMINAL/PASS with complete map/metadata/input
+equality. The named cohort stops at its first changed output, Halls2, after13
+unchanged cases. Fresh whole-view/all10 delta source review confirms a real
+REGRESSION: ten removed full32 footprints contain marble terrain. Their10240
+source-positive pixels fall to2048 covered (8192 lost). Retained metadata and
+nongeometry are unchanged, but that cannot excuse terrain loss. V3 is REJECTED
+for adoption; the remaining ten named cases were deliberately not run. All
+failed outputs/labels are preserved. Neither the CN3-18 gain nor16 exact passes
+qualifies the candidate or proves all41 protections.
+This candidate is still private and not app-bound. Its process-local global
+instrumentation is unsuitable for the threaded app: maintained per-source
+context integration, cold/warm and simultaneous-context tests, controlled whole
+runtime, all protections and final-current71 remain required. The interim71
+audit separates this private gain from unchanged public24 strict QA carries/
+47 pending/zero whole-room approvals. Source-size diagnostic kind was not true
+producer provenance: the old residual16 minis came from joint material growth,
+not the sizing return. Original failed receipts remain preserved.
+
+A new research-only maintained module, source_growth_confidence, extracts the
+rule into explicit functions without global patches. It is NOT bound into the
+scanner/runtime dependency list.58 affected tests pass in12.222s, including16
+new tests. Numerical-port qualification preserves192 entire RGB edge proofs,
+24 entire role proofs and a mixed-provenance selector proof;18 additional
+portable RGB tests also pass. Returned proofs cannot mutate source witnesses,
+edge memos or texture teachers. Actual maintained context integration and warm/
+cold cache safety remain separate work, not implied by these component tests.
+The extracted rule is also research-only: numerical parity with a rejected
+prototype is not an accuracy qualification. Diagnose source witness availability
+and16-versus32 texture/geometry evidence before revising the confidence gate;
+do not exempt Halls2, memorize its origins, or simply relax every role threshold.
+
+Public sampler checkpoint3e550bf is committed/pushed. App process control and
+loopback observations were prevented by environment permissions, leaving HTTP
+health and loaded/disk parity unverified; this is not evidence the app is down.
+No permission bypass or deployment claim. Suppression alone cannot satisfy the
+goal's positive-recovery, multi-family and new reserved-success requirements.
+
 ## 2026-10-15 — Concrete execution plan, failed reserve and exact sampler checkpoint
 
 Read GENERAL_RECOGNITION_GOAL.md for the detailed continuation plan. The active
