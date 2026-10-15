@@ -1,6 +1,6 @@
 # General recognition: measured implementation and release plan
 
-Updated 2026-10-15. This refines the unfinished active goal; it does not declare
+Updated 2026-10-16. This refines the unfinished active goal; it does not declare
 the preceding work complete, reset its evidence, or weaken its numerical gates.
 Continue in the existing `main` checkout. No new repository, clone, branch or
 worktree. Preserve all source images, fixtures, JMaps and local corrections.
@@ -23,6 +23,44 @@ The central distinction is **appearance versus identity versus placement**:
 - Cropped, padded or unknown pixels are not evidence of absence.
 
 ## Starting evidence and honest status
+
+Current execution order (2026-10-16) supersedes historical continuation steps
+below. Published experimental confidence is now really loaded in the app:
+approved scoped restart, root/health HTTP200 and loaded/disk source parity.
+The compact-source work described next remains PRIVATE, not app-enabled.
+
+Qualified compact-source coordinates expose a useful positive-recovery cause:
+the existing source stage bypasses19x13 captures entirely. Reuse exact centered,
+rounded physical normalization; neither an ideal top-left frame nor padded RGB
+is source evidence.13 frame tests and actual128r/130r source-view/probe parity
+pass. Before tuning, freeze complete source structures, semantic uncertainty and
+nonunique-terrain occupancy metrics;12 portable metric tests pass.
+
+The first frozen query-only rectangle experiment recovers THREE real NANG128r
+blocks, not twelve gains from their16px subdivisions. Source-positive coverage
+16384->19456,complete tiles16->19; fixed-region errors20->8(60%reduction),
+zero new labelled-empty terrain.38 full spikes remain exact;four minis still
+shifted8px low remain wrong. All three additions are source-reviewed; every
+original detection/metadata is retained. This is a private captured-stage trial,
+not a new whole scan, deployment, whole-room approval or speed measurement.
+The same frozen candidate adds/removes nothing in protected compactNANG130r.
+12 portable query tests cover three palettes/polarity, fractional scale, crop,
+empty backings, flat impostors, padding and rejection of emitted teachers.
+
+Next: preserve this checkpoint; independently source-freeze the COMPLETE
+predeclared compatible NANG138r reserve before evaluating the unchanged
+mechanism. Original full-spike bases locate finite queries, not block answers;
+new query points never join original rectangle teachers. Require unchanged
+shape/interior evidence, source coverage and all-delta review. Then qualify
+ordinary whole scans, safe maintained integration, protected outputs and whole
+cost before app activation. Do not repeat completed confidence controls/timings
+or score a reserve before its independent source/metric freeze. Existing filled
+research, other causal failures and all original positive/transfer/final71 gates
+remain necessary. No source hashes, room IDs, palettes or expected coordinates
+enter recognition. Current71 audit still has zero whole-room approvals.
+
+The following records earlier checkpoints; old imperative steps are historical,
+not instructions to repeat completed workers or undo the current execution order.
 
 Newest qualification: maintained guarded original-stage replay preserves all16
 exact/original41/601/139+four challenges by full output equality. Eight quiet AC

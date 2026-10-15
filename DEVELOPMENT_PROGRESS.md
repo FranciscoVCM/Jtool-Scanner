@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Source-frozen compact recovery research; published app verified
+
+The published confidence entry is now loaded after a properly approved scoped
+restart of the verified scanner listener. Root and health return HTTP200;
+loaded/disk fingerprints match. Earlier approval-service usage failures were
+not bypassed. Standard scanning remains unchanged; compact research is NOT active.
+
+Private generic frame tests expose why compact19x13 cases received none of the
+source-stage repairs: the application deliberately bypasses that mapping.
+13 coordinate/coverage tests and actual128r/130r canonical/probe parity pass,
+including exact centered rounded padding, physical crop and downsample coverage.
+Unknown/padded pixels never become source observations.12 portable metric tests
+freeze solid occupancy separately from nonunique block/miniblock tilings and
+keep false minis inside full spikes as typed errors, not uncertainty exemptions.
+
+Before any candidate score, a complete NANG128r source structure was frozen:
+19 steel tiles,38 full spikes,18 minis;19456positive/130320clear-negative/
+41712unknown pixels. Two targeted source crops corrected one omitted annotation
+before baseline scoring; old annotations and verifier failures remain preserved.
+The B235 whole output matches the captured original-stage geometry/ordered
+metadata/frame/warnings, apart from the explicit source_geometry entry flag.
+It has20 fixed-region errors: three missing tiles and four8px-low minis
+(twelve missing terrain cells plus four spike misses/four extras).
+
+A frozen query-only experiment uses ORIGINAL full-spike bases to locate new
+rectangle queries. It retains unchanged three-disjoint-frame/two-coherent-closed
+source models,.9 frame/interior correlations and source-face thresholds. Query
+points never become teachers; no room/palette/coordinate answers are used.
+12 portable tests pass across three palettes/polarity,fractional scale,crop,
+empty backing,flat impostor,padding and prohibited emitted-teacher feedback.
+
+Private captured-stage evaluation recovers THREE real tiles, coverage16384->
+19456,complete tiles16->19,errors20->8(60%reduction),zero new labelled-empty
+terrain. All three source deltas and whole source view are reviewed; original
+objects/metadata are intact.38 full spikes still exact;four shifted minis remain
+wrong. Protected compactNANG130r has zero additions/removals with the unchanged
+candidate. These are not twelve independent gains, an actual whole scan,
+all-control qualification, app deployment, latency proof or whole-room acceptance.
+The prototype remains ignored/private; no implementation or fixture changed.
+
+Next is independent complete-source freezing/evaluation of the predeclared
+compatible reserve, then ordinary scans/maintained integration/all-delta QA/
+protected outputs and whole cost before adoption. Full positive8/three rooms/
+two visual families/new reserve/final-current71+16/six-gate goal remains OPEN.
+Conservative current71 v13 retains29 output qualifications/42 pending/0approvals.
+
 ## 2026-10-15 — Broad confidence qualification, controlled cost and experimental entry
 
 The maintained confidence consumer now passes all16 exact controls and all29

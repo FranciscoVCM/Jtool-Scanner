@@ -1,10 +1,23 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-15. Continue in the existing repository at
+Updated 2026-10-16. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
+
+NEWEST: ignored COMPACT_ACTIVE_20261016.md supersedes older restart/launch notes.
+All producers TERMINAL. Published confidence code is NOW verified loaded after
+proper approved exact-listener restart: root/health200,loaded==disk. Private
+compact source-frame/query research is NOT app-active.13 frame+12 metric+12query
+tests pass. Source-frozen NANG128r private experiment recovers THREE real blocks,
+coverage16384->19456,fixed-region errors20->8;38 full spikes exact,four shifted
+minis still wrong. All3source deltas reviewed. Unchanged candidate preserves
+protected130r with zeroadds/removals. No whole-room approvals/actual whole scan/
+whole-cost/all-control claim. Model/threshold/query policy frozen; next complete
+SOURCE-only NANG138r compatible-reserve freeze before scoring,then ordinary
+whole scans/maintained integration/controls/cost. Existing full numerical/six
+goal gates unchanged; do not reset the goal or repeat completed broad producers.
 
 LATEST: CONTROL_COST_ACTIVE_v1.md supersedes old launch notes. Maintained broad
 exact16+named24+challenge4 all TERMINAL/PASS, original41/601/139 by complete
