@@ -8,6 +8,7 @@ are deliberately rejected until their coordinate transform is qualified.
 from __future__ import annotations
 
 import argparse
+from collections import OrderedDict
 from dataclasses import asdict, dataclass
 import hashlib
 import json
@@ -35,7 +36,8 @@ class SourceContours:
     """Cache coherent RGB edge support after local-gradient subtraction."""
 
     def __init__(self, image: RGBImage, room: Box,
-                 native_size: tuple[int, int] = (800, 608), *, squared_norm=False, source_frame=None):
+                 native_size: tuple[int, int] = (800, 608), *, squared_norm=False, source_frame=None,
+                 probe_cache_limit=0):
         if min(room.width, room.height, *native_size) <= 0:
             raise ValueError("Room and native dimensions must be positive")
         self.image, self.room, self.native_size = image, room, native_size
@@ -47,6 +49,14 @@ class SourceContours:
         self.source_frame = source_frame
         self._squared_norm = squared_norm
         self._edges: dict[tuple, EdgeEvidence] = {}
+        if (not isinstance(probe_cache_limit, int) or isinstance(probe_cache_limit, bool)
+                or probe_cache_limit < 0):
+            raise ValueError('Probe cache limit must be a nonnegative integer')
+        if probe_cache_limit and source_frame is None:
+            raise ValueError('Probe reuse requires an immutable original source frame')
+        self.probe_cache_limit = probe_cache_limit
+        self._physical_probes = OrderedDict() if probe_cache_limit else None
+        self.probe_cache_hits = self.probe_cache_misses = self.probe_cache_peak = 0
 
     def edge(self, first: tuple[float, float], second: tuple[float, float]) -> EdgeEvidence:
         key = first, second
@@ -80,6 +90,19 @@ class SourceContours:
                    for x, y in points):
                 unknown = True
                 break
+            # Preserve native/crop availability checks before reuse. The ordered
+            # physical positions identify the exact RGB/spacing calculation;
+            # reversed probes, quantized coordinates and other sources do not.
+            cache = self._physical_probes
+            probe_key = tuple(points) if cache is not None else None
+            if cache is not None and probe_key in cache:
+                phases = cache[probe_key]
+                cache.move_to_end(probe_key)
+                self.probe_cache_hits += 1
+                rows.append((phases, points[4]))
+                continue
+            if cache is not None:
+                self.probe_cache_misses += 1
             values = [self.image.pixel(*point) for point in points]
             derivatives = []
             for j in range(8):
@@ -95,6 +118,11 @@ class SourceContours:
             reference = max(departure(derivatives[j]) for j in (0, 1, 6, 7))
             phases = {j - 3.5 for j in (2, 3, 4, 5)
                       if departure(derivatives[j]) > reference}
+            if cache is not None:
+                cache[probe_key] = frozenset(phases)
+                if len(cache) > self.probe_cache_limit:
+                    cache.popitem(last=False)
+                self.probe_cache_peak = max(self.probe_cache_peak, len(cache))
             rows.append((phases, points[4]))
         supported: set[tuple[int, int]] = set()
         if not unknown:

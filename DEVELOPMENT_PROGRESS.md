@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Optional exact physical-probe reuse; defaults unchanged
+
+The private bounded-cache hypothesis preserves complete source proofs and saves
+18.80%/19.36% helper time on positive NANG-128r and negative NANG-138r in quiet AC
+serial ABBA samples. This is NOT whole-scan timing or an adoption pass; the prior
+13.90%/16.53% whole-cost hold remains.
+
+The cache now has a maintained explicit opt-in in SourceContours and
+SourceRectangleContext. Both default to zero, disabled. A source-local LRU stores
+immutable derivative phases for exact ordered physical pixel tuples. Native/crop
+availability checks precede lookup; arithmetic, spacing, RGB, source witnesses,
+unknown handling, queries, teachers and all recognition predicates are unchanged.
+No reverse-key approximation or global cross-source cache. Positive cache limits
+require an immutable original source frame; memory is bounded by the entry limit.
+
+Eight new portable tests cover palettes/scales, eviction, padding, mutable caller
+wrappers, invalid limits, numerical modes, cold/warm proof identity, parallel
+sources, fractional diagonals and one-byte/isoluminant edges. The affected suite
+passes 109 tests in 69.741s. An initial run hit two existing sandbox temporary-file
+permission errors; the approved normal-permission rerun passes without changing
+implementation to mask the environment failure. No full-project-suite claim.
+
+All 18 compact inputs remain accounted for. Every supported query/model/face
+proof equals the frozen original at cache limits 0 and 4,096, cold and warm;
+the 9x9 scope bypass is unchanged. Complete default contour math/control AST
+equivalence and all-other-runtime-file byte identity preserve prior output
+qualification. Two fresh UNPATCHED native scans, CN3-9 and Halls4, additionally
+pass complete maps, ordered metadata, warnings, inputs, projects and render bytes.
+These scans are not controlled speed measurements or fresh visual approvals.
+
+Conservative audit v18 retains 40 qualified outputs, 31 pending and zero room
+approvals. No new accuracy gain: the private three NANG-128r tile recoveries are
+still unbound; four shifted minis and NANG-138r's striped solids remain unresolved.
+All app/native callers keep the cache disabled. Current maintained opt-in whole
+cost, final runtime qualification and all original six goal gates remain open.
+
 ## 2026-10-16 — All affected compact inputs qualified; whole-cost activation hold
 
 The fixed maintained component is now source-replayed across all 18 non-25x19

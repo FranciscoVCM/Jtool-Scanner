@@ -24,6 +24,15 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Latest cost component (2026-10-16): optional exact scan-local physical-probe
+reuse is maintained but defaults disabled in all app/native callers. Eight new
+portable tests and 109 affected tests pass. Complete default contour math/control
+AST parity, all 18 compact source cases and two fresh unpatched native whole
+outputs qualify; no accuracy change. Audit v18 remains 40 qualified/31 pending/
+zero approvals. Prototype helper saving ~19% is NOT a whole-speed pass. The prior
+compact activation hold remains; current opt-in whole cost and the original
+positive/negative/reserved/multi-family/final release gates are still open.
+
 Latest affected/cost qualification (2026-10-16): 18 compact inputs accounted for,
 with only the existing three NANG-128r gains. Ten additional unchanged canonical
 outputs qualify through sealed whole-output/upstream AST/early compact-return

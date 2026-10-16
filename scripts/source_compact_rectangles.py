@@ -60,16 +60,20 @@ class SourceRectangleContext:
     here; no color-role calibration or other source path is silently reinterpreted.
     """
 
-    def __init__(self, image, room, originals, source_frame):
+    def __init__(self, image, room, originals, source_frame, *, probe_cache_limit=0):
         if not isinstance(image.data, bytes) or len(image.data) != image.width * image.height * 3:
             raise ValueError('Rectangle evidence requires complete immutable original RGB')
         if not source_frame.matches_source(image, room):
             raise ValueError('Rectangle source frame does not match image/room')
+        if (not isinstance(probe_cache_limit, int) or isinstance(probe_cache_limit, bool)
+                or probe_cache_limit < 0):
+            raise ValueError('Probe cache limit must be a nonnegative integer')
         self._original = image
         self._source = RGBImage(image.width, image.height, image.data)
         self._room, self._frame = room, source_frame
         self._extent, self._canonical = source_frame.extent, source_frame.canonical_rgb
         self._originals = deepcopy(tuple(originals))
+        self._probe_cache_limit = probe_cache_limit
         self._field = self._library = self._models = self._model_proof = None
 
     def validate(self, image, room, originals, source_frame):
@@ -85,7 +89,8 @@ class SourceRectangleContext:
 
     def _appearance(self):
         if self._library is None:
-            self._field = SourceContours(self._source, self._frame.extent, source_frame=self._frame)
+            self._field = SourceContours(self._source, self._frame.extent, source_frame=self._frame,
+                                         probe_cache_limit=self._probe_cache_limit)
             # No expensive/irrelevant glyph models, and no glyph teachers.
             self._library = SourceGlyphLibrary(self._source, self._room, (),
                 source_frame=self._frame, contour_field=self._field)

@@ -420,6 +420,16 @@ tiles change. Eight quiet AC whole scans preserve expected outputs but add
 13.90%/16.53% scan time on the positive/negative cases. Activation is held pending
 cost reduction; these components are still not used by the webapp.
 
+For explicit experiments, `SourceRectangleContext(..., probe_cache_limit=4096)`
+can reuse exact contour derivative probes. The default is `0` (disabled), also
+for `SourceContours`. Reuse requires an immutable original source frame; it is
+bounded and local to that source. Ordered physical pixel positions identify the
+calculation, after all availability checks. RGB, arithmetic, independent witness
+positions, unknown coverage, teacher cohorts and recognition thresholds stay
+unchanged. Cache limits 0/4096 preserve all 17 supported compact source proofs;
+the 9x9 case remains bypassed. Prototype helper timings improve about 19%, not
+whole-scan latency. This does not lift the activation hold or enable app caching.
+
 ### Read-only capture-aware hollow glyph evidence
 
 `scripts/source_sampling.py` provides `SourceFrame`: a frozen physical RGB crop,

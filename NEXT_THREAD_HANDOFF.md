@@ -6,6 +6,20 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST optional-cache checkpoint: SourceContours and SourceRectangleContext now
+support bounded exact physical-probe reuse, default ZERO/disabled. Eight new
+portable tests; 109 affected tests PASS 69.741s. All 18 compact inputs qualify:
+17 full query/model/face proofs equal at limits 0/4096 and cold/warm, plus unchanged
+9x9 bypass. Complete default contour math/control AST equivalence; every other
+runtime file byte-identical. Fresh UNPATCHED CN3-9/Halls4 whole scans pass full
+map/metadata/warnings/input/project/render equality. All workers TERMINAL.
+Read ignored COMPACT_PROBE_CACHE_PORT_ACTIVE_v1.md and conservative audit v18.
+40 qualified/31 pending/0 approvals; no new accuracy gain or fresh visual review.
+Private helper speed improves ~19%, NOT whole latency. Prior compact whole-cost
+hold remains; app/native cache disabled and compact consumer UNBOUND. Next
+current maintained whole-cost evaluation and remaining general identity causes;
+all original positive/multi-family/reserve/protection/final71+16 gates stay ACTIVE.
+
 NEWEST affected/cost checkpoint: ignored audit v17 has 40 qualified outputs,
 31 pending, 0 approvals. Ten new qualifications are strict sealed whole-output/
 source/environment + upstream AST/early compact-return equality carries, not

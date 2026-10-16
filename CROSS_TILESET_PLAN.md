@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Current cost component (2026-10-16): exact reuse without narrower recognition
+
+Bounded per-source physical derivative-probe reuse is now explicit and opt-in;
+all app/native defaults remain disabled. Complete source proofs at limits 0/4096
+and unchanged default arithmetic protect all old teachers, queries, RGB, unknown
+coverage and partial occlusions. Eight portable tests, 109 affected tests, all
+18 compact cases and two actual unpatched native outputs pass. Audit v18 remains
+40 qualified/31 pending/0 approvals, not new accepted rooms or accuracy gains.
+Private helper savings of about 19% do not lift the measured compact whole-cost
+hold. Evaluate current whole cost before activation; continue the independent
+source-identity/filled/band causes and all original milestone requirements.
+
 ## Current qualification (2026-10-16): compact identity gain held for cost
 
 The maintained compact source query APIs are still UNBOUND. All 18 affected
