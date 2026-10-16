@@ -8,6 +8,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_occupancy', 'source_geometry_pipeline', 'source_terrain_agreement',
     'source_rectangle_prototypes', 'source_sampling', 'source_hollow_glyphs',
     'source_hollow_pipeline', 'source_hollow_phase', 'source_growth_confidence',
+    'source_filled_pipeline',
 )
 
 

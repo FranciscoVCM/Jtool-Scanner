@@ -2921,8 +2921,10 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
     added = proposed-rejected-surviving
     if rejected or added:
         hollow = {tuple(row['key']) for row in diagnostics.get('source_hollow', {}).get('accepted', ())}
-        new = [_geometry_detection('source_hollow_glyph' if (t, x, y) in hollow else 'source_material_size',
-            t, x, y, .9, image, frame.extent if (t, x, y) in hollow else result.room_box,
+        filled = {tuple(row['key']) for row in diagnostics.get('source_filled', {}).get('accepted', ())}
+        new = [_geometry_detection('source_hollow_glyph' if (t, x, y) in hollow else
+            'source_filled_glyph' if (t, x, y) in filled else 'source_material_size',
+            t, x, y, .9, image, frame.extent if (t, x, y) in hollow | filled else result.room_box,
             16 if t == OBJ_MINI_BLOCK else 32)
             for t, x, y in sorted(added, key=lambda k: (k[0], k[2], k[1]))]
         result.detections = sorted(retained+new, key=lambda d: (d.type_id, d.y, d.x))

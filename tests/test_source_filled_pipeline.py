@@ -129,6 +129,31 @@ class SourceFilledPipelineTests(TestCase):
         with self.assertRaisesRegex(ValueError,'non-original'):
             FilledGlyphEvidence(frame,original,source_library=library)
 
+    def test_legacy_border_teacher_rebuilds_without_pruning_or_unknown_teachers(self):
+        frame, original = scene()
+        border = (4, 768, 320)
+        poly = [(border[1]+u, border[2]+v) for u,v in VERTICES[border[0]]]
+        def paint(raster):
+            draw = ImageDraw.Draw(raster)
+            for y in range(320, 352):
+                for x in range(768, 800):
+                    if _contains(poly, x+.5, y+.5):
+                        draw.point((x,y), fill=(210,150,70))
+        frame = self.with_raster(frame, paint)
+        original += [SimpleNamespace(type_id=border[0], x=border[1], y=border[2])]
+        library = SourceGlyphLibrary(frame.original_snapshot(), frame.room,
+                                     [(d.type_id,d.x,d.y) for d in original])
+        self.assertTrue(any(tuple(a['key']) == border for a in library.anchors))
+        original_anchors = deepcopy(library.anchors)
+        shared = FilledGlyphEvidence(frame, original, source_library=library)
+        fresh = FilledGlyphEvidence(frame, original)
+        self.assertIsNot(shared.library, library)
+        self.assertEqual(library.anchors, original_anchors)
+        self.assertTrue(shared.support(TARGET)['passed'])
+        self.assertEqual(shared.support(TARGET), fresh.support(TARGET))
+        self.assertTrue(shared.support(border)['unknown'])
+        self.assertFalse(any(tuple(a['key']) == border for a in shared.library.anchors))
+
     def test_library_from_another_source_is_rejected(self):
         frame,original=scene()
         different,_=scene(background=(90,20,10))

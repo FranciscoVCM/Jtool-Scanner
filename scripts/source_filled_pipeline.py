@@ -44,11 +44,7 @@ class FilledGlyphEvidence:
         self.frame = frame
         self.original_spikes = tuple(sorted({(d.type_id, d.x, d.y) for d in original
                                             if 3 <= d.type_id <= 6}))
-        if source_library is None:
-            source_library = SourceGlyphLibrary(
-                frame.original_snapshot(), frame.room, self.original_spikes,
-                source_frame=frame, pixel_cache_limit=50000)
-        else:
+        if source_library is not None:
             raw = source_library.raw
             if (raw.room != frame.extent or not frame.matches_source(raw.image, frame.room)
                     or (source_library.source_frame is not None and source_library.source_frame is not frame)):
@@ -56,6 +52,14 @@ class FilledGlyphEvidence:
             original_origins = {(x, y) for _, x, y in self.original_spikes}
             if any(tuple(a['key'][1:]) not in original_origins for a in source_library.anchors if a['size'] == 32):
                 raise ValueError('Filled library contains non-original full-spike teachers')
+        # A legacy crop library can include a border anchor with insufficient
+        # original context. Do not prune its trained models or relax coverage:
+        # rebuild through the SAME original-frame path used without sharing.
+        if source_library is None or any(a['size'] == 32 and not frame.rectangle_available(
+                *a['key'][1:], 32, 32, margin=4) for a in source_library.anchors):
+            source_library = SourceGlyphLibrary(
+                frame.original_snapshot(), frame.room, self.original_spikes,
+                source_frame=frame, pixel_cache_limit=50000)
         self.library = source_library
         self._qualified_models = {}
         self._results = {}

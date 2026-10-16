@@ -11,6 +11,7 @@ from scripts.source_occupancy import footprint, source_size_repair
 from scripts.source_rectangle_prototypes import supplement_source_rectangles
 from scripts.source_terrain_agreement import agree_new_fulls
 from scripts.source_hollow_pipeline import recover_source_hollow_glyphs
+from scripts.source_filled_pipeline import recover_source_filled_glyphs
 from scripts.source_sampling import SourceFrame
 
 
@@ -41,12 +42,15 @@ def joint_proposals(image, room, detections, *, source_context=None, include_gro
 
 
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
-                     include_hollow_glyphs=True, include_growth_confidence=False):
+                     include_hollow_glyphs=True, include_growth_confidence=False,
+                     include_filled_glyphs=False):
     """Return proposals/removals/full proofs, without touching original objects."""
     if not isinstance(include_hollow_glyphs, bool):
         raise ValueError('Hollow recovery flag must be a boolean')
     if not isinstance(include_growth_confidence, bool):
         raise ValueError('Growth confidence flag must be a boolean')
+    if not isinstance(include_filled_glyphs, bool):
+        raise ValueError('Filled recovery flag must be a boolean')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
@@ -97,6 +101,14 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         # locators. Unverified terrain labels cannot act as coordinate answers.
         rejected |= {tuple(p['old']) for p in hollow_diag.get('phase_repairs', ())}
     diagnostics = {**diag, **pose, **agreement, 'rectangle_fallback': rectangle, 'source_hollow': hollow_diag}
+    if include_filled_glyphs:
+        # Explicit research opt-in: reuse ORIGINAL source evidence, never the
+        # accumulated proposals. A legacy crop library cannot serve an extended
+        # world frame; the consumer constructs a correctly framed one instead.
+        library = context.glyph_library(image, room, spikes) if frame.extent == room else None
+        filled, filled_diag = recover_source_filled_glyphs(frame, detections, source_library=library)
+        proposed |= filled
+        diagnostics['source_filled'] = filled_diag
     if include_growth_confidence:
         from scripts.source_growth_confidence import qualify_independent_growth
         evidence = context.growth_evidence(detections)

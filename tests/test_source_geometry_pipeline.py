@@ -17,6 +17,49 @@ def calibration():
 
 
 class SourceGeometryPipelineTests(TestCase):
+    def test_default_and_explicit_filled_bypass_do_not_call_recovery(self):
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',
+                   side_effect=AssertionError('Filled must remain opt-in')):
+            default = source_proposals(self.image, self.room, self.detections)
+            bypass = source_proposals(self.image, self.room, self.detections,
+                                      include_filled_glyphs=False)
+        self.assertEqual(default, bypass)
+        self.assertNotIn('source_filled', default[2])
+
+    def test_filled_switch_requires_boolean(self):
+        for value in (None, 0, 1, 'true'):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                source_proposals(self.image, self.room, self.detections,
+                                 include_filled_glyphs=value)
+
+    def test_filled_opt_in_shares_original_library_without_retirement(self):
+        key = (4, 224, 224)
+        original = deepcopy(self.detections)
+        proof = {'accepted': [{'key': key}], 'no_existing_object_retirement': True}
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',
+                   return_value=({key}, proof)) as recovery:
+            proposed, removed, diag = source_proposals(
+                self.image, self.room, iter(self.detections), include_filled_glyphs=True)
+        self.assertIn(key, proposed)
+        self.assertEqual(removed, set())
+        self.assertEqual(diag['source_filled'], proof)
+        self.assertEqual(self.detections, original)
+        self.assertEqual(recovery.call_args.args[1], tuple(original))
+        library = recovery.call_args.kwargs['source_library']
+        self.assertIsNotNone(library)
+        self.assertTrue(recovery.call_args.args[0].matches_source(library.raw.image, self.room))
+
+    def test_filled_extended_frame_does_not_borrow_legacy_crop_library(self):
+        from scripts.source_sampling import SourceFrame
+        extent = Box(-8, 0, 816, 608)
+        frame = SourceFrame(self.image, self.room, extent=extent, canonical=self.image)
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',
+                   return_value=(set(), {'accepted': []})) as recovery:
+            source_proposals(self.image, self.room, self.detections, source_frame=frame,
+                             include_filled_glyphs=True)
+        self.assertIs(recovery.call_args.args[0], frame)
+        self.assertIsNone(recovery.call_args.kwargs['source_library'])
+
     def test_explicit_hollow_bypass_never_calls_recovery(self):
         with patch('scripts.source_geometry_pipeline.recover_source_hollow_glyphs',
                    side_effect=AssertionError('Explicit bypass must remain available')):

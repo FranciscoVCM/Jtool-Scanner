@@ -6,6 +6,34 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST filled integration checkpoint: ignored FILLED_INTEGRATION_ACTIVE_20261016.md.
+Latest sourceQA/auditv20: all workers TERMINAL/PASS. Four actual opt-in whole
+scans (V2exec10687) retain exact original-input/stage/finalmetadata;three changed
+wholetriplets and14 source-delta crops reviewed. No old terrain/nongeometry lost.
+40default-qualified/31pending/ZERO approvals;newfilled14 PRIVATE,not app gains.
+App5432root/health200,loaded==disk299dac7f89f7279479f46342a9a1ff2eedb7d4f65b1b5a4fba6e972f516843ec.
+Before activation: current enabled protected-controls/quiet whole cost/reserve/
+conflict qualification. Do not repeat completed source stages/pilots or baselines.
+Four repaired current source-stage replays PASS14 recoveries (Golden2+3,CN3-19+8,
+CN3-21+3;CN3-93zero),all old metadata/default entire results retained,full filled
+proofs equal.105finalaffectedtests PASS70.503s. New strict boolean filled flag
+defaultsFALSE;app/CLI leaveOFF. Shared libraries with unknown border-teacher
+context rebuild through identical standalone original-frame construction; no
+post-training contributor pruning, new teachers, thresholds or calibration.
+Distinct filled provenance/extent and19-helper runtime fingerprints tested.
+Strict entire default pipeline/scanner AST +all-other-file identity PASS;old
+default qualifications carry,not new accuracy/room approval. Whole pilot V1
+stopped after completed Golden2 only on tuple/list grid representation; V2 reads
+sealed JSON,reuses that completed scan and completes remaining3. ALL workers are
+TERMINAL;do not restart completed pilots. SourceQA and auditv20 are complete.
+
+Background classifier REJECTED: no Halls3 sky fixes,11 reference-exact Hades
+blocks would be lost. No detector deletion activated. NANG138r userreconfirmed
+A–E allSOLID; old45tiles/nine missing/36errors unchanged. PriorV1/V2 verifier and
+real border-sharing failures preserved. Next current enabled controls/quiet cost
+before any activation; then compatible reserve/conflicts
+and all original six gates. Do not reset goal/resweep baselines/reopen archive.
+
 NEWEST whole-cost/identity checkpoint: all workers TERMINAL. Maintained4096 whole
 ABBA12 passes complete outputs/proofs, but costs +15.08% NANG-128r/+9.09%138r/
 +3.21% protected130r. Activation still HELD, cache defaults0/app disabled, compact

@@ -74,6 +74,21 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertEqual(out.detections, before)
         self.assertTrue(out.source_geometry)
 
+    def test_opt_in_filled_emission_uses_source_frame_and_preserves_survivors(self):
+        result = self.result()
+        extent = Box(-5, -1, 810, 610)
+        frame = SourceFrame(self.image, self.room, extent=extent, canonical=self.image)
+        key = (4, 240, 368)
+        with patch('scripts.source_geometry_pipeline.source_proposals', return_value=(
+                {key}, set(), {'source_filled': {'accepted': [{'key': key}]}})):
+            out = scanner._apply_source_geometry(result, self.image, source_frame=frame)
+        added = next(d for d in out.detections if (d.type_id, d.x, d.y) == key)
+        self.assertEqual(added.kind, 'source_filled_glyph')
+        self.assertEqual(added.image_box, Box(238, 368, 32, 32))
+        self.assertTrue(all(any(d is old for d in out.detections)
+                            for old in (self.old, self.mini, self.save)))
+        self.assertEqual(CorrectionProject.from_scan(out).source_extent, extent)
+
     def test_compact_normalized_shape_stage_keeps_source_seed_recovery(self):
         # Compact originals are padded to canonical working pixels BEFORE the
         # shape stage. The later original-source material stage must still abstain.
@@ -175,14 +190,15 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),18)
+        self.assertEqual(len(paths),19)
         rectangle = next(p for p in paths if p.name == 'source_rectangle_prototypes.py')
         self.assertTrue(all(p.is_file() for p in paths))
         original=app._source_fingerprint()
         read_bytes=Path.read_bytes
         for path in (paths[0], rectangle, *(p for p in paths if p.name in
                     ('source_sampling.py', 'source_hollow_glyphs.py', 'source_hollow_pipeline.py',
-                     'source_hollow_phase.py', 'source_growth_confidence.py'))):
+                     'source_hollow_phase.py', 'source_growth_confidence.py',
+                     'source_filled_pipeline.py'))):
             with self.subTest(dependency=path.name), \
                  patch.object(Path,'read_bytes',lambda p:read_bytes(p)+(b'\n# changed test dependency\n' if p==path else b'')):
                 self.assertNotEqual(app._source_fingerprint(),original)

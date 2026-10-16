@@ -4,6 +4,61 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Current filled integration and border-teacher safety
+
+The fourteen earlier research recoveries remain genuinely missing from the
+current default outputs: Golden2 three, CN3-19 eight, CN3-21 three. Replaying
+the complete genuine original-stage snapshots on current code retains their
+entire filled proofs; CN3-93 proposes nothing. Final outputs are never teachers.
+
+The source pipeline now has an explicit strict-boolean `include_filled_glyphs`
+opt-in, default false. All scanner/app/CLI callers leave it disabled. It shares
+the existing ORIGINAL glyph library when the source frame permits; extended
+capture frames retain their correctly framed standalone path. Filled emissions
+have distinct provenance and use the source-world transform. No old-object
+retirement or calibration change is introduced.
+
+Real integration testing exposed a generic coverage defect: a legacy model
+could include a border teacher without the complete required original margin,
+blocking one otherwise source-proved CN3-21 recovery. Unsafe shared libraries
+now rebuild through the exact standalone original-frame constructor. Trained
+contributors are not pruned, unknown context is not invented, and thresholds
+are not relaxed. A new portable actual-raster test reproduces the defect and
+requires complete fresh/shared proof equality and untouched supplied libraries.
+
+Final affected tests: 105 PASS in 70.503s. An earlier sandbox run's two existing
+Temp permission errors are preserved; the approved normal-permission rerun
+passes without an implementation workaround. No full-project-suite claim.
+All four complete default source-stage ScanResults equal qualified snapshots;
+opt-in retains all old Detection metadata/nongeometry and adds exactly 14 poses.
+Complete standalone/shared filled proofs match. Prior source proofs match except
+the explicitly declared additional proposals in the trace. Tuple/list verifier
+failures are preserved and resolved by comparing canonical persisted JSON.
+
+Strict default specialization proves the entire old pipeline/scanner AST and
+all other runtime-file bytes unchanged on existing callers. The filled module
+is included in the app/corpus dependency fingerprint (19 source helpers).
+Existing default output qualifications can carry; this is not new visual QA,
+a default accuracy gain, or qualification of enabled behavior on every control.
+
+Background-connectivity research is rejected: it misses both false Halls3 sky
+blocks while labelling twelve existing Hades full poses as background; eleven
+are exact human-reference blocks. No such deletion or recalibration was enabled.
+Dense physical sampling fixes the earlier periodic-stencil measurement alias,
+but smoothness/connectivity alone is not semantic background evidence.
+
+NANG-138r's human-confirmed A–E sections remain SOLID, not platforms. Nine
+missing tiles/36 frozen errors and the incompatible full-base result remain;
+the denominator and reserved-success criteria are not changed. Filled opt-in
+WHOLE pilots now pass on all four current sources: exact original input, entire
+stage/final ordered metadata, warnings, source/options/crop/grid. A completed
+Golden2 scan was reused after a JSON grid-representation verifier failure, not
+rescanned. All fourteen delta crops and three current Source/JTool/Blend views
+were reviewed; old terrain/nongeometry remain intact. Large inherited compound,
+terrain and marker errors are still visible: ZERO room approvals. Protected
+enabled controls and controlled whole cost must qualify before activation.
+Full original goal remains open.
+
 ## 2026-10-16 — Current whole-cache hold and original material-identity diagnosis
 
 Twelve fresh-process, quiet AC serial ABBA whole scans qualify the maintained

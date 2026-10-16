@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Current bounded integration (2026-10-16): recover real filled objects safely
+
+Four current original-source stage replays retain14 research recoveries across
+Golden2/CN3-19/CN3-21 and zero CN3-93 additions. The explicit filled pipeline flag
+is default false; no app/CLI activation. Unsafe legacy border-teacher libraries
+rebuild through the unchanged original-frame constructor rather than pruning
+trained witnesses or weakening unknown coverage. Complete source proofs and old
+metadata are preserved;105 affected tests pass. Default AST/full runtime-file
+identity permits existing output carries, not new room approvals.
+
+Four actual opt-in whole pilots and all14 changed-source/three whole-triplet
+reviews now pass,with zero old terrain/nongeometry losses. Golden2's pre-frozen
+scope improves10->7 errors;other major room errors remain. Conservative auditv20
+keeps40 default-qualified/31pending/ZERO approvals;these14 gains remain PRIVATE.
+Next enabled protected-control and quiet-cost qualification before activation,
+not another baseline sweep or premature whole-room acceptance.
+
+The background-connection hypothesis failed on11 reference-exact Hades blocks
+without fixing either Halls3 sky block and is rejected. Do not remove unknown or
+texture-weak terrain. Continue remaining control/cost qualification, then
+independent compound/conflict evidence and a compatible
+pre-frozen reserve. NANG138r A–E remain solid; its old missing9 tiles are NOT fixed.
+All original numerical recovery/conflict/reserve/protection/final71 gates remain.
+
 ## Current priority (2026-10-16): mean-color membership is not object identity
 
 Actual original Halls3 learner/replacement provenance reproduces the entire
