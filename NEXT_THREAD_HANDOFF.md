@@ -6,6 +6,27 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST exact-work checkpoint: ignored SHORT_CIRCUIT_ACTIVE_v1.md and audit v22.
+Maintained short_circuit candidate path preserves all hypotheses/teachers,
+complete44 old proofs and EVERY Golden2/Halls7 pass/unknown decision; detailed
+diagnostic caches remain complete. Full-ablation ENTIRE two-module AST equals
+legacy; all other runtime bytes equal.160 affected tests PASS99.344s.
+All qualification/test/Halls7 scan/render/audit workers are TERMINAL.
+Halls7 actual current opt-in whole/default counterpart and two source crops
+reviewed: +2 genuine Down spikes, no old metadata loss. Default ordered metadata
+and warnings equal B235; fixed61-object scope50->51exact,39->38errors, FAILS
+reserve criteria. Major solids/compound/platform errors remain. No approvals.
+Private total46 (44canonical/11rooms +2Flames), NOT app gains. Audit40qualified/
+31pending/ZERO approvals. App filled stays OFF; old+11.38% hold not waived.
+App restarted on tested source (PID25588): root/healthHTTP200, loaded/disk equal
+cda690fb779294ebf24264fba828c11b83926542ffa307e671fbdea92433ce17.
+Next controlled cost driver measure_filled_short_circuit_whole_v1.py tests
+Golden2 FIRST, then CN3-9/Halls4. It stops explicitly HELD if a completed ABBA
+remains>5%, with unrun controls PENDING. Inspect actual worker/handle before
+starting or resuming; no runtime/HEAD edits while LIVE, no repeated samples.
+After cost/safety, continue independent false conflicts/compatible reserve and
+all original six gates. Below are historical checkpoints, not current workers.
+
 NEWEST qualification: ignored FILLED_ENABLED_ACTIVE_20261016.md and audit v21.
 All 44 original contribution inputs and eight new actual whole scans PASS.
 All 30 new source poses and eight whole triplets reviewed; NR2 (624,464) is a

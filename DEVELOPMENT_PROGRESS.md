@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Exact failed-candidate work avoidance, not narrower detection
+
+An actual integrated profile identifies contour work as the main added filled
+cost, not border-library rebuilding. The maintained recovery now short-circuits
+only when an existing required slope is guaranteed to fail: each remaining
+probe can add at most one independent physical support. All hypotheses, original
+teachers, thresholds, RGB/coverage rules and complete positive proofs remain.
+Detailed queries and explicit full ablation retain the entire old two-module
+AST after specializing the new flag; every other runtime file is byte-identical.
+Deferred negative diagnostics never poison complete-result caches.
+
+All 44 frozen complete filled proofs match, as do every Golden2 (9,868) and
+Halls7 (3,235) candidate pass/unknown decision. 160 affected tests PASS in
+99.344s, including eight new portable query/cache/RGB/scale/unknown tests.
+This is not a full-suite run or a measured whole-speed acceptance.
+
+One actual current Halls7 opt-in whole scan retains every default Detection and
+metadata, plus two source-visible downward full spikes. Its default counterpart
+matches B235's entire ordered detections/warnings. The whole triplet and both
+delta crops were reviewed. In the unchanged corrected 61-object structure,
+exact matches rise 50 -> 51 and errors fall 39 -> 38; the other real addition is
+outside the scope. This FAILS the existing reserve criteria. False solids inside
+spikes, wrong compound directions, missing members and platforms remain MAJOR.
+
+Audit v22 keeps 40 default-qualified /31 pending /ZERO approvals. Private total
+is now 46 recoveries (44 canonical across 11 rooms, two Flames), NOT app gains.
+Prior control/whole/source findings carry through exact full-path/code/proof
+equality, not another sweep. Filled activation remains OFF: fresh controlled
+whole cost must test Golden2 first, then dense/sparse controls if it qualifies.
+The old +11.38% full-path hold is not silently waived. Original goal gates stay.
+
 ## 2026-10-16 — Broader filled transfer and current protection qualification
 
 The fixed opt-in component has now been evaluated on all16 exact controls plus

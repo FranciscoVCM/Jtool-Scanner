@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Current exact-work checkpoint (2026-10-16)
+
+Avoiding provably irrelevant failed-candidate work preserves all original
+hypotheses/teachers and complete positive evidence, rather than buying speed by
+recognizing fewer objects. Both full-ablation module ASTs match the old math;
+44 complete real proofs and every Golden2/Halls7 candidate decision match.
+160 affected tests pass. New controlled whole speed remains PENDING, not inferred
+from helper timing; filled app activation stays OFF.
+
+Actual current Halls7 whole/default-counterpart and all-delta source review add
+two real downward spikes, but its fixed 61-object scope improves only 39 -> 38
+errors. It is still MAJOR and not a reserved success. Audit v22 keeps ZERO room
+approvals and distinguishes 46 private recoveries from app/default results.
+Next: current positive-first AC whole cost, then independent triangle/solid
+ownership and false conflicts with compatible reserved transfer; retain all
+original numerical criteria and final 71+16 release gates.
+
 ## Current transfer checkpoint (2026-10-16): positives beyond the initial rooms
 
 All44 protected original inputs are accounted for; eight newly changed sets

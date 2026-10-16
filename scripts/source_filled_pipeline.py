@@ -89,17 +89,26 @@ class FilledGlyphEvidence:
         self._qualified_models[keys] = answer
         return answer
 
-    def support(self, key):
-        """Complete filled proof; callers receive independent diagnostic data."""
+    def support(self, key, *, short_circuit=False):
+        """Full diagnostics by default; candidate failures may defer unused work.
+
+        Positive proofs are always complete. Deferred negative diagnostics never
+        enter the full-result caches, so a later detailed query still measures
+        the entire original proof. Neither mode changes teachers or candidates.
+        """
+        if not isinstance(short_circuit, bool):
+            raise ValueError('Filled short-circuit flag must be a boolean')
         key = tuple(key)
         if len(key) != 3 or key[0] not in (3, 4, 5, 6):
             raise ValueError('Filled recovery needs a full type3..6,x,y triple')
         if key not in self._results:
+            cacheable = True
             _, x, y = key
             if not self.frame.rectangle_available(x, y, 32, 32, margin=4):
                 result = dict(passed=False, unknown=True, reason='incomplete original source footprint')
             else:
-                silhouette = self.library.filled.evidence(*key)
+                silhouette = self.library.filled.evidence(*key, short_circuit=short_circuit)
+                cacheable = not silhouette.get('diagnostics_deferred', False)
                 result = dict(passed=False, unknown=silhouette['unknown'], silhouette=silhouette)
                 if silhouette['passed']:
                     appearance = self.library.support(*key)
@@ -108,7 +117,10 @@ class FilledGlyphEvidence:
                         teachers = self._teachers(appearance['model'])
                         result.update(passed=bool(teachers), independent_filled_teachers=teachers,
                                       original_teachers_only=True, complete_physical_source=True)
-            self._results[key] = result
+            if cacheable:
+                self._results[key] = result
+            else:
+                return deepcopy(result)
         return deepcopy(self._results[key])
 
     def apex_support(self, key):
@@ -201,8 +213,10 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 
 
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
-                                 terrain_neighbors=True):
+                                 terrain_neighbors=True, short_circuit=True):
     """Return new source-proved full poses and proofs; never remove originals."""
+    if not isinstance(short_circuit, bool):
+        raise ValueError('Filled short-circuit flag must be a boolean')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
@@ -215,7 +229,7 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
                            research_only_not_scanner_bound=True)
     proposed, proofs = set(), []
     for key in hypotheses:
-        proof = evidence.support(key)
+        proof = evidence.support(key, short_circuit=short_circuit)
         if proof['passed']:
             proposed.add(key)
             proofs.append(dict(key=key, evidence=proof))

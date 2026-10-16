@@ -148,7 +148,9 @@ class FilledSourceEvidence:
     def __init__(self, field: SourceGlyphEvidence):
         self.field, self.cache = field, {}
 
-    def evidence(self, type_id, x, y):
+    def evidence(self, type_id, x, y, *, short_circuit=False):
+        if not isinstance(short_circuit, bool):
+            raise ValueError('Filled short-circuit flag must be a boolean')
         size, direction = _dimensions(type_id)
         key = type_id, x, y
         if key in self.cache:
@@ -203,7 +205,17 @@ class FilledSourceEvidence:
                 if foreground(inner) and not foreground(outer):
                     support.add((int(self.field.room.x + px * self.field.room.width / 800),
                                  int(self.field.room.y + py * self.field.room.height / 608)))
+                # A remaining probe can add at most one distinct source support.
+                # This proves the EXISTING required predicate false; it does not
+                # remove a hypothesis or interpret unknown pixels as background.
+                if short_circuit and len(support) + (11-i) < 9:
+                    return dict(passed=False, unknown=False, diagnostics_deferred=True,
+                                reason='required source slope cannot reach nine supports',
+                                max_possible_support=len(support)+(11-i), required_support=9)
             slopes.append(dict(support=len(support), unknown=unknown, source_positions=sorted(support)))
+            if short_circuit and (len(support) < 9 or unknown):
+                return dict(passed=False, unknown=False, diagnostics_deferred=True,
+                            reason='required source slope failed', slopes=slopes)
         base = self.field.raw.edge(ends[0], ends[1])
         corners = [(x, y), (x + size, y), (x + size, y + size), (x, y + size)]
         rectangle = [self.field.raw.edge(corners[i], corners[(i + 1) % 4])[0] for i in range(4)]

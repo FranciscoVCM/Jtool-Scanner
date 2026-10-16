@@ -720,10 +720,19 @@ library with an incompletely observed border teacher is rebuilt through the
 original-frame constructor rather than pruning contributors or relaxing coverage.
 New detections have separate `source_filled_glyph` provenance and retain the
 capture-world transform. Control, reserve, independent source review and whole-
-runtime qualification are still required before app activation. Tests run with:
+runtime qualification are still required before app activation.
+
+The recovery consumer uses `short_circuit=True` to avoid remaining work only
+after an existing required slope predicate is mathematically unable to pass.
+All hypotheses and original teachers remain; passing proofs stay complete.
+Use `recover_source_filled_glyphs(..., short_circuit=False)` for the full-path
+ablation. Detailed evidence/support queries default to false; deferred negative
+diagnostics never enter their full-result caches. Helper savings are not whole-
+scan latency qualification or permission to enable the app's filled recovery.
+Focused tests:
 
 ```powershell
-python -m unittest tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
+python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
 ## Exact room benchmarks
