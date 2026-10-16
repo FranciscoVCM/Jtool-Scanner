@@ -24,6 +24,22 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Latest maintained implementation (2026-10-16): explicit grid-frame and rectangle
+query APIs are qualified but UNBOUND. Thirty new portable tests and76 affected
+tests pass. Two original-source replays preserve complete frame/query/model
+proofs. Two actual private whole-candidate scans retain128r's THREE source-proved
+tiles20->8 and130r's entire original output. Current source/all3delta QA and
+JMap/JTool/Blend byte parity pass;only three intentional provenance labels differ
+in the128r project. Completed128r was reused after a harness JSON-type correction,
+not rescanned. No predicate/source/threshold changes hid either harness failure.
+
+Do not infer deployment:scanner/pipeline/runtime files are unchanged. Next is
+broader affected compact qualification,explicit reuse of the working view,quiet
+paired whole cost and controlled experimental binding. Retain original teacher
+neighborhoods/fallbacks rather than narrowing them for an easy performance pass.
+No-query or source-unknown abstention is not evidence of emptiness. All full-goal
+positive/multi-family/new-reserve/negative/protection/final71/release gates remain.
+
 Latest execution refinement (2026-10-16): complete reserved NANG138r source truth
 and an actual original-stage whole observer are now frozen/qualified. All striped
 A-E sections are human-confirmed SOLID,not platforms. The baseline misses nine

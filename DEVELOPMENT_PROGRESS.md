@@ -4,6 +4,54 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Maintained compact-source APIs and actual whole-pilot qualification
+
+The qualified compact frame/query prototype now has maintainable read-only APIs:
+scripts/source_grid_frame.py and scripts/source_compact_rectangles.py. No private
+imports,compiled function clones,global constructor patches or reference answers.
+Existing scanner/pipeline/native rectangle behavior and runtime dependencies are
+unchanged;these components are NOT app-enabled. The explicit original/frame
+context validates every Detection field and prevents new hypotheses teaching.
+
+13 frame and17 query/context tests pass,including fractional/cropped/odd/oversized
+views,downsample padding,rounding order,three palettes/polarity,neighboring teacher
+phases,flat impostors,two-witness self-teaching,proof isolation and parallel
+sources.76 affected tests pass16.225s across the new APIs,existing rectangle/
+sampling helpers and candidate-coverage tooling. The first test's attempt to
+mutate frozen Detection.score was corrected with dataclasses.replace;the frozen
+model was not weakened. No full-project-suite claim.
+
+Two actual-original-source replays preserve complete canonical RGB/coverage,
+physical review boxes,query points,face/appearance proofs and cold/warm results.
+NANG128r's entire needed teacher-model proof equals the frozen prototype.
+Original neighborhoods/cohorts/thresholds are retained. Only work that cannot
+affect teaching is omitted:two-face rows are not teachers,coherence matters only
+for four-face rows,and unused old-query classification is not emitted. No-query
+controls skip model construction;this is not a source-negative certificate.
+
+Full-pipeline PRIVATE candidate scans now qualify on128r/130r using the maintained
+APIs.128r retains every original Detection/relative order and adds the same THREE
+real tiles;source coverage16384->19456,tiles16->19,errors20->8,no new known-negative
+terrain. All three current source deltas/whole source view freshly reviewed.
+Exported JMap/JTool/Blend bytes equal the reviewed prototype;project differences
+are only generated source-image path and three explicit provenance-kind labels.
+Four shifted minis remain wrong;no room approval.130r preserves complete original
+map/orderedmetadata/warnings/frame/options/project(exceptimagepath)/render bytes.
+
+The first coordinator failed before the component ran because its progress guard
+compared private experiment identity to public identity. A second completed128r
+scan then hit a tuple-versus-JSON-list guard error. Both failures remain preserved.
+The checksummed completed scan was fully revalidated without rescanning;only the
+unexecuted130r control ran afterward. No recognition predicate/source label changed.
+
+These are private actual-candidate scans,not unpatched/default scans,whole-cost
+qualification or deployment. Helpers/pilot durations are not speed claims.
+Broader affected compact outputs,shared working-view integration,controlled whole
+cost and app activation remain open. Native/default code fingerprint is unchanged;
+conservative71 audit keeps all existing major findings/zero room approvals.
+The original positive8/three rooms/two families/new reserved success/4conflict
+fixes/final71+16/six-gate goal remains unfinished.
+
 ## 2026-10-16 — Reserved solid bands and explicit candidate-coverage diagnostics
 
 NANG138r's complete inner source region is independently frozen before any

@@ -6,6 +6,22 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST maintained compact checkpoint: two read-only public APIs are now present
+in scripts/source_grid_frame.py and source_compact_rectangles.py,NOT app-bound.
+13frame+17query/context portable tests;76affected total PASS16.225s. Exact two-
+source frame/query/model/cold-warm parity and private actual WHOLE128r/130r pilot
+qualify.128r THREEreal tiles/20->8 freshly source-reviewed;all originalmetadata
+retained;JMap/JTool/Blend byteequal prototype;only3kindlabels/projectimagepath
+differ.130r complete original output/project/render parity. All workers TERMINAL;
+failed identity/JSON harnesses preserved,completed128r reused NOT rescanned.
+Read ignored maintained-compact-whole-pilot-qualified-v1.json, sourceQA note and
+71-screen-general-recognition-checkpoint-v16.md: 30 published-code qualified,
+41 pending, zero whole-room approvals. Private pilot gains are separate.
+Existing scanner/pipeline/runtime dependency list unchanged. Next affectedcompact
+whole outputs,working-view sharing,quiet wholecost,guarded integration;register
+dependencies ONLY when runtime reachable. No fullgoal or room approvals. Keep
+original teacher neighborhoods/cohorts and all previous protections/minimum gates.
+
 NEWEST: ignored COMPACT_GATE_INFERENCE_CORRECTION_v2.md and conservative71v15.
 All producers TERMINAL (ordinary ORIGINAL138r observer2240,128rtrace90025 PASS
 whole B235map/orderedmetadata/input/frame/JTool/Blend/projectexceptsourcepath).

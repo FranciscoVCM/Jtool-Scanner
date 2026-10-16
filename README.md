@@ -387,6 +387,33 @@ and does not itself emit objects. The experimental caller consumes its evidence;
 standard scanning is unchanged. Insufficient source examples,
 occlusion, hidden size identity and unfamiliar styles can still require abstention.
 
+### Read-only grid-frame rectangle queries (not app-enabled)
+
+`scripts/source_grid_frame.py` wraps an **existing** room-grid normalization:
+physical crop, rounded centering/cropping offsets, working RGB and original-pixel
+coverage. It does not infer another grid or replace the existing 800x600 capture-
+truncation/lattice handling. Padding and downsampling taps outside the original
+crop are unknown, regardless of their displayed color. Physical review boxes
+round in working coordinates before applying the integer source translation.
+This helper explicitly performs one RGB resize for its canonical view; sharing
+that view and whole-scan cost still need qualification before runtime adoption.
+
+`scripts/source_compact_rectangles.py` exposes
+`source_backing_rectangles(image, room, original_detections, source_frame=frame)`.
+Original full-spike bases locate finite candidate rectangles, not assumed blocks.
+Models use independently supported original-source frame neighborhoods, including
+neighboring phases. New queries never join the teacher cohort. Three physically
+disjoint witnesses, two closed/coherent frames, matching frame/interior artwork
+and original-source coverage are required. RGB is retained; no second grayscale
+scan, game IDs, saved tilesets or reference-map answers are used.
+
+Optional `SourceRectangleContext(image, room, original_detections, frame)` reuses
+source evidence while validating the complete original detection metadata and
+source/frame identity. Returned proofs are isolated copies. No-query/unknown
+cases may leave model proof `None`: unperformed work is not negative evidence.
+These APIs return hypotheses only. They do not edit maps or activate the app's
+compact source stage; broader controls, runtime and binding remain pending.
+
 ### Read-only capture-aware hollow glyph evidence
 
 `scripts/source_sampling.py` provides `SourceFrame`: a frozen physical RGB crop,
