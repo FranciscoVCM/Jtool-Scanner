@@ -43,7 +43,7 @@ def joint_proposals(image, room, detections, *, source_context=None, include_gro
 
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
                      include_hollow_glyphs=True, include_growth_confidence=False,
-                     include_filled_glyphs=False):
+                     include_filled_glyphs=False, include_filled_joint_phase=False):
     """Return proposals/removals/full proofs, without touching original objects."""
     if not isinstance(include_hollow_glyphs, bool):
         raise ValueError('Hollow recovery flag must be a boolean')
@@ -51,6 +51,10 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         raise ValueError('Growth confidence flag must be a boolean')
     if not isinstance(include_filled_glyphs, bool):
         raise ValueError('Filled recovery flag must be a boolean')
+    if not isinstance(include_filled_joint_phase, bool):
+        raise ValueError('Filled joint phase flag must be a boolean')
+    if include_filled_joint_phase and not include_filled_glyphs:
+        raise ValueError('Joint phase requires filled recovery')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
@@ -106,7 +110,8 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         # accumulated proposals. A legacy crop library cannot serve an extended
         # world frame; the consumer constructs a correctly framed one instead.
         library = context.glyph_library(image, room, spikes) if frame.extent == room else None
-        filled, filled_diag = recover_source_filled_glyphs(frame, detections, source_library=library)
+        filled, filled_diag = recover_source_filled_glyphs(
+            frame, detections, source_library=library, joint_phase=include_filled_joint_phase)
         proposed |= filled
         diagnostics['source_filled'] = filled_diag
     if include_growth_confidence:

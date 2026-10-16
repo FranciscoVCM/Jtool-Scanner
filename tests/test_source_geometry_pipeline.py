@@ -32,6 +32,45 @@ class SourceGeometryPipelineTests(TestCase):
                 source_proposals(self.image, self.room, self.detections,
                                  include_filled_glyphs=value)
 
+    def test_joint_phase_switch_requires_boolean(self):
+        for value in (None, 0, 1, 'true', []):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'boolean'):
+                source_proposals(self.image, self.room, self.detections,
+                                 include_filled_glyphs=True, include_filled_joint_phase=value)
+
+    def test_joint_phase_requires_filled_recovery(self):
+        with self.assertRaisesRegex(ValueError, 'requires filled'):
+            source_proposals(self.image, self.room, self.detections,
+                             include_filled_joint_phase=True)
+
+    def test_joint_phase_opt_in_forwards_only_original_source(self):
+        original = deepcopy(self.detections)
+        key = (4, 224, 224)
+        proof = {'accepted': [{'key': key, 'joint_source_phase': [1, 0]}]}
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',
+                   return_value=({key}, proof)) as recovery:
+            proposed, removed, diag = source_proposals(
+                self.image, self.room, iter(self.detections),
+                include_filled_glyphs=True, include_filled_joint_phase=True)
+        self.assertIs(recovery.call_args.kwargs['joint_phase'], True)
+        self.assertEqual(recovery.call_args.args[1], tuple(original))
+        self.assertTrue(recovery.call_args.args[0].matches_source(
+            recovery.call_args.kwargs['source_library'].raw.image, self.room))
+        self.assertEqual(self.detections, original)
+        self.assertIn(key, proposed)
+        self.assertEqual(removed, set())
+        self.assertEqual(diag['source_filled'], proof)
+
+    def test_explicit_joint_bypass_equals_default_filled_mode(self):
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',
+                   return_value=(set(), {'accepted': []})) as recovery:
+            default = source_proposals(self.image, self.room, self.detections,
+                                       include_filled_glyphs=True)
+            bypass = source_proposals(self.image, self.room, self.detections,
+                                      include_filled_glyphs=True, include_filled_joint_phase=False)
+        self.assertEqual(default, bypass)
+        self.assertTrue(all(call.kwargs['joint_phase'] is False for call in recovery.call_args_list))
+
     def test_filled_opt_in_shares_original_library_without_retirement(self):
         key = (4, 224, 224)
         original = deepcopy(self.detections)
@@ -46,6 +85,7 @@ class SourceGeometryPipelineTests(TestCase):
         self.assertEqual(self.detections, original)
         self.assertEqual(recovery.call_args.args[1], tuple(original))
         library = recovery.call_args.kwargs['source_library']
+        self.assertIs(recovery.call_args.kwargs['joint_phase'], False)
         self.assertIsNotNone(library)
         self.assertTrue(recovery.call_args.args[0].matches_source(library.raw.image, self.room))
 

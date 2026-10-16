@@ -40,6 +40,7 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertTrue(proposal.call_args.kwargs['source_frame'].matches_source(self.image, self.room))
         self.assertIs(proposal.call_args.kwargs['include_growth_confidence'], True)
         self.assertIs(proposal.call_args.kwargs['include_filled_glyphs'], True)
+        self.assertIs(proposal.call_args.kwargs['include_filled_joint_phase'], True)
         self.assertIs(out, result)
         self.assertNotIn(self.old, out.detections)
         self.assertTrue(any(d is self.mini for d in out.detections))

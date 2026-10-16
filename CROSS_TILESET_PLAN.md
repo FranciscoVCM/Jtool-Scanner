@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Latest adopted checkpoint (2026-10-16): coherent source phase enabled
+
+Experimental source geometry now requests the qualified joint phase. Lower APIs
+default false; normal scanning/compact bypass stay unchanged. Five newly enabled
+real full spikes (19 two/21 two/Halls7 one) bring known cumulative recovery to
+51, not 51 new or correct rooms. No ownership-deletion rule was enabled.
+
+174 affected tests and three actual UNPATCHED complete-output checks pass.
+Quiet AC ABBA12 medians: +0.75% positive CN3-21, -0.54% dense CN3-9, +4.87%
+sparse Halls4. Sparse adds 3.071s/narrowly clears 5%, with both after samples
+slower than both before; limited two-per-mode variation and added cost explicit.
+Original41/601/139/16 bounds pass through qualified maps/compatible reuse.
+Auditv25:41 output-qualified/30pending/ZERO correctness approvals. Halls7fixed61
+still52exact/37errors, only5.13% versus B23539: reserve FAIL/full goal OPEN.
+
+V4-V6 ownership observers remain held at one hypothetical removal. Their frozen
+Halls7 transfer cannot run its ownership predicate without a qualified BG role:
+three BG votes are fragmented across two color clusters (1+2). Do not lower the
+per-cluster threshold or tune a Halls7 exception. Investigate independent source-
+object/background role evidence on development cases before a separately frozen
+compatible reserve; retain Hades, real occlusions, RGB and original denominators.
+
 ## Latest opt-in evidence (2026-10-16): joint physical phase, NOT app activation
 
 A known weak base can now require complete geometry AND RGB at one coherent

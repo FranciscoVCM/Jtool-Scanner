@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Qualified coherent phase enabled in Experimental source mode
+
+The scanner now requests coherent filled phase only through its existing
+Experimental source-geometry stage. Both lower-level APIs still default joint
+phase false. Normal scanning and compact bypass are unchanged; saved projects
+and corrections are not rewritten. Fresh Experimental scans gain five reviewed
+full spikes: CN3-19 two, CN3-21 two and Halls7 one. The known enabled total is
+51 versus the earlier unfilled path (49 canonical across eleven rooms, two
+Flames), not 51 new recoveries or eleven correct rooms.
+
+All 174 affected tests pass in 117.295s, including strict flag/dependency and
+original-source forwarding checks. Three actual UNPATCHED production whole
+scans match every qualified detection, ordered metadata, warning, input, crop,
+grid, project, JMap, JTool render and blend. This carries all five source-delta
+and three whole reviews through complete equality. Exact scanner/pipeline AST
+bridges prove consumer-only activation; no helper predicate, model, teacher,
+threshold or source frame changed. No full-suite claim.
+
+Quiet AC serial fresh-process ABBA12 retains every corresponding expected
+output. Before -> coherent-phase medians: CN3-21 60.065 -> 60.514s (+0.75%);
+dense CN3-9 133.775 -> 133.046s (-0.54%); sparse Halls4 63.110 -> 66.181s
+(+4.87%). Sparse adds 3.071s and clears the unchanged 5% gate narrowly; both
+after samples exceed both before samples. Two samples per mode and observed
+variation are limited evidence, not zero added cost or a universal speedup.
+The exact consumer bridge connects the measured opt-in to production behavior.
+
+Original 41 groups, 601 miniblocks, 139 terrain footprints and all 16 exact
+bounds pass using qualified changed maps and compatible reuse, not a new
+44-whole sweep. FTFA remains 926/928 with no extras/shifts/wrong directions;
+Flames remains 254 exact/19 misses, with 42 extras/20 shifts/two wrong unchanged.
+Audit v25 revalidates 41 current outputs /30 pending /ZERO correctness approvals.
+Halls7's corrected 61-object scope remains 52 exact/37 errors: only 5.13% fewer
+than B235's 39 errors, still FAILING reserved success. Major errors remain.
+
+Ownership observations V4-V6 still prove only one hypothetical Golden2 removal;
+no deletion rule was adopted. Their separate frozen Halls7 transfer abstained
+before ownership queries: foreground role exists, but background votes split
+between clusters (one and two), so neither meets the unchanged three-vote rule.
+This identifies a source-role availability problem, not permission to lower a
+threshold or infer empty terrain. Future role evidence needs independent source
+qualification, Hades/partial-occlusion protection and a new compatible reserve.
+All original conflict/three-room/reserve/final-stable71+16 goal gates remain open.
+
 ## 2026-10-16 — Coherent physical-phase prototype; five private source recoveries
 
 An explicit `joint_phase=False` filled-recovery option now separates a weak

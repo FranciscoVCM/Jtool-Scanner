@@ -6,6 +6,30 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST adoption: JOINT_PHASE_ACTIVATION_ACTIVE_v1.md and auditv25. All timing,
+protection/test/whole/audit producers TERMINAL/PASS. Pipeline jointFalse remains
+the API default; scanner requestsTrue only in existing Experimental source mode.
+Normal/compact unchanged; no ownership deletion. Five reviewed recoveries now
+enabled (19two/21two/Halls7one), cumulative51=49canonical/11rooms+2Flames.
+174testsPASS117.295s, three actual UNPATCHED complete maps/metadata/projects/
+renders equal the reviewed opt-in outputs. Consumer-only full AST bridge passes.
+
+Quiet AC serialABBA12: CN3-21 +.7475%,denseCN3-9 -.5450%,sparseHalls4 +4.8664%.
+Sparse adds3.071s/narrowly clears5%, bothafter>bothbefore; limited2samples/mode,
+not zero-cost/universal timing. Original41/601/139/16 pass; FTFA926/928zero
+extras/shifts/wrong, Flames254exact/19miss with old42/20/2 errors unchanged.
+Audit41qualified/30pending/ZEROapprovals; Halls7fixed61 remains52exact/37errors,
+only5.13% versusB23539, reserveFAIL. Full six gates/finalstable71+16 stillOPEN.
+
+Ownership V4-V6 stillonlyone hypothetical removal, not adopted. Exact frozen
+Halls7transfer ABSTAINS before ownership queries: FG[4],BG[]; BGtip votes are
+split1+2 acrossclusters, neither reaches unchanged3. Preserve that evidence,
+do NOT lower thresholds/tune Halls7/claim successful reserve. Next distinct cause
+is independently qualified source-object/BG role evidence; use development
+cases and predeclared compatible later reserve, protect Hades/true partial walls.
+No baseline/archive reopening. App restartedPID20380root/health200,loaded/disk
+02a1d45ac2e4b42daeec67477c86df62a9a3731e094362ad98262664beac412f.
+
 NEWEST component: ignored JOINT_PHASE_ACTIVE_v1.md; successor auditv24.
 Read that before the older activation notes. Filled helper has a strict opt-in
 joint_phase=False API; scanner/app do NOT request it. Existing Experimental
