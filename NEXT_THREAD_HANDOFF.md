@@ -6,6 +6,26 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST qualification: ignored FILLED_ENABLED_ACTIVE_20261016.md and audit v21.
+All 44 original contribution inputs and eight new actual whole scans PASS.
+All 30 new source poses and eight whole triplets reviewed; NR2 (624,464) is a
+USER-CONFIRMED real downward spike, distinct from the old false effects.
+Prior14 +new30 =44 private opt-in recoveries (42 canonical/10 rooms +2 Flames),
+NOT app gains or room approvals. Original41/601/139/16 guards PASS; FTFA926/928
+zero extras/shifts/wrong, Flames254 exact/19 misses with old42/20/2 errors.
+Unchanged controls use compatible zero-novelty assembly, NOT44 fresh wholes.
+All producers through quiet AC WHOLE12 exec58821 are TERMINAL; do not restart.
+Whole medians: CN3-9 122.501->127.498s (+4.08%), Halls4 57.834->58.675s (+1.46%),
+Golden2 60.313->67.179s (+11.38%), with complete expected output equality.
+Both Golden2 filled samples exceed both defaults; limited sample acknowledged.
+Activation remains HELD/OFF for cost investigation, not silently adopted.
+Audit v21 keeps40 default-qualified/31 pending/ZERO approvals. Continue Halls7
+current safety, independent false conflicts and a compatible frozen reserve;
+full original goal and final71+16 release gates remain OPEN.
+Localhost was found stopped during publication checks and restarted (PID30256)
+with the documented app command. Root/health HTTP200 and loaded/disk fingerprint
+299dac7f89f7279479f46342a9a1ff2eedb7d4f65b1b5a4fba6e972f516843ec match.
+
 NEWEST filled integration checkpoint: ignored FILLED_INTEGRATION_ACTIVE_20261016.md.
 Latest sourceQA/auditv20: all workers TERMINAL/PASS. Four actual opt-in whole
 scans (V2exec10687) retain exact original-input/stage/finalmetadata;three changed

@@ -4,6 +4,50 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Broader filled transfer and current protection qualification
+
+The fixed opt-in component has now been evaluated on all16 exact controls plus
+28 named/challenge ORIGINAL source inputs. Four completed current proofs were
+reused, not rescanned. Existing compact entry bypasses remain explicit; this is
+not qualification of a compact filled model or44 fresh whole scans.
+
+Eight newly changed sets received actual whole scans: Flames+2, NR2+1, CN3-25+1,
+CN3-31+16, Dotkid1+2, Entrance1+1, Entrance2+2 and Halls2+5. Every whole original
+input and complete filled proof matches its source preflight; every old object,
+ordered nongeometry and metadata is retained. All30 new source crops and eight
+current Source/JTool/Blend views were inspected. The user confirmed NR2's new
+downward spike is real; the distinct old decorative effects remain negatives.
+
+Together with the prior14, this is44 opt-in source recoveries across11 changed
+sets:42 in ten canonical rooms, two in the Flames control. It is not44 new
+default/app recoveries or a count of approved rooms. Large inherited terrain,
+compound, direction/phase and marker errors remain visible. No new complete
+per-room error denominator or reserved success is inferred from transfer counts.
+
+The original41 definitions,601 miniblocks,139 terrain footprints,CN3-7 mask,
+Golden7 restorations/coverage and all16 exact bounds pass. Output qualification
+combines actual newly changed wholes with zero-novelty contribution/default-
+assembly compatibility for unchanged cases; it is not a new44-whole sweep.
+FTFA stays926/928 with zero extras/shifts/wrong directions. Flames improves
+252->254 exact and21->19 misses, while42 extras/20 shifts/2 wrong are unchanged.
+
+The read-only protection verifier spent a long interval waiting on file I/O;
+it completed normally without being killed/restarted or changing implementation.
+Twelve quiet AC, fresh-process serial ABBA whole scans now pass complete expected
+map/metadata/warnings/input/project/render equality. Median default -> filled:
+dense CN3-9 122.501 -> 127.498s (+4.08%); sparse Halls4 57.834 -> 58.675s (+1.46%);
+accuracy-positive Golden2 60.313 -> 67.179s (+11.38%). Both Golden2 filled samples
+are slower than both default samples. Two samples per mode are limited evidence, not
+a universal latency estimate; the >5% case keeps activation HELD/OFF. Do not
+substitute helper timing or remove candidate queries to conceal this cost.
+
+Successor audit v21 preserves 40 default-qualified /31 pending /ZERO approvals,
+records the 44 private recoveries separately, and resolves the NR2 semantic
+question without changing any scanner rule. Remaining work includes measured
+cost investigation, Halls7 current safety, independent false-conflict repair,
+a successful compatible reserve and the final stable 71+16 release evidence.
+The original full goal remains active; this is a qualification checkpoint.
+
 ## 2026-10-16 — Current filled integration and border-teacher safety
 
 The fourteen earlier research recoveries remain genuinely missing from the

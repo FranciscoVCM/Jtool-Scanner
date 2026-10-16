@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Current transfer checkpoint (2026-10-16): positives beyond the initial rooms
+
+All44 protected original inputs are accounted for; eight newly changed sets
+have actual whole/preflight proof parity and30 source-reviewed new full spikes.
+Together with14 prior recoveries,42 canonical poses across ten rooms plus two
+Flames reference-exact poses are retained in the opt-in candidate. This includes
+contrasting flat/stone/wire textures, backgrounds and source palettes; it is not
+proof of every unseen sprite/tileset or whole-room correctness. No new reserve
+success/complete per-room error denominator is manufactured from these counts.
+
+All41/601/139 and16 numerical protections pass. Twelve controlled AC whole scans
+retain complete expected outputs. Dense CN3-9 median +4.08%, sparse Halls4 +1.46%,
+positive Golden2 +11.38%; both filled Golden2 samples exceed both defaults.
+The >5% case keeps app activation HELD/OFF pending causal cost investigation;
+the limited timing sample is explicit. Audit v21 retains 40 default-qualified,
+31 pending and ZERO approvals, with private gains separated. Complete Halls7
+current safety, real compound/ownership conflicts and a compatible frozen
+reserve; do not substitute additive transfer counts for the full goal.
+
 ## Current bounded integration (2026-10-16): recover real filled objects safely
 
 Four current original-source stage replays retain14 research recoveries across
