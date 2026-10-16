@@ -83,6 +83,7 @@ class SourceFilledShortCircuitTests(TestCase):
         detailed = recover_source_filled_glyphs(frame,original,short_circuit=False)
         quick = recover_source_filled_glyphs(frame,original)
         self.assertEqual(quick,detailed)
+        self.assertFalse(quick[1]['research_only_not_scanner_bound'])
         self.assertIn(TARGET,quick[0])
         self.assertEqual(original,snapshot)
 

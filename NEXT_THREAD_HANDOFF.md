@@ -6,6 +6,29 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST adoption: ignored FILLED_APP_ACTIVATION_ACTIVE_v1.md and auditv23.
+All cost/test/scan/diagnostic/audit producers TERMINAL. WHOLE12 completePASS:
+Golden2+3.704%,CN3-9+4.257%,Halls4+3.189%, all expected outputs exact; limited
+2samples/mode, NOT zero added cost/universal timing. Do not repeat completed runs.
+Scanner now passes include_filled_glyphs=True ONLY in existing Experimental
+source geometry; standard/compact bypass unchanged, direct APIdefaultFalse.
+Exact scanner single-keyword +filled docs/2deployment-flag AST bridge PASS.
+160testsPASS105.777s; actual UNPATCHED Golden2/CN3-21/Flames/Halls7/Hades and
+canonicalCN3_18 all ENTIRE reviewed map/metadata/project/render/source parity.
+Canonical18 is unchanged and distinct from near-exactcn3-18 control.
+46 reviewed recoveries ENABLED inExperimental (44canonical/11rooms+2Flames),
+NOT standard gains/room approvals. Audit41output-qualified/30pending/ZERO
+correctness approvals; Halls7fixed39->38FAILreserve, all original goal gates OPEN.
+App restartedPID34604,root/health200,loaded==disk
+a984eb37212dac47ba36ca740381d208b0736a40cc4fbc1c3cd6d53fe2dbbf1f.
+Next bounded source identity work: filled-ownership-components-v1.json and
+NEXT_COMPOUND_OWNERSHIP_DIAGNOSTIC_v1.md. Source-only data shows base failures
+despite strong appearance, including two already-correct Golden2 spikes. Do
+not lower thresholds or blanketdelete overlaps; distinguish joint physical
+phase/real attachment and competing triangle/solid/background ownership. No new
+rule evaluated on Halls7. Review/commit/push this checkpoint before new tuning;
+no baseline/archive resweep or goal reset. Older entries below are history.
+
 NEWEST exact-work checkpoint: ignored SHORT_CIRCUIT_ACTIVE_v1.md and audit v22.
 Maintained short_circuit candidate path preserves all hypotheses/teachers,
 complete44 old proofs and EVERY Golden2/Halls7 pass/unknown decision; detailed

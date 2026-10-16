@@ -702,7 +702,7 @@ Relevant component/integration tests:
 python -m unittest tests.test_source_growth_confidence tests.test_source_growth_context tests.test_source_geometry_integration
 ```
 
-### Filled-glyph research (not enabled in the app)
+### Filled-glyph source recovery (experimental)
 
 `scripts/source_filled_pipeline.py` evaluates source-local filled full spikes
 using three disjoint, original-source teachers, RGB appearance and directed
@@ -713,14 +713,16 @@ recorded as repair candidates, not silently emitted or used to delete originals.
 Physical clipping remains unknown, and proposals never become teachers.
 
 The source pipeline exposes `include_filled_glyphs=False` as a strict boolean
-research opt-in. Existing scanner, CLI and app callers leave it disabled; the
-normal and Experimental modes do not gain filled recovery from this API alone.
+ablation option. The final scanner stage explicitly enables it only in
+**Experimental source geometry (slower)** mode, including CLI `--source-geometry`.
+Normal scans do not use it; the existing compact-frame bypass remains unchanged.
 Opt-in evaluation can reuse the original source glyph library, but a legacy
 library with an incompletely observed border teacher is rebuilt through the
 original-frame constructor rather than pruning contributors or relaxing coverage.
 New detections have separate `source_filled_glyph` provenance and retain the
-capture-world transform. Control, reserve, independent source review and whole-
-runtime qualification are still required before app activation.
+capture-world transform. Protected controls, independent source review and whole-
+runtime qualification remain required for changes. Experimental adoption is not
+whole-room certification or proof of arbitrary unfamiliar-sprite accuracy.
 
 The recovery consumer uses `short_circuit=True` to avoid remaining work only
 after an existing required slope predicate is mathematically unable to pass.

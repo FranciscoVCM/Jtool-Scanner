@@ -4,6 +4,46 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Qualified filled recovery enabled in Experimental source mode
+
+The app and CLI now consume filled full-spike recovery through the existing
+Experimental source-geometry mode. Normal scanning and compact-frame bypass are
+unchanged; the lower-level pipeline API still defaults to filled=false.
+The change enables 46 already source-reviewed recoveries: 44 in eleven canonical
+rooms and two in Flames. It does not make those rooms correct or certify unseen
+tilesets. Models still use three disjoint original-source teachers, complete
+physical coverage, directed geometry and RGB appearance, not reference answers.
+
+Twelve fresh-process quiet AC ABBA whole scans retain every corresponding
+expected map/ordered metadata/warning/input/project/render. Medians default ->
+enabled: Golden2 59.913 -> 62.132s (+3.70%); dense CN3-9 121.595 -> 126.771s
+(+4.26%); sparse Halls4 59.102 -> 60.987s (+3.19%). All clear the unchanged 5%
+gate. Added cost and limited two-samples-per-mode variation remain explicit;
+these are not zero-cost or universal latency guarantees. The prior full filled
+path's Golden2 +11.38% is superseded for adoption by the qualified exact shortcut.
+
+Production dispatch differs by exactly one source-stage keyword. The complete
+scanner AST otherwise matches; the filled helper differs only in deployment
+docs/two diagnostic flags. Six actual UNPATCHED scans match the reviewed outputs
+in full: Golden2, CN3-21, Flames, Halls7, Hades and canonical CN3-18 (not the
+near-exact fixture). Canonical18 is unchanged, not a newly claimed repair. Every
+old object/metadata and source finding is retained through complete equality.
+All 160 affected tests pass in 105.777s; no full-suite claim.
+
+Audit v23 has 41 current Experimental outputs qualified /30 pending /ZERO room
+correctness approvals. This is evidence coverage, not 41 solved rooms. Halls7's
+unchanged 61-object scope improves only 39 -> 38 errors and still fails reserve
+criteria. Major false solids/compound/platform errors remain. Original control
+bounds and 41/601/139 protections carry through exact code/proof/map equivalence,
+including fresh Flames/Hades checks; this was not a new 71+16 sweep.
+
+The next source-only diagnostic separates base evidence from appearance failure.
+Two already-correct Golden2 spikes have high appearance matches but weak nominal
+bases; that does not justify lowering the threshold. Next work is joint physical
+phase/independent attachment evidence and triangle-versus-solid ownership with
+complete positive/negative controls. No new predicate was tuned on Halls7.
+The full original goal, compatible-reserve and final stable 71+16 gates stay open.
+
 ## 2026-10-16 — Exact failed-candidate work avoidance, not narrower detection
 
 An actual integrated profile identifies contour work as the main added filled

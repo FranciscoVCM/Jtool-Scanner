@@ -1,5 +1,25 @@
 # Cross-tileset milestone
 
+## Current adopted checkpoint (2026-10-16)
+
+Filled source recovery is enabled ONLY in existing Experimental source geometry;
+normal scanning/compact bypass remain unchanged.46 reviewed recoveries are now
+available (44canonical/11rooms +2Flames), with original teachers/RGB/unknown rules.
+This is a generalized source-local mechanism, not a new per-room tileset table.
+It is not proof of arbitrary future-screen accuracy or a solved71-room corpus.
+
+Quiet AC WHOLE12 passes entire expected outputs with medians+3.70% Golden2,
++4.26% denseCN3-9 and+3.19% sparseHalls4; limited2samples/mode/variation explicit.
+Six actual UNPATCHED dispatches and160tests pass. Exact single-keyword/metadata-
+only bridge carries other qualified outputs, not new scans or visual approvals.
+Auditv23:41output-qualified/30pending/ZEROcorrectness approvals. Halls7 fixed
+39->38 errors still fails reserve; canonical18 is unchanged by this activation.
+
+Next bounded cause: joint physical phase versus genuinely hidden bases, then
+independent triangle/solid ownership for false conflicts. Freeze any new rule
+before reserved evaluation; retain original criteria, Hades/half-wall/rail/text
+protections and final stable71+16. Do not revive rejected BG-connectivity vetoes.
+
 ## Current exact-work checkpoint (2026-10-16)
 
 Avoiding provably irrelevant failed-candidate work preserves all original

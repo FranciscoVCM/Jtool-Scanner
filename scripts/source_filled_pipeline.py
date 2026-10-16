@@ -1,6 +1,6 @@
-"""Research-only source-local filled full-spike recovery.
+"""Source-local filled full-spike recovery for explicit source geometry.
 
-This consumer is intentionally not bound to the scanner or the app. Original
+The final scanner source stage opts in; ordinary standard scans do not. Original
 locators are hypotheses, never coordinate/direction answers. Three disjoint
 source-proved filled teachers, complete physical coverage, directed silhouette
 and a matching original-source appearance model must agree. New proposals never
@@ -226,7 +226,7 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
                            reason='no three independent source-filled teachers',
                            original_teachers_only=True, complete_physical_source_required=True,
                            no_existing_object_retirement=True, no_new_objects_as_witnesses=True,
-                           research_only_not_scanner_bound=True)
+                           research_only_not_scanner_bound=False)
     proposed, proofs = set(), []
     for key in hypotheses:
         proof = evidence.support(key, short_circuit=short_circuit)
@@ -238,4 +238,4 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
     return proposed, dict(accepted=proofs, hypotheses=len(hypotheses), evaluated=len(hypotheses), original_teachers_only=True,
                          same_instance_repair_candidates=alternatives,
                          complete_physical_source_required=True, no_existing_object_retirement=True,
-                         no_new_objects_as_witnesses=True, research_only_not_scanner_bound=True)
+                         no_new_objects_as_witnesses=True, research_only_not_scanner_bound=False)
