@@ -4,6 +4,43 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — All affected compact inputs qualified; whole-cost activation hold
+
+The fixed maintained component is now source-replayed across all 18 non-25x19
+B235 cases: 17 supported 19x13 inputs, including three tracked controls, and one
+unchanged 9x9 bypass. Two already-qualified source proofs were reused through
+complete original metadata/frame/source checks. Only NANG-128r proposes the same
+three real missing tiles; all other inputs add/remove nothing. No predicate,
+teacher or threshold tuning.
+
+Complete upstream scanner AST equality to B235 (only native source dispatch
+changed), the early compact return before changed helpers, an unchanged
+environment and sealed entire-output/artifact/input checks qualify ten more
+canonical outputs without rescanning the baseline. Conservative 71-screen audit
+v17 has 40 qualified outputs, 31 pending, and ZERO room approvals. These are
+strict equality carries, not fresh visual reviews. Every old major/uncertain
+finding remains; qualification does not mean correctness.
+
+NANG-138r has now been evaluated as an affected regression of the already-frozen,
+incompatible full-base component: zero additions and no independent teacher
+model. All human-confirmed A-E striped bands remain SOLID: 45 source tiles,
+nine missing, 36 fixed errors. No reserved success, unseen claim or denominator
+change. Seven roof tiles were unreachable even under optimistic identity.
+
+Eight fresh-process, quiet AC serial ABBA WHOLE scans pass entire corresponding
+maps, ordered metadata, warnings, inputs, projects, render bytes and source proofs.
+NANG-128r: baseline median 26.127s, candidate 29.758s (+13.90%). NANG-138r:
+26.086s -> 30.399s (+16.53%). Activation is HELD because both exceed 5%; the APIs
+remain unbound and the app/default unchanged. These compact timings do not
+replace the required dense/sparse runtime contract.
+
+Profiling isolates original-neighborhood contour work. Exact physical derivative
+probe duplicates reach 46.1%/48.8% with 4,096 entries in a diagnostic observation;
+complete source proofs stay identical. This is cache POTENTIAL, not an implemented
+optimization or speed claim. Next: exact scan-local evidence reuse with complete
+proof parity, not fewer teachers or suppressed real queries. Independent
+connected-band/minibase identity and all full-goal gates remain open.
+
 ## 2026-10-16 — Maintained compact-source APIs and actual whole-pilot qualification
 
 The qualified compact frame/query prototype now has maintainable read-only APIs:

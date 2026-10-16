@@ -1,5 +1,19 @@
 # Cross-tileset milestone
 
+## Current qualification (2026-10-16): compact identity gain held for cost
+
+The maintained compact source query APIs are still UNBOUND. All 18 affected
+compact inputs are source-qualified, with only the three real NANG-128r tile
+additions. Audit v17 has 40 qualified outputs, 31 pending, 0 approvals; ten new
+qualifications are strict complete-output/AST equality carries, not fresh reviews
+or accepted rooms. NANG-138r's human-confirmed striped solids remain missing;
+the fixed full-base candidate adds nothing and is not a reserved success.
+Eight quiet AC whole scans preserve expected outputs but cost 13.90%/16.53% more.
+Hold activation; test exact scan-local evidence reuse before accepting overhead.
+Do not narrow source teachers, drop queries or change source truth to force a
+speed pass. Source identity, query coverage and runtime are separate gates.
+See current progress/handoff and ignored conservative 71-screen audit v17.
+
 ## Current direction (2026-10-16): query coverage is not object identity
 
 Keep the active original GOAL_PLAN requirements and B235 baseline. The qualified

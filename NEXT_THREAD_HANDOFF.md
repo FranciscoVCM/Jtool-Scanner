@@ -6,6 +6,20 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST affected/cost checkpoint: ignored audit v17 has 40 qualified outputs,
+31 pending, 0 approvals. Ten new qualifications are strict sealed whole-output/
+source/environment + upstream AST/early compact-return equality carries, not
+new visual reviews. All 18 compact inputs accounted for; only NANG-128r adds the
+same three real tiles. NANG-138r's fixed incompatible regression adds nothing:
+no independent model; all A-E striped bands SOLID, nine missing tiles, 36 errors.
+Eight quiet AC whole ABBA scans TERMINAL/PASS output checks, but cost increases
+13.90%/16.53%: activation HELD. App/default/runtime unchanged; APIs UNBOUND.
+Exact physical-probe duplicates (46.1%/48.8%) are cache potential, not a speedup.
+Read ignored NEXT_COMPACT_COST_BATCH_v1.md and COMPACT_AFFECTED_ACTIVE_20261016.md,
+then 71-screen-general-recognition-checkpoint-v17.md/json. All producers TERMINAL;
+no completed scan/baseline/archive resweep. All original numerical, positive,
+negative, reserve, protection, final 71+16 and six-gate requirements remain ACTIVE.
+
 NEWEST maintained compact checkpoint: two read-only public APIs are now present
 in scripts/source_grid_frame.py and source_compact_rectangles.py,NOT app-bound.
 13frame+17query/context portable tests;76affected total PASS16.225s. Exact two-

@@ -24,6 +24,17 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Latest affected/cost qualification (2026-10-16): 18 compact inputs accounted for,
+with only the existing three NANG-128r gains. Ten additional unchanged canonical
+outputs qualify through sealed whole-output/upstream AST/early compact-return
+equality, NOT new visual reviews. Audit v17: 40 qualified, 31 pending, 0 approvals.
+NANG-138r's fixed incompatible candidate was evaluated as a regression: zero
+additions; all A-E striped solids/nine missing tiles/36 errors remain. No reserved
+win or retuning. Eight quiet AC whole ABBA scans pass output checks but show
+13.90%/16.53% overhead: activation HELD. Components remain UNBOUND; app/default
+unchanged. Exact-probe reuse is an optimization hypothesis, not a speedup.
+Preserve full neighborhoods, fallbacks, unknowns and all original six gates.
+
 Latest maintained implementation (2026-10-16): explicit grid-frame and rectangle
 query APIs are qualified but UNBOUND. Thirty new portable tests and76 affected
 tests pass. Two original-source replays preserve complete frame/query/model

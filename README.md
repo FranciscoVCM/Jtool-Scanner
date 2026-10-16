@@ -414,6 +414,12 @@ cases may leave model proof `None`: unperformed work is not negative evidence.
 These APIs return hypotheses only. They do not edit maps or activate the app's
 compact source stage; broader controls, runtime and binding remain pending.
 
+Current qualification: all 18 compact corpus inputs are accounted for (17 source
+replays plus an unchanged 9x9 scope bypass); only three source-proved NANG-128r
+tiles change. Eight quiet AC whole scans preserve expected outputs but add
+13.90%/16.53% scan time on the positive/negative cases. Activation is held pending
+cost reduction; these components are still not used by the webapp.
+
 ### Read-only capture-aware hollow glyph evidence
 
 `scripts/source_sampling.py` provides `SourceFrame`: a frozen physical RGB crop,
