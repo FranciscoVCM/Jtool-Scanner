@@ -4,6 +4,44 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Current whole-cache hold and original material-identity diagnosis
+
+Twelve fresh-process, quiet AC serial ABBA whole scans qualify the maintained
+4,096-entry cache consumer against the current baseline, two samples per mode
+and source. All maps, ordered metadata, warnings, inputs, frames, projects,
+render bytes and complete source proofs match their qualified expected outputs.
+NANG-128r medians: 27.373 -> 31.501s (+15.08%); NANG-138r: 28.977 -> 31.611s
+(+9.09%); protected NANG-130r: 24.280 -> 25.059s (+3.21%). Timing varies and the
+sample is limited; the two persistent >5% cases keep activation HELD. The prior
+helper saving is not a whole-scan acceptance or an isolated cache speed claim.
+App/native cache defaults remain zero; the compact repair is still unbound.
+
+Two timing-launcher bookkeeping failures occurred before any samples: a renamed
+existing reference path and a parent-only guard accidentally running in a child.
+Both are preserved. A direct coordinator replaced layered rewriting; no detector,
+teacher, threshold or source-label changes, and no completed samples repeated.
+
+An actual transparent Halls3 whole trace now captures ORIGINAL repeated-material
+learner inputs, working RGB, all 1,900 cells, 55 support probes, cluster centers,
+votes, selected profile and replacement input/output. It reproduces the entire
+qualified ordinary map/metadata/project/render output and genuine before-source
+ScanResult. It is an observed scan, not an unpatched scan or timing measurement.
+
+The two frozen false sky blocks are absent before replacement and introduced by
+the learned profile. All 16 frozen real blocks and both false blocks have every
+quarter assigned to the same selected color cluster. That cluster receives
+45/55 support votes; 55 raw full blocks become a profile with 116 candidates.
+This proves nearest-color membership is not object identity; it does not prove
+all raw support spikes correct or justify deleting unknown/texture-weak objects.
+The four real texture-weak solids and prior Hades losses remain explicit guards.
+
+Next: bounded independent rectangle/background/compound identity evidence,
+preserving complete positives, then current qualification of the existing 14
+research filled recoveries across two visual families. No hue-specific rule,
+unknown-as-empty shortcut, teacher narrowing or reserve retuning. Audit v19
+retains 40 output-qualified/31 pending/zero approvals; Halls3 is diagnosed, NOT
+fixed. Original recovery/conflict/reserve/control/runtime/final71+16 gates remain.
+
 ## 2026-10-16 — Optional exact physical-probe reuse; defaults unchanged
 
 The private bounded-cache hypothesis preserves complete source proofs and saves

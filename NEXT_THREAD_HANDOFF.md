@@ -6,6 +6,22 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST whole-cost/identity checkpoint: all workers TERMINAL. Maintained4096 whole
+ABBA12 passes complete outputs/proofs, but costs +15.08% NANG-128r/+9.09%138r/
++3.21% protected130r. Activation still HELD, cache defaults0/app disabled, compact
+consumer UNBOUND. Two bookkeeping failures before any sample are preserved;
+direct V3 ran the 12 samples without repeating completed scans.
+New Halls3 original-learner trace has full ordinary-output/genuine-source-input
+parity: 1,900 cells, 55 probes, 45 selected votes, 116 profile fulls vs 55 raw.
+All 16 real/2 false frozen blocks share the same color cluster. Both exact false
+sky poses are absent before replacement and introduced by its profile. NOT fixed.
+Read ignored Halls3-original-learner-causal-summary-v1.json, audit v19 and
+NEXT_SOURCE_IDENTITY_BATCH_v2.md. Next is independent object/background/compound
+identity evidence, not another marginal cache variation or tighter hue rule.
+Keep four real texture-weak positives, Hades/occlusion guards and existing 14
+filled recoveries (research, not shipped). Full original six-gate goal ACTIVE;
+40 output-qualified/31 pending/0 room approvals, no archive/baseline resweep.
+
 NEWEST optional-cache checkpoint: SourceContours and SourceRectangleContext now
 support bounded exact physical-probe reuse, default ZERO/disabled. Eight new
 portable tests; 109 affected tests PASS 69.741s. All 18 compact inputs qualify:

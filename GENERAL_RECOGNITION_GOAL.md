@@ -24,6 +24,15 @@ The central distinction is **appearance versus identity versus placement**:
 
 ## Starting evidence and honest status
 
+Latest evidence (2026-10-16): maintained4096 whole ABBA12 retains all outputs but
+costs +15.08%128r/+9.09%138r/+3.21% protected130r, so activation remains held.
+An exact ordinary-output-equivalent original Halls3 learner trace proves both
+false sky blocks are newly emitted by a color cluster shared with all 16 frozen
+real blocks. Next independent source object/background/compound identity, keeping
+texture-weak real solids and Hades guards; no tighter hue or unknown-as-empty.
+Existing 14 filled recoveries remain research requiring current qualification.
+Audit v19: 40 output-qualified, 31 pending, zero approvals. Full goal unchanged.
+
 Latest cost component (2026-10-16): optional exact scan-local physical-probe
 reuse is maintained but defaults disabled in all app/native callers. Eight new
 portable tests and 109 affected tests pass. Complete default contour math/control

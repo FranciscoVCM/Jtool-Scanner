@@ -416,9 +416,10 @@ compact source stage; broader controls, runtime and binding remain pending.
 
 Current qualification: all 18 compact corpus inputs are accounted for (17 source
 replays plus an unchanged 9x9 scope bypass); only three source-proved NANG-128r
-tiles change. Eight quiet AC whole scans preserve expected outputs but add
-13.90%/16.53% scan time on the positive/negative cases. Activation is held pending
-cost reduction; these components are still not used by the webapp.
+tiles change. Twelve current quiet AC whole scans with the explicit cache below
+preserve expected outputs, but add 15.08%/9.09% on NANG-128r/138r and 3.21% on
+protected NANG-130r. Activation remains held; the compact repair is not used by
+the webapp. These measurements do not replace the native dense/sparse contract.
 
 For explicit experiments, `SourceRectangleContext(..., probe_cache_limit=4096)`
 can reuse exact contour derivative probes. The default is `0` (disabled), also

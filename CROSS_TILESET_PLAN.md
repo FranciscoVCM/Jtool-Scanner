@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Current priority (2026-10-16): mean-color membership is not object identity
+
+Actual original Halls3 learner/replacement provenance reproduces the entire
+ordinary output. Both false sky blocks are introduced by the material profile;
+all 16 frozen real blocks and both false blocks share its selected color cluster.
+The cluster gets 45/55 support votes. This is a measured color-aliasing cause,
+not a reason to add room colors, delete texture failures or call unknown empty.
+Next independent rectangle/background/compound evidence must retain all positives,
+four texture-weak real blocks, Hades and genuine partial occlusions. Requalify
+the existing 14 filled source recoveries rather than substituting suppression.
+
+Maintained cache whole ABBA12 passes output checks but adds 15.08%/9.09% on
+128r/138r, 3.21% on protected130r. App/cache/compact activation stays held/default
+disabled. Stop iterating this cache hypothesis for now; source identity is the
+higher-value next causal batch. Audit v19 remains 40 qualified/31 pending/zero
+approvals; all original positive/multi-family/reserve/protection/release gates stay.
+
 ## Current cost component (2026-10-16): exact reuse without narrower recognition
 
 Bounded per-source physical derivative-probe reuse is now explicit and opt-in;
