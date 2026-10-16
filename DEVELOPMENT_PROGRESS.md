@@ -4,6 +4,33 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Background-role experiment held: no geometry gain
+
+A source-only diagnostic groups independently verified original glyph exterior
+samples rather than lowering per-colour vote thresholds. Six development and
+two causal source checks preserve the original foreground calibration and all
+teachers. Eight portable source tests pass: five split-brightness positives
+(including polarity, channel, dimming and fractional-capture variants), with
+unrelated-colour, duplicate-locator and foreground counterexamples abstaining.
+These are component checks, not a new scanner test-suite run or unseen-sprite proof.
+
+Supplemental background roles become available in Halls3 and the already-exposed
+Halls7. Applying them to the frozen dense ownership diagnostic examines all
+167 Halls3 and 73 scoped Halls7 original block/full-spike candidates, but permits
+ZERO removals. Halls3's fixed upper17 remains 16 exact/two errors with all
+10,240 solid pixels retained; Halls7's corrected61 remains 52 exact/37 errors
+with all 33,280 solid pixels retained. Neither is a new reserved success.
+Both false Halls3 sky blocks still resemble the selected foreground material;
+background vote fragmentation is not their complete cause.
+
+No recognition code, thresholds, fixtures, projects or app behavior changed.
+Do not bind this experiment, loosen its dense-pixel safety rules, or count role
+availability as accuracy improvement. Next work must distinguish source-local
+object/terrain evidence from colour membership and diagnose the remaining
+ownership conflicts. Golden5/NANG138r remain unevaluated for this mechanism.
+The existing 71-room audit remains 41 output-qualified/30 pending/ZERO room
+approvals; all original milestone gates stay open.
+
 ## 2026-10-16 — Qualified coherent phase enabled in Experimental source mode
 
 The scanner now requests coherent filled phase only through its existing

@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest research checkpoint (2026-10-16): role cohorts held, not adopted
+
+Frozen original-source witness cohorts pass eight portable source challenges and
+eight real-source observations, without changing foreground calibration, teachers
+or per-cluster thresholds. They supply additional background evidence in Halls3
+and former Halls7, but the unchanged dense ownership safety rules allow no removal
+among 240 original candidates. Fixed errors remain Halls3 two/Halls7 37, with
+all frozen source-positive terrain retained. No geometry gain, new reserve success
+or scanner activation is claimed. Colour-role availability alone does not solve
+object identity, particularly Halls3's foreground-coloured sky aliases.
+
+Preserve these negative results; do not continue threshold-loosening iterations.
+Next investigate source-local object/terrain support and ownership causes before
+a new compatible reserve. Golden5/NANG138r remain unevaluated for this mechanism.
+Runtime and all adopted gains below are unchanged; zero whole-room approvals.
+
 ## Latest adopted checkpoint (2026-10-16): coherent source phase enabled
 
 Experimental source geometry now requests the qualified joint phase. Lower APIs

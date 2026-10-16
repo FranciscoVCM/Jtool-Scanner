@@ -6,6 +6,18 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST research: BACKGROUND_COHORT_ACTIVE_v1.md and successor auditv26. All
+source observers are TERMINAL; NO runtime change. Eight portable source tests
+and eight real-source observations qualify supplementary BG evidence, but the
+frozen ownership diagnostic removes nothing from167 Halls3/73 Halls7 original
+candidates. Halls3upper17 remains16exact/twoerrors; Halls7fixed61 remains
+52exact/37errors. Source-solid denominators10240/33280 fully retained.
+This is a held negative result, not progress in object accuracy or a new reserve.
+Halls3's false sky is foreground-coloured: global colour roles are insufficient.
+Next inspect source-local terrain/object support and remaining ownership causes;
+no V7 threshold loosening or production binding. Golden5/NANG138r remain
+unevaluated for this mechanism. App/runtime/adopted gains below unchanged.
+
 NEWEST adoption: JOINT_PHASE_ACTIVATION_ACTIVE_v1.md and auditv25. All timing,
 protection/test/whole/audit producers TERMINAL/PASS. Pipeline jointFalse remains
 the API default; scanner requestsTrue only in existing Experimental source mode.
