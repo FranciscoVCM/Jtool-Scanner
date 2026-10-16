@@ -6,6 +6,29 @@ branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
 
+NEWEST component: ignored JOINT_PHASE_ACTIVE_v1.md; successor auditv24.
+Read that before the older activation notes. Filled helper has a strict opt-in
+joint_phase=False API; scanner/app do NOT request it. Existing Experimental
+filled46 recovery stays on; normal/compact behavior unchanged. Default-false
+ENTIRE helper AST matches published0403216 after only the new method/unused
+cache/switch are removed; other80 runtime files equal. All45 original proofs
+pass.170 affected testsPASS112.769s, not full suite.
+
+Three actual research whole scans/source QA validate5 PRIVATE full spikes:
+CN3-19+2,CN3-21+2,Halls7+1. All old metadata/solid occupancy retained. Halls7
+unchanged corrected61:51->52exact,38->37errors; only5.13% versus B23539, still
+FAILreserve. No new reserve tuning/room approvals/universal accuracy claim.
+Ownership V2 corrects the observer's original block/material contract; V3 tries
+independent source rectangles/repeated source artwork. Both still permit ONLY
+one hypothetical false-spike removal; no deletion adopted/unknown guard relaxed.
+
+Poll actual handles in the active note before runtime/HEAD edits; never restart
+completed whole/preflight cases after reporting-only errors. The five private
+gains need controlled incremental whole cost and explicit protection closure
+before app binding. Continue independent false-conflict/source-identity work,
+not another additive-only completion claim. All original six goal gates and
+final stable71+16 remain open; no baseline or archive resweep.
+
 NEWEST adoption: ignored FILLED_APP_ACTIVATION_ACTIVE_v1.md and auditv23.
 All cost/test/scan/diagnostic/audit producers TERMINAL. WHOLE12 completePASS:
 Golden2+3.704%,CN3-9+4.257%,Halls4+3.189%, all expected outputs exact; limited

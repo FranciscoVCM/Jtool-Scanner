@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Latest opt-in evidence (2026-10-16): joint physical phase, NOT app activation
+
+A known weak base can now require complete geometry AND RGB at one coherent
+source-pixel-bounded phase, without weakening nine-support/.9/three-original-
+teacher requirements or shifting the native hypothesis. Strict opt-in defaults
+false; nominal positive proofs, original teachers and instance guards remain.
+All45 original contributions preserve default proofs;170 affected tests pass.
+Three actual whole scans/source review validate five PRIVATE full-spike gains:
+CN3-19 two, CN3-21 two, Halls7 one. No terrain/old metadata is lost. Current
+Halls7 fixed61 improves38->37errors, only5.13% versus B23539: reserve stillFAILS.
+Other inherited major errors and the full original milestone criteria remain.
+
+The app retains the adopted filled path below, NOT these extra five. Incremental
+joint whole cost/protected-group closure precedes activation. Ownership observers
+still yield only one hypothetical false-conflict removal, with no deletion rule
+adopted. Do not replace the required conflict/reserve work with additive counts
+or infer unseen-sprite/general room correctness from these examples. Successor
+audit distinguishes default equality carry from private fresh whole/source QA.
+
 ## Current adopted checkpoint (2026-10-16)
 
 Filled source recovery is enabled ONLY in existing Experimental source geometry;

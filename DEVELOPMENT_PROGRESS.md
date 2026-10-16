@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-16 — Coherent physical-phase prototype; five private source recoveries
+
+An explicit `joint_phase=False` filled-recovery option now separates a weak
+nominal base from an actually missing base. It preserves nominal positives and
+unknowns verbatim. Only a known weak base with both existing directed slopes,
+an appearance match and three original filled teachers may search the other
+eight one-physical-pixel phases. The complete silhouette and RGB signature must
+agree at the SAME phase. Native hypotheses, teachers, thresholds and the existing
+apex/instance guard stay unchanged; no original object is retired.
+
+All 45 original contribution inputs retain their entire default filled proofs,
+including the compact early bypass. Only CN3-19 (+2), CN3-21 (+2) and Halls7 (+1)
+gain opt-in proposals. Three actual whole scans confirm exactly those additions,
+every old detection's metadata and unchanged solid occupancy. All five source
+crops and three current Source/JTool/Blend views were reviewed. Existing major
+block/compound/direction/platform errors remain; these are not solved rooms.
+
+Halls7's unchanged corrected 61-object scope improves 51 -> 52 exact /38 -> 37
+errors. The 39-error B235 denominator stays fixed: this is only a 5.13% reduction,
+still FAILING the reserved success requirement. No reserve tuning followed.
+The other rooms' gains do not establish a complete-room error denominator.
+
+170 affected tests PASS in 112.769s, including ten new phase/coherence/cache/
+teacher/crop/RGB/scale tests. Contour-arbitration unit tests explicitly mock the
+isolated weak-base condition; real source transfer supplies the five recovery
+examples. Simple synthetic one-pixel translations already passed nominal logic
+and are not counted as new recoveries. This is not a full-suite run.
+
+Default-false specialization matches the ENTIRE previously published helper AST
+after removing only the new method/unused cache/switch; all other runtime files
+match. The app does NOT request joint phase. Existing Experimental filled
+recovery remains enabled, normal scanning and compact bypass remain unchanged.
+New joint-phase whole latency and explicit protected-group closure are still
+required before binding it; private gains are not additional app gains.
+
+Separately, correcting the ownership observer's block-teacher inputs and testing
+independent rectangles/repeated original artwork still permits only one safe
+hypothetical Golden2 false-spike removal. No deletion rule was enabled or unknown
+pixel/partial-occlusion/marker guard relaxed to force four corrections. This
+negative result constrains the next source-identity batch, not the goal's scope.
+The conservative successor audit keeps all major findings and zero approvals;
+the full original conflict/reserve/runtime/final71+16 gates remain open.
+
 ## 2026-10-16 — Qualified filled recovery enabled in Experimental source mode
 
 The app and CLI now consume filled full-spike recovery through the existing

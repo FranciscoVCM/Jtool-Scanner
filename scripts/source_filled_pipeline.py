@@ -63,6 +63,7 @@ class FilledGlyphEvidence:
         self.library = source_library
         self._qualified_models = {}
         self._results = {}
+        self._joint_results = {}
         self._apex_results = {}
 
     def has_qualified_model(self):
@@ -122,6 +123,70 @@ class FilledGlyphEvidence:
             else:
                 return deepcopy(result)
         return deepcopy(self._results[key])
+
+    def support_joint_phase(self, key, *, short_circuit=False):
+        """Resolve a known weak base at one coherent physical source phase.
+
+        Nominal positives and unknowns are unchanged. This is not a wider pose
+        search: both original slopes and an original appearance model must
+        already agree. A fallback needs the ENTIRE same-phase silhouette and
+        RGB signature, with the same frozen original teachers and thresholds.
+        The native hypothesis is not shifted and no original object is retired.
+        """
+        nominal = self.support(key, short_circuit=short_circuit)
+        key = tuple(key)
+        if nominal['passed'] or nominal['unknown']:
+            return nominal
+        if key in self._joint_results:
+            return deepcopy(self._joint_results[key])
+        shape = nominal.get('silhouette', {})
+        slopes, base = shape.get('slopes', ()), shape.get('raw_base')
+        rectangle = shape.get('competing_rectangle_faces', ())
+        if (len(slopes) != 2 or any(row['support'] < 9 or row['unknown'] for row in slopes)
+                or not base or base[1] or base[0] >= 9
+                or not rectangle or min(rectangle) >= 9):
+            return nominal
+        appearance = self.library.support(*key)
+        if not appearance['passed'] or not self._teachers(appearance['model']):
+            return nominal
+        kind, x, y = key
+        px, py = self.frame.pitch
+        for dx in (0, -px, px):
+            for dy in (0, -py, py):
+                if (dx == 0 and dy == 0) or not self.frame.rectangle_available(
+                        x+dx, y+dy, 32, 32, margin=4):
+                    continue
+                phased = self.library.filled.evidence(kind, x+dx, y+dy,
+                                                      short_circuit=short_circuit)
+                if not phased['passed']:
+                    continue
+                signature = self.library.signature(kind, x+dx, y+dy)
+                best = None
+                for model in self.library.models:
+                    if model['native_size'] != 32:
+                        continue
+                    score = sum(a*b for a, b in zip(signature, model['signature']))
+                    if best is None or score > best[0]:
+                        best = score, model
+                if best is None or best[0] < .9:
+                    continue
+                score, model = best
+                teachers = self._teachers(model)
+                if not teachers:
+                    continue
+                result = dict(passed=True, unknown=False, silhouette=phased,
+                    appearance=dict(passed=True, correlation=score,
+                        model={k:v for k,v in model.items() if k != 'signature'},
+                        query_phase=[dx, dy], native_size=32,
+                        bounded_by_one_original_source_pixel=True,
+                        original_source_witnesses_only=True),
+                    independent_filled_teachers=teachers, original_teachers_only=True,
+                    complete_physical_source=True, nominal_failure=nominal,
+                    joint_source_phase=[dx, dy], same_phase_geometry_and_RGB=True,
+                    native_hypothesis_unchanged=True)
+                self._joint_results[key] = result
+                return deepcopy(result)
+        return nominal
 
     def apex_support(self, key):
         """Known local RGB around an apex, used only to distinguish instances.
@@ -213,10 +278,13 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 
 
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
-                                 terrain_neighbors=True, short_circuit=True):
+                                 terrain_neighbors=True, short_circuit=True,
+                                 joint_phase=False):
     """Return new source-proved full poses and proofs; never remove originals."""
     if not isinstance(short_circuit, bool):
         raise ValueError('Filled short-circuit flag must be a boolean')
+    if not isinstance(joint_phase, bool):
+        raise ValueError('Joint phase flag must be a boolean')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
@@ -229,7 +297,8 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
                            research_only_not_scanner_bound=False)
     proposed, proofs = set(), []
     for key in hypotheses:
-        proof = evidence.support(key, short_circuit=short_circuit)
+        proof = (evidence.support_joint_phase(key, short_circuit=short_circuit) if joint_phase
+                 else evidence.support(key, short_circuit=short_circuit))
         if proof['passed']:
             proposed.add(key)
             proofs.append(dict(key=key, evidence=proof))
