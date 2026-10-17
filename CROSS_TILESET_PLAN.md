@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Latest component (2026-10-17): unbound local terrain identity observer
+
+`source_repeated_identity` has no scanner caller/removal API. It combines existing
+intrinsic block geometry, coherent source rectangles and independently verified
+original glyph backing; unsupported means abstention, not empty background.
+104 focused tests pass (15 new portable tests), with five actual original-source
+observations and all previous runtime/dispatch bytes unchanged. The unsafe
+closure/backing-only idea is rejected by 7168/8192 real source-positive losses
+in Halls5/NR1. Intrinsic geometry protects these counterexamples without tuning.
+
+The observer exposes two Halls3 and three current Golden7 full-block conflicts,
+NOT adopted corrections. Two Golden7 contexts include nearby spike artwork;
+never label their entire crop or hidden terrain background. Next qualify MATCHING
+source-local negative/continuity evidence with these new bare/hook protections,
+not unsupported-as-empty deletion. Actual whole outputs/QA/protections/cost/new
+compatible reserve still precede binding. All six original gates remain open;
+41 outputs qualified/30 pending/ZERO room approvals, no new baseline sweep.
+
 ## Latest research checkpoint (2026-10-16): role cohorts held, not adopted
 
 Frozen original-source witness cohorts pass eight portable source challenges and

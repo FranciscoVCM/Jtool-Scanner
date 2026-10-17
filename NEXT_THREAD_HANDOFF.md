@@ -1,10 +1,22 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-16. Continue in the existing repository at
+Updated 2026-10-17. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
+
+NEWEST component: REPEATED_IDENTITY_ACTIVE_v1.md / REPEATED_IDENTITY_SOURCE_QA_v1.md
+and auditv27. New public source_repeated_identity is READ-ONLY/UNBOUND; no removal
+API/caller.104focused testsPASS35.210s incl15portable; five actual original-source
+observations preserve metadata. All previous runtime/dispatch bytes unchanged.
+Closure/backing-only admission is REJECTED by7168Halls5/8192NR1real-pixel losses.
+Existing intrinsic block geometry rescues both without threshold tuning. The new
+observer identifies two Halls3/three current Golden7 conflicts, not adopted fixes.
+Source QA: two Golden7 contexts include spike artwork; do NOT label full crops
+empty or infer hidden terrain. Next independently MATCHING local negative evidence,
+using the protected hook/bare islands; no unsupported-as-empty retirement.
+Whole map/protection/cost/newcompatible reserve/binding/fullgoal still pending.
 
 NEWEST research: BACKGROUND_COHORT_ACTIVE_v1.md and successor auditv26. All
 source observers are TERMINAL; NO runtime change. Eight portable source tests

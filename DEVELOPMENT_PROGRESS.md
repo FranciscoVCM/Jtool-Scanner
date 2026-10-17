@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-17 — Local terrain identity observer; no detector activation
+
+Added `scripts/source_repeated_identity.py`, a read-only source-evidence API.
+It combines the unchanged intrinsic block classifier with coherent rectangle
+closure and verified ORIGINAL glyph-backing evidence for repeated-material
+components. Mixed phases use actual footprint connectivity; clipped context
+and original nongeometry overlap remain abstentions. No generated teachers,
+palette/room/coordinate rules, map mutation or scanner caller was introduced.
+An unsupported component is explicitly NOT proof of empty background.
+
+All 104 focused tests pass in 35.210s, including 15 new portable checks for
+palette/polarity/channel/brightness/fractional scale, real rectangle and original
+backing channels, duplicate witnesses, clipping, transforms and source identity.
+This is not a full-suite run. Five sealed actual original-source observations
+retain all original metadata. Existing runtime files and detector dispatch are
+unchanged; this new observer is not used by app scanning.
+
+The earlier closure/backing-only classifier is rejected: despite removing two
+Halls3 sky blocks, it would lose 7,168 real Halls5 hook pixels and 8,192 real
+NR1 island pixels. Existing intrinsic geometry supplies those missing positives
+without lowering any threshold. The combined observer leaves all repeated
+terrain in Halls4/Halls5/NR1 supported or explicitly uncertain. It isolates the
+two existing Halls3 sky conflicts and three currently surviving Golden7 conflicts
+for further testing. Source crop review finds nearby spike artwork in two
+Golden7 contexts: these are NOT five wholly empty rectangles or adopted removals.
+
+No source-local negative/continuity rule is enabled. Independent negative proof,
+whole-map/protection/latency checks and a compatible reserved evaluation remain
+necessary before binding. Per-room audit stays 41 output-qualified/30 pending/
+ZERO correctness approvals; no new 71-room sweep or goal-completion claim.
+
 ## 2026-10-16 — Background-role experiment held: no geometry gain
 
 A source-only diagnostic groups independently verified original glyph exterior
