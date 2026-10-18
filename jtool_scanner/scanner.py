@@ -82,7 +82,7 @@ DEFAULT_SCAN_GRID_STEP = 8
 # Only proven ORIGINAL source-mode callers can enable the opt-in lower API.
 _SOURCE_REPEATED_IDENTITY_ENABLED = True
 # Keep capture-base adoption separate from its qualified source-evidence API.
-_CAPTURE_BASE_CONTEXT_ENABLED = False
+_CAPTURE_BASE_CONTEXT_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,

@@ -6,6 +6,8 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from jtool_scanner import scanner
+from jtool_scanner.geometry import Box
+from jtool_scanner.image import RGBImage
 from scripts import source_filled_pipeline as filled
 from scripts.source_geometry_pipeline import source_proposals
 from tests.test_source_capture_base import TARGETS, edge_scene
@@ -97,8 +99,8 @@ class CaptureBasePipelineRoutingTests(TestCase):
         self.assertEqual(diagnostic['source_filled'], proof)
         self.assertEqual(self.detections, before)
 
-    def test_actual_scanner_consumer_default_off_and_only_final_source_call(self):
-        self.assertIs(scanner._CAPTURE_BASE_CONTEXT_ENABLED, False)
+    def test_actual_scanner_consumer_enabled_and_only_final_source_call(self):
+        self.assertIs(scanner._CAPTURE_BASE_CONTEXT_ENABLED, True)
         tree = ast.parse(inspect.getsource(scanner._apply_source_geometry))
         call = next(n for n in ast.walk(tree) if isinstance(n, ast.Call)
                     and isinstance(n.func, ast.Name) and n.func.id == 'source_proposals')
@@ -108,3 +110,20 @@ class CaptureBasePipelineRoutingTests(TestCase):
         self.assertEqual([k.value for k in expansion.body.keys], ['include_filled_capture_base'])
         self.assertEqual([v.value for v in expansion.body.values], [True])
         self.assertEqual(expansion.orelse.keys, [])
+
+    def test_actual_final_call_routes_enabled_and_explicit_bypass(self):
+        image = RGBImage(800, 608, bytes(800*608*3))
+        for enabled in (True, False):
+            with self.subTest(enabled=enabled), \
+                 patch.object(scanner, '_CAPTURE_BASE_CONTEXT_ENABLED', enabled), \
+                 patch('scripts.source_geometry_pipeline.source_proposals',
+                       return_value=(set(), set(), {})) as proposal:
+                result = scanner.ScanResult(800, 608, Box(0, 0, 800, 608), [],
+                                            source_grid=(25, 19))
+                scanner._apply_source_geometry(result, image)
+            proposal.assert_called_once()
+            if enabled:
+                self.assertIs(proposal.call_args.kwargs['include_filled_capture_base'], True)
+            else:
+                self.assertNotIn('include_filled_capture_base', proposal.call_args.kwargs)
+            self.assertEqual(result.detections, [])

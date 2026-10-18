@@ -13,7 +13,48 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Newest continuation: timing complete; activation still pending
+### Newest continuation: tested capture-base recovery activated
+
+The actual Experimental source consumer is now ON; lower APIs remain default
+OFF. Activation changes exactly one runtime boolean from `072a125`; the entire
+scanner AST is identical when that assignment is reverted, with every other
+runtime byte unchanged. No classifier/query/teacher/model/threshold tuning.
+156 UNIQUE affected tests pass in 71.445s, including all four clipped-body
+adversaries and actual enabled/explicit-bypass final-call routing. Not a full suite.
+
+Two ACTUAL UNPATCHED whole scans reproduce every reviewed expected artifact,
+source/crop/options/grid/warning and old ordered metadata, adding only real
+Golden2 Up(48,576) and CN3-19 Left(768,128). Independent whole/all-delta visual
+QA is equality-carried, not freshly repeated. The ENTIRE original numerical
+41-group / 601-miniblock / 139-terrain / 16-control evaluator passes with no
+failures. FTFA926/928zeroextra/shift/wrong; Flames254exact/19miss/42extra/20shift/2wrong.
+The previously completed cost12 experiment remains valid by the one-constant
+bridge: +1.36% Golden2, +0.98% dense9, -0.10% sparseH4; no >5%hold, limited evidence.
+
+Read ignored `capture-base-activation-qualification-v1.json`,
+`capture-base-activation-wholes-v1.json`, `capture-base-activation-protections-v1.json`
+and `71-screen-general-recognition-checkpoint-v35.md`/JSON in the goal folder.
+The current publication/app/Git receipt is `capture-base-activation-publication-v1.json`,
+NOT an older OFF receipt carried in historical audit fields. Use its exact HEAD
+and loaded/disk app parity, plus actual Git/process state. All producers are terminal.
+
+Auditv35 keeps 41 qualified current outputs / 30 pending / ZERO room approvals:
+two fresh unpatched scans, 39 fully qualified equality carries. Golden2 fixed37
+is now37exact/6errors; all six oldextras/28672positive solid pixels remain.
+CN3-19 still has major errors. Previous51 + new2 =53 enabled source recoveries;
+five earlier false-block corrections remain. Golden5 new reserve FAILED (zero
+novelty/17same); Halls7 prior failed result unchanged. No new reserve success.
+
+NEXT distinct causal batch: inspect current source-grounded missing terrain
+and compound triangle/rectangle ownership in CN3-19 and Golden2, then select a
+genuinely different shared cause only after reading the held ownershipV1-V6
+evidence. Do not merely loosen that failed family or retune the reserve.
+Use current outputs/source RGB/contours, not old screenshots or JMap answers;
+freeze complete contiguous positives/negatives and transforms before tuning.
+Retain the full goal requirements, compatible reserved evaluation and final
+stable71+16 audit; all six gates remain OPEN. No archive/baseline resweep needed.
+
+### Historical disabled integration / cost qualification
 
 The optional implementation was reviewed and published as
 `ce968fa399f3f266322b0358792354150d7e03a0`. The subsequent handoff-only
@@ -49,7 +90,7 @@ Do not claim activation before those checks. Afterwards pursue a distinct
 shared remaining detection cause; do not retune the failed reserve or declare
 the 71 rooms/general-recognition goal complete. All full-goal gates stay OPEN.
 
-### Qualified optional integration details (same implementation, still OFF)
+### Historical optional integration details (before one-switch activation)
 
 Read the TOP of ignored `CAPTURE_BASE_ACTIVE_v1.md` and auditv34 in the goal
 folder. The original source predicate/query/model bytes are unchanged. Strict

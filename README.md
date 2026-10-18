@@ -750,7 +750,7 @@ Focused tests:
 python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
-### Optional capture-base recovery (app consumer still OFF)
+### Capture-base recovery (Experimental source mode)
 
 `scripts/source_capture_base.py` investigates filled spikes whose bodies and
 two slopes are visible but whose external base context lies beyond the physical
@@ -765,19 +765,22 @@ old locator neighborhoods. This does not add another full-image scan. It is
 used by a strict default-false `capture_base` option in filled recovery and
 `include_filled_capture_base` in the source pipeline. They share the existing
 original evidence instance and require filled mode. A guarded scanner consumer
-is installed but internally switched OFF pending controlled whole-cost checks.
+is enabled for fresh Experimental source scans after qualified whole-cost checks.
 The new transitive dependency is included in the app's 21-file source fingerprint.
 Normal scans and compact mappings retain their existing entry bypasses.
 
 The opt-in path adds objects only: it never teaches from proposals, retires old
 objects, uses human JMaps as inputs or labels unseen pixels background. Two
 actual consumer whole scans reproduce the old complete metadata/artifacts plus
-only the two source-reviewed spikes. These are still private results, not new
-app gains. Original regression protections and controlled actual-consumer timing
+only the two source-reviewed spikes. Two ACTUAL UNPATCHED scans now match these
+entire reviewed outputs; the two recoveries are enabled, not whole-room approvals.
+156 unique affected tests pass, including actual enabled/explicit-bypass routing.
+Original regression protections and controlled actual-consumer timing
 pass: 12 quiet-AC serial ABBA scans with full expected outputs, two samples per
 mode/source, median changes +1.36% Golden2 / +0.98% dense CN3-9 / -0.10% sparse
 Halls4. No >5% hold; these are limited measurements, not universal latency proof.
-Activation and unpatched production checks still precede deployment. The four extra crop
+Activation changes one runtime boolean, not classifier thresholds or teacher rules.
+Normal scans and existing saved projects are not silently rewritten. The four extra crop
 tests reject false 8px shifts of partially clipped spikes, including 800x600.
 
 ```powershell

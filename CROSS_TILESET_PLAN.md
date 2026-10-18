@@ -1,6 +1,22 @@
 # Cross-tileset milestone
 
-## Newest checkpoint (2026-10-18): cost qualified; activation pending
+## Newest checkpoint (2026-10-18): qualified capture-base recovery ON
+
+One-constant runtime activation only; source models/teachers/predicates/query
+rules unchanged.156unique affected testsPASS71.445s, two ACTUAL UNPATCHED whole
+outputs equal reviewed expectations, ENTIRE original41/601/139/16 evaluatorPASS.
+Completed actual12-scan cost remains qualified (+1.36%/+0.98%/-0.10%, no >5%hold).
+Normal/compact/inner bypasses and defaultFalse lower APIs stay unchanged.
+
+Auditv35:41qualified/30pending/ZEROapprovals;53enabled positive recoveries and
+five retained false-block corrections. Two new real boundary spikes help Golden2
+and CN3-19, not universal unseen-screen proof. Golden2 retains six fixed-scope
+extras; CN3-19 major errors remain. Golden5/Halls7 reserved results remain failed.
+Next inspect current missing terrain/compound triangle-versus-rectangle causes,
+read held ownership experiments before proposing a distinct mechanism, and
+freeze complete structures before tuning. All full-goal/reserve/final71+16 gates OPEN.
+
+## Prior checkpoint (2026-10-18): cost qualified before activation
 
 The default-OFF actual capture-base integration is published as `ce968fa`.
 Frozen quiet-AC serial ABBA12 passes all complete expected outputs, with median

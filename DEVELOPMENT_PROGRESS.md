@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Capture-base recovery activated after unpatched verification
+
+Changed only one scanner runtime boolean from the published disabled checkpoint
+`072a125`. ENTIRE scanner AST reverts exactly with that constant; all other runtime
+bytes, source predicates/queries/teachers/models/thresholds are unchanged. Lower
+APIs remain default OFF. Normal scanning and compact/inner-pass bypasses remain.
+
+156 UNIQUE affected tests pass in 71.445s, including clipped-body adversaries
+and actual True/False final-call routing. Two ACTUAL UNPATCHED whole scans match
+all reviewed expected source/project/JMap/JTool/Blend artifacts, ordered old
+metadata, warnings, settings, crop and grid. Only real Golden2Up48,576 and
+CN3-19Left768,128 are added. Every-delta/whole source QA carries through complete
+equality; it was not called a fresh visual review.
+
+The ENTIRE original41/601/139/16 numerical evaluator passes, zero failures:
+FTFA926/928zeroextra/shift/wrong; Flames254exact/19miss/42extra/20shift/2wrong.
+All original denominators/positives/negatives and nongeometry metadata stay intact.
+The frozen12-scan actual-consumer timing transfers by the one-constant bridge:
++1.36%Golden2/+0.98%dense9/-0.10%sparseH4, no >5%hold. Not a new timing run or
+universal latency guarantee. The app was refreshed to tested ON code and its
+root/health200 plus loaded/disk21dependency parity verified.
+
+Auditv35:41qualified/30pending/ZEROroom approvals, two fresh unpatched maps and
+39 qualified equality carries. Previous51 + new2 =53 source recoveries, plus five
+previous false-block corrections. Golden2 fixed37 scope37exact/6errors with all
+six inherited extras/28672solid pixels retained. CN3-19 still has major errors.
+Golden5 new reserve remains FAILED (zero novelty/17same), Halls7 failed unchanged.
+All full-goal/new-reserve/finalstable71+16 gates remain OPEN. Next distinct causal
+investigation must use current missing terrain/compound evidence, not retune
+held ownership heuristics or count these checkpoints as whole-room completion.
+
 ## 2026-10-18 — Controlled optional-consumer cost and durable continuation
 
 Published the reviewed default-OFF integration as `ce968fa` (12 public files).
