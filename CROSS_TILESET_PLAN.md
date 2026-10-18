@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Latest causal checkpoint (2026-10-18): terrain lost to provisional anchors
+
+Ordinary-output-equivalent tracing proves false platforms erase accepted real
+CN3-19 beam blocks, then are pruned. Original-prefix replay reproduces exact
+conflicts. This is a pipeline-order cause, not merely unfamiliar tile colour.
+Frozen PRIVATE early platform validation gains2714 positive source pixels with
+zero loss/new negative solids in the fixed field BUT creates false geometry
+elsewhere/global phase-recovery cascades: HOLD/NOT deployed. Runtime/app/auditv35
+unchanged; no room approval/new reserve success/timing/test-control sweep claimed.
+
+Next SOURCE-VALIDATED deferred veto ledger after fixed phase/marker checks.
+Rejected anchor != positive geometry. Require independent original source
+rectangle/triangle evidence; preserve real marker/partial-occlusion protections.
+Freeze complete criteria, test unrelated transfer/cost before any adoption.
+Fine/coarse appearance probes and early reorder remain held, not repeated.
+Root handoff/private terminal decision preserve exact continuation/evidence.
+All six full-goal gates, successful reserve and final stable71+16 remain OPEN.
+
 ## Newest checkpoint (2026-10-18): qualified capture-base recovery ON
 
 One-constant runtime activation only; source models/teachers/predicates/query

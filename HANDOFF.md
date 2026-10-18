@@ -73,6 +73,12 @@ Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
 compatible checksummed output reuse and paired whole-scan speed measurements.
 Keep source correctness distinct from warning counts and inherited audit labels.
+Latest causal tracing also shows false provisional platform anchors can erase
+real accepted terrain before those anchors are later rejected. A private early
+validation reorder improves a fixed source region but introduces false geometry
+elsewhere; it is held, NOT deployed. The next investigation is source-validated
+deferred arbitration, with real marker/occlusion protections retained. Follow
+the current root next-thread handoff for exact terminal evidence and next steps.
 No whole-room correctness approvals or universal future-screen guarantees are
 justified by the current audit. Keep the full numerical goal/protection gates;
 do not replace them with an easier passing subset.

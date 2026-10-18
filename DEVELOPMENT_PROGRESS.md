@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — False-platform veto cascade traced; unsafe reorder held
+
+Actual CN3-19 tracing reproduces the ENTIRE ordinary output, ordered metadata,
+warnings/options/crop/grid and source/project/JMap/JTool/Blend.459 unchanged
+function calls identify an earlier cause than source recovery: false platform
+anchors delete real accepted beam blocks, then the late check rejects those
+anchors without restoring terrain. An original-prefix replay reproduces all20
+anchors/every left conflict. The real save's veto remains valid/protected.
+
+A frozen PRIVATE whole experiment applies the SAME three source-only platform
+checks early; no new predicate/threshold. Fixed source-positive occupancy rises
+7251 ->9965 of16366 (2714 gained/zero lost), known-negative excess stays40/38106.
+BUT whole26 additions/10 removals/two changed-survivor metadata/warnings include
+a block inside a triangle and spikes in empty background. HOLD/NOT deployed.
+Main inspected the whole source/all38 delta panels; no room approval or claim
+that region pixels satisfy the goal's actionable-error denominator.
+
+Registered32 cohorts have five unique real original teacher tiles, four private
+real corner candidates but ZERO fixed-left gain. Fine16 and pooled4x4 parent
+parts yield ZERO valid models; held. Original material gates reject34/38 clean
+positive cores by pattern and4/38 by role. Do not repeat those failed sweeps
+to repair terrain already accepted by the raw classifier and deleted later.
+
+Next bounded investigation: source-validated DEFERRED vetoes after marker checks
+and room phase are fixed; invalid anchors alone never prove terrain. Preserve
+real markers/occlusions and freeze complete positive/negative criteria first.
+All diagnostics/failed counterfactuals are saved privately; root handoff gives
+exact continuation. Runtime/app/auditv35 unchanged:41qualified/30pending/ZERO
+approvals. Prior156 tests/2unpatched outputs/original41/601/139/16/cost12 remain
+qualified, not rerun. No new tests/reserve/control sweep/timing/app gains claimed.
+All six full-goal gates remain OPEN.
+
 ## 2026-10-18 — Connected-terrain model gates diagnosed (read-only)
 
 After activation, inspected current CN3-19 source/JTool/Blend and the held

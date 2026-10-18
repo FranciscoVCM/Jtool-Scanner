@@ -13,6 +13,52 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Newest continuation: provisional platform vetoes erase real terrain
+
+Runtime UNCHANGED from activated5bc5e28; this checkpoint saves documentation.
+ALL producers TERMINAL. Existing `HANDOFF.md`/`README.md` already describe the
+project/architecture/install/workflows; no migration/reset needed. Goal remains OPEN.
+Read ignored `EARLY_PLATFORM_ORDER_RESULT_v1.md` FIRST in the goal folder, then
+`REGISTERED_RECTANGLE_ACTIVE_v1.md`. All older LIVE/model-next entries below are
+historical. This docs checkpoint's verification receipt is
+`early-platform-causal-publication-v1.json`; actual Git/live origin controls HEAD.
+
+`early-geometry-flow-v1.json`:459 unchanged calls/198 wrappers, ENTIRE ordinary
+CN3-19 map/ordered metadata/warnings/options/crop/grid/source/project/JMap/JTool/
+Blend parity. `initial-anchors-v1.json` reproduces all20 nongeometry anchors and
+EVERY left deletion. False platforms64,112 and96,96 delete real accepted beam
+blocks64,96 and96,96, then disappear in the late check. Platform128,96 deletes
+a third beam block and remains. Real save96,64 correctly rejects its alias.
+These coordinates are diagnostics, never production answers/room-specific rules.
+
+Frozen PRIVATE `early-platform-order-v1.json` applies the SAME three existing
+source-only platform pruners early:18platforms ->1. Original fixed-source field
+7251 ->9965 of16366 positives (2714gained/0lost);40/38106 negative excess unchanged;
+13368 unknown. NOT a goal typed-error denominator. Whole26additions/10removals/
+2changed-survivor metadata/warnings introduce source-wrong geometry. Main viewed
+whole source/all38delta panels; a block fills a triangle, spikes occupy empty
+background. HOLD/NOT deployed; retain gains AND regressions, no room approval.
+
+Registered32 model work is complete: SAME five real original teacher tiles, four
+private real corner hypotheses, ZERO fixed-left gain. Fine16 and coarse4x4 parent
+parts have ZERO valid models. Material rejects34/38 clean positive cores on
+pattern/4onrole. Do not rerun failed sweeps/lower thresholds. The beam is accepted
+by the raw classifier; provisional-anchor removal is a distinct measured cause.
+
+NEXT: separately freeze a SOURCE-VALIDATED deferred veto ledger, retaining
+ORIGINAL proposals rejected by provisional platforms and evaluating restoration
+only AFTER marker checks/room phase are fixed. Rejected anchor != positive
+geometry. Require independent known-source rectangle/triangle evidence, surviving
+real marker/occlusion protection, full positives/negatives, all-delta/whole QA,
+actual unrelated transfer and cost before adoption. No blind resurrection or
+repeat of unsafe early reorder. All private originals/maps/projects/indexes intact.
+
+Auditv35 remains current for unchanged runtime:41qualified/30pending/ZEROapprovals,
+53enabled source recoveries/five retained false-block fixes. Prior156 affected
+tests/2unpatched outputs/original41/601/139/16/cost12 stay qualified; no new test/
+control sweep/timing/fresh71review here. All six full-goal gates OPEN.
+NR2Down624,464 is confirmed REAL32px; Down16,512/48,512 are false effects. Do not re-ask.
+
 ### Newest continuation: tested capture-base recovery activated
 
 The actual Experimental source consumer is now ON; lower APIs remain default
