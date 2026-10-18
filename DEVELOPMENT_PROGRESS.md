@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Connected-terrain model gates diagnosed (read-only)
+
+After activation, inspected current CN3-19 source/JTool/Blend and the held
+ownershipV1-V6 evidence. Two unchanged-helper source censuses reproduce entire
+proofs and show zero rectangle models on CN3-19/Golden2. All 89/426 accepted
+material cells are already represented in the current solid coverage. A simple
+fallback enable or lost-growth repair therefore does not explain the omissions.
+
+CN3-19:28 four-face candidate closures, only two coherent closed teacher frames,
+nominal RGB pair correlation0.818. Golden2:33 four-face candidates, zero coherent
+closed seeds. No candidate was relabelled a correct block from these diagnostics.
+
+A separately frozen one-source-pixel phase probe raises CN3-19's pair score to
+0.928 while BOTH frames retain complete known context, four raw faces and the
+existing exterior predicate. The less-constrained0.945 maximum fails eligibility
+and is explicitly excluded. Existing0.9 threshold unchanged. This is evidence
+of registration sensitivity, not a qualified three-teacher model or new gain.
+
+Next investigate consistently registered ORIGINAL teacher cohorts with all
+independent three-teacher/two-closed/geometry/interior/unknown protections, not
+threshold relaxation. Golden2's exterior-seed deficiency is a separate cause.
+No runtime edits, reserve tuning, new output gains, timing or room approvals in
+these observations. Current audit remainsv35; published activation/protections
+and the app snapshot are unchanged. All full-goal gates remain OPEN.
+
 ## 2026-10-18 — Capture-base recovery activated after unpatched verification
 
 Changed only one scanner runtime boolean from the published disabled checkpoint

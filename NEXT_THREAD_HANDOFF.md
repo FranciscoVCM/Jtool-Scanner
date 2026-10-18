@@ -45,12 +45,32 @@ CN3-19 still has major errors. Previous51 + new2 =53 enabled source recoveries;
 five earlier false-block corrections remain. Golden5 new reserve FAILED (zero
 novelty/17same); Halls7 prior failed result unchanged. No new reserve success.
 
-NEXT distinct causal batch: inspect current source-grounded missing terrain
-and compound triangle/rectangle ownership in CN3-19 and Golden2, then select a
-genuinely different shared cause only after reading the held ownershipV1-V6
-evidence. Do not merely loosen that failed family or retune the reserve.
-Use current outputs/source RGB/contours, not old screenshots or JMap answers;
-freeze complete contiguous positives/negatives and transforms before tuning.
+NEXT distinct causal batch now has measured diagnostics, not just a plan:
+`connected-terrain-census-v1.json` and `rectangle-model-gates-v1.json` are
+TERMINAL/PASS. The unchanged rectangle helper makes ZERO models/proposals on
+CN3-19 and Golden2. All 89/426 accepted material cells are already covered by
+current terrain: simply re-enabling the skipped rectangle fallback or rescuing
+accepted growth will not fix these omissions. CN3-19 has 28 four-face candidate
+closures but only two coherent closed teacher frames; their nominal RGB
+correlation is 0.818. Golden2 has 33 four-face candidates but zero coherent closed
+seeds. These are candidate gates, NOT newly certified blocks or accuracy gains.
+
+The single frozen `rectangle-teacher-phase-v1.json` probe uses the EXISTING
+one-original-pixel phase grid, not new origins or thresholds. CN3-19's known,
+four-face/coherent teacher pair reaches 0.928 after one-source-pixel vertical
+registration, passing the unchanged 0.9 correlation. The unconstrained maximum
+0.945 FAILS geometry/exterior eligibility and must NOT be used. This proves a
+sampling-phase cause for this pair, NOT a valid three-teacher model or terrain gain.
+
+Next test a separately frozen ORIGINAL teacher-registration model with all
+three-disjoint/two-closed/full-RGB/interior/geometry/unknown protections intact;
+do not lower 0.9, waive teachers, independently move edges or emit from a pair.
+Golden2's exterior-seed gate remains distinct. Read held ownershipV1-V6 before
+any proposed ownership work; do not repeat/relax that family or retune reserves.
+Use current original RGB/contours and freeze complete positive/negative source
+structures before changing recognition. Any real gains still need portable
+cross-scale/appearance tests, unrelated transfer, full output QA and controlled
+whole runtime before adoption. These new observers made NO runtime changes.
 Retain the full goal requirements, compatible reserved evaluation and final
 stable71+16 audit; all six gates remain OPEN. No archive/baseline resweep needed.
 
