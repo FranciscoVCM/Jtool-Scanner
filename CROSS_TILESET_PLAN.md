@@ -1,6 +1,27 @@
 # Cross-tileset milestone
 
-## Latest qualification (2026-10-18): complete opt-in protection cohort
+## Latest implementation (2026-10-18): disabled original-provenance consumer
+
+The early plain-profile consumer is installed behind an internal OFF switch.
+Only source mode/outer shape refits/native25x19/actual ORIGINAL image object/
+same physical crop/plain profile can forward a SourceFrame. Equal pixel bytes
+are not provenance; compact/canonical/inner/strong-profile paths bypass.
+No learner/teacher/threshold or lower-admission math changed; no extra scan,
+hashing or transform inference. Late phase-free reconciliation is untouched.
+
+184affected testsPASS101.045s, ten new caller checks; ENTIRE disabled scanner
+AST equals the prior version and all other runtime bytes are unchanged. Routing
+45+canonical18 connects prior protection proofs without repeating prefixes.
+Two actual private consumer wholes equal all expected Golden7/canonical18
+maps/metadata/projects/render/source/options. Halls3 actual consumer output
+will be checked in the fixed positive whole-cost case.
+
+Auditv30 remains41currentqualified/30pending/ZEROapprovals. App switch staysOFF;
+five private corrections are not deployed. Next quietAC serial fresh-process
+ABBA12 on positiveHalls3/dense9/sparseH4; at least2samples/mode/source, complete
+output checks, persistent>5% HOLD. Original reserve/final71+16/six gates OPEN.
+
+## Earlier qualification (2026-10-18): complete opt-in protection cohort
 
 All45 protected inputs pass:40 actual original generic prefixes and5 reused
 qualified opt-in wholes, plus a separate passing canonicalCN3-18 prefix.

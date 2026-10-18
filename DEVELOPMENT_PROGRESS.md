@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Original-provenance consumer installed, disabled pending cost
+
+Added an internal default-OFF consumer at the early plain repeated-profile
+call. It only forwards the qualified admission API for source mode, an outer
+shape-refit pass, native 25x19 mapping, the actual ORIGINAL image object/crop,
+and a plain profile. Byte-identical copies, resampled/canonical/compact/inner
+passes and independent strong profiles bypass before frame construction.
+No image hashing, transform inference, extra image pass, teacher or threshold
+change was added. The late phase-free call and lower admission math are unchanged.
+
+All 184 affected tests pass in 101.045s, including ten new provenance/wiring
+tests. This is not a full-suite run. An ENTIRE scanner AST bridge proves the
+disabled path equals the previous public implementation after removing only
+the off switch, options helper and one caller expansion; every other runtime
+file and the entire lower-admission function are unchanged.
+
+Routing checks connect all 45 protected inputs plus canonical CN3-18 to the
+qualified direct-original API or unchanged normalized/compact bypass, without
+repeating the completed detector prefixes. Two actual whole scans with ONLY
+the consumer boolean privately enabled reproduce ENTIRE expected Golden7 and
+canonical CN3-18 detections, warnings, options, crop/grid, JMaps, projects and
+JTool/Blend/source bytes. Prior source QA carries only through that equality.
+Halls3's actual consumer whole is queued in the positive timing case.
+
+Audit v30 retains 41 current outputs qualified /30 pending /ZERO room approvals.
+The five prototype corrections are still not app-enabled. The fixed actual-
+consumer timing plan is quiet AC serial fresh-process ABBA on Halls3, dense
+CN3-9 and sparse Halls4, two samples per mode/source and complete expected
+output checks. Persistent >5% cost is a hold. No timing result, activation,
+new reserve or full-goal completion is claimed by this disabled checkpoint.
+
 ## 2026-10-18 — Upstream opt-in protections closed; app still unchanged
 
 The fixed 45-input protection cohort passes: 40 fresh actual generic prefixes

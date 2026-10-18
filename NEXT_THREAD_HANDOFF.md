@@ -13,6 +13,28 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+NEWEST implementation: UPSTREAM_CONSUMER_ACTIVE_v1.md / auditv30 supersede
+the instruction to implement a consumer below. Internal switch is OFF; helper
+requires source mode/outerrefits/native25x19/ORIGINAL image ID/samecrop/plain
+profile. No hash/transform inference/extra image pass or lower-model change.
+184testsPASS101.045s; ENTIRE disabled AST/unchanged other runtime bytes/lower
+math; routing45+canonical18 connects completed protections. Two actual private
+consumer wholes match ENTIRE Golden7/canonical18 expected output/metadata/
+project/JMap/JTool/Blend/source/options. Prior source QA carries by equality.
+Actual consumer Halls3 whole is still pending in the fixed positive cost case.
+
+NEXT: measure_upstream_consumer_whole_v1.py after verifying ALL other actual
+producers terminal and quietAC. Actual booleanFalse/True, no helper/tracing
+wrappers inside the scan timer. Fixed Halls3/dense9/sparseH4 fresh-process
+serialABBA12, >=2samples/mode/source, ENTIRE expected output equality and
+>5%incremental cost HOLD. Keep runtime/HEAD frozen while producerLIVE; preserve
+per-sample receipts/PIDs/output caches and never blindly restart a sample.
+The consumer is NOT app-enabled; final activation needs passed cost/protection
+bridge, one-switch activation proof, actual unpatched output equality/sourceQA
+and app parity. No new reserve/room approval/full-goal completion. Auditv30
+41qualified/30pending/ZEROapprovals. See private publication receipt for exact
+Git/app status; runtime now differs from the earlier a324a16 scanner bytes.
+
 NEWEST qualification: UPSTREAM_REPEATED_PREFIX_ACTIVE_v1.md / auditv29 supersede
 the v28/pending-protection wording below. ALL producers are TERMINAL/PASS:
 45 fixed inputs =40fresh actual generic prefixes +5reused qualified opt-in

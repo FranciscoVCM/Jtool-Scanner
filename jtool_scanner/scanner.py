@@ -79,6 +79,8 @@ MINI_SPIKE_TYPES = frozenset(
     }
 )
 DEFAULT_SCAN_GRID_STEP = 8
+# Research consumer stays off until original-source routing and whole cost pass.
+_SOURCE_REPEATED_IDENTITY_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2141,6 +2143,34 @@ def scan_png(
     )
 
 
+def _source_repeated_identity_options(
+    image: RGBImage,
+    room: Box,
+    original_image: RGBImage,
+    original_room: Box,
+    source_grid: tuple[int, int] | None,
+    *,
+    source_geometry: bool,
+    apply_shape_refits: bool,
+    profile: _RepeatedTerrainProfile | None,
+) -> dict:
+    """Only a direct ORIGINAL source may supply the existing admission API.
+
+    Equal pixel bytes do not establish provenance for a resampled wrapper.
+    Compact, canonical and inner passes retain the previous default behavior.
+    """
+    if not (
+        _SOURCE_REPEATED_IDENTITY_ENABLED
+        and source_geometry and apply_shape_refits and source_grid == (25, 19)
+        and image is original_image and room == original_room
+        and profile is not None
+        and not (profile.complementary_texture or profile.phase_free_texture)
+    ):
+        return {}
+    from scripts.source_sampling import SourceFrame
+    return dict(include_local_identity=True, source_frame=SourceFrame(original_image, original_room))
+
+
 def scan_image(
     image: RGBImage,
     room_box: Box | None = None,
@@ -2508,6 +2538,12 @@ def scan_image(
                     _replace_repeated_terrain_geometry(
                         detections, image, box,
                         profile=learned_terrain, already_learned=True,
+                        **_source_repeated_identity_options(
+                            image, box, source_image, source_box, normalized_grid,
+                            source_geometry=source_geometry,
+                            apply_shape_refits=_apply_shape_refits,
+                            profile=learned_terrain,
+                        ),
                     )
                 )
             if not repeated_terrain_room:

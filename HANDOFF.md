@@ -37,6 +37,11 @@ These checks do not activate the app or replace whole-scan cost qualification.
 The frozen canonical CN3-18 lower-left terrain field is already clear of its
 historical false-solid excess; remaining work must use current evidence.
 
+A guarded consumer is now installed but switched OFF. It accepts actual
+original-image identity, not merely equal pixels, and bypasses normalized,
+compact and inner passes. Its 184 affected tests and two private whole-output
+checks pass; controlled whole cost and final activation remain pending.
+
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
 compatible checksummed output reuse and paired whole-scan speed measurements.
