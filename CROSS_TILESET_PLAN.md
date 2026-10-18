@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Newest implementation (2026-10-18): automatic source witnesses / deferred vetoes
+
+UNBOUND source_registered_rectangles mines original known geometric frames and
+background-role fronts automatically; no stored teacher coordinates. ENTIRE
+C19 model/cohort/query proofs match, Golden2 stays zero. UNBOUND
+source_deferred_platforms freezes original conflicts and admits source-proved
+blocks only after false platforms vanish, retaining real marker/coverage guards.
+122affected testsPASS27.844s/19new. SourceContext evidence is reused; no duplicate
+material pass or emitted teachers. App runtime/auditv36 remain unchanged.
+Next actual automatic C19 whole + frozen Halls7 reserve, then control/wholecost
+qualification before binding. No new automatic whole/reserve/app gains claimed.
+All six full-goal gates remain OPEN.
+
 ## Latest component (2026-10-18): source RGB variation, not a fixed palette
 
 UNBOUND SourceRGBDistribution uses independently verified original source frames

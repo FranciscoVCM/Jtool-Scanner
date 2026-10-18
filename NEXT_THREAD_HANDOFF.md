@@ -13,6 +13,31 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Newest: automatic source cohorts and original veto ledger, still UNBOUND
+
+`source_registered_rectangles.py` and `source_deferred_platforms.py` are now
+implemented with122unique affected tests PASS27.844s (19new). Original source
+cohorts/background roles are discovered automatically, no cached parent positions
+or query answers. ENTIRE C19 model/cohort proofs and all eligible query proofs
+match the qualified prototype; Golden2 remains zero models. SourceContext reuse,
+strict source identity, explicit25x19/coverage and immutable original vetoes remain.
+The pure FINAL consumer protects real markers and existing coverage, changes no
+earlier phase decisions, never restores raw spikes or teaches from additions.
+
+All jobs TERMINAL at this pre-whole checkpoint. See ignored
+`automatic-rgb-model-parity-v1.json`, `automatic-rgb-tests-v1.json`, full
+`AUTOMATIC_RGB_COHORT_FREEZE_v1.md`/`DEFERRED_PLATFORM_CONSUMER_FREEZE_v1.md`
+and top `DEFERRED_VETO_ACTIVE_v1.md`. NEXT frozen actual automatic C19 consumer
+whole + Halls7 NO-TUNING reserve. Both must prove complete ordinary pre-addition
+artifact/metadata parity; C19 must reproduce only the four reviewed originals.
+Mine source models from ACTUAL original pre-source snapshot/material/context,
+not final proposed objects. No automatic whole/reserve outcome claimed yet.
+
+Existing app21dependency runtime and auditv36 remain unchanged41/30/ZERO;
+four older PRIVATE blocks are NOT new app gains. Do not activate before actual
+transfer/protected controls/cost. Add every true dependency if later bound and
+keep source-image identity/nontranslated original25x19 caller guards. Full goal OPEN.
+
 ### Latest continuation: source RGB variation helper; four PRIVATE real blocks
 
 Start at ignored `DEFERRED_VETO_ACTIVE_v1.md` and full `GOAL_PLAN.md` in the goal

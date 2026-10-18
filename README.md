@@ -477,8 +477,20 @@ background/text/triangle negatives, duplicate/self-teaching and crop boundaries.
 An actual PRIVATE final-stage CN3-19 trial adds only four source-reviewed blocks
 after full ordinary pre-addition artifact/metadata parity, preserving all old
 objects. This is NOT app adoption or universal recognition: automatic source
-cohort discovery, safe veto-ledger binding, real transfer, controls and whole cost
-remain pending. Current app behaviour and its 21 runtime dependencies are unchanged.
+cohort discovery and a pure final-veto helper are now implemented, but actual
+automatic whole/transfer tests, app binding, controls and whole cost remain
+pending. Current app behaviour and its 21 runtime dependencies are unchanged.
+
+`scripts/source_registered_rectangles.py` provides `original_rgb_models` to mine
+parents automatically from ORIGINAL detections/material diagnostics, with explicit
+`source_grid`, `source_frame` and optional shared `source_context`. It reuses
+existing calibration, never loads a saved map or parent-coordinate list.
+`scripts/source_deferred_platforms.py` provides `original_platform_vetoes` and
+`recover_deferred_platform_blocks`: immutable original full-block conflicts may
+be revisited only at the final stage after platform/phase decisions. Surviving
+markers still veto; every recovery needs original source evidence and new solid
+coverage. These helpers are read-only/unbound, not app-default changes.
+122 affected tests (19 new) pass; original context/compact/crop/marker guards remain.
 
 ### Read-only capture-aware hollow glyph evidence
 

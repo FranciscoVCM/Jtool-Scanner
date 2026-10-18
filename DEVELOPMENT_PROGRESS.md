@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Automatic original cohorts and deferred ledger implemented
+
+New UNBOUND `source_registered_rectangles.py` mines original source cohorts
+without cached teacher positions or reference answers. ENTIRE registered models/
+cohort counts match the frozen diagnostic: CN3-19 two cohorts of the SAME five
+original frames, one deduplicated RGB distribution; Golden2 still zero. All
+eligible CN3-19 source-query proofs match exactly, not merely acceptance counts.
+Background fronts are selected from existing original material calibration and
+checked against original glyph membership; no second material generator.
+
+New UNBOUND `source_deferred_platforms.py` preserves immutable original vetoes,
+then admits independently source-qualified original blocks only after their
+platform anchors vanish. Real surviving markers/late diagonal vetoes remain;
+no raw spikes, origin moves, deletions, self-teachers or duplicate solid coverage.
+122 UNIQUE affected tests PASS27.844s, including19 new discovery/ledger tests.
+RGB/polarity/fractional capture, source identity, compact/crop bypass, duplicate
+parents, impostors, marker coexistence and half-strip novelty remain protected.
+
+Runtime/app21dependencies remain unchanged, auditv36 current41/30/ZERO. Four
+previous PRIVATE real blocks stay separate from53 deployed source recoveries.
+NEXT: frozen actual automatic C19 whole (same four additions required) and
+Halls7 NO-TUNING reserve using actual original source/context evidence. Neither
+new automatic whole nor reserve result is claimed yet. App binding/transfer/
+protected controls/whole cost still pending; all six full-goal gates OPEN.
+
 ## 2026-10-18 — Original RGB variation evidence and safe private final recovery
 
 Implemented UNBOUND `scripts/source_rgb_distribution.py`, with no scanner/app

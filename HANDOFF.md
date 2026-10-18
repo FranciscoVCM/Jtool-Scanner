@@ -79,8 +79,10 @@ validation reorder improves a fixed source region but introduces false geometry
 elsewhere; it is held, NOT deployed. The new read-only RGB-distribution helper
 instead corroborates source-local colour variation with independent original
 geometry. Ten portable tests/103 affected tests and an actual private final-stage
-four-block trial pass. Automatic teacher discovery, app binding, real transfer
-and controlled whole cost remain pending; these are NOT deployed recoveries.
+four-block trial pass. Automatic teacher-discovery and immutable deferred-veto
+helpers are now implemented/tested but UNBOUND (122 affected tests/19 new).
+Actual automatic whole/transfer tests, app binding and controlled whole cost
+remain pending; these are NOT deployed recoveries.
 Source-validated deferred arbitration retains real marker/occlusion protection. Follow
 the current root next-thread handoff for exact terminal evidence and next steps.
 No whole-room correctness approvals or universal future-screen guarantees are
