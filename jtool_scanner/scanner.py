@@ -16956,6 +16956,8 @@ def _replace_repeated_terrain_geometry(
     profile: _RepeatedTerrainProfile | None = None,
     already_learned: bool = False,
     blocks_only: bool = False,
+    include_local_identity: bool = False,
+    source_frame=None,
 ) -> tuple[list[Detection], bool]:
     """Reconcile repeated terrain only when the generic result is clearly poor.
 
@@ -16965,6 +16967,13 @@ def _replace_repeated_terrain_geometry(
     2x2 cells.  Established room profiles and miniblock rooms are routed around
     this function by ``scan_image``.
     """
+
+    if not isinstance(include_local_identity, bool):
+        raise ValueError('Local repeated identity flag must be a boolean')
+    if include_local_identity:
+        from scripts.source_sampling import SourceFrame
+        if not isinstance(source_frame, SourceFrame) or not source_frame.matches_source(image, room):
+            raise ValueError('Local repeated identity requires the matching ORIGINAL source frame')
 
     if not already_learned:
         profile = _learn_repeated_terrain_profile(image, room, detections)
@@ -17030,6 +17039,19 @@ def _replace_repeated_terrain_geometry(
             key=lambda position: (position[1], position[0]),
         )
     )
+    if include_local_identity and not (profile.complementary_texture or profile.phase_free_texture):
+        from scripts.source_repeated_identity import repeated_material_support
+        # This is admission of pending colour-profile proposals, not deletion
+        # of established raw objects or inference that unsupported pixels are
+        # empty. Query poses never enter the ORIGINAL glyph teacher snapshot.
+        proof = repeated_material_support(image, room, detections,
+            source_frame=source_frame, candidate_points=profile.full_blocks)
+        original_fulls = {(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK}
+        withheld = {tuple(key) for key in proof['unsupported_known'] if tuple(key[1:]) not in original_fulls}
+        reconciled = [d for d in reconciled if (d.type_id, d.x, d.y) not in withheld]
+        if not any(d.type_id == OBJ_BLOCK for d in reconciled):
+            # Lack of a newly admissible profile is not an empty-room finding.
+            return detections, False
     return _dedupe_exact_detections(reconciled), True
 
 

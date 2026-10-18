@@ -1,8 +1,21 @@
 # JTool Scanner
 
-Early prototype for turning IWBTG-style screenshots into JTool maps.
+Local scanner and graphical correction workspace for turning IWBTG-style
+fangame screenshots into editable JTool maps. Compare Source, JTool and Blend
+views, correct the draft, then save an editable project or export a `.jmap`.
 
-The first usable layer is the `.jmap` core:
+Development focuses on recognition that transfers across tilesets, backgrounds,
+colours, brightness, sprite variations and capture scales—not memorizing the
+review corpus. Difficult rooms still need corrections; the project does not
+claim universal or 100% accuracy. Experimental source geometry is opt-in and
+individual research APIs may remain disabled pending accuracy and speed checks.
+
+See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
+principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
+run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and
+[CROSS_TILESET_PLAN.md](CROSS_TILESET_PLAN.md) for measured gains and open gates.
+
+The core workflows include:
 
 - parse JTool `.jmap` files
 - export valid `.jmap` files

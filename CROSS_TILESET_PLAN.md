@@ -1,6 +1,29 @@
 # Cross-tileset milestone
 
-## Latest component (2026-10-17): unbound local terrain identity observer
+## Latest opt-in checkpoint (2026-10-17): upstream positive admission
+
+The plain colour-profile fallback can now require independent source-local
+object evidence BEFORE emitting NEW full blocks. Strict lower-API default is
+false; scanner/app callers do not activate it. Raw original blocks and stronger
+rectangle-qualified profiles are preserved; unknown context abstains and an
+inadmissible fallback cannot replace the original map with empty output.
+Pending profile queries are never original glyph teachers. No thresholds changed.
+
+139 affected tests pass54.091s; complete scanner AST ablation proves the old
+default path unchanged. Six observed whole scans and complete source QA qualify
+five PRIVATE false-block corrections: Halls3 two, Golden7 three. Halls3 fixed21
+retains21exact/all16384solid pixels, errors2->0. Golden7 positive49504/54880
+is unchanged, known negative excess576->0; major errors/5376missing pixels remain.
+Halls4/Halls5/NR1 whole outputs and all old ordered nongeometry metadata are
+unchanged; hooks7168/islands8192 remain. These are not five empty source boxes:
+real spike art in two Golden7 contexts is retained, with no hidden-terrain inference.
+
+Auditv28 retains41qualified/30pending/ZEROapprovals through the default-false
+bridge and full cached-output validation, not a new71 sweep. New opt-in all16/
+41/601/139 closure, controlled whole cost and safe original-frame consumer
+activation remain pending. No new reserve success or full-goal completion.
+
+## Earlier component (2026-10-17): unbound local terrain identity observer
 
 `source_repeated_identity` has no scanner caller/removal API. It combines existing
 intrinsic block geometry, coherent source rectangles and independently verified

@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-17 — Qualified upstream terrain admission; default off
+
+The repeated-material fallback now has an explicit, default-false lower API
+for admitting NEW plain colour-profile block proposals using original-source
+object evidence. Pending proposals cannot teach the detector. Incoming raw
+blocks, independently rectangle-qualified profiles and unknown/clipped/marker
+contexts retain their previous eligibility. If nothing is admissible, the
+fallback declines rather than replacing the original map with an empty result.
+No room, palette, coordinate or reference-answer exception was added.
+
+All 139 affected tests pass in 54.091s; this is not a full-suite run. A complete
+scanner AST ablation proves default-false behavior equal to the previous public
+checkpoint. Actual original upstream inputs also reproduce the old stage exactly.
+On 2026-10-18, 35 additional app/cache/dispatch tests pass in 54.708s. The
+runtime-fingerprint test now checks every one of the 20 source dependencies;
+its obsolete expectation of 19 was repaired without changing detector behavior.
+Six actual observed whole scans qualify one default Halls3 baseline and five
+opt-in outputs, not unpatched production activation or a latency benchmark.
+The completed baseline was reused after a verifier-only schema repair, not rescanned.
+
+Source/JTool/Blend review of both changed rooms and all five deltas confirms
+two false Halls3 sky blocks and three Golden7 profile conflicts withheld.
+Halls3's fixed 21-object structure retains all 21 exact positives and 16,384
+solid pixels, with errors 2 -> 0. Golden7 retains 49,504/54,880 positive pixels
+while fixed negative excess falls 576 -> 0; its 5,376 missing positive pixels
+and major inherited errors remain. Halls4/Halls5/NR1 whole outputs are unchanged;
+all 7,168 hook and 8,192 island pixels remain. All remaining ordered detection
+metadata, nongeometry, options and JMap settings are unchanged.
+
+The scanner/app does NOT request this flag. The new transitive dependency is
+fingerprinted, but these five private corrections are not deployed. Current
+audit remains 41 output-qualified/30 pending/ZERO correctness approvals through
+the default-false bridge and revalidated complete cached outputs. All-16 opt-in
+protections, controlled whole cost, safe original-frame consumer binding and a
+successful compatible reserve are still required. The full goal remains open.
+
+Continuation documentation now has an explicit current-first read order,
+unchanged numerical gates and exact pending qualification steps. README and
+HANDOFF describe the actual workflow/generalization goal and distinguish old
+Git/test snapshots from current evidence. Private START_HERE points to them;
+the transcript, image indexes, source archive and generated reports stay ignored.
+
 ## 2026-10-17 — Local terrain identity observer; no detector activation
 
 Added `scripts/source_repeated_identity.py`, a read-only source-evidence API.

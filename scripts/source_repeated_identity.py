@@ -103,17 +103,29 @@ def _backing_witness(image, room, frame, context, spikes, members):
     return None
 
 
-def repeated_material_support(image, room, detections, *, source_frame=None, source_context=None):
+def repeated_material_support(image, room, detections, *, source_frame=None, source_context=None,
+                              candidate_points=None):
     """Observe finite ORIGINAL full-profile components without changing objects.
 
     Existing intrinsic block geometry, known coherent rectangle closure and a
     source-verified original glyph backing are separate positive channels.
     Unknown/clipped context and nongeometry overlap remain explicit abstentions.
     The ordinary scanner does not call this function. No removal set is returned.
+    Optional candidate_points locate pending profile queries only; the ORIGINAL
+    detections remain the sole source of glyph teachers and marker protections.
     """
     detections = tuple(detections)
-    points = {(d.x, d.y) for d in detections
-              if d.type_id == 1 and getattr(d, 'kind', None) == 'repeated_terrain_block'}
+    if candidate_points is None:
+        points = {(d.x, d.y) for d in detections
+                  if d.type_id == 1 and getattr(d, 'kind', None) == 'repeated_terrain_block'}
+    else:
+        try:
+            points = set(map(tuple, candidate_points))
+        except TypeError as error:
+            raise ValueError('Candidate points must be native integer x,y pairs') from error
+        if any(len(point) != 2 or any(not isinstance(v, int) or isinstance(v, bool) for v in point)
+               or not (0 <= point[0] <= 768 and 0 <= point[1] <= 576) for point in points):
+            raise ValueError('Candidate points must be in-room native integer x,y pairs')
     result = dict(components=[], unsupported_known=[], no_objects_changed=True,
                   no_new_outputs_as_teachers=True, unsupported_is_NOT_empty_background=True)
     if not points:

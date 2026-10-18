@@ -38,6 +38,28 @@ class SourceRepeatedIdentityTests(TestCase):
         self.assertEqual(proof['components'], [])
         self.assertEqual(proof['unsupported_known'], [])
 
+    def test_pending_points_query_source_without_joining_teacher_snapshot(self):
+        image, room = scene()
+        originals = []
+        proof = repeated_material_support(image, room, originals,
+            candidate_points=iter(((128, 128), (416, 320), (416, 320))))
+        self.assertEqual(proof['unsupported_known'], [(1, 416, 320)])
+        self.assertEqual(originals, [])
+        self.assertTrue(proof['no_new_outputs_as_teachers'])
+        self.assertEqual(len(proof['components']), 2)
+
+    def test_invalid_pending_points_are_rejected(self):
+        image, room = scene()
+        for points in ([(1,)], [(True, 32)], [(32.5, 32)], [(-1, 32)], [(769, 32)], [(32, 577)], [5]):
+            with self.subTest(points=points), self.assertRaises(ValueError):
+                repeated_material_support(image, room, [], candidate_points=points)
+
+    def test_empty_pending_query_does_not_build_evidence(self):
+        image, room = scene()
+        with patch('scripts.source_repeated_identity.SourceFrame', side_effect=AssertionError('No work')):
+            proof = repeated_material_support(image, room, [detection(128, 128)], candidate_points=[])
+        self.assertEqual(proof['components'], [])
+
     def test_components_connect_mixed_phases_but_not_single_corners(self):
         groups = list(_components(((32, 32), (64, 48), (80, 48), (112, 80))))
         self.assertEqual(groups, [((32, 32), (64, 48), (80, 48)), ((112, 80),)])

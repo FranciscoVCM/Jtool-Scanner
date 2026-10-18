@@ -4,12 +4,52 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
+## Current development direction — 2026-10-18
+
+This document is the general project overview. For an interrupted run, start
+with `NEXT_THREAD_HANDOFF.md`, then `DEVELOPMENT_PROGRESS.md` and
+`CROSS_TILESET_PLAN.md`; use Git itself for current branch, dirty state and
+publication status. The older Git/test snapshots below are historical, not
+claims about the present checkout.
+
+The central engineering goal is recognition that transfers across unfamiliar
+tilesets, backgrounds, colours, brightness, sprite variation and capture scales,
+not coordinate answers for the 71 reviewed rooms. Those rooms, human reviews
+and supplied JMaps provide evaluation evidence; JMaps must never become detector
+inputs or answers. FTFA remains a strict golden control; the supplied Lap Around
+references now also support exact evaluation. Exact object origins and solid
+occupancy are separate measures because editor block tiling can be nonunique.
+
+Normal scanning and the opt-in Experimental source-geometry path are distinct.
+Experimental source analysis uses original RGB, independently verified source
+witnesses, contours and competing triangle/rectangle evidence. It has qualified
+filled/compound spike and phase recoveries, but major false terrain, missing
+objects and ownership conflicts remain. The newest repeated-terrain admission
+API is default OFF and not called by app scans: five reviewed private false-block
+corrections are not deployed results. Never interpret an unsupported shape as
+empty source, use newly emitted objects as teachers, or delete every overlap;
+real partially hidden spikes and narrow solid strips must survive.
+
+Work in bounded causal batches with frozen source-positive/negative structures,
+focused regression tests, source/JTool/Blend checks of every changed object,
+compatible checksummed output reuse and paired whole-scan speed measurements.
+Keep source correctness distinct from warning counts and inherited audit labels.
+No whole-room correctness approvals or universal future-screen guarantees are
+justified by the current audit. Keep the full numerical goal/protection gates;
+do not replace them with an easier passing subset.
+
+Private image indexes, reviews, corrections and historical material remain in
+ignored local storage. Commit only reviewed public code, tests and documentation
+on existing `main`; do not publish `.codex-notes`, `.artifacts`, `local_corpus`,
+source archives or generated output. Preserve all original fixtures and JMaps.
+
 ## 1. Purpose and target workflow
 
 JTool Scanner turns screenshots of *I Wanna Be the Guy* fangame rooms into
 editable JTool maps. The practical target is a useful one-click draft that
-needs only small corrections. The longer-term target is approximately 99%
-accuracy on unseen rooms, with irreducible visual ambiguity handled by the
+needs only small corrections. The longer-term target is fully faithful scans
+of unseen rooms across unfamiliar appearances; that is not achieved. Handle
+irreducible visual ambiguity through the
 correction interface rather than hidden behind false confidence.
 
 The intended user workflow is:
@@ -28,19 +68,20 @@ The intended user workflow is:
 JTool remains the target runtime. This project does not attempt to clone its
 gameplay engine.
 
-## 2. Repository and current state
+## 2. Repository and historical migration checkpoint
 
 - Local repository: `C:\Users\corvo\Documents\Jtool Scanner`
 - GitHub: `https://github.com/FranciscoVCM/Jtool-Scanner`
 - Branch: `main`
-- Latest verified implementation checkpoint: `450de97` (`scanner: gate active
-  saves by header morphology`). This handoff refresh is a documentation-only
-  follow-up; local `main` and live `origin/main` remain equal.
+- Historical verified implementation checkpoint: `450de97` (`scanner: gate active
+  saves by header morphology`). This and the Git snapshots below describe the
+  older handoff refresh, not the current branch tip.
 - The immediately preceding published checkpoints are `5795f7c` (`assets:
   restore default JTool vine frames`), `ff84176` (`docs: record rejected warm
   edge recovery`), `4fcd472` (`scanner: recover pale platforms in dark rooms`),
   and `e33ea64` (`scanner: preserve visual save phase aliases`).
-- The current working tree is clean and local `main` matches live `origin/main`.
+- At that historical check, the working tree was clean and local `main` matched
+  live `origin/main`. Recheck both in any new thread.
 - Earlier implementation history, including `e73ce97` (`Recognize outlined
   terrain across neon rooms`), remains available in Git history.
 
@@ -68,6 +109,9 @@ from the repository root so Python can import the package directly.
 | `jtool_scanner/evaluation.py` | Tolerance-based fixture matching and aggregate metrics |
 | `jtool_scanner/report_analysis.py` | False-positive/miss diagnostics grouped by type, score, grid residue, and other features |
 | `jtool_scanner/benchmark.py` | Exact golden-room comparison, localized reviews, baseline regression gate, and HTML dashboard |
+| `jtool_scanner/corpus.py` | Resumable corpus scans with source/options/runtime identity and checksummed artifacts; references evaluated only after scanning |
+| `jtool_scanner/runtime_sources.py` | Explicit transitive source-helper dependencies shared by runtime and cache fingerprints |
+| `scripts/source_*.py` | Original-source sampling, contours, material/glyph evidence, filled/hollow recovery and final source proposals; lower-level research flags are not automatically app-enabled |
 
 The scanner returns a `ScanResult` containing the normalized room, detected
 objects, OCR text/settings, and structural warnings. It can produce a direct
@@ -302,7 +346,7 @@ exact matches. `--pair ID` selects one or more rooms for quick iteration.
 
 ### Automated tests
 
-The repository contains eleven test modules covering JMap encoding, correction
+The repository contains test modules covering JMap encoding, correction
 projects, app APIs, scanner/color behavior, geometry, evaluation, report
 analysis, exact comparisons, structural review, and unseen-room regressions.
 
@@ -320,10 +364,11 @@ python -m unittest discover -s tests -v
 ```
 
 The bundled runtime initially lacked `pytest`; installing `pillow pytest`
-completed the documented environment. The current continuation's complete
+completed the documented environment. A historical continuation's complete
 `python -m unittest discover -s tests -v` run passed **364 tests in 1177.212
 seconds**, `OK`. An earlier pytest collection recorded 308 tests and 46
-subtests; use the unittest command above as the current full-suite baseline.
+subtests. These are historical counts, not a current full-suite result; use
+the commands above and current progress receipts for the checkout being tested.
 The temporary directory override used by that older pytest run is only needed
 on this Windows host because its default pytest temp root is not writable; it
 is not a scanner workaround.
@@ -572,30 +617,26 @@ address binding so a second process fails instead of splitting requests.
 
 ## 16. Remaining work and recommended next steps
 
-1. Validate the supplied Lap Around-01 through Lap Around-12 references and
-   completeness/metadata disagreements without altering originals, then
-   deliberately select permanent fixtures and an exact manifest.
-2. Choose and preserve a known-good FTFA benchmark report for
-   `--baseline --fail-on-regression`; generated `out` directories alone are
-   not durable.
-3. Curate the broader named CN3/NANG conversation sources into a local corpus
-   manifest. Promote only small, reviewed golden cases to Git unless Git LFS or
-   another storage policy is chosen.
-4. Preserve unique `.jscan.json` projects that contain manual corrections not
-   reproducible from source plus current code.
-5. Add packaging/dependency metadata for Pillow, pytest, and optional
-   Tesseract setup.
-6. Add CI that runs the full test suite and a deliberately bounded exact
-   benchmark.
-7. Continue improving source-independent segmentation and feature grouping
-   across unseen palettes instead of adding coordinate-specific fixes.
-8. Measure rule changes across all fixture manifests and exact FTFA rooms
-   before accepting them.
-9. Extend exact goldens for CN3/NANG/object families where the corrected JMaps
-   already exist.
-10. Expand dotkid detection only when another visually distinct, reviewed
-    marker family is available; keep the existing visibility-ring rule
-    conservative.
+1. Continue the current source-identity/compound-geometry goal, with its fixed
+   positive/negative structures, minimum real recoveries, conflict reduction,
+   cross-family transfer and separately frozen no-tuning reserve. The 71 human
+   reviews and canonical manifest already exist locally; do not recreate them
+   or read the full private archive merely to resume.
+2. Qualify the newest default-off admission API against all protected groups
+   and exact controls, then measure controlled whole cost before any safe
+   original-frame consumer binding. Do not count private outputs as app results.
+3. Preserve all established object/metadata gains, true overlaps, partial spikes,
+   compact/cropped unknowns, original RGB and text/marker negatives. References
+   are post-scan evaluators, never image-recognition inputs.
+4. Maintain a final-current 71+16 audit using compatible checksummed reuse and
+   source review of changed whole maps/every delta. Separate pending, inherited,
+   fresh and equality-carried evidence; do not approve rooms by counts alone.
+5. Preserve unique manual `.jscan.json` corrections, supplied JMaps and local
+   source/index material. Consider permanent golden promotions only deliberately,
+   with source/reference disagreements resolved and originals untouched.
+6. Later infrastructure opportunities include packaging/dependency metadata,
+   bounded CI tests/exact benchmarks, and further independent real sprite
+   families. Do not substitute these for the active recognition work.
 
 ## 17. Image-corpus policy and verified counts
 

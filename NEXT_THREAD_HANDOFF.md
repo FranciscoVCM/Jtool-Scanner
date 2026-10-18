@@ -1,10 +1,75 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-17. Continue in the existing repository at
+Updated 2026-10-18. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
 ## Read first: concrete continuation, not an evidence reset
+
+This top section supersedes ALL older “NEWEST”, “Latest”, live PID and goal
+wording further below; those entries are historical logs. Do not read the whole
+file/archive just to resume. `HANDOFF.md` is the general project overview;
+`DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
+Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
+latest active note and audit named below. Preserve the existing goal/baseline.
+
+NEWEST checkpoint: read ignored UPSTREAM_REPEATED_ADMISSION_ACTIVE_v1.md,
+its admission/whole freeze files and auditv28 before older notes. Default-off
+lower API qualifies139focused tests54.091s, a complete default-False scanner
+AST bridge, genuine upstream stage replay and6 actual observed whole scans.
+Additional app/cache/dispatch35testsPASS54.708s after strengthening the runtime
+fingerprint check for ALL20 source dependencies; not a full-suite claim.
+Final source-mask QA is now TERMINAL/PASS: private opt-in withholds2NEW Halls3/
+3Golden7 full-block conflicts; all remaining ordered metadata/nongeometry,
+Halls4/Halls5/NR1 wholes and hook7168/island8192positive pixels are preserved.
+Halls3fixed21 errors2->0/all16384solid; Golden7positive49504/54880unchanged,
+negativeexcess576->0, missing5376/majorerrors remain. Both changed wholetriplets
+and all5source deltas reviewed. No source images/fixtures/JMaps changed.
+The scanner/app DOES NOT request this flag; these5corrections are NOT deployed.
+Audit41qualified/30pending/ZEROapprovals uses defaultFalse/fullcache equality,
+not a new sweep. All16/41/601/139 OPT-IN closure, controlled whole cost and safe
+ORIGINAL-frame consumer binding remain pending. Continue those bounded gates;
+do not rescan completed outputs or call Halls7 a successful reserve. NR2Down
+(624,464) is confirmed REAL32px; do not re-ask or confuse with old false effects.
+The ignored active/publication receipts record exact commit/app/parity status.
+
+### Next bounded implementation work (not a new goal)
+
+1. Start with actual Git state and terminal receipts. Do not reset dirty work,
+   create a branch/worktree, or restart a completed scan because a tool handle
+   is gone. The partial audit-v1 worker stopped at48/71; its successor only
+   revalidates saved outputs. Keep both receipts. The obsolete19-dependency
+   test was corrected to20 and strengthened to check ALL dependency bytes.
+2. For opt-in protection closure, compare the complete genuine generic-prefix
+   ScanResult/original frame at `_apply_source_geometry` entry with sealed stage
+   snapshots from `filled-enabled44-preflight-v1.json`. Exact equality plus
+   unchanged later pipeline can carry reviewed whole outputs; missing/mismatched
+   inputs require targeted qualification, not an invented carry or full resweep.
+   Qualified changed Halls3/Golden7 wholes are already preserved. Preserve ALL
+   original41 groups/601minis/139terrain footprints and all16 exact bounds.
+3. Prove a future caller's working RGB/dimensions/room match the ORIGINAL physical
+   source before supplying SourceFrame. Normalized/padded pixels cannot serve
+   as original evidence. Preserve compact, extended-world and 800x600 crop
+   uncertainty; do not enable the gate by manufacturing a matching working frame.
+4. Before binding, quiet AC serial whole timings need at least2 samples/mode/
+   source on dense CN3-9, sparse Halls4 and positive Halls3, with complete expected
+   output equality. Persistent>5% cost is a hold. Old/helper timing is not new
+   whole-cost proof. Then consumer-only bridge, actual unpatched outputs and
+   source QA/app parity are still required.
+5. Continue the unresolved shared causes/reserve after this gate. Halls7 remains
+   a FAILED reserve: corrected61 has52exact/37errors versus B23539errors. Later
+   predeclared Golden5/NANG138r need separate compatible pre-freezes; historically
+   exposed is not unseen. Canonical CN3-18 is not the separate tracked near-exact
+   CN3-18 fixture. No background/ownership suppression alone completes the goal.
+
+Completion remains ALL six gates, including3improved rooms/2visual families/
+1new successful reserve, >=8real geometry corrections across2rooms AND>=4false
+conflicts, >=25% fixed-structure error reduction/>=2corrections per successful
+room, no positive losses, all protections/16controls, valid whole cost,
+final-current71+16/conservative QA, pushed clean main/private preservation and
+app200/loaded-source parity. None of the pending gates may be silently weakened.
+
+### Historical checkpoint log — consult selectively, not current instructions
 
 NEWEST component: REPEATED_IDENTITY_ACTIVE_v1.md / REPEATED_IDENTITY_SOURCE_QA_v1.md
 and auditv27. New public source_repeated_identity is READ-ONLY/UNBOUND; no removal
