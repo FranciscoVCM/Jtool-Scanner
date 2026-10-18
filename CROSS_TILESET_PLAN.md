@@ -1,6 +1,28 @@
 # Cross-tileset milestone
 
-## Latest opt-in checkpoint (2026-10-17): upstream positive admission
+## Latest qualification (2026-10-18): complete opt-in protection cohort
+
+All45 protected inputs pass:40 actual original generic prefixes and5 reused
+qualified opt-in wholes, plus a separate passing canonicalCN3-18 prefix.
+Complete metadata/RGB/crop/grid/world-frame parity and unchanged downstream
+code qualify reuse; these are not45 new whole scans. Original41/601/139/16
+definitions pass without narrowed denominators. All16 exact summaries remain
+unchanged: FTFA926/928zeroextra/shift/wrong; Flames254exact/19miss/42extra/
+20shift/2wrong. ConfirmedNR2facts and the entire current Halls7 map survive.
+
+The original canonicalCN3-18 lower-left scope is independently reverified:
+4864/4864solids/4exacthazards/0excess versusB23518176. This is an ALREADY shipped
+gain, not new here or whole-room approval. Do not retune that cleared field.
+The full-block intrinsic classifier is not a qualified mini-block filter.
+
+No runtime predicates changed.139+35 earlier tests carry by exact code equality,
+not a new full suite. Auditv29 remains41currentqualified/30pending/ZEROapprovals.
+Five reviewed private false-block corrections are still NOT app-enabled.
+Next qualify a disabled original-provenance consumer, measure its actual whole
+cost, then enable only after passing cost/consumer-output bridges. A compatible
+new reserve and all original full-goal completion requirements remain open.
+
+## Earlier opt-in checkpoint (2026-10-17): upstream positive admission
 
 The plain colour-profile fallback can now require independent source-local
 object evidence BEFORE emitting NEW full blocks. Strict lower-API default is

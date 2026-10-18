@@ -13,6 +13,28 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+NEWEST qualification: UPSTREAM_REPEATED_PREFIX_ACTIVE_v1.md / auditv29 supersede
+the v28/pending-protection wording below. ALL producers are TERMINAL/PASS:
+45 fixed inputs =40fresh actual generic prefixes +5reused qualified opt-in
+wholes, plus a separate canonicalCN3-18 prefix. Entire original ScanResult/RGB/
+physicalcrop/worldextent/cache checks pass. Original41groups/601minis/139terrain/
+16exact summaries pass unchanged; FTFA926/928zeroextra/shift/wrong, Flames254exact/
+19miss/42extra/20shift/2wrong. NR2realDown624464/minis retained, oldfalseeffects
+absent; Halls7 entire current map preserved, NOT new reserve success.
+
+CanonicalCN3-18 frozen lower-left ROI is CURRENT4864/4864solids/4exacthazards/
+ZEROexcess versusB23518176. This was already shipped, not a gain from this turn
+or whole-room approval. No remaining false terrain query exists in that frozen
+field; do not keep tuning it from the old baseline finding. Do not use the full-
+block intrinsic classifier as a new mini filter (0/14known16px positives pass).
+
+Runtime bytes remain equal to the previous a324a16 checkpoint;139+35 tests carry,
+not a new full-suite run. App still DOES NOT enable the upstream gate; five
+private corrections remain private. Audit41qualified/30pending/ZEROapprovals.
+Next implement only a DISABLED consumer/provenance guard and wiring/default-
+active equivalence tests. Then measure actual proposed consumer whole cost and
+only enable after passing. The original goal/reserve/final71+16 gates stayOPEN.
+
 NEWEST checkpoint: read ignored UPSTREAM_REPEATED_ADMISSION_ACTIVE_v1.md,
 its admission/whole freeze files and auditv28 before older notes. Default-off
 lower API qualifies139focused tests54.091s, a complete default-False scanner
@@ -40,13 +62,13 @@ The ignored active/publication receipts record exact commit/app/parity status.
    is gone. The partial audit-v1 worker stopped at48/71; its successor only
    revalidates saved outputs. Keep both receipts. The obsolete19-dependency
    test was corrected to20 and strengthened to check ALL dependency bytes.
-2. For opt-in protection closure, compare the complete genuine generic-prefix
-   ScanResult/original frame at `_apply_source_geometry` entry with sealed stage
-   snapshots from `filled-enabled44-preflight-v1.json`. Exact equality plus
-   unchanged later pipeline can carry reviewed whole outputs; missing/mismatched
-   inputs require targeted qualification, not an invented carry or full resweep.
-   Qualified changed Halls3/Golden7 wholes are already preserved. Preserve ALL
-   original41 groups/601minis/139terrain footprints and all16 exact bounds.
+2. Original-prefix and numerical protection closure is NOW DONE: see
+   upstream-repeated-prefix-v1.json, upstream-primary18-prefix-v1.json and
+   upstream-repeated-all-protections-v1.json. Do not rerun40prefixes/5wholes or
+   the complete controls merely to resume. An exact disabled-consumer default
+   bridge and active-path provenance proof must connect those saved results
+   to future wiring; a mismatch requires targeted qualification, not invented
+   carry. Preserve ALL original41/601/139/16 and all51 adopted recoveries.
 3. Prove a future caller's working RGB/dimensions/room match the ORIGINAL physical
    source before supplying SourceFrame. Normalized/padded pixels cannot serve
    as original evidence. Preserve compact, extended-world and 800x600 crop

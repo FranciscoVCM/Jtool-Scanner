@@ -4,6 +4,44 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Upstream opt-in protections closed; app still unchanged
+
+The fixed 45-input protection cohort passes: 40 fresh actual generic prefixes
+stopped before source analysis, plus five previously qualified actual opt-in
+whole scans revalidated and reused. Complete ScanResult, ordered metadata,
+original RGB, dimensions, physical crop, world extent and cleared feature-cache
+comparisons pass. A separate canonical CN3-18 prefix also passes; it is not the
+tracked CN3-18 exact-control image. No baseline or 71-room rescan was performed.
+
+The ENTIRE original numerical evaluator passes all 41 groups, 601 source
+miniblocks, 139 terrain footprints and 16 exact bounds with unchanged definitions
+and denominators. Every exact-control summary is unchanged. FTFA remains
+926/928 with zero extras/shifts/wrong directions; Flames remains 254 exact,
+19 misses, 42 extras, 20 shifts and two wrong directions. The confirmed NR2
+Down(624,464) and two real minis survive; the two old decorative effects remain
+absent. Halls7's entire current map is preserved, not a new reserved success.
+
+Re-measuring the original canonical CN3-18 lower-left structure confirms all
+4,864 solid pixels and four expected hazards, with zero known false-solid
+excess versus B235's 18,176. This improvement was ALREADY shipped before this
+turn. It is not a new correction or whole-room approval; do not retune that
+cleared field merely because an audit retains the old baseline finding.
+A source-only intrinsic diagnostic does not justify applying the full-block
+classifier to 16px terrain: none of 14 known world-frame positive mini probes
+passes its full-block threshold. No such filter was implemented.
+
+Runtime/recognition code did not change during these producers. The earlier
+139 focused and 35 deployment tests remain valid through byte-identical code;
+they were not rerun or relabelled as a new full suite. Audit v29 keeps 41 current
+outputs qualified /30 pending /ZERO correctness approvals. Five experimental
+false-block corrections remain disabled in the app.
+
+Next: a disabled consumer with explicit ORIGINAL-image provenance/normalization
+bypass, focused wiring tests and exact default/active bridges; then quiet AC
+serial whole timings on dense CN3-9, sparse Halls4 and positive Halls3, at least
+two samples per mode/source. Cost, actual consumer activation/unpatched output
+proof, compatible new reserve and the full six completion gates remain open.
+
 ## 2026-10-17 — Qualified upstream terrain admission; default off
 
 The repeated-material fallback now has an explicit, default-false lower API

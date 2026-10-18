@@ -30,6 +30,13 @@ corrections are not deployed results. Never interpret an unsupported shape as
 empty source, use newly emitted objects as teachers, or delete every overlap;
 real partially hidden spikes and narrow solid strips must survive.
 
+The latest protection cohort now passes: 40 fresh original generic prefixes,
+five reused qualified whole scans, an additional canonical CN3-18 prefix and
+the original 41 groups/601 miniblocks/139 terrain footprints/16 exact bounds.
+These checks do not activate the app or replace whole-scan cost qualification.
+The frozen canonical CN3-18 lower-left terrain field is already clear of its
+historical false-solid excess; remaining work must use current evidence.
+
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
 compatible checksummed output reuse and paired whole-scan speed measurements.
@@ -622,9 +629,10 @@ address binding so a second process fails instead of splitting requests.
    cross-family transfer and separately frozen no-tuning reserve. The 71 human
    reviews and canonical manifest already exist locally; do not recreate them
    or read the full private archive merely to resume.
-2. Qualify the newest default-off admission API against all protected groups
-   and exact controls, then measure controlled whole cost before any safe
-   original-frame consumer binding. Do not count private outputs as app results.
+2. Preserve the newest default-off admission API's completed prefix/protection
+   qualification. Qualify a disabled original-provenance consumer and measure
+   its actual controlled whole cost before enabling it. Do not count private
+   outputs as app results or repeat the completed protection scans to resume.
 3. Preserve all established object/metadata gains, true overlaps, partial spikes,
    compact/cropped unknowns, original RGB and text/marker negatives. References
    are post-scan evaluators, never image-recognition inputs.
