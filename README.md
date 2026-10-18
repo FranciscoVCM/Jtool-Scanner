@@ -750,6 +750,28 @@ Focused tests:
 python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
+### Read-only capture-base evidence (not app-enabled)
+
+`scripts/source_capture_base.py` investigates filled spikes whose bodies and
+two slopes are visible but whose external base context lies beyond the physical
+capture. It requires three independent original filled witnesses, the existing
+directed-slope criteria, and source-local RGB appearance. All body sample
+positions must have original pixels. Only filtered baseward context may be
+omitted, using the identical known mask for query and source models; missing
+pixels are never treated as background.
+
+Its finite one-dimensional capture-edge proposals address cases outside the
+old locator neighborhoods. This does not add another full-image scan. It is
+currently a supplementary evidence API, not imported by scanner dispatch or
+included in the app runtime dependencies. It does not change existing objects,
+teach from proposals, or use human JMaps as inputs. Two source-reviewed
+diagnostic candidates are not yet deployed improvements. Actual integration,
+whole-output checks, regression protection and incremental timing remain required.
+
+```powershell
+python -m unittest tests.test_source_capture_base tests.test_source_filled_pipeline tests.test_source_filled_short_circuit tests.test_source_filled_joint_phase tests.test_source_glyph_prototypes tests.test_source_sampling
+```
+
 ## Exact room benchmarks
 
 Use `benchmark` for saved real-world rooms that have an authoritative source

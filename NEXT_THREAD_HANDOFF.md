@@ -13,7 +13,46 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: measured original-source consumer activation
+### Newest bounded batch: read-only capture-base recovery evidence
+
+Start with ignored `CAPTURE_BASE_ACTIVE_v1.md` in the goal folder before older
+consumer notes. The new public `scripts/source_capture_base.py` and its tests
+are UNBOUND: no existing scanner/runtime bytes, dispatch, app output or timing
+changed. The previously published five false-block corrections remain enabled.
+
+Golden2's missing bottom spike has BOTH a locator seed gap and a censored
+external base halo. The new finite1D capture-edge proposals and source proof
+require two known slopes, all original body sample positions and three
+independent original filled teachers. Same known mask/affineRGB model comparison;
+no unknown-as-background, emitted teachers, room/palette/origin answers, original
+deletion or general interior-base weakening. Read the separate freezes/QA.
+
+86affected tests PASS11.508s (14portable); all1356 public/private query proofs
+equal on four complete source sets. Two independently source-reviewed PRIVATE
+candidates: Golden2Up48,576 and CN3-19Left768,128; Halls3/21 no additions.
+Golden2's unchanged complete37 structure36exact/7errors ->hypothetical37exact/
+6errors, all six oldextras retained. Neither candidate is an app gain yet.
+
+`capture-base-controls-preflight-v2.json` is TERMINAL/PASS: 43 original
+nonreserve inputs plus canonical18, all16 exact controls and the additional
+CN3-7 reference checked, ZERO new reference extras. Four sealed proof sets were
+reused. Only the two already source-reviewed candidates are novel. V1 completed
+all44 rows but its final reporter incorrectly counted17 reference-bearing cases
+as16; the failed receipt is preserved, all44 sealed rows reused without rerun
+or detector/label changes. Halls7/Golden5/NANG138r were NOT development evaluations.
+
+Auditv32 carries41qualified/30pending/ZEROapprovals through ENTIRE unchanged
+runtime and v31 complete-output qualification; no fresh whole scans or app gain.
+Read `capture-base-publication-v1.json` for exact reviewed commit/Git/app status.
+No old producer needs restarting. New code will need runtime fingerprint
+registration when a qualified consumer actually imports it.
+
+Next: actual opt-in integration,
+whole output/metadata/sourceQA/protection closure and incremental quietAC timing
+before app adoption. Do not restart completed baselines/whole scans or count
+private candidates as shipped results. Full goal/reserve/final71+16 still OPEN.
+
+### Published app checkpoint: measured original-source consumer activation
 
 Read the TOP of ignored
 `.artifacts/general-recognition-20261014/UPSTREAM_CONSUMER_ACTIVE_v1.md` and

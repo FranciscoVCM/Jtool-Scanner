@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## New source-evidence component (2026-10-18): capture-base context
+
+Read-only and UNBOUND: two visible source slopes/body plus three independent
+original filled witnesses can support an object even when its external base
+context crosses the actual capture boundary. A finite 1D edge proposal policy
+addresses locator seed gaps without scanning the entire image again. Original
+RGB and unknown coverage remain explicit; no base/interior threshold weakening,
+new teachers, deletion, reference answers or production room/palette rules.
+
+86 affected tests PASS11.508s, including14 portable checks. ENTIRE public/private
+proofs match on1356 real development/challenge queries. Two source-reviewed
+private candidates: Golden2Up48,576 and CN3-19Left768,128 across different visual
+materials; Golden2 complete37 scope36exact/7errors ->37exact/6errors, with old
+extras retained. Halls3/21 no gain. These are not deployed corrections, a room
+approval, reserve success, actual whole scan or whole-cost result.
+
+44 nonreserve source-contribution checks pass: all16 exact controls plus the
+additional CN3-7 reference yield ZERO new reference extras; only the reviewed
+two candidates are novel. The final reporting-count failure (17 reference-bearing
+inputs, not16) is preserved and repaired without rerunning the sealed observations.
+Existing app/runtime bytes and all previous gains remain unchanged. Auditv32
+carries41qualified/30pending/ZEROapprovals, not fresh room QA. No reserve tuning.
+Next qualify actual integration/whole/sourceQA/protections/cost
+before adoption, preserving all original final71+16/six-goal requirements.
+
 ## Current activation checkpoint (2026-10-18)
 
 Controlled consumer cost is TERMINAL/PASS: all 12 quiet-AC serial ABBA whole

@@ -48,6 +48,17 @@ Quiet-AC serial 12-scan timing passes with median changes +2.3006% Halls3,
 not a zero-cost guarantee. Normal scanning remains unchanged. Consult the latest
 activation publication receipt for exact loaded app/Git status, not older PIDs.
 
+The newer `source_capture_base.py` is a separate read-only, UNBOUND investigation:
+finite capture-edge proposals plus original-source geometry/RGB evidence for
+visible filled spikes with clipped external base context. Its 86 affected tests
+and complete four-source proof parity pass. Two source-reviewed diagnostic
+candidates are not new app gains; actual integration, whole/protection checks
+and incremental cost qualification still precede adoption. The broader 44-input
+nonreserve source preflight includes all16 exact controls plus CN3-7's reference,
+with zero novel reference extras. Auditv32 remains41qualified/30pending/ZERO
+room approvals, carried by unchanged runtime rather than fresh scans. See the newest
+next-thread section rather than treating this research API as deployed behavior.
+
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
 compatible checksummed output reuse and paired whole-scan speed measurements.

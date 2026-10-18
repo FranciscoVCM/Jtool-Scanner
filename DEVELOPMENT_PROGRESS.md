@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Separate capture-base source evidence, not app gains
+
+Tracing Golden2's remaining lower spike reveals two distinct blockers: its
+origin is outside the existing finite proposal neighborhoods, and its external
+base halo crosses the actual capture boundary. The complete original 37-object
+structure and its positive/negative labels remain unchanged. Repeating the held
+ownership observer or weakening interior base thresholds was not used.
+
+New read-only `source_capture_base.py` adds a finite one-dimensional edge query
+policy and a separate source proof. Both directed slopes and the observed body
+must agree with independent original filled models; every body sample position
+has an actual source pixel. Only filtered baseward context is omitted, with
+the SAME known mask/affine-RGB normalization for query and teachers. Unknown
+never becomes background, and proposals never teach or retire objects.
+
+The public component passes 86 affected tests in 11.508s, including 14 portable
+tests across four directions, palettes, polarity, dim/isoluminant colors,
+fractional scales, crop boundaries, missing bodies, text/rectangle impostors
+and immutable proof outputs. All 1,356 query proofs on four complete real
+development/challenge sets equal the frozen private prototype, not just counts.
+
+Two independently source-reviewed diagnostic candidates result: Golden2's
+missing upward spike and CN3-19's right-edge left-facing spike, across gold and
+gray-embossed visual families. Golden2 hypothetically improves 36 ->37 exact
+and 7 ->6 errors on the unchanged structure; its six old extras remain. This
+is one local recovery, not a new room approval. Halls3 and CN3-21 add nothing.
+
+The broader source-only preflight passes 44 inputs: 43 original nonreserve
+cases plus canonical CN3-18, including all16 exact controls and CN3-7's additional
+reference. ZERO new reference extras; only the two reviewed candidates are new.
+Four complete proof sets were reused. An obsolete final reporter count assumed
+16 reference-bearing cases, but there are17; its failed receipt is preserved
+and the sealed44 observations were finalized without rerunning or changing
+detection, labels or thresholds. Reserves were not evaluated.
+
+The API is UNBOUND: all existing scanner/runtime bytes, app outputs and previous
+gains remain unchanged. Successor auditv32 carries41qualified/30pending/ZERO
+approvals by unchanged runtime/v31 complete outputs, not fresh room QA. No whole
+scan, timing, reserve success or new app correction is claimed. Integration and actual
+whole/protection/cost gates still precede adoption. The full goal remains open.
+
 ## 2026-10-18 — Activate qualified consumer and save exact continuation
 
 The previously running whole-cost experiment finished normally: all 12 actual
