@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Activate qualified consumer and save exact continuation
+
+The previously running whole-cost experiment finished normally: all 12 actual
+consumer scans pass, quiet AC/serial fresh-process ABBA with two samples per
+mode/source and complete expected-output checks. Median before ->after:
+Halls3 61.6242 ->63.0419s (+2.3006%); dense CN3-9 119.4684 ->122.9776s
+(+2.9373%); sparse Halls4 40.3051 ->40.1129s (-0.4771%). No >5% hold; the
+dense/positive cases do have added cost. Two samples are limited evidence,
+not a general speed guarantee. Old timing receipts and outputs are preserved.
+
+The activation changes ONLY the internal consumer constant to True and its
+default-state test/comment. An ENTIRE one-constant scanner AST bridge proves
+the measured True branch equals the new production branch, with every other
+runtime file unchanged and no import-time switch-derived state. All 184 affected
+tests pass in 74.867s; not a full suite. Normal scanning, compact/normalized/inner
+and strong-profile routes still bypass; the lower API still defaults False.
+
+Three actual UNPATCHED wholes reproduce the complete expected Halls3, Golden7
+and canonicalCN3-18 maps, ordered metadata, settings, warnings, source/options,
+crop/grid, JMap, JTool/Blend and projects. Only the verified owned source locator
+is normalized. This carries earlier whole/all-delta source QA, not room approval.
+Two Halls3 false sky blocks and three Golden7 false-block conflicts become
+enabled corrections. No new positive recovery: the previous 51 remain protected.
+Halls3's fixed 21 positives / 16384 solid pixels survive; Golden7 retains 49504/54880
+positive pixels and its 5376 missing pixels/major errors. The canonical18 frozen
+lower-left gain was already shipped, not new here. False saves/compound and
+other room errors remain.
+
+Successor audit v31 keeps 41 current outputs qualified / 30 pending / zero correctness
+approvals, including eleven explicit compact-grid bypass carries. Original 41
+groups / 601 minis / 139 terrain footprints / 16 exact definitions and results
+carry through qualified routing and the complete switch bridge, not a fresh
+control sweep. FTFA 926/928 with zero extras/shifts/wrong directions;
+Flames 254 exact / 19 misses / 42 extras / 20 shifts / 2 wrong directions.
+
+Updated existing public and ignored next-thread entry points with terminal
+receipts, original goal constraints, preserved local corpus and next causal
+batch. Exact publication/app status is separately verified in the activation
+publication receipt. All six goal gates remain OPEN, including a successful
+new compatible reserve and final stable71+16; Halls7 is still a failed reserve.
+
 ## 2026-10-18 — Original-provenance consumer installed, disabled pending cost
 
 Added an internal default-OFF consumer at the early plain repeated-profile

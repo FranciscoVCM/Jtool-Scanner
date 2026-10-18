@@ -13,27 +13,78 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-NEWEST implementation: UPSTREAM_CONSUMER_ACTIVE_v1.md / auditv30 supersede
-the instruction to implement a consumer below. Internal switch is OFF; helper
-requires source mode/outerrefits/native25x19/ORIGINAL image ID/samecrop/plain
-profile. No hash/transform inference/extra image pass or lower-model change.
-184testsPASS101.045s; ENTIRE disabled AST/unchanged other runtime bytes/lower
-math; routing45+canonical18 connects completed protections. Two actual private
-consumer wholes match ENTIRE Golden7/canonical18 expected output/metadata/
-project/JMap/JTool/Blend/source/options. Prior source QA carries by equality.
-Actual consumer Halls3 whole is still pending in the fixed positive cost case.
+### Current checkpoint: measured original-source consumer activation
 
-NEXT: measure_upstream_consumer_whole_v1.py after verifying ALL other actual
-producers terminal and quietAC. Actual booleanFalse/True, no helper/tracing
-wrappers inside the scan timer. Fixed Halls3/dense9/sparseH4 fresh-process
-serialABBA12, >=2samples/mode/source, ENTIRE expected output equality and
->5%incremental cost HOLD. Keep runtime/HEAD frozen while producerLIVE; preserve
-per-sample receipts/PIDs/output caches and never blindly restart a sample.
-The consumer is NOT app-enabled; final activation needs passed cost/protection
-bridge, one-switch activation proof, actual unpatched output equality/sourceQA
-and app parity. No new reserve/room approval/full-goal completion. Auditv30
-41qualified/30pending/ZEROapprovals. See private publication receipt for exact
-Git/app status; runtime now differs from the earlier a324a16 scanner bytes.
+Read the TOP of ignored
+`.artifacts/general-recognition-20261014/UPSTREAM_CONSUMER_ACTIVE_v1.md` and
+the successor `71-screen-general-recognition-checkpoint-v31.md`/JSON there.
+The project description, architecture, commands and preservation policy are
+already in root `HANDOFF.md` and `README.md`; do not recreate a handoff or
+reload the archive. All 71 user reviews are preserved in
+`local_corpus/user-reviewed-20261001/USER_REVIEWS.md`. Both image indexes in
+`.codex-notes` remain local, ignored and unchanged. Preserve original sources,
+human JMaps and unique correction projects.
+
+The saved 12-scan controlled timing job is TERMINAL/PASS, not stuck or live.
+Fresh-process quiet-AC serial ABBA, two samples/mode/source, full expected
+output checks: Halls3 61.6242 ->63.0419s (+2.3006%), dense CN3-9
+119.4684 ->122.9776s (+2.9373%), sparse Halls4 40.3051 ->40.1129s (-0.4771%).
+There is real added dense/positive cost, but no >5% hold. This limited experiment
+does not establish universal latency or zero cost. Do not rerun it to resume.
+
+The internal consumer switch is TRUE; lower admission API still defaults OFF.
+Only Experimental source mode, outer shape refits, native25x19, actual ORIGINAL
+image object/same crop/plain profile may request it. Normal scanning, compact/
+unknown grids, normalized/inner passes and stronger profiles bypass. No
+recognition predicate, teacher, threshold, image pass or transform inference
+changed during activation. An ENTIRE one-constant AST bridge and unchanged
+other runtime bytes connect it to the measured True branch. All 184 affected
+tests PASS in 74.867s; this is NOT a full-suite run.
+
+All three actual UNPATCHED wholes (Halls3, Golden7, canonicalCN3-18) pass ENTIRE
+expected maps, ordered metadata, warnings, options, crop/grid, source, JMap,
+JTool/Blend and project equality; only a verified owned source locator is
+normalized. Prior whole/all-delta source QA carries by this full equality,
+not counts. The producers are TERMINAL, not awaiting another restart. Five
+reviewed false-full-block corrections are enabled (Halls3 two / Golden7 three),
+not five new positive recoveries. Original 51 positive recoveries stay protected.
+
+Use `upstream-consumer-activation-publication-v1.json` for the final exact
+commit/live origin/main/clean Git/private exclusions/index hashes/app200/loaded-
+source parity. If publication is interrupted before that receipt exists,
+finish review/explicit public-only stage/commit/push and app verification;
+do not repeat completed tests or scans. Recheck actual Git/processes on resume.
+No runtime/HEAD edits during a live frozen producer; timeout is not failure.
+
+### Next bounded accuracy batch — same goal, not another evidence reset
+
+Audit remains 41 current outputs qualified / 30 pending / zero whole-room approvals;
+qualification is not correctness. Read current per-room findings conservatively.
+Canonical CN3-18's frozen lower-left ROI is already 4864/4864 solids / 4 hazards / zero
+excess, not a new gain or reason to retune that cleared region. It is NOT the
+separate tracked near-exact CN3-18 fixture.
+
+Prioritize a remaining shared positive/compound-geometry cause using Golden2
+and current Halls3 evidence: trace original proposals through classification,
+normalization and final ownership before choosing a predicate. Freeze complete
+contiguous positives/negatives/uncertainty and numerical criteria BEFORE tuning.
+Do not force unrelated causes into this repeated-terrain admission rule or use
+the full-block classifier as an unqualified mini-block filter. References are
+post-scan evaluators, never runtime answers or teachers. Preserve original RGB,
+true partial overlaps and unknown crop/padding evidence.
+
+Use portable appearance/scale/adversarial tests plus real cross-family transfer,
+focused protections and actual whole/all-delta source QA. Halls7 remains a FAILED
+reserve (52 exact / 37 errors vs B235's 39 errors), not a success to rename. Golden5 or
+NANG138r may be later reserves only for a separately frozen compatible mechanism;
+their historical exposure is explicit. NANG138r is compact and its striped A-E
+sections are confirmed SOLID. Do not retune a failed reserve and call it new.
+
+All six original GOAL_PLAN gates remain OPEN, including the required real gains,
+new compatible reserve, final stable71+16 and conservative source QA. A tested,
+pushed checkpoint is a safe continuation point, not completion of the project.
+
+### Prior checkpoints — historical; superseded by the current section above
 
 NEWEST qualification: UPSTREAM_REPEATED_PREFIX_ACTIVE_v1.md / auditv29 supersede
 the v28/pending-protection wording below. ALL producers are TERMINAL/PASS:

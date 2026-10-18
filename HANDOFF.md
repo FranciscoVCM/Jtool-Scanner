@@ -25,22 +25,28 @@ Experimental source analysis uses original RGB, independently verified source
 witnesses, contours and competing triangle/rectangle evidence. It has qualified
 filled/compound spike and phase recoveries, but major false terrain, missing
 objects and ownership conflicts remain. The newest repeated-terrain admission
-API is default OFF and not called by app scans: five reviewed private false-block
-corrections are not deployed results. Never interpret an unsupported shape as
-empty source, use newly emitted objects as teachers, or delete every overlap;
+API still defaults OFF at its lower entry point. Its guarded scanner consumer
+is now enabled for fresh Experimental scans: five source-reviewed false-block
+corrections, not new positive recoveries or whole-room correctness. Never
+interpret an unsupported shape as empty source, use newly emitted objects as
+teachers, or delete every overlap;
 real partially hidden spikes and narrow solid strips must survive.
 
 The latest protection cohort now passes: 40 fresh original generic prefixes,
 five reused qualified whole scans, an additional canonical CN3-18 prefix and
 the original 41 groups/601 miniblocks/139 terrain footprints/16 exact bounds.
-These checks do not activate the app or replace whole-scan cost qualification.
+These checks are not fresh full-control scans or whole-room correctness approvals.
 The frozen canonical CN3-18 lower-left terrain field is already clear of its
 historical false-solid excess; remaining work must use current evidence.
 
-A guarded consumer is now installed but switched OFF. It accepts actual
-original-image identity, not merely equal pixels, and bypasses normalized,
-compact and inner passes. Its 184 affected tests and two private whole-output
-checks pass; controlled whole cost and final activation remain pending.
+A guarded consumer accepts actual original-image identity, not merely equal
+pixels, and bypasses normalized, compact and inner passes. All 184 affected
+activation tests pass in 74.867s. Three
+actual unpatched whole outputs match all reviewed expected artifacts/metadata.
+Quiet-AC serial 12-scan timing passes with median changes +2.3006% Halls3,
++2.9373% dense CN3-9 and -0.4771% sparse Halls4, no >5% hold. This is limited evidence,
+not a zero-cost guarantee. Normal scanning remains unchanged. Consult the latest
+activation publication receipt for exact loaded app/Git status, not older PIDs.
 
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
@@ -634,10 +640,11 @@ address binding so a second process fails instead of splitting requests.
    cross-family transfer and separately frozen no-tuning reserve. The 71 human
    reviews and canonical manifest already exist locally; do not recreate them
    or read the full private archive merely to resume.
-2. Preserve the newest default-off admission API's completed prefix/protection
-   qualification. Qualify a disabled original-provenance consumer and measure
-   its actual controlled whole cost before enabling it. Do not count private
-   outputs as app results or repeat the completed protection scans to resume.
+2. Preserve the newest admission consumer's completed prefix/protection,
+   one-switch activation and actual whole-cost qualifications. Follow the latest
+   publication receipt and next-thread note for exact Git/app status; do not
+   repeat completed scans merely to resume. Next prioritize a remaining shared
+   real-positive/compound-geometry cause, not only more suppression.
 3. Preserve all established object/metadata gains, true overlaps, partial spikes,
    compact/cropped unknowns, original RGB and text/marker negatives. References
    are post-scan evaluators, never image-recognition inputs.

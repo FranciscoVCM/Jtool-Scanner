@@ -1,6 +1,35 @@
 # Cross-tileset milestone
 
-## Latest implementation (2026-10-18): disabled original-provenance consumer
+## Current activation checkpoint (2026-10-18)
+
+Controlled consumer cost is TERMINAL/PASS: all 12 quiet-AC serial ABBA whole
+scans, two samples/mode/source, complete expected outputs. Median Halls3 +2.3006%,
+denseCN3-9 +2.9373%, sparseHalls4 -0.4771%; no >5% hold. Limited repeated-sample
+evidence, not zero cost or universal latency. Do not repeat this experiment.
+
+Production switch activation is the ONLY scanner change; complete one-constant
+AST/other-runtime equality connects it to those measured branches. All 184 affected
+tests PASS in 74.867s, not full suite. Lower API defaults False; normal, compact,
+normalized/inner and strong-profile scanning remain unchanged. Only proven
+original-source plain repeated profiles use the guarded consumer.
+
+All three actual UNPATCHED wholes (Halls3, Golden7, canonical18) match complete
+expected outputs, ordered metadata/settings/source/options/crop/grid/projects/
+renders. Prior whole/all-delta source QA carries by equality. Five false-block
+corrections are now enabled: Halls3 two / Golden7 three, with no new positive recovery.
+Original 51 recoveries / 41 groups / 601 minis / 139 terrain footprints / 16 exact
+results are protected. Audit v31: 41 qualified / 30 pending / zero whole-room
+approvals, not a fresh 71/16 sweep.
+Use the activation publication receipt for final app/Git/parity verification.
+
+Next investigate a remaining shared positive/compound cause from Golden2 and
+current Halls3, freezing full structures before tuning and preserving all old
+positives/negatives. Halls7 is still a failed reserve; any later Golden5/compact
+NANG138r reserve needs a separately frozen compatible mechanism. No full-block
+mini filter, palette/room answers or suppression-only substitute for recovery.
+All original numerical/reserve/final71+16/six completion gates remain OPEN.
+
+## Earlier implementation (2026-10-18): disabled original-provenance consumer
 
 The early plain-profile consumer is installed behind an internal OFF switch.
 Only source mode/outer shape refits/native25x19/actual ORIGINAL image object/

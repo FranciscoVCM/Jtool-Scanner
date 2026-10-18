@@ -1,4 +1,4 @@
-"""Disabled consumer routing must not invent original provenance from pixels."""
+"""Source consumer routing must not invent original provenance from pixels."""
 import ast
 from dataclasses import replace
 import inspect
@@ -24,9 +24,10 @@ class RepeatedIdentityConsumerTests(TestCase):
             source_geometry=mode, apply_shape_refits=refits,
             profile=self.profile if profile == 'plain' else profile)
 
-    def test_default_consumer_is_disabled_without_frame_work(self):
-        self.assertIs(scanner._SOURCE_REPEATED_IDENTITY_ENABLED, False)
-        with patch('scripts.source_sampling.SourceFrame', side_effect=AssertionError('Disabled')):
+    def test_source_consumer_default_enabled_but_explicit_bypass_has_no_frame_work(self):
+        self.assertIs(scanner._SOURCE_REPEATED_IDENTITY_ENABLED, True)
+        with patch.object(scanner, '_SOURCE_REPEATED_IDENTITY_ENABLED', False), \
+             patch('scripts.source_sampling.SourceFrame', side_effect=AssertionError('Disabled')):
             self.assertEqual(self.options(), {})
 
     def test_enabled_consumer_forwards_one_matching_original_frame(self):

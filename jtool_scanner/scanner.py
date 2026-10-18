@@ -79,8 +79,8 @@ MINI_SPIKE_TYPES = frozenset(
     }
 )
 DEFAULT_SCAN_GRID_STEP = 8
-# Research consumer stays off until original-source routing and whole cost pass.
-_SOURCE_REPEATED_IDENTITY_ENABLED = False
+# Only proven ORIGINAL source-mode callers can enable the opt-in lower API.
+_SOURCE_REPEATED_IDENTITY_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
