@@ -773,8 +773,11 @@ The opt-in path adds objects only: it never teaches from proposals, retires old
 objects, uses human JMaps as inputs or labels unseen pixels background. Two
 actual consumer whole scans reproduce the old complete metadata/artifacts plus
 only the two source-reviewed spikes. These are still private results, not new
-app gains. Original regression protections pass; incremental timing, activation
-and unpatched production checks still precede deployment. The four extra crop
+app gains. Original regression protections and controlled actual-consumer timing
+pass: 12 quiet-AC serial ABBA scans with full expected outputs, two samples per
+mode/source, median changes +1.36% Golden2 / +0.98% dense CN3-9 / -0.10% sparse
+Halls4. No >5% hold; these are limited measurements, not universal latency proof.
+Activation and unpatched production checks still precede deployment. The four extra crop
 tests reject false 8px shifts of partially clipped spikes, including 800x600.
 
 ```powershell

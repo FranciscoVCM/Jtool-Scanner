@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Newest checkpoint (2026-10-18): cost qualified; activation pending
+
+The default-OFF actual capture-base integration is published as `ce968fa`.
+Frozen quiet-AC serial ABBA12 passes all complete expected outputs, with median
+changes +1.36% Golden2, +0.98% dense CN3-9, -0.10% sparse Halls4. No >5% hold;
+limited two-sample-per-mode evidence, not a universal no-cost claim. Auditv34
+keeps 41 qualified cached outputs / 30 pending / ZERO room approvals.
+
+Next qualify one-switch activation, affected tests and actual UNPATCHED
+Golden2/CN3-19 whole outputs, then reviewed publication/app parity. Until then
+the two new real recoveries remain private and the consumer stays OFF. No
+source labels, original protections or failed reserve results changed. All
+new-reserve/final71+16/full-goal gates remain OPEN; continue with a distinct
+shared causal batch after adoption, not reserve retuning or corpus overfitting.
+
 ## Current integration (2026-10-18): actual source consumer, still OFF
 
 Strict defaultFalse lower/pipeline flags now reuse the SAME original filled

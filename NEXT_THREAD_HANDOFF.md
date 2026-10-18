@@ -13,9 +13,45 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Newest bounded batch: actual capture-base consumer installed, OFF
+### Newest continuation: timing complete; activation still pending
 
-Read the TOP of ignored `CAPTURE_BASE_ACTIVE_v1.md` and auditv33 in the goal
+The optional implementation was reviewed and published as
+`ce968fa399f3f266322b0358792354150d7e03a0`. The subsequent handoff-only
+publication is recorded in ignored `capture-base-handoff-publication-v1.json`;
+use Git/live origin and that receipt for exact current HEAD, not historical PIDs.
+The project overview, architecture, install/start/test commands and image policy
+are already tracked in `HANDOFF.md` and `README.md`.
+
+The frozen cost producer is TERMINAL/PASS: all 12 actual consumer whole scans,
+serial fresh-process quiet-AC ABBA, two samples per mode/source. Every sample
+passes complete expected output/metadata checks. Median disabled -> enabled:
+Golden2 57.6874 -> 58.4746s (+1.36%); dense CN3-9 112.7502 -> 113.8534s
+(+0.98%); sparse Halls4 54.0404 -> 53.9849s (-0.10%). No >5% hold. This is
+limited paired evidence, not zero added cost or universal latency proof.
+Read `capture-base-whole-cost-v1.json`; do NOT rerun the completed producer.
+
+Audit `71-screen-general-recognition-checkpoint-v34.md`/JSON revalidates all
+41 qualified cached outputs; 30 remain pending and ZERO rooms are approved.
+No fresh 71-room sweep or new visual review is implied. Source labels, exact
+controls, failed reserve result and every original protection remain unchanged.
+Previous 151 affected tests and four supplemental crop tests were not rerun
+for this docs/cost checkpoint. The app consumer remains OFF: the two new real
+spikes are still private results, not deployed gains. Previous deployed fixes
+remain intact. App21-dependency source parity/root&health200 was verified.
+
+NEXT: qualify the one-switch activation separately. Change only the scanner
+consumer default (keep lower APIs default OFF), update its explicit routing
+test, prove the one-constant whole-module bridge, run affected tests and two
+ACTUAL UNPATCHED whole scans against the reviewed Golden2/CN3-19 expectations.
+Then carry all-delta source QA/protections, refresh the conservative audit,
+review/commit/push, restart the owned app and verify source parity/HTTP200.
+Do not claim activation before those checks. Afterwards pursue a distinct
+shared remaining detection cause; do not retune the failed reserve or declare
+the 71 rooms/general-recognition goal complete. All full-goal gates stay OPEN.
+
+### Qualified optional integration details (same implementation, still OFF)
+
+Read the TOP of ignored `CAPTURE_BASE_ACTIVE_v1.md` and auditv34 in the goal
 folder. The original source predicate/query/model bytes are unchanged. Strict
 default-false lower/pipeline APIs now share the SAME original FilledGlyphEvidence;
 the final source caller has `_CAPTURE_BASE_CONTEXT_ENABLED=False`. No app
@@ -56,13 +92,13 @@ Auditv33 revalidates all41 current cache artifacts and defaultFalse behavior,
 corrections remain. Read `capture-base-integration-publication-v1.json` for final
 exact commit/live main/clean/private/index/app200/loaded-source parity.
 
-NEXT controlled ACTUAL consumer whole cost, not a lower-helper experiment:
+The controlled ACTUAL consumer whole cost below is now COMPLETED as above:
 `measure_capture_base_consumer_whole_v1.py`, positiveGolden2/dense9/sparseHalls4,
 quietAC serial freshprocessABBA12,2samples/mode/source, ENTIRE expected outputs,
-persistent>5%HOLD. Publication receipt is a precondition. If a producer is LIVE,
+persistent>5%HOLD. Publication preceded it. For any future LIVE producer,
 poll its ACTUAL handle/childPID; no runtime/HEAD edits, other scans/tests/renderers
-or blind sample restarts. Preserve sealed receipts on interruption. Then only
-after cost passes: one-switch activation proof, actual UNPATCHED outputs/sourceQA,
+or blind sample restarts. Preserve sealed receipts on interruption. NEXT is
+one-switch activation proof, actual UNPATCHED outputs/sourceQA,
 reviewed public checkpoint and app parity. All full-goal/reserve/final71+16 gates
 remain OPEN; the capture-only zero-yield reserve does not finish the milestone.
 

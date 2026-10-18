@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Controlled optional-consumer cost and durable continuation
+
+Published the reviewed default-OFF integration as `ce968fa` (12 public files).
+All 151 unique affected tests and four supplemental crop tests remain qualified;
+no full-suite rerun is claimed. Refreshed the existing next-thread handoff and
+general overview rather than creating a second competing project description.
+
+The frozen actual-consumer cost experiment is TERMINAL/PASS: 12 serial fresh
+process scans, quiet AC, ABBA with two samples per mode/source. Every completed
+sample matches its entire expected ordered detections, warnings, crop, grid,
+options, source, project, JMap and JTool/Blend artifacts.
+
+| Case | Disabled median (s) | Enabled median (s) | Change |
+|---|---:|---:|---:|
+| Golden2 | 57.6874 | 58.4746 | +1.36% |
+| CN3-9 dense | 112.7502 | 113.8534 | +0.98% |
+| Halls4 sparse | 54.0404 | 53.9849 | -0.10% |
+
+No case crosses the predeclared 5% hold. Two samples per mode are limited
+evidence, not a zero-cost or universal speed guarantee. Original runtime and
+HEAD stayed fixed throughout; no concurrent scanner/tests/renderers were run.
+
+Ignored auditv34 revalidates all 41 qualified cached outputs, with 30 pending
+and ZERO room approvals. This is not a fresh 71-room scan or visual review.
+Original 41/601/139/16 protections, source labels and failed Golden5 reserve
+(zero novelty / 17 -> 17 errors) are unchanged. Halls7 remains a failed reserve.
+
+The new consumer is still OFF. No new app recoveries in this checkpoint; the
+two real private recoveries await one-switch activation, actual unpatched
+whole-output checks and final app publication/parity. Previous 51 recoveries
+and five false-block corrections remain deployed. The app was refreshed to the
+21-dependency snapshot and verified HTTP200/loaded-disk parity. Local/private
+indexes, images, original maps, reviews and failed receipts are preserved.
+Read the newest NEXT_THREAD_HANDOFF section; all full-goal gates remain OPEN.
+
 ## 2026-10-18 — Actual capture-base integration qualified, consumer OFF
 
 Installed strict default-false recovery/pipeline APIs and a disabled scanner

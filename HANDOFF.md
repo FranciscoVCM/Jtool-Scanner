@@ -58,8 +58,13 @@ recognition math.151unique affected tests plus four supplemental crop tests,
 the original41/601/139/16 protections pass. The two real added spikes are still
 PRIVATE, not app gains. Auditv33 is41qualified/30pending/ZEROroom approvals.
 Frozen Golden5 gives0novelty/17->17errors, not a new reserve success. Controlled
-actual-consumer cost, activation and unpatched output/parity checks remain.
-Consult the newest next-thread section and exact publication receipt.
+actual-consumer cost now passes 12 quiet-AC serial ABBA scans, two samples per
+mode/source: +1.36% Golden2, +0.98% dense CN3-9 and -0.10% sparse Halls4, all
+complete expected outputs preserved and no >5% hold. This limited experiment
+does not establish universal latency. Auditv34 revalidates the same41 outputs /
+30pending / ZEROapprovals, not a fresh corpus sweep. Activation and actual
+UNPATCHED whole-output/publication/app parity checks still remain; the consumer
+is still OFF. Consult the newest next-thread section and exact publication receipt.
 
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,
