@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Current integration (2026-10-18): actual source consumer, still OFF
+
+Strict defaultFalse lower/pipeline flags now reuse the SAME original filled
+evidence. Scanner's final source caller has an internal OFF switch; no app
+adoption yet. Runtime fingerprint covers21 dependencies. Source predicates,
+teachers, thresholds and the qualified finite edge policy are unchanged.
+
+151unique affected testsPASS69.493s plus4separate crop adversaries. ENTIRE
+scanner/two-pipeline defaultFalse specialization preserves prior math; all44
+shared-library capture proofs match standalone. Two actual consumer whole maps
+plus every source delta pass complete old ordered metadata/expected artifacts.
+Only two real full-spike additions (Golden2/CN3-19); no room approval. Original
+41/601/139/16 evaluator passes; FTFA926/928zeroextra/shift/wrong, Flames unchanged.
+
+Frozen Golden5 evaluation gives0novelty/17->17errors, NOT reserve success;
+prior failed Halls7 map preserved. No tuning/shrunken source scope. Auditv33
+41qualified/30pending/ZEROapprovals. Old51recoveries/five false-block fixes remain;
+new2positive candidates still private. Next actual consumer controlled ABBA12
+on Golden2/dense9/sparseH4,>=2samples/mode/source and >5%HOLD before activation.
+Full new-reserve/final71+16/six-goal requirements remain OPEN.
+
 ## New source-evidence component (2026-10-18): capture-base context
 
 Read-only and UNBOUND: two visible source slopes/body plus three independent

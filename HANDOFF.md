@@ -48,16 +48,18 @@ Quiet-AC serial 12-scan timing passes with median changes +2.3006% Halls3,
 not a zero-cost guarantee. Normal scanning remains unchanged. Consult the latest
 activation publication receipt for exact loaded app/Git status, not older PIDs.
 
-The newer `source_capture_base.py` is a separate read-only, UNBOUND investigation:
-finite capture-edge proposals plus original-source geometry/RGB evidence for
-visible filled spikes with clipped external base context. Its 86 affected tests
-and complete four-source proof parity pass. Two source-reviewed diagnostic
-candidates are not new app gains; actual integration, whole/protection checks
-and incremental cost qualification still precede adoption. The broader 44-input
-nonreserve source preflight includes all16 exact controls plus CN3-7's reference,
-with zero novel reference extras. Auditv32 remains41qualified/30pending/ZERO
-room approvals, carried by unchanged runtime rather than fresh scans. See the newest
-next-thread section rather than treating this research API as deployed behavior.
+The newer `source_capture_base.py` supplies finite capture-edge proposals and
+original-source geometry/RGB evidence for visible filled spikes with clipped
+external base context. Optional lower/pipeline APIs and a guarded scanner
+consumer are now installed, but default OFF. Source fingerprinting includes
+all21 transitive dependencies; default-path AST specialization preserves prior
+recognition math.151unique affected tests plus four supplemental crop tests,
+44shared-library proofs, two actual consumer whole/source-delta reviews and
+the original41/601/139/16 protections pass. The two real added spikes are still
+PRIVATE, not app gains. Auditv33 is41qualified/30pending/ZEROroom approvals.
+Frozen Golden5 gives0novelty/17->17errors, not a new reserve success. Controlled
+actual-consumer cost, activation and unpatched output/parity checks remain.
+Consult the newest next-thread section and exact publication receipt.
 
 Work in bounded causal batches with frozen source-positive/negative structures,
 focused regression tests, source/JTool/Blend checks of every changed object,

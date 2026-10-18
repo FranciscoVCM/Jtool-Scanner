@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Actual capture-base integration qualified, consumer OFF
+
+Installed strict default-false recovery/pipeline APIs and a disabled scanner
+consumer at the existing final source call. The new query channel reuses the
+already-built original filled evidence/model/frame; source predicates, thresholds
+and teacher construction are unchanged. No additional image/model pass or
+reference-answer input. Runtime registration now includes all21 dependencies.
+Normal scanning and compact entry bypasses retain their previous behavior.
+
+151 unique affected tests pass in69.493s, plus four separately recorded crop
+adversaries; not a full suite. Entire scanner and two pipeline ASTs specialize
+exactly to795034a when the new flags/guards/expansions are removed. Explicit
+dependency registration is the only other old runtime change. All44 actual
+shared-library capture proofs match the frozen standalone proofs exactly.
+
+Two actual consumer wholes, with only its boolean privately enabled, reproduce
+all original ordered detection metadata/settings and complete expected projects,
+JMaps, JTool/Blend and source bytes, adding ONLY the two source-reviewed spikes.
+Both actual whole triplets and every delta were visually reviewed. Golden2's
+unchanged complete37 structure improves36->37exact/7->6errors,28672positive solid
+pixels retained and six oldextras remain. CN3-19 gains its real right-edge
+left-facing spike but still has major layout/terrain/spike errors. No room approval.
+
+The ENTIRE original41/601/139/16 evaluator passes with unchanged definitions:
+FTFA926/928zeroextra/shift/wrong; Flames254exact/19miss/42extra/20shift/2wrong.
+A Windows progress-file rename failure was retained, then only private verifier
+I/O received bounded retries; no detector changes or scans were rerun to fix it.
+Four extra tests reject false8px shifts of clipped24px bodies on every edge,
+including800x600. Existing sources/fixtures/JMaps/projects/indexes are untouched.
+
+The separately frozen Golden5 transfer has zero novelty/17->17fixed errors,
+so is NOT a reserve success. Halls7's prior failed52exact/37errors/entire map is
+preserved. No tuning or label changes; compact NANG138r is not a success here.
+
+Auditv33 revalidates41 outputs/30pending/ZEROapprovals. The new two positives
+remain PRIVATE until controlled actual-consumer cost and final activation;
+old51recoveries/five false-block fixes stay deployed. Next quietAC serialABBA12
+on Golden2/dense9/sparseH4, two samples/mode/source and full artifact/metadata
+checks; persistent>5%overhead is a hold. No runtime/HEAD edits while live.
+The full goal/new compatible reserve/finalstable71+16/six gates remain OPEN.
+
 ## 2026-10-18 — Separate capture-base source evidence, not app gains
 
 Tracing Golden2's remaining lower spike reveals two distinct blockers: its

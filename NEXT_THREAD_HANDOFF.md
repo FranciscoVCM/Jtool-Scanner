@@ -13,44 +13,58 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Newest bounded batch: read-only capture-base recovery evidence
+### Newest bounded batch: actual capture-base consumer installed, OFF
 
-Start with ignored `CAPTURE_BASE_ACTIVE_v1.md` in the goal folder before older
-consumer notes. The new public `scripts/source_capture_base.py` and its tests
-are UNBOUND: no existing scanner/runtime bytes, dispatch, app output or timing
-changed. The previously published five false-block corrections remain enabled.
+Read the TOP of ignored `CAPTURE_BASE_ACTIVE_v1.md` and auditv33 in the goal
+folder. The original source predicate/query/model bytes are unchanged. Strict
+default-false lower/pipeline APIs now share the SAME original FilledGlyphEvidence;
+the final source caller has `_CAPTURE_BASE_CONTEXT_ENABLED=False`. No app
+activation yet. Normal/compact entry bypasses remain. Runtime source registration
+is now21 dependencies and every dependency byte is fingerprint-tested.
 
-Golden2's missing bottom spike has BOTH a locator seed gap and a censored
-external base halo. The new finite1D capture-edge proposals and source proof
-require two known slopes, all original body sample positions and three
-independent original filled teachers. Same known mask/affineRGB model comparison;
-no unknown-as-background, emitted teachers, room/palette/origin answers, original
-deletion or general interior-base weakening. Read the separate freezes/QA.
+151 UNIQUE affected tests PASS69.493s; four separately recorded crop adversaries
+also pass, not a full-suite claim. ENTIRE scanner/two-pipeline defaultFalse AST
+specialization equals published795034a; the only other old code change is
+explicit dependency registration. No original teacher/classifier/threshold change.
+All44 actual SHARED-library capture proofs equal the standalone frozen proofs;
+no repeated full detector/helper search was needed. Four earlier proof sets and
+the original16control/CN3-7 reference checks remain preserved.
 
-86affected tests PASS11.508s (14portable); all1356 public/private query proofs
-equal on four complete source sets. Two independently source-reviewed PRIVATE
-candidates: Golden2Up48,576 and CN3-19Left768,128; Halls3/21 no additions.
-Golden2's unchanged complete37 structure36exact/7errors ->hypothetical37exact/
-6errors, all six oldextras retained. Neither candidate is an app gain yet.
+Two actual consumer whole scans (ONLY its boolean enabled privately, no helper
+logic wrapper) pass all old ordered metadata/settings/options/crop/grid plus
+ENTIRE expected source/project/JMap/JTool/Blend artifacts. Both whole triplets
+and every unmarked/marked source delta were reviewed. Exactly two REAL additions:
+Golden2Up48,576 and CN3-19Left768,128. Golden2 complete37 scope36->37exact,
+7->6errors,28672positive solid pixels retained, all six oldextras remain. CN3-19
+has major inherited terrain/layout/spike errors. These are NOT app gains yet.
 
-`capture-base-controls-preflight-v2.json` is TERMINAL/PASS: 43 original
-nonreserve inputs plus canonical18, all16 exact controls and the additional
-CN3-7 reference checked, ZERO new reference extras. Four sealed proof sets were
-reused. Only the two already source-reviewed candidates are novel. V1 completed
-all44 rows but its final reporter incorrectly counted17 reference-bearing cases
-as16; the failed receipt is preserved, all44 sealed rows reused without rerun
-or detector/label changes. Halls7/Golden5/NANG138r were NOT development evaluations.
+Original41/601/139/16 numerical evaluator passes without narrower definitions:
+FTFA926/928zeroextra/shift/wrong; Flames254exact/19miss/42extra/20shift/2wrong.
+The first verifier hit a Windows progress-file rename failure; failed receipt
+preserved, unchanged evaluator completed with bounded PRIVATE I/O retries.
+No scanner/environment workaround or scan rerun. New supplemental crop tests
+protect all four clipped edges and reject a false shifted32px object from a
+24px visible body, including the historical800x600 scenario.
 
-Auditv32 carries41qualified/30pending/ZEROapprovals through ENTIRE unchanged
-runtime and v31 complete-output qualification; no fresh whole scans or app gain.
-Read `capture-base-publication-v1.json` for exact reviewed commit/Git/app status.
-No old producer needs restarting. New code will need runtime fingerprint
-registration when a qualified consumer actually imports it.
+After mechanism freeze, Golden5 later reserve gives ZERO novelty/17->17fixed
+errors: NOT a successful reserve. Prior failed Halls7 entire map/52exact/37errors
+remain unchanged. No retuning/relabeling; NANG138r remains a compact bypass,
+not a compatible reserve for this full-size channel. No source labels changed.
 
-Next: actual opt-in integration,
-whole output/metadata/sourceQA/protection closure and incremental quietAC timing
-before app adoption. Do not restart completed baselines/whole scans or count
-private candidates as shipped results. Full goal/reserve/final71+16 still OPEN.
+Auditv33 revalidates all41 current cache artifacts and defaultFalse behavior,
+30pending/ZEROwhole-room approvals. Previous51recoveries/five adopted false-block
+corrections remain. Read `capture-base-integration-publication-v1.json` for final
+exact commit/live main/clean/private/index/app200/loaded-source parity.
+
+NEXT controlled ACTUAL consumer whole cost, not a lower-helper experiment:
+`measure_capture_base_consumer_whole_v1.py`, positiveGolden2/dense9/sparseHalls4,
+quietAC serial freshprocessABBA12,2samples/mode/source, ENTIRE expected outputs,
+persistent>5%HOLD. Publication receipt is a precondition. If a producer is LIVE,
+poll its ACTUAL handle/childPID; no runtime/HEAD edits, other scans/tests/renderers
+or blind sample restarts. Preserve sealed receipts on interruption. Then only
+after cost passes: one-switch activation proof, actual UNPATCHED outputs/sourceQA,
+reviewed public checkpoint and app parity. All full-goal/reserve/final71+16 gates
+remain OPEN; the capture-only zero-yield reserve does not finish the milestone.
 
 ### Published app checkpoint: measured original-source consumer activation
 

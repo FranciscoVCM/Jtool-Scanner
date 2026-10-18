@@ -81,6 +81,8 @@ MINI_SPIKE_TYPES = frozenset(
 DEFAULT_SCAN_GRID_STEP = 8
 # Only proven ORIGINAL source-mode callers can enable the opt-in lower API.
 _SOURCE_REPEATED_IDENTITY_ENABLED = True
+# Keep capture-base adoption separate from its qualified source-evidence API.
+_CAPTURE_BASE_CONTEXT_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2951,7 +2953,9 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
                                                        source_frame=frame, include_growth_confidence=True,
                                                        include_filled_glyphs=True,
-                                                       include_filled_joint_phase=True)
+                                                       include_filled_joint_phase=True,
+                                                       **({'include_filled_capture_base': True}
+                                                          if _CAPTURE_BASE_CONTEXT_ENABLED else {}))
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]

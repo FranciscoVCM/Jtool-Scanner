@@ -10,6 +10,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_hollow_pipeline', 'source_hollow_phase', 'source_growth_confidence',
     'source_filled_pipeline',
     'source_repeated_identity',
+    'source_capture_base',
 )
 
 

@@ -750,7 +750,7 @@ Focused tests:
 python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
-### Read-only capture-base evidence (not app-enabled)
+### Optional capture-base recovery (app consumer still OFF)
 
 `scripts/source_capture_base.py` investigates filled spikes whose bodies and
 two slopes are visible but whose external base context lies beyond the physical
@@ -762,14 +762,24 @@ pixels are never treated as background.
 
 Its finite one-dimensional capture-edge proposals address cases outside the
 old locator neighborhoods. This does not add another full-image scan. It is
-currently a supplementary evidence API, not imported by scanner dispatch or
-included in the app runtime dependencies. It does not change existing objects,
-teach from proposals, or use human JMaps as inputs. Two source-reviewed
-diagnostic candidates are not yet deployed improvements. Actual integration,
-whole-output checks, regression protection and incremental timing remain required.
+used by a strict default-false `capture_base` option in filled recovery and
+`include_filled_capture_base` in the source pipeline. They share the existing
+original evidence instance and require filled mode. A guarded scanner consumer
+is installed but internally switched OFF pending controlled whole-cost checks.
+The new transitive dependency is included in the app's 21-file source fingerprint.
+Normal scans and compact mappings retain their existing entry bypasses.
+
+The opt-in path adds objects only: it never teaches from proposals, retires old
+objects, uses human JMaps as inputs or labels unseen pixels background. Two
+actual consumer whole scans reproduce the old complete metadata/artifacts plus
+only the two source-reviewed spikes. These are still private results, not new
+app gains. Original regression protections pass; incremental timing, activation
+and unpatched production checks still precede deployment. The four extra crop
+tests reject false 8px shifts of partially clipped spikes, including 800x600.
 
 ```powershell
 python -m unittest tests.test_source_capture_base tests.test_source_filled_pipeline tests.test_source_filled_short_circuit tests.test_source_filled_joint_phase tests.test_source_glyph_prototypes tests.test_source_sampling
+python -m unittest tests.test_source_capture_base_integration tests.test_source_capture_base_crop tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
 ## Exact room benchmarks

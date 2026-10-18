@@ -279,12 +279,14 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
                                  terrain_neighbors=True, short_circuit=True,
-                                 joint_phase=False):
+                                 joint_phase=False, capture_base=False):
     """Return new source-proved full poses and proofs; never remove originals."""
     if not isinstance(short_circuit, bool):
         raise ValueError('Filled short-circuit flag must be a boolean')
     if not isinstance(joint_phase, bool):
         raise ValueError('Joint phase flag must be a boolean')
+    if not isinstance(capture_base, bool):
+        raise ValueError('Capture-base flag must be a boolean')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
@@ -295,10 +297,21 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
                            original_teachers_only=True, complete_physical_source_required=True,
                            no_existing_object_retirement=True, no_new_objects_as_witnesses=True,
                            research_only_not_scanner_bound=False)
+    capture_evidence = None
+    if capture_base:
+        from scripts.source_capture_base import CaptureBaseEvidence, capture_base_hypotheses
+        capture_evidence = CaptureBaseEvidence(evidence)
+        hypotheses = sorted((set(hypotheses) | capture_base_hypotheses(frame))-existing)
     proposed, proofs = set(), []
     for key in hypotheses:
         proof = (evidence.support_joint_phase(key, short_circuit=short_circuit) if joint_phase
                  else evidence.support(key, short_circuit=short_circuit))
+        if capture_base and not proof['passed'] and capture_evidence.boundary(key):
+            supplemental = capture_evidence.support(key)
+            if supplemental['passed']:
+                proof = {**supplemental, 'capture_base_context_censored': True,
+                         'complete_physical_body_source': True,
+                         'complete_physical_source': False, 'original_teachers_only': True}
         if proof['passed']:
             proposed.add(key)
             proofs.append(dict(key=key, evidence=proof))
