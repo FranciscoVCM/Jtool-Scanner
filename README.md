@@ -444,6 +444,42 @@ unchanged. Cache limits 0/4096 preserve all 17 supported compact source proofs;
 the 9x9 case remains bypassed. Prototype helper timings improve about 19%, not
 whole-scan latency. This does not lift the activation hold or enable app caching.
 
+### Read-only original RGB variation (not app-enabled)
+
+`scripts/source_rgb_distribution.py` corroborates finite rectangle queries using
+the observed colour variation of independent ORIGINAL source tiles. A striped
+tile need not spatially match a framed tile to share its material. It retains
+RGB (including isoluminant colours), not a second grayscale scan or saved palette.
+
+```python
+from scripts.source_rgb_distribution import SourceRGBDistribution
+
+evidence = SourceRGBDistribution(
+    frame, original_registered_parents, original_background_role_glyphs,
+)
+proof = evidence.support(x, y)  # native integer locator, never a new teacher
+```
+
+Inputs must come from independently mined ORIGINAL source evidence, not JMaps,
+corrections or new outputs. The helper rechecks geometry, known physical coverage,
+three disjoint parents/two closed frames, RGB pattern agreement and three
+independent background fronts. Queries need three OTHER parents, four known
+rectangle faces and high-confidence colour evidence in every quarter. Evidence
+registration does not move the queried object origin. Unknown/insufficient
+evidence abstains. Returned proofs are isolated; the helper changes no objects.
+The caller must first qualify the standard25x19/native800x608 mapping: this
+low-level API does not infer the game's grid from the physical image dimensions.
+Do not pass a compact19x13 room as though it were a standard frame. Extended-world
+frames explicitly abstain; compact-grid binding remains unqualified.
+
+Ten new portable tests cover changed interior pattern, RGB/polarity/scale,
+background/text/triangle negatives, duplicate/self-teaching and crop boundaries.
+An actual PRIVATE final-stage CN3-19 trial adds only four source-reviewed blocks
+after full ordinary pre-addition artifact/metadata parity, preserving all old
+objects. This is NOT app adoption or universal recognition: automatic source
+cohort discovery, safe veto-ledger binding, real transfer, controls and whole cost
+remain pending. Current app behaviour and its 21 runtime dependencies are unchanged.
+
 ### Read-only capture-aware hollow glyph evidence
 
 `scripts/source_sampling.py` provides `SourceFrame`: a frozen physical RGB crop,

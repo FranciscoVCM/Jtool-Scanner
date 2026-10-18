@@ -4,6 +4,44 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-18 — Original RGB variation evidence and safe private final recovery
+
+Implemented UNBOUND `scripts/source_rgb_distribution.py`, with no scanner/app
+import or runtime-fingerprint change. Original source-frame geometry, known
+coverage, three independent parents/two closed frames, RGB-pattern agreement and
+three background fronts are independently rechecked. Queries use three OTHER
+parents, observed RGB variation (not a single material mean or matching tile
+artwork), four known contour faces and unchanged .95/.5/.25 confidence gates.
+No reference answers, emitted teachers, room rules, origin moves or deletions.
+
+103 UNIQUE affected tests PASS17.122s, including10 new portable tests across
+RGB/polarity/isoluminance/scale/interior-pattern variation, impostor negatives,
+self/duplicate witnesses and physical crop/overlap boundaries. Initial sandbox
+run had two TEMP PermissionErrors; unchanged normal-permission rerun passes.
+Failed diagnostic sampler-unpacking and proof tuple/list reporters are preserved;
+their repairs changed no recognition threshold. Real-source helper parity passes.
+
+Actual PRIVATE final-stage CN3-19 consumer captures the ENTIRE live raw geometry/
+24-veto ledger and first proves complete ordinary pre-addition metadata, warnings,
+source/crop/grid/options/project/JMap/JTool/Blend parity. It then adds ONLY four
+independently source-reviewed real block footprints, preserving every old ordered
+detection/nongeometry. Main reviewed whole Source/JTool/Blend and every delta.
+Compatible cached ORIGINAL source cohorts are reused/rechecked, not query answers;
+automatic cohort discovery and production binding are NOT implemented yet.
+
+Fixed original left occupancy7251 ->8577/16366:1326gained/0lost,40/38106 negative
+excess unchanged/13368unknown. Metrics carry through exact prototype/final-map
+equality; pixels are not goal typed errors. Other beam holes, wrong compound
+directions and false spike overlaps remain; CN3-19 is still MAJOR. No new app
+gains/reserve success/timing/full-control sweep or room approval claimed.
+
+Next: automatic original source-cohort discovery, source-context reuse and safe
+final veto binding, then frozen unrelated/reserved evaluation and controlled
+whole runtime before app adoption. Auditv36 separates four PRIVATE candidates
+from unchanged app evidence:41 revalidated qualified outputs/30pending/ZERO
+approvals,53enabled recoveries/five retained false-block fixes. No fresh71 sweep.
+All six full-goal gates remain OPEN; root handoff gives exact receipts/next steps.
+
 ## 2026-10-18 — False-platform veto cascade traced; unsafe reorder held
 
 Actual CN3-19 tracing reproduces the ENTIRE ordinary output, ordered metadata,

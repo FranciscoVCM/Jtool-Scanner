@@ -13,6 +13,57 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source RGB variation helper; four PRIVATE real blocks
+
+Start at ignored `DEFERRED_VETO_ACTIVE_v1.md` and full `GOAL_PLAN.md` in the goal
+folder, then auditv36. All producers are TERMINAL at this checkpoint; older LIVE
+entries are historical. App runtime remains byte-identical to activated5bc5e28.
+New PUBLIC helper `scripts/source_rgb_distribution.py` is UNBOUND: no scanner
+imports/default change or runtime dependency added. Do not call it app recovery.
+Publication receipt: `deferred-rgb-publication-v1.json`; actual Git/live origin
+remains authority for HEAD. All original/private material and index hashes intact.
+
+103 unique affected tests PASS17.122s, including10 new portable tests. Two initial
+sandbox TEMP PermissionErrors disappeared on the UNCHANGED normal-permission
+rerun. Diagnostics' failed sampler unpacking and tuple/list proof comparison are
+preserved; repairs did not tune recognition. `deferred-rgb-library-parity-v2.json`
+reproduces all eligible source-query outcomes and ENTIRE accepted evidence.
+
+`deferred-rgb-whole-v1.json`: actual original scan/first-anchor observer/FINAL
+private consumer. ENTIRE raw metadata/24veto ledger and ordinary pre-addition
+map/warnings/options/crop/grid/source/project/JMap/JTool/Blend parity pass. Only
+four original source-qualified blocks added; old ordered metadata/nongeometry
+unchanged, no deletion/rephase. Main viewed whole Source/current/private JTool/
+Blend plus all4deltas; `deferred-rgb-source-qa-v1.json` records REAL footprints.
+FixedLEFT7251->8577/16366 positives,1326gained/0lost,40/38106 excess unchanged,
+13368unknown. Pixel metrics are equality-carried evaluation, NOT goal typed errors.
+CN3-19 remains MAJOR with other beam holes/false spikes/compound direction errors.
+
+The helper learns OBSERVED RGB variation from the existing independent original
+registered source cohort, rather than the single-centre foreground gate which
+accepted ZERO of24vetoes. It independently rechecks source geometry/.9pattern/
+known coverage/physical independence, requires3OTHER parents/2closed and3original
+background fronts, unchanged .95/.5/.25 confidence/fourknown9/12faces. Cached
+original source FEATURES are reused/rechecked, NOT accepted-query answers.
+It does NOT yet automatically discover source cohorts or bind the veto ledger.
+
+NEXT bounded implementation: extract automatic original teacher discovery from
+the existing registered-model algorithm WITHOUT room/hash/coordinate lookup;
+share original source evidence, capture original platform vetoes, evaluate ONLY
+after fixed phase/marker decisions. Keep current outputs/metadata unchanged before
+any qualified late additions. Freeze unrelated/reserved transfer before inspecting
+outcomes (Halls7 is historically exposed, not unseen). Protect original41/601/139/16
+and all prior positives; investigate helper/whole cost before adoption. If bound,
+add every actual new dependency to runtime fingerprints and refresh app parity.
+Gate the original grid25x19 explicitly: the low-level RGB helper assumes native
+800x608 and does not infer compact grid identity from screenshot dimensions.
+No blind raw resurrection, early reorder, threshold sweep or duplicate full scan.
+
+Auditv36 revalidates all41 current cached app outputs/30pending/ZEROapprovals;
+four PRIVATE blocks do NOT raise enabled recoveries from53 to57. Old protection/
+cost qualifications carry by unchanged runtime, not a new prototype control sweep.
+No new reserved success/controlled cost/fresh71review; all six full-goal gates OPEN.
+
 ### Newest continuation: provisional platform vetoes erase real terrain
 
 Runtime UNCHANGED from activated5bc5e28; this checkpoint saves documentation.

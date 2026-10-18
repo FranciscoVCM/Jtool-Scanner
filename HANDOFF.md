@@ -76,8 +76,12 @@ Keep source correctness distinct from warning counts and inherited audit labels.
 Latest causal tracing also shows false provisional platform anchors can erase
 real accepted terrain before those anchors are later rejected. A private early
 validation reorder improves a fixed source region but introduces false geometry
-elsewhere; it is held, NOT deployed. The next investigation is source-validated
-deferred arbitration, with real marker/occlusion protections retained. Follow
+elsewhere; it is held, NOT deployed. The new read-only RGB-distribution helper
+instead corroborates source-local colour variation with independent original
+geometry. Ten portable tests/103 affected tests and an actual private final-stage
+four-block trial pass. Automatic teacher discovery, app binding, real transfer
+and controlled whole cost remain pending; these are NOT deployed recoveries.
+Source-validated deferred arbitration retains real marker/occlusion protection. Follow
 the current root next-thread handoff for exact terminal evidence and next steps.
 No whole-room correctness approvals or universal future-screen guarantees are
 justified by the current audit. Keep the full numerical goal/protection gates;

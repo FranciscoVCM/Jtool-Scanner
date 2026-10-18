@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Latest component (2026-10-18): source RGB variation, not a fixed palette
+
+UNBOUND SourceRGBDistribution uses independently verified original source frames
+to represent their actual RGB variation. A striped source tile can share material
+with framed tiles without spatial-template equality. Source geometry/coverage/
+independence and .9parent-pattern/.95quarter/.5distance/.25mean gates remain;
+queries never become teachers. Ten portable tests and103 affected tests pass.
+
+Actual PRIVATE final-stage CN3-19 trial preserves complete ordinary pre-addition
+artifacts/old metadata and adds only four source-reviewed real block footprints.
+Fixed positive pixels +1326,0lost,40same known-negative excess. Other major errors
+remain. Cached ORIGINAL cohorts reused/rechecked; automatic discovery and app
+binding/real transfer/controlled whole cost are pending. No new app gains or
+universal unseen-tileset claim. Auditv36:41qualified app caches/30pending/ZERO
+approvals,53enabled recoveries unchanged, four private candidates kept separate.
+Next automatic source-model discovery/context reuse/final veto integration, then
+reserved/control/cost qualification. All six full-goal gates remain OPEN.
+
 ## Latest causal checkpoint (2026-10-18): terrain lost to provisional anchors
 
 Ordinary-output-equivalent tracing proves false platforms erase accepted real
