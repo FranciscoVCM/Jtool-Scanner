@@ -13,7 +13,66 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: automatic trials finished; cheaper models still UNBOUND
+### Current checkpoint: real original-veto scanner binding, default OFF
+
+Parent `92d4ba7a4d3b58a407abcc3d0f345759a3b8beb0`. All producers TERMINAL.
+Read ignored `deferred-scanner-integration-publication-v1.json` and actual Git/
+live origin for current publication/app state; no historical PID is a live worker.
+
+The scanner now records immutable original block/platform conflicts BEFORE its
+first geometry dedupe, only for direct original-source25x19/nontranslated/outer
+shape-refit passes. Final source analysis shares the actual original context/
+material; automatic models use the ORIGINAL tuple, not retained/proposed outputs.
+Recovery runs AFTER the ordinary source/phase/marker merge. Real markers and
+existing solid coverage remain authoritative. No classifier/seed/threshold change.
+
+`_SOURCE_DEFERRED_PLATFORMS_ENABLED=False`: integration is implemented but NOT
+activated. Registry now24 dependencies, including all three new callable helpers.
+ENTIRE default-OFF scanner AST specializes to parent92d4ba7; every other existing
+runtime dependency byte is unchanged. Normal/compact/inner/extended bypasses stay.
+
+222 UNIQUE affected tests PASS172.747s (nine new integration methods); not the
+full suite. THREE actual whole scans use no helper/detector patches, only the
+explicit internal boolean profile for opt-in. C19OFF exactly matches the entire
+baseline. C19ON exactly reproduces the same four source-reviewed PRIVATE real
+blocks and all expected metadata/project/JMap/JTool/Blend. Halls7ON adds ZERO,
+entire baseline preserved; still a FAILED reserved evaluation, never retuned.
+Whole/all-delta source QA carries by entire expected-output equality, NOT fresh QA.
+
+Auditv39:41 qualified default-app outputs (ONE fresh OFF scan/40 explicit AST-and-
+dependency-byte semantic carries),30 pending,ZERO room approvals. Old cache code
+identities were NOT rewritten.53 enabled source recoveries/five false-block fixes
+remain; four opt-in blocks are NOT four new app gains. CN3-19 remains MAJOR.
+Original OFF41/601/139/16 evidence carries by the bridge; it is NOT a new enabled
+consumer sweep. Actual enabled protections and controlled whole cost are PENDING.
+All six full-goal gates remain OPEN. All new receipts/audit are in the goal folder.
+
+### Next bounded batch — qualify enabled controls and cost, not more binding
+
+1. Read full `GOAL_PLAN.md`, current `DEFERRED_VETO_ACTIVE_v1.md`, auditv39,
+   `DEFERRED_SCANNER_INTEGRATION_FREEZE_v1.md` and the four `deferred-scanner-*`
+   off-parity/tests/wholes/integration-qualification receipts. The binding and
+   THREE successful whole scans are DONE; do not repeat them or the baseline.
+2. Freeze actual enabled original41 groups/601 minis/139 terrain footprints/16
+   exact controls, with strict compatible reuse only for original-source inputs.
+   Never use final source proposals/corrected maps as teacher snapshots. Inspect
+   every changed source object and whole output; retain all old gains/metadata.
+3. Freeze quiet-AC serial whole runtime: positive C19 plus dense9/sparseHalls4,
+   >=2 samples/mode/source, full expected outputs. Persistent>5%overhead is HOLD
+   for investigation, not an accepted tradeoff or grounds to weaken protections.
+   Early failed cost evidence can prevent wasteful full regeneration; instrumented
+   helper times and the three ordinary scans are NOT controlled latency proof.
+4. Activate only after enabled controls/QA/cost pass, then distinct cross-family
+   geometry/material work. Diagnose Golden2's closed-seed gate without relaxing
+   teachers; do NOT retune failed reservedHalls7. Follow the predeclared later
+   reserve compatibility/freeze policy. Keep the full goal, not just these blocks.
+
+Project overview/workflows/architecture are in `HANDOFF.md`/`README.md`; progress
+and design gates in their root docs. All private images/JMaps/reviews/indexes/
+projects stay preserved/ignored. Stage explicit public paths, commit/push measured
+checkpoints, keep tested app HTTP200/loaded-source parity. No archive reopening.
+
+### Historical checkpoint: automatic trials finished; cheaper models UNBOUND then
 
 No work was lost at the interruption. ALL scan/test/profile/qualification jobs
 are TERMINAL. Use actual Git and `lazy-rgb-publication-v1.json` for publication
@@ -51,7 +110,7 @@ Original b420384 source/test bytes were preserved as SHA-verified private snapsh
 before optimization. Historical receipts remain immutable; resolve their old
 hashes to those snapshots, never silently treat them as tests of newer bytes.
 
-### Next bounded batch (do not restart the finished work)
+### Historical next batch (scanner binding above is now DONE)
 
 1. Read full `GOAL_PLAN.md`, then current `DEFERRED_VETO_ACTIVE_v1.md`, auditv38
    and the qualification receipts above. Verify main/status/live origin/app.

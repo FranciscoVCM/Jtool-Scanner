@@ -11,6 +11,9 @@ SOURCE_GEOMETRY_MODULES = (
     'source_filled_pipeline',
     'source_repeated_identity',
     'source_capture_base',
+    'source_rgb_distribution',
+    'source_registered_rectangles',
+    'source_deferred_platforms',
 )
 
 

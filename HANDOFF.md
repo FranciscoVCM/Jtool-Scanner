@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
+Newest: original platform-veto capture and FINAL source-validated recovery are
+now wired into the actual scanner with `_SOURCE_DEFERRED_PLATFORMS_ENABLED=False`.
+The context/material/original teacher tuple is shared, never taught from outputs.
+All three newly callable helpers are fingerprinted:24 runtime dependencies.
+222 affected tests and three actual default-OFF/opt-in whole comparisons pass.
+Default-OFF entire scanner AST equals parent92d4ba7; other prior dependency bytes
+are unchanged. C19 opt-in reproduces four reviewed private real blocks; Halls7
+has no additions, still a failed reserve. No new app gains or universal accuracy.
+
+Auditv39:41 qualified default outputs (one fresh OFF scan/40 explicit semantic
+carries),30 pending,ZERO approvals. No fresh visual review; source QA carries
+only through complete expected-output equality. Enabled original41/601/139/16
+controls and controlled whole latency remain pending before activation. Start
+at the newest root next-thread section; all six full-goal gates remain OPEN.
+
+### Earlier checkpoint that day (before scanner binding)
+
 The general project overview/goals below are already tracked. Resume interrupted
 work from the TOP of `NEXT_THREAD_HANDOFF.md`; its newest checkpoint supersedes
 historical test totals, PIDs, pending tasks and Git snapshots elsewhere.

@@ -479,8 +479,9 @@ after full ordinary pre-addition artifact/metadata parity, preserving all old
 objects. Automatic original-source discovery and actual private whole trials now
 reproduce those four additions without saved parent/query inputs. Halls7's
 no-tuning trial yields zero models/recoveries, so transfer is NOT established.
-App binding, protected consumer controls and controlled whole cost remain pending.
-Current app behaviour and its 21 runtime dependencies are unchanged.
+The actual scanner binding is now implemented but its internal switch remains
+OFF. Protected enabled-consumer controls and controlled whole cost remain pending.
+Default app scan behavior is unchanged; runtime fingerprinting covers24 dependencies.
 
 `scripts/source_registered_rectangles.py` provides `original_rgb_models` to mine
 parents automatically from ORIGINAL detections/material diagnostics, with explicit
@@ -490,13 +491,23 @@ existing calibration, never loads a saved map or parent-coordinate list.
 `recover_deferred_platform_blocks`: immutable original full-block conflicts may
 be revisited only at the final stage after platform/phase decisions. Surviving
 markers still veto; every recovery needs original source evidence and new solid
-coverage. These helpers are read-only/unbound, not app-default changes.
+coverage. The evidence helpers stay read-only; their scanner consumer is guarded
+by `_SOURCE_DEFERRED_PLATFORMS_ENABLED=False`, not an app-default accuracy change.
 123 affected tests pass; original context/compact/crop/marker guards remain.
 Independent RGB/disjointness gates now precede expensive phase contours during
 cohort extension. Entire C19/Golden2/Halls7 model proofs and C19/Halls7 recovery
 metadata remain exact; contour calls3352 ->1673 in the qualified helper profile.
 This is not a whole-scan speed claim. The conservative audit retains zero room
 approvals; use the newest next-thread handoff for current evidence and open gates.
+
+The actual binding passes222 affected tests and three whole comparisons with no
+helper/detector patches: CN3-19 OFF preserves its entire baseline, ON reproduces
+the same four reviewed private blocks; Halls7 ON preserves its baseline with no
+additions (failed reserve). Entire default-OFF scanner logic specializes to the
+prior module; all other existing runtime dependency bytes are unchanged. Models
+use the ORIGINAL source tuple/context/material, not newly proposed objects, and
+recoveries occur only after ordinary phase/marker decisions. Activation still
+requires enabled protections/whole-source QA and controlled quiet-AC timing.
 
 ### Read-only capture-aware hollow glyph evidence
 
@@ -820,7 +831,7 @@ used by a strict default-false `capture_base` option in filled recovery and
 `include_filled_capture_base` in the source pipeline. They share the existing
 original evidence instance and require filled mode. A guarded scanner consumer
 is enabled for fresh Experimental source scans after qualified whole-cost checks.
-The new transitive dependency is included in the app's 21-file source fingerprint.
+The dependency is included in the app's current24-file source fingerprint.
 Normal scans and compact mappings retain their existing entry bypasses.
 
 The opt-in path adds objects only: it never teaches from proposals, retires old

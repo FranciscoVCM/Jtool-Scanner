@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Current checkpoint (2026-10-19): original-veto scanner binding, disabled
+
+Automatic source models and final deferred recovery are now wired into the REAL
+scanner with an internal defaultFalse switch. Original conflicts are frozen at
+the first anchor pass; shared original source/context/material feed the model,
+not new proposals. Final source/phase/marker decisions remain unchanged before
+any addition. All three new callable dependencies are fingerprinted (24 total).
+
+222 affected tests pass; ENTIRE default-OFF scanner AST equals parent92d4ba7 and
+all other prior dependency bytes are unchanged. Actual C19OFF/ON and Halls7ON
+wholes pass complete expected outputs/metadata:zero/four/zero additions. C19's
+four PRIVATE real blocks retain prior whole/all-delta QA by exact equality;
+Halls7 remains a FAILED reserve, not a new generalization success. No retuning.
+
+Auditv39:one fresh default-OFF scan/40 explicit semantic carries/30 pending/ZERO
+approvals. App gains remain53/five false-block fixes; new consumer not activated.
+Next enabled original41/601/139/16 controls and every source delta, then quiet-AC
+whole cost (>=2 samples/mode/source, >5%hold) before adoption. Helper profiling
+and ordinary whole durations are not latency qualification. Cross-family seed/
+compound work and all six full-goal gates remain open; do not substitute these
+four private blocks for the full objective or tune the failed reserve.
+
 ## Current checkpoint (2026-10-19): automatic outcomes, unchanged app
 
 Automatic original-source discovery reproduces four PRIVATE real CN3-19 blocks;

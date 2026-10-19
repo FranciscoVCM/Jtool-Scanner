@@ -83,6 +83,8 @@ DEFAULT_SCAN_GRID_STEP = 8
 _SOURCE_REPEATED_IDENTITY_ENABLED = True
 # Keep capture-base adoption separate from its qualified source-evidence API.
 _CAPTURE_BASE_CONTEXT_ENABLED = True
+# Adoption follows actual consumer controls and whole cost, not helper proofs.
+_SOURCE_DEFERRED_PLATFORMS_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2234,6 +2236,8 @@ def scan_image(
                 **({'source_geometry': True} if source_geometry else {}),
             )
     source_translation: tuple[int, int] | None = None
+    if _SOURCE_DEFERRED_PLATFORMS_ENABLED:
+        deferred_platform_vetoes = None
     deferred_neutral_fields: list[tuple[tuple[Detection, ...], float]] = []
     compact_room = normalized_grid == (19, 13)
     if normalized_grid is not None and normalized_grid != (25, 19):
@@ -2393,6 +2397,14 @@ def scan_image(
             for detection in detections
             if detection.type_id in MINI_SPIKE_TYPES
         ]
+        if (
+            _SOURCE_DEFERRED_PLATFORMS_ENABLED
+            and source_geometry and _apply_shape_refits
+            and normalized_grid == (25, 19) and source_translation is None
+            and image is source_image and box == source_box
+        ):
+            from scripts.source_deferred_platforms import original_platform_vetoes
+            deferred_platform_vetoes = original_platform_vetoes(detections)
         detections = _dedupe_overlapping_geometry(detections)
         detections = _recover_low_contrast_mini_up_pairs(detections, image, box)
         detections = _dedupe_overlapping_geometry(detections)
@@ -2936,11 +2948,15 @@ def scan_image(
     )
     _PATCH_FEATURE_CACHE.clear()
     if source_geometry and _apply_shape_refits:
-        result = _apply_source_geometry(result, source_image)
+        if _SOURCE_DEFERRED_PLATFORMS_ENABLED and deferred_platform_vetoes is not None:
+            result = _apply_source_geometry(result, source_image, platform_vetoes=deferred_platform_vetoes)
+        else:
+            result = _apply_source_geometry(result, source_image)
     return result
 
 
-def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=None) -> ScanResult:
+def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=None,
+                           platform_vetoes=None) -> ScanResult:
     """Apply once to final source coordinates; compact mappings remain unqualified."""
     result.source_geometry = True
     if result.source_grid != (25, 19):
@@ -2950,12 +2966,22 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
 
     frame = SourceFrame(image, result.room_box) if source_frame is None else source_frame
     result.source_extent = frame.extent if frame.extent != result.room_box else None
+    deferred_options = {}
+    if (platform_vetoes is not None and frame.extent == result.room_box
+            and any(v.anchors and all(a.type_id == OBJ_PLATFORM for a in v.anchors)
+                    for v in platform_vetoes)):
+        from scripts.source_evidence_context import SourceEvidenceContext
+        original_source_detections = tuple(result.detections)
+        original_context = SourceEvidenceContext(image, result.room_box,
+            [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
+        deferred_options = dict(source_context=original_context)
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
                                                        source_frame=frame, include_growth_confidence=True,
                                                        include_filled_glyphs=True,
                                                        include_filled_joint_phase=True,
                                                        **({'include_filled_capture_base': True}
-                                                          if _CAPTURE_BASE_CONTEXT_ENABLED else {}))
+                                                          if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
+                                                       **deferred_options)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
@@ -2971,6 +2997,17 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             for t, x, y in sorted(added, key=lambda k: (k[0], k[2], k[1]))]
         result.detections = sorted(retained+new, key=lambda d: (d.type_id, d.y, d.x))
         result.structural_warnings = structural_scan_warnings(result.detections)
+    if deferred_options:
+        from scripts.source_registered_rectangles import original_rgb_models
+        from scripts.source_deferred_platforms import recover_deferred_platform_blocks
+        models, _ = original_rgb_models(image, result.room_box, original_source_detections,
+            diagnostics['source_material'], source_grid=result.source_grid, source_frame=frame,
+            source_context=original_context)
+        merged, recovery = recover_deferred_platform_blocks(result.detections, platform_vetoes, models,
+            source_grid=result.source_grid, source_frame=frame)
+        if recovery['added']:
+            result.detections = sorted(merged, key=lambda d: (d.type_id, d.y, d.x))
+            result.structural_warnings = structural_scan_warnings(result.detections)
     return result
 
 

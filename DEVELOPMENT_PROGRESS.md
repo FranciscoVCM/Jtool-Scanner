@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Actual original-veto scanner consumer implemented, default OFF
+
+The scanner now records original block/platform conflicts at its FIRST anchor
+pass under direct original-source/25x19/no-translation/outer-shape-refit guards.
+The final source stage reuses one original context/material diagnostic; automatic
+model teachers remain the ORIGINAL detection tuple, never new/retained proposals.
+Only after ordinary phase/marker decisions does the pure recovery helper add
+source-proved novel original solids. No classifier, threshold, seed or origin
+change. Internal consumer remains FALSE, pending enabled protections and cost.
+
+222 UNIQUE affected tests PASS172.747s, including nine new integration tests.
+ENTIRE default-OFF scanner AST equals parent92d4ba7 after exact specialization;
+all other existing runtime dependency bytes are unchanged. Runtime registration
+adds all three newly callable helpers (21 ->24), with byte-mutation tests for each.
+Normal, compact, inner, extended-source and real-marker protections remain.
+
+THREE actual whole scans, no helper/detector patches: C19OFF matches the complete
+baseline; C19ON matches the entire prior reviewed four-real-block private output;
+Halls7ON adds zero and preserves the complete baseline. Ordered metadata, warnings,
+crop/grid/options/project/JMap/JTool/Blend all match. Prior independent C19 whole/
+all-delta QA carries by full equality; no new visual review or transfer success.
+CN3-19 still has major errors. Ordinary scan durations are NOT controlled timing.
+
+Auditv39 keeps41 qualified default outputs:one fresh actual OFF scan/40 explicit
+AST-and-byte semantic carries,30 pending,ZERO approvals. Cache identities were
+not rewritten.53 enabled recoveries/five false-block fixes remain; four opt-in
+blocks are NOT new app gains. Original OFF41/601/139/16 qualifications carry,
+not a new enabled-control sweep. NEXT actual enabled protections/all-delta QA
+and quiet-AC whole cost before activation; all six full-goal gates remain OPEN.
+Use the root next-thread handoff and private integration qualification/publication
+receipts for exact tested bytes and continuation, not historical worker states.
+
 ## 2026-10-19 — Interrupted work recovered; automatic outcomes and lazy contours
 
 Actual automatic original-source trials are complete. CN3-19 reproduces ONLY
