@@ -87,6 +87,8 @@ _CAPTURE_BASE_CONTEXT_ENABLED = True
 _SOURCE_DEFERRED_PLATFORMS_ENABLED = False
 # Original compound conflicts require separate protection and whole-cost gates.
 _SOURCE_COMPOUND_CONFLICTS_ENABLED = False
+# Positive touching-glyph evidence has independent protection/cost qualification.
+_SOURCE_INTERIOR_GLYPHS_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2992,6 +2994,8 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                        include_filled_joint_phase=True,
                                                        **({'include_filled_capture_base': True}
                                                           if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
+                                                       **({'include_filled_interior': True}
+                                                          if _SOURCE_INTERIOR_GLYPHS_ENABLED and frame.extent == result.room_box else {}),
                                                        **deferred_options, **compound_options)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.

@@ -16,6 +16,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_deferred_platforms',
     'source_pixel_geometry',
     'source_compound_conflicts',
+    'source_interior_glyphs',
 )
 
 

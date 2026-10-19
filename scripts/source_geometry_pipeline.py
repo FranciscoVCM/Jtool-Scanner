@@ -44,7 +44,8 @@ def joint_proposals(image, room, detections, *, source_context=None, include_gro
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
                      include_hollow_glyphs=True, include_growth_confidence=False,
                      include_filled_glyphs=False, include_filled_joint_phase=False,
-                     include_filled_capture_base=False, record_filled_source=False):
+                     include_filled_capture_base=False, record_filled_source=False,
+                     include_filled_interior=False):
     """Return proposals/removals/full proofs, without touching original objects."""
     if not isinstance(include_hollow_glyphs, bool):
         raise ValueError('Hollow recovery flag must be a boolean')
@@ -66,6 +67,12 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         raise ValueError('Filled source recording requires filled recovery')
     if record_filled_source and source_frame is not None and source_frame.extent != room:
         raise ValueError('Filled source recording requires a direct original frame')
+    if not isinstance(include_filled_interior, bool):
+        raise ValueError('Interior recovery flag must be a boolean')
+    if include_filled_interior and not include_filled_glyphs:
+        raise ValueError('Interior recovery requires filled recovery')
+    if include_filled_interior and source_frame is not None and source_frame.extent != room:
+        raise ValueError('Interior recovery requires a direct original frame')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
@@ -124,7 +131,8 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         filled, filled_diag = recover_source_filled_glyphs(
             frame, detections, source_library=library, joint_phase=include_filled_joint_phase,
             **({'capture_base': True} if include_filled_capture_base else {}),
-            **({'source_context': context} if record_filled_source else {}))
+            **({'source_context': context} if record_filled_source else {}),
+            **({'interior_grid': (25, 19)} if include_filled_interior else {}))
         proposed |= filled
         diagnostics['source_filled'] = filled_diag
     if include_growth_confidence:

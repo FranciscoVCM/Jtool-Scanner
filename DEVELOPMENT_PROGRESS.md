@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Touching-glyph interior evidence, disabled pending qualification
+
+Added source-only interior RGB corroboration for real touching filled spikes
+whose neighbor contaminates the old whole-box exterior appearance test. It uses
+at least three independent ORIGINAL source teachers, three closed raw contour
+edges, independent original background pixels and rectangle/marker/crop vetoes.
+No room/palette/origin lookup, output teachers, object retirement or grayscale
+rescan. Actual binding shares the existing FilledGlyphEvidence, lazy/scan-local;
+only qualified direct25x19 frames. `_SOURCE_INTERIOR_GLYPHS_ENABLED=False`.
+Compound/deferred-platform consumers remain disabled; runtime dependencies27.
+
+156 UNIQUE affected tests PASS (27 new methods), NOT full suite. Four entire old
+modules' ASTs match after exact OFF specialization; other old runtime bytes are
+unchanged. Complete9868 Golden2/6067 Halls3 hypothesis domains retain scalar
+accepted proofs/rejection counts after exact pixel/model reuse. Helper timing is
+not whole-scan cost qualification. A coherent raw-edge phase hypothesis failed
+for Halls3 LEFT16064; retained the negative result rather than weakening support.
+
+Three actual ON outputs qualify: Golden2 V2 scan strictly reused by corrected V3
+reporter, Halls3 and FTFA-1 fresh V3. Entire expected ordered metadata, warnings,
+projects/JMaps/JTool/Blend match. FTFA exact result unchanged; Halls3 entire output
+unchanged. Only Golden2 real RIGHT624128 is added, with no removals/nongeometry
+changes. Initial SVG/JMap newline comparison failures are preserved; no detector
+logic changed to hide export-check errors and no needless Golden2 rescan.
+
+Fresh whole/every-delta source QA corrects an omitted false full704128 in the
+floating five-spike structure:4 ->5 exact true spikes, complete errors3 ->2,
+NOT the incomplete spike-only2 ->1. Wrong RIGHT640120 and full704128 remain;
+false-solid excess1024px unchanged. Original freeze retained with separate
+explicit reporting correction. Original37 lower structure37exact/6errors and
+central10 APP10exact/3errors unchanged; whole room remains MAJOR. This is a
+PRIVATE experiment, not a new app gain or successful reserved evaluation.
+
+Auditv44 separates historical findings from current evidence. Halls3's two old
+sky blocks are already absent; remaining compound misses/aliases/false save are
+not solved. CN3-18's old carpet label is not a fresh pixel-certified measurement.
+41 default outputs carry through entire OFF semantics;30 pending/ZERO approvals.
+53 enabled recoveries/five false-block fixes unchanged. Full41/601/139/16 enabled
+qualification, compatible reserved transfer, whole cost and final71+16 remain
+open. See TOP next-thread handoff for exact receipts and next bounded batch.
+
 ## 2026-10-19 — Actual compound binding OFF; Golden5 reserve failed
 
 The real scanner can now opt into the compound checker AFTER ordinary final

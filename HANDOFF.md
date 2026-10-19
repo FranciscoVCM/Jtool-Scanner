@@ -6,7 +6,35 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
-Newest: the actual compound checker is wired after ordinary final source decisions,
+Newest: a source-only interior appearance channel now addresses touching filled
+spikes without demanding empty background on every exterior side. It still needs
+three independent ORIGINAL source teachers, three closed raw contour edges,
+original background support and rectangle/marker/crop vetoes. It shares the actual
+filled-evidence instance and retains RGB; no duplicate scan, room/palette/origin
+lookup, generated teachers or object retirement. Direct25x19 only; internal
+`_SOURCE_INTERIOR_GLYPHS_ENABLED=False`. Compound/deferred flags also remainFalse.
+Runtime dependencies27; the app must be checked for loaded/disk source parity.
+
+156 unique affected tests PASS (27 new methods), NOT the full suite. Four entire
+old modules match after exact default-OFF specialization; other runtime bytes
+unchanged. Three actual private ON outputs match entire expectations: Golden2
+adds one real RIGHT624128, Halls3/FTFA-1 unchanged with FTFA exact result retained.
+Golden2's completed sealed scan was reused after verifier-only newline fixes;
+Halls3/FTFA are fresh V3 runs. Original failures and frozen evidence are preserved.
+
+Fresh whole/every-delta Source/JTool/Blend QA found an old false block omitted
+from the five-spike region's arithmetic. Complete errors3 ->2 (exact4 ->5), not
+the spike-only2 ->1. False RIGHT640120 and full704128 remain; no room approval or
+default-app improvement. Auditv44:41 default semantic carries/30pending/ZERO
+approvals;53 enabled recoveries/five false-block fixes unchanged. It now separates
+historical labels from current findings: Halls3's two sky blocks are already
+corrected, but compound/false-save errors remain. Broader protections, reserved
+transfer, controlled speed and final71+16 audit are still pending. See TOP
+NEXT_THREAD_HANDOFF.md for exact evidence and bounded continuation instructions.
+
+### Earlier that day: compound binding / failed reserve
+
+Previously: the actual compound checker is wired after ordinary final source decisions,
 but `_SOURCE_COMPOUND_CONFLICTS_ENABLED=False`. It reuses the original stage's
 actual filled-evidence instance/context/material/block library, preserving surviving
 objects' order/metadata and keeping deferred-platform activation independent.

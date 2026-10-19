@@ -13,7 +13,88 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: actual compound consumer OFF; Golden5 reserve FAILED
+### Current checkpoint: source-interior positive recovery, default OFF
+
+The published parent for this batch is
+`4e5973cfb28b442315f46d8bfbf4a953ae104ddb`. Actual Git/live origin and
+`interior-binding-publication-v1.json` determine whether publication is complete;
+do not infer it from a planned commit. All accuracy/test producers are TERMINAL.
+Latest audit: `71-screen-general-recognition-checkpoint-v44.md`/JSON in the goal
+folder. Private active note: `DEFERRED_VETO_ACTIVE_v1.md`. No archive resweep.
+
+New `scripts/source_interior_glyphs.py` distinguishes a touching filled spike's
+own interior RGB from exterior pixels occupied by its real neighbor. It requires
+three independently qualified ORIGINAL source teachers, three closed raw contour
+edges, original background support and no competing full rectangle. No generated
+teachers, scene/palette/coordinate lookup, unknown-as-empty or object retirement.
+The actual pipeline reuses its original FilledGlyphEvidence; construction is lazy
+and scan-local, not a second scan. Compact/extended frames abstain. Internal
+`_SOURCE_INTERIOR_GLYPHS_ENABLED=False`; compound and deferred-platform flags also
+remain False. Registry now27; refresh/check the app's loaded/disk fingerprint.
+
+`interior-binding-qualification-v1.json`:156 UNIQUE affected tests PASS,27 new
+portable/integration methods, NOT full suite. Four old modules match their ENTIRE
+parent AST after exact OFF specialization; other old runtime bytes unchanged.
+Complete Golden2/Halls3 hypothesis domains (9868/6067) preserve scalar accepted
+proofs and rejection counts after exact feature reuse. Halls3 LEFT16064 remains
+missed: a coherent phase experiment failed, and the raw-edge rule was not relaxed.
+
+`interior-binding-actual-wholes-v3.json`: THREE actual opt-in outputs. Golden2's
+completed sealed V2 scan is strictly reused, not rescanned; Halls3/FTFA-1 are fresh
+V3 executions. All entire expected maps, ordered metadata, warnings, project,
+JMap/JTool/Blend and FTFA exact comparison match. Only real RIGHT624128 is added
+in Golden2; no original removals or nongeometry changes. V1/V2 export-hash checks
+failed from SVG/JMap newline handling; only private comparison drivers changed.
+
+Fresh actual whole/every-delta Source/before/after/Blend QA exposed a scoring
+omission: false full704128 was already in the floating five-spike group. Complete
+geometry errors are THREE ->TWO, not the spike-only TWO ->ONE; false RIGHT640120
+and full704128 remain. The old freeze is preserved; explicit correction is
+`INTERIOR_GLYPH_FULL_SCOPE_CORRECTION_v1.md`. Do not hide that block or call the
+room solved. Old37 structure remains37exact/6errors; central10 APP remains
+10exact/3errors because compound arbitration is OFF. Whole Golden2 remains MAJOR.
+
+Auditv44:41 qualified DEFAULT outputs through full OFF semantic carries,
+30 pending/ZERO approvals. The three private ON results are separate, NOT app
+gains. Existing53 enabled recoveries/five false-block fixes remain unchanged.
+Historical baseline and current finding are now separate: Halls3's old two sky
+blocks are ALREADY absent, while missed/false compound spikes and false save
+remain. CN3-18's legacy carpet extent is not a fresh current pixel measurement.
+
+NEXT BOUNDED WORK: qualify the frozen interior mechanism against the original
+41 groups/601 minis/139 terrain footprints/16 exact controls, inspecting every
+new contribution and preserving all old positive/negative definitions. Reuse
+compatible original source snapshots for early rejection; do not call replay a
+fresh whole scan. If genuine transfer survives, freeze a compatible NEW no-tuning
+reserve before inference. Halls7/Golden5 already failed: do NOT retune them.
+NANG138r remains compact/unqualified; do not pretend a direct25x19 mechanism
+supports it. Additional support needs independently frozen transform evidence.
+Only then consider activation, after actual whole/control QA and valid whole-cost
+qualification. If it fails, retain evidence and return to the next PRIMARY
+source-identity cause; do not loosen guards to manufacture a reserve success.
+
+Do not repeat156 tests/three completed wholes without changed bytes or a concrete
+evidence reason. No runtime/test/HEAD edits during a frozen producer. Controlled
+quiet-AC timing remains deferred; battery accuracy work can continue. The old
+deferred +24.1615% HOLD is NOT the measured cost of this new component. All six
+full-goal gates remain open; current milestone is not all71 or universal accuracy.
+
+### Pasteable next-chat continuation
+
+Continue JTool Scanner in `C:\Users\corvo\Documents\Jtool Scanner`, existing
+main only. Read the TOP of NEXT_THREAD_HANDOFF.md, DEVELOPMENT_PROGRESS.md,
+CROSS_TILESET_PLAN.md and HANDOFF.md; read the full ignored
+`.artifacts/general-recognition-20261014/GOAL_PLAN.md`. Inspect Git/status/live
+origin, then the latest active note, auditv44 and interior-binding publication
+receipt. Preserve all WIP if publication is incomplete. Resume the bounded
+interior-evidence protection/transfer qualification above, not a fresh archive or
+baseline sweep. Preserve the explicit Golden2 full-scope3 ->2 error correction,
+Halls3 current-vs-historical distinction, failed reserves and all goal gates.
+Keep private artifacts/indexes/JMaps/transcript ignored. Commit/push reviewed
+public checkpoints, keep the app on tested bytes, and do not claim universal
+recognition or complete rooms without independent source evidence.
+
+### Previous checkpoint: actual compound consumer OFF; Golden5 reserve FAILED
 
 Parent `3dc0e708f86e6fce99de8c94544e69b8fb196b94`. All test/scan/diagnostic/audit
 producers TERMINAL. Publication authority: actual Git/live origin and

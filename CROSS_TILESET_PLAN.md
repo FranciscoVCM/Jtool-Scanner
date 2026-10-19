@@ -1,6 +1,43 @@
 # Cross-tileset milestone
 
-## Current checkpoint (2026-10-19): actual binding; failed transfer is explicit
+## Current checkpoint (2026-10-19): positive interior evidence, not activated
+
+A real Golden2 spike failed because a touching neighbor filled an exterior area
+expected to be background, not because its own sprite was absent. The new generic
+interior channel retains original RGB and three raw contour edges, compares its
+body with independent original source teachers and still requires original
+background samples/rectangle/marker/crop safeguards. No palette/game/origin
+special cases or new-output teachers; one shared filled instance, no full rescan.
+Direct25x19 only. Interior, compound and deferred-platform consumers are OFF.
+
+156 unique affected tests/27 new methods pass; NOT full suite. Four entire
+OFF-specialized old ASTs and unchanged remaining runtime bytes establish default
+parity. Full9868/6067 Golden2/Halls3 domains preserve exact scalar accepted proofs
+and rejection counts after feature reuse. Three actual private ON outputs match
+their entire expectations: Golden2 one real RIGHT624128 addition, Halls3/FTFA-1
+unchanged, FTFA exact result unchanged. No original removals/nongeometry changes.
+Golden2 completed V2 whole was strictly reused after export newline verifier fixes;
+only Halls3/FTFA were freshly executed by V3. Failed checks remain preserved.
+
+Whole/every-delta source QA: floating5 exact4 ->5; complete errors3 ->2. The
+earlier2 ->1 figure counted spikes only and omitted an existing false full704128.
+Preserve that explicit correction and the old freeze. Wrong RIGHT640120 and full
+704128 remain. Whole room MAJOR; no private result is an app improvement or new
+reserved success. Halls3 LEFT16064 still fails strict raw-edge evidence; a phase
+search did not justify relaxing it. Synthetic palette/rotation/capture tests plus
+one real source recovery do NOT prove unseen sprite/tileset generalization.
+
+Auditv44 retains41 DEFAULT semantic carries/30pending/ZERO approvals,53 enabled
+recoveries/five fixes unchanged. Historical labels are distinct from current
+findings (Halls3 sky blocks already corrected; CN3-18 carpet extent not newly
+measured). Next qualify this frozen positive mechanism on original protections
+and exact controls, then a genuinely compatible pre-frozen reserve. Do not retune
+failed Halls7/Golden5 or force compact NANG138r through a standard frame. Actual
+whole cost, all prior protections and final71+16 remain gates before activation.
+Battery accuracy can proceed; helper timings are not a controlled speed result.
+See TOP NEXT_THREAD_HANDOFF.md; existing goal remains active, no gate waived.
+
+## Previous checkpoint (2026-10-19): actual binding; failed transfer is explicit
 
 The compound checker is wired AFTER the ordinary final source merge, default
 OFF. It shares the actual original filled-evidence instance/context/material/

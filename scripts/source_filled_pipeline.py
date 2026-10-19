@@ -279,7 +279,8 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
                                  terrain_neighbors=True, short_circuit=True,
-                                 joint_phase=False, capture_base=False, source_context=None):
+                                 joint_phase=False, capture_base=False, source_context=None,
+                                 interior_grid=None):
     """Return new source-proved full poses and proofs; never remove originals."""
     if not isinstance(short_circuit, bool):
         raise ValueError('Filled short-circuit flag must be a boolean')
@@ -287,6 +288,8 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
         raise ValueError('Joint phase flag must be a boolean')
     if not isinstance(capture_base, bool):
         raise ValueError('Capture-base flag must be a boolean')
+    if interior_grid is not None and (interior_grid != (25, 19) or frame.extent != frame.room):
+        raise ValueError('Interior recovery requires a qualified direct25x19 source frame')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
@@ -305,6 +308,7 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
         capture_evidence = CaptureBaseEvidence(evidence)
         hypotheses = sorted((set(hypotheses) | capture_base_hypotheses(frame))-existing)
     proposed, proofs = set(), []
+    interior_evidence = None
     for key in hypotheses:
         proof = (evidence.support_joint_phase(key, short_circuit=short_circuit) if joint_phase
                  else evidence.support(key, short_circuit=short_circuit))
@@ -314,6 +318,14 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
                 proof = {**supplemental, 'capture_base_context_censored': True,
                          'complete_physical_body_source': True,
                          'complete_physical_source': False, 'original_teachers_only': True}
+        if interior_grid is not None and not proof['passed'] and not proof.get('unknown', False):
+            if interior_evidence is None:
+                from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence
+                interior_evidence = SourceInteriorGlyphEvidence(evidence, original, source_grid=interior_grid)
+            supplemental = interior_evidence.support(key)
+            if supplemental['passed']:
+                proof = {**supplemental, 'interior_appearance_recovery': True,
+                         'complete_physical_source': True, 'original_teachers_only': True}
         if proof['passed']:
             proposed.add(key)
             proofs.append(dict(key=key, evidence=proof))
