@@ -4,6 +4,43 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Guard source paint and coherent tips; reject texture aliases
+
+The complete original-source contribution screen found21 candidates, not21
+improvements. Independent source views exposed NR2/CN3-21 direction/wall aliases.
+Two simple-tip variants, near-tip counts and same-position RGB envelopes failed
+their preservation/separation requirements; those negative results are preserved.
+
+Added necessary source-paint and coherent-tip guards ONLY to the disabled interior
+channel. Every interior RGB must match a paint actually observed in its disjoint
+ORIGINAL teachers within the existing relative limit, without requiring identical
+texture placement. The source-cohort tip requires known, coherent original pixels
+at one bounded phase. Original geometry/correlation/mean/background/rectangle/
+marker/crop checks remain, with no new teachers, case rules or original deletion.
+Nominal/joint/capture recovery and all other runtime module bytes are unchanged.
+
+161 unique affected tests PASS (five new methods), NOT full suite. The same full44
+domains retain16 candidates:11 source-backed across G2/Hades/Golden7, five CN3-19/
+21 semantics unresolved. Four known aliases plus one ambiguous Dotkid candidate
+abstain. Do not count prevented private proposals as shipped conflict corrections.
+Actual four-source whole comparison receipt separates artifact/metadata equality
+from source-semantic QA. Hades335/350 exact versus334, misses3 versus4, unchanged
+extras/shifts/orientation/metadata errors. Golden7 nine additions are not room
+approval; old conflicts remain. All experimental consumers remainFalse/app gains0.
+
+The screen also proves15 inputs bypass this channel for compact/extended frames,
+including canonicalC18/25/27/31/Entrance1/2. Qualifying original-world sampling is
+a concrete shared next cause; do not call those unchanged outputs a palette-model
+failure or simply remove the frame guard. Compact NANG mapping remains separate.
+See TOP next-thread handoff and auditv45 for exact private evidence/unknown poses.
+Eight fresh quiet-AC ABBA actual flag scans preserve ENTIRE ordinary outputs on
+dense CN3-9 and sparse Halls4. Medians123.715 ->128.377s (+3.768%) and59.318 ->
+59.096s (-0.374%, effectively unchanged) both meet the5% threshold. This is a
+whole-cost qualification for THIS component, not activation, a speedup claim or
+waiver of the old deferred consumer HOLD. Raw sample variation is preserved.
+Held-out Golden5/new reserve/unknown semantics/final71+16 remain open; all original
+protection definitions and positive coverage are still required.
+
 ## 2026-10-19 — Touching-glyph interior evidence, disabled pending qualification
 
 Added source-only interior RGB corroboration for real touching filled spikes

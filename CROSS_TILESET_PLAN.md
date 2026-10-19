@@ -1,6 +1,34 @@
 # Cross-tileset milestone
 
-## Current checkpoint (2026-10-19): positive interior evidence, not activated
+## Current checkpoint (2026-10-19): paint identity, not texture coordinates
+
+Broader source checks caught false supplemental directions despite matching mean
+RGB/raw contours. Matching foreground on average is insufficient: a wrong crop
+can include source-background pixels. But demanding identical pixelwise texture
+positions also lost a real Hades spike. New guards use actual ORIGINAL foreground
+paint sets, retaining RGB/isoluminant evidence and the existing relative tolerance,
+plus a coherent source-cohort tip. No room/palette/origin rule or duplicate scan;
+all old nominal/joint/capture paths and source positives remain protected.
+
+161 affected tests pass; identical complete44-source domains retain16 candidates,
+not21:11 source-backed (G2 one/Hades one/Golden7 nine), five CN3-19/21 poses still
+UNKNOWN. Known NR2/CN3-21 aliases abstain. This is actual transfer evidence from
+different appearances, not a universal sprite/tileset claim. Whole-output wiring
+checks remain distinct from source truth; unresolved candidates cannot be counted
+as improvements. All experimental consumers OFF; existing app totals unchanged.
+
+Frame eligibility is now a measured shared limitation:15 inputs bypass compact/
+extended captures, including several primary hard rooms. Next qualify existing
+original-world25x19 transforms and clipping before extending this mechanism.
+Do not infer it merely needs another palette, remove frame guards without proof,
+or conflate compact19x13 mappings. Keep all original numerical definitions, failed
+reserves/held-out Golden5. This component's quiet-AC8 whole ABBA checks preserve
+ENTIRE control outputs and meet the5% gate: dense+3.768%, sparse-0.374% (noise-level
+change). No speedup/activation claim, and the old deferred consumer HOLD remains
+separate. Auditv45/NEXT_THREAD_HANDOFF carry the exact evidence; zero broad room
+approvals remain.
+
+## Previous checkpoint (2026-10-19): positive interior evidence, not activated
 
 A real Golden2 spike failed because a touching neighbor filled an exterior area
 expected to be background, not because its own sprite was absent. The new generic

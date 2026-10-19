@@ -5,7 +5,7 @@ positive channel requires three raw contour edges AND original interior RGB
 cohorts. It never retires objects, treats unknown as empty, or learns outputs.
 """
 from copy import deepcopy
-from math import hypot, isfinite, sqrt
+from math import dist, hypot, isfinite, sqrt
 
 from jtool_scanner.spike_shape import VERTICES
 from scripts.source_filled_pipeline import FilledGlyphEvidence
@@ -117,8 +117,56 @@ class SourceInteriorGlyphEvidence:
                 self._model_cache[teachers] = dict(
                     teachers=teachers, background=background, foreground=foreground,
                     limit=.25*min(r[2] for r in rows),
-                    pattern=_normalized([v for p in samples for v in p]))
+                    pattern=_normalized([v for p in samples for v in p]),
+                    # Paint variation belongs to the source sprite; its exact
+                    # texture placement must not become object identity.
+                    original_paints=tuple(sorted({rgb for r in rows for rgb in r[0]})),
+                    paint_distance_cache={})
         return self._model_cache[teachers]
+
+    def _paint_support(self, model, body):
+        cache = model['paint_distance_cache']
+        for rgb in set(body):
+            if rgb not in cache:
+                cache[rgb] = min(dist(rgb, paint) for paint in model['original_paints'])
+        maximum = max(cache[rgb] for rgb in body)
+        return dict(passed=maximum <= model['limit'],
+                    max_original_paint_distance=maximum, original_RGB_limit=model['limit'],
+                    original_paint_count=len(model['original_paints']),
+                    every_interior_sample_source_supported=maximum <= model['limit'],
+                    texture_placement_not_required=True)
+
+    def _tip_support(self, key, model):
+        kind, x, y = key
+        poly = VERTICES[kind]
+        tx, ty = x+poly[0][0], y+poly[0][1]
+        ux = (poly[1][0]+poly[2][0])/2-poly[0][0]
+        uy = (poly[1][1]+poly[2][1])/2-poly[0][1]
+        length = hypot(ux, uy)
+        ux, uy = ux/length, uy/length
+        vx, vy = -uy, ux
+        px, py = self.frame.pitch
+        background, foreground = model['background'], model['foreground']
+        vector = tuple(f-b for f, b in zip(foreground, background))
+        energy = sum(v*v for v in vector)
+        phases = []
+        for dx in (0, -px, px):
+            for dy in (0, -py, py):
+                ax, ay = tx+dx, ty+dy
+                points = [(ax+3*ux*px, ay+3*uy*py), (ax-3*ux*px, ay-3*uy*py),
+                          (ax+3*vx*px, ay+3*vy*py), (ax-3*vx*px, ay-3*vy*py)]
+                positions = [self.frame.original_position(*p) for p in points]
+                values = [self._pixels.pixel(*p) if p is not None else None for p in positions]
+                projections = [sum((v-b)*d for v, b, d in zip(rgb, background, vector))/energy
+                               if rgb is not None and energy else None for rgb in values]
+                known = all(p is not None for p in projections) and len(set(positions)) == 4
+                labels = [p > .5 if p is not None else None for p in projections]
+                passed = bool(known and labels[0] and sum(v is False for v in labels[1:]) >= 2)
+                phases.append(dict(phase=(dx, dy), positions=positions, RGB=values,
+                                   foreground_projection=projections, known=known, passed=passed))
+        return dict(passed=any(p['passed'] for p in phases), phases=phases,
+                    unknown=not any(p['known'] for p in phases), original_cohort_not_query_corners=True,
+                    coherent_single_original_pixel_phase=True, physical_radius=3)
 
     def support(self, key):
         """Corroborate a finite original-locator hypothesis; never emit it."""
@@ -188,9 +236,16 @@ class SourceInteriorGlyphEvidence:
                     rectangle = self.field.rectangle(x, y, 32)
                     if all(e.support >= 9 and not e.unknown for e in rectangle):
                         return {**proof, 'abstained': 'competing complete source rectangle'}
+                paint = self._paint_support(model, body)
+                if not paint['passed']:
+                    continue
+                tip = self._tip_support(key, model)
+                if not tip['passed']:
+                    continue
                 best = dict(correlation=correlation, mean_RGB_error=error,
                             mean_RGB_limit=model['limit'], original_teachers=teachers,
-                            known_exterior_background_pixels=len(known_background))
+                            known_exterior_background_pixels=len(known_background),
+                            source_paint=paint, source_tip=tip)
         if best is None:
             return {**proof, 'abstained': 'no independent source interior appearance',
                     'independent_body_samples': len(INTERIOR_POINTS)}

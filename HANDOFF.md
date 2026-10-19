@@ -6,7 +6,30 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
-Newest: a source-only interior appearance channel now addresses touching filled
+Newest: broader source checks exposed direction aliases in the disabled interior
+experiment. It now requires ORIGINAL foreground-paint support for every interior
+sample, without memorizing texture positions, and a coherent original-cohort tip.
+Existing geometry/RGB/rectangle/unknown protections remain.161 affected tests pass;
+all other runtime module bytes are unchanged. Complete44-source screening retains
+11 source-backed private recoveries plus five UNKNOWN CN3-19/21 poses, not an
+automatic16 gains. Actual whole checks and source QA are separate evidence.
+Hades exact335/350 versus334 with no increased extras/shifts; Golden7 has nine
+source-positive candidates, not room approval. All experimental consumers remain
+OFF; no new default-app gain. The new audit distinguishes these private results.
+
+15 screened inputs bypass compact/extended frames, including canonicalCN3-18 and
+several hard rooms. Qualifying original-world transforms is a concrete next shared
+task; do not remove guards or treat cropped/resampled evidence as known. Use TOP
+NEXT_THREAD_HANDOFF.md/auditv45 for continuation, pending human pose questions,
+original protections, held-out reserve and unresolved goal gates. This component's
+eight fresh quiet-AC whole ABBA scans preserve complete control outputs: dense
++3.768% median overhead, sparse-0.374% (effectively unchanged), below the5% hold
+threshold. That qualifies its measured cost, not activation or the older deferred
+consumer's separate cost HOLD.
+
+### Earlier that day: initial interior-positive binding
+
+Previously: a source-only interior appearance channel now addresses touching filled
 spikes without demanding empty background on every exterior side. It still needs
 three independent ORIGINAL source teachers, three closed raw contour edges,
 original background support and rectangle/marker/crop vetoes. It shares the actual

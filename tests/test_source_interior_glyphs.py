@@ -1,6 +1,6 @@
 """Portable touching glyph interiors corroborate geometry, not raw locators."""
 from copy import deepcopy
-from math import hypot
+from math import dist, hypot
 from types import SimpleNamespace
 from unittest import TestCase
 
@@ -9,7 +9,7 @@ from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.spike_shape import VERTICES
 from scripts.source_filled_pipeline import FilledGlyphEvidence
-from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence, INTERIOR_POINTS, _oriented
+from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence, INTERIOR_POINTS, _oriented, _normalized
 from scripts.source_sampling import SourceFrame
 
 
@@ -59,6 +59,60 @@ def evidence(values,*,source_grid=(25,19)):
 
 
 class SourceInteriorGlyphTests(TestCase):
+    def test_one_background_body_sample_cannot_average_into_foreground(self):
+        values=scene();before=evidence(values)[0].support(values[4]);self.assertTrue(before['passed'])
+        image,room,_,original,key=values;kind,x,y=key
+        raster=Image.frombytes('RGB',(800,608),image.data)
+        a,b=_oriented(kind,17,23);self.assertIn((17,23),INTERIOR_POINTS)
+        raster.putpixel((x+a,y+b),(20,30,60))
+        changed=RGBImage(800,608,raster.tobytes());frame=SourceFrame(changed,room)
+        query=SourceInteriorGlyphEvidence(FilledGlyphEvidence(frame,original),original,source_grid=(25,19))
+        model=query._model(tuple(before['appearance']['original_teachers']));body=query._body(key)
+        self.assertLess(dist(tuple(sum(p[c] for p in body)/len(body) for c in range(3)),model['foreground']),model['limit'])
+        pattern=_normalized([v-model['background'][c] for p in body for c,v in enumerate(p)])
+        self.assertGreater(sum(a*b for a,b in zip(pattern,model['pattern'])),.9)
+        self.assertTrue(all(e.support>=9 and not e.unknown for e in query.field.triangle(*key)))
+        paint=query._paint_support(model,body)
+        self.assertFalse(paint['passed']);self.assertFalse(paint['every_interior_sample_source_supported'])
+        self.assertFalse(query.support(key)['passed'])
+
+    def test_source_paint_support_does_not_memorize_texture_positions(self):
+        values=scene();query,_=evidence(values);proof=query.support(values[4]);self.assertTrue(proof['passed'])
+        model=query._model(tuple(proof['appearance']['original_teachers']))
+        paints=model['original_paints'];body=tuple(paints[i%len(paints)] for i in range(len(INTERIOR_POINTS)))
+        supported=query._paint_support(model,body)
+        self.assertTrue(supported['passed']);self.assertEqual(supported['max_original_paint_distance'],0)
+        self.assertEqual(query._paint_support(model,body[::-1]),supported)
+        self.assertEqual(query._paint_support(model,body+body),supported)
+        self.assertEqual(model['original_paints'],paints)
+
+    def test_isoluminant_source_palette_retains_rgb_identity(self):
+        values=scene(foreground=(180,40,90),background=(40,120,45))
+        proof=evidence(values)[0].support(values[4]);self.assertTrue(proof['passed'],proof)
+        self.assertTrue(proof['appearance']['source_paint']['passed'])
+        self.assertTrue(proof['appearance']['source_tip']['passed'])
+
+    def test_tip_unknown_background_and_solid_interior_abstain(self):
+        values=scene();query,_=evidence(values);proof=query.support(values[4]);self.assertTrue(proof['passed'])
+        model=query._model(tuple(proof['appearance']['original_teachers']))
+        self.assertFalse(query._tip_support((3,608,400),model)['passed'])
+        edge=query._tip_support((3,0,0),model);self.assertFalse(edge['passed']);self.assertTrue(edge['unknown'])
+        image,room,_,original,_=values;raster=Image.frombytes('RGB',(800,608),image.data)
+        ImageDraw.Draw(raster).rectangle((592,384,672,464),fill=(210,150,70))
+        changed=RGBImage(800,608,raster.tobytes());frame=SourceFrame(changed,room)
+        solid=SourceInteriorGlyphEvidence(FilledGlyphEvidence(frame,original),original,source_grid=(25,19))
+        model=solid._model(tuple(proof['appearance']['original_teachers']))
+        self.assertFalse(solid._tip_support((3,608,400),model)['passed'])
+
+    def test_paint_tip_proofs_are_complete_and_mutation_isolated(self):
+        values=scene();query,_=evidence(values);before=query.support(values[4]);self.assertTrue(before['passed'])
+        tip=before['appearance']['source_tip'];self.assertTrue(tip['coherent_single_original_pixel_phase'])
+        self.assertTrue(tip['original_cohort_not_query_corners'])
+        self.assertTrue(any(p['passed'] and p['known'] and len(set(p['positions']))==4 for p in tip['phases']))
+        proof=query.support(values[4]);proof['appearance']['source_tip']['phases'].clear()
+        proof['appearance']['source_paint']['original_RGB_limit']=1000000
+        self.assertEqual(query.support(values[4]),before)
+
     def test_touching_positive_closed_geometry_and_original_RGB(self):
         values=scene();query,filled=evidence(values);original=deepcopy(values[3])
         proof=query.support(values[4]);self.assertTrue(proof['passed'],proof)

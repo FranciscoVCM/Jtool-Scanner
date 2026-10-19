@@ -13,7 +13,90 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: source-interior positive recovery, default OFF
+### Current checkpoint: original-paint/tip safeguards; transfer semantics explicit
+
+Parent for this batch: `d78bc32ecf1f43b71f8eb214773d19dc8da6108b`. Actual Git/live
+origin and `interior-paint-tip-publication-v1.json` are publication authority.
+Read the latest private active note for any live process before editing runtime.
+Latest successor audit is v45 in the goal folder; keep all older receipts/freeze
+definitions. No archive resweep or new repository/branch/worktree.
+
+The first COMPLETE protection contribution screen exposed unsafe supplemental
+aliases:21 candidates were NOT21 gains. Every20 new proposal crops were reviewed,
+plus the prior Golden2 actual delta. A query-calibrated tip would lose8of9 real
+Golden7 spikes; a source-cohort tip alone still accepted the false NR2 direction;
+near-tip contour counts did not separate them. A same-position pixel envelope
+rejected the real/reference-backed Hades spike. All failed observations remain.
+
+The new guards require each interior sample to match actual ORIGINAL teacher
+foreground paints within the EXISTING source-relative RGB limit, independent of
+texture placement. They also require a coherent source-taught tip at one bounded
+original-pixel phase, with known foreground behind/at least2 exterior background
+samples. No query-corner self-calibration, new colours, outlier budget, room rules,
+answer lookup, new teachers, grayscale pass or original object deletion. Exact
+paint distances are cached per original model. Old geometry/mean/correlation/
+rectangle/background/crop guards remain; nominal/joint/capture paths unchanged.
+
+161 UNIQUE affected tests PASS (five new methods), NOT full suite. The supplemental
+module is the ONLY changed runtime file; all old scanner/pipeline bytes unchanged.
+Full identical44-source domains give a guarded subset16 proposals:11 source-backed
+(the earlier G2 one, Hades one, Golden7 nine) and FIVE semantically unresolved
+CN3-19/21 poses. Four known false aliases and one ambiguous Dotkid proposal abstain.
+Those prevented PRIVATE proposals are not extra shipped/app conflict corrections.
+
+Actual guarded whole comparisons are in `interior-guarded-transfer-wholes-v1.json`:
+Hades, Golden7, CN3-19 and CN3-21. Require terminal/pass and complete expected
+ordered metadata/warnings/project/JMap/JTool/Blend equality; this checks wiring,
+NOT whether ambiguous shapes are real. Hades exact335/350 versus334, misses3
+versus4, same20extras/12shifts/zero wrong directions/metadata errors. Golden7's
+nine source-positive additions do NOT remove its old false/opposing locators or
+certify the room. No default-app gains: all three experimental flags remainFalse.
+
+Two asynchronous source questions cover CN3-19 UP200456/DOWN568192 and CN3-21
+LEFT336352/DOWN64432/DOWN120488, with `interior-user-...-uncertain-poses-v1.png`
+panels. Keep them UNKNOWN unless source/human evidence resolves them; do not
+guess from expected-output parity, count them as gains, or repeatedly re-ask.
+
+NEXT BOUNDED QUALIFICATION: before activation, evaluate the held-out Golden5 on
+this FROZEN new paint/tip mechanism. Preserve the old failed compound evaluation
+and original13-object protection; independently label a complete positive/negative
+structure BEFORE new inference if testing positive transfer. Do not tune the
+mechanism after reserve results or count post-proposal labels as pre-frozen truth.
+Resolve or conservatively retain the five human pose questions. Then address the
+frame gap below and independently source-proved old spike/solid arbitration;
+adding real spikes does not by itself fix existing wrong locators. Preserve all
+original goal minima and quantify actual enabled gains against B235, not warning
+counts or an isolated green control. No new images/archive sweep is needed.
+
+IMPORTANT NEXT SHARED GAP:15of44 inputs explicitly bypass this channel because
+compact OR extended capture frames, not merely missing palette familiarity.
+Canonical CN3-18/25/27/31 and Entrance1/2 are among the extended cases; NANG
+compact19x13 is a separate mapping issue. Existing SourceFrame preserves original
+RGB/unknown clipping and the scanner already supplies lattice-qualified25x19
+world extents. A later bounded batch should qualify this original-coordinate
+path/positive-negative protections before extending admission; do NOT simply
+remove guards, treat resampled pixels as original, or conflate compact mappings.
+
+`interior-guarded-whole-cost-v1.json`: EIGHT fresh quiet-AC serial ABBA actual
+flag-OFF/ON scans, two per mode/source, ENTIRE ordinary outputs/metadata/projects/
+exports identical. Dense CN3-9 medians123.715s OFF/128.377s ON (+3.768%); sparse
+Halls4 59.318s OFF/59.096s ON (-0.374%, effectively unchanged). Both below the5%
+hold threshold; raw variation is retained, not a claim of speedup. No detector/
+helper logic or scan-timer observers patched. This qualifies THIS component's
+measured whole cost, not activation or the old deferred consumer's +24.1615% HOLD.
+The optional HOLD-only profiler was NOT run because no new cost HOLD occurred.
+
+Original41/601/139/16 definitions remain unchanged. Golden5 is held out from this
+new mechanism's inference until a separate frozen no-tuning evaluation; its
+original protection is therefore not yet ON-qualified. Halls7/Golden5 old failed
+reserve results remain failed/untuned. All six full-goal gates remain open,
+including successful reserved transfer, broad actual source QA and final-current
+71+16 outputs. This component's paired cost has passed; other gates are not waived.
+Battery accuracy is allowed; helper/uncontrolled times are not a speed pass.
+53 enabled recoveries/five fixes remain the app totals. See v45 for exact carries,
+new private outputs, pending evidence and next step; do not label all71 accepted.
+
+### Previous checkpoint: source-interior positive recovery, default OFF
 
 The published parent for this batch is
 `4e5973cfb28b442315f46d8bfbf4a953ae104ddb`. Actual Git/live origin and
@@ -85,11 +168,14 @@ Continue JTool Scanner in `C:\Users\corvo\Documents\Jtool Scanner`, existing
 main only. Read the TOP of NEXT_THREAD_HANDOFF.md, DEVELOPMENT_PROGRESS.md,
 CROSS_TILESET_PLAN.md and HANDOFF.md; read the full ignored
 `.artifacts/general-recognition-20261014/GOAL_PLAN.md`. Inspect Git/status/live
-origin, then the latest active note, auditv44 and interior-binding publication
-receipt. Preserve all WIP if publication is incomplete. Resume the bounded
-interior-evidence protection/transfer qualification above, not a fresh archive or
-baseline sweep. Preserve the explicit Golden2 full-scope3 ->2 error correction,
-Halls3 current-vs-historical distinction, failed reserves and all goal gates.
+origin, then the latest active note, auditv45 and interior-paint-tip publication
+receipt. Preserve all WIP/live frozen producers if publication is incomplete.
+Resume held-out protection/reserve qualification and the measured source-frame
+gap above, not a fresh archive or baseline sweep. The16 private proposals mean
+11 source-backed (including one earlier G2 carry) plus5 UNKNOWN poses, not16
+gains. Keep the actual cost receipt/HOLD authoritative. Preserve the explicit
+Golden2 full-scope3 ->2 correction, Halls3 historical/current distinction, failed
+reserves and every original goal gate.
 Keep private artifacts/indexes/JMaps/transcript ignored. Commit/push reviewed
 public checkpoints, keep the app on tested bytes, and do not claim universal
 recognition or complete rooms without independent source evidence.
