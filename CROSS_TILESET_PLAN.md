@@ -1,6 +1,35 @@
 # Cross-tileset milestone
 
-## Current checkpoint (2026-10-19): source-pixel boundary ambiguity isolated
+## Current checkpoint (2026-10-19): generic compound checker, not activated
+
+The UNBOUND checker uses source-qualified ORIGINAL glyph/material/rectangle
+evidence plus exact original pixel-square overlap to explain compound raster
+mixtures. It does not turn unknown into background or erase objects by overlap.
+Positive rectangle geometry/artwork and marker vetoes remain; no room/palette/
+reference lookup, new teachers, mini/spike deletion or coordinate changes.
+
+106 unique affected tests pass (17 new methods), NOT the full suite. One valid
+actual PRIVATE Golden2 whole scan preserves the entire ordinary prefilter map,
+metadata and rendered artifacts, then removes ONLY two source-reviewed false
+blocks. Fresh whole/every-delta QA: central10 exact/3 ->1 errors/4096 solid
+pixels retained; original37 exact/6 errors/28672 pixels unchanged. Three disjoint
+residual pixels prevent removing the remaining false block. No room approval.
+
+Four protected checks retain entire current maps: FTFA-1/NR2 current source
+replays; Flames/Entrance2 structural bypasses ONLY. No reserve success, enabled
+original41/601/139/16 qualification or whole-cost pass is implied. Auditv42 keeps
+41 unchanged-runtime APP carries/30 pending/ZERO approvals. This private result
+is NOT a new app gain; existing53 recoveries/five false-block fixes stay unchanged.
+
+Next bounded batch: integrate default OFF after ordinary final source decisions,
+reuse its ACTUAL original filled-evidence instance/context/material/block library,
+protect default-OFF whole output/order/metadata and bypasses, then evaluate the
+predeclared compatible reserve without tuning. Do not duplicate source passes
+or promote suppression alone to the goal's required real recoveries. Old cost
+HOLD remains; battery accuracy is useful but controlled speed waits for AC.
+All six goal gates remain open; continue past this checkpoint toward real transfer.
+
+## Previous checkpoint (2026-10-19): source-pixel boundary ambiguity isolated
 
 Two frozen source-only ownership variants do NOT fix Golden2's central three
 false rectangles: all ten positives remain, three errors remain. No thresholds

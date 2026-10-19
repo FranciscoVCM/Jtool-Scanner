@@ -13,7 +13,57 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: compound cause diagnosed; pixel geometry UNBOUND
+### Current checkpoint: generic compound checker tested, UNBOUND
+
+Parentcb75f0a87c735964f2ebc3644e11bf2f01f33cb2. All accuracy/test producers
+TERMINAL, including control4 PID16224; the aborted wholeV1 worker is stale,
+NOT live. Actual Git/live origin and `generic-compound-publication-v1.json`
+are publication authority. Read auditv42 and the TOP private active note.
+
+New `source_compound_conflicts.py` returns original full-block conflict keys/
+isolated proofs, not automatic map edits. No app binding or runtime registration;
+all24 existing runtime dependency bytes remain unchanged. Original source tuple,
+material/block/filled evidence, RGB/independence/rectangle/marker/crop protections
+are retained. Exact physical-pixel mixtures are not background relabelling.
+Native geometry stays at original keys; sampling phase registers appearance only.
+An initial down-rotation failure and driver-only wholeV1 abort are preserved,
+not hidden or counted as successful scans.
+
+`generic-compound-full-source-v1.json`:106 unique affected tests PASS28.454s
+(17 new methods), NOT full suite. Complete original Golden2 domain:24 candidate
+conflicts, ONLY full368,296 and400,272 retired. Actual wholeV2 receipt confirms
+ENTIRE ordinary prefilter metadata/project/JMap/JTool/Blend baseline equality.
+`generic-compound-actual-source-QA-v1.json`: fresh whole Source/JTool/Blend and
+everyactualdelta reviewed; central10 exact retained/errors3 ->1/4096 positive
+pixels; original37 exact/6errors/28672 pixels unchanged. False336,272 remains
+because1FG/2unknown are unresolved. Room still MAJOR. No new app gains.
+
+`generic-compound-control4-v1.json`: FTFA-1/NR2 current source-only replays plus
+Flames/Entrance2 declared world/grid bypass checks, all entire current metadata
+unchanged. NOT four actual wholes or the original44/41/601/139/16 qualification.
+No Halls7/Golden5 reserve evaluation here. Auditv42 separates one valid PRIVATE
+whole/fresh QA from41 APP byte-identity carries/30pending/ZERO approvals;
+53 enabled app recoveries/five false-block fixes unchanged.
+
+NEXT concrete implementation, not another proof of the same two keys: freeze
+default-OFF scanner binding AFTER ordinary final source decisions. Reuse the
+ACTUAL original FilledGlyphEvidence instance in SourceEvidenceContext (validate
+same frozen original tuple/frame/source), plus existing material/block evidence;
+do not reconstruct a second library or teach from final proposals. Keep old
+deferred-platform options separate so requesting context does not activate that
+consumer. Preserve default-OFF entire scanner/pipeline behavior, output order,
+metadata, crop/grid and compact/extended bypasses. Register/fingerprint both
+new callable modules only with real callsites, portable integration/mutation
+tests and app refresh. Then actual expected-output checks, remaining original
+protections, compatible predeclared no-tuning transfer and everydelta source QA.
+Keep failed Halls7 untuned; no automatic activation before cost/protection gates.
+
+Existing deferred-platform consumer remainsFalse/old +24.1615% cost HOLD.
+User cannot connect AC now: do NOT ask again, wait on power or substitute battery
+timing for controlled cost. Continue accuracy work. No archive/baseline resweep,
+no repeated finished238tests/fivewholes. All six full-goal gates stay OPEN.
+
+### Previous checkpoint: compound cause diagnosed; pixel geometry UNBOUND
 
 Parent12a2df040931119fb34148f211ea038bf4b5be8a. All producer jobs TERMINAL.
 Read `pixel-footprint-qualification-v1.json`, auditv41 and the latest

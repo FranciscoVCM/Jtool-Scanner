@@ -4,6 +4,46 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Generic compound checker; two private false solids removed
+
+New `source_compound_conflicts.py` is an UNBOUND source-only API, not an active
+app detector. It queries the complete original detection domain using qualified
+original filled glyphs, rectangle/material evidence and exact physical-pixel
+coverage. Original RGB, independent teachers, unknown/crop, true-rectangle and
+marker vetoes remain. No scene IDs, answer maps, new teachers, grayscale scan,
+shape dilation, spike/mini deletion or origin changes. Supplied source material
+and original block evidence are reused rather than generating another mask.
+
+106 UNIQUE affected tests PASS28.454s, including17 new portable methods; NOT
+the full suite. Four directions, palette/polarity/dim/isoluminant/fractional
+captures, real solids/partial occlusion, text, source/teacher contamination and
+proof isolation are covered. Initial down-rotation failures exposed sampling
+phase incorrectly moving native ownership geometry; corrected that contract
+without relaxing thresholds. The failed version/evidence is preserved.
+
+One valid actual PRIVATE Golden2 whole scan reproduces the ENTIRE ordinary
+baseline before applying the checker. Only two false full blocks are removed.
+Fresh Source/JTool/Blend and every-delta source QA confirm central10 exact
+objects retained, errors3 ->1 and4096 positive solid pixels preserved. The
+original37-object freeze remains37 exact/6 errors/28672 positive pixels: no
+denominator replacement. The third central false block retains unresolved
+foreground/unknown evidence and is deliberately not removed. Room remains MAJOR.
+An earlier driver-only attempt was stopped for a postscan configuration bug;
+its partial evidence is preserved separately, not counted as a completed scan.
+
+Four protected input/output checks pass with zero current-map changes: FTFA-1
+and NR2 replay the current source checker; Flames/Entrance2 qualify only the
+explicit nonstandard-world bypass. NOT four fresh whole scans, the original
+44/41/601/139/16 qualification, reserve success or speed evidence.
+
+Auditv42:41 qualified APP outputs carried through entire unchanged24 runtime
+dependency bytes/30 pending/ZERO room approvals. One private whole scan and
+its fresh whole/every-delta review are recorded separately, not as deployed
+gains. App remains53 enabled recoveries/five retained false-block corrections.
+Next: default-OFF actual binding with shared original filled evidence, remaining
+protections and compatible no-tuning transfer. AC is unavailable; accuracy work
+continues on battery, controlled timing waits. Old cost HOLD/all six gates open.
+
 ## 2026-10-19 — Compound-conflict cause isolated; exact pixel geometry tested
 
 A fresh scoped source inspection of Golden2's two central pyramids confirms ten

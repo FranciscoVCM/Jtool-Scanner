@@ -6,7 +6,30 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
-Newest: a scoped Golden2 source investigation isolated a raster-boundary issue:
+Newest: UNBOUND `source_compound_conflicts.py` now checks original full-block
+conflicts using independent source glyph/material/rectangle evidence and exact
+physical-pixel geometry. No app binding, coordinate/palette/scene exceptions,
+new teachers or unknown-as-background.106 affected tests pass (17 new methods),
+NOT full suite. Native geometry and source sampling phase remain distinct.
+
+One valid PRIVATE actual Golden2 whole scan matches the complete ordinary
+baseline before filtering; only two false solids are removed. Fresh whole and
+every-delta source QA retains central10 exact objects/4096 positive pixels,
+reducing3 errors to1. Older37-object structure remains37 exact/6 errors/28672
+pixels; the unresolved third central block stays. Room remains MAJOR. Two source
+control replays and two declared bypass checks preserve entire current outputs,
+not all original protections or reserve/speed qualification.
+
+Auditv42 carries41 APP outputs through unchanged24 runtime dependency bytes,
+30 pending/ZERO approvals. The one private scan/review is separate, not a live
+app improvement:53 enabled recoveries/five false-block fixes unchanged. Next is
+default-OFF actual binding/shared source evidence and protected transfer checks.
+AC is unavailable; accuracy can continue on battery, controlled timing is deferred.
+Old cost HOLD and all six full-goal gates remain open. Use TOP next-thread handoff.
+
+### Earlier that day: source-pixel boundary geometry
+
+A scoped Golden2 source investigation isolated a raster-boundary issue:
 38 of41 residual physical pixel squares intersect verified spike shapes although
 their centres lie outside. Three remain unresolved. Two strict ownership probes
 still leave the region's10 correct objects/3false blocks unchanged; no fix or
