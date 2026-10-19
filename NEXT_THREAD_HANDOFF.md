@@ -13,7 +13,50 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: exact feature reuse; cost HOLD, accuracy on battery
+### Current checkpoint: compound cause diagnosed; pixel geometry UNBOUND
+
+Parent12a2df040931119fb34148f211ea038bf4b5be8a. All producer jobs TERMINAL.
+Read `pixel-footprint-qualification-v1.json`, auditv41 and the latest
+`DEFERRED_VETO_ACTIVE_v1.md` in the goal folder; publication authority is
+`pixel-geometry-publication-v1.json` plus actual Git/live origin. Do not reopen
+the archive or repeat the completed baseline/five wholes/238 tests.
+
+New `source_pixel_geometry.py` is READ-ONLY/UNBOUND: exact original pixel-square
+versus convex native polygon area, with crop/world unknown=None, not zero.
+No RGB/resampling/transform inference/shape dilation/teacher or detector changes.
+65 unique focused/adjacent tests pass,12new; NOT full suite. Entire current app/
+24 runtime dependency bytes are unchanged; do not restart the app unnecessarily.
+Register/fingerprint the new module only when an actual scanner caller is added.
+
+Fresh Golden2 CENTRAL source region [304,240,448,352]: six real UP spikes and
+four real base blocks already correct, three false rectangles. Complete10-object
+scope/4096 solid pixels is frozen separately; the older37-object freeze and its
+denominator are NOT replaced. Both strict colour/ownership variants abstain,
+so10 exact/3errors remains. Do not claim a fix or keep retuning those thresholds.
+Registered rectangle API has zero models but SourceBlockLibrary has19: distinct
+channels, not a reason to relax the coherent-exterior seed requirement.
+
+`compound-rectangle-cause-v1/v2.json`: after verified neighbors/artwork, residual
+FG/unknown counts11/13/17. Initial panel saved40of41; complete source replay now
+recovers the missing one. New exact geometry and independent clipping oracle
+agree:38of41 ORIGINAL pixel squares intersect verified original spike shapes
+despite outside centres. THREE remain disjoint/unresolved. Area is NOT alpha,
+sprite ownership or block absence. No widened halo or unknown-as-background.
+
+Next separately freeze source-supported mixed-pixel arbitration, preserving
+RGB/rectangle/marker vetoes and the three unresolved pixels. Inspect every
+changed object/whole map, original37 and all41/601/139/16 protections, real
+embedded32px spikes/mini rails, then compatible no-tuning transfer and cost.
+Do not substitute helper geometry tests for those adoption gates. Keep failed
+Halls7 reserve untuned. No new app gain/reserve success/whole-room approval yet.
+
+Auditv41:41 unchanged-runtime carries/30pending/ZERO approvals, no fresh scans,
+ONE new scoped source inspection.53 enabled recoveries/five false-block fixes
+unchanged. Existing deferred-platform consumer staysFalse/old cost HOLD; the
+user cannot connect AC now. Continue accuracy on battery; comparable timing
+waits without repeated power requests. All six full-goal gates remain OPEN.
+
+### Previous checkpoint: exact feature reuse; cost HOLD, accuracy on battery
 
 Parent89cce271ae84a28f2697f6a3d0984118d78849e9. Read the newest private
 `DEFERRED_VETO_ACTIVE_v1.md`, `source-feature-reuse-tests-v1.json` and

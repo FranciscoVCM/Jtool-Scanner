@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
+Newest: a scoped Golden2 source investigation isolated a raster-boundary issue:
+38 of41 residual physical pixel squares intersect verified spike shapes although
+their centres lie outside. Three remain unresolved. Two strict ownership probes
+still leave the region's10 correct objects/3false blocks unchanged; no fix or
+room approval is claimed. The older37-object source freeze remains unchanged.
+
+UNBOUND `source_pixel_geometry.py` now measures exact original-pixel/polygon area
+without changing RGB, resampling, transforms, teachers or scanner output.
+65 focused/adjacent tests pass (12new), not the full suite. Unknown coverage is
+None, distinct from zero; area is not sprite ownership or permission to delete.
+Entire app/runtime24 dependency bytes remain unchanged. Auditv41 carries41
+qualified outputs/30pending/ZERO approvals, with one new regional source review
+and no fresh scans/app gains. Source-supported arbitration and all adoption/
+full-goal gates remain open; use the TOP of the next-thread handoff to continue.
+
+### Earlier that day: exact feature reuse
+
 Latest: exact source-feature reuse passed238 UNIQUE affected tests335.098s
 (not the full suite), with unchanged entire source model/recovery proofs.
 Pixel caching is bounded/scoped ONLY to the new registered-model factory; the

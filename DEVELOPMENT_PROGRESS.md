@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Compound-conflict cause isolated; exact pixel geometry tested
+
+A fresh scoped source inspection of Golden2's two central pyramids confirms ten
+correct objects (six upward spikes/four base blocks) plus three false rectangles.
+This is not whole-room QA. Both frozen strict ownership variants abstained:
+10 exact/3 errors remains unchanged. No colour/unknown threshold was relaxed.
+The separate registered-rectangle API's zero models is not the same as missing
+all rectangle evidence: the original SourceBlockLibrary has 19 models here.
+
+The remaining classification residuals expose a sampling distinction. Replaying
+all 41 original physical pixels, including one omitted by the earlier bounded
+reporter, finds 38 pixel squares intersect independently verified original
+spike shapes although their centres are outside. THREE remain disjoint and
+unresolved. This is geometric overlap, not alpha, ownership or proof of absence.
+
+New UNBOUND `source_pixel_geometry.py` measures exact convex-polygon/original-
+pixel area using the existing SourceFrame transform. It does not read/resample
+RGB, enlarge a halo, infer a transform, add teachers or change detections.
+Missing crop/world coverage stays None, distinct from known zero. Validation
+rejects concave/self-intersecting/nonfinite geometry and fractional pixel IDs.
+65 unique focused/adjacent tests pass (12 new); NOT the full suite. All 40 prior
+saved pixel-area measurements agree with an independent clipping oracle, and
+the complete 41-pixel replay preserves every original residual count.
+
+Auditv41 carries 41 qualified outputs through ENTIRE unchanged app/runtime bytes;
+30 pending/ZERO room approvals/ZERO fresh scans. One new scoped region review,
+not all71 freshly reviewed. No new app gains:53 enabled recoveries/five retained
+false-block corrections remain. Old controlled cost HOLD/all six goal gates open.
+Next separately freeze mixed-pixel arbitration and verify its whole source deltas,
+old protections/partial occlusions and compatible transfer; area alone cannot
+authorize deletion. Accuracy work continues on battery; AC timing remains deferred.
+
 ## 2026-10-19 — Exact feature reuse; consumer cost remains on hold
 
 The first controlled actual-consumer experiment completed four quiet-AC C19

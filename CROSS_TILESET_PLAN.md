@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Current checkpoint (2026-10-19): source-pixel boundary ambiguity isolated
+
+Two frozen source-only ownership variants do NOT fix Golden2's central three
+false rectangles: all ten positives remain, three errors remain. No thresholds
+or labels were weakened. A complete source replay isolates 38 of41 residual
+pixels whose AREA intersects an independently verified spike while its centre
+does not. Three remain disjoint/unresolved; the initially unsaved pixel was
+recovered, not assumed. This is a general capture-sampling distinction, not a
+new tile/palette exception or proof a block is absent.
+
+New UNBOUND exact polygon/pixel geometry API passes65 focused tests (12new),
+including fractional/anisotropic transforms, crop/800x600/unknown boundaries,
+four directions and malformed polygon rejection. It makes NO detection decision.
+Entire app/runtime24 dependency bytes remain unchanged. Auditv41:41 qualified
+output carries/30 pending/ZERO approvals, one scoped source inspection/no scans.
+53 enabled recoveries/five false-block fixes unchanged; no new app gains.
+
+Next source-supported mixed-pixel arbitration must retain original RGB/teacher/
+marker/rectangle/partial-occlusion safeguards and independently verify source
+deltas/protections/compatible transfer/cost. Do not erase the three unresolved
+pixels, widen a halo, or promote geometry overlap to ownership automatically.
+All six full-goal gates and old speed HOLD remain open. Accuracy can run on battery.
+
 ## Current checkpoint (2026-10-19): feature reuse, speed gate not passed
 
 The actual default-OFF consumer's first controlled quiet-AC cost check found
