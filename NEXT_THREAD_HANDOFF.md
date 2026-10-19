@@ -13,7 +13,42 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: original-paint/tip safeguards; transfer semantics explicit
+### Current continuation: Golden5 reserve failed; original outputs preserved
+
+2026-10-19, runtime/test bytes and all three experimental OFF flags unchanged
+from `eec90c91c26bce0f8ab1cc25b34827e1bef4cec7`. New successor auditv46 is in
+the existing goal folder; private active notes supersede stale LIVE entries.
+Golden5's separately frozen paint/tip reserve is TERMINAL and FAILED improvement:
+complete corridor25 true objects,22 exact,three real half-wall32px spike misses
+and two false blocks =5errors before AND after. Preserved old13 structures give
+aggregate8 ->8 errors; zero map additions/removals. No retuning failed reserves.
+
+`Golden5-interior-reserve-source-QA-v2.json` seals main's actual whole/full-corridor
+Source/before/after/Blend review plus ENTIRE ordered metadata/warnings/comparison/
+project/source/JMap/JTool/Blend equality. This closes only Golden5's original ON
+numeric placeholder; it is NOT a positive reserve success or room approval.
+The V1 QA verifier failed on publication-head identity alone; V2 explicitly
+proves ALL runtime/environment identity fields equal, excluding only Git HEAD.
+V1 remains preserved. Five CN3-19/21 semantics stay UNKNOWN/already asked.
+
+`extended-interior-prerequisites-v1.json` is a READ-ONLY complete-domain observation
+on canonical CN3-18/CN3-27/Entrance2. Original frozen world frames/RGB are retained;
+qualification staysFalse, no flag/predicate/teacher override or detections emitted.
+Some source body/contour/paint/tip prerequisites survive, but background/marker/
+instance admission and source semantics are NOT qualified by this observation.
+Next bounded work: qualify extended25x19 original-world sampling/unknown clipping
+on PRIMARY sources before enabling any path; investigate true wall-occluded32px
+geometry separately, without lowering raw support or allowing arbitrary paints.
+Compact19x13 remains a different transform; failed reserves are not tuning data.
+
+No fresh tests or speed runs needed for unchanged runtime; prior161 affected
+tests/cost8 remain evidence, NOT new executions. Human cannot connectAC now:
+accuracy work is allowed on battery, controlled timing deferred, no repeated
+power request. All original protections/minima/six gates remain required.
+41 DEFAULT carries/30pending/ZERO approvals,53 enabled recoveries/five fixes
+unchanged. Existing app should be rechecked for HTTP200/loaded-disk parity.
+
+### Previous checkpoint: original-paint/tip safeguards; transfer semantics explicit
 
 Parent for this batch: `d78bc32ecf1f43b71f8eb214773d19dc8da6108b`. Actual Git/live
 origin and `interior-paint-tip-publication-v1.json` are publication authority.

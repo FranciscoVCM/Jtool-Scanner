@@ -6,7 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
-Newest: broader source checks exposed direction aliases in the disabled interior
+Latest continuation: the separately frozen Golden5 paint/tip reserve FAILED
+improvement, not preservation: corridor22/25 exact,5 ->5 errors; original13
+retained, aggregate8 ->8 errors, zero additions/removals. Entire output/project/
+exports match default and actual whole/corridor source review remains MAJOR.
+No runtime/test/flag changes or new app gains. Auditv46/TOP next-thread handoff
+record the failed reserve, qualified original ON output and next shared frame
+investigation. Extended-world prerequisite observations are NOT emitted detections
+or accuracy proof; compact mappings remain separate. Accuracy can proceed on
+battery; only reliable speed comparisons require controlled AC power.
+
+Previous implementation checkpoint: broader source checks exposed direction aliases in the disabled interior
 experiment. It now requires ORIGINAL foreground-paint support for every interior
 sample, without memorizing texture positions, and a coherent original-cohort tip.
 Existing geometry/RGB/rectangle/unknown protections remain.161 affected tests pass;

@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Current checkpoint (2026-10-19): paint identity, not texture coordinates
+## Current continuation (2026-10-19): reserve failure and shared frame gap
+
+The unchanged paint/tip mechanism FAILED the separately frozen Golden5 reserve:
+25-object corridor22exact/5errors unchanged, original13 preserved, aggregate8 ->8.
+No new geometry, app gain or reserve success. Entire output/metadata/project/
+exports and actual whole/corridor source QA qualify preservation, not accuracy.
+Auditv46 records the distinction; five CN3-19/21 source poses remain UNKNOWN.
+
+Read-only complete-domain prerequisites on extended CN3-18/27/Entrance2 confirm
+that some original-source constituents exist behind the explicit frame bypass.
+Admission remainsFalse and no detection was emitted. Next qualify original-world
+25x19 sampling/unknown boundaries before extending this path; treat compact19x13
+and genuine wall-occluded full32 geometry separately. Do not retune failed reserves,
+lower support thresholds or interpret partial constituents as semantic truth.
+No runtime/test/flag changes or new speed claims. Existing161 affected tests and
+quiet-ACcost8 remain prior evidence. Accuracy work can continue on battery; defer
+controlled timing when AC unavailable. Original goal gates/minima remain intact.
+
+## Previous checkpoint (2026-10-19): paint identity, not texture coordinates
 
 Broader source checks caught false supplemental directions despite matching mean
 RGB/raw contours. Matching foreground on average is insufficient: a wrong crop

@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Frozen Golden5 reserve: no improvement, preservation qualified
+
+No runtime/test/flag changes. The separately frozen new paint/tip evaluation
+FAILED: Golden5 corridor22/25 exact and5errors unchanged (three real half-wall
+32px spikes missed, two false blocks); original13 retained, aggregate8 ->8errors.
+Main independently reviewed actual whole/full corridor Source/before/after/Blend.
+Entire map, ordered metadata, warnings, comparison, owned project and exported
+source/JMap/JTool/Blend equal the default baseline. This qualifies the original
+Golden5 numeric ON placeholder, not successful transfer, a new app gain or approval.
+Failed reserve and verifier-only Git-HEAD mismatch remain preserved; no retuning.
+
+Read-only complete-domain source prerequisites on extended CN3-18/27/Entrance2
+retain frozen original RGB/world mapping and leave qualificationFalse. Surviving
+body/contour/paint/tip constituents are NOT complete support/source truth. Next
+qualify that shared frame gap, separately from compact19x13 and real wall occlusion.
+No new tests/timing claimed: full runtime bytes equal the prior161-test/cost8
+checkpoint. Battery accuracy can continue while controlled timing is deferred.
+Auditv46:41 DEFAULT carries/30pending/ZERO approvals; five CN3-19/21 poses UNKNOWN,
+53 enabled recoveries/five corrections unchanged. All six goal gates remain open.
+
 ## 2026-10-19 — Guard source paint and coherent tips; reject texture aliases
 
 The complete original-source contribution screen found21 candidates, not21
