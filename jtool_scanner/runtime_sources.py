@@ -14,6 +14,8 @@ SOURCE_GEOMETRY_MODULES = (
     'source_rgb_distribution',
     'source_registered_rectangles',
     'source_deferred_platforms',
+    'source_pixel_geometry',
+    'source_compound_conflicts',
 )
 
 

@@ -6,7 +6,33 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
-Newest: UNBOUND `source_compound_conflicts.py` now checks original full-block
+Newest: the actual compound checker is wired after ordinary final source decisions,
+but `_SOURCE_COMPOUND_CONFLICTS_ENABLED=False`. It reuses the original stage's
+actual filled-evidence instance/context/material/block library, preserving surviving
+objects' order/metadata and keeping deferred-platform activation independent.
+26 dependencies are fingerprinted, and the app has been refreshed to these bytes.
+223 unique affected tests pass (16 new integration methods), NOT full suite;
+exact OFF specialization preserves all five changed modules' entire old behavior.
+
+Five actual whole scans complete. G2OFF/ON, FTFA1ON and NR2ON preserve entire
+expected metadata/projects/JMaps/JTool/Blend, including unchanged FTFA exact result.
+G2ON reproduces the old privately reviewed two-block correction, not a new app gain.
+The new no-tuning Golden5 reserve FAILED:13 exact/3errors/4096 positive pixels
+unchanged, zero removals. Three complete structures were frozen before inference;
+fresh whole review still finds MAJOR errors. UNKNOWN and background-colour gates
+remain unsatisfied, not weakened. No successful reserve/general-accuracy claim.
+
+Auditv43:41 qualified default outputs (one fresh OFF/40 explicit semantic carries),
+30 pending/ZERO room approvals; four private ON wholes recorded separately.
+53 enabled recoveries/five false-block fixes unchanged. Original enabled protections,
+real positive-recovery/cross-family gains, reserve success and controlled speed all
+remain pending. Both consumers stay disabled; accuracy can continue on battery.
+Use TOP next-thread handoff for current evidence/next primary-room causal work;
+all six goal gates remain open. Do not retune the failed reserves.
+
+### Earlier that day: generic source-only API
+
+UNBOUND `source_compound_conflicts.py` now checks original full-block
 conflicts using independent source glyph/material/rectangle evidence and exact
 physical-pixel geometry. No app binding, coordinate/palette/scene exceptions,
 new teachers or unknown-as-background.106 affected tests pass (17 new methods),

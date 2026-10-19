@@ -13,7 +13,63 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: generic compound checker tested, UNBOUND
+### Current checkpoint: actual compound consumer OFF; Golden5 reserve FAILED
+
+Parent `3dc0e708f86e6fce99de8c94544e69b8fb196b94`. All test/scan/diagnostic/audit
+producers TERMINAL. Publication authority: actual Git/live origin and
+`compound-binding-publication-v1.json`; current auditv43/source-QA receipt in
+the goal folder. No archive/baseline resweep or new worktree. Preserve full goal.
+
+Actual post-ordinary-source compound consumer is wired, internal defaultFalse.
+It reuses the ACTUAL original FilledGlyphEvidence instance via validated context
+record/get methods, plus original material/block library. No second constructor/
+generator or final-output teachers. Final filtering keeps survivor order/identity/
+metadata, and requesting shared context does NOT activate deferred-platform RGB.
+Direct25x19 guards, compact/extended bypasses retained. Runtime24 ->26; app refreshed.
+
+`compound-binding-qualification-v2.json`:223 UNIQUE affected tests PASS:initial50
+120.738s carried at identical bytes/173 additional28.409s,16 new methods, NOT full
+suite. ENTIRE five changed modules' parent AST matches after exact OFF specialization;
+other old runtime bytes unchanged. V1 failed because Git stdout decoded Windows
+default versus UTF-8 files. V2 fixes ONLY verifier decoding; failed receipt preserved.
+`compound-binding-actual-wholes-v1.json`: FOUR actual bound scans/no detector/helper
+logic patches: G2OFF entire baseline; G2ON entire old source-reviewed private two-
+block expectation; FTFA1ON/NR2ON baseline equal. Full metadata/warnings/options/
+project/JMap/JTool/Blend match, FTFA exact comparison rerun unchanged. G2 source
+QA is carried by entire equality, NOT fresh visual review or new app improvement.
+
+`Golden5-compound-reserve-freeze-v1.json` froze THREE complete source structures
+before inference:13 true objects/3false fulls/4096 positive solid pixels. The NEW
+actual ON no-tuning reserve removed ZERO. `compound-Golden5-reserve-actual-v1.json`
+is execution-pass/accuracy-FAILED; DO NOT confuse its passed flag with reserve
+success. Fresh whole source/before/after/Blend QA remains MAJOR. No actual deltas.
+`Golden5-compound-abstention-observation-v1.json`: source-only cause replay, NOT
+another whole scan.23 candidates/76 original glyph proofs; known source owners
+exist. Frozen full144,112/304,496/336,112 retain36/9/7 UNKNOWN pixels; mean BG errors
+34.529/31.347/38.659 also exceed19.674. Both safety gates remain; NO reserve tuning.
+
+Auditv43/sourceQA:41 qualified DEFAULT-app outputs (one fresh OFF/40 explicit
+semantic carries),30pending/ZERO approvals; FOUR private ON wholes separate.
+53 enabled source recoveries/five false-block fixes unchanged. No new app gains,
+new reserve success, all-control sweep or speed pass. Current app session53209/
+PID8288 last HTTP200 with26deps/disk-loaded parity; inspect actual state on resume.
+Fingerprint2d6195b9b898566af149ebacfaf1986571c4f0f9a7f90d440a165bbeb79cc33a.
+
+NEXT: do not repeat these five wholes or the same private two-block ROI proof.
+Investigate source appearance/unknown and REAL compound misses on PRIMARY G2
+(central remainder/original37), Halls3/C18, preserving their complete freezes.
+Check spatial background variation/artwork/capture mixtures against independently
+verified source geometry and local RGB; do not assume one cause, remove unknown
+labels, widen a shape halo or use generated detections as teachers. Positive
+recoveries are REQUIRED, not suppression alone. Keep failed Golden5/Halls7 untuned;
+NANG138r is compact and cannot count as compatible until transform/evidence is
+properly qualified. Original enabled41/601/139/16, goal recovery/cross-family minima,
+successful reserve, final71+16 and quiet-AC whole cost all remain OPEN.
+Both consumers defaultFalse; old deferred +24.1615% cost HOLD is not a measured
+cost of the new compound checker. User cannot connect AC: accuracy on battery,
+defer controlled speed/DO NOT ask again. All six full-goal gates remain OPEN.
+
+### Previous checkpoint: generic compound checker tested, UNBOUND
 
 Parentcb75f0a87c735964f2ebc3644e11bf2f01f33cb2. All accuracy/test producers
 TERMINAL, including control4 PID16224; the aborted wholeV1 worker is stale,

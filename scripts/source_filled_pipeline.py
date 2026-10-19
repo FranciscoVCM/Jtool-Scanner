@@ -279,7 +279,7 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
                                  terrain_neighbors=True, short_circuit=True,
-                                 joint_phase=False, capture_base=False):
+                                 joint_phase=False, capture_base=False, source_context=None):
     """Return new source-proved full poses and proofs; never remove originals."""
     if not isinstance(short_circuit, bool):
         raise ValueError('Filled short-circuit flag must be a boolean')
@@ -290,6 +290,8 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
+    if source_context is not None:
+        source_context.record_filled_source(original, frame, evidence)
     hypotheses = sorted(filled_hypotheses(original, terrain_neighbors=terrain_neighbors)-existing)
     if not evidence.has_qualified_model():
         return set(), dict(accepted=[], hypotheses=len(hypotheses), evaluated=0,

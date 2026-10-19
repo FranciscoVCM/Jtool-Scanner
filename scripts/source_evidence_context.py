@@ -107,6 +107,30 @@ class SourceEvidenceContext:
             self._validate_growth_originals(detections)
             self._growth_texture = library
 
+    def record_filled_source(self, detections, frame, evidence):
+        """Retain the actual original-stage evidence, never build a second copy."""
+        self._validate_growth_originals(detections)
+        from scripts.source_filled_pipeline import FilledGlyphEvidence
+        if (not frame.matches_source(self._original, self._room) or frame.extent != self._room
+                or not isinstance(evidence, FilledGlyphEvidence) or evidence.frame is not frame
+                or evidence.original_spikes != tuple(k for k in self._spikes if 3 <= k[0] <= 6)):
+            raise ValueError('Filled source evidence must share the original frame and detections')
+        existing = getattr(self, '_filled_source', None)
+        if existing is not None and (existing[0] is not frame or existing[1] is not evidence):
+            raise ValueError('Original filled source evidence cannot be replaced')
+        self._filled_source = frame, evidence
+
+    def filled_source(self, detections, frame):
+        """Validate every reuse of the original stage's single evidence instance."""
+        self._validate_growth_originals(detections)
+        saved = getattr(self, '_filled_source', None)
+        if saved is None:
+            raise ValueError('Missing original filled source evidence')
+        if saved[0] is not frame:
+            raise ValueError('Original filled source frame changed')
+        self.record_filled_source(detections, frame, saved[1])
+        return saved[1]
+
     def growth_evidence(self, detections):
         """Lazy, scan-local qualification; cache hits still validate originals."""
         self._validate_growth_originals(detections)

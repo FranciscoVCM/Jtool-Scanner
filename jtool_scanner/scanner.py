@@ -85,6 +85,8 @@ _SOURCE_REPEATED_IDENTITY_ENABLED = True
 _CAPTURE_BASE_CONTEXT_ENABLED = True
 # Adoption follows actual consumer controls and whole cost, not helper proofs.
 _SOURCE_DEFERRED_PLATFORMS_ENABLED = False
+# Original compound conflicts require separate protection and whole-cost gates.
+_SOURCE_COMPOUND_CONFLICTS_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2975,13 +2977,22 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
         original_context = SourceEvidenceContext(image, result.room_box,
             [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
         deferred_options = dict(source_context=original_context)
+    compound_options = {}
+    if _SOURCE_COMPOUND_CONFLICTS_ENABLED and frame.extent == result.room_box:
+        if not deferred_options:
+            from scripts.source_evidence_context import SourceEvidenceContext
+            original_source_detections = tuple(result.detections)
+            original_context = SourceEvidenceContext(image, result.room_box,
+                [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
+            compound_options['source_context'] = original_context
+        compound_options['record_filled_source'] = True
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
                                                        source_frame=frame, include_growth_confidence=True,
                                                        include_filled_glyphs=True,
                                                        include_filled_joint_phase=True,
                                                        **({'include_filled_capture_base': True}
                                                           if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
-                                                       **deferred_options)
+                                                       **deferred_options, **compound_options)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
@@ -3007,6 +3018,19 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             source_grid=result.source_grid, source_frame=frame)
         if recovery['added']:
             result.detections = sorted(merged, key=lambda d: (d.type_id, d.y, d.x))
+            result.structural_warnings = structural_scan_warnings(result.detections)
+    if compound_options:
+        from scripts.source_compound_conflicts import source_compound_conflicts
+        evidence = original_context.growth_evidence(original_source_detections)
+        libraries = evidence['original_texture_libraries']
+        retired, _ = source_compound_conflicts(image, result.room_box, original_source_detections,
+            source_grid=result.source_grid, source_frame=frame, source_context=original_context,
+            source_material=diagnostics['source_material'],
+            source_block_library=libraries[0] if libraries else None,
+            source_filled_evidence=original_context.filled_source(original_source_detections, frame))
+        remaining = [d for d in result.detections if (d.type_id, d.x, d.y) not in retired]
+        if len(remaining) != len(result.detections):
+            result.detections = remaining
             result.structural_warnings = structural_scan_warnings(result.detections)
     return result
 

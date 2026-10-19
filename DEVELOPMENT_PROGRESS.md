@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Actual compound binding OFF; Golden5 reserve failed
+
+The real scanner can now opt into the compound checker AFTER ordinary final
+source decisions. Default remains `_SOURCE_COMPOUND_CONFLICTS_ENABLED=False`.
+It reuses the ACTUAL original FilledGlyphEvidence instance, material and block
+library through a validated source-context sidecar; no second constructor or
+material pass. Only proved original full keys are filtered, preserving survivor
+order/identity/metadata and nongeometry. Context sharing does not activate the
+separate deferred-platform consumer. Compact/extended frames bypass the checker.
+
+223 UNIQUE affected tests pass:50 integration tests120.738s,173 additional tests
+28.409s; the initial50 were carried at identical bytes, not rerun.16 new methods.
+NOT the full suite. ENTIRE parent AST matches after exact default-OFF specialization
+for all five changed modules; other old runtime dependency bytes are unchanged.
+Runtime registration24 ->26 includes both newly callable helpers, with mutation
+tests. The first AST verifier mixed Windows-default Git decoding with UTF-8 working
+files; preserved that failed attempt and fixed ONLY verifier decoding. No scanner
+logic adjustment. The app was refreshed and loaded/disk fingerprints agree.
+
+FIVE actual whole scans, no helper/detector logic patches: Golden2OFF/ON,
+FTFA-1ON, NR2ON and the separately frozen no-tuning Golden5 reserve ON. First4
+match ENTIRE expected ordered metadata/warnings/projects/JMaps/JTool/Blend;
+FTFA's exact comparison is rerun and unchanged. Golden2ON reproduces the old
+reviewed two-private-false-block result; source QA carries by complete equality.
+
+Golden5 reserve FAILED: three complete structures were source-reviewed/frozen
+BEFORE inference,13 exact/3 errors/4096 positive solid pixels. All remain unchanged,
+zero retirements. Fresh whole Source/JTool/Blend review retains MAJOR status.
+A read-only source observation finds sufficient glyph owners, not absent teachers:
+the three false fulls retain36/9/7 UNKNOWN pixels AND mean-background errors
+34.529/31.347/38.659 above19.674. Neither gate nor denominator was relaxed.
+Do not call compatible unchanged output a transfer success or retune this reserve.
+
+Auditv43:41 qualified default-app outputs (one fresh OFF/40 explicit full-behavior
+semantic carries),30 pending/ZERO approvals. Four private ON wholes are separate;
+53 enabled recoveries/five false-block corrections remain unchanged. No app gain.
+Original enabled41/601/139/16 protections, positive-recovery/cross-family milestone,
+compatible reserve success, final71+16 and controlled whole cost remain pending.
+Old deferred consumer cost HOLD is not waived; neither consumer is activated.
+Accuracy continues on battery. Next investigate unresolved source appearance and
+real compound recovery on PRIMARY rooms, not another replay of these five scans.
+
 ## 2026-10-19 — Generic compound checker; two private false solids removed
 
 New `source_compound_conflicts.py` is an UNBOUND source-only API, not an active

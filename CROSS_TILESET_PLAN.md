@@ -1,6 +1,43 @@
 # Cross-tileset milestone
 
-## Current checkpoint (2026-10-19): generic compound checker, not activated
+## Current checkpoint (2026-10-19): actual binding; failed transfer is explicit
+
+The compound checker is wired AFTER the ordinary final source merge, default
+OFF. It shares the actual original filled-evidence instance/context/material/
+block library, not generated teachers or another complete source pass. Filtering
+preserves survivor order/metadata; separate deferred-platform activation stays
+independent. Compact/extended transforms abstain.26 dependencies are fingerprinted.
+
+223 unique affected tests pass (50 carried at identical bytes/173 additional,
+16 new integration methods), NOT the full suite. ENTIRE old behavior matches
+after exact OFF specialization of all five changed modules; other old runtime
+bytes unchanged. A verifier-only Git decoding error was fixed, not detector logic.
+FIVE actual whole scans complete: G2OFF/ON, FTFA1ON, NR2ON, Golden5reserveON.
+First4 preserve entire expected artifacts/ordered metadata and FTFA exact result.
+G2's old private two-block correction retains source QA by complete equality.
+
+NEW no-tuning Golden5 reserve FAILED, not success: three frozen complete source
+structures retain13 exact/3errors/4096 positive pixels; zero retirements. Fresh
+whole review remains MAJOR. Source observation confirms glyph evidence exists,
+but UNKNOWN counts36/9/7 and mean-background error gates all abstain. No weakened
+threshold, scope or teacher rule. Do not tune this failed reserve or count it as
+proof of unseen appearance generalization. NANG138r remains compact/unqualified.
+
+Auditv43 distinguishes one fresh default-OFF output/40 semantic carries from
+four private ON wholes:41qualified/30pending/ZERO approvals. No new app gains;
+53 enabled recoveries/five false-block fixes unchanged. Both consumers stay OFF;
+all original enabled protections, new positive recoveries/cross-family evidence,
+successful reserve and quiet-AC controlled cost remain open. Battery accuracy
+continues; no repeated power request or speed substitution.
+
+Next causal work belongs on PRIMARY G2/Halls3/C18: determine whether unresolved
+RGB comes from background variation, artwork/capture mixtures or weak material
+calibration, and inspect real filled-glyph misses as well as false rectangles.
+Use source-supported local evidence while retaining RGB/unknown/rectangle guards;
+do not force all causes into one rule, widen a halo or add suppression alone.
+Do not repeat completed223tests/fivewholes merely to reprove these outcomes.
+
+## Previous checkpoint (2026-10-19): generic compound checker, not activated
 
 The UNBOUND checker uses source-qualified ORIGINAL glyph/material/rectangle
 evidence plus exact original pixel-square overlap to explain compound raster
