@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Exact feature reuse; consumer cost remains on hold
+
+The first controlled actual-consumer experiment completed four quiet-AC C19
+scans (OFF/ON/ON/OFF), with two samples per mode and complete expected-output
+checks. OFF median48.321s versus ON59.996s is +24.1615%: a real cost HOLD, not
+an accepted slowdown. Remaining cost cases were deliberately not run.
+
+Profiling motivated FEATURE reuse only: a bounded65536-entry pixel cache scoped
+to the new registered-model factory, restoring the original cache/counters even
+on nested/exception exits; and one squared distance per identical source palette
+colour/query RGB instead of recalculating it for each witness. The ordinary
+global pixel-cache default remains0. No seed, threshold, geometry, independence,
+teacher, tie-order or recognition decision changed.
+
+238 UNIQUE affected tests PASS335.098s, including seven new feature tests; NOT
+the full suite. Entire old cohort-core/guard AST and old glyph API AST match;
+all other runtime dependency bytes are unchanged. Entire C19/Golden2/Halls7
+model proofs and C19/Halls7 recovery proofs/metadata match prior evidence.
+Actual current C19 OFF/ON scans preserve the entire baseline/four-block private
+expectation respectively; old source QA carries by equality, not fresh review.
+
+The bounded batch completed FIVE actual whole-output checks: C19 OFF/ON plus
+FTFA-1, dense CN3-9 and sparse Halls4 ON, all complete expected maps, ordered
+metadata, warnings, projects and renders equal. FTFA's exact comparison is also
+unchanged. Two passed V1 scans were strictly reused; three V2 scans were fresh.
+V1's omitted FTFA reference-input metadata caused a strict-input failure; that
+attempt is preserved and FTFA was rescanned correctly, not the assertion relaxed.
+Answers are postscan only. No helper/detector logic patches or new visual QA.
+
+Auditv40:41 qualified default-app outputs (one fresh OFF scan/40 old-API semantic
+carries),30 pending,ZERO room approvals. No old cache identity was rewritten.
+53 enabled source recoveries/five false-block corrections unchanged. The four
+experimental blocks remain private, not app gains. The five checks are NOT the
+original44/41/601/139/16 enabled qualification or a full71-room regeneration.
+
+Instrumented helper improvements are NOT whole-scan speed qualification. The
+candidate timing attempt stopped before any sample because AC was unavailable.
+The user cannot connect now: continue accuracy on battery, defer comparable
+speed measurements without repeated AC requests or weakening the gate.
+Consumer remains FALSE. No new app gains, reserve success or room approvals.
+Original enabled41/601/139/16 qualification and all six goal gates remain open.
+
 ## 2026-10-19 — Actual original-veto scanner consumer implemented, default OFF
 
 The scanner now records original block/platform conflicts at its FIRST anchor

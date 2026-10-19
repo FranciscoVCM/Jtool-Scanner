@@ -13,7 +13,55 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current checkpoint: real original-veto scanner binding, default OFF
+### Current checkpoint: exact feature reuse; cost HOLD, accuracy on battery
+
+Parent89cce271ae84a28f2697f6a3d0984118d78849e9. Read the newest private
+`DEFERRED_VETO_ACTIVE_v1.md`, `source-feature-reuse-tests-v1.json` and
+`source-feature-reuse-qualification-v1.json`, `source-feature-accuracy-v2.json`
+and `source-feature-publication-v1.json`; consult actual Git for publication
+state, not any historical PID below. All producer jobs are TERMINAL.
+
+238 UNIQUE affected tests PASS335.098s, NOT full suite. Scoped65536 pixel-feature
+reuse ONLY in the new registered-model factory; old default0/cache/counters
+restored. Identical source palette colours share squared-distance calculations;
+no classifier/teacher/gate/domain/tie changes. Entire original cohort/guard AST,
+old glyph API AST, three-room model/two-room recovery proofs remain equal; all
+other runtime bytes unchanged. Actual C19 OFF/ON whole outputs match baseline/
+same four reviewed PRIVATE blocks. No fresh visual QA or app gain.
+
+Old controlled quiet-AC C19 medians48.321OFF/59.996ON (+24.1615%) are HOLD.
+Instrumented helper improvements DO NOT clear it. Candidate timing attempt
+`source-feature-whole-cost-v1.json` is TERMINAL/ERROR before ANY sample: AC absent.
+The user cannot connect now. Continue accuracy work on battery; do not re-ask,
+wait on power, weaken the gate or run battery timing as a substitute. Future
+timing needs fresh V2 paths/quiet AC, not overwrite/resume by pretending samples.
+Consumer remains OFF; all enabled protections/cross-family goal gates still open.
+
+Bounded accuracy protocol/worker: `SOURCE_FEATURE_ACCURACY_FREEZE_v1.md` and
+`SOURCE_FEATURE_ACCURACY_RESUME_v2.md`. V1 good C19 OFF/ON wholes preserved;
+its FTFA whole matched but strict inputs failed because the driver omitted
+expected_jmap metadata. V2 strictly reused only the two fully passed wholes and
+completed THREE fresh scans: FTFA-1, dense9 and sparseHalls4 ON. All FIVE whole
+maps/ordered metadata/warnings/projects/renders equal expected; FTFA exact
+comparison also unchanged. References are postscan only; no detector/helper
+logic patches. No new visual QA or room approvals. Do not rerun finished checks.
+
+Auditv40:41 qualified default-app outputs (one fresh OFF scan/40 explicit old-API
+semantic carries),30 pending,ZERO room approvals. No cache identity rewritten.
+53 enabled recoveries/five retained false-block corrections unchanged. Four
+experimental recoveries remain private; original enabled44/41/601/139/16 NOT
+complete. The publication receipt verifies tested app HTTP200/source parity,
+pushed main/clean Git/private indexes. All six full-goal gates remain OPEN.
+
+Next: remaining enabled protections and separate source-positive cross-family
+causes; timing only when AC is available. Further performance hypotheses must
+follow causal evidence, not another global cache or helper-only speed claim.
+Do not repeatedly prove the same four blocks or retune failed Halls7 reserve.
+Query-first geometry is necessary but insufficient: six closed C19 candidates,
+only four also pass independent RGB. Do not admit the two RGB-rejected shapes,
+drop unknown/independence gates or restrict teachers to known raw-block origins.
+
+### Previous checkpoint: real original-veto scanner binding, default OFF
 
 Parent `92d4ba7a4d3b58a407abcc3d0f345759a3b8beb0`. All producers TERMINAL.
 Read ignored `deferred-scanner-integration-publication-v1.json` and actual Git/

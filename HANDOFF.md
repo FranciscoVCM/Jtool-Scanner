@@ -6,6 +6,27 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-19
 
+Latest: exact source-feature reuse passed238 UNIQUE affected tests335.098s
+(not the full suite), with unchanged entire source model/recovery proofs.
+Pixel caching is bounded/scoped ONLY to the new registered-model factory; the
+ordinary global default stays0. Identical source palette colours share exact
+distance calculations. No classifier, teacher, geometry or confidence change.
+
+Actual C19 OFF/ON outputs match the preserved baseline/same four private blocks.
+FTFA-1, dense CN3-9 and sparse Halls4 ON also preserve complete expected outputs;
+FTFA's exact comparison is unchanged. FIVE qualified wholes total (two verified
+V1 scans reused/three fresh V2 scans), not a new all44 protected-control sweep.
+Auditv40 keeps41 qualified default outputs (one fresh OFF/40 semantic carries),
+30 pending/ZERO approvals;53 enabled recoveries/five false-block fixes unchanged.
+The preceding quiet-AC whole-cost experiment measured +24.1615% and remains
+HOLD. Faster instrumented helpers do not clear it; candidate timing produced no
+samples because AC was absent. Accuracy work can continue on battery while
+fair speed comparisons wait. Consumer stays disabled, no new room approvals
+or app gains. Use the TOP of the next-thread handoff for active receipts and
+continuation; all six full-goal gates remain open.
+
+### Earlier that day: real scanner binding
+
 Newest: original platform-veto capture and FINAL source-validated recovery are
 now wired into the actual scanner with `_SOURCE_DEFERRED_PLATFORMS_ENABLED=False`.
 The context/material/original teacher tuple is shared, never taught from outputs.

@@ -43,6 +43,14 @@ def registered_rectangle_models(image, room, detections, *, source_grid,
         return proof
     library = context.glyph_library(image, room, spikes)
     field = context.contours()
+    # The ordinary source stages keep their existing cache policy. This new
+    # factory has overlapping phase samples; reuse exact FEATURES only here.
+    with library.scoped_pixel_cache(65536):
+        return _registered_cohorts(library, field, room, source_frame, locators, proof)
+
+
+def _registered_cohorts(library, field, room, source_frame, locators, proof):
+    """Existing cohort arithmetic/ordering, isolated from temporary cache policy."""
 
     def faces_at(x, y):
         nominal = field.rectangle(x, y, 32)

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from collections import OrderedDict
+from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import asdict
 import hashlib
@@ -298,6 +299,26 @@ class SourceGlyphLibrary:
                                     signature=tuple(v / max(1e-12, length) for v in prototype),
                                     original_source_witnesses=[self.anchors[i]["key"] for i in group],
                                     independent_regions=len(regions), all_source_pairs_mutually_correlated=True))
+
+    @contextmanager
+    def scoped_pixel_cache(self, limit):
+        """Bound exact pixel reuse to one caller; leave the old default intact.
+
+        Only this source library is affected. Nested scopes and failed producers
+        restore the caller's original cache object, limits and telemetry. No
+        signatures, witnesses or recognition answers are added by this cache.
+        """
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 0:
+            raise ValueError('Pixel cache limit must be a nonnegative integer')
+        previous = (self._pixel_cache_limit, self._pixel_results, self.pixel_cache_hits,
+                    self.pixel_cache_misses, self.pixel_cache_peak)
+        self._pixel_cache_limit, self._pixel_results = limit, OrderedDict()
+        self.pixel_cache_hits = self.pixel_cache_misses = self.pixel_cache_peak = 0
+        try:
+            yield self
+        finally:
+            (self._pixel_cache_limit, self._pixel_results, self.pixel_cache_hits,
+             self.pixel_cache_misses, self.pixel_cache_peak) = previous
 
     def pixel(self, x, y):
         if not self._pixel_cache_limit:

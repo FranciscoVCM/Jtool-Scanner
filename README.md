@@ -10,6 +10,12 @@ review corpus. Difficult rooms still need corrections; the project does not
 claim universal or 100% accuracy. Experimental source geometry is opt-in and
 individual research APIs may remain disabled pending accuracy and speed checks.
 
+The deferred-platform recovery consumer currently remains disabled: its first
+controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
+has passed affected tests/source-proof checks, but helper timings are not a
+whole-scan speed pass. Accuracy tests can run on battery; comparable performance
+qualification is deferred until quiet AC power is available.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and

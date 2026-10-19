@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Current checkpoint (2026-10-19): feature reuse, speed gate not passed
+
+The actual default-OFF consumer's first controlled quiet-AC cost check found
++24.1615% median whole-scan overhead on C19. That is HOLD; it was not accepted
+or hidden by correct output. Profiling led to exact bounded pixel-feature reuse
+only during the new model factory, plus shared identical RGB-distance arithmetic.
+No global cache enable, source labels, teachers, gates or classifier change.
+
+238 affected tests pass. Entire old cohort-core/guards and old glyph API AST,
+three-room model/two-room recovery proofs remain exact; other runtime bytes
+unchanged. FIVE actual whole-output checks pass: C19 OFF/ON, FTFA-1/dense9/
+sparseHalls4 ON; complete expected artifacts/metadata equal, FTFA exact summary
+unchanged. Two verified V1 wholes reused/three V2 scans fresh. The preserved V1
+FTFA reference-metadata failure was fixed in the test driver, not the detector.
+No new visual QA or whole-room approval. Auditv40:41 qualified default outputs
+(one fresh OFF/40 explicit semantic carries),30 pending/ZERO approvals;53 enabled
+recoveries/five false-block corrections unchanged. Helper profile improvements
+are NOT a controlled whole speed pass. Candidate timing launched no samples
+because AC was absent; user cannot connect now. Accuracy continues on battery.
+
+Keep consumer FALSE and old cost HOLD. Enabled original41/601/139/16, new
+compatible reserve success, cross-family positive corrections and all six goal
+gates remain open. Four private recoveries are not new app gains; current rooms
+still contain major errors. Do not substitute more profiling for real transfer.
+
 ## Current checkpoint (2026-10-19): original-veto scanner binding, disabled
 
 Automatic source models and final deferred recovery are now wired into the REAL

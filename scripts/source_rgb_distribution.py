@@ -141,8 +141,13 @@ class SourceRGBDistribution:
 
     def _rgb_distances(self, rgb):
         if rgb not in self._distances:
-            self._distances[rgb] = tuple(tuple(min(_distance2(rgb, color)
-                for color in row.palette) for row in group)
+            if not hasattr(self, '_palette_colors'):
+                self._palette_colors = tuple(dict.fromkeys(
+                    color for group in (self.parents, self.background)
+                    for row in group for color in row.palette))
+            distances = {color: _distance2(rgb, color) for color in self._palette_colors}
+            self._distances[rgb] = tuple(tuple(min(distances[color] for color in row.palette)
+                for row in group)
                 for group in (self.parents, self.background))
         return self._distances[rgb]
 
