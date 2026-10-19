@@ -1,6 +1,8 @@
 """Source-only automatic cohort discovery, original identities and explicit grid."""
 from types import SimpleNamespace
 import unittest
+from unittest import mock
+from PIL import Image, ImageDraw
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from scripts.source_sampling import SourceFrame
@@ -108,6 +110,32 @@ class RegisteredRectangleTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual([vars(d) for d in original], snapshot)
         self.assertEqual(context.statistics()['glyph_builds'], 1)
+
+    def test_uncorrelated_three_sided_source_strip_skips_phase_contours(self):
+        frame = scene()
+        canvas = Image.frombytes('RGB', (800, 608), frame.original_snapshot().data)
+        # A plausible three-sided source region, but no matching interior
+        # artwork. It is not an original closed seed or another tile answer.
+        ImageDraw.Draw(canvas).rectangle((512, 320, 543, 383), fill=(40, 50, 65))
+        image = RGBImage(800, 608, canvas.tobytes())
+        frame = SourceFrame(image, Box(0, 0, 800, 608))
+        original = detections() + [SimpleNamespace(type_id=1, x=512, y=320)]
+        context = SourceEvidenceContext(image, frame.room, GLYPHS)
+        field = context.contours()
+        rectangles, original_rectangle = [], field.rectangle
+
+        def observed(x, y, size=32):
+            rectangles.append((x, y))
+            return original_rectangle(x, y, size)
+
+        with mock.patch.object(field, 'rectangle', side_effect=observed):
+            proof = registered_rectangle_models(image, frame.room, original, source_grid=(25, 19),
+                source_frame=frame, source_context=context)
+        self.assertTrue(proof['models'])
+        # Nominal8px-grid work still occurs; this1px phase can be rejected
+        # by its original RGB before geometry. No recognition gate is waived.
+        self.assertIn((512, 320), rectangles)
+        self.assertNotIn((511, 320), rectangles)
 
 
 if __name__ == '__main__':

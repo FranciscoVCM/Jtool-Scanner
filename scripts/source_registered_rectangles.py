@@ -70,9 +70,9 @@ def registered_rectangle_models(image, room, detections, *, source_grid,
             nominal_teacher=_qualified(nominal) >= 3,
             nominal_strong=_qualified(nominal) == 4 and coherent,
             strong=count == 4 and coherent))
-    variants_cache, scores, models, seen, cohorts = {}, {}, [], set(), []
+    variants_cache, geometry_cache, scores, models, seen, cohorts = {}, {}, {}, [], set(), []
 
-    def variants(row):
+    def variants(row, group=()):
         point = row['point']
         if point not in variants_cache:
             values = []
@@ -82,21 +82,30 @@ def registered_rectangle_models(image, room, detections, *, source_grid,
                     px, py = x + dx, y + dy
                     if not source_frame.rectangle_available(px, py, 32, 32, margin=4):
                         continue
-                    nominal, faces, inset = faces_at(px, py)
-                    count = _qualified(faces)
-                    if count < 3:
-                        continue
                     values.append(dict(point=point, phase=(dx, dy), registered=(px, py), known=True,
-                        faces=[asdict(f) for f in faces], joint_inset=inset,
-                        coherent_closed=count == 4 and _coherent_exterior(library, px, py),
-                        nominal_teacher=_qualified(nominal) >= 3,
                         physical=(floor(room.x + px * room.width / 800),
                                   floor(room.y + py * room.height / 608),
                                   ceil(room.x + (px + 32) * room.width / 800),
                                   ceil(room.y + (py + 32) * room.height / 608)),
                         signature=library.signature(3, px, py)))
             variants_cache[point] = values
-        return variants_cache[point]
+        for candidate in variants_cache[point]:
+            # Independent conjunction gates commute. Closed seeds have no
+            # group and still materialize every known phase; growing groups
+            # need not read contours for an already-incompatible RGB body.
+            if group and (not all(_disjoint(candidate, other) for other in group)
+                    or min(correlation(candidate, other) for other in group) < .9):
+                continue
+            key = point, candidate['phase']
+            if key not in geometry_cache:
+                px, py = candidate['registered']
+                nominal, faces, inset = faces_at(px, py)
+                count = _qualified(faces)
+                geometry_cache[key] = (dict(candidate, faces=[asdict(f) for f in faces],
+                    joint_inset=inset, coherent_closed=count == 4 and _coherent_exterior(library, px, py),
+                    nominal_teacher=_qualified(nominal) >= 3) if count >= 3 else None)
+            if geometry_cache[key] is not None:
+                yield geometry_cache[key]
 
     def correlation(first, second):
         a, b = (first['point'], first['phase']), (second['point'], second['phase'])
@@ -122,7 +131,7 @@ def registered_rectangle_models(image, room, detections, *, source_grid,
                 if any(row['point'] == v['point'] for v in group):
                     continue
                 best, best_score = None, -1
-                for variant in variants(row):
+                for variant in variants(row, group):
                     if label == 'nominal' and not variant['nominal_teacher']:
                         continue
                     if not all(_disjoint(variant, other) for other in group):

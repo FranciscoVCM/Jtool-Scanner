@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-18. Continue in the existing repository at
+Updated 2026-10-19. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,30 +13,71 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Newest: automatic source cohorts and original veto ledger, still UNBOUND
+### Current checkpoint: automatic trials finished; cheaper models still UNBOUND
 
-`source_registered_rectangles.py` and `source_deferred_platforms.py` are now
-implemented with122unique affected tests PASS27.844s (19new). Original source
-cohorts/background roles are discovered automatically, no cached parent positions
-or query answers. ENTIRE C19 model/cohort proofs and all eligible query proofs
-match the qualified prototype; Golden2 remains zero models. SourceContext reuse,
-strict source identity, explicit25x19/coverage and immutable original vetoes remain.
-The pure FINAL consumer protects real markers and existing coverage, changes no
-earlier phase decisions, never restores raw spikes or teaches from additions.
+No work was lost at the interruption. ALL scan/test/profile/qualification jobs
+are TERMINAL. Use actual Git and `lazy-rgb-publication-v1.json` for publication
+state, not an older PID/commit or the historical entries below. All receipts
+named here are in ignored `.artifacts/general-recognition-20261014/`.
 
-All jobs TERMINAL at this pre-whole checkpoint. See ignored
-`automatic-rgb-model-parity-v1.json`, `automatic-rgb-tests-v1.json`, full
-`AUTOMATIC_RGB_COHORT_FREEZE_v1.md`/`DEFERRED_PLATFORM_CONSUMER_FREEZE_v1.md`
-and top `DEFERRED_VETO_ACTIVE_v1.md`. NEXT frozen actual automatic C19 consumer
-whole + Halls7 NO-TUNING reserve. Both must prove complete ordinary pre-addition
-artifact/metadata parity; C19 must reproduce only the four reviewed originals.
-Mine source models from ACTUAL original pre-source snapshot/material/context,
-not final proposed objects. No automatic whole/reserve outcome claimed yet.
+- `automatic-rgb-wholes-v1.json`: actual automatic original-source factories,
+  with ENTIRE ordinary pre-addition artifact/metadata parity. CN3-19 reproduces
+  ONLY the same four independently reviewed PRIVATE real block recoveries.
+  Whole/all-delta source QA carries through entire expected-output equality;
+  it was not repeated. Fixed left positives +1326, zero loss/new negative pixels;
+  these are occupancy pixels, not goal typed-error counts. The room remains MAJOR.
+- Halls7 reserved NO-TUNING: zero coherent closed seedpoints, registered/RGB
+  models and recoveries. ENTIRE final outputs equal baseline. FAILED reserve,
+  not a transfer success. Golden2 still has zero registered models. No thresholds,
+  source labels or scopes were adjusted to turn those failures into successes.
+- `lazy-rgb-tests-v1.json`:123 UNIQUE affected tests PASS25.886s, not the full
+  suite. `lazy-rgb-qualification-v1.json`: ENTIRE C19/Golden2/Halls7 source model
+  proofs and C19/Halls7 recovery proofs/ordered metadata remain exact after an
+  evaluation-order optimization. Reject incompatible original RGB/disjoint
+  phases before costly contours; seed scope, gates and tie order are unchanged.
+  Factory contour calls3352 ->1673, edges26236 ->13280. Instrumented helper time
+  35.534 ->27.921s is NOT controlled whole-scan timing or an app speed claim.
+- Auditv38 carries auditv37 through byte-identical app/runtime, not new scans
+  or visual review:41 qualified app outputs/30 pending/ZERO room approvals.
+  Enabled app gains remain53 source recoveries/five retained false-block fixes;
+  four PRIVATE blocks must NOT be counted as57 enabled recoveries.
 
-Existing app21dependency runtime and auditv36 remain unchanged41/30/ZERO;
-four older PRIVATE blocks are NOT new app gains. Do not activate before actual
-transfer/protected controls/cost. Add every true dependency if later bound and
-keep source-image identity/nontranslated original25x19 caller guards. Full goal OPEN.
+The three new helpers `source_registered_rectangles.py`,
+`source_rgb_distribution.py` and `source_deferred_platforms.py` remain UNBOUND.
+The app's21-dependency runtime is unchanged from activated capture-base recovery.
+Automatic model discovery and private whole trials are DONE; real scanner binding,
+protected consumer controls, controlled whole cost and successful transfer are NOT.
+Original b420384 source/test bytes were preserved as SHA-verified private snapshots
+before optimization. Historical receipts remain immutable; resolve their old
+hashes to those snapshots, never silently treat them as tests of newer bytes.
+
+### Next bounded batch (do not restart the finished work)
+
+1. Read full `GOAL_PLAN.md`, then current `DEFERRED_VETO_ACTIVE_v1.md`, auditv38
+   and the qualification receipts above. Verify main/status/live origin/app.
+   Do not reopen the image archive or rescan the original baseline.
+2. Freeze an actual default-OFF scanner integration: collect the immutable veto
+   ledger at the ORIGINAL first anchor pass; reuse actual original source/context/
+   material; query only at FINAL fixed phase after marker decisions. Keep source
+   object identity, nontranslated25x19, compact/inner/crop bypass and real markers.
+   No early reorder, blind resurrection, emitted teachers or cached answer inputs.
+3. Prove ordinary default-OFF behavior/metadata parity and actual opt-in whole
+   results, then ALL original41 groups/601 miniblocks/139 terrain footprints/16
+   exact controls and controlled quiet-AC whole cost (>=2 samples/mode/source;
+   persistent>5% slowdown is a hold). Register every true transitive dependency
+   in runtime fingerprints. Do not enable merely because the four private blocks
+   look correct; source QA must cover every changed object and the whole map.
+4. Pursue a DISTINCT source-identity/compound cause for cross-family transfer.
+   Golden2's closed-seed failure needs diagnosis, not threshold relaxation;
+   Halls7 must not become a tuning target after its reserved failure. Use the
+   predeclared later reserve policy, with compatibility/freeze before evaluation.
+
+General project purpose, architecture, installation, Source/JTool/Blend workflow,
+fixture/exact commands and preservation policy are already tracked in `HANDOFF.md`
+and `README.md`. JMaps are post-scan evaluation, NEVER detector answers. Keep
+all private images/maps/reviews/indexes/projects intact and ignored; stage only
+explicit public paths. All six full-goal gates remain OPEN. Perfect71/universal
+recognition is not established; preserve major/uncertain findings honestly.
 
 ### Latest continuation: source RGB variation helper; four PRIVATE real blocks
 

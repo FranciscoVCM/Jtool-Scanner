@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-19 — Interrupted work recovered; automatic outcomes and lazy contours
+
+Actual automatic original-source trials are complete. CN3-19 reproduces ONLY
+the four previously source-reviewed PRIVATE real blocks, with entire ordinary
+pre-addition outputs/metadata and entire expected final outputs equal. Whole/
+all-delta source QA is equality-carried, not newly repeated. Fixed positive
+occupancy +1326/zero loss/new negatives; this is not the typed-error denominator.
+CN3-19 remains MAJOR. Halls7 NO-TUNING yields zero coherent closed seedpoints,
+models or recoveries and entire unchanged final outputs: FAILED reserve. Golden2
+still has zero models; no thresholds or label scopes were relaxed.
+
+Profiling identified phase contours built before independent RGB/disjointness
+rejection. The registered-model helper now checks those conjunction gates first
+when extending a source cohort; original closed-seed enumeration, phase/tie order,
+teacher requirements and all confidence gates remain unchanged. Expensive contour
+calls3352 ->1673, edges26236 ->13280. Instrumented factory35.534 ->27.921s is
+helper evidence only, NOT controlled whole-scan latency or an app speedup.
+
+123 UNIQUE affected tests PASS25.886s, including the lazy-rejection regression.
+ENTIRE C19/Golden2/Halls7 model/cohort proofs remain exact; C19/Halls7 complete
+recovery proofs and all old ordered metadata remain exact. Original module/test
+snapshots preserve historical evidence hashes; old receipts were not rewritten.
+All jobs are terminal. No source images, fixtures, JMaps or private corrections changed.
+
+Auditv38 explicitly carries v37's unchanged app evidence:41 qualified/30pending/
+ZERO approvals,53 enabled recoveries/five false-block corrections. No fresh71
+scan/review or new app gains. The three automatic RGB/deferred helpers remain
+UNBOUND; app21dependency bytes are unchanged. Next default-OFF scanner binding,
+protected actual-consumer controls/whole cost, then distinct cross-family work;
+not another proof of the same four private additions. All six goal gates OPEN.
+`NEXT_THREAD_HANDOFF.md` is the concise resume entry; `HANDOFF.md`/`README.md`
+already document purpose, architecture, install/testing and preservation policy.
+
 ## 2026-10-18 — Automatic original cohorts and deferred ledger implemented
 
 New UNBOUND `source_registered_rectangles.py` mines original source cohorts

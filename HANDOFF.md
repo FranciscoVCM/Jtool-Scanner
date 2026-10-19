@@ -4,7 +4,28 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current development direction — 2026-10-18
+## Current checkpoint — 2026-10-19
+
+The general project overview/goals below are already tracked. Resume interrupted
+work from the TOP of `NEXT_THREAD_HANDOFF.md`; its newest checkpoint supersedes
+historical test totals, PIDs, pending tasks and Git snapshots elsewhere.
+
+Automatic original-source RGB/cohort discovery and immutable deferred platform
+veto helpers now exist, but remain UNBOUND to the scanner/app. Actual private
+trials reproduce four reviewed real CN3-19 blocks; the room still has major
+errors. Halls7 no-tuning reserve produces zero models/recoveries, not a transfer
+success. An evaluation-order optimization halves expensive model contour calls
+without changing complete three-room model proofs or two-room recovery metadata.
+123 affected tests pass; helper profiling is not whole-scan performance proof.
+
+Auditv38 carries byte-identical app evidence from v37:41 qualified outputs,
+30 pending, ZERO whole-room approvals. Enabled gains remain53 source recoveries
+and five retained false-block corrections; four PRIVATE blocks are not app gains.
+Actual scanner binding, protected consumer controls, controlled whole latency
+and successful cross-family reserve transfer remain open. No fresh71-room scan
+or visual review is implied. Do not claim universal recognition or completion.
+
+## Development direction — 2026-10-18
 
 This document is the general project overview. For an interrupted run, start
 with `NEXT_THREAD_HANDOFF.md`, then `DEVELOPMENT_PROGRESS.md` and

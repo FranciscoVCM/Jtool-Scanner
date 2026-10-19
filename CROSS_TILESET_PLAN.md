@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Current checkpoint (2026-10-19): automatic outcomes, unchanged app
+
+Automatic original-source discovery reproduces four PRIVATE real CN3-19 blocks;
+entire ordinary and expected final artifacts/metadata match. Halls7 NO-TUNING
+has zero coherent closed seedpoints/models/novelty, NOT reserve success. Golden2
+also has no registered models. Do not retune reserved cases or call the private
+recoveries deployed. Other major layout/compound/false-spike errors remain.
+
+Source-cohort extension now lazily builds contour phases only after independent
+RGB/disjoint gates; no seed/gate/tie-order change.123 affected tests pass and
+ENTIRE three-room model/two-room recovery proofs stay exact. Factory contour
+calls3352 ->1673/edges26236 ->13280; helper profiling is not whole timing.
+All new RGB/registered/deferred helpers remain UNBOUND, app21deps unchanged.
+Auditv38 equality-carries v37:41qualified/30pending/ZERO approvals;53 enabled
+recoveries/five retained false-block fixes. No new scans/visual review implied.
+
+Next separately freeze default-OFF original-veto/final-stage scanner binding,
+all original protections/actual whole controls/cost before activation; then a
+distinct geometry-versus-material cause with pre-frozen compatible transfer.
+Golden2 seed failure needs causal diagnosis, not weaker teachers. Halls7 stays
+a failed reserve, not new development data. Keep original source evidence and
+post-scan JMap evaluation separate. All six full-goal gates remain OPEN.
+
 ## Newest implementation (2026-10-18): automatic source witnesses / deferred vetoes
 
 UNBOUND source_registered_rectangles mines original known geometric frames and

@@ -476,10 +476,11 @@ Ten new portable tests cover changed interior pattern, RGB/polarity/scale,
 background/text/triangle negatives, duplicate/self-teaching and crop boundaries.
 An actual PRIVATE final-stage CN3-19 trial adds only four source-reviewed blocks
 after full ordinary pre-addition artifact/metadata parity, preserving all old
-objects. This is NOT app adoption or universal recognition: automatic source
-cohort discovery and a pure final-veto helper are now implemented, but actual
-automatic whole/transfer tests, app binding, controls and whole cost remain
-pending. Current app behaviour and its 21 runtime dependencies are unchanged.
+objects. Automatic original-source discovery and actual private whole trials now
+reproduce those four additions without saved parent/query inputs. Halls7's
+no-tuning trial yields zero models/recoveries, so transfer is NOT established.
+App binding, protected consumer controls and controlled whole cost remain pending.
+Current app behaviour and its 21 runtime dependencies are unchanged.
 
 `scripts/source_registered_rectangles.py` provides `original_rgb_models` to mine
 parents automatically from ORIGINAL detections/material diagnostics, with explicit
@@ -490,7 +491,12 @@ existing calibration, never loads a saved map or parent-coordinate list.
 be revisited only at the final stage after platform/phase decisions. Surviving
 markers still veto; every recovery needs original source evidence and new solid
 coverage. These helpers are read-only/unbound, not app-default changes.
-122 affected tests (19 new) pass; original context/compact/crop/marker guards remain.
+123 affected tests pass; original context/compact/crop/marker guards remain.
+Independent RGB/disjointness gates now precede expensive phase contours during
+cohort extension. Entire C19/Golden2/Halls7 model proofs and C19/Halls7 recovery
+metadata remain exact; contour calls3352 ->1673 in the qualified helper profile.
+This is not a whole-scan speed claim. The conservative audit retains zero room
+approvals; use the newest next-thread handoff for current evidence and open gates.
 
 ### Read-only capture-aware hollow glyph evidence
 
