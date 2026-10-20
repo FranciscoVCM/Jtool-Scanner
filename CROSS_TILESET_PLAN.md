@@ -1,5 +1,36 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): background-decoupled body research; reserve no gain
+
+Concrete Halls3 cause: matching spike body was rejected because unrelated sky
+colours did not match. New UNBOUND SourceDirectionalBodyEvidence retains old
+strict positives and adds original same-direction body texture plus existing
+directed RGB-normal three-face geometry at one common sampling phase. All body/
+paint/three-original-witness/full-coverage/marker/competing-rectangle guards remain.
+No answer teachers, native shifts, original deletion or fixed tileset palette.
+
+60 unique focused tests PASS, NOT full suite. All21,165 primary hypotheses match
+the frozen prototype. All37 current-frame domains/308,617 finite hypotheses yield
+four additional source-stage spikes: Halls3one/CN3-7one/Golden7two. Complete
+source-stage exports and whole/every-delta QA preserve all old metadata/terrain/
+nongeometry. Halls3 upper17 errors2->1; this does not meet the room minimum.
+CanonicalCN3-18/Golden2 get no new keys. These are NOT new app gains/new-rule
+whole scans or room approvals; module is unused by active scanner consumers.
+
+NEW-rule Halls7 reserve is unchanged/unsuccessful: original39/corrected37 errors
+remain. Fresh unchanged-channel whole is ENTIRE equal; old failed mechanisms
+stay failed. All8 missing fulls have contour geometry but no eligible original
+same-direction texture teachers. Do not retune/relax using this result. Next
+distinct causal batch must address sparse/direction availability/compound
+identity with frozen primary structures and another predeclared compatible
+reserve, not substitute more controls for primary progress.
+
+Auditv53:41 default carries/30pending/ZERO approvals. All4 flagsOFF, current
+runtime bytes unchanged; old41/601/139/16 protections carried, not rerun. New cue
+whole cost/integration/current71+16 are unqualified. Existing costv3 does NOT
+qualify this new API. Native C25/27 calibration remains explicitly unresolved.
+All six goal gates/numerical minima retained; no universal recognition claim.
+
 ## Newest continuation (2026-10-20): equivalent necessary eligibility, whole cost qualified
 
 Profiled the actual CN3-25 combined source stage after its +5.053% cost HOLD.

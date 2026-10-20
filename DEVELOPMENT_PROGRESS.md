@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Separate spike-body evidence from unrelated background colours
+
+Traced a genuine missing Halls3 spike through original proposals and source
+arbitration: its body matches the original sprite, but the old channel requires
+the query sky to match the teachers' sky. Raw contrast also selects some internal
+sprite relief instead of its outline. Added an UNBOUND research API using the
+existing directed RGB-normal contour kernel and original same-direction body
+texture. It requires three disjoint original witnesses, unchanged body/paint
+limits, three coherent faces at one sampling phase, and no competing rectangle.
+No query/emitted teachers, background-as-empty assumption, native-coordinate
+change, original deletion, stored room/palette rule or duplicate grayscale scan.
+Every old strict positive proof remains unchanged; the API is not wired into
+scanner consumers or the active runtime registry.
+
+60 unique focused tests PASS20.312s, NOT full suite. Portable tests cover all
+directions, changed backgrounds, polarity, dim and isoluminant RGB, fractional
+scale, marker/crop/mini impostors, common-phase coherence and proof isolation.
+Public API matches its frozen prototype on all21,165 primary hypotheses. Across
+37 current-frame domains/308,617 finite hypotheses, there are four potential
+new keys: Halls3one, CN3-7one and Golden7two. Actual source-stage checks, artifact
+exports and whole/every-delta source QA qualify those four visible spikes with
+zero removals or retained-key metadata changes. These are NOT new app detections
+or complete new-rule whole scans. Halls3's fixed upper17 errors2->1 is only one
+correction; canonical CN3-18 and Golden2 have no additional keys from this rule.
+Post-scan CN3-7 supplied-JMap comparison corroborates its recovered spike:
+259->260/299 exact, misses8->7, extras43/shifts31/wrong1 unchanged. The reference
+is evaluation only; the room still has substantial errors and is not approved.
+
+The predeclared NEW-mechanism Halls7 reserve is unsuccessful, not retuned. One
+fresh unchanged-channel whole reproduces ENTIRE current output/artifacts and
+captures a genuine current incoming tuple. The new API's actual source-stage
+replay is unchanged: original39/source-corrected37 fixed errors remain. All eight
+missing full spikes pass contour geometry but lack eligible original directional
+texture teachers. Earlier failed reserve mechanisms stay failed. This identifies
+a sparse/direction-availability limitation, not a reason to drop corroboration.
+
+Auditv53 preserves71 rows/41 default carries/30pending/ZERO approvals and separates
+research source-stage results from unchanged app behavior. Original41/601/139/16
+protections retain unchanged active bytes, NOT newly executed control scans.
+All4 flags remainOFF; new cue has no whole-cost qualification. Old costv3 applies
+only to the older channel. Native C25/27 anchor diagnostic remains deferred:
+internal texture peaks/two nearby anchors cannot prove global native mapping.
+Next: a separately frozen causal investigation of missing-direction/sparse
+witnesses and filled compound ownership in the primary rooms, with an untuned
+compatible reserve, rather than loosening this failed reserve into a pass.
+The six-gate goal and final stable71+16 remain incomplete.
+
 ## 2026-10-20 — Skip impossible directional recovery without changing detections
 
 Investigated the combined experimental path's +5.053% whole-cost HOLD before

@@ -6,6 +6,21 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Latest research separates original spike-body identity from unrelated background
+colours: an UNBOUND API combines original directional RGB texture with coherent
+directed contour geometry, preserving the old strict positive proofs.60 focused
+tests PASS (NOT full suite),21,165 primary hypotheses reproduce the frozen rule,
+and37 domains/308,617 finite hypotheses yield four source-reviewed source-stage
+spikes in Halls3/CN3-7/Golden7 with no old-object/metadata losses. These are NOT
+app gains or complete new-rule scans. Halls3 upper17 errors2->1; Halls7 NEW-rule
+reserve unchanged/unsuccessful, original39/corrected37 errors remain. Sparse or
+missing original direction witnesses are unresolved; no thresholds were relaxed.
+Auditv53 keeps41 default carries/30pending/ZERO approvals. All4 flagsOFF, unused
+API not in the active runtime registry; new whole-cost/integration/final71+16
+remain pending. Older costv3 does not qualify this new API. Original protections
+carry through unchanged active runtime, NOT newly rerun tests/controls. Read TOP
+NEXT_THREAD_HANDOFF for exact evidence and the next distinct causal batch.
+
 Latest refinement is efficiency-only: cached original-direction compatibility
 eligibility skips candidates that cannot meet the existing positive-channel
 requirements, without changing accepted objects.288 affected tests PASS (NOT full

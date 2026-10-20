@@ -13,6 +13,67 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: background-decoupled body API UNBOUND; Halls7 no gain
+
+Parent ebabbffd56964ee6d36ca9908adea3b06700b2f4; verify actual HEAD/liveorigin and
+directional-body-publication-v1.json after publication. Two new public files:
+scripts/source_directional_body.py and tests/test_source_directional_body.py.
+They are explicit research API/tests, NOT bound to scanner consumers. Do NOT add
+an unused module to runtime_sources merely to hide the preserved v1 preflight
+identity error; explicit API SHA is bound separately in every new receipt.
+
+Halls3's matching cyan body failed because teacher sky did not match query sky;
+raw contrast also preferred internal relief. New positive-only conjunction:
+old strict proofs preserved ENTIRE,3 disjoint original SAME-direction texture
+witnesses under unchanged>=.9/body/paint limits, full source32+margin4/marker
+guards, three existing RGB-normal faces>=9 at ONE common phase, no raw/directed
+closed rectangle competitor. No new teachers, unknown-as-empty, native shift,
+original veto, fixed room/palette or duplicate scan. All4 app flags remainOFF.
+
+Read private evidence root .artifacts/general-recognition-20261014:
+directional-body-tests-v2.json:60 unique focused tests PASS20.312s, NOT full suite.
+directional-body-public-domains-v2.json:all21,165 primary hypotheses reproduce
+frozen prototype. directional-body-transfer-domains-v1.json:37 current-frame
+domains/308,617 finite hypotheses. Actual source-stage replays and whole/every-
+delta source QA qualify4 new visible spikes:Halls3LEFT16064,CN3_7UP512176,
+Golden7RIGHT448432/DOWN176224. Zero removals/retained metadata changes; no new
+app detections or full new-rule scans. Halls3 upper17 errors2->1; not room pass.
+CanonicalCN3-18/Golden2 no new keys. Source-native mapping remains conditional.
+Receipts directional-body-Halls3-dispatch-v1.json, transfer-dispatch-v1.json,
+source-QA-v1.json; complete source/artifact/API digests, no archive resweep.
+Post-scan directional-body-CN3_7-reference-score-v1.json: supplied-map exact
+259->260/299,misses8->7,extras43/shifts31/wrong1 unchanged. No reference teachers
+or whole-room approval; reference confirms only this source-stage recovery.
+
+directional-body-Halls7-reserve-v1.json: NEW-rule predeclared untuned reserve
+UNSUCCESSFUL, unchanged original39/source-corrected37 errors. Fresh unchanged-
+channel whole preserves ENTIRE current metadata/project/JMap/JTool/Blend and
+saves fresh ORIGINAL incoming tuple (old snapshot stale; do not reuse as current).
+New-rule source stage unchanged/all3 earlier contributions retained. All8 missing
+fulls pass directed geometry but original cohorts have no same-direction teachers
+for their missing directions: failure-cause-v1.json. No retuning/relabelling old
+Halls7/Golden5 mechanisms. Do not call successful process execution reserve success.
+
+Native-anchor diagnostic native-frame-anchor-observation-v1.json DEFERRED:
+internal texture peaks/two nearby confirmed LEFT anchors cannot certify global
+physical/native mapping. Preserve C25/27 uncertainty/right-pillar arithmetic.
+Old signed-face and cohort-apex diagnostics remain failed/incomplete alternatives,
+not36+ recoveries. Read active note for terminal worker state, not historical LIVE.
+Auditv53:71 rows/41 default carries/30pending/ZERO approvals,4 UNBOUND source-stage
+poses and one ENTIRE-equal unchanged-channel Halls7 whole. Original41/601/139/16
+gains preserved through unchanged active bytes, NOT rerun. All6 goal gates remain.
+
+NEXT bounded causal batch: investigate missing-direction/sparse witnesses and
+filled compound ownership using frozen canonicalC18/Halls3/Golden2 positives AND
+negatives, not more work on already-solved controls or weakening directional
+corroboration. Predeclare a compatible NEW-mechanism reserve from original later
+pool before queries (historically exposed, not unseen; prior failures preserved).
+Keep real partial occlusions/isoluminant RGB/text negatives/old original teachers.
+New cue actual whole/integration/controlledAC cost are NOT qualified; older
+frame-texture costv3 applies to OLD channel only. No active producers may overlap
+runtime edits/HEAD. Final stable71+16 and shipped general positive/conflict gains
+remain incomplete; do not mark goal done or quietly reduce its numeric criteria.
+
 ### Current continuation: necessary eligibility equivalent; controlled costv3 PASS
 
 Parent6fb848ce716ea26418322c6cd2181a4abab216f0;verify actual HEAD/liveorigin and
