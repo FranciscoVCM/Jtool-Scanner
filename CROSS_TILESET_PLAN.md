@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): equivalent necessary eligibility, whole cost qualified
+
+Profiled the actual CN3-25 combined source stage after its +5.053% cost HOLD.
+The interior path spent5.978s instrumented across7,725 queries despite no original
+same-direction cohort containing three pairwise-compatible/disjoint RGB bodies.
+Added a cached NECESSARY graph-triangle check under the existing>=.9 threshold,
+not a new classifier or greedy-model rejection. All final checks/teachers remain.
+
+288 unique affected tests PASS, NOT full suite. All77 decisions/14 entire positive
+proofs across37 fixed domains unchanged. Actual completeC25/Golden7 opt-in scans
+ENTIRE equal including metadata/project/map/JTool/Blend. Legacy False AST parity;
+other pipelines unchanged. This improves efficiency only, NOT accuracy or coverage.
+Serial quietAC combined costv3 TERMINAL/PASS all12 full-equality samples:
+C25 median104.914->101.594s (-3.165%),G7 102.841->103.774s (+0.907%),
+Halls4 60.931->61.028s (+0.159%). All below5%;old unoptimized and separate
+deferred cost receipts preserved, no deferred waiver. All4 flagsOFF, goal gates open.
+Native calibration, a successful compatible reserve, broader positive/conflict
+gains and final stable71+16 remain work; do not rebaseline or relabel rooms.
+Auditv52:41 default carries/30pending/ZERO approvals,two actual ENTIRE-equal
+research wholes, no new default-app accuracy gain or fresh visual-review claim.
+
 ## Newest continuation (2026-10-20): positive directional texture, qualified research outputs
 
 An optional necessary-AND source texture check now restricts the unshipped

@@ -55,6 +55,80 @@ def query(values,required=True):
 
 
 class SourceDirectionalTextureTests(TestCase):
+    def test_necessary_graph_requires_three_known_disjoint_same_cohort_witnesses(self):
+        from unittest.mock import patch
+        kind=3
+        a,b,c,d=((kind,x,64) for x in (64,192,320,448))
+        field=object.__new__(SourceInteriorGlyphEvidence)
+        for cohorts,vectors,expected in (
+                ([(a,b,c)],{a:(1.,0.),b:(1.,0.),c:(1.,0.)},True),
+                ([(a,b,c)],{a:(1.,0.),b:(1.,0.),c:None},False),
+                ([(a,b,c)],{a:(1.,0.),b:(0.,1.),c:(1.,0.)},False),
+                ([(a,b),(c,d)],{a:(1.,0.),b:(1.,0.),c:(1.,0.),d:(1.,0.)},False),
+                ([(a,(3,72,64),c)],{a:(1.,0.),(3,72,64):(1.,0.),c:(1.,0.)},False),
+                ([(a,b,(4,320,64))],{a:(1.,0.),b:(1.,0.),(4,320,64):(1.,0.)},False)):
+            with self.subTest(cohorts=cohorts,vectors=vectors):
+                field._cohorts=cohorts;field._texture_vectors={};field._texture_eligibility={}
+                with patch.object(field,'_texture_vector',side_effect=vectors.get) as sample:
+                    self.assertIs(field._has_directional_texture(kind),expected)
+                    count=sample.call_count
+                    self.assertIs(field._has_directional_texture(kind),expected)
+                    self.assertEqual(sample.call_count,count)
+
+    def test_graph_search_does_not_substitute_greedy_models_for_necessary_triangles(self):
+        from unittest.mock import patch
+        from math import sqrt
+        # Three mutually correlated originals plus earlier distractors that
+        # would obstruct greedy models. A real triangle must remain eligible.
+        a,b,c=((3,x,160) for x in (320,448,576))
+        d,e,f=((3,x,64) for x in (64,96,128))
+        vertices=[d,e,f,a,b,c]
+        vectors={a:(1.,0.,0.),b:(.92,sqrt(1-.92**2),0.),
+                 c:(.96,.08,sqrt(1-.96**2-.08**2)),d:(.92,-sqrt(1-.92**2),0.),
+                 e:(sqrt(.5),sqrt(.5),0.),f:(.85,0.,sqrt(1-.85**2))}
+        def compatible(first,second):
+            return (abs(first[1]-second[1])>=32 or abs(first[2]-second[2])>=32) and sum(
+                x*y for x,y in zip(vectors[first],vectors[second]))>=.9
+        greedy=[]
+        for seed in sorted(vertices):
+            clique=[seed]
+            for teacher in sorted(vertices):
+                if teacher!=seed and all(compatible(teacher,other) for other in clique):
+                    clique.append(teacher)
+            greedy.append(clique)
+        self.assertEqual(max(map(len,greedy)),2)
+        field=object.__new__(SourceInteriorGlyphEvidence)
+        field._cohorts=[tuple(vertices)];field._texture_vectors={};field._texture_eligibility={}
+        with patch.object(field,'_texture_vector',side_effect=vectors.get):
+            self.assertTrue(field._has_directional_texture(3))
+
+    def test_impossible_texture_skips_query_body_without_claiming_object_absence(self):
+        from unittest.mock import patch
+        values=textured_scene();field=query(values)
+        teachers=sorted(field._texture_originals)
+        vectors={key:tuple(float(i==j) for j in range(len(teachers))) for i,key in enumerate(teachers)}
+        with patch.object(field,'_texture_vector',side_effect=vectors.get), \
+                patch.object(field,'_body',wraps=field._body) as body:
+            proof=field.support(values[4])
+        self.assertFalse(proof['passed']);self.assertTrue(proof['unknown'])
+        body.assert_not_called()
+        self.assertTrue(proof['no_retirement'])
+
+    def test_eligible_queries_retain_entire_positive_proof(self):
+        from unittest.mock import patch
+        for rotation in range(4):
+            values=textured_scene(rotation=rotation)
+            with patch.object(SourceInteriorGlyphEvidence,'_has_directional_texture',return_value=True):
+                before=query(values).support(values[4])
+            self.assertTrue(before['passed'])
+            self.assertEqual(query(values).support(values[4]),before)
+
+    def test_legacy_channel_does_not_compute_directional_eligibility(self):
+        from unittest.mock import patch
+        values=scene();field=query(values,False)
+        with patch.object(field,'_has_directional_texture',side_effect=AssertionError('legacy used new gate')):
+            self.assertTrue(field.support(values[4])['passed'])
+
     def test_isoluminant_palette_uses_rgb_not_a_grayscale_texture_pass(self):
         foreground,background=(150,80,65),(80,120,40)
         self.assertEqual(Image.new('RGB',(1,1),foreground).convert('L').getpixel((0,0)),

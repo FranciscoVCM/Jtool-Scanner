@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Latest refinement is efficiency-only: cached original-direction compatibility
+eligibility skips candidates that cannot meet the existing positive-channel
+requirements, without changing accepted objects.288 affected tests PASS (NOT full
+suite);all77 fixed decisions/14 entire accepted proofs and two completeC25/Golden7
+opt-in outputs remain equal. Legacy False predicates unchanged. Combined serial
+quietAC whole cost passes all12 samples:C25 -3.165%,Golden7 +0.907%,Halls4 +0.159%,
+all with full per-mode output equality. Older unoptimized/deferred receipts remain
+preserved;this does not waive the separate deferred path's cost. Auditv52 still
+has41 default carries/30pending/ZERO approvals. All4
+experimental paths remainOFF;no new default-app accuracy gain or room approvals.
+Read TOP NEXT_THREAD_HANDOFF and DEVELOPMENT_PROGRESS for current terminal state.
+
 Newest research batch adds optional original-direction RGB texture corroboration
 to the disabled interior channel,not a global object veto or stored tileset rule.
 283 affected tests PASS,not full suite;default/legacy API AST parity verified.

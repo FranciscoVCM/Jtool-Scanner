@@ -13,6 +13,50 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: necessary eligibility equivalent; controlled costv3 PASS
+
+Parent6fb848ce716ea26418322c6cd2181a4abab216f0;verify actual HEAD/liveorigin and
+latest publication receipt. Current optimization changes only source_interior
+necessary guard/helper/cache, plus five portable tests. A same-direction ORIGINAL
+cohort must contain three pairwise-disjoint/nonzero RGB vectors with every cosine
+>=.9. No such graph triangle => final model cannot pass, even after query pruning.
+Do NOT use unfiltered greedy-model absence (not monotonic). Final checks unchanged.
+
+Private evidence root:.artifacts/general-recognition-20261014. Read
+DIRECTIONAL_TEXTURE_ELIGIBILITY_FREEZE_v1.md and DEFERRED_VETO_ACTIVE_v1.md.
+texture-eligibility-{tests,domains,scope,wholes}-v1.json TERMINAL/PASS:288affected
+tests191.621s/37domains77same decisions14ENTIRE-positive-proof parity/legacyFalse
+AST scope/two actualC25+G7 ENTIRE metadata/project/map/JTool/Blend equal wholes.
+Other prior protection/source-QA scopes carry through equivalence, NOT rerun.
+directional-texture-cost-attribution-v1.json proves three actual source-stage
+returns preserve outputs;interior7725calls/5.978s instrumented,no finaltexture/
+paint/tip,selectionabout.6s. NOT whole latency. No changes to detections or sources.
+
+Controlled costv3 TERMINAL/PASS:frame-texture-whole-cost-v3.json, all12 serial
+quietAC ABBA wholes, exact262b356 BEFORE vs optimizedcombinedAFTER.
+C25 medians104.914->101.594s (-3.165%),G7 102.841->103.774s (+0.907%),
+H4 60.931->61.028s (+0.159%). Full per-mode outputs equal, no >5% case.
+Parent30456/all children terminal,nothing to restart. Original unoptimizedv2
++5.053381% and separate older deferred+24.1615% receipts preserved, no deferred
+waiver;new causal code,not favorable unchanged rerun. All4flagsOFF. Auditv52
+keeps41default carries/30pending/ZERO approvals,two ENTIRE-equal current research
+wholes/no new visual reviews or accuracy gain. Publication receipt is
+texture-eligibility-publication-v1.json;verify actual HEAD/liveorigin/cleanGit/app
+source parity from it rather than an old parent or live PID in historical logs.
+
+NEXT:cost is no longer the combined-path blocker;do not repeat sealed profiles/
+cost runs or spend another batch only on compatibility reports. Keep full six
+gates. Freeze a bounded independent source-native calibration check for C25/27
+using existing object-frame-registration evidence and viewport/capture geometry,
+not coordinate answers or permissive raw ownership alone. Preserve all offered
+owners and unknowns;decline if no independent proof,do not invent native truth.
+Then address the remaining shared positive/compound geometry cause in canonical
+C18/Halls3/Golden2 with a separately frozen compatible reserve from the original
+pool (old Halls7/Golden5 mechanisms FAILED,not new successes). Consider separate
+direct-frame channel adoption only with full qualified scope/source review;
+cost alone is not activation permission. Native/reserve/complete positive+
+negative gains/final stable71+16 remain open. Do not reopen the archive/rebaseline.
+
 ### Current continuation: directional texture accuracy-qualified, cost HOLD; both paths OFF
 
 Parentf6c59958dd8de14ffe6b81d41d57c2578030df5c;verify actual Git/live origin and

@@ -90,6 +90,7 @@ class SourceInteriorGlyphEvidence:
         self._require_directional_texture = require_directional_texture
         self._texture_originals = frozenset(k for cohort in self._cohorts for k in cohort)
         self._texture_vectors, self._texture_models = {}, {}
+        self._texture_eligibility = {}
 
     def _texture_vector(self, key):
         body = self._body(key)
@@ -98,6 +99,40 @@ class SourceInteriorGlyphEvidence:
         mean = _mean(body)
         values = tuple(v-mean[c] for rgb in body for c, v in enumerate(rgb))
         return _normalized(values) if any(values) else None
+
+    def _has_directional_texture(self, kind):
+        """Cheap necessary condition, not a substitute for per-query proof.
+
+        Every accepted directional model contains three mutually compatible,
+        disjoint originals from ONE cohort. Removing query-overlapping teachers
+        cannot create a triangle in this original compatibility graph. Testing
+        graph triangles, rather than greedy model availability, preserves that
+        implication even when pruning changes the later greedy cliques.
+        """
+        if kind not in self._texture_eligibility:
+            possible = False
+            for cohort in self._cohorts:
+                candidates = [t for t in cohort if t[0] == kind]
+                if len(candidates) < 3:
+                    continue
+                for teacher in candidates:
+                    if teacher not in self._texture_vectors:
+                        self._texture_vectors[teacher] = self._texture_vector(teacher)
+                candidates = [t for t in candidates if self._texture_vectors[t] is not None]
+                neighbors = {t: set() for t in candidates}
+                for index, first in enumerate(candidates):
+                    for second in candidates[index+1:]:
+                        if ((abs(first[1]-second[1]) >= 32 or abs(first[2]-second[2]) >= 32)
+                                and sum(a*b for a, b in zip(self._texture_vectors[first],
+                                                          self._texture_vectors[second])) >= .9):
+                            neighbors[first].add(second)
+                            neighbors[second].add(first)
+                possible = any(neighbors[first] & neighbors[second]
+                               for first in candidates for second in neighbors[first])
+                if possible:
+                    break
+            self._texture_eligibility[kind] = possible
+        return self._texture_eligibility[kind]
 
     def _directional_texture(self, key, model):
         """Additional positive evidence, never an original-object veto.
@@ -257,8 +292,7 @@ class SourceInteriorGlyphEvidence:
             return {**proof, 'abstained': 'unqualified grid/world frame'}
         if not self.frame.rectangle_available(x, y, 32, 32, margin=4):
             return {**proof, 'unknown': True, 'abstained': 'incomplete original source footprint'}
-        if self._require_directional_texture and not any(
-                sum(t[0] == kind for t in cohort) >= 3 for cohort in self._cohorts):
+        if self._require_directional_texture and not self._has_directional_texture(kind):
             return {**proof, 'unknown': True,
                     'abstained': 'no independent original same-direction texture teachers'}
         body = self._body(key)

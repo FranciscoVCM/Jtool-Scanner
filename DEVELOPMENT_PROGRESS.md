@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Skip impossible directional recovery without changing detections
+
+Investigated the combined experimental path's +5.053% whole-cost HOLD before
+changing its behavior. A return-preserving three-mode CN3-25 source-stage profile
+found 7,725 optional interior calls (5.978s instrumented cumulative), none reaching
+the final texture test. Frame selection itself was about0.6s. Profiling is NOT
+ordinary whole-scan latency or an excuse to waive the HOLD.
+
+Added a lazy, per-direction necessary-condition cache: one ORIGINAL material
+cohort must contain a triangle of three mutually compatible, disjoint directional
+RGB bodies under the SAME existing cosine>=.9 threshold. Query exclusions cannot
+create such a triangle. Absence of a greedy model is NOT used, since pruning can
+change greedy results. Eligible candidates still undergo every old per-query
+geometry/paint/tip/texture check. No new teacher, palette/room rule, cutoff,
+original-object veto or accuracy change; all four experimental opt-ins remain OFF.
+
+288 unique affected tests PASS191.621s, NOT full suite, including five additional
+tests. All77 frozen candidate decisions across37 domains and all14 accepted
+complete proofs equal the published implementation. AST review restricts runtime
+changes to the necessary guard/helper/cache; legacy False behavior is unchanged.
+Two actual complete scans, CN3-25 and Golden7, retain ENTIRE ordered metadata,
+warnings, project, JMap, JTool and Blend outputs. Source reviews carry through
+complete equality, not invented new visual reviews. Original41/601/139/16 gains
+and definitions retain the prior equivalence scope, NOT newly executed controls.
+
+New causal-code serial quietAC ABBA cost comparison TERMINAL/PASS, all12 samples
+with complete per-mode equality:CN3-25 median104.914->101.594s (-3.165%),
+Golden7 102.841->103.774s (+0.907%),Halls4 60.931->61.028s (+0.159%). No case
+exceeds5%. This qualifies the optimized combined path's measured cost, not native
+calibration or activation. Original unoptimized+5.053% and separate older
+deferred+24.1615% receipts remain preserved; no waiver of that deferred path.
+Auditv52 keeps71 rows/41 default carries/30pending/ZERO approvals, two new
+ENTIRE-equal research wholes, no new visual reviews or default-app accuracy gain.
+All4 flags stayOFF;reserve/native/final71+16 and remaining goal gates stay open.
+
 ## 2026-10-20 — Original-direction texture corroborates an additional positive channel
 
 Implemented optional source-local RGB texture corroboration for the previously
