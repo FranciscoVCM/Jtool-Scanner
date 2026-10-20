@@ -188,6 +188,66 @@ class SourceFilledPipelineTests(TestCase):
         self.assertEqual(proposed,{extra})
         self.assertEqual(alternatives,[])
 
+    def test_thin_tip_connector_is_not_a_second_full_spike_apex(self):
+        transforms=(lambda c:c,lambda c:tuple(255-v for v in c),
+                    lambda c:(c[2],c[0],c[1]),lambda c:tuple(round(v*.35) for v in c))
+        for transform in transforms:
+            for scale in (1,.75,1.25):
+                frame,original=scene(transform=transform)
+                raster=Image.frombytes('RGB',(800,608),frame.original_snapshot().data)
+                draw=ImageDraw.Draw(raster)
+                pairs=[]
+                for t,x,y in TEACHERS+(TARGET,):
+                    poly=VERTICES[t];tx,ty=x+poly[0][0],y+poly[0][1]
+                    ux=((poly[1][0]+poly[2][0])/2-poly[0][0])/32
+                    uy=((poly[1][1]+poly[2][1])/2-poly[0][1])/32
+                    draw.line((tx,ty,tx-12*ux,ty-12*uy),fill=transform((210,150,70)),width=2)
+                    pairs.append(((t,x,y),(t,x-8*ux,y-8*uy)))
+                if scale!=1:raster=raster.resize((round(800*scale),round(608*scale)),Image.Resampling.BILINEAR)
+                image=RGBImage(raster.width,raster.height,raster.tobytes())
+                frame=SourceFrame(image,Box(0,0,image.width,image.height))
+                evidence=FilledGlyphEvidence(frame,original)
+                for real,fragment in pairs:
+                    with self.subTest(real=real,scale=scale,foreground=transform((210,150,70))):
+                        self.assertTrue(evidence.apex_support(real)['passed'])
+                        self.assertFalse(evidence.apex_support(fragment)['passed'])
+
+    def test_tip_connector_cannot_certify_a_nearby_independent_instance(self):
+        frame,original=scene()
+        def edit(raster):
+            ImageDraw.Draw(raster).line((176,160,176,148),fill=(210,150,70),width=2)
+        evidence=FilledGlyphEvidence(self.with_raster(frame,edit),original)
+        snapshot=deepcopy(original);fragment=(3,160,152)
+        proposed,alternatives=distinguish_filled_instances({fragment},original,evidence)
+        self.assertEqual(proposed,set());self.assertEqual(original,snapshot)
+        self.assertEqual(tuple(alternatives[0]['key']),fragment)
+        self.assertTrue(alternatives[0]['no_original_retirement'])
+
+    def test_close_real_apices_survive_all_directions_and_capture_scales(self):
+        for scale in (.75,1,1.25):
+            for transform in (lambda c:c,lambda c:tuple(255-v for v in c)):
+                frame,original=scene(transform=transform)
+                raster=Image.frombytes('RGB',(800,608),frame.original_snapshot().data)
+                pairs=[]
+                for t,x,y in TEACHERS+(TARGET,):
+                    extra=(t,x+8,y) if t in (3,6) else (t,x,y+8)
+                    poly=[(extra[1]+u,extra[2]+v) for u,v in VERTICES[t]]
+                    for py in range(extra[2],extra[2]+32):
+                        for px in range(extra[1],extra[1]+32):
+                            if _contains(poly,px+.5,py+.5):raster.putpixel((px,py),transform((210,150,70)))
+                    pairs.append(((t,x,y),extra))
+                if scale!=1:raster=raster.resize((round(800*scale),round(608*scale)),Image.Resampling.BILINEAR)
+                image=RGBImage(raster.width,raster.height,raster.tobytes())
+                frame=SourceFrame(image,Box(0,0,image.width,image.height))
+                original.append(SimpleNamespace(type_id=TARGET[0],x=TARGET[1],y=TARGET[2]))
+                evidence=FilledGlyphEvidence(frame,original)
+                for old,extra in pairs:
+                    with self.subTest(old=old,scale=scale,foreground=transform((210,150,70))):
+                        self.assertTrue(evidence.apex_support(old)['passed'])
+                        self.assertTrue(evidence.apex_support(extra)['passed'])
+                        kept,alternatives=distinguish_filled_instances({extra},original,evidence)
+                        self.assertEqual(kept,{extra});self.assertEqual(alternatives,[])
+
     def test_real_repair_is_recorded_not_silently_emitted_as_a_duplicate(self):
         frame,original=scene()
         original[0]=SimpleNamespace(type_id=3,x=160,y=168)

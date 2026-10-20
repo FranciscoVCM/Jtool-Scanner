@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Directed local slopes prevent false independent spike instances
+
+Strengthened the existing filled-instance apex check, not the full-glyph detector:
+two short directed RGB slopes must agree at one original-source phase. A thin
+foreground connector must not certify another full triangle. No room/palette/
+origin lookup, new teacher, original retirement or extra full-image pass.
+
+207 unique affected tests pass (three new methods),NOT full suite. Portable
+connectors/real close pairs cover four directions/palette/polarity/dim/native and
+fractional scales. All44 original contribution domains screened;48/50 old final
+filled contributions retained. ONLY Entrance2 UP24072/DOWN24040 were withheld:
+fresh unpatched whole/whole-and-both-delta source QA confirms two shifted extras,
+retaining actual UP24080/DOWN24048 and all other objects/ordered metadata/exports.
+All original41/601/139/16 protections pass;FTFA926/928,zeroextras/shifts/wrong,
+Flames254 unchanged. Fresh Halls7 whole retains its additional three contributions
+and ENTIRE old output;not a new reserve success. Rooms remain MAJOR/unapproved.
+
+The historical53 recovery claim included those two false duplicates;51 historical
+additions remain,NOT51 newly recertified positives. This is a retrospective audit
+correction,not losing real objects. No new positive recovery in this batch.
+
+QuietAC serial exact-parent/currentABBA8 whole scans preserve complete outputs:
+C19 48.605 ->49.759s(+2.37%);Halls4 59.053 ->58.819s(-0.40%),below5% threshold.
+Old deferred-consumer24.1615% HOLD stays separate. App200/loaded-disk parity verified.
+Auditv49:four actual cases/37 proof carries/30pending/ZERO approvals. All3
+experimental consumersOFF;positive geometry/reserve/final71+16 gates remain open.
+
+Eight-frame observation (2376 original objects) and three source-stage replays
+support investigating registration,not blind8px shifts or automatic frame choice.
+The C27 textured real apex can still abstain;the guard is not a positive pose
+repair. Background/widened-tip/residual shortcuts were not adopted. See TOP
+NEXT_THREAD_HANDOFF for exact evidence,failed checks and next bounded work.
+
 ## 2026-10-20 — Negative hypothesis rejected; capture-coordinate cause localized
 
 Published b9172c496b456bc57cd15657c841ac2fbf566149:reviewed frame qualification,

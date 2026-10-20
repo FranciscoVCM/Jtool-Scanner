@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Latest measured change:directed local RGB slopes strengthen the existing
+filled-instance guard.207 affected tests/original41/601/139/16 protections pass;
+actual Entrance2 loses two shifted extra spikes,keeping its real pair and all
+other metadata. Halls7's three prior contributions/entire output preserved.
+QuietAC paired whole cost:C19+2.37%,Halls4-0.40%.App200/source parity verified.
+Auditv49:four actual cases/37 proof carries/30pending/ZERO approvals. Historical
+53 recovery claim included these two mistakes;51 historical additions remain,
+NOT51 newly recertified true positives. No new positive recovery this batch.
+No automatic frame selection/blanket8px correction;next work is source-backed
+registration and positive geometry. All3 experimental consumers remainOFF.
+
 Published frame checkpoint b9172c496b456bc57cd15657c841ac2fbf566149;204 affected
 tests pass, app source parity verified. Subsequent read-only background-paint
 hypothesis rejects none of77 candidates and does NOT fix C19 fragment errors.

@@ -1,6 +1,30 @@
 # Cross-tileset milestone
 
-## Current continuation (2026-10-20): object-backed registration before pose changes
+## Current continuation (2026-10-20): instance identity qualified; frame choice still open
+
+Current FilledGlyphEvidence instance check adds two short directed RGB slopes at
+one bounded original-source phase. This prevents a thin connector certifying a
+second full spike;it is not a sprite whitelist,full-glyph rewrite or original
+deletion rule.207 affected tests PASS;48 other core contributions plusHalls7three
+retained. Actual Entrance2 removes ONLY two shifted extras;all retained metadata/
+terrain/nongeometry intact. Whole/both-delta source QA and original41/601/139/16
+protections pass. Historical53 positives claim included these two mistakes:
+51 historical additions remain,NOT51 newly recertified correct detections.
+
+QuietAC exact-parent/currentABBA8 whole cost:C19+2.37%,Halls4-0.40%,complete output
+equality. Old deferred+24.1615% HOLD stays separate. App200/source parity verified.
+Auditv49:four actual/37 carries/30pending/ZERO approvals;all3 experimental pathsOFF.
+No positive recovery/reserve success or goal completion implied by this safeguard.
+
+Next positive/frame batch:2376 original objects across eight world cases show
+different physical/world preferences. Three physical replays suggest recoveries,
+but no automatic selector is implemented. C27's old shifted crop can masquerade
+as a tip on a connector;new guard withholds duplicate admission,not a proved
+origin repair. Freeze full structures/registration before changes;preserve useful
+normalization and all prior gains. Other fragment/primary-room causes and all
+six gates remain distinct. Do not adopt failed background/wedge/residual shortcuts.
+
+## Previous continuation (2026-10-20): object-backed registration before pose changes
 
 Original-background-paint support at tips FAILED discrimination:37 domains/ALL77
 previously accepted candidates remain, including both confirmed C19 false crops.

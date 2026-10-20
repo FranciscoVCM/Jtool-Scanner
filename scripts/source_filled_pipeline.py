@@ -188,6 +188,53 @@ class FilledGlyphEvidence:
                 return deepcopy(result)
         return nominal
 
+    def _apex_edge_support(self, key, is_foreground):
+        """Two coherent local slopes, not a point on a foreground connector.
+
+        Keep the full-edge kernel's 9/12 support fraction, measured against
+        DISTINCT original centres in the back half of a quarter-length edge.
+        Its inward/outward RGB order must agree at the SAME apex phase; an
+        unsigned gradient from a nearby horizontal line cannot supply it.
+        A small or clipped observation is unknown, never an absence proof.
+        """
+        t, x, y = key
+        poly = [(x+u, y+v) for u, v in VERTICES[t]]
+        tip = poly[0]
+        rows = []
+        for end in poly[1:]:
+            end = (tip[0]+(end[0]-tip[0])/4, tip[1]+(end[1]-tip[1])/4)
+            tx, ty = end[0]-tip[0], end[1]-tip[1]
+            length = hypot(tx, ty)
+            nx, ny = -ty/length, tx/length
+            cx, cy = sum(a for a, _ in poly)/3, sum(b for _, b in poly)/3
+            inward = 1 if (cx-tip[0])*nx+(cy-tip[1])*ny > 0 else -1
+            centers, supported, known = set(), set(), True
+            for i in range(12):
+                # At least4 native pixels behind the apex, so a one-source-
+                # pixel inward probe stays inside a normal full32 wedge.
+                q = .5+.5*i/11
+                px, py = tip[0]+q*tx, tip[1]+q*ty
+                center = self.frame.original_position(px, py)
+                points = [(px+s*inward*nx*self.frame.pitch[0],
+                           py+s*inward*ny*self.frame.pitch[1]) for s in (1,-1)]
+                positions = [self.frame.original_position(*p) for p in points]
+                if center is None or None in positions or len(set(positions)) != 2:
+                    known = False
+                    continue
+                centers.add(center)
+                inner, outer = [self.frame.original_pixel(*p) for p in points]
+                if is_foreground(inner) and not is_foreground(outer):
+                    supported.add(center)
+            capacity = len(centers)
+            known = known and capacity >= 4
+            required = (3*capacity+3)//4
+            rows.append(dict(support=len(supported), independent_centers=capacity,
+                             required=required, known=known,
+                             passed=known and len(supported) >= required))
+        return dict(passed=all(r['passed'] for r in rows),
+                    unknown=not all(r['known'] for r in rows), slopes=rows,
+                    native_edge_fraction=.25, original_support_fraction=.75)
+
     def apex_support(self, key):
         """Known local RGB around an apex, used only to distinguish instances.
 
@@ -236,7 +283,12 @@ class FilledGlyphEvidence:
                         known = all(rgb is not None for rgb in values)
                         labels = [is_foreground(rgb) if rgb is not None else None for rgb in values]
                         passed = bool(known and labels[0] and sum(v is False for v in labels[1:]) >= 2)
-                        phases.append(dict(phase=(dx,dy), known=known, foreground=labels, passed=passed))
+                        shape = self._apex_edge_support((t,x+dx,y+dy),is_foreground) if passed else None
+                        if shape is not None:
+                            known = known and not shape['unknown']
+                            passed = passed and shape['passed']
+                        phases.append(dict(phase=(dx,dy), known=known, foreground=labels,
+                                           passed=passed, local_shape=shape))
             result = dict(passed=any(p['passed'] for p in phases),
                           unknown=not any(p['known'] for p in phases), phases=phases,
                           physical_radius=3, no_unknown_as_background=True)

@@ -13,7 +13,66 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: failed background hypothesis; mixed-frame cause traced
+### Current continuation: directed instance safeguard; two duplicate spikes corrected
+
+Parent afc9c4f. Verify actual Git/live origin/latest publication receipt. The
+only runtime change is FilledGlyphEvidence's instance-apex check: two short
+inward/outward RGB slopes must agree at the SAME bounded original-source phase.
+A thin foreground connector is not another full triangle. Existing9/12 support
+fraction is applied to distinct original observations; crop/low-resolution gaps
+remain UNKNOWN. Full-glyph classifiers/teachers are unchanged. This guard only
+withholds unproved supplemental instances; it never retires original detections.
+No room/origin/palette rules or new full-image scan. All3 experimental consumersOFF.
+
+207 UNIQUE affected tests PASS, three new methods;NOT full suite. Four directions,
+palette/polarity/dim variants, native0.75/1/1.25 scales and real close pairs tested.
+All44 original domains screened:50 old final filled contributions,48 retained;
+ONLY Entrance2 extra UP24072/DOWN24040 removed. Actual UNPATCHED whole preserves
+ENTIRE expected retained metadata/options/source/project/JMap/JTool/Blend; real
+UP24080/DOWN24048 remain. Main reviewed whole and both delta Source/JTool/Blend.
+Other defects remain MAJOR. Original41/601/139/16 numeric protections PASS;
+FTFA926/928,zeroextras/shifts/wrong;Flames254,other error counts unchanged.
+Halls7's three additional filled contributions retained by fresh ENTIRE-equal
+ordinary whole. This is an exposed failed-reserve regression,not reserve success.
+
+CORRECT the old53 source-positive recovery claim:it included those two false
+Entrance2 duplicates.51 historical additions remain;NOT51 newly recertified true
+positives and NOT a loss of two real objects. Historical reports are preserved.
+No new source-positive recovery this batch;two false-extra corrections only.
+
+Controlled quietAC exact-parent/currentABBA8 wholes PASS full output equality:
+denseC19 48.605 ->49.759s(+2.37%);sparseHalls4 59.053 ->58.819s(-0.40%).Both
+below5% threshold;not universal latency proof. Old deferred+24.1615% HOLD remains
+separate/unwaived. App restarted with normal local-service permissions:root/
+health200,loaded==disk a28c090156feb8786db680b5f56aaed30605d000daf94070422eda7cfd433ee2.
+Initial sandbox-isolated restart bound the port but was unreachable; no app/code
+workaround. Current intended live app exec95309. All diagnostic workers terminal.
+
+Auditv49:four current actual cases (Entrance2,Halls7,C19,Halls4),37 complete proof
+carries,30pending,ZERO approvals. Only Entrance2 has fresh visual/delta QA;other
+three actual outputs carry QA by ENTIRE source/map/metadata/project equality.
+See directed-apex-{tests,protection-screen,numerical-protections}-v1.json,
+directed-apex-Entrance2-whole-v2.json/source-QA-v1.json and cost/Halls7 receipts.
+
+NEXT remains positive geometry/frame provenance, not another arbitrary tip patch.
+Eight-case paired observation covers2376 original geometry objects. Physical
+support is stronger onC25/C27/Entrance2;world support is stronger onIrkara/Flames/
+C18/C31;Entrance1 has conflicting channels. Three physical-stage replays proposed
+C25+9/C27+6/E2-2,all whole/delta views reviewed,NOT deployed or15 independent gains.
+C27 RIGHT528240 matches the full source triangle but old RIGHT536240 crops it;
+the new guard withholds double admission,also abstaining on the textured real tip.
+The expected positive-apex transfer assertion FAILED:do not claim a pose repair
+or retire the old object from that negative alone. No frame selector implemented.
+Freeze complete positive/negative structures and qualify object-backed registration
+across these cases before changing frames/origins. Protect useful normalization.
+
+Background-paint and wider-tip wedge failed discrimination;global body-residual
+thresholds would reject source-positive shapes. None adopted. C19two private
+fragment poses remainFALSE/unfixed;C21threeUNKNOWN. No further images needed now.
+All original six goal gates,positive minima/successful reserve/final71+16 remain
+open. Private NEWEST note:DEFERRED_VETO_ACTIVE_v1.md. Do not rerun terminal work.
+
+### Previous continuation: failed background hypothesis; mixed-frame cause traced
 
 The reviewed ten-file frame-consistency checkpoint is published as
 b9172c496b456bc57cd15657c841ac2fbf566149. Its204 affected tests/eight world
