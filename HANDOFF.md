@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+New research checkpoint: conservative source-frame arbitration is implemented
+but DISABLED pending controlled whole-scan timing. It preserves every offered
+original-object proof and needs three disjoint, non-collinear physical witnesses.
+270 affected tests pass; original41/601/139/16 protections retain their bounds.
+Eight source-stage replays select CN3-25/27 only; two actual opt-in whole scans
+add14 source-backed spike poses, remove none, and update one image box. Main
+reviewed both whole maps/all15 deltas. Both rooms remain MAJOR; coordinates are
+conditional on the physical projection, not independently game-calibrated.
+Auditv50 distinguishes these research outputs from unchanged DEFAULT behavior.
+Battery power stopped timing before any sample; do not enable until qualified.
+
 Latest measured change:directed local RGB slopes strengthen the existing
 filled-instance guard.207 affected tests/original41/601/139/16 protections pass;
 actual Entrance2 loses two shifted extra spikes,keeping its real pair and all

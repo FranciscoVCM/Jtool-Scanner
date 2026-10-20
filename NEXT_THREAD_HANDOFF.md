@@ -13,7 +13,57 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: directed instance safeguard; two duplicate spikes corrected
+### Current continuation: source-frame dominance accuracy-qualified, disabled for timing
+
+Parent262b356. Verify actual Git/live origin/publication receipt rather than
+assuming this parent is HEAD. New source_frame_arbitration API preserves EVERY
+independently raw-source-owned ORIGINAL full32 locator in the offered world
+mapping, declining on any conflicting proof. Physical preference requires three
+disjoint, non-collinear pixel-backed witnesses and quantized ORIGINAL image-box
+provenance. Select one existing frame before glyph proposals, never remap/delete
+originals, use references/new teachers or perform a second scanner pass.
+
+270 UNIQUE affected tests PASS, NOT full suite.57 saved qualified routes inventoried;
+exactly eight can enter selector. Eight actual source-stage replays select C25/27
+only; other six ENTIRE metadata/warnings/project/JMap/JTool/Blend equal. Two actual
+opt-in wholes add9/5 source-backed full poses, no removals, one C25UP12848 image-box
+update. Main reviewed both wholes/all15deltas. Existing wrong originals remain;
+both rooms MAJOR. Conditional physical-projection frozen typed errors7->4 /15->13,
+terrain unchanged. Not independently native-game-calibrated,14 new independent
+instances, a second visual family, reserve success or a room approval.
+
+All original41/601/139/16 numerical protections PASS;FTFA926/928 with zero extras/
+shifts/wrong;Flames254 unchanged. New frame flag OFF;other3 experimental flagsOFF.
+Exact-parent AST specialization verifies default-OFF hook/None-API parity;all old
+scanner/pipeline functions/context methods unchanged. Auditv50:41 default proof
+carries/30pending/ZERO approvals;two opt-in actual outputs separate;NO app gain.
+
+Private evidence in .artifacts/general-recognition-20261014:
+frame-dominance-{tests,OFF-parity,replay-v2,target-wholes,source-QA,numerical-protections,
+route-inventory,fixed-structures,actual-render}-v1.json (replay is replay-v2.json).
+Failed replayv1 preserved:receipt key typo after six sealed successes;v2 reuses
+those six and completes ONLY two pending cases. Do not repeat the eight cases.
+FRAME_DOMINANCE_API_FREEZE_v1.md / SOURCE_LABELS_v1.md preserve pre-edit policy and
+whole source scopes;old world freezes unchanged. Original2376-object measurements
+and old failure hypotheses remain;do not reopen the archive or resweep baseline.
+
+Cost is PENDING, not a measured slowdown: frame-dominance-whole-cost-v1.json
+stopped on battery BEFORE any child/sample. User cannot plug in immediately,
+expects to later;continue independent accuracy work. Never rerun that occupied
+receipt/erase failure. Resume a new numbered cost driver with frozen denseC25 /
+sparseHalls4 ABBA, exact parent262b356 hook/pipeline before, current opt-in after,
+full per-mode metadata/project/exports equality. Ignore a docs-only Git-head
+change ONLY when all runtime files/code hash/Python/Pillow/platform still equal;
+do not relabel changed runtime evidence as current. >5% HOLD remains;do not enable
+without valid timing. Older deferred24.1615% HOLD stays separate/unwaived.
+
+Next independent accuracy investigation: source compound-triangle ownership
+using confirmed relative CN3-19 formations, not coordinate answer copying or
+another background-paint/global-texture-residual cutoff. Preserve the old false
+fragment facts/unknown C21 poses;freeze/trace a bounded causal test before editing.
+All original positive/reserve/final71+16/six-goal gates remain open. Goal ACTIVE.
+
+### Previous continuation: directed instance safeguard; two duplicate spikes corrected
 
 Parent afc9c4f. Verify actual Git/live origin/latest publication receipt. The
 only runtime change is FilledGlyphEvidence's instance-apex check: two short

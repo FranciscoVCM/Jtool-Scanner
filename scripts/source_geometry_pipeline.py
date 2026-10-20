@@ -13,6 +13,7 @@ from scripts.source_terrain_agreement import agree_new_fulls
 from scripts.source_hollow_pipeline import recover_source_hollow_glyphs
 from scripts.source_filled_pipeline import recover_source_filled_glyphs
 from scripts.source_sampling import SourceFrame
+from scripts.source_glyph_prototypes import SourceGlyphEvidence
 
 
 def joint_proposals(image, room, detections, *, source_context=None, include_growth_confidence=False):
@@ -42,6 +43,7 @@ def joint_proposals(image, room, detections, *, source_context=None, include_gro
 
 
 def source_proposals(image, room, detections, *, source_context=None, source_frame=None,
+                     source_glyph_field=None,
                      include_hollow_glyphs=True, include_growth_confidence=False,
                      include_filled_glyphs=False, include_filled_joint_phase=False,
                      include_filled_capture_base=False, record_filled_source=False,
@@ -75,6 +77,19 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)
     context.validate(image, room, spikes)
+    if source_glyph_field is not None:
+        if (not isinstance(source_frame, SourceFrame)
+                or not source_frame.matches_source(image, room)
+                or not isinstance(source_glyph_field, SourceGlyphEvidence)
+                or source_glyph_field.room != source_frame.extent
+                or not source_frame.matches_source(source_glyph_field.image, room)
+                or source_glyph_field.raw.field.room != source_frame.extent
+                or source_glyph_field.raw.field.native_size != (800, 608)
+                or not source_frame.matches_source(source_glyph_field.raw.field.image, room)
+                or source_glyph_field.raw.field.source_frame is not source_glyph_field.source_frame
+                or source_glyph_field.source_frame is not source_frame
+                   and not (source_frame.extent == room and source_glyph_field.source_frame is None)):
+            raise ValueError('Shared glyph field must match the original source frame')
     if include_growth_confidence:
         context.begin_growth(detections)
         proposed, rejected, diag = joint_proposals(image, room, detections, source_context=context,
@@ -114,7 +129,9 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
     if include_hollow_glyphs:
         # Old material/size/pose retain their physical crop. Only new evidence
         # uses the existing world frame. Never remap or reteach the old stages.
-        source_field = context.glyph_library(image, room, spikes).raw if frame.extent == room else None
+        source_field = source_glyph_field
+        if source_field is None and frame.extent == room:
+            source_field = context.glyph_library(image, room, spikes).raw
         hollow, hollow_diag = recover_source_hollow_glyphs(frame, detections, source_field=source_field)
         proposed |= hollow
         # Only source-proved SAME type/size phase replacements can retire old

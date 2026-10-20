@@ -89,6 +89,7 @@ _SOURCE_DEFERRED_PLATFORMS_ENABLED = False
 _SOURCE_COMPOUND_CONFLICTS_ENABLED = False
 # Positive touching-glyph evidence has independent protection/cost qualification.
 _SOURCE_INTERIOR_GLYPHS_ENABLED = False
+_SOURCE_FRAME_ARBITRATION_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2969,19 +2970,31 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
     from scripts.source_sampling import SourceFrame
 
     frame = SourceFrame(image, result.room_box) if source_frame is None else source_frame
+    original_direct_frame = frame.extent == result.room_box
+    frame_options = {}
+    if _SOURCE_FRAME_ARBITRATION_ENABLED and frame.extent != result.room_box:
+        from scripts.source_evidence_context import SourceEvidenceContext
+        from scripts.source_frame_arbitration import select_source_glyph_frame
+        original_source_detections = tuple(result.detections)
+        original_context = SourceEvidenceContext(image, result.room_box,
+            [(d.type_id, d.x, d.y) for d in result.detections if 3 <= d.type_id <= 10])
+        frame, glyph_field, _ = select_source_glyph_frame(image, result.room_box,
+            result.detections, frame, source_grid=result.source_grid, source_context=original_context)
+        frame_options = dict(source_context=original_context, source_glyph_field=glyph_field)
     result.source_extent = frame.extent if frame.extent != result.room_box else None
     deferred_options = {}
-    if (platform_vetoes is not None and frame.extent == result.room_box
+    if (platform_vetoes is not None and original_direct_frame
             and any(v.anchors and all(a.type_id == OBJ_PLATFORM for a in v.anchors)
                     for v in platform_vetoes)):
         from scripts.source_evidence_context import SourceEvidenceContext
         original_source_detections = tuple(result.detections)
-        original_context = SourceEvidenceContext(image, result.room_box,
-            [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
+        if not frame_options:
+            original_context = SourceEvidenceContext(image, result.room_box,
+                [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
         deferred_options = dict(source_context=original_context)
     compound_options = {}
-    if _SOURCE_COMPOUND_CONFLICTS_ENABLED and frame.extent == result.room_box:
-        if not deferred_options:
+    if _SOURCE_COMPOUND_CONFLICTS_ENABLED and original_direct_frame:
+        if not deferred_options and not frame_options:
             from scripts.source_evidence_context import SourceEvidenceContext
             original_source_detections = tuple(result.detections)
             original_context = SourceEvidenceContext(image, result.room_box,
@@ -2996,7 +3009,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                           if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
                                                        **({'include_filled_interior': True}
                                                           if _SOURCE_INTERIOR_GLYPHS_ENABLED else {}),
-                                                       **deferred_options, **compound_options)
+                                                       **{**frame_options, **deferred_options, **compound_options})
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]

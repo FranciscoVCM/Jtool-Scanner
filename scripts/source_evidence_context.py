@@ -11,7 +11,7 @@ from copy import deepcopy
 from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from scripts.source_contours import SourceContours
-from scripts.source_glyph_prototypes import SourceGlyphLibrary, _dimensions
+from scripts.source_glyph_prototypes import SourceGlyphEvidence, SourceGlyphLibrary, _dimensions
 
 
 def _locators(spikes):
@@ -203,6 +203,16 @@ class SourceEvidenceContext:
         else:
             self.glyph_reuses += 1
         return self._glyphs
+
+    def glyph_field(self, image: RGBImage, room: Box, spikes):
+        """Raw original ownership, sharing the physical contour cache lazily."""
+        self.validate(image, room, spikes)
+        if self._glyphs is not None:
+            return self._glyphs.raw
+        if getattr(self, '_glyph_field', None) is None:
+            self._glyph_field = SourceGlyphEvidence(self._source, self._room,
+                                                    contour_field=self.contours())
+        return self._glyph_field
 
     def statistics(self):
         glyphs = self._glyphs

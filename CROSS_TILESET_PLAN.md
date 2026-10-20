@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): frame prototype accuracy-qualified, OFF for cost
+
+Original-object set dominance, not a majority score, now qualifies an existing
+physical source mapping only when all offered raw-source owners survive plus
+three disjoint/non-collinear source witnesses with original image-box provenance.
+No original coordinate changes, generated teachers or second complete scan.
+Compact/direct mappings bypass; useful world normalization is retained on conflict.
+
+270 affected tests and original41/601/139/16 protections PASS. All57 saved routes
+inventoried, eight eligible; eight real source-stage replays select C25/C27 only,
+six ENTIRE-equal declines. Two actual opt-in wholes add9/5 source-backed poses,
+zero removals/one image-box update. Whole/all15 deltas source-reviewed;both rooms
+still MAJOR. Conditional frozen typed-error scopes7->4 and15->13, unchanged
+terrain. No native calibration, two-family/reserve or room-approval claim.
+
+Frame flag OFF pending predeclared denseC25/sparseHalls4 quietAC ABBA. The first
+attempt stopped on battery BEFORE any timing child/sample. User will reconnect
+later; do independent accuracy work meanwhile. Default-OFF exact-parent AST
+parity verified; auditv50 separates two research wholes from41 default carries/
+30pending/ZERO approvals. No new default-app accuracy gain. Keep all goal gates.
+
 ## Current continuation (2026-10-20): instance identity qualified; frame choice still open
 
 Current FilledGlyphEvidence instance check adds two short directed RGB slopes at

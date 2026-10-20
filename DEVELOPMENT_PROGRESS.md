@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Object-backed frame arbitration qualified for accuracy, not enabled
+
+Implemented a conservative choice between the already offered world frame and
+the physical source crop. Keep every independently raw-source-owned ORIGINAL
+full-spike proof; any conflict preserves the offered frame. Physical preference
+needs three disjoint, non-collinear original witnesses and integer-quantized
+image-box provenance. No room/hash/palette/reference answer, new teacher,
+original coordinate edit/deletion, or second complete scan. Shared raw contours
+avoid duplicating the downstream hollow evidence. Compact/direct frames bypass.
+
+270 unique affected tests PASS, NOT full suite. All57 saved qualified routes
+inventoried: exactly eight can enter this hook. Complete source-stage replays
+select CN3-25/27 only; the other six preserve ENTIRE ordered metadata, warnings,
+project/JMap/JTool/Blend. Two actual opt-in whole scans reproduce exactly the
+predicted nine/five source-backed poses, zero removals, one retained image-box
+update. Main reviewed both complete maps and every15 delta, including metadata.
+Original41/601/139/16 numerical protections PASS; FTFA926/928 zero extras/shifts/
+wrong directions; Flames254 unchanged. Existing incorrect originals remain.
+
+Pre-frozen conditional physical-projection scopes: typed spike errors7->4 on
+CN3-25 and15->13 on CN3-27; terrain occupancy unchanged. These are NOT whole-room
+or independent native-game truth certificates, nor a two-family/reserve success.
+Both rooms remain MAJOR. No14-independent-new-instance or room approval claim.
+
+The new flag remains OFF. Exact-parent AST parity proves unchanged default
+hook/None-API behavior; all old scanner/pipeline functions/context methods are
+unchanged. Auditv50 keeps41 default semantic carries/30pending/ZERO approvals,
+with the two opt-in actual outputs shown separately and NO new app accuracy gain.
+QuietAC timing stopped before any child/sample because the host was on battery;
+user cannot reconnect immediately. Preserve the failed preflight, finish other
+accuracy work, and qualify cost before enabling. Original six goal gates remain.
+
 ## 2026-10-20 — Directed local slopes prevent false independent spike instances
 
 Strengthened the existing filled-instance apex check, not the full-glyph detector:
