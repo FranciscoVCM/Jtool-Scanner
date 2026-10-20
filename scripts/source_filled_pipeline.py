@@ -288,8 +288,8 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
         raise ValueError('Joint phase flag must be a boolean')
     if not isinstance(capture_base, bool):
         raise ValueError('Capture-base flag must be a boolean')
-    if interior_grid is not None and (interior_grid != (25, 19) or frame.extent != frame.room):
-        raise ValueError('Interior recovery requires a qualified direct25x19 source frame')
+    if interior_grid is not None and interior_grid != (25, 19):
+        raise ValueError('Interior recovery requires a qualified25x19 source frame')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)

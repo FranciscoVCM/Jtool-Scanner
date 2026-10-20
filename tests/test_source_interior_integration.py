@@ -9,7 +9,7 @@ from scripts import source_filled_pipeline as filled
 from scripts.source_geometry_pipeline import source_proposals
 from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence
 from scripts.source_sampling import SourceFrame
-from tests.test_source_interior_glyphs import scene
+from tests.test_source_interior_glyphs import scene, cropped_scene
 
 
 class InteriorRecoveryIntegrationTests(TestCase):
@@ -45,15 +45,25 @@ class InteriorRecoveryIntegrationTests(TestCase):
         oldproofs={tuple(r['key']):r for r in baseline[1]['accepted']}
         self.assertEqual({tuple(r['key']):r for r in proof['accepted'] if tuple(r['key']) in oldproofs},oldproofs)
 
-    def test_invalid_grid_or_extended_world_rejected_before_construction(self):
+    def test_invalid_grid_rejected_before_construction(self):
         image,room,frame,original,_=scene()
         for grid in ((19,13),False,[25,19],'25x19'):
             with self.subTest(grid=grid),patch.object(filled,'FilledGlyphEvidence',side_effect=AssertionError('No construction')):
-                with self.assertRaisesRegex(ValueError,'direct25x19'):
+                with self.assertRaisesRegex(ValueError,'qualified25x19'):
                     filled.recover_source_filled_glyphs(frame,original,interior_grid=grid)
-        extended=SourceFrame(image,room,extent=Box(-8,0,816,608),canonical=image)
-        with self.assertRaisesRegex(ValueError,'direct25x19'):
-            filled.recover_source_filled_glyphs(extended,original,interior_grid=(25,19))
+
+    def test_extended_world_positive_and_entire_default_bypass_preserved(self):
+        _,_,frame,original,target=cropped_scene(scale=1.25)
+        before=deepcopy(original)
+        with patch('scripts.source_interior_glyphs.SourceInteriorGlyphEvidence',
+                   side_effect=AssertionError('Disabled path must not construct')):
+            baseline=filled.recover_source_filled_glyphs(frame,original,joint_phase=True)
+            bypass=filled.recover_source_filled_glyphs(frame,original,joint_phase=True,interior_grid=None)
+        self.assertEqual(baseline,bypass)
+        proposed,proof=filled.recover_source_filled_glyphs(frame,original,joint_phase=True,interior_grid=(25,19))
+        self.assertEqual(proposed-baseline[0],{target});self.assertEqual(original,before)
+        oldproofs={tuple(r['key']):r for r in baseline[1]['accepted']}
+        self.assertEqual({tuple(r['key']):r for r in proof['accepted'] if tuple(r['key']) in oldproofs},oldproofs)
 
     def test_original_context_record_and_interior_share_actual_evidence(self):
         from scripts.source_evidence_context import SourceEvidenceContext
@@ -96,12 +106,18 @@ class InteriorPipelineRoutingTests(TestCase):
         self.assertEqual(recover.call_args.kwargs['interior_grid'],(25,19))
         self.assertTrue(recover.call_args.args[0].matches_source(recover.call_args.kwargs['source_library'].raw.image,self.room))
 
-    def test_extended_world_record_rejected_before_proposal_work(self):
+    def test_extended_world_record_remains_separate_from_interior_routing(self):
         frame=SourceFrame(self.image,self.room,extent=Box(-8,0,816,608),canonical=self.image)
         with patch('scripts.source_geometry_pipeline.joint_proposals',side_effect=AssertionError('Too early')):
             with self.assertRaisesRegex(ValueError,'direct original'):
                 source_proposals(self.image,self.room,self.original,source_frame=frame,
-                    include_filled_glyphs=True,include_filled_interior=True)
+                    include_filled_glyphs=True,include_filled_interior=True,record_filled_source=True)
+        with patch('scripts.source_geometry_pipeline.recover_source_filled_glyphs',return_value=(set(),{'accepted':[]})) as recover:
+            source_proposals(self.image,self.room,self.original,source_frame=frame,
+                include_filled_glyphs=True,include_filled_interior=True)
+        self.assertIs(recover.call_args.args[0],frame)
+        self.assertIsNone(recover.call_args.kwargs['source_library'])
+        self.assertEqual(recover.call_args.kwargs['interior_grid'],(25,19))
 
     def test_actual_scanner_default_off_and_direct_opt_in_only(self):
         self.assertIs(scanner._SOURCE_INTERIOR_GLYPHS_ENABLED,False)
@@ -113,7 +129,7 @@ class InteriorPipelineRoutingTests(TestCase):
             if enabled:self.assertIs(proposals.call_args.kwargs['include_filled_interior'],True)
             else:self.assertNotIn('include_filled_interior',proposals.call_args.kwargs)
 
-    def test_compact_and_extended_original_frames_do_not_forward_flag(self):
+    def test_compact_bypasses_but_extended_world_routes_only_explicit_opt_in(self):
         for compact in (False,True):
             frame=SourceFrame(self.image,self.room) if compact else SourceFrame(self.image,self.room,
                 extent=Box(-8,0,816,608),canonical=self.image)
@@ -121,4 +137,7 @@ class InteriorPipelineRoutingTests(TestCase):
             with self.subTest(compact=compact),patch.object(scanner,'_SOURCE_INTERIOR_GLYPHS_ENABLED',True), \
                  patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as proposals:
                 scanner._apply_source_geometry(result,self.image,source_frame=frame)
-            self.assertTrue(all('include_filled_interior' not in c.kwargs for c in proposals.call_args_list))
+            if compact:self.assertFalse(proposals.called)
+            else:
+                self.assertIs(proposals.call_args.kwargs['include_filled_interior'],True)
+                self.assertIs(proposals.call_args.kwargs['source_frame'],frame)

@@ -58,6 +58,19 @@ def evidence(values,*,source_grid=(25,19)):
     return SourceInteriorGlyphEvidence(filled,original,source_grid=source_grid),filled
 
 
+def cropped_scene(*, rotation=0, scale=1, transform=lambda c:c):
+    """An actual clipped capture of a known world, not stretched source pixels."""
+    image,_,frame,original,target=scene(rotation=rotation,scale=scale,transform=transform)
+    left,top=round(8*scale),round(8*scale)
+    raster=Image.frombytes('RGB',(image.width,image.height),image.data).crop(
+        (left,top,round(792*scale),round(600*scale)))
+    physical=RGBImage(raster.width,raster.height,raster.tobytes())
+    room=Box(0,0,physical.width,physical.height)
+    canonical=RGBImage(800,608,frame.canonical_rgb)
+    world=SourceFrame(physical,room,extent=Box(-left,-top,image.width,image.height),canonical=canonical)
+    return physical,room,world,original,target
+
+
 class SourceInteriorGlyphTests(TestCase):
     def test_one_background_body_sample_cannot_average_into_foreground(self):
         values=scene();before=evidence(values)[0].support(values[4]);self.assertTrue(before['passed'])
@@ -168,12 +181,81 @@ class SourceInteriorGlyphTests(TestCase):
         self.assertFalse(proof['passed']);self.assertTrue(proof['unknown'])
         values=scene(scale=.125);self.assertFalse(evidence(values)[0].support(values[4])['passed'])
 
-    def test_compact_and_extended_frames_abstain(self):
+    def test_compact_frame_abstains(self):
         values=scene();self.assertFalse(evidence(values,source_grid=(19,13))[0].support(values[4])['passed'])
-        image,room,_,original,target=values
-        frame=SourceFrame(image,room,extent=Box(-8,0,816,608),canonical=image)
-        query=SourceInteriorGlyphEvidence(FilledGlyphEvidence(frame,original),original,source_grid=(25,19))
-        self.assertFalse(query.support(target)['passed'])
+
+    def test_extended_world_uses_original_pixels_at_integer_and_fractional_scales(self):
+        transforms=(lambda c:c,lambda c:tuple(255-v for v in c),
+                    lambda c:(c[2],c[0],c[1]),lambda c:tuple(round(.4*v) for v in c))
+        for rotation,transform in enumerate(transforms):
+            for scale in (1,1.25):
+                with self.subTest(rotation=rotation,scale=scale):
+                    values=cropped_scene(rotation=rotation,scale=scale,transform=transform)
+                    query,filled=evidence(values);proof=query.support(values[4])
+                    self.assertTrue(proof['passed'],proof)
+                    self.assertIs(query.field.source_frame,values[2])
+                    self.assertIs(filled.library.source_frame,values[2])
+                    kind,x,y=values[4]
+                    expected=tuple(values[2].original_pixel(x+a,y+b) for a,b in
+                                   (_oriented(kind,*p) for p in INTERIOR_POINTS))
+                    self.assertEqual(query._body(values[4]),expected)
+                    self.assertTrue(proof['appearance']['source_paint']['passed'])
+                    self.assertTrue(proof['appearance']['source_tip']['passed'])
+
+    def test_extended_original_crop_and_display_padding_remain_unknown(self):
+        values=cropped_scene();query,_=evidence(values)
+        for key in ((3,0,48),(3,48,0),(6,768,576)):
+            with self.subTest(key=key):
+                proof=query.support(key);self.assertFalse(proof['passed']);self.assertTrue(proof['unknown'])
+        image,room,frame,original,target=values
+        physical_crop=Box(0,0,240,image.height)
+        partial=SourceFrame(image,physical_crop,extent=frame.extent,
+                            canonical=RGBImage(800,608,frame.canonical_rgb))
+        proof=SourceInteriorGlyphEvidence(FilledGlyphEvidence(partial,original),original,
+            source_grid=(25,19)).support(target)
+        self.assertFalse(proof['passed']);self.assertTrue(proof['unknown'])
+
+    def test_extended_legacy_or_different_frame_cannot_supply_contours(self):
+        for component in ('library','raw','contour'):
+            values=cropped_scene();_,filled=evidence(values)
+            owner=filled.library if component=='library' else filled.library.raw if component=='raw' else filled.library.raw.raw.field
+            owner.source_frame=None
+            with self.subTest(component=component),self.assertRaisesRegex(ValueError,'original source'):
+                SourceInteriorGlyphEvidence(filled,values[3],source_grid=(25,19))
+        values=cropped_scene();_,filled=evidence(values)
+        filled.library.raw.raw.field.source_frame=SourceFrame(values[0],values[1],extent=values[2].extent,
+            canonical=RGBImage(800,608,values[2].canonical_rgb))
+        with self.assertRaisesRegex(ValueError,'original source'):
+            SourceInteriorGlyphEvidence(filled,values[3],source_grid=(25,19))
+
+    def test_extended_background_wrong_direction_and_rectangle_do_not_gain_support(self):
+        values=cropped_scene();query,_=evidence(values)
+        for key in ((3,608,400),(6,224,240),(5,256,224)):
+            with self.subTest(key=key):self.assertFalse(query.support(key)['passed'])
+        image,room,frame,original,key=values
+        raster=Image.frombytes('RGB',(image.width,image.height),image.data)
+        _,x,y=key
+        ImageDraw.Draw(raster).rectangle((x-8,y-8,x+31-8,y+31-8),fill=(210,150,70))
+        changed=RGBImage(image.width,image.height,raster.tobytes())
+        changed_frame=SourceFrame(changed,room,extent=frame.extent,
+            canonical=RGBImage(800,608,frame.canonical_rgb))
+        proof=SourceInteriorGlyphEvidence(FilledGlyphEvidence(changed_frame,original),original,
+            source_grid=(25,19)).support(key)
+        self.assertFalse(proof['passed'])
+
+    def test_extended_inverse_background_triangle_and_text_are_not_glyphs(self):
+        image,room,frame,original,_=cropped_scene()
+        raster=Image.frombytes('RGB',(image.width,image.height),image.data);draw=ImageDraw.Draw(raster)
+        draw.rectangle((544-8,304-8,608-8,368-8),fill=(210,150,70))
+        key=(3,560,320)
+        draw.polygon([(560+a-8,320+b-8) for a,b in VERTICES[3]],fill=(20,30,60))
+        draw.line([(640-8,320-8),(672-8,320-8),(648-8,352-8)],fill=(210,150,70),width=3)
+        changed=RGBImage(image.width,image.height,raster.tobytes())
+        changed_frame=SourceFrame(changed,room,extent=frame.extent,
+            canonical=RGBImage(800,608,frame.canonical_rgb))
+        query=SourceInteriorGlyphEvidence(FilledGlyphEvidence(changed_frame,original),original,source_grid=(25,19))
+        self.assertTrue(all(e.support>=9 and not e.unknown for e in query.field.triangle(*key)))
+        self.assertFalse(query.support(key)['passed']);self.assertFalse(query.support((3,640,320))['passed'])
 
     def test_new_original_or_invented_teacher_rejected(self):
         values=scene();_,filled=evidence(values)

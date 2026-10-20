@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Original-world interior routing OFF; registration and fragment risks explicit
+
+Qualified explicit25x19 extended SourceFrames only when library/raw/contours all
+share the actual original frame. Original RGB/unknown coverage and every source
+measurement predicate/threshold remain unchanged; compact19x13 still bypasses.
+Entire old scanner/pipeline ASTs match under default-OFF specialization. No new
+room/palette/origin lookup or resampling pass; all three experimental flagsOFF.
+
+204 unique affected tests pass:183 original passes at identical bytes plus21
+Windows Temp-permission failures rerun with proper access; six added methods.
+No code workaround and no full-suite claim. Complete eight new world domains
+yield three retained contributions. Actual private ON wholes/whole+delta QA
+preserve entire expected artifacts/ordered metadata: Flames exact254 ->255,
+misses19 ->18, other error counts unchanged; C27/C31 each add a visible spike,
+with native registration still conditional. Original41/601/139/16 numerical
+definitions pass with explicit actual/semantic carries. No DEFAULT app gain.
+
+C27 known pillars expose a registration discrepancy;17 withheld alternatives
+all differ8px vertically. Do not fix this with a blind pose shift. The frozen
+C27 structure remains unchanged. Human CN3-19 review resolves two private poses
+as incorrect crops of four-full-spike formations; three C21 poses stay UNKNOWN.
+Next test source-taught BACKGROUND support at tips/internal texture seams, without
+losing real touching/partial spikes. Auditv47 retains41 DEFAULT carries/30pending/
+ZERO approvals. Extended-frame cost/activation/reserve/final71+16 remain open.
+
 ## 2026-10-19 — Frozen Golden5 reserve: no improvement, preservation qualified
 
 No runtime/test/flag changes. The separately frozen new paint/tip evaluation

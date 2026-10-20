@@ -2995,7 +2995,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                        **({'include_filled_capture_base': True}
                                                           if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
                                                        **({'include_filled_interior': True}
-                                                          if _SOURCE_INTERIOR_GLYPHS_ENABLED and frame.extent == result.room_box else {}),
+                                                          if _SOURCE_INTERIOR_GLYPHS_ENABLED else {}),
                                                        **deferred_options, **compound_options)
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.

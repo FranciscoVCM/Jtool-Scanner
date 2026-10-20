@@ -1,6 +1,25 @@
 # Cross-tileset milestone
 
-## Current continuation (2026-10-19): reserve failure and shared frame gap
+## Current continuation (2026-10-20): consistency is not registration or object identity
+
+The disabled interior path now accepts consistently bound original-world25x19
+frames, retaining original RGB/unknown handling and all measurement predicates.
+204 unique affected tests pass; compact mappings remain separate. Eight complete
+new world domains yield three actual private additions: Flames gains one exact
+reference match, C27/C31 show one visible spike each but native registration is
+conditional. No new DEFAULT app gain. Whole/metadata/export/source QA and all
+original numerical protections remain separate evidence, not room approval.
+
+C27 known-pillar projections expose mixed physical-crop/world provenance, so its
+17 withheld8px alternatives are not automatically valid pose repairs. CN3-19's
+two former unknown additions are human-confirmed WRONG fragment crops. Full32px
+four-spike compound geometry is confirmed, but internal artwork can mimic a tip.
+Next read-only test taught background paints/coherent geometry across all current
+positives and negatives; no hardcoded formations or weaker preservation gates.
+Auditv47:41 DEFAULT carries/30pending/ZERO approvals. Extended-frame cost, source
+registration, successful reserved transfer and final71+16 remain unresolved.
+
+## Previous continuation (2026-10-19): reserve failure and shared frame gap
 
 The unchanged paint/tip mechanism FAILED the separately frozen Golden5 reserve:
 25-object corridor22exact/5errors unchanged, original13 preserved, aggregate8 ->8.

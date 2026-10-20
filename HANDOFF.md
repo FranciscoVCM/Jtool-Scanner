@@ -4,7 +4,19 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-19
+## Current checkpoint — 2026-10-20
+
+Latest: consistently bound original-world25x19 sampling is qualified in the
+DISABLED interior channel; compact mappings and all measurement thresholds remain
+unchanged.204 unique affected tests pass, not full suite. Three actual private
+whole scans/source reviews preserve expected metadata/exports; Flames exact254
+->255, C27/C31 native registration still conditional. No new DEFAULT app gains.
+C27 exposes physical-crop/world registration disagreement; two CN3-19 private
+proposals are now human-confirmed incorrect fragment crops. Auditv47 keeps zero
+room approvals. Read TOP NEXT_THREAD_HANDOFF for exact scope and next source-role
+investigation; do not mistake consistent sampling for a correctly inferred frame.
+
+### Previous checkpoint — 2026-10-19
 
 Latest continuation: the separately frozen Golden5 paint/tip reserve FAILED
 improvement, not preservation: corridor22/25 exact,5 ->5 errors; original13

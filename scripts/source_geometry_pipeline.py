@@ -71,8 +71,6 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         raise ValueError('Interior recovery flag must be a boolean')
     if include_filled_interior and not include_filled_glyphs:
         raise ValueError('Interior recovery requires filled recovery')
-    if include_filled_interior and source_frame is not None and source_frame.extent != room:
-        raise ValueError('Interior recovery requires a direct original frame')
     detections = tuple(detections)
     spikes = [(d.type_id, d.x, d.y) for d in detections if 3 <= d.type_id <= 10]
     context = source_context if source_context is not None else SourceEvidenceContext(image, room, spikes)

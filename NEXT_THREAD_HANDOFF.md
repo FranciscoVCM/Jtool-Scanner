@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-19. Continue in the existing repository at
+Updated 2026-10-20. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,7 +13,56 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: Golden5 reserve failed; original outputs preserved
+### Current continuation: world-frame consistency qualified OFF; fragment negatives confirmed
+
+Parent5542f88. Actual Git/live origin and latest publication receipt are authority.
+The interrupted six-file change qualifies explicit25x19 original-world frames:
+Filled library/raw/contours must share the SAME original SourceFrame/source/extent.
+Only constructor eligibility/routing changes; ALL interior measurement predicates
+and thresholds are unchanged. Entire scanner/pipeline ASTs match parent after OFF
+specialization. `_SOURCE_INTERIOR_GLYPHS_ENABLED=False`; compound/deferred alsoOFF.
+Compact19x13 stays unqualified. Frame consistency is NOT registration accuracy.
+
+204 unique affected tests PASS (six additional methods):183 same-byte passes plus
+21 Temp-permission failures rerun with proper access. Initial failure/preflight
+bookkeeping retained; no implementation workaround. Complete eight newly eligible
+world domains/29 direct semantic carries/7 compact bypasses. Three actual private
+ON wholes match ENTIRE expected ordered metadata/warnings/project/JMap/JTool/Blend:
+Flames one source/reference-backed recovery, exact254 ->255/misses19 ->18 with
+unchanged extras/shifts/direction errors; C27/C31 one visible source spike each,
+but their absolute native origins remain conditional on supplied world registration.
+Main reviewed all three actual whole maps and every delta; rooms remain MAJOR.
+All original41/601/139/16 numerical definitions pass at the explicit actual/carry
+scope. This is not a fresh71 sweep, new DEFAULT app gain, reserve success or approval.
+
+Critical next causes: C27's17 withheld pose alternatives all have oldY=newY+8.
+Known pillar source view fits physical-crop projection better than inferred world;
+original Detection.image_box and logical coordinates have mixed provenance. Qualify
+source/canonical registration before any blind8px correction or original retirement.
+See `C27-known-left-pillars-frame-render-v1.json` and phase-coordinate provenance.
+The complete frozen C27 structure remains unchanged/required recovery withheld.
+
+Human CN3-19 review now confirms UP200456/DOWN568192 are INCORRECT fragment crops,
+not valid new full spikes. Preserve historical receipts; supersede old UNKNOWN/gain
+claims. Real upright/inverted structures consist of four full32px spikes, with
+the inverted innerUP16px higher than the first typed example. Relative geometry
+is confirmed; approximate overlay pixels are not exact source-native registration.
+Three CN3-21 poses remain UNKNOWN; do not reask resolved C19/NR2/Halls1 facts.
+Next bounded recognition check: actual taught BACKGROUND paint support at coherent
+tips versus internal texture seams, preserving every real touching/partial spike.
+Start with read-only complete accepted-domain diagnostics; no coordinate/case rules,
+template answer lookup or blanket overlap deletion. Reuse original source witnesses.
+
+Auditv47:41 DEFAULT proof carries/30pending/ZERO approvals;53 enabled recoveries/
+five fixes unchanged. New extended-frame controlled cost remains PENDING, not
+inherited from direct-frame cost8. Old deferred cost HOLD remains unwaived. The
+app refresh/publication initially failed approval review before executing. The
+subsequent actual restart is verified: root/healthHTTP200, loaded==disk fingerprint
+28e5a486c489b5b9083c5ec620896e7283cea50d1aaa5984b38307308c2240c1.
+Verify latest publication receipt/live origin rather than assuming push success.
+User AC confirmedOnline; all original six goal gates/failed reserves remain.
+
+### Previous continuation: Golden5 reserve failed; original outputs preserved
 
 2026-10-19, runtime/test bytes and all three experimental OFF flags unchanged
 from `eec90c91c26bce0f8ab1cc25b34827e1bef4cec7`. New successor auditv46 is in

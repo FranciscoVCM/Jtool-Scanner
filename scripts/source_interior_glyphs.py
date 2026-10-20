@@ -59,13 +59,17 @@ class SourceInteriorGlyphEvidence:
         self._pixels = self.frame.original_snapshot()
         self._markers = tuple((d.x, d.y, 32, 8 if d.type_id == 13 else 32)
                               for d in original if d.type_id > 10 and d.type_id not in (14, 15, 23))
-        self.qualified = source_grid == (25, 19) and self.frame.extent == self.frame.room
+        self.qualified = source_grid == (25, 19)
         self.field = filled.library.raw.raw.field
         if (not self.frame.matches_source(filled.library.raw.image, self.frame.room)
                 or filled.library.raw.room != self.frame.extent
                 or self.field.room != self.frame.extent
                 or self.field.native_size != (800, 608)
-                or self.field.source_frame is not None and self.field.source_frame is not self.frame):
+                or self.field.source_frame is not None and self.field.source_frame is not self.frame
+                or self.frame.extent != self.frame.room and (
+                    filled.library.source_frame is not self.frame
+                    or filled.library.raw.source_frame is not self.frame
+                    or self.field.source_frame is not self.frame)):
             raise ValueError('Interior glyph library must match the original source')
         origins = {(x, y) for _, x, y in spikes}
         self._cohorts = []
