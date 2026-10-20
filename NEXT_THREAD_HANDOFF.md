@@ -13,6 +13,66 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: public calibrated conflicts, controls/cost next
+
+Parent663cc5643d9782032916d37021a2886abeb98fcf; verify actual HEAD/liveorigin and
+public-backdrop-checkpoint-publication-v1.json. Original goal ACTIVE/all six gates
+and positive-recovery minima retained. Main read GOAL_PLAN IN FULL. Previous
+turns' background diagnostics are COMPLETE, not instructions to rerun them.
+
+Public modules scripts/source_raster_cells.py, source_glyph_backdrop.py and
+source_calibrated_conflicts.py implement the EXACT frozen backdrop-only mode,
+with legacy point evidence first, raw cell convex hulls and independent original
+geometry-qualified backdrop. No additional body polygons, production AST/
+monkeypatches, reference/emitted teachers, palette identities or new cutoffs.
+Whole original square coverage at fractional crop borders has an explicit test.
+SourceLocalBackground.predict(include_plane=True) adds coefficients of the SAME
+fit; default proofs/cache preserved. source_compound_conflicts defaults to
+calibrated_background=False. Existing OFF scanner compound consumer requests
+True; all4flags remainOFF, now32 honest transitive runtime dependencies.
+
+Private root .artifacts/general-recognition-20261014. New receipts:
+
+- public-backdrop-tests-v1.json:353 UNIQUE affected tests PASS, NOT full suite.
+  Initial47subset had45pass/2sandboxTemp PermissionErrors; exact2PASS elevated,
+  then full353PASS outside sandbox, NO environmental implementation workaround.
+- public-backdrop-parity-v1.json:ENTIRE prototype/public proofs and decisions
+  equal for G2ten/H3zero/G5seven; all original tuple metadata retained.
+- public-backdrop-default-parity-v1.json:entire scanner AST equal except one
+  argument inside OFF consumer; compound default class/function AST equal;
+  72complete parent/default affine proofs equal. NOT fresh whole evidence.
+- public-backdrop-target-wholes-v1.json:3actual ordinary wholes G2AFTER,
+  G5BEFORE/AFTER, every complete detection/warning/project/JTool/Blend check PASS.
+  Two changed-feature wholes equal sealed source-stage artifacts; all whole/
+  every17delta QA carries strictly through source/map/metadata/render equality.
+  G2ten/G5seven false-block corrections, onlyseven NEW this mechanism. G5fixed
+  errors3->1/all13typed/4096solid retained. NOT17new, no new positive recoveries.
+- public-backdrop-qualification-v1.json binds proofs/tests/artifacts/source QA.
+- 71-screen-general-recognition-checkpoint-v56.json/.md:71rows/41default
+  algorithm-evidence carries/30pending/ZEROapprovals. Runtime DID change; do not
+  label old protections unchanged-source or freshly reverified for new feature.
+
+NEXT run prepared run_public_backdrop_controls_v1.py for16freshoptinexactwholes.
+It requires qualified target wholes and checks ENTIRE runtime bytes/environment
+across any publication-only HEAD change, retaining recorded identities. Original
+references POSTscan only. Inspect any changed control with source QA, preserve
+FTFA>=926/928/zeroextras-shifts-wrong, Flames>=252/no increased42/21/20/2 (current
+255/42/18/20/2), other achieved gains. Qualify original41/601/139 masks/rails/
+nongeometry/impostors, not only control numbers. Do not activate on tests alone.
+
+PUBLIC_BACKDROP_WHOLE_COST_FREEZE_v1.md predeclares quiet serialACABBA for denseG2,
+affectedG5,sparseH4;beforeframe+interiorON/compoundOFF,aftercompoundON,deferredOFF.
+Afteraccuracy, no other live producer;2samples/mode/source, full per-mode output
+equality;>5%HOLD/investigate. Accuracy-run times are NOT cost samples; oldcostv3
+does NOT qualify this feature. No need for more screenshots or archive reopening.
+Continue real positive compound recovery and other primary causes afterward;
+this negative-conflict fix alone cannot meet original8real/3rooms2families goal.
+
+Test4412/parity29488/target18496 all TERMINAL before publication. App31740 reloaded
+current snapshot2589dc88de3966a229c313ce538c1090404506bc3754bff23b4a7c98c6dfa7e9,
+root/health200/all4OFF. Verify live processes, active note and publication receipt;
+prepared control worker may have been launched AFTER publication, do not duplicate.
+
 ### Current continuation: geometry-qualified backdrop; Golden5 source-stage pass
 
 Parent15874d9acde3c91845e758df5e8f3969db691e7a; verify actual HEAD/liveorigin and

@@ -18,6 +18,10 @@ SOURCE_GEOMETRY_MODULES = (
     'source_compound_conflicts',
     'source_interior_glyphs',
     'source_frame_arbitration',
+    'source_directional_body',
+    'source_raster_cells',
+    'source_glyph_backdrop',
+    'source_calibrated_conflicts',
 )
 
 

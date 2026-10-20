@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+2026-10-21 update: the frozen original-pixel artwork/backdrop combination is
+implemented as a public opt-in compound API, with original context reuse/lazy
+calibration and32 registered dependencies. All4app switches remainOFF. 353 unique
+affected tests PASS (NOT full suite); complete prototype/public proofs match on
+three domains. Three fresh whole scans reproduce the reviewed expected artifacts
+(Golden2 AFTER, Golden5 BEFORE/AFTER); their ten/seven false-block changes carry
+whole/every-delta source QA through ENTIRE map/metadata/project/render equality.
+Golden5 fixed3->1/13typed/4096solid retained. Audit56 keeps41 default algorithm-
+evidence carries/30pending/ZEROapprovals. Runtime bytes DID change, default
+parent-path equivalence is separately verified; no new default-app gain claimed.
+Fresh16/all41/601/139 protection and controlledAC whole cost remain pending before
+activation. Read TOP NEXT_THREAD_HANDOFF for the implementation checkpoint.
+
 Newest research calibrates backdrop from exterior patches of original,
 body/contour-qualified spikes rather than reusing terrain palette labels for
 every object. Original-object/intrinsic/glyph exclusions, three OTHER disjoint

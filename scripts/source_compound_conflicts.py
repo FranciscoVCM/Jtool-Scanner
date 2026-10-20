@@ -235,14 +235,18 @@ class _ConflictQuery:
 
 def source_compound_conflicts(image, room, detections, *, source_grid, source_frame,
                              source_context=None, source_material=None,
-                             source_block_library=None, source_filled_evidence=None):
+                             source_block_library=None, source_filled_evidence=None,
+                             calibrated_background=False):
     """Return reviewable original full-block keys and source-only evidence.
 
     The caller must freeze ORIGINAL detections before new proposals. Supplied
     material/libraries must belong to that source/context. Reuse existing stages
     during integration; only standalone diagnostics compute absent material.
-    No automatic scanner binding, map edits or expanded teacher set.
+    No automatic scanner binding, map edits or expanded teacher set. The explicit
+    calibrated-background option retains the legacy path by default.
     """
+    if not isinstance(calibrated_background, bool):
+        raise ValueError('Calibrated background switch must be a boolean')
     original = tuple(detections)
     if not source_frame.matches_source(image,room):
         raise ValueError('Compound frame must match the original source')
@@ -290,7 +294,11 @@ def source_compound_conflicts(image, room, detections, *, source_grid, source_fr
             or any(not {(x,y),(x+16,y),(x,y+16),(x+16,y+16)} <= textured for x,y in blocks.teachers)
             or any(tuple(p) not in set(blocks.teachers) for model in blocks.models for p in model['source_teachers'])):
         raise ValueError('Block library must contain only original source teachers')
-    query = _ConflictQuery(source_frame,context,original,material,library,blocks,filled)
+    query_type = _ConflictQuery
+    if calibrated_background:
+        from scripts.source_calibrated_conflicts import CalibratedConflictQuery
+        query_type = CalibratedConflictQuery
+    query = query_type(source_frame,context,original,material,library,blocks,filled)
     if query.separation <= 0:
         return set(),{**proof,'abstained':'no source colour separation'}
     query.glyphs()

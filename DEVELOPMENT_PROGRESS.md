@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Public opt-in backdrop implementation reproduces the reviewed scans
+
+Implemented the exact frozen physical-cell artwork plus independent original-
+glyph backdrop combination as an explicit calibrated-background option in the
+compound API. Production no longer needs the prototype's AST extraction or
+monkeypatching. The existing disabled scanner consumer requests this option;
+all four experimental switches remain OFF. Original contexts/filled libraries
+are reused and backdrop construction is lazy, after legacy positives/vetoes.
+No extra body-owner polygons, answer teachers, case/palette branches or new
+thresholds. Covered cells require whole physical pixel squares, including at
+fractional crop borders; an explicit adversarial test protects that distinction.
+
+SourceLocalBackground optionally exposes the coefficients of the same affine
+fit, without changing its ordinary proof/cache. All actual transitive helpers
+are registered: 32 runtime dependencies. Default-path parent AST checks and 72
+complete legacy affine proofs pass. The broader affected suite passes all 353
+UNIQUE tests, NOT the full suite. Two initial sandbox temporary-file permission
+errors pass outside the sandbox without implementation workarounds.
+
+The public API reproduces ENTIRE frozen prototype proofs and decisions for
+Golden2, Halls3 and Golden5. Three fresh ordinary full scans also pass complete
+detection/warning/project/JTool/Blend equality: Golden2 AFTER, Golden5 BEFORE
+and AFTER. The two new-feature wholes reproduce ten and seven false-block
+corrections respectively. Seven are new to this mechanism, not 17 newly invented
+gains. All whole/every-delta source QA carries only through complete source/map/
+metadata/project/render equality. Golden5's original fixed groups now have
+new-feature WHOLE evidence: errors3->1, all13 expected objects/4096 solid pixels
+retained. The remaining error and large room issues remain unapproved.
+
+Auditv56 keeps71 rows/41 default algorithm-evidence carries/30pending/ZERO
+approvals. Runtime bytes DID change; default carries are supported by OFF-path
+equivalence, not falsely labelled unchanged implementation. No default-app
+accuracy gain or new positive recovery is claimed. The app was reloaded with
+the new dependency snapshot and returns root/healthHTTP200; flags remain OFF.
+
+Next: fresh16 exact control wholes, original41/601/139/nongeometry/impostor
+protection qualification, then predeclared quietAC serial whole ABBA on Golden2,
+Golden5 and Halls4. Current accuracy-run times are NOT controlled cost evidence;
+the old timing receipts do not qualify this mechanism. Keep >5% holds explicit.
+Continue real positive compound recovery and the other primary causes; all six
+original goal gates and numerical minima remain active/incomplete.
+
 ## 2026-10-20 — Original-object backdrop calibration passes a reserved source-stage check
 
 Traced the remaining conflict failures without changing thresholds. Primary

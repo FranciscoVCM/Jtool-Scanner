@@ -3045,7 +3045,8 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             source_grid=result.source_grid, source_frame=frame, source_context=original_context,
             source_material=diagnostics['source_material'],
             source_block_library=libraries[0] if libraries else None,
-            source_filled_evidence=original_context.filled_source(original_source_detections, frame))
+            source_filled_evidence=original_context.filled_source(original_source_detections, frame),
+            calibrated_background=True)
         remaining = [d for d in result.detections if (d.type_id, d.x, d.y) not in retired]
         if len(remaining) != len(result.detections):
             result.detections = remaining

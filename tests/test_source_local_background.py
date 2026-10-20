@@ -15,6 +15,21 @@ def library(positions=((160, 160), (256, 192), (352, 224)), affine=True):
 
 
 class SourceLocalBackgroundTests(TestCase):
+    def test_optional_plane_has_exact_legacy_proof_and_separate_cache(self):
+        bg=SourceLocalBackground(library(),lambda value:True)
+        expected=bg.predict(240,320,10)
+        detailed=bg.predict(240,320,10,include_plane=True)
+        extra={'source_affine_coefficients','source_affine_centre'}
+        self.assertEqual({k:v for k,v in detailed.items() if k not in extra},expected)
+        self.assertEqual(bg.predict(240,320,10),expected)
+        self.assertNotIn('source_affine_coefficients',expected)
+        detailed['source_affine_coefficients'][0][0]=999
+        self.assertNotEqual(bg.predict(240,320,10,include_plane=True),detailed)
+
+    def test_plane_diagnostic_option_requires_boolean(self):
+        with self.assertRaises(ValueError):
+            SourceLocalBackground(library(),lambda value:True).predict(240,320,10,include_plane=1)
+
     def test_local_affine_prediction_matches_original_rgb_illumination(self):
         bg = SourceLocalBackground(library(), lambda value: True)
         result = bg.predict(240, 320, 1e-6)

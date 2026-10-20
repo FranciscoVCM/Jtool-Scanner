@@ -35,9 +35,15 @@ class SourceLocalBackground:
                 mean = tuple(sum(v[c] for v in values)/len(values) for c in range(3))
                 self.examples.append(dict(point=(cx, cy), mean=mean, source_anchor=tuple(anchor['key'])))
 
-    def predict(self, x, y, limit):
-        """Return isolated evidence; failed prediction must not justify removal."""
-        key = x, y, limit
+    def predict(self, x, y, limit, *, include_plane=False):
+        """Return isolated evidence; failed prediction must not justify removal.
+
+        Optional coefficients describe the SAME fitted plane. Ordinary callers
+        retain their complete legacy proof and cache key, without extra fitting.
+        """
+        if not isinstance(include_plane, bool):
+            raise ValueError('Plane diagnostics switch must be a boolean')
+        key = (x, y, limit, True) if include_plane else (x, y, limit)
         if key in self.cache:
             return deepcopy(self.cache[key])
         nearby = sorted(self.examples, key=lambda r: (
@@ -84,5 +90,7 @@ class SourceLocalBackground:
         residual = median(residuals)
         result = dict(valid=residual <= limit, prediction=prediction, residual=residual, limit=limit,
                       source_witnesses=chosen, independent_source_regions=len(regions), original_source_only=True)
+        if include_plane:
+            result.update(source_affine_coefficients=coefficients, source_affine_centre=(x, y))
         self.cache[key] = result
         return deepcopy(result)

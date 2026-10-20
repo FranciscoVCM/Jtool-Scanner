@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-21): public opt-in, actual whole parity
+
+The exact frozen source-cell/backdrop expert is now production code behind the
+existing disabled compound consumer; no research AST extraction/monkeypatching,
+extra body-owner polygons, fixed palettes or answer teachers. Original context/
+filled evidence is reused; backdrop construction is lazy after old positives
+and vetoes. Whole physical-square coverage is required at fractional crop edges.
+All32 transitive helpers are registered and all4 default switches remain OFF.
+
+353 unique affected tests PASS, NOT full suite. Complete prototype/public proof
+parity passes G2/H3/G5. Default parent AST equivalence and72 complete legacy affine
+proofs pass. Three fresh ordinary full scans reproduce sealed expected complete
+maps/metadata/projects/JTool/Blend: G2AFTER, G5BEFORE/AFTER. Two new-feature wholes
+carry source QA for every17removed false blocks through ENTIRE artifact equality.
+G5 fixed3->1/13typed/4096solid retained; no new positives or room approvals.
+
+Audit56 retains71rows/41default algorithm-evidence carries/30pending/ZEROapprovals.
+Runtime DID change; do not call this unchanged-source carry or default-app gains.
+Fresh16controls, original41/601/139 protection and quietAC G2/G5/H4 ABBA remain
+pending before activation. Existing timing does not qualify this feature.
+Keep all original positive-recovery/reserve/generalization gates active; this
+conflict repair is not a solution to H3 sky or canonical18 mountain proposals.
+
 ## Newest continuation (2026-10-20): independent backdrop, reserved source-stage gain
 
 The terrain-derived background palette is not a universal sprite-exterior

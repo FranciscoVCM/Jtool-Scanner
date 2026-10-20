@@ -16,6 +16,12 @@ has passed affected tests/source-proof checks, but helper timings are not a
 whole-scan speed pass. Accuracy tests can run on battery; comparable performance
 qualification is deferred until quiet AC power is available.
 
+The disabled compound-conflict experiment now has an explicit calibrated-
+background API. It combines original-pixel artwork cells with backdrop witnesses
+from independently qualified original spikes; terrain colours are not treated
+as universal background labels. This is opt-in research, not default scanner
+activation. Full control and whole-scan cost checks are required before adoption.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and
