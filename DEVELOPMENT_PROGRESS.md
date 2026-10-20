@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Original-object backdrop calibration passes a reserved source-stage check
+
+Traced the remaining conflict failures without changing thresholds. Primary
+residuals do not show the suspected multi-background-centroid mean problem;
+even an invalid diagnostic that omits all geometry-intersecting residual pixels
+does not solve the reserved failures. Requiring the terrain palette's background
+label also yields zero usable exterior witnesses in Golden5. That label is not
+a universal description of the background outside every object sprite.
+
+Froze a separate source-only calibration: exterior patches of original,
+independently body/contour-qualified spikes, excluding original terrain, minis,
+markers, intrinsic cells and verified glyph coverage. Require three OTHER
+disjoint anchors, the existing local affine RGB model, all chosen witness
+residuals inside the unchanged colour bound, and unchanged coverage/rectangle/
+nongeometry/unknown vetoes. No answer teachers, emitted teachers, palette IDs,
+grayscale pass or geometry-only declaration of empty space. Earlier failed
+mechanisms and their original denominators remain preserved.
+
+19 unique focused calibration/composition checks PASS; NOT the full suite.
+Four-way primary ablations add no corrections beyond the previous research
+checkpoint: Golden2 still has its ten experimental removals, Halls3 none.
+Halls3's sky conflicts do not overlap qualified spike polygons; this conflict
+expert is not a solution to those unrelated proposals.
+
+The frozen NEW-mechanism Golden5 reserve produces seven false-block corrections
+through the actual scanner final source stage. Body-owner-only changes nothing;
+independent backdrop calibration produces the gain. Main reviewed the whole room
+and every changed object against Source/current/new/Blend. Original frozen
+structures retain all 13 expected objects and 4,096 solid pixels; actionable
+errors fall from 3 to 1, with no new fixed negatives. No additions or retained
+Detection metadata/nongeometry changes. Source-stage numeric and visual checks
+pass, but this is NOT a new-feature whole-scan/control/cost qualification or an
+enabled app improvement. The remaining error and other large room issues stay.
+
+Auditv55 retains 71 rows, 41 default carries, 30 pending and ZERO approvals.
+Runtime/fixtures are unchanged, all four experimental consumers remain OFF,
+and the original 41/601/139/16 protections carry through unchanged active bytes,
+NOT fresh reruns. The app was restarted after interruption and returns HTTP200
+with loaded/disk source parity. All prototypes, outputs and local QA stay ignored.
+
+Next: implement the EXACT frozen successful combination as opt-in; prove full
+public/prototype parity, affected portable/protected controls, actual feature
+wholes and every-delta QA, then quiet AC whole-scan cost before activation.
+Continue real compound-geometry recovery and the other primary causes as well;
+the original positive-recovery minima and all six goal gates remain incomplete.
+
 ## 2026-10-20 — Source-cell artwork explains additional false block conflicts
 
 Completed a distinct original-material/two-slope experiment across all21,334

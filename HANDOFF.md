@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Newest research calibrates backdrop from exterior patches of original,
+body/contour-qualified spikes rather than reusing terrain palette labels for
+every object. Original-object/intrinsic/glyph exclusions, three OTHER disjoint
+anchors, the existing affine RGB model and unchanged bounds/vetoes remain.
+19 unique focused checks pass (NOT full suite). Primary ablations add no new
+corrections beyond earlier research. A new frozen untuned Golden5 reserve gives
+seven source-reviewed false-block corrections through the actual final source
+stage: original fixed errors3->1, all13 expected objects/4096solid pixels retained,
+no new negatives or retained metadata/nongeometry changes. This numeric+QA
+source-stage pass is NOT feature-whole/control/cost qualification or an enabled
+app improvement. Auditv55 retains41default carries/30pending/ZEROapprovals;
+runtime/fixtures unchanged and all4consumersOFF. The remaining error and other
+large room issues stay. Implement and qualify the exact opt-in mechanism next;
+real positive compound recovery and all six original goal gates remain open.
+Read TOP NEXT_THREAD_HANDOFF for terminal state, frozen evidence and next steps;
+older checkpoint paragraphs below are historical, not superseding this result.
+
 Latest research studies fractional capture alignment in original sprite artwork.
 14 focused checks pass (NOT full suite). In actual source-stage testing Golden2
 loses10 false blocks(2older unshipped+8additional), preserving all other metadata,

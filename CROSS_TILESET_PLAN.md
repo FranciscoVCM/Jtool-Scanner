@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): independent backdrop, reserved source-stage gain
+
+The terrain-derived background palette is not a universal sprite-exterior
+model. A new frozen research expert uses exterior patches of ORIGINAL
+body/contour-qualified spikes, original-object/intrinsic/glyph exclusions,
+three OTHER disjoint anchors and the existing affine RGB fit with unchanged
+bounds/all-witness checks. No unknown-as-empty, geometry-only mixture expansion,
+answer teachers, fixed palette identities or native origin changes.
+
+19 unique focused checks PASS, NOT full suite. Primary four-way ablations yield
+no additional keys beyond prior research: Golden2 ten false blocks, Halls3 none.
+Predeclared NEW-rule Golden5 reserve gives seven actual final-source-stage
+false-block corrections; body-owner-only gives none. Whole/every-delta source QA
+confirms all seven. Frozen errors3->1, all13 typed positives/4096 solid pixels
+retained, no new negatives or retained metadata/nongeometry changes. No retuning;
+old failures stay failed. This is a source-stage numeric+QA pass, NOT full feature
+whole/control/cost qualification, app gains, room approval or a new native cert.
+
+Auditv55:71rows/41default carries/30pending/ZEROapprovals; unchanged runtime and
+four disabled consumers. Original41/601/139/16 protections carry, NOT rerun.
+NEXT implement exact frozen opt-in combination, public/prototype parity,
+feature wholes/protections/controls/QA and quietAC whole cost before activation.
+Do not broaden this triangle-overlap expert to sky/mountain terrain merely to
+force primary gains. Keep real positive compound recovery and all six original
+gates/3rooms2families/8realAND4false requirements active.
+
 ## Newest continuation (2026-10-20): physical-cell conflict evidence, reserve unchanged
 
 Original-material/two-slope experiment:ALL21,334 primary hypotheses, no new keys;

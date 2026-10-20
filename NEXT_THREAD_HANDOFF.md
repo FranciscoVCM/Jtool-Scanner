@@ -13,6 +13,77 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: geometry-qualified backdrop; Golden5 source-stage pass
+
+Parent15874d9acde3c91845e758df5e8f3969db691e7a; verify actual HEAD/liveorigin and
+glyph-backdrop-checkpoint-publication-v1.json after publication. Four rootdocs
+ONLY; no runtime/test/fixture changes. GOAL_PLAN read IN FULL; original goal
+ACTIVE/all six gates and positive-recovery minima remain incomplete.
+Auditv55:71rows/41default carries/30pending/ZEROapprovals/all4consumersOFF.
+
+Private evidence root .artifacts/general-recognition-20261014. The proposed
+multi-BG mean explanation is NOT supported by actual primary observations.
+BG-pixel-footprint-profile-v1.json shows even INVALID omission of every
+geometry-intersecting residual would not fix Golden5. Original globally
+BG-labelled affine witnesses yield ZERO Golden5 samples, despite qualified
+spikes. Do not loosen the mean bound/unknown rules or retry those failed paths.
+
+GLYPH_BACKDROP_FREEZE_v1.md defines a DISTINCT expert: original body/contour-
+qualified spike exteriors teach local backdrop, NOT terrain palette labels.
+Require full physical source, both coherent4x4 exterior patches, original
+terrain/mini/marker/intrinsic/qualified-glyph exclusions, three OTHER disjoint
+anchors outside query context, existing affine fit and ALL chosen witness
+residuals within the unchanged colour bound. Existing conflict vetoes survive;
+physical unknowns stay unknown, geometry area never becomes new RGB ownership.
+The physical-mixture gate is NOT broadened to formerly BG-labelled pixels.
+
+prototype_glyph_backdrop_v1.py / prototype_glyph_backdrop_conflicts_v1.py /
+glyph_backdrop_inputs_v1.py implement the frozen LOCAL research experiment.
+glyph-backdrop-anchor-audit-v2.json includes actual intrinsic exclusions (zero
+intrinsic cells here), accepted31G2/26H3/47G5 anchors. Main viewed9 teacher sources/
+18 exterior patches, NOT every teacher. QA renderer v1 had vertical variable
+shadow/offpanel boxes; v2 corrected separate outputs, original failure retained.
+
+glyph-backdrop-focused-tests-v1.json:19 UNIQUE focused checks PASS6.559s, NOT full
+suite. Prior12/7 runs are the same tests, not additional unique coverage.
+glyph-backdrop-primary-ablations-v1.json:8sealed rows/four modes per primary;
+no additional keys relative previous source-cell research. G2 retains10false
+removals; H3zero. Its sky false blocks do not overlap qualified spike polygons;
+do not force this expert onto them or claim that calibratedBG alone proves empty.
+
+glyph-backdrop-Golden5-reserve-v1.json:NEW pre-frozen untuned four-way reserve,
+original predeclared pool/historically exposed NOT unseen. Legacy/body-owner-only
+remove0; backdrop-only/both remove the SAME7. No variants after this result.
+glyph-backdrop-Golden5-dispatch-v1.json:ACTUAL final scanner source stage with
+backdrop-only (no additional body-owner polygons) removes those7, adds0, changes
+no retained Detection metadata/spikes/nongeometry. Full export artifacts saved.
+Original three fixed groups:13exact/4096solid retained, errors3->1, no new fixed
+negatives. Source-native frame remains reused/conditional, NOT newly certified.
+Main viewed whole/every7delta Source/current/new/Blend: all7 are false rectangles
+crossing genuine spike formations/open corners, real bases/adjacent terrain remain.
+glyph-backdrop-qualification-v1.json binds tests, inference, artifacts and QA.
+This is a numeric+QA SOURCE-STAGE reserve pass, NOT full feature whole/controls/
+cost qualification, enabled app gains or room approval. Third frozen error remains.
+Prior failed Golden5/Halls7 mechanisms remain failed; no denominator changes.
+
+NEXT IMPLEMENTATION BATCH:promote the EXACT frozen successful combination into
+an explicit opt-in API, with portable/adversarial tests and ENTIRE public/private
+proof/decision parity on the frozen tuples. Remove research-only AST extraction
+and monkeypatching from production, share original context/models, register any
+actual new runtime dependency honestly. Keep ordinary behaviour and all4flags
+stable until actual new-feature wholes,41/601/139/16protections,whole/every-delta
+QA and quietAC paired whole latency qualify it. Existing timing receipts do NOT
+qualify this mechanism. Do not spend the next batch repeating old diagnostics or
+merely documenting compatibility. Real positive compound recovery and other
+primary causes are still required for the original3rooms/2families/8realAND4false
+milestone; this reserved negative correction alone does not complete the goal.
+
+All producers TERMINAL; CIM appONLY12120 after interruption restart. App root and
+api/health200,loaded fingerprint336913d31d1ac4dbf80605d5592f0cbf85b78cc8b8d1735a24b4082289242419
+matches disk. Do not restart completed jobs from older LIVE notes. Use v55audit
+and active note; no fresh71+16/default scans this batch. Older protections carry
+through unchanged runtime bytes, NOT rerun. Private images/maps/indexes intact.
+
 ### Current continuation: source-cell conflict experiment, not adopted
 
 Parent cec341ec7233c80a58bb2d6edddd72ff661a17c0; verify actual HEAD/liveorigin and
