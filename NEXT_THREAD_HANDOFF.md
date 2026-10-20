@@ -13,7 +13,77 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: source-frame dominance accuracy-qualified, disabled for timing
+### Current continuation: directional texture accuracy-qualified, cost HOLD; both paths OFF
+
+Parentf6c59958dd8de14ffe6b81d41d57c2578030df5c;verify actual Git/live origin and
+latest publication receipt. Added optional positive-only directional texture:
+three disjoint ORIGINAL same-direction body witnesses in a matched material
+cohort,centered RGB cosine>=.9,all old geometry/paint/tip/instance gates retained.
+No answer teachers,new emission witnesses,room/palette/origin lookup,original
+deletion or duplicate scan. App's interior opt-in always requests this qualified
+version;legacy API defaults remain false. All4 experimental opt-ins stillOFF.
+
+283 UNIQUE affected tests PASS320.541s,NOT full suite;13 new methods. Exact-parent
+OFF/False API AST parity. Actual implementation reproduces frozen prototype on
+37 domains/ALL77 old accepted private candidates:14 retained,63 withheld from
+the UNShipped optional channel,NOT63 default objects deleted. C19's two confirmed
+false fragments withheld;other genuine opposite-direction members may remain
+unknown because original teachers are absent. Do not tune back to those crops.
+
+Ten actual combined source-stage dispatches complete:11 texture additions only,
+Golden7nine/Golden2one/Flamesone;zero removals/retained metadata changes versus
+old frame results. C25/C27 are ENTIRE equal to previous frame-only research.
+Five actual whole scans reproduce complete metadata/project/JMap/JTool/Blend and
+source-review predictions. Flames255exact,42extras/18misses/20shifts/2wrong.
+Halls7/Golden5 sixth/seventh wholes are ENTIRE equal;Halls7's three earlier
+contributions preserved,NOT new successful reserves. Original41/601/139/16
+protections PASS with unchanged definitions. All57 saved routes accounted for:
+37 fixed domains/two exposed whole safeguards/18 early bypasses;30 still pending.
+All changed rooms remain MAJOR and unapproved.
+
+Private evidence root:.artifacts/general-recognition-20261014.
+directional-texture-{tests,domains,default-parity,target-wholes,source-QA}-v1.json;
+dispatch is directional-texture-dispatch-v5.json. Prior replay attempts preserved:
+tuple/list driver mismatch;tool interruption after two rows (PID absence verified);
+wrong use of selected output rather than original input extent;E2 project path
+comparison fixed ONLY after byte-identical source-content verification. Reuse
+sealed rows,do not rescan the archive/baseline or erase failures. Current actual
+whole outputs match all intended source-stage results. New app hidden process
+loads tested files;root/health200 and loaded==disk verified (recheck on resume).
+Additional receipts:directional-texture-numerical-protections-v2.json,
+directional-texture-route-coverage-v1.json and Halls7/Golden5-equality-v1.json.
+Numericv1 stopped on a genuinely unbound Golden5 route;the added current whole
+closes it rather than dropping any old definition. Failure record preserved.
+
+Cost TERMINAL/HOLD,not live:FRAME_TEXTURE_WHOLE_COST_FREEZE_v2.md /
+frame-texture-whole-cost-v2.json. First denseC25 exact262b356 hook/pipeline BEFORE
+vs current BOTH-ON AFTER,serial quietAC ABBA;all4 samples preserve ENTIRE expected
+outputs. Before99.727/91.132s,after102.175/98.329s;medians95.430->100.252,+5.053%.
+Just above frozen5% threshold;do NOT round into a pass. Golden7/Halls4 samples
+unrun,so overall cost gate incomplete. Visible before/after spread merits
+attribution/variance investigation,not a hardware-error claim or favorable rerun.
+Older deferred+24.1615% HOLD remains separate/unwaived. All accuracy workers and
+timing worker TERMINAL. Reuse sealed results;do not repeat occupied paths.
+
+Next bounded batch:freeze a return-value-preserving whole or source-stage
+call/CPU attribution on the actual C25 combined path,with ENTIRE output equality.
+Distinguish frame-selection/changed geometry work from optional interior queries
+before choosing an optimization. No new threshold/teacher/room rule;prefer cache
+reuse or logically necessary early qualification if evidence proves waste.
+Requalify positive/negative decisions and outputs after any edit,then separately
+freeze new serialAC whole cost. Do not weaken5% or call helper timings whole cost.
+No runtime/HEAD edits while producers live;no additional scan jobs during cost.
+
+Auditv51:71 rows,41 default semantic carries/30pending/ZERO approvals;five changed
+research wholes/two ENTIRE-equal exposed safeguards,NO new default app gain.
+No archive/baseline resweep or new images needed. App source parity verified;
+recheck listener/health on resume. Publish reviewed OFF checkpoint normally.
+
+No new compatible reserve success/native calibration/final stable71+16 or goal
+completion yet. Keep full GOAL_PLAN/six gates and immutable B235 definitions.
+Do not substitute suppression-only or report-writing for positive/general repair.
+
+### Previous continuation: source-frame dominance accuracy-qualified, disabled for timing
 
 Parent262b356. Verify actual Git/live origin/publication receipt rather than
 assuming this parent is HEAD. New source_frame_arbitration API preserves EVERY

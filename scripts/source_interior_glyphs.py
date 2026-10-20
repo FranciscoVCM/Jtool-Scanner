@@ -47,9 +47,12 @@ def _normalized(values):
 class SourceInteriorGlyphEvidence:
     """One frozen original frame/model domain; proofs are independent copies."""
 
-    def __init__(self, filled, original_detections, *, source_grid):
+    def __init__(self, filled, original_detections, *, source_grid,
+                 require_directional_texture=False):
         if not isinstance(filled, FilledGlyphEvidence):
             raise ValueError('Interior glyphs need actual original filled evidence')
+        if not isinstance(require_directional_texture, bool):
+            raise ValueError('Directional texture requirement must be a boolean')
         original = tuple(original_detections)
         spikes = tuple(sorted({(d.type_id, d.x, d.y) for d in original
                                if 3 <= d.type_id <= 6}))
@@ -84,6 +87,69 @@ class SourceInteriorGlyphEvidence:
                 self._cohorts.append(teachers)
                 seen.add(teachers)
         self._body_cache, self._teacher_cache, self._model_cache, self._results = {}, {}, {}, {}
+        self._require_directional_texture = require_directional_texture
+        self._texture_originals = frozenset(k for cohort in self._cohorts for k in cohort)
+        self._texture_vectors, self._texture_models = {}, {}
+
+    def _texture_vector(self, key):
+        body = self._body(key)
+        if body is None:
+            return None
+        mean = _mean(body)
+        values = tuple(v-mean[c] for rgb in body for c, v in enumerate(rgb))
+        return _normalized(values) if any(values) else None
+
+    def _directional_texture(self, key, model):
+        """Additional positive evidence, never an original-object veto.
+
+        Material colour alone cannot identify a crop of a repeated sprite. A
+        directional residual prototype must be mutually corroborated by three
+        disjoint ORIGINAL bodies in this same material cohort. Flat, unmatched
+        or differently drawn sprites abstain; the ordinary channels stay intact.
+        """
+        teachers = tuple(map(tuple, model['teachers']))
+        if not set(teachers) <= self._texture_originals:
+            raise ValueError('Directional texture teachers must be original source witnesses')
+        identity = key[0], teachers
+        if identity not in self._texture_models:
+            candidates = []
+            for teacher in teachers:
+                if teacher[0] != key[0]:
+                    continue
+                if teacher not in self._texture_vectors:
+                    self._texture_vectors[teacher] = self._texture_vector(teacher)
+                if self._texture_vectors[teacher] is not None:
+                    candidates.append(teacher)
+            cliques, seen = [], set()
+            for seed in sorted(candidates):
+                clique = [seed]
+                for teacher in sorted(candidates):
+                    if teacher == seed:
+                        continue
+                    if all((abs(teacher[1]-other[1]) >= 32 or abs(teacher[2]-other[2]) >= 32)
+                           and sum(a*b for a, b in zip(self._texture_vectors[teacher],
+                                                       self._texture_vectors[other])) >= .9
+                           for other in clique):
+                        clique.append(teacher)
+                clique = tuple(sorted(clique))
+                if len(clique) < 3 or clique in seen:
+                    continue
+                seen.add(clique)
+                template = _normalized(tuple(sum(self._texture_vectors[t][i] for t in clique)/len(clique)
+                    for i in range(len(self._texture_vectors[seed]))))
+                cliques.append((clique, template))
+            self._texture_models[identity] = tuple(cliques)
+        body = self._texture_vector(key)
+        matches = []
+        for witnesses, template in self._texture_models[identity]:
+            if any(abs(key[1]-t[1]) < 32 and abs(key[2]-t[2]) < 32 for t in witnesses):
+                continue
+            if body is not None:
+                matches.append(dict(teachers=witnesses, correlation=sum(a*b for a, b in zip(body, template))))
+        return dict(passed=any(row['correlation'] >= .9 for row in matches),
+                    qualified_models=len(self._texture_models[identity]), query_known=body is not None,
+                    models=matches, no_model_is_unknown_not_absence=True,
+                    original_teacher_minimum=3, cosine_bound=.9)
 
     def _body(self, key):
         if key not in self._body_cache:
@@ -191,6 +257,10 @@ class SourceInteriorGlyphEvidence:
             return {**proof, 'abstained': 'unqualified grid/world frame'}
         if not self.frame.rectangle_available(x, y, 32, 32, margin=4):
             return {**proof, 'unknown': True, 'abstained': 'incomplete original source footprint'}
+        if self._require_directional_texture and not any(
+                sum(t[0] == kind for t in cohort) >= 3 for cohort in self._cohorts):
+            return {**proof, 'unknown': True,
+                    'abstained': 'no independent original same-direction texture teachers'}
         body = self._body(key)
         if body is None:
             return {**proof, 'unknown': True, 'abstained': 'insufficient independent original body pixels'}
@@ -246,10 +316,15 @@ class SourceInteriorGlyphEvidence:
                 tip = self._tip_support(key, model)
                 if not tip['passed']:
                     continue
+                texture = self._directional_texture(key, model) if self._require_directional_texture else None
+                if texture is not None and not texture['passed']:
+                    continue
                 best = dict(correlation=correlation, mean_RGB_error=error,
                             mean_RGB_limit=model['limit'], original_teachers=teachers,
                             known_exterior_background_pixels=len(known_background),
                             source_paint=paint, source_tip=tip)
+                if texture is not None:
+                    best['directional_source_texture'] = texture
         if best is None:
             return {**proof, 'abstained': 'no independent source interior appearance',
                     'independent_body_samples': len(INTERIOR_POINTS)}

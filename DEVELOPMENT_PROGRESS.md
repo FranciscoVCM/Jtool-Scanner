@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Original-direction texture corroborates an additional positive channel
+
+Implemented optional source-local RGB texture corroboration for the previously
+disabled interior recovery path. It requires three disjoint ORIGINAL witnesses
+of the same spike direction, mutually agreeing within the existing appearance
+cohort. Centered RGB residuals retain isoluminant evidence and tolerate small
+sprite changes; flat/unmatched evidence abstains. The old full geometry, paint,
+background, tip and instance checks remain necessary. No stored game sprite,
+room/hash/palette/origin rule, answer teacher, original-object veto or grayscale
+second scan. Ordinary/hollow/filled channels are unchanged.
+
+283 unique affected tests PASS in320.541s, NOT full suite. Thirteen new methods
+cover directions, palette/polarity/brightness, fractional scale, cropped-world
+unknowns, modest sprite variation, impostor paint rearrangement, original-only
+teachers and integration. Default-OFF and legacy False APIs have exact-parent
+AST parity. Actual API decisions equal the frozen prototype across37 domains /
+all77 previously accepted private candidates:14 retained,63 withheld ONLY from
+that unshipped channel, not63 existing object deletions. Both confirmed CN3-19
+fragment mistakes are withheld; missing independent teachers remain a limitation.
+
+Ten actual combined frame/interior source-stage replays produce exactly11 new
+texture poses:Golden7nine,Golden2one,Flamesone. No removals/retained metadata
+changes versus the prior frame outputs. Five actual complete scans reproduce
+the entire predictions and main-reviewed Source/JTool/Blend artifacts. C25/27
+preserve the earlier frame-only9/5 poses and one image-box update. Flames exact
+254->255, extras42/shifts20/wrong2 unchanged, misses19->18. A sixth exposed Halls7
+whole is ENTIRE-equal and retains its three earlier contributions;another Golden5
+whole is ENTIRE-equal too. Neither is a new reserve success. All changed rooms
+remain MAJOR/unapproved; old wrong originals remain.
+
+Original41/601/139/16 numerical protections PASS with unchanged definitions.
+Saved-route coverage is57:37 fixed domains,two additional exposed whole scans,
+18 compact/other-grid early bypasses;the other30 remain pending. Controlled
+combined quietAC ABBA completed the first dense case:95.430->100.252s median,
++5.053%,just ABOVE the frozen5% threshold. HOLD for attribution/variance
+investigation;Golden7/Halls4 timing samples were NOT run. All four opt-ins remain OFF:these are research
+outputs,not new default-app gains. No all71/future-sprite accuracy or milestone
+completion claim. Current localhost200/loaded-source parity is independently
+verified; private artifacts remain ignored. Auditv51 keeps41 default semantic
+carries/30pending/ZERO approvals,separate from five changed research wholes and
+two equality safeguards. Read TOP NEXT_THREAD_HANDOFF;the goal remains active.
+
 ## 2026-10-20 — Object-backed frame arbitration qualified for accuracy, not enabled
 
 Implemented a conservative choice between the already offered world frame and

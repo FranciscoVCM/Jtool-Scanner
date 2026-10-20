@@ -332,7 +332,7 @@ def distinguish_filled_instances(proposed, original_detections, evidence):
 def recover_source_filled_glyphs(frame, original_detections, *, source_library=None,
                                  terrain_neighbors=True, short_circuit=True,
                                  joint_phase=False, capture_base=False, source_context=None,
-                                 interior_grid=None):
+                                 interior_grid=None, interior_texture=False):
     """Return new source-proved full poses and proofs; never remove originals."""
     if not isinstance(short_circuit, bool):
         raise ValueError('Filled short-circuit flag must be a boolean')
@@ -342,6 +342,10 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
         raise ValueError('Capture-base flag must be a boolean')
     if interior_grid is not None and interior_grid != (25, 19):
         raise ValueError('Interior recovery requires a qualified25x19 source frame')
+    if not isinstance(interior_texture, bool):
+        raise ValueError('Interior texture requirement must be a boolean')
+    if interior_texture and interior_grid is None:
+        raise ValueError('Interior texture requires interior recovery')
     original = tuple(original_detections)
     existing = {(d.type_id, d.x, d.y) for d in original}
     evidence = FilledGlyphEvidence(frame, original, source_library=source_library)
@@ -373,7 +377,8 @@ def recover_source_filled_glyphs(frame, original_detections, *, source_library=N
         if interior_grid is not None and not proof['passed'] and not proof.get('unknown', False):
             if interior_evidence is None:
                 from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence
-                interior_evidence = SourceInteriorGlyphEvidence(evidence, original, source_grid=interior_grid)
+                interior_evidence = SourceInteriorGlyphEvidence(evidence, original, source_grid=interior_grid,
+                    **({'require_directional_texture': True} if interior_texture else {}))
             supplemental = interior_evidence.support(key)
             if supplemental['passed']:
                 proof = {**supplemental, 'interior_appearance_recovery': True,

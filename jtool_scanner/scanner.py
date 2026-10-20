@@ -3007,7 +3007,8 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                        include_filled_joint_phase=True,
                                                        **({'include_filled_capture_base': True}
                                                           if _CAPTURE_BASE_CONTEXT_ENABLED else {}),
-                                                       **({'include_filled_interior': True}
+                                                       **({'include_filled_interior': True,
+                                                           'include_filled_interior_texture': True}
                                                           if _SOURCE_INTERIOR_GLYPHS_ENABLED else {}),
                                                        **{**frame_options, **deferred_options, **compound_options})
     # Retired keys must not re-enter from a proposal set. Preserve every surviving

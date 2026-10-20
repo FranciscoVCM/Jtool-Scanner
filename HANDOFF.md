@@ -6,6 +6,22 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Newest research batch adds optional original-direction RGB texture corroboration
+to the disabled interior channel,not a global object veto or stored tileset rule.
+283 affected tests PASS,not full suite;default/legacy API AST parity verified.
+Ten source-stage replays and five complete scans qualify11 additional poses:
+Golden7nine/Golden2one/Flamesone. Whole/every-delta source reviews bind through
+complete artifact/source equality. C25/C27 retain the previous frame results;
+additional Halls7/Golden5 wholes are ENTIRE-equal,not new reserve successes. Flames exact255,
+42extras/18misses/20shifts/2wrong. All rooms remain unapproved with old defects.
+Both C19 fragments are withheld from this additional path;no63-default-object
+deletion claim from the77->14 private candidate screen. Original41/601/139/16
+protections PASS;all57 saved routes accounted for,30 pending. All4 opt-ins remainOFF
+after first controlled dense cost95.430->100.252s (+5.053%) exceeded the frozen5%
+threshold. Other timing cases unrun;investigate before adoption. Auditv51 retains
+41 default carries/30pending/ZERO approvals;no new default-app gain.
+Read TOP NEXT_THREAD_HANDOFF for live evidence rather than older entries below.
+
 New research checkpoint: conservative source-frame arbitration is implemented
 but DISABLED pending controlled whole-scan timing. It preserves every offered
 original-object proof and needs three disjoint, non-collinear physical witnesses.

@@ -1,5 +1,33 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): positive directional texture, qualified research outputs
+
+An optional necessary-AND source texture check now restricts the unshipped
+interior path to three disjoint original SAME-direction RGB witnesses. It does
+not veto ordinary detections or use emitted objects/references as teachers.
+Raw geometry/background/paint/tip/instance checks remain required. Flat or
+unmatched sprites abstain; no full grayscale pass or fixed tileset palette.
+
+283 unique affected tests PASS,not full suite; exact-parent default/False API
+AST parity. Across37 frozen domains/77 old private candidates,14 remain and63
+are withheld,including both confirmed C19 fragments. This is NOT deletion of63
+default objects. Ten actual source-stage replays and five matching complete
+scans qualify11 additional texture poses:G7+9,G2+1,Flames+1. Main source review
+carries only through complete matching artifacts/source bytes. C25/C27 retain
+the earlier frame-only outputs. Halls7/Golden5 extra wholes are ENTIRE-equal,
+not new reserve successes. Original41/601/139/16 protections PASS;all57 saved
+routes accounted for (37 domains/two exposed wholes/18 bypasses),30 still pending.
+Flames255 exact,42 extras/18 misses/20 shifts/2wrong;rooms still MAJOR.
+
+All4 experimental paths remain OFF. The predeclared denseC25/denseG7/sparseHalls4
+serial quietAC whole cost completed C25:95.430->100.252s,+5.053%,HOLD above5%.
+Other two timing cases unrun;do not call the whole cost gate passed. Attribute
+the added work/investigate variance before adoption,without weakening evidence
+or choosing a favorable rerun. Auditv51:41 default carries/30pending/zero approvals.
+No new default-app gain or all71 approval. Sparse/nonrepeated or
+substantially different sprite bodies and missing original teachers remain
+unresolved;this is source-local corroboration,not universal recognition.
+
 ## Newest continuation (2026-10-20): frame prototype accuracy-qualified, OFF for cost
 
 Original-object set dominance, not a majority score, now qualifies an existing
