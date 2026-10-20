@@ -1,5 +1,33 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-20): physical-cell conflict evidence, reserve unchanged
+
+Original-material/two-slope experiment:ALL21,334 primary hypotheses, no new keys;
+not adopted/retuned. Next distinct sampling experiment accounts for fractional
+capture alignment with actual covered2x2 raw RGB cells, not colour boxes or a
+wider collision halo. Three OTHER independent original sprite teachers must each
+support observed RGB in their local convex hull under unchanged distance/pairwise
+limits. Old conflict/knownBG/mean/zero-unexplained/veto guards remain unchanged.
+
+14 focused checks PASS, NOT full suite. Actual Golden2 source-stage output removes
+10 false blocks(2older unshipped+8new), retaining every spike/nongeometry/other
+Detection metadata. Whole/every-delta source-reviewed. Fixed central10errors3->0,
+exact10/solid4096 retained; lower-left37errors6 unchanged,exact37/solid28672
+retained. NO new full scanner run with this mechanism, app gain or room approval.
+
+Predeclared NEW-rule Golden5 reserve unchanged13exact/3errors/4096solid. Fresh
+ENTIRE-equal ordinary observer saved current original inputs; source-stage replay
+does not satisfy reserve minima. Do not relax BG-mean/unknown checks to pass it.
+Investigate their original source/model evidence and independent primary or
+portable mixed-background counterexamples before asserting a calibration defect.
+CN3-18's offered world mapping remains unqualified by the compound API.
+
+Auditv54:41 default carries/30pending/ZERO approvals; all active bytes/4OFF flags
+unchanged. New-feature full controls/actual wholes/controlledAC cost remain open;
+old cost receipts do not qualify it. Original protections retained, NOT rerun.
+Prototype/failure/source evidence stays ignored locally; no scanner/fixture change.
+Keep all six gates and the full positive+negative/reserve objectives unchanged.
+
 ## Newest continuation (2026-10-20): background-decoupled body research; reserve no gain
 
 Concrete Halls3 cause: matching spike body was rejected because unrelated sky

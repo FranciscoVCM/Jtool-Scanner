@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Latest research studies fractional capture alignment in original sprite artwork.
+14 focused checks pass (NOT full suite). In actual source-stage testing Golden2
+loses10 false blocks(2older unshipped+8additional), preserving all other metadata,
+spikes/nongeometry and32768 protected solid pixels. Original central10 errors3->0;
+lower-left37 errors6 unchanged. Whole/every-delta source QA complete, but this is
+not a new-feature whole scan or app gain. NEW-rule Golden5 reserve remains
+13exact/3errors/4096solid, unsuccessful and not retuned. Auditv54 keeps41 default
+carries/30pending/ZERO approvals. All runtime bytes/4OFF flags unchanged; no
+implementation/fixture changes. Held prototypes remain local/ignored. Actual
+wholes/full controls/controlled cost/adoption and full goal gates remain open.
+Read TOP NEXT_THREAD_HANDOFF for exact evidence and the next causal investigation.
+
 Latest research separates original spike-body identity from unrelated background
 colours: an UNBOUND API combines original directional RGB texture with coherent
 directed contour geometry, preserving the old strict positive proofs.60 focused

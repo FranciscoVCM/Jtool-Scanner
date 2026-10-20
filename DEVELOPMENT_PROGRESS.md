@@ -4,6 +4,50 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Source-cell artwork explains additional false block conflicts
+
+Completed a distinct original-material/two-slope experiment across all21,334
+primary hypotheses including originals. It produced no additional object keys;
+Halls3's seven frozen cyan spikes all abstained. Preserved, not promoted or
+retuned. This is not a new recovery claim from already-detected objects.
+
+Investigated exact-point artwork matching across fractional capture alignment.
+The frozen research alternative compares observed RGB with the convex hull of
+at most four covered raw pixel-centre neighbours at the SAME oriented point on
+each of three OTHER independent original sprite teachers. Existing distance and
+pairwise limits remain; exact-point positives win first. No RGB-box shortcut,
+whole foreground/background colour segment, padded samples, collision halo,
+new teacher, unknown-as-background classification or changed conflict veto.
+
+14 unique focused math/sampling/witness checks PASS, NOT full suite. Actual
+Golden2 final source-stage output removes10 false blocks: two from the older
+UNSHIPPED compound path plus eight additional sampling repairs. No added objects,
+retained metadata, spike or nongeometry changes. Main reviewed whole and every
+removed-block Source/current/new/Blend view. The original central10 structure
+retains10 exact and4096 solid pixels, errors3->0; original lower-left37 retains
+37 exact/28672 solid pixels and six errors, unchanged. Total32768 protected solid
+pixels retained. Other large room errors remain; this is not room approval.
+
+A fresh Golden5 ordinary-equivalent whole preserved ENTIRE current artifacts and
+captured its genuine incoming tuple. The predeclared NEW-rule reserve's actual
+source-stage comparison gives no improvement:13 exact/3 errors/4096 solid pixels
+unchanged. No successful reserve or retuning. Its unknown/background-mean vetoes
+remain; in two fixed conflicts there are no remaining FG/unknown pixels but the
+background mean still fails its limit. That observation does NOT prove the limit
+wrong or authorize loosening it. Verify original pixel/model distributions and
+independent primary/synthetic counterexamples before choosing the next mechanism.
+
+CanonicalCN3-18 keeps the existing compound API's world-frame decline, never
+reinterpreted as direct. Preserved driver failures and completed stages: wrong
+input lookup, missing adapter namespace, and an explicit world-frame scope guard.
+Two sealed source stages were reused after exact hashes rather than rescanned.
+Auditv54 keeps71 rows/41 default carries/30pending/ZERO approvals. All runtime
+bytes and4 disabled flags unchanged; no new app gains, actual new-feature wholes,
+full controls or controlled-cost qualification. No code/fixture changes this
+checkpoint; held prototypes and outputs remain ignored local evidence. Original
+41/601/139/16 scopes carry through unchanged runtime, NOT newly rerun controls.
+All six goal gates and original numerical minima remain active/incomplete.
+
 ## 2026-10-20 — Separate spike-body evidence from unrelated background colours
 
 Traced a genuine missing Halls3 spike through original proposals and source

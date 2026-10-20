@@ -13,6 +13,64 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: source-cell conflict experiment, not adopted
+
+Parent cec341ec7233c80a58bb2d6edddd72ff661a17c0; verify actual HEAD/liveorigin and
+raster-cell-checkpoint-publication-v1.json. No runtime/test/fixture edits this
+checkpoint. Main read GOAL_PLAN IN FULL; all six original gates/minima remain.
+Auditv54:71 rows/41 default carries/30pending/ZERO approvals; all4 flagsOFF.
+
+Private evidence root .artifacts/general-recognition-20261014. FIRST alternative
+own-material-primary-domains-v1.json/assessment-v1.json is TERMINAL/no new keys
+across21,334 finite primary hypotheses incl originals. Do not promote, retune or
+count already-detected objects as recoveries. Halls3's frozen7 cyan fulls abstain.
+
+Next distinct prototype uses exact physical bilinear cells to explain ORIGINAL
+sprite artwork when capture alignment differs. At SAME oriented relative point,
+actual RGB must fit local covered2x2 raw-colour convex hulls of3OTHER independent
+original teachers, with old distance/pairwise limits. No RGB range-box/wholeFG-BG
+segment/padding/3x3 search/collision dilation/new teacher/unknownBG relabelling.
+Old exact-point positives and every conflict veto/knownBG/mean/all-pixel guard
+remain. RASTER_CELL_ARTWORK_FREEZE_v1.md is the frozen specification;
+prototype_raster_cell_artwork_v1.py and observe_raster_cell_artwork_v1.py
+implement it locally. It is NOT in public runtime.
+
+raster-cell-qualification-v1.json:14 UNIQUE focused checks PASS, NOT full suite;
+main whole/every10delta Source/current/new/Blend QA.
+raster-cell-Golden2-dispatch-v3.json actual stages reproduce current output, old compound removes2,
+new cells removes10 total, zero added/retained-metadata/spike/nongeometry changes.
+Eight are additional source-confirmed false rectangles, not10 NEW shipped fixes.
+fixed-structures-v1.json:original central10exact10/4096solid/errors3->0; original
+lower-left37exact37/28672solid/errors6 UNCHANGED. Positive32768 retained. Rooms
+remain MAJOR; no new-feature full scanner run or app binding/cost qualification.
+
+raster-cell-Golden5-original-input-v1.json:one actual ENTIRE-equal ordinary whole,
+fresh original before-source tuple, no answer teachers. NEW-rule reserve-v1.json
+two actual source-stage replays unchanged13exact/3errors/4096solid, NO reserve
+success/no tuning. Old failed mechanisms preserved. Two frozen false conflicts
+have zero remainingFG/unknown but meanBG errors38.242/31.245 versus19.674 limit;
+the third retains29unknown. This DOES NOT prove the guard wrong or permit relaxing
+it. No new native cert; canonicalC18 is an actual existing-world API decline,
+not secretly reinterpreted direct. Full stable71+16 and shipped gains remain open.
+
+Preserved failures:world-scope assertion after2sealed domains(v2 reuses both and
+verifies actualAPIdecline); wrong Golden2 input lookup before any stage(v1);
+missing compound module in adapter namespace(v2 actual replay). Corrected adapter
+v2 passes8 new witness tests; dispatchv3 reuses two sealed current/old stages and
+executes only the corrected final stage. Runtime/source/producer/artifact hashes
+remain bound. Do NOT restart completed jobs from historical LIVE notes below.
+
+NEXT:inspect precise original pixel/model distributions behind background-mean
+vetoes and unexplained source artwork in PRIMARY frozen structures. Determine
+whether averaging different independently known BG materials is a real general
+sampling/model cause, using independent portable/primary counterexamples; do not
+change the mean limit or mark unknown empty just to fix Golden5. Retain existing
+37+10 scopes/positives and source-native uncertainty. Any new predicate needs a
+separate freeze, compatible predeclared reserve, portable/adversarial checks and
+actual source/whole/all-delta/protection/cost qualification before activation.
+Do not substitute more report-only compatibility work or easy controls for the
+requested positive geometry gains. All original goal requirements stay ACTIVE.
+
 ### Current continuation: background-decoupled body API UNBOUND; Halls7 no gain
 
 Parent ebabbffd56964ee6d36ca9908adea3b06700b2f4; verify actual HEAD/liveorigin and
