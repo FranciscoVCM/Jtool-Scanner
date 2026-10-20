@@ -13,7 +13,50 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: world-frame consistency qualified OFF; fragment negatives confirmed
+### Current continuation: failed background hypothesis; mixed-frame cause traced
+
+The reviewed ten-file frame-consistency checkpoint is published as
+b9172c496b456bc57cd15657c841ac2fbf566149. Its204 affected tests/eight world
+domains/three private wholes/source and numerical QA remain valid at their stated
+scope; all experimental flagsOFF. See extended-interior-publication-v1.json.
+Root/health200 and loaded==disk28e5a486c489b5b9083c5ec620896e7283cea50d1aaa5984b38307308c2240c1
+verified after actual restart. No new DEFAULT accuracy gain or room approval.
+
+Read-only background-tip-paints-v1.json is TERMINAL:37 prior-qualified domains,
+ALL77 previously accepted candidates rechecked. Requiring original teacher
+background paints at existing coherent tips/existing RGB limit rejects ZERO,
+including both human-confirmed false C19 fragments. FAILED discrimination; do NOT
+implement this redundant cost. No new threshold, teacher, runtime edit or reserve
+query. Initial diagnostic preflight included compact rows and failed before any
+queries/output; corrected25x19-only plan completed without environment workaround.
+
+One actual ordinary CN3-27 scan, C27-capture-provenance-trace-v1.json, returns
+ENTIRE prior ordered detections/warnings/options/source/crop/grid/project/JMap/
+JTool/Blend unchanged. Return-value-preserving observers record30 stage events.
+C27-capture-provenance-analysis-v1.json locates17 old poses:15 come unchanged from
+the physical-source branch, two from later physical-source material recovery,
+NONE from canonical branch. All17 remain unchanged through final source evidence,
+which evaluates original-source keys using a DIFFERENT inferred world frame.
+This is a causal registration mismatch, not proof that17 alternatives are right.
+Do not make a blanket8px correction or assume frame consistency is registration.
+
+Next bounded batch: freeze/measure original object evidence under physical and
+inferred-world frames across the existing eight world domains. Preserve both
+branches/metadata and compare real objects, not just a repeated-texture lattice
+score; no reference/known-coordinate answers in a detector. Protect successful
+capture-normalization cases, physical marker origins, FTFA/Flames and true partial
+spikes. Keep C19 fragment identity and other primary-room causes separate; no
+claim that registration alone solves all unfamiliar tilesets. No new images needed.
+
+Auditv48:one fresh unchanged DEFAULT scan/40 OFF-semantic carries/30pending/
+ZERO approvals, prior QA only by ENTIRE equality, not a new visual review. The
+confirmed C19 templates/display caveat remain evaluation-only; two false private
+poses are NOT fixed, three C21 questions remain UNKNOWN. Source-positive gains,
+successful reserve, extended-frame cost and final71+16/all six gates remain open.
+Private active note is DEFERRED_VETO_ACTIVE_v1.md; its NEWEST top supersedes older
+LIVE entries. Trace exec7815/PID26860 is TERMINAL, not a hung/still-running scan.
+
+### Previous continuation: world-frame consistency qualified OFF; fragment negatives confirmed
 
 Parent5542f88. Actual Git/live origin and latest publication receipt are authority.
 The interrupted six-file change qualifies explicit25x19 original-world frames:

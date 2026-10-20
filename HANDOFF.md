@@ -6,6 +6,14 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-20
 
+Published frame checkpoint b9172c496b456bc57cd15657c841ac2fbf566149;204 affected
+tests pass, app source parity verified. Subsequent read-only background-paint
+hypothesis rejects none of77 candidates and does NOT fix C19 fragment errors.
+One fresh unchanged C27 ordinary trace localizes physical-source/world-coordinate
+provenance disagreement. Auditv48:one fresh default scan/40 carries/30pending,
+ZERO approvals;no new APP accuracy gain. Next qualify object-backed registration,
+without blind8px shifts or using reference coordinates as detector answers.
+
 Latest: consistently bound original-world25x19 sampling is qualified in the
 DISABLED interior channel; compact mappings and all measurement thresholds remain
 unchanged.204 unique affected tests pass, not full suite. Three actual private

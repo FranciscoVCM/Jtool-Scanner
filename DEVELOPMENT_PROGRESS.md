@@ -4,6 +4,29 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-20 — Negative hypothesis rejected; capture-coordinate cause localized
+
+Published b9172c496b456bc57cd15657c841ac2fbf566149:reviewed frame qualification,
+204 affected tests, default-OFF behavior retained. App restart/source parity,
+live origin equality/clean Git and private-index preservation verified.
+
+Read-only necessary-AND probe across37 prior-qualified domains/ALL77 accepted
+candidates rejects none, including the two human-confirmed C19 fragment mistakes.
+Original taught background paints therefore do NOT solve this ambiguity. No
+recognition edit, extra runtime cost, weaker threshold or new teacher was added.
+
+Fresh ordinary C27 scan with30 return-value-preserving observer events reproduces
+ENTIRE ordered metadata/map/options/source/project/JMap/JTool/Blend. Of17 old
+poses opposed by8px world alternatives,15 originate in physical-source branch,
+two in later physical-source recovery,NONE in canonical branch. Final evidence
+uses a different inferred world frame. This localizes a registration mismatch;
+it does not prove alternative coordinates or authorize blind original retirement.
+
+Auditv48:one fresh unchanged default scan/40 equality-backed OFF carries/30pending,
+ZERO approvals, no newAPPgain. Prior visual QA only by complete equality. Next
+compare object-backed physical/world registration across original world domains;
+keep fragment identity/primary-room causes and all original goal gates separate.
+
 ## 2026-10-20 — Original-world interior routing OFF; registration and fragment risks explicit
 
 Qualified explicit25x19 extended SourceFrames only when library/raw/contours all

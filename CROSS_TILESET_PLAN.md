@@ -1,6 +1,22 @@
 # Cross-tileset milestone
 
-## Current continuation (2026-10-20): consistency is not registration or object identity
+## Current continuation (2026-10-20): object-backed registration before pose changes
+
+Original-background-paint support at tips FAILED discrimination:37 domains/ALL77
+previously accepted candidates remain, including both confirmed C19 false crops.
+Do not add this redundant work or call it a fix. No recognition/runtime edit.
+
+An ordinary C27 trace preserves the ENTIRE old output/metadata/artifacts.15 of17
+old poses come from physical-source detection,two from later physical-source
+recovery,NONE from canonical branch. Final source evidence uses a different
+inferred world. Qualify physical/world registration against original object
+evidence before changing poses or trusting repeated-texture lattice scores alone.
+This cause is distinct from C19 fragment identity and other primary-room errors.
+Auditv48:one fresh unchanged DEFAULT scan/40 carries/30pending/ZERO approvals;
+all experimental pathsOFF,no newAPPgain. Successful reserve/cost/final71+16 and
+all six gates stay open. See TOP NEXT_THREAD_HANDOFF for precise next bounded work.
+
+## Previous continuation (2026-10-20): consistency is not registration or object identity
 
 The disabled interior path now accepts consistently bound original-world25x19
 frames, retaining original RGB/unknown handling and all measurement predicates.
