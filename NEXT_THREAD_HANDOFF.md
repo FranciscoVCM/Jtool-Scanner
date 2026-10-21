@@ -15,6 +15,45 @@ latest active note and audit named below. Preserve the existing goal/baseline.
 
 ### Current continuation: bounded late original-primary recovery, default OFF
 
+LATEST: additional late-capture implementation; check actual HEAD/live origin
+and TOP DEFERRED_VETO_ACTIVE_v1.md for live workers before runtime/HEAD edits.
+Current runtime f322d770; six new caller-wiring tests and63 unique focused
+methods PASS (142.548s), not all old380/full suite. Helper executable proof AST
+unchanged, all old DEFAULT scanner AST equal after explicit OFF reduction.
+
+Golden2-side-cluster-trace-v64.json:188 events/ENTIRE ordinary parity. Correct
+primary RIGHT624,128 is emitted and retained early, then bright-filled rebuild
+drops it and restores falseRIGHT640,120. Existing strict body/geometry accepts
+the real/rejects fragment. The two trueLEFTs fail that body API but must stay;
+proof failure alone is not absence. Added only second capture site around the
+late rebuild, same mapping guards, append/dedup exact original metadata, never
+teachers/intermediate support, same final shared-field proof. Switch staysOFF.
+
+v65 completed H3 unchanged/G2 one real recovery, then invalid PRIVATE manifest
+partition stopped G5 before scanning. Failure preserved; v66 ran ONLY G5 pair
+with valid evaluation label, unchanged algorithm/seven selectors. Both G5
+outputs unchanged, zero reserve gain, recognition FAILED. v67 development QA
+main viewed whole and ALLone new object: side-cluster5 exact4->5/miss1->0/extra1
+stays/errors2->1, all legacy metadata/nongeometry/terrain/minis retained. Not
+an exact cluster/goal-room success (<2 corrected). Public parity receipts and
+audit62 provide current evidence; do not restart completed private scans.
+
+Golden2 A/B now HUMAN CONFIRMED: UP64,16 partly hidden by ceiling; DOWN64,48.
+User says displayed outlines slightly right but native positions good; do NOT
+shift origins for display impression. Read HUMAN-CONFIRMED-v67 and complete
+six-full source scope v70. Current missing UP/8px-low DOWN remain, not fixed by
+late capture. Next investigate qualified occluders/visible geometry and bounded
+same-instance phase repair with positive exclusive source evidence, not weaker
+texture predicates or bbox-only suppression. Preserve real RIGHT64,112.
+
+Audit62:71 DEFAULT findings/41 carries/30 pending/0 approvals, all5 flagsOFF.
+New extended-path ON16/original41+601+139 and quietAC cost PENDING. Old16 v62
+matching-profile pass is historical, not current ON qualification; v63 timing
+never started and is stale after implementation. Compound7.51%HOLD unchanged.
+Do not close original goal or imply all71/universal recognition is achieved.
+
+Everything below this paragraph is earlier checkpoint history.
+
 LATEST2026-10-21: matching-profile16 worker16732 TERMINAL/PASS (v62), ALL16
 ENTIRE output-equal, no control source-QA deltas; FTFA926/928, Flames255/18.
 Preserve FAILED mixed-profile v61 eight-case receipt, not16PASS. Actual paired

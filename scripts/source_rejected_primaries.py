@@ -1,4 +1,4 @@
-"""Recover source-proved ORIGINAL spikes lost before terrain arbitration.
+"""Recover source-proved ORIGINAL spikes lost during legacy geometry arbitration.
 
 This bounded channel never enumerates new poses. Rejected candidates remain
 outside every teacher snapshot; the already-built final original filled field
@@ -21,7 +21,7 @@ def _snapshot(detections):
 
 
 def rejected_primary_candidates(before, after):
-    """Record only exact original primaries removed by the legacy pruner."""
+    """Record only exact original primaries removed by a legacy geometry stage."""
     before, after = _snapshot(before), frozenset(_snapshot(after))
     return tuple(d for d in before if d not in after and _PRIMARY.get(d.type_id) == d.kind)
 

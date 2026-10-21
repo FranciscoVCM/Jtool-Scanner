@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+A second guarded capture site now retains original primary spikes lost by a
+late bright-filled rebuild; same unchanged source proof, no new teachers or
+poses. Default OFF.63 focused tests pass, six new caller-wiring methods; not a
+full-suite rerun. Golden2 prototype recovers one real original; its five-spike
+group becomes5exact plus1extra, not perfect. H3 unchanged; fresh same-profile
+Golden5 reserve gains zero. Audit62 retains71 default findings/zero approvals.
+Expanded-path ON controls/cost remain pending; old ON16 is not new qualification.
+Human confirms Golden2 UP64,16/DOWN64,48; their separate errors remain unfixed.
+
+### Earlier 2026-10-21 checkpoint (matching-profile controls)
+
 Matching-profile16 fresh opt-in controls now pass with ENTIRE output equality;
 FTFA926/928 and Flames255/18 in the original-three-ON experimental profile.
 The earlier mixed-profile8-case failure stays preserved; paired isolation

@@ -2601,12 +2601,21 @@ def scan_image(
                 or repeated_terrain_room
             ),
         )
+        late_primary_input = None
+        if (_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED and source_geometry and _apply_shape_refits
+                and normalized_grid == (25, 19) and source_translation is None
+                and image is source_image and box == source_box):
+            late_primary_input = tuple(detections)
         detections = _reconcile_bright_filled_full_spikes(
             detections,
             raw_full_spikes,
             image,
             box,
         )
+        if late_primary_input is not None:
+            from scripts.source_rejected_primaries import rejected_primary_candidates
+            pending_source_primaries = tuple(dict.fromkeys((*pending_source_primaries,
+                *rejected_primary_candidates(late_primary_input, detections))))
         detections = _reconcile_bright_neutral_full_spike_components(
             detections,
             image,

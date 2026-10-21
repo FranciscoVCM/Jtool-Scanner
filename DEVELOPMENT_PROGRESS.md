@@ -4,6 +4,57 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Preserve source-proved primaries lost by a late rebuild
+
+An ordinary Golden2 trace (188 events, ENTIRE ordinary output equality) finds
+a real, correctly classified primary discarded by the later bright-filled
+rebuilder. Its two-cluster inside/outside contrast fails where neighbouring
+real spikes occupy the nominal exterior; a shifted fragment passes that test
+and returns instead. Existing source-body/geometry proof accepts the real
+primary and rejects the fragment. Both true LEFT peers stay even though that
+one body API cannot qualify them. Failure of one proof is not absence evidence.
+
+Added a second capture site around that rebuilder, behind the existing OFF
+switch. Exact original primary metadata joins the existing pending queue;
+earlier rejections are preserved and identical entries deduplicated. Captured
+objects never become intermediate detections or teachers. The existing final
+source proof, physical mapping, retirement and unknown guards are unchanged;
+no new poses, library, threshold, deletion or full scan pass.
+
+63 unique focused tests pass, including six new caller-wiring tests covering
+both sites, metadata, prior pending, deduplication, OFF/standard/inner and
+translated compact routes. The two expected pre-implementation missing-site
+test failures are resolved. This is not the full suite or a fresh rerun of all
+380 earlier affected methods. Entire prior DEFAULT scanner AST matches after
+explicit OFF reduction; the helper's executable AST is unchanged except docs.
+
+Actual prototype wholes: Halls3 unchanged; Golden2 adds one independently
+source-reviewed original RIGHT. Complete five-spike scope 4->5 exact, missing
+1->0, extra1 unchanged, typed errors2->1. Every prior Detection/nongeometry/
+terrain/mini is retained. Whole and every added object reviewed. The fragment
+remains; this is NOT an exact cluster or successful goal room (<2 corrections).
+The additional capture-site Golden5 reserve gains ZERO in a fresh same-profile
+pair, so recognition failed. An invalid private partition label initially
+stopped it before scanning; retained that failure and resumed only the two
+unexecuted scans with a valid label, without changing corpus or detection.
+
+Three actual PUBLIC-enabled H3/G2/G5 wholes now reproduce the prototypes with
+ENTIRE input/map/metadata/warnings/grid/crop/project/source/JTool/Blend equality,
+including the original teacher snapshots and complete recovery proofs. The
+already-built filled field is reused, with no additional filled constructor.
+The one changed-object source QA carries through that complete equality.
+
+Human confirmation now establishes Golden2 UP(64,16), partly ceiling-hidden,
+and DOWN(64,48); slight displayed outline offset does not change coordinates.
+Those remain missing/8px-low in current output; this batch does not fix them.
+Investigate source-qualified partial occlusion and bounded same-instance pose
+repair next, not a weaker texture threshold or blanket overlap deletion.
+
+Audit62 keeps 71 DEFAULT findings, 41 prior evidence carries, 30 pending and
+ZERO room approvals. All five optional app consumers remain OFF. Prior ON16
+does not qualify the expanded capture path; current ON controls/original41+
+601+139 and quiet cost remain pending. Compound +7.51% HOLD stays separate.
+
 ## 2026-10-21 — Matching-profile exact16 pass; experiment-profile guard
 
 All16 fresh rejected-primary opt-in controls PASS with ENTIRE baseline output

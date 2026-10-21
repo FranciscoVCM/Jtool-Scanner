@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-21): late arbitration can erase correct recognition
+
+Golden2 source-equivalent 188-event trace finds a correct primary lost by the
+bright-filled rebuild, not an unknown-tileset proposal failure. Neighbouring
+real glyphs contaminate its nominal outside-fill score; the shifted fragment
+scores better. Existing unchanged source-body/geometry proof separates them.
+Added only a second original-rejection capture site behind the existing OFF
+switch; exact metadata stays out of every teacher pool, same final proof.
+
+63 unique focused tests pass (six new caller-wiring methods); NOT full suite/
+all old380 rerun. Entire DEFAULT AST matches after explicit new OFF reduction;
+all other runtime bytes except helper documentation unchanged. Prototype H3
+unchanged, G2 one source-reviewed recovery: five-spike scope4->5exact, extra1
+stays. No successful goal room or exact cluster claim. Fresh same-profile G5
+pair yields zero reserve gain; failure stays, not tuned into success.
+
+Human confirms G2 UP64,16 partly hidden and DOWN64,48; current missing/8px-low
+poses remain unresolved. Next source-qualified occlusion and bounded pose
+repair, with positive old-exclusive-background/new-exclusive-body proof and
+physical tips; no weaker texture threshold or arbitrary block-box ownership.
+
+Audit62: 71 default findings/41 carries/30 pending/zero approvals. All5 flags
+OFF; expanded-path ON controls/41/601/139/cost pending, separate compound7.51%
+HOLD retained. Original positive/room/reserve/runtime/final71+16 gates remain.
+
 ## Newest continuation (2026-10-21): isolate feature profiles before scanning
 
 Rejected-primary matching-profile16 controls now PASS, all ENTIRE outputs equal;
