@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-21): current16 closed; pose evidence not a fix
+
+Expanded-capture ON16 now PASS with ENTIRE same-profile legacy output equality,
+FTFA926/928 (zero extras/shifts/wrong), Flames255/18. Every scan validated all
+seven selectors against the recovered frozen baseline. This is not a fresh
+full-suite, enabled41/601/139 or controlled-cost certificate. Those remain open.
+
+Human confirms Golden2 UP64,16 partly ceiling-hidden and DOWN64,48; slight
+display-outline offset is not a native-origin change. Both errors remain
+unfixed. Existing source contour/paint supports DOWN48; only it among four
+axial8px alternatives has full contour support. A guarded physical old-exclusive
+patch matches independent original local BG in all16 cohorts. Earlier native
+nine-sample coverage failed and remains failed. Five private sampling tests
+pass, including unknown/insufficient coverage; no acceptance rule, new pose,
+retirement or scanner change. Background evidence alone is not absence, and
+genuine partial occlusions still fail whole-footprint APIs too.
+
+Audit63:71 default findings/41 prior carries/30pending/ZEROapprovals, no new
+accuracy gain. All5 consumersOFF, compound7.51%HOLD/failed reserves retained.
+Next qualify remaining enabled protections/cost, then a separately frozen
+source-positive bounded phase/occlusion repair, not globally looser texture.
+Original real-gain/reserve/room/runtime/final71+16 goal minima remain unchanged.
+
 ## Newest continuation (2026-10-21): late arbitration can erase correct recognition
 
 Golden2 source-equivalent 188-event trace finds a correct primary lost by the

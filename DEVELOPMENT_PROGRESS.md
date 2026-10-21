@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Expanded-capture controls pass; Golden2 positions confirmed
+
+All16 fresh controls for the published second capture site PASS with ENTIRE
+same-profile output equality: source/map/JTool/Blend, ordered Detection metadata,
+warnings, crop/grid/options and owned project. FTFA926/928 with zero extras,
+shifts or wrong orientations; Flames255exact/18miss. All seven experimental
+selectors were recovered from the hash-checked baseline producer and validated
+before every scan. No weaker baseline or changed feature profile was used.
+This closes current ON16 qualification, not enabled41/601/139 or quiet cost.
+
+Human confirmation fixes Golden2's semantic labels: ordinary UP(64,16), partly
+hidden by the ceiling, and ordinary DOWN(64,48). Displayed outlines appearing
+slightly right do not change those origins. The UP is still missing and current
+DOWN(64,56) still8px low; neither is repaired by this diagnostic checkpoint.
+
+Original-source diagnostics find the correct DOWN has existing contour and
+sprite-paint support. Of four axial8px alternatives, only that pose passes the
+existing contour test. A geometry-selected nine-independent-physical-pixel
+patch exclusive to the old pose matches independently sampled original local
+background in all16 original cohorts. This is not by itself semantic absence
+or permission to retire an object. The earlier nine-native-request check fails
+because two samples lie outside the old triangle; that failure is retained.
+Five private portable sampling tests pass, including insufficient-coverage
+abstention. They are not recognition tests or a new public/full-suite run.
+Whole-footprint APIs also fail genuine wall-hidden spikes: do not relax texture
+thresholds or infer absence from proof failure to force the confirmed answer.
+
+Audit63 retains71 DEFAULT findings/41 prior semantic carries/30 pending/ZERO
+approvals. No new accuracy gain, emitted pose, retirement, scanner/default or
+fixture change this batch; prior H3/Golden2 opt-in recoveries remain. All five
+consumers stay OFF. Enabled41/601/139, controlled cost, failed reserve outcomes,
+separate compound+7.51%HOLD and all original goal completion gates stay open.
+
 ## 2026-10-21 — Preserve source-proved primaries lost by a late rebuild
 
 An ordinary Golden2 trace (188 events, ENTIRE ordinary output equality) finds

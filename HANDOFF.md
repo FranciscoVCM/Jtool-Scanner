@@ -11,9 +11,14 @@ late bright-filled rebuild; same unchanged source proof, no new teachers or
 poses. Default OFF.63 focused tests pass, six new caller-wiring methods; not a
 full-suite rerun. Golden2 prototype recovers one real original; its five-spike
 group becomes5exact plus1extra, not perfect. H3 unchanged; fresh same-profile
-Golden5 reserve gains zero. Audit62 retains71 default findings/zero approvals.
-Expanded-path ON controls/cost remain pending; old ON16 is not new qualification.
+Golden5 reserve gains zero. Audit63 retains71 default findings/zero approvals.
+Current expanded-path ON16 now PASS with ENTIRE same-profile output equality:
+FTFA926/928, zero extras/shifts/wrong; Flames255exact/18miss. Enabled original41/
+601/139 and controlled cost remain pending; no default activation or speed claim.
 Human confirms Golden2 UP64,16/DOWN64,48; their separate errors remain unfixed.
+New source-exclusive physical-pixel diagnostics support investigating DOWN's
+phase, not a shipped repair. Five private sampling tests pass; old63 public
+focused tests carry unchanged, not a fresh full-suite run. All5 flags remainOFF.
 
 ### Earlier 2026-10-21 checkpoint (matching-profile controls)
 

@@ -13,7 +13,40 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: bounded late original-primary recovery, default OFF
+### Current continuation: current16 closed; phase diagnosis, not a fix
+
+Published implementation remains f78eb0f/runtimef322d770; this successor changes
+documentation only. v72 exact16 PID39296 TERMINAL/PASS, all16 ENTIRE equal;
+FTFA926/928zeroextras/shifts/wrong, Flames255/18. Complete seven-selector
+baseline recovered from hash-checked old scanner/actual producer and validated
+before EVERY scan. No control delta/source-QA replacement or cost claim. Audit63
+keeps71DEFAULTfindings/41prior semantic carries/30pending/ZEROapprovals.
+
+v73/74/75 source diagnostics TERMINAL, no live worker to restart. Correct G2
+DOWN64,48 has source contour/paint; only it among four axial8px alternatives
+passes the contour check. Original disjoint anchors predict local BG; all16
+cohorts agree a guarded nine-independent-physical-pixel old-exclusive patch
+matches it. Earlier ALL-nine native-request check FAILS because two points are
+outside old triangle under anisotropic pitch; retained, not ignored. Geometry-
+only physical patch construction has five private portable tests PASS, and
+can correctly abstain at native8 when no complete guarded patch fits. These
+are diagnostics, NOT a pose acceptance rule, retirement, scan gain or new
+public/full-suite certificate. Existing63 public focused tests carry unchanged.
+
+Human G2 UP64,16/DOWN64,48 remain confirmed and UNFIXED. Do NOT adjust origins
+for display outlines. Preserve full6/22-current-block scope v70, lower37/side5,
+true wall-hidden RIGHT64,112. Both real partial spikes fail whole-footprint
+channels, so weaker texture/failed-proof-as-absence is not a safe solution.
+
+Next: enabled original41/601/139 qualification and valid quietAC whole cost,
+then separately freeze/test positive source-exclusive phase/qualified occlusion
+repair with real-loss/marker/unknown guards and a compatible untuned reserve.
+All5 consumers remainOFF; failed G5/Halls7 and separate compound7.51%HOLD stay.
+No current71/default accuracy claim; original six goal gates remain active.
+Check TOP DEFERRED_VETO_ACTIVE_v1.md for any later live worker before code/HEAD
+edits. All following continuation sections are older implementation history.
+
+### Earlier continuation: bounded late original-primary recovery, default OFF
 
 LATEST: additional late-capture implementation; check actual HEAD/live origin
 and TOP DEFERRED_VETO_ACTIVE_v1.md for live workers before runtime/HEAD edits.
