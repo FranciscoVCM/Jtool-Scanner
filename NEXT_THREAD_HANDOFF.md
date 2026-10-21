@@ -15,6 +15,36 @@ latest active note and audit named below. Preserve the existing goal/baseline.
 
 ### Current continuation: bounded late original-primary recovery, default OFF
 
+LATEST2026-10-21: matching-profile16 worker16732 TERMINAL/PASS (v62), ALL16
+ENTIRE output-equal, no control source-QA deltas; FTFA926/928, Flames255/18.
+Preserve FAILED mixed-profile v61 eight-case receipt, not16PASS. Actual paired
+Flames isolation: default/new-only254/19 ENTIREequal; old-three/old-three+new
+255/18 ENTIREequal, zero new-consumer calls. Constants differ between those
+profiles; don't silently vary them or weaken old255/18 bounds.
+
+New experiment-only scripts/scanner_feature_profiles.py +9 passing tests:
+snapshot ALLseven actual selectors; validate EXACT declared before/after
+changes before expensive scanning. Not detector runtime/import/registration.
+Runtime remains8789a423, app fingerprint3020c4fc; all5experimental flagsOFF.
+Prior380tests retain scope/age; new9 are not a fresh full suite/389 rerun.
+
+Audit61 successor retains71 DEFAULT findings/41semanticcarries/30pending/0
+approvals, adds fresh matching-profile controls, NOTnew default gains. Read
+latest ACTIVE note for any later worker before mutating runtime/HEAD. Next
+enabled41/601/139 and quietAC new-channel cost, then actual recognition cause;
+separate compound7.51%HOLD and failed Halls7 reserve unchanged.
+
+New Golden2 ordinary556-event trace ENTIREequal plus4 proofparities: upper-left
+DOWN64,48 strong RGBgeometry/paint but texture.840/.779 fails; currentDOWN64,56
+geometry/body fails. Exact A/B origins PROVISIONAL pending illustrated user
+answer. Lower frozen37 ALREADY37exact, same6extras; four B235recoveries earlier,
+not new. canonical18-matched-world-API-v61.json51probes preserve actual extended
+world; canonical view replay lacks original saved RGB hash, so not bit-parity or
+new recovery. Old lower carpet already cleared; remaining canonical issues stay.
+
+The text below this paragraph is the prior published checkpoint, not latest
+worker/protection state. Do not restart completed controls or reopen archive.
+
 Base6da83c70305f97683da83c7246f27c1dd3f1c370; verify actual HEAD/live origin.
 Read GOAL_PLAN IN FULL and latest DIRECTED_TRACE_ACTIVE_v1.md/DEFERRED_VETO_ACTIVE_v1.md
 in .artifacts/general-recognition-20261014. Previous/current turn PROGRESS:

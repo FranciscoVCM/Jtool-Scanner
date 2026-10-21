@@ -10,6 +10,14 @@ review corpus. Difficult rooms still need corrections; the project does not
 claim universal or 100% accuracy. Experimental source geometry is opt-in and
 individual research APIs may remain disabled pending accuracy and speed checks.
 
+Experimental scan comparisons must record the complete process-local feature
+profile as well as the code fingerprint. `scripts/scanner_feature_profiles.py`
+provides `snapshot_feature_profile(scanner)` and
+`validate_feature_comparison(before, after, expected_changes=...)` to reject
+undeclared selector changes before scanning. Keep every untested selector
+constant; missing historical profile metadata is unknown, not implicitly OFF.
+Profile validation does not replace input, full-output, accuracy or speed checks.
+
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
 has passed affected tests/source-proof checks, but helper timings are not a

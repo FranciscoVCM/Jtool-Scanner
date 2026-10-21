@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Matching-profile exact16 pass; experiment-profile guard
+
+All16 fresh rejected-primary opt-in controls PASS with ENTIRE baseline output
+equality: maps, ordered metadata, warnings, crop/grid, source, owned projects,
+JTool and Blend. FTFA926/928, zero extras/shifts/wrong; Flames255exact/18miss
+in the original frame/interior/compound-ON profile. That profile is held fixed
+on BOTH sides; only the rejected-primary selector changes. No control delta
+requires new source QA. This is not a speed or full-suite certificate.
+
+Retain the earlier FAILED mixed-profile8-case report. It changed three old
+selectors as well as the new one, producing Flames254/19 versus255/18. Two
+isolation wholes prove default254/19 ENTIRE-equals new-only254/19, and original
+three-ON255/18 ENTIRE-equals original-three-plus-new255/18. No new recovery
+consumer invocation in either Flames isolation. Do not lower bounds, erase
+the failure, or attribute it to the new channel.
+
+Added experiment-only complete seven-selector snapshots and an explicit
+before/after change validator, plus9 passing test methods. Undeclared changes,
+missing/unknown selectors, nonboolean values and schema drift fail BEFORE an
+expensive scan. This tooling is not imported/registered in detector runtime;
+runtime bytes and app defaults remain unchanged. Prior380 affected tests keep
+their recorded age/scope, not a claimed fresh389/full-suite run.
+
+New ordinary-equivalent Golden2 trace (556events) and4 complete proof parities
+locate another issue: a provisional correct DOWN pose has strong original RGB
+body/geometry but fails same-direction texture correlation; the current8px-low
+pose fails body/geometry. No threshold was weakened. Upper-left exact origins
+await illustrated human confirmation. The lower frozen37 are ALREADY37/37:
+four B235 misses fixed earlier, the same6 extras remain. Do not count them again.
+
+Canonical CN3-18 matching-world API diagnostic passes51 unique probes without
+changing source teachers or production: retain explicit extended extent and
+matching canonical view. Original canonical RGB hash was not saved, so this
+is not bit-parity certification or a new recovery. The old lower carpet was
+already cleared; other canonical errors remain. Never substitute tracked CN3-18.
+
+Audit61 retains71 DEFAULT findings/41prior semantic carries/30pending/ZERO
+approvals, with new16 matching-profile controls recorded separately. All five
+experimental app switches stay OFF. Enabled original41/601/139, new-channel
+quiet whole cost, further positive/reserved gains and final71+16 remain open;
+separate compound+7.51% cost HOLD is unchanged. Original goal remains active.
+
 ## 2026-10-21 — Source-proved rejected-primary recovery, default still OFF
 
 Traced actual ordinary Halls3 output, not a new baseline. Two complete observed

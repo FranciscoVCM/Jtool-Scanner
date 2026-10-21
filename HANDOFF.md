@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+Matching-profile16 fresh opt-in controls now pass with ENTIRE output equality;
+FTFA926/928 and Flames255/18 in the original-three-ON experimental profile.
+The earlier mixed-profile8-case failure stays preserved; paired isolation
+shows default/new-only254/19 versus original-three/original-three-plus-new255/18.
+Experiment-only seven-selector validation and9tests prevent undeclared changes
+before expensive scans. No detector/default change or full-suite rerun.
+Audit61 keeps71 DEFAULT findings/41prior carries/30pending/ZEROapprovals.
+Enabled original41/601/139 and new-channel quiet cost remain pending; all5
+optional app consumersOFF. Golden2 new origin labels remain provisional;
+canonical18 matching-world API probe is not a new detection/bit-parity claim.
+
+### Earlier 2026-10-21 checkpoint (rejected-primary implementation)
+
 Added default-OFF bounded source recovery for exact ORIGINAL primary spikes
 rejected before terrain recovery. Reuse original filled evidence and unchanged
 body/texture/RGB/same-instance proofs; pending/repaired candidates never teach.

@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-21): isolate feature profiles before scanning
+
+Rejected-primary matching-profile16 controls now PASS, all ENTIRE outputs equal;
+FTFA926/928 with no extras/shifts/wrong, Flames255/18 in original-three-ON mode.
+Earlier mixed-profile8-case failure stays preserved. Paired isolation establishes
+default/new-only254/19 versus original-three/original-three-plus-new255/18,
+not a demonstrated new-channel regression. New experiment-only profile validator
+and9tests prevent undeclared selector changes; code identity alone is insufficient.
+No detector byte/default change or fresh full-suite claim (prior380 retained).
+
+Golden2 actual ordinary556-event trace/4proof parities reveal texture-versus-
+pose evidence conflict, not permission to relax old thresholds. New upper-left
+labels provisional; lower37 scope already37exact and same6extras, four earlier
+recoveries not re-earned. Canonical18 API can preserve original extended world
+with matching canonical view; replay51probes is NOT new geometry or original
+canonical-bit parity. Lower carpet already clear; remaining source errors stay.
+
+Audit61:71 DEFAULT findings/41carries/30pending/ZEROapprovals. All5flagsOFF.
+Original41/601/139 enabled qualification and new-channel controlled cost pending;
+compound+7.51%HOLD separate. Halls7 new-consumer reserve still failed (zero gain).
+Continue real primary/reserved recognition work; all original six gates remain.
+
 ## Newest continuation (2026-10-21): recover rejected originals without new teachers
 
 Actual H3 trace finds a real correctly proposed spike lost by a later generic
