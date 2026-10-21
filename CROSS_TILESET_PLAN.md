@@ -1,6 +1,29 @@
 # Cross-tileset milestone
 
-## Newest continuation (2026-10-21): accuracy protected, runtime HOLD
+## Newest continuation (2026-10-21): exact computation, unchanged recognition
+
+One runtime helper now uses exact balanced nearest-original-RGB search. Same
+uint8 samples and math.dist result, exact lower-bound pruning, old exhaustive
+fallback for other inputs, instance-only indexes. No new dependency, colour
+identity, teacher/query change or recognition threshold. Golden2 paint distances
+fall14,973,906->717,071 with ENTIRE proof equality; this is not whole-scan latency.
+362 UNIQUE affected tests PASS (not full suite), three complete G2/H3/G5 public
+proof/decision parities and whole-module change-scope checks pass.
+
+New separate quiet AC G2 ABBA:65.419s baseline/70.335s enabled,+7.51%, all four
+fresh ordinary wholes ENTIRE per-mode equal. Still HOLD under5%; G5/H4 cost
+cases unrun. Prior+10.68%failure remains; the two series are not direct paired
+old/new-code benchmarking. Profile the remaining actual work without changing
+decisions or waiving the budget. All four switches remain OFF.
+
+Audit58:71rows/41default semantic carries/30pending/ZEROapprovals. Prior16exact
+and original41/601/139 protections are exact-computation/default-OFF carries,
+NOT fresh execution on new bytes. No accuracy gain from optimization; retain
+the earlier18 experimental false corrections and all positive-recovery goals.
+Return to real compound recovery/other primary causes; do not replace the
+original six-gate milestone with perpetual optimization or reporting.
+
+## Historical continuation (2026-10-21): accuracy protected, runtime HOLD
 
 All 16 fresh feature-control wholes preserve ENTIRE qualified outputs. FTFA
 926/928 with zero extras/shifts/wrong types; Flames 255 exact, 42 extra, 18 missed,

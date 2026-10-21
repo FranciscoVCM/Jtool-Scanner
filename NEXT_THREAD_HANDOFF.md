@@ -13,7 +13,58 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: controls protected; measured runtime HOLD
+### Current continuation: exact paint search; runtime still held
+
+Base f533b877c14241aa61ffaaf17ca8b53003d628aa; verify actual HEAD/live origin.
+GOAL_PLAN IN FULL and latest DEFERRED_VETO_ACTIVE_v1.md remain authoritative;
+original goal ACTIVE/all gates and positive minima incomplete. No new archive
+or corpus sweep. Default app recognition has NOT changed; all four switches OFF.
+
+Only scripts/source_interior_glyphs.py changes runtime: exact balanced nearest
+uint8 original-RGB search, SAME math.dist/min, exact split-plane lower bounds,
+old exhaustive fallback, evidence-instance-only indexes. New portable tests
+tests/test_source_paint_search.py. No dependency, teacher/sample/threshold or
+recognition change. Existing per-model distance cache/proof fields retained.
+
+Private evidence in .artifacts/general-recognition-20261014:
+
+- exact-paint-search-prototype-v1.json:3399 exact distance comparisons and
+  three ENTIRE original public proof/decision/metadata parities PASS.
+- exact-paint-tests-v1.json:362 UNIQUE affected tests PASS, NOT full suite.
+- exact-paint-public-parity-v1.json:production G2/H3/G5 ENTIRE proofs/decisions
+  equal frozen originals; original tuples unchanged.
+- exact-paint-semantics-v1.json:whole-module AST equal except index/cache/paint
+  loop; original return expressions/maximum unchanged; only ONE runtime file
+  differs. Prior16/41/601/139 are exact-computation/default-OFF SEMANTIC carries,
+  NOT fresh reruns on optimized bytes or unchanged-runtime assertions.
+- exact-paint-comparisons-v1.json:actual original G2 input14,973,906->717,071
+  paint distances, ENTIRE proof equal. About95.2% fewer comparisons, NOT a
+  whole-latency improvement percentage. Previous identical-palette sharing
+  would saveZERO and was not implemented.
+- exact-paint-whole-cost-v1.json:TERMINAL quietAC G2ABBA,65.419s baseline versus
+  70.335s enabled median,+7.51%, all4fresh ordinary wholes ENTIREpermodeequal.
+  HOLD persists; G5/H4 unrun, not cost-qualified. Original+10.68%series remains
+  failed, not relabelled. The two series are not direct old/new-code ABBA.
+- 71-screen-general-recognition-checkpoint-v58.json/.md:71rows/41default
+  semantic carries/30pending/ZEROapprovals. Four new comparison wholes G2only;
+  no fresh71default sweep, no new positive/false correction sincev57. Prior18
+  experimental false blocks/EIGHTnewtobackdrop retained, NOT new app gains.
+
+exact-paint-whole-profile-v1.json is COMPLETE/PASS: actual compound-call profile
+preserves ENTIRE ordinary artifacts; original-body qualification/directed
+geometry and physical-cell artwork checks are the remaining largest costs.
+Its seconds are NOT latency samples. Inspect active-note live PIDs before any
+new producer. Do not change runtime/HEAD
+while frozen worker lives. Identify remaining measured avoidable source-evidence
+work, prove full decisions/metadata/proofs, and use a separately frozen cost
+series before activation; never waive5% or expand teachers to save time.
+Continue real positive compound recovery/other primary causes too. H3 upper17
+still missesLEFT16064 and contains falseDOWN22464 in current whole; old two sky
+blocks already absent. Body API's one LEFT recovery remains unbound. Canonical
+CN3-18 is NOT the tracked near-exact cn3-18 control. No room approval/universal
+accuracy or full-goal completion claim is justified by this optimization.
+
+### Historical continuation: controls protected; measured runtime HOLD
 
 Base 7365aa2e92c6a641911e1fa4b06816def3c6c813; verify actual HEAD/live origin.
 Read GOAL_PLAN IN FULL and the newest DEFERRED_VETO_ACTIVE_v1.md note in private

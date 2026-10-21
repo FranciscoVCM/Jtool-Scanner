@@ -6,6 +6,24 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+The latest bounded batch changes only exact nearest-original-RGB computation,
+not recognition: same samples/math.dist minimum, exact lower-bound search,
+non-uint8 exhaustive fallback and source-instance isolation. 362 unique affected
+tests PASS (NOT full suite), three complete original proof/decision parities,
+and four fresh Golden2 comparison wholes preserve ENTIRE expected artifacts.
+Actual paint-distance work falls14,973,906->717,071, not a claimed whole-scan
+speedup. New quiet AC baseline65.419s/enabled70.335s median is still+7.51%:
+activation HELD, remaining G5/H4 cost cases unrun. Earlier+10.68% failure stays.
+
+Audit58 retains71rows/41default semantic carries/30pending/ZEROapprovals. Prior
+16 exact controls and original41/601/139 protections carry by exact arithmetic/
+default-OFF semantics, NOT fresh execution on optimized bytes. All4switchesOFF,
+no new default-app accuracy gain/positive recovery. App reloaded with matching
+disk source. Original recognition goals and all six gates remain incomplete.
+Read TOP NEXT_THREAD_HANDOFF for receipts and the next bounded causal work.
+
+### Earlier 2026-10-21 checkpoint (before exact-search optimization)
+
 All 16 fresh opt-in exact-control wholes preserve their ENTIRE qualified outputs.
 FTFA remains 926/928 with zero extras/shifts/wrong types; Flames remains
 255 exact/42 extra/18 missed/20 shifted/two wrong types. All original 41 numerical

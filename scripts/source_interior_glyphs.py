@@ -44,6 +44,55 @@ def _normalized(values):
     return tuple(v/max(1e-12, length) for v in values)
 
 
+class _OriginalPaintIndex:
+    """Exact nearest original uint8 RGB, not an approximate colour classifier.
+
+    A splitting plane supplies only a Euclidean LOWER bound. Every candidate
+    distance uses the original math.dist; unsupported inputs keep exhaustive
+    search. The tree stores only original paints, never query pixels.
+    """
+
+    def __init__(self, paints):
+        self.paints = paints
+        self.exact_raw = bool(paints) and all(self._raw_rgb(p) for p in paints)
+        self.root = self._build(paints, 0) if self.exact_raw else None
+
+    @staticmethod
+    def _raw_rgb(point):
+        return len(point) == 3 and all(type(v) is int and 0 <= v <= 255 for v in point)
+
+    @classmethod
+    def _build(cls, paints, depth):
+        if not paints:
+            return None
+        axis = depth % 3
+        points = sorted(paints, key=lambda p: (p[axis], p))
+        middle = len(points)//2
+        return (axis, points[middle], cls._build(points[:middle], depth+1),
+                cls._build(points[middle+1:], depth+1))
+
+    def distance(self, rgb):
+        if not self.exact_raw or not self._raw_rgb(rgb):
+            return min(dist(rgb, paint) for paint in self.paints)
+        best = float('inf')
+        pending = [(self.root, 0)]
+        while pending:
+            node, bound = pending.pop()
+            if node is None or bound >= best:
+                continue
+            axis, paint, left, right = node
+            best = min(best, dist(rgb, paint))
+            if best == 0:
+                break
+            delta = rgb[axis]-paint[axis]
+            near, far = (left, right) if delta <= 0 else (right, left)
+            if far is not None and abs(delta) < best:
+                pending.append((far, abs(delta)))
+            if near is not None:
+                pending.append((near, 0))
+        return best
+
+
 class SourceInteriorGlyphEvidence:
     """One frozen original frame/model domain; proofs are independent copies."""
 
@@ -91,6 +140,7 @@ class SourceInteriorGlyphEvidence:
         self._texture_originals = frozenset(k for cohort in self._cohorts for k in cohort)
         self._texture_vectors, self._texture_models = {}, {}
         self._texture_eligibility = {}
+        self._paint_indices = {}
 
     def _texture_vector(self, key):
         body = self._body(key)
@@ -233,7 +283,10 @@ class SourceInteriorGlyphEvidence:
         cache = model['paint_distance_cache']
         for rgb in set(body):
             if rgb not in cache:
-                cache[rgb] = min(dist(rgb, paint) for paint in model['original_paints'])
+                paints = model['original_paints']
+                if paints not in self._paint_indices:
+                    self._paint_indices[paints] = _OriginalPaintIndex(paints)
+                cache[rgb] = self._paint_indices[paints].distance(rgb)
         maximum = max(cache[rgb] for rgb in body)
         return dict(passed=maximum <= model['limit'],
                     max_original_paint_distance=maximum, original_RGB_limit=model['limit'],

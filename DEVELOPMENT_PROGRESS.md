@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Exact original-paint search preserves recognition; cost still held
+
+Replaced exhaustive nearest-paint lookup with an exact balanced RGB search over
+the SAME immutable original uint8 palette. Splitting-plane distances are only
+Euclidean lower bounds; visited points use the SAME math.dist minimum. Non-uint8
+inputs retain the old exhaustive expression. Indexes live inside one evidence
+instance, never learn query pixels or cross source frames. No new dependency,
+approximate match, palette identity, sample/teacher pruning or threshold change.
+
+All 362 UNIQUE affected tests PASS in this execution (353 prior plus nine new),
+NOT the full suite. All three complete production proofs/decisions/original
+metadata for Golden2, Halls3 and Golden5 match their frozen originals. An entire-
+module AST check restricts changes to the exact index, instance cache and paint
+loop; all proof-field expressions and maximum-distance calculations remain.
+Only one runtime file changed. The actual Golden2 original-input observation
+reduces paint-distance evaluations from 14,973,906 to 717,071 (about 95.2%) while
+preserving the ENTIRE proof and decisions. This is work-count evidence, NOT a
+whole-scan speedup percentage.
+
+A SEPARATE quiet AC serial Golden2 ABBA gives baseline median 65.419s versus
+compound-enabled 70.335s, +7.51%. All four fresh ordinary wholes reproduce their
+ENTIRE expected per-mode outputs, projects and renders. Activation remains HELD
+above the original 5% budget; Golden5/Halls4 timing cases are unrun. Preserve the
+earlier +10.68% failed series too. These two series are not a direct paired
+old-code/new-code speed benchmark. Profile the remaining actual added work;
+instrumented timings are not latency evidence and no budget is waived.
+
+The follow-up actual compound-call profile also reproduces ENTIRE ordinary
+artifacts. Original-body qualification/directed geometry and physical-cell
+artwork checks remain the largest costs; preserve these causes for the next
+bounded investigation, not another identical-palette cache attempt.
+
+Audit v58 retains 71 rows, 41 default semantic carries, 30 pending and ZERO room
+approvals. Prior 16 exact controls and original 41/601/139 protections carry by
+exact-computation/default-OFF semantics, NOT fresh execution on optimized bytes
+or unchanged-runtime claims. The four new comparison wholes are Golden2 only,
+not a fresh corpus sweep. All four experimental consumers remain OFF and the
+app is reloaded with matching disk source. No new recognition gain, positive
+recovery or false correction since v57; the prior 18 experimental corrections
+remain. Continue real positive recovery/other primary causes and all original
+goal gates, not a performance-only replacement goal.
+
 ## 2026-10-21 — Backdrop controls pass; whole-scan cost holds activation
 
 Completed all 16 fresh opt-in exact-control whole scans. ENTIRE ordered
