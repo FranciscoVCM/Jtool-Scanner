@@ -4,7 +4,56 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
-## 2026-10-21 — Public opt-in backdrop implementation reproduces the reviewed scans
+## 2026-10-21 — Backdrop controls pass; whole-scan cost holds activation
+
+Completed all 16 fresh opt-in exact-control whole scans. ENTIRE ordered
+detections, warnings, comparisons, owned projects, source and JTool/Blend
+artifacts match their qualified prior outputs. FTFA remains 926/928 exact with
+zero extras, shifts or wrong types. Flames remains 255 exact, 42 extra, 18 missed,
+20 shifted and two wrong types. References are used only after scanning.
+
+All original 41 numerical protection groups pass with unchanged definitions;
+all 601 source miniblocks and 139 terrain footprints survive. CN3-7 retains
+168,448/168,448 solid pixels. Golden7 retains its achieved 49,504/54,880 with
+5,376 still missing and zero excess, NOT a perfect mask. Named 28-case bindings
+reuse 21 sealed rows and qualified Golden2/5 wholes, then finish the remaining
+API contributions. This is NOT 44 fresh whole scans. Original compact/world
+guards remain; stale input and reporting-field failures were preserved and
+corrected without retuning recognition.
+
+An additional actual CN3-92 source-stage comparison removes one false block
+between two real up-spikes. Main reviewed the whole room and every changed
+object: both real spikes and the floor survive; a false down-spike and other
+errors remain. There are now 18 source-reviewed experimental false-block
+corrections across Golden2/5/CN3-92, only EIGHT new to the backdrop mechanism.
+No new positive recovery or default-app accuracy gain is claimed.
+
+Quiet serial AC-powered Golden2 ABBA completes with full per-mode artifact
+equality: baseline median 64.058s, compound-enabled median 70.902s, +10.68%.
+This exceeds the 5% budget: activation is HELD and Golden5/Halls4 timing cases
+remain unrun. The earlier power-loss attempt collected ZERO samples and is
+separate from this measured cost failure. Profile the actual shared source
+stage before any decision-equivalent optimization; do not relax the budget or
+substitute helper/accuracy-run times. All four experimental switches stay OFF.
+
+An actual shared compound-call profile preserves the ENTIRE expected whole
+artifacts and identifies original body qualification/paint comparisons as the
+largest cost. Its instrumented times are NOT latency evidence. A separate
+unchanged-proof observation counts 14,973,906 paint distances across 166 distinct
+palettes: sharing identical palette caches saves ZERO of these calls. Do not
+implement that ineffective cache. Next investigate exact nearest-colour search
+with the SAME original RGB samples and distance arithmetic, no approximation,
+new dependency, palette identity or detection-threshold change; require complete
+proof/decision parity before considering it for production.
+
+Audit v57 keeps 71 rows, 41 default algorithm-evidence carries, 30 pending and
+ZERO approvals. It explicitly separates current evidence from immutable prior
+experiments instead of inheriting obsolete unversioned summary flags. The
+previously completed 353 affected tests are not a new execution or the full
+suite. No implementation or fixture changes in this continuation. Real positive
+geometry recovery, other primary causes and all original goal gates remain open.
+
+## 2026-10-20 — Public opt-in backdrop implementation reproduces the reviewed scans
 
 Implemented the exact frozen physical-cell artwork plus independent original-
 glyph backdrop combination as an explicit calibrated-background option in the

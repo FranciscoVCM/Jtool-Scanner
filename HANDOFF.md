@@ -4,9 +4,28 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-20
+## Current checkpoint — 2026-10-21
 
-2026-10-21 update: the frozen original-pixel artwork/backdrop combination is
+All 16 fresh opt-in exact-control wholes preserve their ENTIRE qualified outputs.
+FTFA remains 926/928 with zero extras/shifts/wrong types; Flames remains
+255 exact/42 extra/18 missed/20 shifted/two wrong types. All original 41 numerical
+protection groups, 601 source minis and 139 terrain footprints pass. These use
+mixed fresh-whole and validated contribution evidence, NOT 44 new full scans.
+One more source-reviewed CN3-92 false block brings the experimental total to
+18, EIGHT new to this backdrop mechanism. No new positive recovery or room
+approval. Audit v57 retains 71 rows/41 default evidence carries/30 pending.
+
+The controlled quiet AC Golden2 comparison is 64.058s baseline versus 70.902s
+enabled median (+10.68%) with full per-mode artifact equality. Activation is
+HELD under the 5% runtime gate; Golden5/Halls4 cost cases remain unrun. Profile
+and prove any optimization before a new frozen timing series. All four switches
+remain OFF; there is no new default-app accuracy gain. The previous 353 affected
+tests are not a fresh full-suite execution. Read TOP NEXT_THREAD_HANDOFF for
+current receipts and continuation; all original goal gates remain incomplete.
+
+### 2026-10-20 implementation checkpoint (historical)
+
+The frozen original-pixel artwork/backdrop combination is
 implemented as a public opt-in compound API, with original context reuse/lazy
 calibration and32 registered dependencies. All4app switches remainOFF. 353 unique
 affected tests PASS (NOT full suite); complete prototype/public proofs match on

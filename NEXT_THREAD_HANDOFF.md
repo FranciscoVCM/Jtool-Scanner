@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-20. Continue in the existing repository at
+Updated 2026-10-21. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,7 +13,64 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: public calibrated conflicts, controls/cost next
+### Current continuation: controls protected; measured runtime HOLD
+
+Base 7365aa2e92c6a641911e1fa4b06816def3c6c813; verify actual HEAD/live origin.
+Read GOAL_PLAN IN FULL and the newest DEFERRED_VETO_ACTIVE_v1.md note in private
+root .artifacts/general-recognition-20261014. Original goal remains ACTIVE, all
+six gates/positive-recovery minima incomplete. Do not resweep the archive or
+restart completed producers. No runtime/fixture changes in this continuation.
+
+Completed receipts:
+
+- public-backdrop-exact16-v1.json: 16 FRESH exact wholes, ENTIRE ordered
+  detection/warning/comparison/project/JTool/Blend/source equality. FTFA926/928,
+  zero extras/shifts/wrong; Flames255/42extra/18miss/20shift/2wrong unchanged.
+- public-backdrop-named28-contributions-v4.json: all 28 bindings complete.
+  Reuses 21 sealed v2 rows and qualified G2/G5 wholes, finishes remaining five
+  API contributions. NOT 28 fresh whole scans. V1 stale H3 tuple, v2 stale G5
+  domain and v3 reporting-key failures are preserved; v4 corrects provenance
+  only, not recognition. Original offered-frame guard, not selected-frame
+  substitution, controls direct/compact/world eligibility.
+- public-backdrop-original41-protections-v1.json: ORIGINAL 41 definitions pass,
+  601 source minis and 139 terrain footprints retained. CN3-7mask168448/168448.
+  Golden7 retains49504/54880,5376missing/0excess, NOT perfect mask. Raw report's
+  CN3-92 QA-pending entry is cleared by the SEPARATE next receipt, not edited.
+- public-backdrop-protection-source-QA-v1.json: main viewed CN3-92 whole and
+  every delta; actual source stage removes false full384544 between two real
+  UPspikes. Floor and both UPs survive; false DOWN remains. NOT new whole scan.
+  Now18 research false-block corrections: G2ten/G5seven/C92one, only EIGHT new
+  to backdrop. Previous17delta QA carries only through ENTIRE artifact equality.
+- public-backdrop-whole-cost-v2.json: TERMINAL measured HOLD, G2 quiet serial
+  AC ABBA baseline64.058s/enabled70.902s median,+10.68%. Every sample passes
+  complete per-mode output equality. G5/H4 cost cases UNRUN, not qualified.
+  V1 was a zero-sample AC precondition failure; preserve both. Inspect current
+  profile worker/CIM before restarting anything; active note owns live PIDs.
+- public-backdrop-whole-profile-v1.json: complete actual shared compound-call
+  profile, ENTIRE whole artifacts equal. Original body/paint qualification is
+  the largest added cost; instrumented seconds are NOT ordinary latency.
+- public-backdrop-paint-reuse-observation-v1.json: unchanged ENTIRE public proof
+  and decisions; 14,973,906 distances, 166 distinct palettes. Identical-palette
+  sharing would save ZERO calls. Do not implement that failed optimization.
+- 71-screen-general-recognition-checkpoint-v57.json/.md: 71 rows/41 default
+  algorithm-evidence carries/30pending/ZEROapprovals. Explicit current summary
+  avoids inherited stale experiment flags; old audits remain immutable. No new
+  default-app gain/positive recovery. Previous353 affected tests, NOT newly run
+  or full suite. All four experimental switches remain OFF.
+
+NEXT investigate exact nearest-original-RGB search, retaining the SAME sample
+set, math.dist arithmetic and every bound; no approximation/new dependency or
+recognition change. Optimize ONLY measured avoidable work with ENTIRE
+proof/decision/metadata/artifact parity, then a SEPARATE frozen
+quiet AC timing series; retain this failed cost result and >5% gate. No runtime
+or HEAD edits while frozen worker live. Continue positive compound recovery and
+other primary causes, not merely false-block suppression. H3 original upper17
+still16exact/missingLEFT16064/extraDOWN22464 in current whole; prior body API can
+recover the LEFT but remains unbound, not an app gain. Old H3 false sky blocks
+are already absent: do not claim their old diagnosis as a new correction.
+Canonical CN3-18 remains distinct from tracked near-exact cn3-18 control.
+
+### Historical continuation: public calibrated conflicts, controls/cost next
 
 Parent663cc5643d9782032916d37021a2886abeb98fcf; verify actual HEAD/liveorigin and
 public-backdrop-checkpoint-publication-v1.json. Original goal ACTIVE/all six gates

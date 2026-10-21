@@ -1,6 +1,33 @@
 # Cross-tileset milestone
 
-## Newest continuation (2026-10-21): public opt-in, actual whole parity
+## Newest continuation (2026-10-21): accuracy protected, runtime HOLD
+
+All 16 fresh feature-control wholes preserve ENTIRE qualified outputs. FTFA
+926/928 with zero extras/shifts/wrong types; Flames 255 exact, 42 extra, 18 missed,
+20 shifted, two wrong types unchanged. All original 41 numerical groups, 601
+source minis and 139 terrain footprints pass without denominator changes.
+Named 28-case contribution checks reuse sealed evidence where compatible; they
+are not 28 new full scans. Compact/world guards remain unchanged.
+
+CN3-92 adds one source-reviewed false-block correction in the actual source
+stage, not a new whole scan or room approval. Total experimental corrections
+are Golden2 ten + Golden5 seven + CN3-92 one; only EIGHT new to this backdrop
+mechanism. Real floor/spikes/metadata remain protected. No new positive recovery.
+
+New quiet serial AC Golden2 ABBA: 64.058s baseline versus 70.902s enabled median,
++10.68%, with complete per-mode output equality. HOLD activation under the
+existing >5% rule; remaining Golden5/Halls4 cost cases unrun. The zero-sample
+power interruption is preserved separately. Next profile actual added work,
+require full proof/decision/output parity for any optimization, and rerun a
+separate frozen cost series. All four switches remain OFF; old timing does not
+qualify this feature. Continue the positive-recovery/other-primary work too.
+
+Audit v57: 71 rows, 41 default evidence carries, 30 pending, ZERO approvals and
+zero default-app gains. Its current summary no longer copies stale historical
+experiment flags. Immutable older audits retain their full history. All six
+original goal gates and numerical minima remain incomplete.
+
+## Historical continuation (2026-10-20): public opt-in, actual whole parity
 
 The exact frozen source-cell/backdrop expert is now production code behind the
 existing disabled compound consumer; no research AST extraction/monkeypatching,
