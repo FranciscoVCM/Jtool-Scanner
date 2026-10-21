@@ -192,7 +192,7 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),32)
+        self.assertEqual(len(paths),33)
         self.assertEqual(len(set(paths)),len(paths))
         self.assertIn('source_repeated_identity.py',{p.name for p in paths})
         self.assertIn('source_capture_base.py',{p.name for p in paths})

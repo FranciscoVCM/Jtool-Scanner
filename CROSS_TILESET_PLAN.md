@@ -1,6 +1,35 @@
 # Cross-tileset milestone
 
-## Newest continuation (2026-10-21): positive spatial-role evidence, two failed experts
+## Newest continuation (2026-10-21): recover rejected originals without new teachers
+
+Actual H3 trace finds a real correctly proposed spike lost by a later generic
+pruner, not an unrecognized source proposal. New bounded recovery retains the
+exact rejected primary outside all teachers, reuses actual original filled
+evidence and unchanged directional body/texture/RGB/same-instance proof, then
+restores original metadata only at the end. No new full-grid/library/pass,
+colour bound, reference teacher or blanket overlap deletion. New switch and
+all four old switches OFF;33runtime helpers registered.
+
+380 UNIQUE affected tests PASS, NOT full suite. Three actual public opt-in
+wholes: H3one real recovery (17scope16->17exact/errors2->1/onefalseextra stays);
+G2zero;first untuned new-consumer Halls7 reservezero,ENTIREoldoutput equal.
+Reserve recognition FAILED and no successful goal room is claimed. Canonical18
+world guard unresolved. Do not loosen proof or tune reserve to claim transfer.
+
+Audit60 keeps71 DEFAULT findings/41semantic carries/30pending/ZEROapprovals,
+with opt-in results separated. Entire old scanner AST after explicit FALSE-only
+reduction is equal; prior DEFAULT exact16/original41+601+139 carry, not fresh
+ON tests. New channel requires enabled protections and quiet whole cost before
+activation. Separate compound+7.51%HOLD persists. All original positive/room/
+reserve/QA/runtime/final71+16/publication gates remain incomplete.
+
+Next qualify the bounded channel without rewriting criteria, and pursue actual
+G2 compound/other-primary source identity causes for further real recovery.
+H3 marker alias has a separately evidenced recovery/late-arbitration cause;
+fixing it must preserve source-supported genuine overlaps. No further palette-
+only loosening or repeated baseline/archive sweep.
+
+## Historical continuation (2026-10-21): positive spatial-role evidence, two failed experts
 
 Two distinct private positive experts pass13 unique portable tests but yield
 ZERO new objects/repairs on each complete6458H3+10276G2 domain. First: original

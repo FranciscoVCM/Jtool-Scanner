@@ -22,6 +22,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_raster_cells',
     'source_glyph_backdrop',
     'source_calibrated_conflicts',
+    'source_rejected_primaries',
 )
 
 

@@ -6,6 +6,24 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+Added default-OFF bounded source recovery for exact ORIGINAL primary spikes
+rejected before terrain recovery. Reuse original filled evidence and unchanged
+body/texture/RGB/same-instance proofs; pending/repaired candidates never teach.
+380 unique affected tests pass, NOT full suite;33runtime helpers registered.
+Three actual enabled wholes give ONE verified H3 positive recovery (frozen17
+scope16->17exact/oneextra remains), zero G2 and zero on the first untuned Halls7
+reserve. Reserve recognition failed; no goal-room or broad tileset success.
+
+Audit60 keeps71 DEFAULT findings/41semantic carries/30pending/ZEROapprovals.
+All five optional consumers OFF. Entire old default scanner AST is equivalent
+after explicit FALSE-only reduction; prior exact16/original41+601+139 carry
+their prior DEFAULT evidence, not fresh enabled qualification. Enabled controls
+and controlled cost for the new channel remain pending; the separate7.51%
+compound cost HOLD and all original goal gates remain. App default accuracy
+has not changed. Read TOP NEXT_THREAD_HANDOFF for the concrete continuation.
+
+### Earlier 2026-10-21 checkpoint (two failed positive experts)
+
 Latest accuracy investigation tests two separately frozen positive-boundary
 experts:13 unique private portable methods pass, but each complete Halls3/Golden2
 candidate evaluation produces ZERO new keys or repairs. Neither is adopted;

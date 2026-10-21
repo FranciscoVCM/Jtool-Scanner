@@ -13,7 +13,75 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: two positive experts failed; inspect spatial roles
+### Current continuation: bounded late original-primary recovery, default OFF
+
+Base6da83c70305f97683da83c7246f27c1dd3f1c370; verify actual HEAD/live origin.
+Read GOAL_PLAN IN FULL and latest DIRECTED_TRACE_ACTIVE_v1.md/DEFERRED_VETO_ACTIVE_v1.md
+in .artifacts/general-recognition-20261014. Previous/current turn PROGRESS:
+31ENTIRE proof traces, two actual ordinary-equivalent H3 stage traces, actual
+source-positive rejection cause, disabled implementation/380tests/3public
+enabled wholes. Original goal ACTIVE/incomplete, not narrowed to this channel.
+
+New public scripts/source_rejected_primaries.py and scanner binding:
+
+- _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED FALSE;all four earlier switchesOFF.
+  Collect exact ORIGINAL primary Detection objects removed by low-value pruner
+  only on direct original25x19/refit/source-mode/no-translation route. They stay
+  OUT of teacher pools through all later stages. Restore at end using SAME
+  actual filled instance, unchanged directional body/texture/RGB/same-instance
+  proof. No new poses/library/full pass/teacher/colour bound/old deletion.
+- 33rd transitive runtime helper registered. tests/test_source_rejected_primaries.py
+  has18new methods. rejected-primary-tests-v1.json TERMINAL/PASS380 UNIQUE
+  affected methods (old362+18), NOTfull suite. Expanded58subset alsoPASS.
+  Initial diagnostic preflight/fixture/newline failures preserved; sandbox
+  tempfile permissions rerun elevated, no implementation workaround.
+- Halls3-marker-recovery-trace-v1.json and Halls3-positive-path-trace-v2.json:
+  two actual ordinary wholes ENTIRE old outputs/projects/renders equal. Real
+  LEFT160,64 initially correct, lost by _prune_low_value_full_spike_recoveries
+  BEFORE backing repeated terrain recovery. False DOWN marker alias removed
+  early,recovered224,72,aligned224,64,escapes apple-only late pass. Separate
+  cause remains unfixed;do NOT add blanket marker-overlap deletion.
+- rejected-original-body-Halls3-v1.json: ENTIRE legacy287->270replay,17dropped,
+  13primaryqueries;existing body proof accepts ONLY realLEFT160,64. Then
+  rejected-original-late-transfer-v4.json: actual H3/G2 private wholes reuse
+  actual filled field after all teachers;H3one final recovery,G2zero. Old
+  metadata kept, no restored object teaches. v2/v3 errors preserved, v4complete.
+- rejected-primary-public-wholes-v2.json:3actual PUBLIC-API enabled wholes,
+  H3/G2 ENTIRE private-v4 final artifacts equal;untuned Halls7 ENTIRE old whole
+  equal. H3captures13/evaluates13/adds1;G2captures55/evaluates53/adds0;
+  H7captures5/evaluates5/adds0. FIRST new-consumer reserve recognition FAILED,
+  NOTa room approval or permission to tune it. No more source-body loosening.
+- rejected-primary-source-qa-v1.json: ALLone actual changed object main viewed
+  in dimension-checked rejected-primary-review-panels-v2.json/PNG. H3fixed17
+  16->17exact,miss1->0,extra1unchanged,errors2->1;ALL legacy/nongeometry/terrain/
+  mini metadata retained. One corrected error is NOTgoal-room success. Invalid
+  Sharp-v1panel kept but NOTcarried asQA;v2 materializes each resize correctly.
+- rejected-primary-default-semantics-v1.json: ENTIRE old scanner AST equal
+  after explicit FALSE-only new-channel reduction; all other old runtime bytes
+  unchanged except declared registry addition;newhelper no import-time calls.
+  Prior DEFAULT16/41/601/139 evidence can carry its age/scope,NOTfresh ON gates.
+- 71-screen-general-recognition-checkpoint-v60.json/.md:71DEFAULT findings
+  unchanged/41semanticcarries/30pending/ZEROapprovals;3freshopt-inwholes separate.
+  New opt-in positive1/defaultgain0/reserve0. Enabled16+41/601/139 and controlled
+  whole cost PENDING;separate compound7.51%HOLD stillfails. Allsixgoal gates
+  plus8real/4false/3rooms2families+reserve/final71+16 remain incomplete.
+- directed-pixel-trace-summary-v1.json:31ENTIRE geometry proofs/39815RGB LEFT-
+  normal vectors verified. H3sevenofeight geometrypass;G2eightofnine;C19three
+  of14 (ONLY3of12relative real members, NOTseven;both false fragments fail).
+  C19absolute registration unverified. Strictkernel already rejects these
+  falsefragments; tightening it is not their ordinary-emitter fix.
+
+NEXT: qualified bounded channel still needs ON protections/exact16 and quiet
+whole ABBA before default activation. Do NOT treat its one recovery or380tests
+as goal completion. Continue actual G2 compound/other-primary causes and retain
+canonical18offered-world guard rather than substitute tracked cn3-18. Reuse all
+completed producers, no new baseline/archive sweep or newteacher/coordinate
+answers. H3 marker loop is independently traced;any correction needs actual
+source identity and genuine overlap protections. Public checkpoint is disabled
+research, not an app-wide recognition or runtime success. Preserve private
+indexes/corrections;verify latest publication receipt/app instead of old PIDs.
+
+### Historical continuation: two positive experts failed; inspect spatial roles
 
 Base7db34827d8083e9ac29ea7f03d46fd3c288181c1; verify actual HEAD/live origin.
 Read GOAL_PLAN IN FULL/current active note. Previous turn PROGRESS: exact index,

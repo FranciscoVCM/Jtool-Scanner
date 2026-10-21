@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Source-proved rejected-primary recovery, default still OFF
+
+Traced actual ordinary Halls3 output, not a new baseline. Two complete observed
+wholes preserve ENTIRE ordinary maps/metadata/projects/renders. Real LEFT160,64
+is initially classified correctly, then lost by the low-value pruner before
+later terrain recovery supplies its backing. Separately, the false DOWN on a
+gravity flipper is removed early, recovered at224,72, aligned224,64 and escapes
+the late apple-only anchor pass. No blanket marker-overlap deletion was added.
+
+Added a bounded source-only recovery channel behind the initially FALSE
+`_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED`. Carry exact original rejected
+primaries outside ALL teacher snapshots; reuse the already-built filled field
+and unchanged directional body/texture/RGB-contour/same-instance proof. Restore
+only exact old Detection metadata after teacher-using consumers finish. No new
+pose grid, extra filled library, changed colour bound or legacy deletion.
+Compact/extended/resampled mappings remain guarded; the helper is registered
+as the33rd transitive runtime module. All four earlier switches remain OFF.
+
+380 UNIQUE affected test methods PASS (362 prior +18 new), NOT the full suite.
+The expanded58 integration subset also passes. Initial private import/manifest/
+newline checks and incomplete test-fixture metadata were corrected explicitly;
+sandbox temporary-file permission errors were rerun with appropriate access,
+not hidden by application changes. No fixture/source/reference modification.
+
+Three actual public-enabled wholes reproduce their full expected artifacts:
+Halls3 restores ONE main-source-reviewed real spike with old metadata; frozen
+17-object scope16->17exact, missing1->0, extra1 unchanged, errors2->1. Every
+legacy/nongeometry/terrain/mini object remains. Golden2 captures55 originals,
+evaluates53 and addsZERO. First untuned new-consumer reserve Halls7 evaluates
+all5 captured candidates and addsZERO; complete old whole equal. That reserve
+recognition FAILED. One corrected error is NOT a successful goal room or proof
+of general tileset recognition. The false flipper spike still needs a fix.
+
+Audit60 retains71 DEFAULT findings/41semantic carries/30pending/ZEROapprovals;
+new opt-in evidence is separate from unchanged app behavior. Entire old scanner
+AST matches after explicit FALSE-only new-channel reduction; other old runtime
+bytes are unchanged. Prior exact16/original41+601+139 keep their prior DEFAULT
+evidence age/scope, NOT fresh enabled qualification. New-feature ON protections
+and quiet controlled whole cost remain pending; separate compound7.51%HOLD
+remains. Do not enable or call this milestone complete from380tests/one recovery.
+
+The31 pixel traces also preserve ENTIRE old geometry proofs: H3all7true fulls
+pass/falsemarkerfails; G2eight interior fulls pass/borderabstains; C19only3/12
+relative true members pass/both false fragments fail. Absolute C19 registration
+is still unverified. Trace vectors are LEFT-normal, not uniformly inward.
+
 ## 2026-10-21 — Two positive-boundary experts fail complete primary transfer
 
 Returned to missing-geometry causes, not another runtime-only batch. Tested two

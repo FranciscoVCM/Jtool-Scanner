@@ -90,6 +90,8 @@ _SOURCE_COMPOUND_CONFLICTS_ENABLED = False
 # Positive touching-glyph evidence has independent protection/cost qualification.
 _SOURCE_INTERIOR_GLYPHS_ENABLED = False
 _SOURCE_FRAME_ARBITRATION_ENABLED = False
+# Exact legacy rejections remain outside source teachers until final recovery.
+_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2241,6 +2243,7 @@ def scan_image(
                 **({'source_geometry': True} if source_geometry else {}),
             )
     source_translation: tuple[int, int] | None = None
+    pending_source_primaries: tuple[Detection, ...] = ()
     if _SOURCE_DEFERRED_PLATFORMS_ENABLED:
         deferred_platform_vetoes = None
     deferred_neutral_fields: list[tuple[tuple[Detection, ...], float]] = []
@@ -2503,11 +2506,19 @@ def scan_image(
             )
         elif _has_confirmed_gravity_pair(detections):
             detections = _replace_gravity_room_blocks(detections, image, box)
+        original_primary_input = None
+        if (_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED and source_geometry and _apply_shape_refits
+                and normalized_grid == (25, 19) and source_translation is None
+                and image is source_image and box == source_box):
+            original_primary_input = tuple(detections)
         detections = _prune_low_value_full_spike_recoveries(
             detections,
             image,
             box,
         )
+        if original_primary_input is not None:
+            from scripts.source_rejected_primaries import rejected_primary_candidates
+            pending_source_primaries = rejected_primary_candidates(original_primary_input, detections)
         detections = _prune_final_mini_spike_noise(
             detections,
             image,
@@ -2953,15 +2964,18 @@ def scan_image(
     )
     _PATCH_FEATURE_CACHE.clear()
     if source_geometry and _apply_shape_refits:
+        pending_options = ({'rejected_primary_spikes': pending_source_primaries}
+                           if pending_source_primaries else {})
         if _SOURCE_DEFERRED_PLATFORMS_ENABLED and deferred_platform_vetoes is not None:
-            result = _apply_source_geometry(result, source_image, platform_vetoes=deferred_platform_vetoes)
+            result = _apply_source_geometry(result, source_image, platform_vetoes=deferred_platform_vetoes,
+                                            **pending_options)
         else:
-            result = _apply_source_geometry(result, source_image)
+            result = _apply_source_geometry(result, source_image, **pending_options)
     return result
 
 
 def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=None,
-                           platform_vetoes=None) -> ScanResult:
+                           platform_vetoes=None, rejected_primary_spikes=()) -> ScanResult:
     """Apply once to final source coordinates; compact mappings remain unqualified."""
     result.source_geometry = True
     if result.source_grid != (25, 19):
@@ -3001,6 +3015,17 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                 [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
             compound_options['source_context'] = original_context
         compound_options['record_filled_source'] = True
+    pending_options = {}
+    recover_original_primaries = bool(_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED
+                                     and rejected_primary_spikes and original_direct_frame)
+    if recover_original_primaries:
+        if not compound_options and not deferred_options and not frame_options:
+            from scripts.source_evidence_context import SourceEvidenceContext
+            original_source_detections = tuple(result.detections)
+            original_context = SourceEvidenceContext(image, result.room_box,
+                [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
+            pending_options['source_context'] = original_context
+        pending_options['record_filled_source'] = True
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
                                                        source_frame=frame, include_growth_confidence=True,
                                                        include_filled_glyphs=True,
@@ -3010,7 +3035,8 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                        **({'include_filled_interior': True,
                                                            'include_filled_interior_texture': True}
                                                           if _SOURCE_INTERIOR_GLYPHS_ENABLED else {}),
-                                                       **{**frame_options, **deferred_options, **compound_options})
+                                                       **{**frame_options, **deferred_options, **compound_options,
+                                                          **pending_options})
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
@@ -3037,6 +3063,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
         if recovery['added']:
             result.detections = sorted(merged, key=lambda d: (d.type_id, d.y, d.x))
             result.structural_warnings = structural_scan_warnings(result.detections)
+    recovery_retired = set(rejected) if recover_original_primaries else None
     if compound_options:
         from scripts.source_compound_conflicts import source_compound_conflicts
         evidence = original_context.growth_evidence(original_source_detections)
@@ -3047,9 +3074,20 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             source_block_library=libraries[0] if libraries else None,
             source_filled_evidence=original_context.filled_source(original_source_detections, frame),
             calibrated_background=True)
+        if recovery_retired is not None:
+            recovery_retired.update(retired)
         remaining = [d for d in result.detections if (d.type_id, d.x, d.y) not in retired]
         if len(remaining) != len(result.detections):
             result.detections = remaining
+            result.structural_warnings = structural_scan_warnings(result.detections)
+    if recover_original_primaries:
+        from scripts.source_rejected_primaries import recover_rejected_primaries
+        merged, recovery = recover_rejected_primaries(result.detections, rejected_primary_spikes,
+            original_source_detections, source_frame=frame, source_grid=result.source_grid,
+            source_filled_evidence=original_context.filled_source(original_source_detections, frame),
+            retired=recovery_retired)
+        if recovery['accepted']:
+            result.detections = merged
             result.structural_warnings = structural_scan_warnings(result.detections)
     return result
 
