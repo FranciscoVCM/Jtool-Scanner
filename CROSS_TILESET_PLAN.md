@@ -1,6 +1,28 @@
 # Cross-tileset milestone
 
-## Newest continuation (2026-10-21): exact computation, unchanged recognition
+## Newest continuation (2026-10-21): positive spatial-role evidence, two failed experts
+
+Two distinct private positive experts pass13 unique portable tests but yield
+ZERO new objects/repairs on each complete6458H3+10276G2 domain. First: original
+material/independentBG/three visible faces. Second: two visible slopes plus a
+base owned by another source-qualified original and16exposed body samples.
+No runtime/fixture changes or reserve queries; neither expert is adopted.
+Keep original17/37 scopes,7/9 diagnostic full-spike denominators and all minima.
+Canonical18 offered-world guard remains, not replaced by the tracked control.
+
+Measured source crops explain separate problems: real paired spikes need not
+have BG at their shared base; fixed OUT probes can land on sprite outline;
+real BG can match a foreground-highlight palette. Spatial role is not simply
+nearest RGB material. Do not respond with looser colour/ownership bounds.
+Next inspect existing contour/apex and source-appearance/collar evidence before
+another mechanism; keep real and false compound fragments as paired challenges.
+
+Audit59:71unchanged findings/41prior carries/30pending/ZEROapprovals. Prior362,
+16exact and original41/601/139 retain their prior evidence through unchanged
+runtime, NOT fresh reruns. All4switchesOFF/7.51%costHOLD/no new app gains. The
+full original goal and positive-recovery requirements remain active/incomplete.
+
+## Historical continuation (2026-10-21): exact computation, unchanged recognition
 
 One runtime helper now uses exact balanced nearest-original-RGB search. Same
 uint8 samples and math.dist result, exact lower-bound pruning, old exhaustive

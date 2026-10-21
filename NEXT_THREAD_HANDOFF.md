@@ -13,7 +13,58 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: exact paint search; runtime still held
+### Current continuation: two positive experts failed; inspect spatial roles
+
+Base7db34827d8083e9ac29ea7f03d46fd3c288181c1; verify actual HEAD/live origin.
+Read GOAL_PLAN IN FULL/current active note. Previous turn PROGRESS: exact index,
+362tests and measured cost. This turn PROGRESS: two complete frozen experiments,
+13unique private tests and decision-equivalent source attribution, not new
+recognition gains. Production/fixtures unchanged; all4switchesOFF/cost7.51%HOLD.
+
+Private root .artifacts/general-recognition-20261014, completed evidence:
+
+- CALIBRATED_BOUNDARY_POSITIVE_FREEZE_v1.md and calibrated-boundary-primary-v1.json:
+  original material + independent BG + ALL3known material/BG faces. Portable6
+  pass; ALL6458H3+10276G2poses evaluated; no new keys/withheld repairs. FAILED
+  recognition experiment, not a reserve success or new app feature.
+- ADJACENT_BASE_POSITIVE_FREEZE_v1.md and adjacent-base-primary-v1.json: preserve
+  old positives; two visible slopes, independently source-owned WHOLE-pixel
+  base,>=16exposed positive body positions. Portable7pass; SAME full domains,
+  zero new keys/repairs. Also FAILED transfer/not adopted. Construction failures
+  in ADJACENT_BASE_PREFLIGHT_FAILURE_v1.md: literal indentation, then empty
+  rectangle-model domain; no fake palette/new owner/predicate workaround.
+- calibrated-boundary-failure-attribution-v1.json: diagnostic-only detail,
+  ENTIRE ordinary decisions/proofs unchanged. Real G2UP232432/DOWN232464 have
+  12/12 both slopes but0BGbase:all12base probes on another verified glyph.
+- positive-boundary-attribution-panels-v1.json and its two PNGs: main viewed
+  exact source samples. H3LEFT16064 OUT can land on dark sprite outline beyond
+  the ideal collision edge; a genuine BG sample also matches original highlight
+  paint closely. These are separate role/appearance problems, not permission to
+  declare unknown empty or merely relax the colour bounds. H3 zero qualified
+  original rectangles in this query scope; do NOT use raw block boxes as owners.
+- positive-boundary-experiments-assessment-v1.json: original17H3/37G2typed
+  scopes and7/9full-spike diagnostic denominators unchanged. First admits0/7H3,
+  3/9G2; adjacency0/7H3,5/9G2, all already recognized. No fixed-subset negatives
+  admitted, NOT whole-room accuracy. No emitted maps/actual wholes needed or run
+  for zero new keys. Golden5 reserve NOTqueried; canonical18offered-world guard
+  retained/not queried, no substitution by tracked near-exact cn3-18 control.
+- 71-screen-general-recognition-checkpoint-v59.json/.md:71unchanged findings,
+  41prior default evidence carries/30pending/ZEROapprovals/no new app gains.
+  Prior362/16exact/original41+601+139 carry via ENTIREunchanged production bytes,
+  retaining prior evidence age/scope, NOT fresh reruns. Earlier18 research false
+  corrections remain; all original positive/recovery/other-primary gates open.
+
+NEXT: do NOT restart these completed producers, rerun baseline/archive, query a
+reserve for either failed mechanism, or enumerate looser role/visibility bounds.
+Inspect existing contour/apex APIs and actual source boundary/appearance evidence
+for real versus false compound fragments: spatial junctions/artwork collars and
+BG/foreground palette overlap need explicit evidence, not another RGB-pool-only
+filter. Preserve source teachers, unknowns, partial occlusions and every original
+protection. A successful portable synthetic test without real new primary keys
+is insufficient. Continue the ORIGINAL eight-real/four-false/three-room/two-family
+and new reserve requirements plus all six gates; goal ACTIVE/incomplete.
+
+### Historical continuation: exact paint search; runtime still held
 
 Base f533b877c14241aa61ffaaf17ca8b53003d628aa; verify actual HEAD/live origin.
 GOAL_PLAN IN FULL and latest DEFERRED_VETO_ACTIVE_v1.md remain authoritative;

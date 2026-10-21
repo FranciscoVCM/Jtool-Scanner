@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Two positive-boundary experts fail complete primary transfer
+
+Returned to missing-geometry causes, not another runtime-only batch. Tested two
+separately frozen, additive source-only experts without changing production:
+original material plus independent background and three visible boundary faces;
+then a distinct verified-neighbour base model with two visible slopes and at
+least 16 exposed source-positive body positions. Three original witnesses,
+physical coverage, old appearance/geometry bounds, marker/rectangle vetoes and
+unknown handling remain. Unverified block boxes never become owners.
+
+13 UNIQUE private portable test methods pass across the two experiments,
+including missing-direction teachers, joined/isolated shapes, source-wrong or
+missing neighbours, whole-pixel ownership, colour changes and fractional scale.
+Initial private construction failures were preserved and corrected without fake
+palettes, new owners or production/environment workarounds.
+
+Each expert evaluates ALL 6,458 Halls3 and 10,276 Golden2 frozen candidates:
+33,468 evaluations of the SAME 16,734 poses, not 33,468 unique examples. BOTH
+produce zero new primary keys and zero withheld pose repairs. The original
+17/37-object scopes remain; their diagnostic full-spike denominators stay 7/9.
+Existing recognized poses admitted by a new proof are NOT detection gains.
+Canonical CN3-18 retains the unresolved offered-world guard, not a physical
+reinterpretation or substitution by the tracked control. Neither expert is
+adopted; the predeclared new-expert Golden5 reserve remains unqueried.
+
+Main inspected measured source crops. Real Golden2 paired spikes share a base
+with another verified original glyph, not background. In Halls3, some fixed
+OUT probes still lie on sprite outline beyond the ideal collision triangle;
+another genuine background probe closely matches the foreground-highlight
+palette. A coherent fitted backdrop or nearest-palette label does not resolve
+those spatial roles. Do not claim these source semantics solved or simply
+loosen colour/visibility bounds after the failures.
+
+Audit v59 retains 71 unchanged findings, 41 prior default evidence carries,
+30 pending and ZERO approvals. No implementation/fixture changes, new app
+gains, full scanner runs, exact16 rerun or fresh public362-test execution.
+Those protections retain their prior evidence through unchanged runtime bytes.
+All four switches stay OFF; the 7.51% cost HOLD and original goal gates remain.
+Next inspect existing contour/apex and source-appearance boundary evidence,
+including artwork collars and material/background ambiguity, before choosing
+another positive mechanism. Avoid another loop of easier palette predicates.
+
 ## 2026-10-21 — Exact original-paint search preserves recognition; cost still held
 
 Replaced exhaustive nearest-paint lookup with an exact balanced RGB search over

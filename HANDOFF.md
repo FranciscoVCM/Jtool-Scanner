@@ -6,6 +6,22 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+Latest accuracy investigation tests two separately frozen positive-boundary
+experts:13 unique private portable methods pass, but each complete Halls3/Golden2
+candidate evaluation produces ZERO new keys or repairs. Neither is adopted;
+production/fixtures remain unchanged and the new-expert reserve is unqueried.
+Measured source crops expose shared-base ownership, artwork outside ideal
+collision edges and genuine BG/foreground-highlight palette overlap. Further
+work needs spatial/source-appearance evidence, not another looser colour rule.
+
+Audit59 retains71unchanged findings/41prior carries/30pending/ZEROapprovals.
+Prior public362/16exact/original41+601+139 keep their evidence via unchanged
+runtime, NOT fresh reruns. All4switchesOFF and7.51%costHOLD remain. Canonical18
+world-frame uncertainty and all original six goal gates are still open.
+Read TOP NEXT_THREAD_HANDOFF for failed evidence and the concrete continuation.
+
+### Earlier 2026-10-21 checkpoint (exact-search optimization)
+
 The latest bounded batch changes only exact nearest-original-RGB computation,
 not recognition: same samples/math.dist minimum, exact lower-bound search,
 non-uint8 exhaustive fallback and source-instance isolation. 362 unique affected
