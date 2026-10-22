@@ -92,6 +92,8 @@ _SOURCE_INTERIOR_GLYPHS_ENABLED = False
 _SOURCE_FRAME_ARBITRATION_ENABLED = False
 # Exact legacy rejections remain outside source teachers until final recovery.
 _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = False
+# Same-instance phase correction has separate source QA, control and cost gates.
+_SOURCE_FULL_SPIKE_PHASE_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -3035,6 +3037,16 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                 [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
             pending_options['source_context'] = original_context
         pending_options['record_filled_source'] = True
+    phase_options = {}
+    refit_original_full_phases = bool(_SOURCE_FULL_SPIKE_PHASE_ENABLED and original_direct_frame)
+    if refit_original_full_phases:
+        if not frame_options and not deferred_options and not compound_options and not pending_options:
+            from scripts.source_evidence_context import SourceEvidenceContext
+            original_source_detections = tuple(result.detections)
+            original_context = SourceEvidenceContext(image, result.room_box,
+                [(d.type_id, d.x, d.y) for d in original_source_detections if 3 <= d.type_id <= 10])
+            phase_options['source_context'] = original_context
+        phase_options['record_filled_source'] = True
     proposed, rejected, diagnostics = source_proposals(image, result.room_box, result.detections,
                                                        source_frame=frame, include_growth_confidence=True,
                                                        include_filled_glyphs=True,
@@ -3045,7 +3057,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
                                                            'include_filled_interior_texture': True}
                                                           if _SOURCE_INTERIOR_GLYPHS_ENABLED else {}),
                                                        **{**frame_options, **deferred_options, **compound_options,
-                                                          **pending_options})
+                                                          **pending_options, **phase_options})
     # Retired keys must not re-enter from a proposal set. Preserve every surviving
     # original Detection (score/provenance/image box), including legitimate overlap.
     retained = [d for d in result.detections if (d.type_id, d.x, d.y) not in rejected]
@@ -3072,7 +3084,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
         if recovery['added']:
             result.detections = sorted(merged, key=lambda d: (d.type_id, d.y, d.x))
             result.structural_warnings = structural_scan_warnings(result.detections)
-    recovery_retired = set(rejected) if recover_original_primaries else None
+    recovery_retired = set(rejected) if recover_original_primaries or refit_original_full_phases else None
     if compound_options:
         from scripts.source_compound_conflicts import source_compound_conflicts
         evidence = original_context.growth_evidence(original_source_detections)
@@ -3096,6 +3108,15 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             source_filled_evidence=original_context.filled_source(original_source_detections, frame),
             retired=recovery_retired)
         if recovery['accepted']:
+            result.detections = merged
+            result.structural_warnings = structural_scan_warnings(result.detections)
+    if refit_original_full_phases:
+        from scripts.source_full_spike_phase import refit_source_full_spike_phases
+        merged, phase = refit_source_full_spike_phases(result.detections, original_source_detections,
+            source_frame=frame, source_grid=result.source_grid,
+            source_filled_evidence=original_context.filled_source(original_source_detections, frame),
+            retired=recovery_retired)
+        if phase['corrected']:
             result.detections = merged
             result.structural_warnings = structural_scan_warnings(result.detections)
     return result

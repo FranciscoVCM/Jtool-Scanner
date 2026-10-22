@@ -4,7 +4,26 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-21
+## Current checkpoint — 2026-10-22
+
+Source-exclusive phase evidence now has an actual default-FALSE final scanner
+consumer, reusing original evidence/teachers without relaxing predicates.
+104 unique focused public methods PASS (18 added since86), NOT full suite.
+Three actual phase-enabled public wholes match complete expected artifacts:
+Golden2 ONLY DOWN(64,56)->(64,48); Halls3/Golden5 ENTIRE unchanged. Whole and
+ALLone delta source-reviewed. Upper6 exact4->5,miss2->1,extra1->0, representing
+ONE physical phase correction. Partial UP(64,16), overlapping block(64,32) and
+other MAJOR errors remain; Golden5 reserve stillFAILED. No room approval.
+
+Audit66 retains71 DEFAULT findings/41 prior carries/30pending/ZERO approvals.
+Complete new-OFF AST equivalence carries prior default evidence; all6 optional
+consumers remain OFF. No new default-app gain. Current phase-enabled16,
+enabled41/601/139, quiet phase-bound cost, finalstable71+16 and original goal
+gates remain open. Prior recovery-only cost passes and compound+7.51%HOLD are
+separate. Experiment profiles now require complete8-selector/schema2 records;
+legacy unknowns cannot be silently filled.35 runtime helpers remain registered.
+
+### Earlier 2026-10-21 checkpoint (unbound phase API)
 
 Latest: rejected-primary-only quietAC ABBA cost passes12 samples, H3-.26%,
 G2+.95%, H4+.82%, all complete expected outputs equal. Separate compound7.51%

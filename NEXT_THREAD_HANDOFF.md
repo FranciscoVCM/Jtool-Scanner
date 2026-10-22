@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-21. Continue in the existing repository at
+Updated 2026-10-22. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,7 +13,41 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: quiet cost passed; public phase evidence still unbound
+### Current continuation: actual phase caller, one measured correction
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md for latest publication/runtime/PIDs. Public
+source_full_spike_phase now has a final scanner consumer, separate defaultFALSE
+_SOURCE_FULL_SPIKE_PHASE_ENABLED. All SIX optional consumersOFF. Frozen source
+math unchanged; actual original filled field/BEFORE-source tuple reused, one
+frozen current query snapshot, no emitted teachers. Retired old/new keys,
+duplicate/changed metadata, target collisions and compact/extended-world
+mappings abstain. Corrections retain kind/type/score/order/count and update
+native origin plus corresponding physical image_box only.
+
+v95 TERMINAL/PASS104 unique PUBLIC methods127.628s (18 added since86), NOT full
+suite. v94 proves COMPLETE old scanner AST after explicit new-OFF reduction,
+frozen evidence math unchanged and all other runtime bytes identical. Strict
+experiment profiles now8selectors/schema2; exact old7+literalnewFALSE bridge
+allowed only by v94, never silently interpret unknown legacy metadata.
+
+v96 TERMINAL/PASS3 ACTUAL public wholes: G2 ONLY DOWN64,56->64,48; H3/G5 ENTIRE
+unchanged. Full Source/JMap/project/JTool/Blend/ordered metadata/warnings/frame/
+options parity, original teacher/model isolation/field reuse verified. Main
+viewed v97 whole+upper panels; PHASE_CALLER_SOURCE_QA_v98.md covers ALLone delta.
+Frozen upper6 exact4->5/miss2->1/extra1->0: ONE physical correction, not two
+independent errors or goal-room success. UP64,16 stillmissing, block64,32 still
+conflicting but protected;22currentblocks/lower37/side5/unrelatedmetadata intact.
+Golden2 staysMAJOR. G5zero/FAILEDreserve, no retuning/no unfamiliar-sprite claim.
+
+Audit66:71 DEFAULT findings/41 prior semantic carries/30pending/ZEROapprovals,
+no new default-app gain. Next qualify current phase-enabled16/original41+601+139
+and quiet phase-bound cost before adoption. v77 recovery-only cost PASS is NOT
+new phase cost; compound7.51%HOLD stays. Then source-qualified partial-occlusion
+or compound ownership; not more relaxed colour tests/bbox-only overlap removal.
+Original goalACTIVE:3rooms/2families+newreserved success/8real+4false/all six gates
+and finalstable71+16 stillrequired. Do not restart terminal v95/v96 or baseline.
+
+### Earlier checkpoint: quiet cost passed; public phase evidence unbound
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/runtime/PIDs before
 editing. No scanner/default/fixture change in this batch. Added public

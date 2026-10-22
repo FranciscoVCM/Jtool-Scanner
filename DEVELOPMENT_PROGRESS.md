@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-22 — Actual source-phase correction, default OFF
+
+Bound the frozen source-exclusive phase proof to a separate disabled final
+scanner consumer. It reuses the actual original filled field and immutable
+BEFORE-source teachers, evaluates one frozen current snapshot, and changes only
+a uniquely proved same-direction8/16px origin plus its physical image_box.
+Kind/type/score, unrelated instances/order/count and deliberate retirements
+are protected. Colliding targets, duplicate/changed metadata and unqualified
+compact/extended-world mappings abstain. No evidence threshold was relaxed.
+
+104 unique focused public methods PASS (18 added since prior86); NOT full
+suite. Complete old scanner AST equality under explicit new-OFF reduction,
+unchanged proof math and all other runtime bytes establish default semantic
+carry. Experiment profiles now require all8 selectors/schema2; missing legacy
+metadata is not silently OFF. The declared old7-plus-newFALSE bridge is allowed
+only by that specific OFF-equivalence proof.
+
+Three actual public phase-enabled whole scans match complete predicted Source/
+JMap/project/JTool/Blend, ordered metadata, warnings and frame/options. Golden2
+changes ONLY ordinary DOWN(64,56)->(64,48), preserving kind/type/score. Whole
+and ALLone changed object independently source-reviewed. Frozen upper6:
+exact4->5, misses2->1, extras1->0. ONE physical phase error corrected, not two
+independent gains. All22 current blocks/lower37/side5/nongeometry/minis retained.
+UP(64,16), conflicting block(64,32) and substantial other errors remain; MAJOR,
+not approved. Halls3/Golden5 are ENTIRE unchanged; Golden5 reserve stillFAILED.
+
+Audit66 retains71 DEFAULT findings/41 prior carries/30 pending/ZERO approvals.
+All SIX optional consumers remain OFF, so this is not a default-app gain.
+Current phase-enabled16, enabled original41/601/139, quiet phase-bound cost and
+finalstable71+16 remain pending. Prior recovery-only cost/16 passes are not
+certificates for the newly active path; separate compound+7.51%HOLD remains.
+Original goal criteria and failed reserves are unchanged; goal ACTIVE.
+
 ## 2026-10-21 — Quiet recovery cost passes; source-exclusive phase API
 
 Completed12 ordinary quietAC serial ABBA samples, two per mode/source. Only

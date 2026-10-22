@@ -16,7 +16,14 @@ provides `snapshot_feature_profile(scanner)` and
 `validate_feature_comparison(before, after, expected_changes=...)` to reject
 undeclared selector changes before scanning. Keep every untested selector
 constant; missing historical profile metadata is unknown, not implicitly OFF.
+Current records require all eight selectors and schema version2; legacy records
+need an explicitly proved compatibility bridge, not automatic default filling.
 Profile validation does not replace input, full-output, accuracy or speed checks.
+
+The bounded full-spike phase-correction consumer is separately disabled pending
+broader regression and controlled whole-scan timing checks. It can correct a
+unique source-proved8/16px offset using original evidence; it is not a claim of
+perfect rooms, universal tileset recognition or permission to delete overlaps.
 
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse

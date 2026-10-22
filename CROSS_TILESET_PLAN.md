@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-22): actual phase caller; adoption still gated
+
+The frozen original-source phase proof now has a separate default-FALSE final
+consumer. One immutable original field/teacher pool and frozen current snapshot;
+no emitted teachers, new thresholds, blanket overlap deletion or answer lookup.
+Preserve old metadata/order/count and retired keys; abstain on target collisions
+or unqualified compact/extended-world mappings. All8 selectors/schema2 must be
+recorded; a legacy bridge needs the explicit complete new-OFF equivalence proof.
+
+104 focused public methods PASS,18 added since86, NOT full suite. Three actual
+public wholes: Golden2 ONLY DOWN64,56->64,48; H3/G5 ENTIRE unchanged. Complete
+expected artifacts/metadata/source parity and fresh Golden2 whole/ALLone-delta
+QA pass. Upper6 exact4->5/miss2->1/extra1->0: ONE independent phase correction,
+not a successful goal room. Missing partialUP64,16/overlapping block64,32 and
+other MAJOR errors remain. Golden5 reserve remainsFAILED, not retuned or unseen.
+
+Audit66:71 default findings/41 prior carries/30pending/ZERO approvals. All6
+consumersOFF; no new default-app gain. Current phase-enabled16, original41/601/
+139, quiet phase-bound cost and finalstable71+16 stayOPEN. Prior recovery-only
+cost pass is separate; compound7.51%HOLD retained. Next close these adoption
+gates and investigate source-qualified partial occlusion/compound ownership,
+without relaxing proof to force answers. Original3rooms/2families+reserve,
+8real+4false and all six goal gates remain unchanged.
+
 ## Newest continuation (2026-10-21): measured cost pass; phase evidence unbound
 
 Rejected-primary-only quietAC ABBA cost passes all12 whole samples with ENTIRE

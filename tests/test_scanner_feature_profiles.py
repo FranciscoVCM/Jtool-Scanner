@@ -21,9 +21,10 @@ class ScannerFeatureProfileTests(TestCase):
     def setUp(self):
         self.before = snapshot_feature_profile(scanner)
 
-    def test_snapshot_records_all_seven_actual_values_without_mutating_runtime(self):
+    def test_snapshot_records_all_eight_actual_values_without_mutating_runtime(self):
         self.assertEqual(set(self.before['switches']), SOURCE_FEATURE_SWITCHES)
-        self.assertEqual(len(self.before['switches']), 7)
+        self.assertEqual(len(self.before['switches']), 8)
+        self.assertEqual(self.before['schema_version'], 2)
         with patch.object(scanner, NEW, True):
             after = snapshot_feature_profile(scanner)
             self.assertIs(after['switches'][NEW], True)
@@ -64,10 +65,21 @@ class ScannerFeatureProfileTests(TestCase):
 
     def test_profile_schema_is_strict_and_never_defaults_unknown_to_false(self):
         for profile in ({}, {'schema_version': True, 'switches': self.before['switches']},
-                        {'schema_version': 2, 'switches': self.before['switches']},
+                        {'schema_version': 1, 'switches': self.before['switches']},
+                        {'schema_version': 3, 'switches': self.before['switches']},
                         {**self.before, 'extra': None}):
             with self.subTest(profile=profile),self.assertRaises(ValueError):
                 validate_feature_comparison(profile, self.before, expected_changes={})
+
+    def test_legacy_v1_and_missing_phase_selector_are_not_silently_false(self):
+        legacy=deepcopy(self.before)
+        legacy['schema_version']=1
+        del legacy['switches']['_SOURCE_FULL_SPIKE_PHASE_ENABLED']
+        with self.assertRaises(ValueError):
+            validate_feature_comparison(legacy,self.before,expected_changes={})
+        legacy['schema_version']=2
+        with self.assertRaises(ValueError):
+            validate_feature_comparison(legacy,self.before,expected_changes={})
 
     def test_no_mutation_and_round_trip_for_explicit_code_only_comparison(self):
         original = deepcopy(self.before)

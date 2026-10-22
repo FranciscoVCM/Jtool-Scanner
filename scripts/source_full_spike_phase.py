@@ -1,9 +1,10 @@
-"""Experimental source-positive full-spike phase evidence, not app-bound.
+"""Experimental full-spike phase evidence and a separately gated consumer.
 
 Reports a unique bounded same-instance alternative only with original material,
 complete directed geometry and independent positive exclusive FG/BG evidence.
-No references, emitted-object teachers, caller mutation or retirement. An API
-proposal is not a scanner correction or a proof of unseen-tileset generalization.
+No references, emitted-object teachers or caller mutation. An evidence proposal
+is not a scanner correction; the consumer/caller require separate qualification
+and default OFF. Neither API is proof of unseen-tileset generalization.
 """
 from copy import deepcopy
 from math import dist
@@ -175,3 +176,78 @@ class SourceFullSpikePhaseEvidence:
         else:
             result['abstained']='no complete source-exclusive conjunction'
         return deepcopy(result)
+
+
+def refit_source_full_spike_phases(detections, original_detections, *, source_frame,
+                                  source_filled_evidence, source_grid, retired=()):
+    """Apply only unique original-source phase proofs; preserve every other object.
+
+    Query one frozen current snapshot, never an incrementally corrected teacher
+    list. Keep original kind/type/score; only native origin and corresponding
+    physical image_box change. Ambiguous origins/targets and retired keys stay.
+    """
+    from collections import Counter
+    from dataclasses import asdict, replace
+    from jtool_scanner.geometry import Box
+    from jtool_scanner.scanner import Detection
+    from scripts.source_filled_pipeline import FilledGlyphEvidence
+    from scripts.source_sampling import SourceFrame
+
+    current, original = tuple(detections), tuple(original_detections)
+    if any(not isinstance(d, Detection) or any(isinstance(v, bool) or not isinstance(v, int)
+            for v in (d.type_id, d.x, d.y)) for d in (*current, *original)):
+        raise ValueError('Source phase correction needs original integer Detection metadata')
+    report = dict(evaluated=0, corrected=[], withheld=[], source_proofs=[],
+                  no_new_teachers=True, object_count_unchanged=True,
+                  unchanged_objects_and_order_preserved=True)
+    if not isinstance(source_frame, SourceFrame):
+        raise ValueError('Source phase correction needs an immutable original SourceFrame')
+    if source_grid != (25, 19) or source_frame.extent != source_frame.room:
+        return list(current), {**report, 'reason': 'unqualified direct original source mapping'}
+    if (not isinstance(source_filled_evidence, FilledGlyphEvidence)
+            or source_filled_evidence.frame is not source_frame):
+        raise ValueError('Source phase correction must reuse the actual original filled field')
+    key = lambda d: (d.type_id, d.x, d.y)
+    current_counts = Counter(map(key, current))
+    original_counts = Counter(map(key, original))
+    excluded = set(map(tuple, retired))
+    eligible = [d for d in current if 3 <= d.type_id <= 6 and d in original
+                and current_counts[key(d)] == original_counts[key(d)] == 1 and key(d) not in excluded]
+    if not eligible:
+        return list(current), report
+    evidence = SourceFullSpikePhaseEvidence(source_filled_evidence, original, source_grid=source_grid)
+    if not evidence.body._cohorts:
+        return list(current), {**report, 'reason': 'no independent original source material cohorts'}
+    proposed = []
+    for detection in eligible:
+        old = key(detection)
+        proof = evidence.probe(old, current)
+        report['evaluated'] += 1
+        report['source_proofs'].append(proof)
+        if proof['proposed'] is None:
+            continue
+        new = _full_key(proof['proposed'])
+        delta = abs(new[1] - old[1]), abs(new[2] - old[2])
+        if (new[0] != old[0] or delta not in ((8, 0), (16, 0), (0, 8), (0, 16))
+                or any(isinstance(v, bool) or not isinstance(v, int) for v in new)):
+            raise ValueError('Source phase proof proposed an unqualified replacement')
+        if new in excluded or new in current_counts:
+            report['withheld'].append(dict(old=old, new=new, reason='retired or already current target'))
+            continue
+        proposed.append((detection, new, proof))
+    target_counts = Counter(new for _, new, _ in proposed)
+    replacements = {}
+    frame = source_frame.extent
+    for detection, new, proof in proposed:
+        old = key(detection)
+        if target_counts[new] != 1:
+            report['withheld'].append(dict(old=old, new=new, reason='conflicting replacement targets'))
+            continue
+        image_box = Box(round(frame.x + new[1] * frame.width / 800),
+                        round(frame.y + new[2] * frame.height / 608),
+                        max(1, round(32 * frame.width / 800)), max(1, round(32 * frame.height / 608)))
+        corrected = replace(detection, x=new[1], y=new[2], image_box=image_box)
+        replacements[old] = corrected
+        report['corrected'].append(dict(old=old, new=new, before=asdict(detection),
+                                        after=asdict(corrected), source_evidence=proof))
+    return [replacements.get(key(d), d) for d in current], report

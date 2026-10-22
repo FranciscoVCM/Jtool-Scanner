@@ -14,6 +14,7 @@ SOURCE_FEATURE_SWITCHES = frozenset({
     '_SOURCE_COMPOUND_CONFLICTS_ENABLED',
     '_SOURCE_DEFERRED_PLATFORMS_ENABLED',
     '_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED',
+    '_SOURCE_FULL_SPIKE_PHASE_ENABLED',
     '_SOURCE_REPEATED_IDENTITY_ENABLED',
     '_CAPTURE_BASE_CONTEXT_ENABLED',
 })
@@ -29,7 +30,7 @@ def _switch_values(values):
 
 def recorded_feature_profile(values):
     """Validate explicit metadata; never infer missing old runtime overrides."""
-    return {'schema_version': 1, 'switches': _switch_values(values)}
+    return {'schema_version': 2, 'switches': _switch_values(values)}
 
 
 def snapshot_feature_profile(scanner_module):
@@ -44,7 +45,7 @@ def snapshot_feature_profile(scanner_module):
 
 def _profile_values(profile):
     if (not isinstance(profile, Mapping) or set(profile) != {'schema_version', 'switches'}
-            or type(profile['schema_version']) is not int or profile['schema_version'] != 1):
+            or type(profile['schema_version']) is not int or profile['schema_version'] != 2):
         raise ValueError('Unsupported or incomplete scanner feature-profile record')
     return _switch_values(profile['switches'])
 
@@ -71,6 +72,6 @@ def validate_feature_comparison(baseline, candidate, *, expected_changes):
     if actual != declared:
         raise ValueError('Confounded or missing selector change: expected '
                          f'{sorted(declared.items())}, observed {sorted(actual.items())}')
-    return {'schema_version': 1, 'untested_switches_identical': True,
+    return {'schema_version': 2, 'untested_switches_identical': True,
             'declared_changes': {name: list(pair) for name, pair in sorted(actual.items())},
             'NOT_code_input_output_or_accuracy_qualification': True}
