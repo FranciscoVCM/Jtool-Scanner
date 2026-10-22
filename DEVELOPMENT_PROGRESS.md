@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-21 — Quiet recovery cost passes; source-exclusive phase API
+
+Completed12 ordinary quietAC serial ABBA samples, two per mode/source. Only
+rejected-primary recovery changes; all seven selectors are validated. Every
+sample preserves its expected complete map/metadata/warnings/frame/options/
+owned project/JTool/Blend, with no concurrent app scan detected. Median seconds:
+Halls3 63.710->63.542 (-0.26%), Golden2 66.324->66.956 (+0.95%), Halls4
+60.992->61.493 (+0.82%). This passes that channel's5% gate, not the separate
+compound+7.51%HOLD, phase-expert cost or enabled41/601/139 qualification.
+
+Added an UNBOUND original-source phase-evidence API and a colour-independent
+physical-patch selector. It requires unique axial8/16px replacement geometry,
+original sprite body/paint, new-only foreground, retained old positive samples
+and a complete nine-pixel old-only patch matching independent original local
+BG. Current neighbouring geometry excludes candidate patches before any colour
+read; it is not a source teacher or an excuse to declare hidden pixels empty.
+No old detector threshold, scanner caller, default selector or fixture changed.
+
+The first private15-method gate failed seven cases: nearest patches touched
+neighbouring real spikes, correctly causing abstention. Preserved failures;
+changed only geometric selection to avoid those protected shapes. The SAME15
+criteria plus3 sampler tests then pass, including entire default proof parity
+in320 domains. Public API reproduces ALL144 original-source query proofs:
+Golden2's68 eligible locators propose only DOWN64,56->64,48; Golden5's76
+propose zero. The reserve has NOT succeeded; this is a proposal, not an emitted
+correction. The partly ceiling-hidden UP64,16 remains a separate open problem.
+
+86 unique focused PUBLIC methods PASS (18 new), not the full suite. Initial
+sandbox temporary-file permission errors resolved by running the same tests
+with host permissions, not by changing scanner logic. Dependency coverage now
+requires all35 helpers, including both additions. All prior detector runtime
+bytes remain identical; only two unbound helpers and their registry entries
+were added. Their public executable math matches the frozen prototype exactly.
+Prior16 control/cost execution evidence carries; those are not new whole scans.
+
+Audit65 retains71 default findings/41 prior carries/30 pending/ZERO approvals.
+All five optional consumers remain OFF. No new app accuracy gain this batch.
+Next: finish enabled protections and bind a separately qualified phase repair
+and/or source-qualified partial-occlusion mechanism. Keep failed reserves,
+remaining runtime holds and all original goal minima explicit.
+
 ## 2026-10-21 — Expanded-capture controls pass; Golden2 positions confirmed
 
 All16 fresh controls for the published second capture site PASS with ENTIRE

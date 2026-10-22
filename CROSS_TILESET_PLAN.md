@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-21): measured cost pass; phase evidence unbound
+
+Rejected-primary-only quietAC ABBA cost passes all12 whole samples with ENTIRE
+per-mode expected outputs: H3-.26%, G2+.95%, H4+.82%. Not a new phase-expert
+timing result or resolution of separate compound7.51%HOLD; enabled41/601/139
+remains open. Old detector execution bytes/selectors stay unchanged this batch.
+
+New public source-exclusive phase API requires original body/paint, complete
+RGB contour, positive exclusive FG/BG and unique bounded replacement. Physical
+patch selection avoids protected current geometry BEFORE colour; never picks
+a patch for favourable colour. First private gate7failures retained; SAME15
+criteria plus3 sampling checks pass after that geometric correction. Public
+API has ENTIRE proof parity on144 actual original-source queries: one confirmed
+G2DOWN64,56->64,48 proposal, zero Golden5 reserve proposals. No reserve success,
+emitted correction or universal unfamiliar-sprite claim. Real partial UP still
+needs source-qualified occlusion, not weaker texture or bbox-only suppression.
+
+86 unique focused public tests PASS,18new; NOT full suite.35 helpers included
+in startup/fingerprint coverage. Audit65 keeps71default/41carries/30pending/
+ZEROapprovals, all5consumersOFF/no new app gain. Remaining integration/protection/
+runtime/final71+16/source-review and original goal8real+4false/3rooms+reserve
+requirements are unchanged. New API remains unbound until those relevant gates.
+
 ## Newest continuation (2026-10-21): current16 closed; pose evidence not a fix
 
 Expanded-capture ON16 now PASS with ENTIRE same-profile legacy output equality,

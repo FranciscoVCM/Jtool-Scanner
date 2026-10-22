@@ -13,7 +13,47 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: current16 closed; phase diagnosis, not a fix
+### Current continuation: quiet cost passed; public phase evidence still unbound
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/runtime/PIDs before
+editing. No scanner/default/fixture change in this batch. Added public
+scripts/source_physical_patch.py and scripts/source_full_spike_phase.py,
+SourceFullSpikePhaseEvidence.probe(old,current), plus18 public tests.35 helpers
+now preload/fingerprint. ALLold detector bytes/selectors unchanged; v91
+semantics proves new executable math equal frozen private prototype.86 focused
+PUBLIC methods PASS, not full suite. Initial ImageDraw port-test typo
+fixed; sandbox temp PermissionErrors rerun with host permissions, no app fix.
+
+v77 quietAC cost TERMINAL/PASS12serialordinary ABBA samples (2/mode/source),
+ALL expected outputs/metadata/source/options/project/JTool/Blend equal, appCPU
+quiet: H3 63.710->63.542(-.264%);G2 66.324->66.956(+.953%);H4
+60.992->61.493(+.822%). Same rejected-primary-only toggle/all7selectors fixed.
+NOT phase-expert cost/compound7.51%HOLD resolution or original41/601/139 pass.
+
+Private v78/v79 failed15test gate (7failures) retained. v80 diagnosis: chosen
+nearest old-only patch touched a separate real neighbour. v81 changes ONLY
+pure geometry selection to avoid current protected polygons BEFORE RGB; all
+9sample/BG/body/FGretention/geometry/unknown/marker/uniqueness bounds retained.
+SAME15+3 checks pass, complete default sampler parity320domains. Public v90
+reproduces ALL144 actual original-source proofs exactly (G2 68locators,
+reserved G5 76), no teacher/current metadata mutation. ONLY proposed G2
+DOWN64,56->64,48; G5 zero, so NO reserved recognition success/no retuning.
+
+This API is deliberately UNBOUND: no source pose emitted/retired, app still
+has old DOWN56/missing partly ceiling-hidden UP64,16. Human native coordinates
+remain confirmed; do not adjust for display outlines. Source scope6fulls/
+22CURRENTprotected blocks/lower37/side5 preserved. Other current geometry can
+only veto BG sampling, never become teachers or justify deletion. Unknown or
+positive originals always retain; no weakened old texture/palette tests.
+
+Audit65:71DEFAULTfindings/41prior semantic carries/30pending/ZEROapprovals,
+no new app gain. Next close enabled protections, then separately integrate/
+qualify bounded phase and source-qualified partial occlusion; reserve failure
+does not meet original goal minima. No final87 sweep until stable adoption.
+All original six gates, phase-expert cost and compound HOLD remain open.
+Following sections are historical, not current worker/qualification state.
+
+### Earlier continuation: current16 closed; phase diagnosis, not a fix
 
 Published implementation remains f78eb0f/runtimef322d770; this successor changes
 documentation only. v72 exact16 PID39296 TERMINAL/PASS, all16 ENTIRE equal;

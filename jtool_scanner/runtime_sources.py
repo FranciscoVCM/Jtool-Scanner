@@ -23,6 +23,8 @@ SOURCE_GEOMETRY_MODULES = (
     'source_glyph_backdrop',
     'source_calibrated_conflicts',
     'source_rejected_primaries',
+    'source_physical_patch',
+    'source_full_spike_phase',
 )
 
 

@@ -835,6 +835,34 @@ Focused tests:
 python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
+### Source-exclusive full-spike phase evidence (unbound research API)
+
+`scripts/source_full_spike_phase.py` exposes `SourceFullSpikePhaseEvidence`.
+Given the already-built original `FilledGlyphEvidence`, immutable original
+detections and a qualified direct25x19 source frame, `probe(old_key, current)`
+reports a unique same-direction alternative among axial8/16px displacements.
+It does **not** emit, retire or modify detections, and is not bound to app scans.
+
+The conjunction requires complete directed RGB geometry, independent original
+sprite paint/body, new-exclusive foreground, preservation of old positive body
+pixels, and nine original physical pixels positively matching independent local
+background. Patch selection is geometric and avoids other protected objects
+before reading colour; it never searches for pixels that make a colour test pass.
+Positive old contours, unknown coverage, markers and ambiguous alternatives
+cause abstention. Generated/recovered objects and JMaps never teach appearance.
+
+Portable tests cover directions, hue/polarity/brightness, isoluminant RGB,
+fractional/anisotropic captures, touching shapes and real partial occlusion.
+Complete real-source evaluation proposes one confirmed Golden2 phase correction
+and zero on the historically exposed Golden5 reserve. That is not a successful
+reserve, shipped correction, whole-room approval or arbitrary-sprite guarantee.
+Caller integration, protected outputs/source QA and additional phase-expert
+whole-cost qualification are still required before adoption.
+
+```powershell
+python -m unittest tests.test_source_full_spike_phase tests.test_source_physical_patch
+```
+
 ### Capture-base recovery (Experimental source mode)
 
 `scripts/source_capture_base.py` investigates filled spikes whose bodies and
@@ -851,7 +879,7 @@ used by a strict default-false `capture_base` option in filled recovery and
 `include_filled_capture_base` in the source pipeline. They share the existing
 original evidence instance and require filled mode. A guarded scanner consumer
 is enabled for fresh Experimental source scans after qualified whole-cost checks.
-The dependency is included in the app's current24-file source fingerprint.
+The dependency is included in the app's source-geometry dependency fingerprint.
 Normal scans and compact mappings retain their existing entry bypasses.
 
 The opt-in path adds objects only: it never teaches from proposals, retires old

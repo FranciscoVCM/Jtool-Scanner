@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-21
 
+Latest: rejected-primary-only quietAC ABBA cost passes12 samples, H3-.26%,
+G2+.95%, H4+.82%, all complete expected outputs equal. Separate compound7.51%
+HOLD and enabled41/601/139 remain open. New UNBOUND full-spike phase evidence
+and protected physical sampling APIs have86 focused tests PASS (18new), and
+ENTIRE parity on144 original-source query proofs. They propose only confirmed
+G2DOWN64,56->64,48 and zero on the Golden5 reserve, NOT an emitted repair or
+reserve success.35 helpers now covered by startup/source fingerprint. Audit65
+keeps71default findings/41prior carries/30pending/ZEROapprovals; all5 consumers
+OFF and actual Golden2 A/B errors still unfixed. No new default accuracy gain.
+
+Earlier implementation checkpoint:
+
 A second guarded capture site now retains original primary spikes lost by a
 late bright-filled rebuild; same unchanged source proof, no new teachers or
 poses. Default OFF.63 focused tests pass, six new caller-wiring methods; not a
