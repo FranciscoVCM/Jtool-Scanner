@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-22): numerical texture admission
+
+Interior texture must exceed RGB quantization before normalization. Otherwise
+rounded linear gradients become apparently perfect repeatable artwork. A
+same-sample numerical guard passes115 affected public methods (8new), preserving
+above-bound vectors exactly and unknown coverage semantics. It does not discard
+RGB, infer empty background, delete objects or certify a capture transform.
+
+ALL45 sealed inputs covered:38 actual rectangle-contribution pairs unchanged,
+7 true compact bypasses. Initial extended-world skip was an evaluator error;
+separate7 physical-crop tests close it with the same predicates. Four actual
+Golden2/F189 scans give two ENTIRE-equal whole/artifact pairs. No new room gain,
+whole approval, controlled speed or16PASS claim. The prior71 audit findings must
+not automatically become current-code certifications after a runtime change;
+audit68 preserves those findings with explicit current-code qualification pending.
+
+Source-paint frame hypotheses are not independently certified. Frozen terrain
+corroboration FAILED F189, while a simple scale veto would lose the real Golden2
+phase correction. Preserve all failures; next investigate independent mapping
+evidence or conservative ambiguity, not coordinate vetoes/threshold relaxation.
+User confirms Golden2UP64,16/DOWN64,48; outlines do not change these coordinates.
+Original full goal, failed phase11/5UNRUN, all6OFF,41/601/139/cost/final71+16 stay.
+
 ## Newest continuation (2026-10-22): registration must precede phase adoption
 
 Fresh enabled controls stop at11:10ENTIREequal,F189248->245exact/0->3shifts,

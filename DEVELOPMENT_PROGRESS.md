@@ -4,6 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-22 — Reject quantization-only interior texture
+
+Found a general numerical defect while investigating capture registration:
+normalizing a rounded linear RGB gradient amplifies its tiny residual pattern
+into unit-strength artwork. The interior descriptor now abstains below the
+conservative two-rounding RGB error bound. It reuses the same256 source samples;
+stronger texture descriptors remain bit-identical. No palette/room/origin rules,
+grayscale scan, new teacher or inference that zero texture means empty terrain.
+Very faint real artwork can remain indeterminate at this precision.
+
+Eight new tests reproduce four old gradient failures, then pass with the guard;
+115 affected public methods PASS, NOT the full suite. All45 sealed inputs are
+covered by38 actual OLD/new rectangle-contribution comparisons plus7 genuine
+compact entry bypasses; all contributions/proofs equal. The first evaluator
+incorrectly skipped extended-world inputs. Reading the actual pipeline caught
+that gap: seven supplementary physical-crop comparisons pass without changing
+recognition criteria. One Irkara89 weak descriptor changes, not its proposals.
+
+Four actual Golden2/F189 OLD-function-ablation versus unpatched-current scans
+give two ENTIRE-equal pairs: raw ordered result/project/JMap/JTool/Blend.
+This is whole-output parity for those pairs, NOT a controlled speed pass.
+No new measured room gain or approval. Golden2 human confirms UP64,16 partly
+ceiling-hidden and DOWN64,48; slightly offset outlines do not change origins.
+Audit68 preserves all71 prior findings with zero approvals; runtime changed,
+so prior41carries/30pending remain historical, not automatic current-code QA.
+
+Registration investigation stays unresolved: scale-only veto also rejects the
+real Golden2 correction. Orthogonal source-paint fits supply hypotheses, NOT
+certified transforms. Existing geometry accepts both F189 poses despite body
+evidence distinguishing them. Frozen independent-terrain corroboration fails
+on F189; no relaxed thresholds, frame export or reserve-success claim. The
+separate enabled-phase control failure/5UNRUN,41/601/139, controlled cost,
+final-current71+16 and all original goal gates remain open. Six consumers OFF.
+
 ## 2026-10-22 — Phase control failure exposes source/native registration risk
 
 Actual same-profile phase-enabled controls stop at case11:10 ENTIRE unchanged,

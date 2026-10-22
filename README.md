@@ -27,6 +27,12 @@ It can correct a unique source-proved8/16px offset using original evidence;
 it is not a claim of
 perfect rooms, universal tileset recognition or permission to delete overlaps.
 
+Interior artwork matching retains RGB but refuses to normalize residuals no
+larger than the conservative8-bit rounding bound into texture identity. A
+rounded linear gradient is not reliable artwork just because it repeats.
+Insufficient texture is not proof of empty background or authority to remove
+an object; stronger descriptors and the existing source samples stay unchanged.
+
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
 has passed affected tests/source-proof checks, but helper timings are not a

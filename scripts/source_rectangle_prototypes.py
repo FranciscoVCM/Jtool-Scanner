@@ -31,6 +31,13 @@ def _interior_signature(library, x, y):
     residual = tuple(rgb[c] - mean[c] - sx[c] * u - sy[c] * v
                      for u, v, rgb in values for c in range(3))
     length = sqrt(sum(value * value for value in residual))
+    # Capture rounding and the canonical 8-bit bilinear raster can each add
+    # <= .5 per channel to a linear field. Convex interpolation and least-
+    # squares plane removal cannot increase that L2 bound. Do not amplify this
+    # quantization into unit-strength artwork. Zero means insufficient texture,
+    # NOT empty background or permission to delete an existing object.
+    if length <= sqrt(3 * len(values)):
+        return (0.0,) * len(residual)
     return tuple(value / max(1e-12, length) for value in residual)
 
 

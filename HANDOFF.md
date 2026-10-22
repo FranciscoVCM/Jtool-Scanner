@@ -6,6 +6,20 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-22
 
+Numerical texture guard: the interior descriptor no longer turns rounded
+linear RGB gradients into unit-strength repeated artwork. Same source samples,
+above-bound texture bit-identical; indeterminate texture is NOT empty terrain.
+115 affected public tests PASS (8new);38 actual rectangle-contribution pairs
+and7 compact bypasses cover45 sealed inputs, with no proposal changes. Seven
+extended-world checks corrected an initial evaluator coverage mistake. Four
+actual Golden2/F189 scans give two ENTIRE-equal whole/artifact pairs. No new
+accuracy gain, room approval, full-suite, speed or16-control pass is claimed. Current-code
+whole71 qualification remains pending; audit68 preserves prior findings with
+zero approvals, old audit41carries/30pending historical.
+Golden2UP64,16 and DOWN64,48 are human-confirmed, not the drawn outline offsets.
+
+Previous same-day phase qualification (still unresolved):
+
 Latest qualification: enabled phase controls FAIL at case11 (10ENTIREequal,
 F189248->245exact/0->3shifts;5UNRUN,NOT16PASS). Three spikes move down8px,
 aligning source paint but sinking into native floor. Main whole/ALL3delta QA

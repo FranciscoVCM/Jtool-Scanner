@@ -13,6 +13,34 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Current continuation: numerical texture checkpoint; resume registration
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md first for live PID/publication, not stale
+entries below. Same256-sample interior guard refuses quantization-only
+RGB pattern identity; no new map teachers or absence/deletion permission.
+115 affected public tests PASS (8new), NOT full suite. v126+v129 cover45 sealed
+inputs:38 actual rectangle pairs equal+7 true compact bypasses. v126's initial
+world-bypass claim was WRONG; actual legacy fallback still uses physical crop.
+Preserved126 and supplemented ONLYthe7 omitted world inputs with same criteria.
+One Irkara89 descriptor changes, not proposals; no measured new room gain.
+
+v128 TERMINAL/PASS4 actual default-profile whole calls: Golden2/F189 old/new.
+Old = exact git303be83 interior function ablation; after = public unpatched
+scanner. ALL8 selectors fixed/all6 optional OFF; entire raw ordered result/
+project/JMap/JTool/Blend equal for both pairs. No live producer or need to rerun
+them. Runtime3e12edeb; exact publication HEAD/app health/private exclusion in
+interior-texture-publication-v130.json and TOPactive note. Conservative audit68
+preserves71 findings/ZEROapprovals; current-code full71 qualification pending,
+old41/30 historical. No new measured screen gain,16PASS or controlled speed.
+
+User confirms BOTH Golden2 origins UP64,16 (partly ceiling-hidden),DOWN64,48.
+Drawn outlines slightly right do NOT alter coordinates; private confirmed note67.
+Registration113 simple scale veto FAILED G2;116 paint fits are hypotheses only;
+117 geometry-only FAILED F189;124 independent-terrain corroboration FAILED/no
+cohorts, G2 UNRUN. No exported frame or weakened predicate. Preserve failed100
+phase controls/F189248->245/5UNRUN, cost102NOTRUN, original41/601/139/final71+16
+and ALL original goal gates. Goal remains ACTIVE; not a completed71-screen batch.
+
 ### Current continuation: F189 control fails; diagnose native registration
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/PIDs before editing.
