@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-22
 
+Latest qualification: enabled phase controls FAIL at case11 (10ENTIREequal,
+F189248->245exact/0->3shifts;5UNRUN,NOT16PASS). Three spikes move down8px,
+aligning source paint but sinking into native floor. Main whole/ALL3delta QA
+and an ENTIRE failed-output-equivalent observation isolate a likely source/
+native registration problem. Separately frozen source-only16-pair fit supports
+a coherent scale mismatch with<=1.25px residual; NOTa certified/exported frame
+or new production classifier. No bounds/references/runtime/defaults changed;
+all6consumersOFF. Prior104tests carry,not new/full suite. Audit67 keeps71default
+findings/41priorcarries/30pending/ZEROapprovals. Next qualify mapping before
+local phase adoption; cost NOTRUN,original41/601/139 and full goal gates open.
+
+Earlier same-day implementation checkpoint:
+
 Source-exclusive phase evidence now has an actual default-FALSE final scanner
 consumer, reusing original evidence/teachers without relaxing predicates.
 104 unique focused public methods PASS (18 added since86), NOT full suite.

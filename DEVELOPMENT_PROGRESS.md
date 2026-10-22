@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-22 — Phase control failure exposes source/native registration risk
+
+Actual same-profile phase-enabled controls stop at case11:10 ENTIRE unchanged,
+then F189 exact248->245, shifts0->3;5 controls UNRUN. FTFA926/928 with zero
+extras/shifts/wrong and Flames255/18 retain their executed results, NOT16PASS.
+The three bottom UPs move down8px. Preserved all failed outputs/bounds; no
+runtime/default/fixture changes or cost run. All six optional consumers OFF.
+
+Main whole/ALL3delta Source/JTool/Blend review finds the moved paint aligns
+better with the reported screenshot mapping but sinks into unchanged native
+floor blocks. One diagnostic actual whole reproduces ENTIRE failed output and
+observes the real original field, not final-map teachers.79/89 original fulls
+pass existing directed geometry (8/14 bottom), so three positive teacher
+contours alone would not certify capture/native registration.
+
+Separately frozen source-only diagnostic uses the first existing original body
+model/unchanged colour limit, fixed component geometry and mutual unique pairs,
+not a hardcoded hue. All16 original-UP correspondences fit source x/y scales
+1.02110/1.02441 with max residual.801/1.248px, versus reported1.01000/1.00658.
+No outlier removal; passes predeclared12-pair/3-y/max2px criterion. This supports
+coherent capture/native registration mismatch rather than three independent
+map errors. Component-versus-collision boundary bias remains: NOT a certified
+world extent, exported transform, production classifier or accuracy gain.
+
+Existing-source occlusion observation probes ALL22 upper Golden2 blocks/6spikes:
+ceiling supported/conflicting block rejected, but a real wall also fails. Body/
+texture failure is NOT absence or deletion authority. Partial-UP work stays
+separate. Audit67 retains71 DEFAULT findings/41 prior carries/30pending/ZERO
+approvals. Prior104 focused tests carry unchanged, not fresh/full suite. Next
+qualify source/native mapping before local phase adoption; preserve Golden2's
+actual source-positive correction and all prior protections. Cost is prepared
+only; original41/601/139/final71+16/all original goal gates remain open.
+
 ## 2026-10-22 — Actual source-phase correction, default OFF
 
 Bound the frozen source-exclusive phase proof to a separate disabled final

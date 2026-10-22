@@ -13,7 +13,40 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Current continuation: actual phase caller, one measured correction
+### Current continuation: F189 control fails; diagnose native registration
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/PIDs before editing.
+New turn changes NO runtime/default/fixtures. v100 TERMINAL/FAILED at11:
+10ENTIREequal,F189exact248->245/shift0->3,5controlsUNRUN,NOT16PASS. Preserve all
+failed outputs/profiles/bounds; do not restart or silently complete last5.
+FTFA926/928 zeroextras-shifts-wrong and Flames255/18 retain executed results.
+All6 optional consumersFALSE;current104focused tests carry,not fresh/full suite.
+
+Main viewed source/v105whole+ALL3bottom panels. Three UPs native(64,544),
+(544,544),(640,544) -> y552 align paint but sink into unchanged native floor.
+Actual v106 observation whole ENTIRE reproduces failed output and captures SAME
+real original field/teacher tuple.79/89original fulls pass old directed geometry,
+including8/14bottom;three-positive-teacher shortcut is NOT frame qualification.
+
+Read F189_PHASE_FAILURE_SOURCE_QA_v108.md and frozen v107 diagnostic: first
+existing original source body model, no fixed hue; fixed component geometry,
+mutual uniqueness,ALL16UPpairs/no outlier removal fit scales1.02110/1.02441
+versusreported1.01000/1.00658, maximumresidual<=1.25px. Coherent source/native
+registration mismatch indicated, NOT a certified transform/exported extent.
+Next qualify mapping before local phase corrections with portable/cross-style
+tests and exact existing positive safeguards; no coordinate/palette veto or
+reference forcing. G2 actual DOWN correction stays real but disabled pending
+gates. Old source-qualified partial-UP work remains separate.
+
+v103 old-API observation22blocks/6spikes TERMINAL:ceiling supported/falseblock
+rejected BUT realwall0,32 also fails; failureNOTabsence. See prospective104note,
+not a new detector. Cost102prepared/py_compilePASS/NOTRUN;doNOTstart on failed
+accuracy. Audit67 keeps71default/41carries/30pending/ZEROapprovals. Enabled41/
+601/139/finalstable71+16,failed reserves and original six goal gates stayOPEN.
+App restored hidden25944 after PC return,health200/current fingerprinta372308b;
+exact final publication/state in ACTIVE note. DoNOTrestart terminal workers.
+
+### Earlier checkpoint: actual phase caller, one measured correction
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md for latest publication/runtime/PIDs. Public
 source_full_spike_phase now has a final scanner consumer, separate defaultFALSE

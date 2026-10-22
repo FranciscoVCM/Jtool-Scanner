@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-22): registration must precede phase adoption
+
+Fresh enabled controls stop at11:10ENTIREequal,F189248->245exact/0->3shifts,
+5UNRUN,NOT16PASS. Existing FTFA926/928/zeroextra-shift-wrong and Flames255/18
+stay intact among executed cases. No thresholds/references/runtime/defaults
+changed; all6consumersOFF. Whole+ALL3delta review shows improved screenshot
+alignment but sinking into unchanged native floor, suggesting frame mismatch.
+
+Actual diagnostic whole ENTIRE reproduces failed output with real original
+field/teachers;79/89 original fulls pass existing directed geometry, so a
+three-positive-teacher shortcut is insufficient. Frozen source-only component
+diagnostic, first original body model/no hue threshold/outlier removal, yields
+16unique originalUP pairs and alternative x/y scales1.02110/1.02441 versus
+reported1.01000/1.00658; maxresidual<=1.25px. Supports coherent capture/native
+registration error, NOTa certified transform or permission to move map objects.
+Next source-backed mapping qualification and portable cross-capture tests before
+local phase changes; retain G2 positive, no origin/palette/reference veto.
+
+Golden2 old-API22block/6spike diagnostic distinguishes ceiling/false block but
+also fails one real wall: failureNOTabsence. No new occlusion classifier yet.
+Audit67 retains71default/41carries/30pending/ZEROapprovals;unchanged runtime/
+prior104focused tests,not fresh fullsuite. CostpreparedNOTRUN,original41/601/139/
+final71+16/original six gates and failed reserves remainOPEN. Do not certify
+accuracy from regional gains or replace source registration with coordinate fixes.
+
 ## Newest continuation (2026-10-22): actual phase caller; adoption still gated
 
 The frozen original-source phase proof now has a separate default-FALSE final
