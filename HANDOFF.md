@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Latest qualification: all16 current phase-enabled exact controls PASS complete
+cached/exported output equality (15 fresh this goal turn, one qualified current
+F189 reuse). FTFA926/928 with zero extras/shifts/wrong; Flames255exact/18miss
+and existing42extras/20shifts/2wrong retained. Profiles are explicit, NOT default
+app qualification. Audit70 retains71 findings/ZERO room approvals/new app gains.
+Read-only partial-visibility diagnosis identifies useful remaining Golden2 UP
+evidence but does not emit it. Current41/601/139, quiet phase cost, separate
+compound cost HOLD, final71+16 and original goal gates remain open. All6 default
+consumers remain OFF. Older pending16 wording below describes the earlier stage.
+
 Independent source-paint ambiguity now guards the disabled local phase consumer.
 It retains the old pose only when original BODY+geometry positively support it
 under a coherent alternate mapping; it never exports that mapping or learns

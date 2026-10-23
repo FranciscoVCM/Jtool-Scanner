@@ -1,5 +1,28 @@
 # Cross-tileset milestone
 
+## Latest qualification (2026-10-23): current16 pass, no adoption or room approval
+
+Current phase-enabled16 controls PASS complete cached/exported output equality.
+Fifteen scans were fresh this goal turn; one current F189 whole was explicitly
+qualified for reuse. FTFA926/928, zero extras/shifts/wrong; Flames255exact/18miss
+with42extras/20shifts/2wrong retained. The complete8-switch research profile is
+explicit and differs from the default app; no old or canonical profiles pooled.
+Compact NANG135 correctly bypasses phase; a failed blanket call-count assertion
+was fixed in the harness only, with its scan/failure preserved.
+
+Read-only Golden2 visible-portion diagnosis supports a source-occlusion causal
+batch: the missing ceiling-hidden UP has strong remaining edges and appearance
+from independent originals. Best-crop similarity alone is NOT an object proof.
+Require an independently source-supported occluder, enough visible geometry,
+unique size/origin and negative/partial/transfer protections before proposing a
+new channel. No recovery or geometry gain is claimed by this diagnostic.
+
+Audit70 retains71 findings/ZERO approvals/new default gains. Runtime unchanged;
+prior134 public tests carry, not newly run. All6 default consumers OFF. Current
+41/601/139, quiet phase whole cost, separate compound cost HOLD, final71+16 and
+original goal minima remain OPEN. Do not repeat the completed16 gate merely
+because the next checkpoint is a documentation commit.
+
 ## Newest continuation (2026-10-23): positive registration ambiguity, not a new frame
 
 The disabled phase consumer now withholds a proposed local move when independent

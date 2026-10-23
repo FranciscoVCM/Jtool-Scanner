@@ -13,6 +13,35 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: current16 pass; qualify protected structures next
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/worker receipts. The
+current16 gate160 is TERMINAL/PASS; no scan worker remains live. All16 complete
+cached/exported outputs equal qualified72 baselines on registration-guard code.
+13 fresh160 +two completed current159 outputs +current F189153 reuse;15 fresh
+this goal turn. Full runtime/profile/source/options/reference/artifact bridges
+are explicit. FTFA926/928 zero extras/shifts/wrong; Flames255/18/42/20/2 retained.
+All8 research selectors explicit, original3/recovery/phase/repeat/capture ON,
+deferred OFF. NOT default app or canonical original3-OFF qualification.
+
+Failed159 was an instrumentation assertion on compact NANG13519x13, not an
+accuracy loss. Preserve receipt/logs;160 observes actual entry/grid/direct-frame
+eligibility. Do NOT rerun completed controls or invent unsealed159 call records.
+Prior134 public tests remain runtime-compatible, NOT rerun/full suite this turn.
+
+161/163 read-only partial-visibility diagnostics are TERMINAL/PASS28queries x
+4fixed masks. Read GOLDEN2_VISIBLE_PORTION_FINDINGS_v163.md. UP64,16 has strong
+visible-half evidence; it remains missing, and block64,32 still conflicts.
+Need independently source-proved occlusion/unique object identity, not a best
+crop, relaxed thresholds, generated teachers or blanket overlap deletion. Real
+RIGHT64,112 fails this tip-censor family: a distinct occlusion orientation.
+
+Audit70 conservatively preserves ALL71 findings/ZERO approvals/new app gains.
+Next current original41/601/139 protected structures, reusing these16 controls
+only after full compatibility proof; then quiet AC paired whole phase cost.
+Do not waive the separate compound cost HOLD. All6 default consumers OFF;
+finalcurrent71+16/original real-recovery/reserve/six goal gates remain OPEN.
+
 ### Current continuation: source ambiguity guard; close adoption gates
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/PIDs/receipts. Public

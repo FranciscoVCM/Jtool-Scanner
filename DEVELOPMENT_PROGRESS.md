@@ -4,6 +4,45 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Current phase-enabled control set passes; partial-visibility diagnosis
+
+All16 exact controls now PASS complete cached/exported output equality on the
+published registration-guard runtime. Fifteen actual fresh scans were completed
+this goal turn; F189's earlier current-runtime whole was reused after explicit
+runtime, profile, source, options, reference and artifact checks. The successful
+successor gate contains13 fresh scans plus those three qualified current reuses.
+No old-code output was relabelled as current. Ordered Detection metadata,
+warnings, room/grid/options, source/reference, owned project, JMap/JTool/Blend
+are unchanged. FTFA retains926/928 with zero extras/shifts/wrong directions;
+Flames retains255exact/18miss/42extras/20shifts/2wrong.
+
+All eight experimental switches are recorded: original frame/interior/compound,
+rejected-primary recovery, phase, repeated identity and capture context ON;
+deferred platforms OFF. This is NOT the default app profile or pooled canonical
+original3-OFF evidence. The older failed phase run remains historical. An initial
+current harness also stopped after incorrectly requiring a consumer call on
+compact NANG135's19x13 path. Its completed scan and failure were preserved;
+actual entry/grid/direct-frame observation fixed the harness, not detector code
+or pass criteria. The same output then qualified without another scan.
+
+Separately, a read-only source diagnostic retained all28 hypotheses and four
+predeclared visible-portion masks per hypothesis. For the missing Golden2
+UP64,16, full interior matching has weak correlation;38 remaining samples below
+the covered apex agree with three mutually compatible disjoint originals at
+minimum correlation0.973, with directed remaining edges12/12/12. This motivates
+independently source-qualified occlusion, NOT choosing a convenient crop as an
+object. A smaller10-cell crop has higher correlation but weaker slopes; real
+RIGHT64,112 needs a different occlusion orientation. No object was emitted,
+retired or corrected by this diagnostic. The UP remains missing.
+
+Audit70 preserves all71 findings and ZERO new room approvals/default-app gains.
+Prior134 affected public tests carry through byte-identical runtime; not a fresh
+test run/full suite. All six default consumers remain OFF. Original41/601/139
+protections, quiet AC whole phase cost, separate compound cost HOLD, final stable
+71+16 and the original recovery/reserve/goal minima remain open. Next qualify
+current protected structures, then controlled cost before adoption; pursue the
+source-occlusion/positive-recovery cause without relaxing existing safeguards.
+
 ## 2026-10-23 — Independent source evidence prevents unsafe local phase shifts
 
 Added a source-only ambiguity guard to the separately disabled full-spike phase
