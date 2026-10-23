@@ -4,7 +4,25 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-22
+## Current checkpoint — 2026-10-23
+
+Independent source-paint ambiguity now guards the disabled local phase consumer.
+It retains the old pose only when original BODY+geometry positively support it
+under a coherent alternate mapping; it never exports that mapping or learns
+from corrected objects. Exact bounded paint lookup keeps identical evidence.
+134 affected PUBLIC tests and4 actual whole callers PASS, not full suite/16gate.
+F189 avoids three unsupported shifts, restoring248exact/13extras/0shift. G2 keeps
+its previous DOWN64,48 correction; H3/G5 unchanged, reserve stillFAILED. Main
+whole/ALL3 source review confirms native floor consistency, NOT a certified
+camera alignment or room approval. No additional baseline geometry gains.
+
+Profiles are explicit per source, not pooled. All6 default consumersOFF;36
+helpers preloaded/fingerprinted. Current full16/protection41+601+139/quietACwhole
+cost/final71+16 and all original goal gates remain open. The old failed100/
+5UNRUN are historical, not16PASS. See latest progress/next-thread notes and
+ignored audit69 for the conservative per-room status.
+
+Previous numerical checkpoint — 2026-10-22:
 
 Numerical texture guard: the interior descriptor no longer turns rounded
 linear RGB gradients into unit-strength repeated artwork. Same source samples,

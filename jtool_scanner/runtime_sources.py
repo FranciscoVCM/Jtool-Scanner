@@ -25,6 +25,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_rejected_primaries',
     'source_physical_patch',
     'source_full_spike_phase',
+    'source_phase_registration',
 )
 
 

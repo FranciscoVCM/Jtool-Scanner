@@ -20,11 +20,12 @@ Current records require all eight selectors and schema version2; legacy records
 need an explicitly proved compatibility bridge, not automatic default filling.
 Profile validation does not replace input, full-output, accuracy or speed checks.
 
-The bounded full-spike phase-correction consumer is separately disabled: an
-enabled control run found three incorrect native shifts on F189. Source/native
-capture registration needs qualification before adoption and speed checks.
-It can correct a unique source-proved8/16px offset using original evidence;
-it is not a claim of
+The bounded full-spike phase-correction consumer remains separately disabled.
+An independent source-evidence ambiguity guard prevents three unsupported F189
+shifts in actual caller pilots while preserving the confirmed Golden2 correction.
+It may withhold a unique8/16px local move, but never exports a fitted camera
+frame or learns corrected objects as teachers. Complete control/protection and
+quiet whole-speed qualification still precede adoption. This is not a claim of
 perfect rooms, universal tileset recognition or permission to delete overlaps.
 
 Interior artwork matching retains RGB but refuses to normalize residuals no

@@ -4,6 +4,45 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Independent source evidence prevents unsafe local phase shifts
+
+Added a source-only ambiguity guard to the separately disabled full-spike phase
+consumer. It excludes every old/new query footprint before learning from original
+source witnesses, fits all admitted orthogonal paint correspondences without
+outlier removal, then asks whether independent original body AND geometry also
+support the old pose. Positive counterevidence withholds the local move; no
+fitted frame, new object or coordinate transform is exported. Missing evidence
+is not empty background or proof that registration is correct.
+
+An exact bounded original-paint KD search preserves all classification/proof
+values while avoiding unnecessary full nearest-distance searches. Observed G2
+helper8.37->2.45s; NOT controlled whole-scan timing. One shared child domain per
+proposal set, none without proposals. Existing phase-proof math is AST-identical;
+default-OFF scanner semantics and all8 selectors are unchanged. Runtime preload/
+fingerprint now includes36 helpers. No new dependency or hidden selector.
+
+134 affected PUBLIC methods PASS, including all previous104,20 new registration/
+radius tests,2 new consumer checks and8 numerical tests. NOT full suite. Initial
+flat-fixture failures and the stale35-helper assertion are preserved; qualified
+authored texture and explicit36-helper byte coverage fix those test prerequisites,
+not detector thresholds. Four public original-source API/proof replays equal the
+frozen prototype, followed by FOUR actual whole callers with COMPLETE ScanResult/
+ordered metadata/warnings/frame/options/owned project/JMap/JTool/Blend equality.
+
+F189 retains all three oldUPy544 instead of moving to552:248exact/13extras/0shift,
+restoring the prior control, not three new baseline gains. G2 keeps the confirmed
+DOWN64,56->64,48 correction; no additional recovery. H3/G5 unchanged, zero child
+domains; G5 reserve still FAILED. Main reviewed whole/ALL3 F189 changes; source
+camera drift remains uncertain and13 extras remain. G2 prior whole/one-delta QA
+carries by complete equality, partialUP/other MAJOR errors remain. Zero approvals.
+
+Profiles differ explicitly: F189 original3ON; canonical G2/H3/G5 original3OFF.
+Both use recovery+phaseON/deferredOFF/repeat+captureON. Do not pool their results.
+All6 default consumers stay OFF. Current full16/protection41+601+139/quietACphase
+cost/finalstable71+16 and all original goal criteria stay OPEN; old failed100/
+five UNRUN are not silently upgraded to16PASS. Next close current control/cost
+gates before adoption, then continue real positive compound/occlusion recovery.
+
 ## 2026-10-22 — Reject quantization-only interior texture
 
 Found a general numerical defect while investigating capture registration:

@@ -33,6 +33,32 @@ def refit(scene,*,current=None,original=None,filled=None,frame=None,grid=(25,19)
 
 
 class FullSpikePhaseConsumerTests(TestCase):
+    def test_positive_registration_counterproof_retains_exact_original_instances(self):
+        scene=values()
+        from scripts import source_phase_registration
+        class Ambiguous:
+            def __init__(self,field,original,pairs,*,source_grid):
+                self.pairs=tuple(pairs)
+            def proof(self):
+                return dict(mapping_NOT_certified=True,available=True)
+            def probe(self,old,new):
+                return dict(old=old,new=new,ambiguous=True,positive_original_source_only=True)
+        with patch.object(source_phase_registration,'SourcePhaseRegistrationAmbiguity',Ambiguous):
+            after,report=refit(scene)
+        self.assertEqual(after,list(scene[3]))
+        self.assertTrue(all(a is b for a,b in zip(after,scene[3])))
+        self.assertFalse(report['corrected'])
+        self.assertEqual(len(report['withheld']),1)
+        self.assertTrue(report['withheld'][0]['registration_counterproof']['ambiguous'])
+
+    def test_no_surviving_phase_proposal_does_not_build_registration_evidence(self):
+        scene=values()
+        with patch('scripts.source_phase_registration.SourcePhaseRegistrationAmbiguity',
+                   side_effect=AssertionError('No surviving proposed phase')):
+            after,report=refit(scene,retired=(scene[6],))
+        self.assertEqual(after,list(scene[3]))
+        self.assertFalse(report['corrected'])
+
     def test_actual_source_correction_preserves_all_unrelated_instances_and_order(self):
         scene=values();original=scene[3];old=scene[6]
         extras=(detection(13,704,448,scene[1]),detection(1,0,0,scene[1]),detection(2,32,32,scene[1]))

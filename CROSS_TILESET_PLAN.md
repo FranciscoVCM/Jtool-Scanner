@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Newest continuation (2026-10-23): positive registration ambiguity, not a new frame
+
+The disabled phase consumer now withholds a proposed local move when independent
+source evidence positively supports the old pose under a coherent paint-mapping
+hypothesis. All old/new query boxes excluded before original teacher selection/
+fit/child evidence; no emitted teachers, outlier dropping, coordinate/palette
+rules or exported camera transform. Unknown evidence does not imply empty BG.
+Exact KD radius membership accelerates the unchanged original-paint predicate;
+helper timing improvement is NOT whole latency qualification.
+
+134 affected public methods PASS (old104 retained+20registration+2consumer+
+8numerical), not full suite;36 helpers preloaded/fingerprinted. Complete frozen
+proof equality and4 actual whole caller comparisons pass. F189 old three poses
+retained:248exact/13extras/0shift, restoring—not exceeding—baseline. G2 known
+DOWN repair retained; H3/G5 unchanged/no child, reserve stillFAILED. Main whole/
+ALL3 F189 review shows no floor sinking; global source/camera drift unresolved.
+No new goal gains/room approvals/default-app gain. G2 partialUP still missing.
+
+Do NOT pool profiles: F189 original3ON, canonical3OFF, each with recovery+phaseON
+and all8 switches recorded. All6 DEFAULT consumersOFF. Old failed100/5UNRUN
+remain historical pending a separate current16 gate. Original41/601/139,
+quietACphase cost/final71+16 and original goal8real+4false/3rooms+reserve remain.
+After qualification/adoption, return to positive filled/compound/partial-source
+recovery; retention alone is not a substitute for the requested real gains.
+
 ## Newest continuation (2026-10-22): numerical texture admission
 
 Interior texture must exceed RGB quantization before normalization. Otherwise

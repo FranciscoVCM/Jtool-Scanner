@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-22. Continue in the existing repository at
+Updated 2026-10-23. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -12,6 +12,40 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
+
+### Current continuation: source ambiguity guard; close adoption gates
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/PIDs/receipts. Public
+source_phase_registration supplies positive OLD-body+geometry ambiguity under
+an independently fitted paint hypothesis; it ONLY withholds a local phase move.
+All old/new query boxes excluded before first original cohort/fit/child models.
+No new teachers, exported frame/native answers or unknown-as-empty inference.
+SourceFullSpikePhaseEvidence.probe math AST-identical; all8 selectors unchanged,
+all6 default consumersOFF. New helper is36th startup/fingerprint dependency.
+
+151 TERMINAL/PASS134 PUBLIC methods (old104+20new registration/radius+2consumer+
+8numerical), NOT full suite.149 initially fails only stale35-helper assertion;
+151 requires36 plus actual helper-byte fingerprint coverage. Private134 flat
+fixture failures/142wrong-mock/143pre-execution launcher error preserved. Qualified
+textured-source gate and exact radius checks pass; no weakened predicates.
+150 ENTIRE public/frozen source-proof parity PASS4;152 port/default-OFF AST and
+complete original-metadata preflight PASS.153 FOUR actual public whole callers
+PASS COMPLETE ScanResult/project/JMap/JTool/Blend/metadata/warnings/frame/options.
+Do not restart terminal workers; no baseline resweep/archive reopening needed.
+
+F189 THREE oldUPy544 retained, not moved552:248exact/13extras/0shift. This restores
+prior control, not new goal gains. G2 keeps previous real DOWN56->48; H3/G5 no
+change/no child, reserve stillFAILED. Main viewed154 whole/ALL3 F189 panels;155
+source QA documents remaining global camera drift/13extras. G2 old97/98 QA carries
+strictly through entire output equality; partialUP64,16/otherMAJOR errors remain.
+Profiles differ: F189 original3ON, canonical3OFF, both recovery+phaseON; no pooling.
+
+Next current full16 and original41/601/139/quietACphase-bound whole cost before
+adoption. Failed100/5UNRUN remain historical, NOT16PASS. Helper8.37->2.45s is NOT
+whole speed. Finalcurrent71+16/original six goal gates/8real+4false/3rooms+reserve
+still open; after closing this necessary regression gate, pursue positive filled/
+compound/partial-source recovery. All71 findings remain conservative, zero room
+approvals; do not count F189 retention or re-earned G2 correction as new gains.
 
 ### Current continuation: numerical texture checkpoint; resume registration
 

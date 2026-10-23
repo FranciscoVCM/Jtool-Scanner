@@ -192,7 +192,7 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),35)
+        self.assertEqual(len(paths),36)
         self.assertEqual(len(set(paths)),len(paths))
         self.assertIn('source_repeated_identity.py',{p.name for p in paths})
         self.assertIn('source_capture_base.py',{p.name for p in paths})
@@ -201,7 +201,8 @@ class SourceGeometryIntegrationTests(TestCase):
             'source_compound_conflicts.py','source_interior_glyphs.py',
             'source_frame_arbitration.py','source_directional_body.py',
             'source_raster_cells.py','source_glyph_backdrop.py','source_calibrated_conflicts.py',
-            'source_physical_patch.py','source_full_spike_phase.py'} <= {p.name for p in paths})
+            'source_physical_patch.py','source_full_spike_phase.py',
+            'source_phase_registration.py'} <= {p.name for p in paths})
         self.assertTrue(all(p.is_file() for p in paths))
         original=app._source_fingerprint()
         read_bytes=Path.read_bytes

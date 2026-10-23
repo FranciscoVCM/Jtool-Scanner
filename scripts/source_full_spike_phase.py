@@ -236,6 +236,13 @@ def refit_source_full_spike_phases(detections, original_detections, *, source_fr
             continue
         proposed.append((detection, new, proof))
     target_counts = Counter(new for _, new, _ in proposed)
+    unambiguous_targets = [(detection, new) for detection, new, _ in proposed if target_counts[new] == 1]
+    registration = None
+    if unambiguous_targets:
+        from scripts.source_phase_registration import SourcePhaseRegistrationAmbiguity
+        registration = SourcePhaseRegistrationAmbiguity(evidence, original,
+            [(key(detection), new) for detection, new in unambiguous_targets], source_grid=source_grid)
+        report['registration_source_hypothesis'] = registration.proof()
     replacements = {}
     frame = source_frame.extent
     for detection, new, proof in proposed:
@@ -243,11 +250,18 @@ def refit_source_full_spike_phases(detections, original_detections, *, source_fr
         if target_counts[new] != 1:
             report['withheld'].append(dict(old=old, new=new, reason='conflicting replacement targets'))
             continue
+        counterproof = registration.probe(old, new)
+        if counterproof['ambiguous']:
+            report['withheld'].append(dict(old=old, new=new,
+                reason='independent source registration supports the original pose',
+                registration_counterproof=counterproof))
+            continue
         image_box = Box(round(frame.x + new[1] * frame.width / 800),
                         round(frame.y + new[2] * frame.height / 608),
                         max(1, round(32 * frame.width / 800)), max(1, round(32 * frame.height / 608)))
         corrected = replace(detection, x=new[1], y=new[2], image_box=image_box)
         replacements[old] = corrected
         report['corrected'].append(dict(old=old, new=new, before=asdict(detection),
-                                        after=asdict(corrected), source_evidence=proof))
+                                        after=asdict(corrected), source_evidence=proof,
+                                        registration_counterproof=counterproof))
     return [replacements.get(key(d), d) for d in current], report
