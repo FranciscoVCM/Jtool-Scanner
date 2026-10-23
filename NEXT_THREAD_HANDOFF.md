@@ -13,6 +13,34 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: confirmed flat compound loss; numeric protections closed
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md and ignored audit71, not older pending41
+wording below. v168 TERMINAL/PASS44:28 fresh ordinary protected wholes +16
+qualified current control reuses. Original41 numerical groups/601 minis/139
+terrain PASS; all original exact-control bounds retained. No live producer.
+Runtime still f46f0cc, all6 default consumersOFF. No new implementation in this
+documentation checkpoint; prior134 tests carry, NOT rerun/full suite.
+
+CRITICAL: source QA identifies confirmed real ordinary32px DOWN416,128 in
+CN3-31 missing from that research output. User explicitly confirms it; do NOT
+re-ask or call it decoration. Private v180 confirmation/v186 causal finding.
+v184 COMPLETE ordinary source-stage parity PASS;20 read-only field queries.
+Hypothesis exists, nominal/joint fails on competing exterior materials, interior
+channel abstains on missing original same-direction texture teachers. Omission
+precedes proposal merge, not later phase/deletion. v182 observer-TypeError and
+v183 instrumentation-only correction preserved; no scanner workaround.
+
+Next freeze complete flat compound positive/negative formations and prototype
+general geometric/material instance ownership, preserving CN3-19 false-fragment
+negatives, opposing32px/16px-offset patterns, genuine partials and all existing
+protections. No coordinate override, generated teachers, threshold weakening or
+texture-guard blanket bypass. CN3-21's three omissions remain source-uncertain.
+Golden2 whole/ALL12 deltas reviewed; known false blocks/phase correction retained,
+not new gains. Audit71 has ZERO approvals/new default gains and explicit source
+loss HOLD. Phase cost/separate compound+7.51% HOLD/final71+16/original goal gates
+remainOPEN. Do not rerun completed44/16 or reopen the archive merely to resume.
+
 ### Latest continuation: current16 pass; qualify protected structures next
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md for exact publication/worker receipts. The

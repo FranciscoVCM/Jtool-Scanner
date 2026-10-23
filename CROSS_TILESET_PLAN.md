@@ -1,5 +1,25 @@
 # Cross-tileset milestone
 
+## Latest qualification (2026-10-23): flat compound positive loss blocks adoption
+
+Current44 protected wholes complete:28 fresh +16 qualified current reuses.
+Original41 numerical groups/601 minis/139 terrain PASS, with exact-control
+bounds retained. Independent whole/delta QA nevertheless finds a confirmed
+real CN3-31 DOWN416,128 missing from the research result. Numerical protection
+coverage is not universal source-positive coverage. Adoption stays HOLD.
+
+Exact complete ordinary-stage replay proves the hypothesis is generated but
+not admitted: touching exterior materials defeat ordinary support, while the
+interior alternative requires same-direction artwork unavailable in this flat
+sprite family. Investigate general material/complete-formation ownership, not
+a room-specific answer or blanket relaxation of the texture guard. Protect
+CN3-19 false crops, offset opposing spikes and genuine occlusion in that batch.
+
+Audit71 retains71 findings/ZERO new approvals or default gains; CN3-21 source
+interpretation remains pending. All6 default consumersOFF and runtime unchanged.
+Prior134 affected tests carry, not newly run/full suite. Phase whole cost,
+separate compound+7.51% HOLD, finalcurrent71+16 and original goal gates remain.
+
 ## Latest qualification (2026-10-23): current16 pass, no adoption or room approval
 
 Current phase-enabled16 controls PASS complete cached/exported output equality.

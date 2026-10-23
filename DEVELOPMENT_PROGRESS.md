@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Current protections pass numerically; source QA catches a real loss
+
+Current protected44 qualification is complete:28 fresh ordinary whole scans and
+16 explicitly qualified current control reuses. All original41 numerical groups,
+601 source miniblocks and139 terrain footprints pass unchanged definitions;
+CN3-7's168448-pixel mask is retained without excess. Ordered nongeometry metadata,
+inputs, room/grid and stronger exact-control bounds remain protected. This is
+NOT44 fresh scans or a guarantee that every real object is retained.
+
+Whole/every-delta source QA found a counterexample outside those fixed groups:
+CN3-31's ordinary32px DOWN at(416,128), now human-confirmed, disappears from the
+research-profile result. An exact COMPLETE source-stage replay reproduces the
+loss: the finite hypothesis exists, nominal/joint support rejects competing
+exterior materials, and the supplemental channel abstains for lack of original
+same-direction texture witnesses. It is a flat touching-formation admission gap,
+not a later phase move or evidence that the object is absent. Adoption is HOLD.
+
+Golden2's whole and all12 delta rows confirm ten false blocks removed from real
+spike interiors and retention of the known DOWN56->48 correction. Other reviewed
+specific changes remain unapproved at room level; CN3-21's three omissions need
+stronger source-instance evidence. Audit71 preserves all71 findings, ZERO new
+room approvals/default-app gains, and explicitly records the confirmed loss.
+No runtime/default/fixture changes in this checkpoint; prior134 affected tests
+carry by identical runtime, not a fresh/full-suite run. All6 consumers stay OFF.
+
+Next priority is a general source-geometry/material explanation for flat compound
+members, retaining CN3-19 false-fragment protections and real partial/offset
+formations. Do not disable texture safeguards or insert coordinate answers.
+Quiet phase whole cost, separate compound+7.51% HOLD, finalstable71+16, successful
+reserve and original real-gain/six-goal criteria remain open.
+
 ## 2026-10-23 — Current phase-enabled control set passes; partial-visibility diagnosis
 
 All16 exact controls now PASS complete cached/exported output equality on the

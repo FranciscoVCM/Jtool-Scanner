@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Latest: current44 protected wholes complete (28 fresh +16 qualified current
+reuses), original41 numerical groups/601 minis/139 terrain PASS. Independent
+source QA still catches a real loss: confirmed ordinary32px CN3-31 DOWN416,128
+is missing from the research result. Exact source-stage replay isolates a flat
+touching-formation admission gap: mixed exterior materials and unavailable
+same-direction texture witnesses. Adoption HOLD; no coordinate answer inserted.
+Audit71 preserves71 findings/ZERO new room approvals/default-app gains. No
+runtime/default changes; all6 optional consumersOFF. Prior134 tests carry, not
+newly run/full suite. Source-instance repair, CN3-21 uncertainty, phase cost,
+separate compound+7.51% HOLD/final71+16/original goal gates remain unresolved.
+Earlier same-day checkpoint descriptions below are historical, not newer status.
+
 Latest qualification: all16 current phase-enabled exact controls PASS complete
 cached/exported output equality (15 fresh this goal turn, one qualified current
 F189 reuse). FTFA926/928 with zero extras/shifts/wrong; Flames255exact/18miss
