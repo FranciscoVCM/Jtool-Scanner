@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-23): closed-body evidence tested, not adopted
+
+New unbound API combines complete original interior material/paint/contour
+support with complete common-phase directed RGB edges, without requiring
+recognizable artwork. Existing texture channel and caller/default semantics
+remain unchanged; no answer coordinates, generated teachers or object deletion.
+154 affected public tests (17new) and1,114 entire frozen proofs pass, including
+construction-time input isolation and physical-crop/RGB/scale protections.
+
+Temporary actual caller recovers ONLY real C31 DOWN416,128; C19 ENTIRE unchanged,
+false fragments absent. Current input-snapshot hardening bridges both complete
+development results. Fresh paired Halls7 reserve is ENTIRE unchanged:51/61 exact,
+10misses/29extras/39errors, no new reserve success. This is not the earlier
+differently profiled52/61 result. All changed objects/whole views reviewed.
+
+Four actual wholes, not a new71 sweep. Uncontrolled H7 pair33.514/36.680s is a
+cost warning, NOT controlled qualification. Keep API unbound/all6 consumersOFF;
+audit72 has ZERO new default gains/approvals. Candidate broad controls/protections/
+cost and all original goal minima remainOPEN. Next primary source-occlusion/
+positive-identity investigation must not weaken texture or reserve safeguards.
+
 ## Latest qualification (2026-10-23): flat compound positive loss blocks adoption
 
 Current44 protected wholes complete:28 fresh +16 qualified current reuses.

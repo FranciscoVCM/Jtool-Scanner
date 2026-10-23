@@ -134,3 +134,47 @@ class SourceDirectionalBodyEvidence(SourceInteriorGlyphEvidence):
                 common_phase_NOT_native_origin_change=True, RGB_normal_alignment=.95,
                 existing_required_support=9)
         return deepcopy(self.new_geometry[key])
+
+
+class SourceClosedInteriorGlyphEvidence(SourceDirectionalBodyEvidence):
+    """Unbound positive evidence for flat or otherwise unmodelled artwork.
+
+    A complete original interior-material proof AND the existing directed
+    three-edge proof can identify a triangle without recognizable texture.
+    Neither one alone suffices. Existing strict positives retain their complete
+    proofs. No unmatched-background alternative, new teachers, native transform,
+    object emission or retirement is authorized by this API.
+    """
+
+    def __init__(self, filled, original_detections, *, source_grid,
+                 require_directional_texture=True):
+        original = tuple(original_detections)
+        super().__init__(filled, original, source_grid=source_grid,
+                         require_directional_texture=require_directional_texture)
+        # The lazy view must use construction-time locators/markers even if a
+        # caller later edits its mutable Detection wrappers.
+        self._closed_original = deepcopy(original)
+        self._closed_filled = filled
+        self._closed_grid = source_grid
+        self._closed_interior = None
+
+    def _measure(self, key):
+        # Deliberately bypass the parent's separate, textured unmatched-
+        # background alternative. Its adoption is not implied by this API.
+        strict = SourceInteriorGlyphEvidence._measure(self, key)
+        if strict['passed'] or not self._require_directional_texture or not self.qualified:
+            return strict
+        if self._closed_interior is None:
+            self._closed_interior = SourceInteriorGlyphEvidence(
+                self._closed_filled, self._closed_original, source_grid=self._closed_grid)
+        interior = self._closed_interior.support(key)
+        if not interior['passed']:
+            return strict
+        geometry = self.geometry(key)
+        if not geometry['passed']:
+            return strict
+        return {**interior, 'source_closed_body_alternative': True,
+                'directed_geometry': geometry, 'strict_channel_abstention': strict,
+                'whole_original_body_AND_directed_edges_required': True,
+                'no_background_absence_or_hollow_claim': True,
+                'texture_not_required_for_closed_source_identity': True}

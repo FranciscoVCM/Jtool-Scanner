@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Newest: an UNBOUND closed-body API combines complete original interior material
+and directed RGB edges without requiring recognizable artwork.154 affected
+tests (17new) and1,114 entire proof comparisons pass. Four actual temporary/
+paired whole scans: C31 regains only confirmed DOWN416,128; C19 unchanged;
+Halls7 reserve unchanged51/61 exact/39errors, therefore no reserve success.
+Whole/every-delta QA done, ZERO room approvals/new default gains. API is not
+bound to the scanner; all6 consumersOFF. Audit72 preserves all71 findings.
+Candidate broad protections/controls/controlled cost and original goal gates
+remain open. Earlier same-day checkpoint descriptions below are historical.
+
 Latest: current44 protected wholes complete (28 fresh +16 qualified current
 reuses), original41 numerical groups/601 minis/139 terrain PASS. Independent
 source QA still catches a real loss: confirmed ordinary32px CN3-31 DOWN416,128

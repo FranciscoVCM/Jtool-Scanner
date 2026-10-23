@@ -13,6 +13,37 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: tested unbound closed-body API; Halls7 gives zero gain
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit72 and checkpoint206. Current public
+change adds ONLY SourceClosedInteriorGlyphEvidence to existing helper module
+plus17 portable tests; every earlier runtime function/class remains unchanged.
+It requires complete no-texture interior proof AND unchanged common-phase
+directed RGB geometry, retaining complete strict positives. NO caller/default
+binding. All6 consumersOFF; no new helper/dependency/selector.
+
+198 TERMINAL/PASS1,114 ENTIRE proofs +154 affected tests81.606s, NOT full suite.
+Two mutable-input regressions reproduced then fixed by independent deep copy.
+194 TWO actual temporary caller wholes: C31 only real DOWN416,128 added; C19
+ENTIRE unchanged/both false fragments absent; no old Detection metadata loss.
+200 separately reproduces COMPLETE current hardened source-stage/final raw
+results, qualifying those outputs without another whole scan. Main viewed
+whole/every-delta195 boards; rooms still MAJOR/unapproved.
+
+204 TWO fresh untuned Halls7 wholes before/candidate, COMPLETE raw/exported
+outputs equal;51/61 exact,10misses/29extras/39errors; originalB23539 errors.
+Reserve FAIL, not earlier differently profiled52/61/37. Main viewed205 whole,
+zero deltas. Failed202 lookup stopped before ANY scan; H7 is absent from44,
+so204 correctly used fresh paired inputs. No tuned/substituted reserve.
+
+One uncontrolled timing pair33.514->36.680s is NOT cost qualification. API stays
+UNBOUND; audit72 preserves71 default findings/ZERO new approvals/gains. Actual
+candidate broad41/601/139/16 and controlled cost pending; old gates not rerun.
+Next primary partial-source/occluder identity investigation: independent source
+ownership before choosing a visible mask, unique size/origin, real transfer and
+negative/partial controls. Preserve C31 positive/C19 false fragments. Original
+goal8real+4false/3rooms/2families/reserve/final71+16/six gates remainOPEN.
+
 ### Latest continuation: confirmed flat compound loss; numeric protections closed
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md and ignored audit71, not older pending41

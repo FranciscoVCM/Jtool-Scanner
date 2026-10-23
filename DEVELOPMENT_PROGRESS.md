@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Tested closed-body API recovers flat member; reserve remains unsuccessful
+
+Added UNBOUND `SourceClosedInteriorGlyphEvidence`: the complete existing
+original-source interior/material proof AND the unchanged common-phase directed
+RGB three-edge proof can supply positive identity without recognizable artwork.
+Neither colour nor a convenient triangle crop suffices alone. Existing strict
+texture positives keep their entire proofs; no unmatched-background alternative,
+new teachers, coordinate lookup, retirement or caller/default change is implied.
+
+154 affected public methods PASS (17 new), NOT the full suite;1,114 frozen full
+proof comparisons also PASS. Portable tests cover direction, RGB/polarity/dimness,
+fractional scale, shared edges, wrong size/direction, markers and unknown crop
+coverage. Two additional tests reproduced a mutable-caller alias bug (one failure,
+one error); an independent original-input copy fixes the lazy evidence view.
+
+Four actual whole scans: temporary C31/C19 development callers, then a fresh
+paired Halls7 reserve. C31 gains ONLY confirmed DOWN416,128; every old Detection
+and nongeometry item remains intact. C19 is ENTIRE unchanged, both confirmed
+false fragments absent. Two current source-stage/whole bridges prove the input-
+snapshot hardening preserves those development outputs. Whole/every-delta source
+QA confirms this particular recovery, not a correct room or new B235 gain.
+
+Halls7 reserve FAILS: no candidate delta,51/61 exact,10 misses,29 extras,39 errors;
+original B235 also has39 errors. Earlier differently profiled52/61/37-error
+observations are not pooled. The one uncontrolled before/candidate pair is
+33.514/36.680s: possible added cost, NOT quiet-AC timing qualification or a speed
+claim. No alternative reserve was substituted after this result.
+
+API remains unbound, all6 default consumers OFF. Audit72 preserves71 default
+findings/ZERO room approvals/new default gains. Prior41/601/139 and16 gates were
+not rerun for this unused API; full candidate protections/controls/cost remain
+open. Next investigate independently source-qualified partial/occluder ownership
+in the primary rooms, retaining the flat positive and false-fragment controls.
+Do not enable this candidate merely from one recovered research object.
+
 ## 2026-10-23 — Current protections pass numerically; source QA catches a real loss
 
 Current protected44 qualification is complete:28 fresh ordinary whole scans and
