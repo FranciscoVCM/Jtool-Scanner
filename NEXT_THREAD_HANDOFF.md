@@ -13,6 +13,42 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: public partial API qualified, actual caller still pending
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit74 and checkpoint261. Plain public
+`scripts/source_partial_visibility.py` is UNBOUND: independent original rectangle
+phases establish definite/possible coverage before any spike score; complete
+query domains excluded BEFORE fitting; all4 directions at wall faces; only
+definitely visible original edges/RGB can count. Closed wall perimeters remain
+unobserved. No private imports/exec wrappers/answer coordinates or object edits.
+`support_parent` returns qualified wrapper plus isolated `evidence`; compact grids
+are explicitly unknown. Same-source raw geometry reused, not fitted models.
+
+260 TERMINAL/PASS173 affected+app public methods (14new; NOT full suite) andALL50
+ENTIRE evidence dictionary comparisons:22 G2+28 untuned G5 parent neighborhoods.
+Every failed phase, mask, original contributor/full/mini record retained. Tests
+cover17 procedural scenarios plus input/RGB/isolation/unknown/perimeter guards.
+37th runtime helper eager/fingerprinted; integration count legitimately updated.
+No source geometry pipeline, scanner, selector or default changed; all6 OFF.
+
+Private G2 source positives UP64,16 andUP96,144, both absent current research
+whole. Second is visible below old6-region, NOT retrospective denominator change.
+Private G5 fixed25 prototype22->25exact/5->2errors, three real misses recovered,
+ZERO new extra/loss/outside proposals/mini alternative; two old false blocks stay.
+Main viewed all13 current source/witness boards;88G5 rects/14glyphs andG2 six
+actual glyphs verified. G2/G5 SAME visual family; NOT new2-family proof.255/252
+source QA and248 freeze preserve untuned roles; prior failed H7 stays failed.
+
+NEXT: pre-freeze actual generic whole-caller injection using original source
+and ALL applicable original parents, never ROI/source-hash/answer-key injection.
+Measure whole/every-delta output and cost before binding; preserve old C19 false
+fragments, minis/partial/source-positive/nongeometry and all original protections.
+Exact source-role-independent rectangle-pair reuse or lazy unused negative work
+may address cost ONLY after full proof qualification; no new threshold changes.
+Then full relevant41/601/139/16 and quiet-AC cost/final71+16. No source/HEAD edits
+while frozen producers run. Audit74 preserves71 default findings/ZERO approvals/
+new app/B235 gains; old controls not rerun for this unused API. Goal remainsOPEN.
+
 ### Latest continuation: generic partial-source fans; no live-app change
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md and audit73, then checkpoint228. Private

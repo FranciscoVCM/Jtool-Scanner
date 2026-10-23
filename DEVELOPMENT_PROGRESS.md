@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Portable partial-visibility API; untuned prototype fills three reserve misses
+
+Added UNBOUND `SourcePartialVisibilityEvidence`, with plain tracked source and
+no private imports, answer coordinates or runtime wrappers. Source-supported
+rectangle phases define definite hidden/possible uncertain/definite visible
+regions BEFORE spike scores. Original query neighborhoods are excluded before
+witness fitting. All four directions may be proposed by any wall face; original
+edge clipping treats a wall perimeter as unobserved, not a new glyph boundary.
+RGB/body/paint/raw contour thresholds and coherent physical phases are retained.
+Exact same-source measurements are shared, not fitted models or teacher roles.
+
+173 affected/app public methods PASS (14new), NOT the full suite. Tests include
+17 procedural positive/negative scenarios plus RGB-isoluminance, fractional
+capture, original-query exclusion, mutable callers/results, unknown crop/grid
+and wall-perimeter safeguards. ALL50 complete public evidence dictionaries equal
+the tested prototypes:22 Golden2 and28 untuned Golden5 parent neighborhoods,
+including failed phases, masks, contributors and full/mini records. The37th
+helper is eagerly loaded/fingerprinted; no selector, caller or default changes.
+
+Golden2 source QA confirms missing UP64,16 and additional UP96,144; the latter's
+visible portion is outside the old six-spike region, NOT a retroactive metric
+change. Untuned Golden5 fixed25 private prototype recovers all3 real partial
+misses:22->25 exact and5->2 errors, zero new extras/loss/outside proposals.
+The two old false blocks remain. Whole source/all-positive contexts and actual
+witnesses reviewed; both rooms share one visual family. This is source/prototype
+evidence, NOT actual changed whole scans, a second visual family, shipped reserve
+success or live-app accuracy gains.
+
+API stays unbound; audit74 retains71 default findings/ZERO room approvals or
+new B235 gains. Old41/601/139/16 gates were not rerun for this unused API.
+Next freeze generic actual whole-caller/delta/runtime checks, then protections
+and controls before adoption. Investigate remaining cost without weakening
+identity: helper timings are not quiet-AC whole-speed qualification. Original
+goal minima, prior failed mechanisms, separate cost HOLD and final71+16 remain.
+
 ## 2026-10-23 — Partial-source diagnosis now uses generic, independent query fans
 
 The missing ceiling-hidden Golden2 UP64,16 has two causes: its unmasked body

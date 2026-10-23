@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-23): tested public partial API; reserve prototype, not shipped gain
+
+Unbound `SourcePartialVisibilityEvidence` combines independent source-tile masks,
+three-state boundary uncertainty and visible original body/edge evidence. All
+directions are considered beside each wall face; no invented boundary, generated
+teacher, native answer or blanket overlap deletion. Same-source edge/gradient
+reuse preserves complete evidence; original per-query models remain pruned.
+
+173 affected/app methods PASS (14new), not full suite;50 ENTIRE public/prototype
+proof comparisons pass over22 development and28 untuned reserve neighborhoods.
+Golden2 has two source-confirmed partial hypotheses (second outside old visible
+six-scope). Golden5 private fixed25 prototype22->25 exact/5->2 errors,3real
+recoveries, zero new extras/loss; old two false blocks remain. Source/witness
+photos checked. Both Golden rooms are one visual family, not cross-family proof.
+
+No actual caller/default/detection change;37 helpers eagerly fingerprinted,
+eight selectors unchanged/all6 consumersOFF. API unbound/audit74ZERO new app or
+B235 gains/room approvals. Actual whole caller/deltas, protected41/601/139/16,
+controlled whole cost, other families/primary rooms and original goal minima
+remain OPEN. Do not turn a successful read-only reserve prototype into a claim
+of shipped reserve success or universal recognition.
+
 ## Latest (2026-10-23): partial-source proposal and ownership gaps isolated
 
 Private original-only rectangle masks plus relative face proposals support the

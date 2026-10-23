@@ -26,6 +26,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_physical_patch',
     'source_full_spike_phase',
     'source_phase_registration',
+    'source_partial_visibility',
 )
 
 

@@ -6,6 +6,20 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Newest continuation: plain public `SourcePartialVisibilityEvidence` is tested but
+UNBOUND. Independent source masks distinguish hidden/uncertain/visible pixels;
+all directions may be proposed beside walls without counting wall perimeters as
+visible spike edges.173 affected/app methods PASS (14new), not full suite;50
+ENTIRE public/prototype evidence comparisons pass.37 helpers eager/fingerprinted,
+no caller/default/selector changes. Golden2 source evidence supports two missing
+partial UPs; the additional one does not change the old scope denominator.
+Untuned Golden5 fixed25 private prototype recovers3real misses,22->25exact and
+5->2errors; two old false blocks remain. Both are the same visual family. This
+is NOT actual changed whole scans, shipped reserve success or live-app gains.
+Audit74 keeps71 default findings/ZERO approvals. Actual callers, protections/16,
+controlled whole runtime, other primary/family gains and original goal gates
+remain open. See newest progress/next-thread notes before older entries below.
+
 Newest continuation: a PRIVATE source-qualified partial-visibility prototype
 now uses generic per-rectangle proposal neighborhoods, excluding all potential
 query pixels before independent witness fitting. It automatically proposes and

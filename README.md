@@ -34,6 +34,32 @@ rounded linear gradient is not reliable artwork just because it repeats.
 Insufficient texture is not proof of empty background or authority to remove
 an object; stronger descriptors and the existing source samples stay unchanged.
 
+`scripts/source_partial_visibility.py` provides an **unbound research API** for
+ordinary32px spikes partly hidden by source-supported tiles. Independent original
+rectangle phases define definitely hidden, uncertain and definitely visible
+regions before any spike score. A wall face does not determine the spike's
+direction; only visible original RGB/body/contour evidence can support it.
+Unknown boundaries and wall perimeters are not observed glyph edges or empty
+background. Original query neighborhoods cannot fit their own witnesses.
+
+Given an already-frozen `SourceFrame` and original before-source detections:
+
+```python
+from scripts.source_partial_visibility import SourcePartialVisibilityEvidence
+
+evidence = SourcePartialVisibilityEvidence(
+    frame, original_detections, source_grid=(25, 19))
+for parent in evidence.rectangle_origins:
+    proof = evidence.support_parent(parent)
+```
+
+This returns evidence, not detections or a JMap. Compact/unsupported grids
+explicitly abstain; missing models never authorize removing an original object.
+Neither standard nor experimental scanning calls this API yet. Public tests and
+complete prototype-proof equality do not replace actual caller, protection and
+whole-speed qualification. Run its portable procedural tests with
+`python -m unittest tests.test_source_partial_visibility`.
+
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
 has passed affected tests/source-proof checks, but helper timings are not a
