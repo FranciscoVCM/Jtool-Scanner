@@ -13,6 +13,50 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: public decision API qualified; optimized caller/cost next
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md,292 checkpoint/audit76,288 source QA and290
+receipt before starting anything.290 TERMINAL/PASS182 affected/app methods
+(9new), NOT full suite;50 ENTIRE default wrappers/552 all-parent phase/mask/
+cohort/key/eligibility and ENTIRE positive-row comparisons PASS. No frozen
+validation producer remains. App38536 is current/unbound API, root+health200;
+defaults/all6 consumersOFF unchanged. No baseline/archive resweep needed.
+
+264 prior-source worker is TERMINAL3 actual wholes plus3 unchanged source-stage
+replays, NOT6 ordinary scans or controlled cost. ALL235G2/232G5/85C19 parents.
+G2 adds8 real ordinary32 partial spikes, G5 adds5, C19 ENTIRE raw unchanged;
+ZERO old Detection metadata lost/ordered nongeometry change. Main whole/every-
+delta and actual witnesses QA done (276/288). Original B235 comparison291 proves
+all13 absent on same source/crop/grid/options, NOT shipped/default gains.
+
+G5 frozen25:22->25 exact,5->2 errors,3real/0new negatives/loss;old2false blocks
+remain. Additional2LEFTs outside corridor are not labels. G2 old6 positives5->6;
+275 correct scope supersedes rejected274 bbox-only extra diagnosis. SAME Golden
+family, no universal/newfamily/room approval. Failed old reserves remain failed.
+
+Public API edit adds exact bounded raw feature/pair/probe reuse and shared raw
+contours during FRESH pruned glyph-library fitting. Optional short_circuit=True
+defers only unused negative edge work; ANY positive key rehydrates ENTIRE9phases.
+Default full diagnostics stay complete; no deferred-negative full-cache pollution.
+Plain source, no private adapters/reference lookup/default/scanner binding.
+Qualified public checkpoint contains module/tests/README and four progress/
+handoff documents. Current code does NOT bind the API to the scanner.
+
+295 also completes ONE fresh current canonical CN3-18 research whole, NOT the
+near-exact fixture. Actual physical/world extent matches original labels; frozen
+4864/4864solid and4/4typed positives preserved, known-background excess18176->0.
+Main whole/all79removal windows/actual union-loss source QA complete (301).
+Nine oversized boxes overlap retained terrain; unknown edge fractions stay
+unknown. Room MAJOR/default unrecertified; no new partial-API accuracy gain.
+
+NEXT publish the reviewed seven-file checkpoint if not already done (read TOP
+active note for exact Git state). Keep artifacts/indexes/sources/projects/JMaps
+private/ignored. Verify app loaded/disk parity, live origin==HEAD/cleanGit. Then
+pre-freeze optimized actual caller/control/cost checks;293 lists profile-directed
+cost candidates, NOT implemented speed gains. Original41/601/139/16/primary/
+family/final71+16/six goal gates remainOPEN. No current default gain; the many-
+minute diagnostic path must not be enabled. Do not rerun182/50/552 just to resume.
+
 ### Latest continuation: public partial API qualified, actual caller still pending
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit74 and checkpoint261. Plain public

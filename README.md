@@ -55,9 +55,24 @@ for parent in evidence.rectangle_origins:
 
 This returns evidence, not detections or a JMap. Compact/unsupported grids
 explicitly abstain; missing models never authorize removing an original object.
-Neither standard nor experimental scanning calls this API yet. Public tests and
-complete prototype-proof equality do not replace actual caller, protection and
-whole-speed qualification. Run its portable procedural tests with
+The default returns complete diagnostics. An explicit decision query can defer
+unnecessary negative-edge work while retaining every positive key's ENTIRE
+nine-phase proof, including failed phases. Use this instead of the loop above:
+
+```python
+for parent in evidence.rectangle_origins:
+    decision = evidence.support_parent(parent, short_circuit=True)
+```
+
+Deferred negative diagnostics are marked, not cached as full answers; a later
+default query still measures the complete proof. Bounded exact source-feature,
+pair and physical-probe caches do not share fitted models or teacher roles.
+Pruned glyph libraries fit afresh while reusing original raw contours.
+
+Neither tracked standard nor opt-in scanning binds this API yet. Isolated
+whole-caller experiments recover real partial spikes, but public tests and proof
+equality do not replace full protections and controlled whole-speed qualification.
+Do not equate helper timings with app scan latency. Run its procedural tests with
 `python -m unittest tests.test_source_partial_visibility`.
 
 The deferred-platform recovery consumer currently remains disabled: its first

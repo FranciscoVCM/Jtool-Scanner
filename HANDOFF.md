@@ -6,6 +6,33 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Newest continuation supersedes the older entries below: three isolated actual
+all-parent partial-caller wholes add8 real full32 partial spikes on Golden2 and5
+on Golden5, with ZERO old Detection metadata loss; CN3-19 is ENTIRE unchanged.
+Whole/every-delta and actual witness source QA complete. All13 were absent B235
+on the same input mapping, but remain research—not shipped/default—gains.
+Golden5's original25 reserve22->25 exact/5->2 errors/3real/0new negatives/loss;
+old2false blocks remain. Golden2 original6 positives5->6 without new labels.
+Both Golden rooms are one visual family, not unseen-tileset proof or room approval.
+
+The public API remains UNBOUND. Exact raw feature/pair/probe/contour reuse does
+not share fitted models/roles. Explicit short_circuit=True defers only negative
+diagnostics; every positive key retains ENTIRE nine-phase proof and later
+default queries remain complete.182 affected/app methods PASS (9new), NOT full
+suite;50 ENTIRE default wrappers and552-parent metadata/all-phase/ENTIRE-positive
+comparisons PASS. No caller/default/selector changes;37 helpers. Audit76 retains
+71 default findings/ZERO new room approvals or shipped gains.
+
+Fresh current canonical CN3-18 research (not the tracked near-exact control)
+retains4864/4864 frozen solid-positive pixels and4/4 typed positives while clearing
+known-background excess18176->0. Whole/all79removal and actual union-loss source
+QA complete; oversized boxes' real narrow terrain stays covered, unknown edge
+fractions remain unknown. Other errors remain MAJOR/default unrecertified. This
+freshly measures earlier research consumers, not an API/default accuracy gain.
+Optimized actual callers, full protections/16, controlled whole cost, other
+primary/family gains/final71+16 and all original goal gates remainOPEN. Do not
+activate the many-minute diagnostic caller. See current active/next-thread notes.
+
 Newest continuation: plain public `SourcePartialVisibilityEvidence` is tested but
 UNBOUND. Independent source masks distinguish hidden/uncertain/visible pixels;
 all directions may be proposed beside walls without counting wall perimeters as

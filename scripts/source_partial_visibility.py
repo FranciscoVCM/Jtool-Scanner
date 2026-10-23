@@ -6,7 +6,7 @@ scores. Only definitely visible source RGB and original contours can support a
 new glyph. Unknown masks/crops are not empty; this module never emits, removes
 or moves scanner objects. No caller/default binding is implied by this API.
 """
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 from copy import deepcopy
 from dataclasses import asdict
 from functools import lru_cache
@@ -16,6 +16,7 @@ from jtool_scanner.spike_shape import VERTICES
 from scripts.source_contours import SourceContours
 from scripts.source_directional_body import SourceDirectionalBodyEvidence, _DirectedRGBField
 from scripts.source_filled_pipeline import FilledGlyphEvidence
+from scripts.source_glyph_prototypes import SourceGlyphLibrary
 from scripts.source_interior_glyphs import INTERIOR_POINTS, _OriginalPaintIndex, _oriented
 from scripts.source_sampling import SourceFrame
 
@@ -54,11 +55,17 @@ class SourcePartialVisibilityEvidence:
         self._rectangle_origins = tuple(sorted({(d.x, d.y) for d in self._original if d.type_id == 1}))
         self.markers = tuple(((d.x, d.y, d.x + 32, d.y + (8 if d.type_id == 13 else 32)) for d in self._original if d.type_id > 10))
         self.phases = tuple(((dx, dy) for dx in (0, -frame.pitch[0], frame.pitch[0]) for dy in (0, -frame.pitch[1], frame.pitch[1])))
-        self.contours = SourceContours(frame.original_snapshot(), frame.extent, source_frame=frame)
+        self.contours = SourceContours(frame.original_snapshot(), frame.extent, source_frame=frame,
+                                       probe_cache_limit=32768)
         self.source_directed = _DirectedRGBField(self.frame)
         self.signature = lru_cache(maxsize=8192)(self.signature)
         self.faces = lru_cache(maxsize=8192)(self.faces)
         self.exact_dot = lru_cache(maxsize=200000)(self.exact_dot)
+        self._rectangle_features, self._rectangle_pairs = OrderedDict(), OrderedDict()
+        self._rectangle_feature_limit, self._rectangle_pair_limit = 8192, 200000
+        self._next_rectangle_token = 0
+        self._pair_hits = self._pair_misses = 0
+        self._feature_evictions = self._pair_evictions = 0
 
     def footprint(self, x, y):
         px, py = self.frame.pitch
@@ -92,7 +99,42 @@ class SourcePartialVisibilityEvidence:
         good = [f.support >= 9 and (not f.unknown) for f in faces]
         return any((good[i] and good[(i + 1) % 4] for i in range(4)))
 
-    def _measure_parent(self, parent):
+    def _record_rectangle_variants(self, variants):
+        """Tokens identify exact immutable raw features, never a fitted role."""
+        for variant in variants:
+            key = variant['origin'], variant['phase']
+            values = variant['physical'], variant['full'], variant['inner']
+            if key in self._rectangle_features:
+                previous, token = self._rectangle_features[key]
+                assert values == previous, 'Immutable source rectangle features changed'
+                self._rectangle_features.move_to_end(key)
+            else:
+                self._next_rectangle_token += 1
+                token = self._next_rectangle_token
+                self._rectangle_features[key] = values, token
+                if len(self._rectangle_features) > self._rectangle_feature_limit:
+                    self._rectangle_features.popitem(last=False)
+                    self._feature_evictions += 1
+            variant['_source_feature_token'] = token
+
+    def _rectangle_pair_compatible(self, first, second):
+        key = first['_source_feature_token'], second['_source_feature_token']
+        if key in self._rectangle_pairs:
+            self._pair_hits += 1
+            self._rectangle_pairs.move_to_end(key)
+            return self._rectangle_pairs[key]
+        self._pair_misses += 1
+        answer = (first['origin'] != second['origin']
+                  and not intersects(first['physical'], second['physical'])
+                  and sum(a*b for a, b in zip(first['full'], second['full'])) >= .9
+                  and sum(a*b for a, b in zip(first['inner'], second['inner'])) >= .9)
+        self._rectangle_pairs[key] = answer
+        if len(self._rectangle_pairs) > self._rectangle_pair_limit:
+            self._rectangle_pairs.popitem(last=False)
+            self._pair_evictions += 1
+        return answer
+
+    def _measure_parent(self, parent, *, short_circuit=False):
         assert tuple(parent) in self._rectangle_origins
         x, y = parent
         fan = (x - 24, y - 24, x + 56, y + 56)
@@ -119,12 +161,13 @@ class SourcePartialVisibilityEvidence:
                     continue
                 physical = (floor(self.frame.extent.x + xx * self.frame.extent.width / 800), floor(self.frame.extent.y + yy * self.frame.extent.height / 608), ceil(self.frame.extent.x + (xx + 32) * self.frame.extent.width / 800), ceil(self.frame.extent.y + (yy + 32) * self.frame.extent.height / 608))
                 variants.append(dict(origin=(a, b), phase=(dx, dy), physical=physical, full=full, inner=inner))
+        self._record_rectangle_variants(variants)
         groups, seen = ([], set())
         dot = self.exact_dot
         for seed in variants:
             group = [seed]
             for other in variants:
-                if all((other['origin'] != p['origin'] and (not intersects(other['physical'], p['physical'])) and (dot(other['full'], p['full']) >= 0.9) and (dot(other['inner'], p['inner']) >= 0.9) for p in group)):
+                if all(self._rectangle_pair_compatible(other, p) for p in group):
                     group.append(other)
             key = tuple(sorted(((v['origin'], v['phase']) for v in group)))
             if len(group) < 3 or key in seen:
@@ -158,7 +201,12 @@ class SourcePartialVisibilityEvidence:
         if not any((tuple(m['origin']) == tuple(parent) for m in masks)):
             return {**metadata, 'rows': [], 'mini_rows': [], 'parent_unknown': True}
         original = tuple((d for d in self._original if not 3 <= d.type_id <= 6 or outside(self.footprint(d.x, d.y))))
-        filled = FilledGlyphEvidence(self.frame, original)
+        spikes = tuple(sorted({(d.type_id, d.x, d.y) for d in original if 3 <= d.type_id <= 6}))
+        # The freshly pruned source still fits its OWN anchors/models. Share only
+        # original raw contours, never a previous parent's library or teacher role.
+        library = SourceGlyphLibrary(self.frame.original_snapshot(), self.frame.room, spikes,
+            contour_field=self.contours, source_frame=self.frame, pixel_cache_limit=50000)
+        filled = FilledGlyphEvidence(self.frame, original, source_library=library)
         field = SourceDirectionalBodyEvidence(filled, original, source_grid=(25, 19))
         # These caches contain source RGB geometry, not fitted teacher roles.
         field.field = self.contours
@@ -174,11 +222,13 @@ class SourcePartialVisibilityEvidence:
                     for key in keys:
                         if 0 <= key[1] <= 768 and 0 <= key[2] <= 576:
                             origins[key].append(dict(face=face, depth=depth, tangent_offset=offset))
-        rows = [dict(key=k, seed=origins[k], phases=session.support(k, 32, True, self.phases)) for k in sorted(origins)]
+        rows = [dict(key=k, seed=origins[k], phases=session.support(k, 32, True, self.phases,
+            short_circuit=short_circuit)) for k in sorted(origins)]
         for row in rows:
             row['provisional'] = any((p['passed'] for p in row['phases']))
         challenges = {(t, a, b) for row in rows if row['provisional'] for _, xx, yy in (row['key'],) for t in (3, 4, 5, 6) for a in range(xx - 8, xx + 33, 8) for b in range(yy - 8, yy + 33, 8) if 0 <= a <= 784 and 0 <= b <= 592}
-        minis = [dict(key=k, phases=session.support(k, 16, False, self.phases)) for k in sorted(challenges)]
+        minis = [dict(key=k, phases=session.support(k, 16, False, self.phases,
+            short_circuit=short_circuit)) for k in sorted(challenges)]
         return {**metadata, 'rows': rows, 'mini_rows': minis, 'parent_unknown': False}
 
     @staticmethod
@@ -190,12 +240,15 @@ class SourcePartialVisibilityEvidence:
         """Immutable ORIGINAL full-rectangle locators, not source-positive labels."""
         return self._rectangle_origins
 
-    def support_parent(self, parent):
+    def support_parent(self, parent, *, short_circuit=False):
         """Isolated evidence for one original parent; never an object emitter.
 
-        Compact/unsupported grids abstain explicitly before fitting any models.
-        Source qualification of the parent is still required on standard grids.
+        Full diagnostics are the default. Explicit True defers unused negative
+        work only; every positive key keeps its entire original nine-phase proof.
+        Compact/unsupported grids remain unknown before fitting any models.
         """
+        if not isinstance(short_circuit, bool):
+            raise ValueError('Partial diagnostic short-circuit mode must be a boolean')
         try:
             parent = tuple(parent)
         except TypeError as error:
@@ -204,11 +257,22 @@ class SourcePartialVisibilityEvidence:
             raise ValueError('Parent must be an original native integer x,y pair')
         if self._source_grid != (25, 19):
             return dict(qualified=False, unknown=True, evidence=None, reason='unsupported original source grid; not empty')
-        return dict(qualified=True, evidence=deepcopy(self._measure_parent(parent)))
+        return dict(qualified=True, evidence=deepcopy(self._measure_parent(parent,
+            **({'short_circuit': True} if short_circuit else {}))))
 
     def cache_diagnostics(self):
         """Source-local exact measurements only, never shared model/teacher roles."""
-        return {**{name: getattr(self, name).cache_info()._asdict() for name in ('signature', 'faces', 'exact_dot')}, 'source_raw_edges': len(self.contours._edges), 'source_directed_edges': len(self.source_directed.edges), 'source_RGB_gradients': len(self.source_directed.gradients), 'no_shared_fitted_models_OR_teacher_roles': True}
+        return {**{name: getattr(self, name).cache_info()._asdict() for name in ('signature', 'faces', 'exact_dot')},
+            'source_raw_edges': len(self.contours._edges), 'source_directed_edges': len(self.source_directed.edges),
+            'source_RGB_gradients': len(self.source_directed.gradients), 'no_shared_fitted_models_OR_teacher_roles': True,
+            'rectangle_pair_features': len(self._rectangle_features), 'rectangle_pair_booleans': len(self._rectangle_pairs),
+            'rectangle_pair_hits': self._pair_hits, 'rectangle_pair_misses': self._pair_misses,
+            'rectangle_feature_evictions': self._feature_evictions, 'rectangle_pair_evictions': self._pair_evictions,
+            'rectangle_source_tokens': self._next_rectangle_token,
+            'physical_probe_cache_hits': self.contours.probe_cache_hits,
+            'physical_probe_cache_misses': self.contours.probe_cache_misses,
+            'physical_probe_cache_peak': self.contours.probe_cache_peak,
+            'physical_probe_cache_limit': self.contours.probe_cache_limit}
 
 class _PartialVisibilitySession:
     """Intersection is hidden; envelope-minus-intersection stays UNKNOWN."""
@@ -260,15 +324,28 @@ class _PartialVisibilitySession:
         assert len(definite) + len(uncertain) + len(visible) == len(points)
         return dict(indices=visible, unique=unique, definitely_hidden_indices=definite, uncertain_indices=uncertain, visible_samples=len(visible), hidden=len(definite), uncertain=len(uncertain), known=known, actor=actor, eligible=known and unique >= 16 and (not actor) and (not partial or bool(definite)), uncertainty_is_NOT_foreground_OR_background_evidence=True)
 
-    def geometry(self, key, size):
+    def geometry(self, key, size, *, short_circuit=False):
         t, x, y = key
         poly = [(x + a * size / 32, y + b * size / 32) for a, b in VERTICES[t]]
+        visible = [self.segments(a, b) for a, b in zip(poly, poly[1:] + poly[:1])]
+        if short_circuit and sum(bool(segments) for segments in visible) < 2:
+            return dict(passed=False, diagnostics_deferred=True,
+                reason='insufficient observable ORIGINAL edges; hidden is unknown, not empty')
         edges = []
-        for a, b in zip(poly, poly[1:] + poly[:1]):
+        for original_segments in visible:
             segments = []
-            for p, q in self.segments(a, b):
+            for p, q in original_segments:
                 raw = self.field.field.edge(p, q)
+                if short_circuit and (raw.support < 9 or raw.unknown):
+                    return dict(passed=False, diagnostics_deferred=True,
+                        reason='required original raw segment failed; unused work deferred',
+                        first_failed_segment=dict(first=p, last=q, raw=asdict(raw)),
+                        source_unknown_NOT_empty=raw.unknown)
                 directed = self.field.directed_field.directed(p, q)
+                if short_circuit and directed < 9:
+                    return dict(passed=False, diagnostics_deferred=True,
+                        reason='required original directed segment failed; unused work deferred',
+                        first_failed_segment=dict(first=p, last=q, raw=asdict(raw), directed=directed))
                 segments.append(dict(first=p, last=q, directed=directed, raw=asdict(raw), passed=raw.support >= 9 and (not raw.unknown) and (directed >= 9)))
             edges.append(dict(segments=segments, fully_unobservable_under_source_mask_uncertainty=not segments, passed=bool(segments) and all((p['passed'] for p in segments))))
         exposed = [e for e in edges if not e['fully_unobservable_under_source_mask_uncertainty']]
@@ -313,13 +390,19 @@ class _PartialVisibilitySession:
                     return dict(passed=True, teachers=triple, minimum_query_correlation=min((scores[k] for k in triple)), paint=paint)
         return dict(passed=False, reason='no independent complete original-source body/paint proof')
 
-    def support(self, key, size, partial, phases):
+    def support(self, key, size, partial, phases, *, short_circuit=False):
+        result = self._support(key, size, partial, phases, short_circuit=short_circuit)
+        if short_circuit and any(phase['passed'] for phase in result):
+            return self._support(key, size, partial, phases, short_circuit=False)
+        return result
+
+    def _support(self, key, size, partial, phases, *, short_circuit):
         t, x, y = key
         out = []
         for dx, dy in phases:
             sampled = (t, x + dx, y + dy)
             eligible = self.eligibility(sampled, size, partial)
-            geometry = self.geometry(sampled, size) if eligible['eligible'] else None
+            geometry = self.geometry(sampled, size, short_circuit=short_circuit) if eligible['eligible'] else None
             body = self.body(sampled, eligible['indices']) if size == 32 and geometry and geometry['passed'] else None
             out.append(dict(phase=(dx, dy), eligibility=eligible, geometry=geometry, body=body, passed=bool(geometry and geometry['passed'] and (size == 16 or (body and body['passed']))), geometry_only_NOT_mini_identity=size == 16))
         return out

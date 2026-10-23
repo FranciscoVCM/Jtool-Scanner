@@ -2,7 +2,7 @@
 from copy import deepcopy
 from types import SimpleNamespace
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from PIL import Image, ImageDraw
 
@@ -10,6 +10,7 @@ from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.spike_shape import VERTICES
 from scripts.source_glyph_prototypes import _contains
+from scripts.source_contours import EdgeEvidence
 from scripts.source_partial_visibility import (
     SourcePartialVisibilityEvidence, _PartialVisibilitySession, intersects,
 )
@@ -218,3 +219,128 @@ class SourcePartialVisibilityTests(TestCase):
         for parent in (None,(True,64),(160.,64),(160,64,32),(999,999)):
             with self.subTest(parent=parent), self.assertRaises(ValueError):
                 field.support_parent(parent)
+
+
+class SourcePartialDecisionTests(TestCase):
+    def session(self, *, raw=12, unknown=False, directed=12):
+        edge = EdgeEvidence(raw,unknown,tuple((i,0) for i in range(raw)))
+        field = SimpleNamespace(field=SimpleNamespace(edge=Mock(return_value=edge)),
+            directed_field=SimpleNamespace(directed=Mock(return_value=directed)))
+        return _PartialVisibilitySession(None,field,[],()),field
+
+    def test_failed_raw_does_not_measure_directed_or_later_edges(self):
+        session,field = self.session(raw=8)
+        field.directed_field.directed.side_effect = AssertionError('Unused diagnostic')
+        proof = session.geometry((3,160,64),32,short_circuit=True)
+        self.assertFalse(proof['passed'])
+        self.assertTrue(proof['diagnostics_deferred'])
+        self.assertEqual(field.field.edge.call_count,1)
+
+    def test_unknown_raw_is_insufficient_source_not_empty(self):
+        session,field = self.session(unknown=True)
+        proof = session.geometry((3,160,64),32,short_circuit=True)
+        self.assertFalse(proof['passed'])
+        self.assertTrue(proof['source_unknown_NOT_empty'])
+        field.directed_field.directed.assert_not_called()
+
+    def test_failed_directed_does_not_measure_later_edges(self):
+        session,field = self.session(directed=8)
+        proof = session.geometry((3,160,64),32,short_circuit=True)
+        self.assertFalse(proof['passed'])
+        self.assertTrue(proof['diagnostics_deferred'])
+        self.assertEqual(field.field.edge.call_count,1)
+        self.assertEqual(field.directed_field.directed.call_count,1)
+
+    def test_unobservable_edges_do_not_fabricate_a_boundary(self):
+        session,field = self.session()
+        session.segments = Mock(return_value=[])
+        proof = session.geometry((3,160,64),32,short_circuit=True)
+        self.assertFalse(proof['passed'])
+        self.assertTrue(proof['diagnostics_deferred'])
+        field.field.edge.assert_not_called()
+        field.directed_field.directed.assert_not_called()
+
+    def test_positive_geometry_keeps_the_entire_default_dictionary(self):
+        session,_ = self.session()
+        fast = session.geometry((3,160,64),32,short_circuit=True)
+        self.assertTrue(fast['passed'])
+        self.assertEqual(fast,session.geometry((3,160,64),32))
+
+    def test_later_full_diagnostic_is_not_a_cached_deferred_negative(self):
+        values = partial_scene(negative='empty_visible_region')
+        field = SourcePartialVisibilityEvidence(values[0],values[1],source_grid=(25,19))
+        before = deepcopy(values[1])
+        fast = field.support_parent(values[2],short_circuit=True)
+        self.assertEqual(positive_keys(fast),[])
+        self.assertTrue(any(p['geometry'] and p['geometry'].get('diagnostics_deferred')
+            for r in fast['evidence']['rows'] for p in r['phases']))
+        fresh = SourcePartialVisibilityEvidence(values[0],values[1],source_grid=(25,19))
+        self.assertEqual(field.support_parent(values[2]),fresh.support_parent(values[2]))
+        self.assertEqual(values[1],before)
+
+    def test_all17_pixel_scenes_keep_masks_decisions_and_entire_positive_rows(self):
+        transforms = (lambda c:c,lambda c:tuple(255-v for v in c),
+                      lambda c:(c[2],c[0],c[1]),lambda c:tuple(round(v*.4) for v in c))
+        scenes = [(kind,None,1,transform,None) for kind,transform in zip((3,4,6,5),transforms)]
+        for n,(kind,placement) in enumerate(((3,(144,64)),(3,(176,64)),(4,(160,48)),(4,(160,80)),
+                (6,(144,64)),(6,(176,64)),(5,(160,48)),(5,(160,80)))):
+            scenes.append((kind,placement,1 if n%2 == 0 else 1.25,transforms[n%4],None))
+        scenes += [(3,None,1,lambda c:c,case) for case in ('two_rectangle_witnesses',
+            'unmatched_parent_pattern','original_marker_cover','empty_visible_region','real_mini_not_full')]
+        self.assertEqual(len(scenes),17)
+        for kind,placement,scale,transform,negative in scenes:
+            with self.subTest(kind=kind,placement=placement,scale=scale,negative=negative):
+                values = partial_scene(kind,placement=placement,scale=scale,transform=transform,negative=negative)
+                field = SourcePartialVisibilityEvidence(values[0],values[1],source_grid=(25,19))
+                detailed = field.support_parent(values[2])
+                fast = field.support_parent(values[2],short_circuit=True)
+                self.assertEqual({k:v for k,v in fast.items() if k != 'evidence'},
+                                 {k:v for k,v in detailed.items() if k != 'evidence'})
+                a,b = fast['evidence'],detailed['evidence']
+                self.assertEqual({k:v for k,v in a.items() if k not in ('rows','mini_rows')},
+                                 {k:v for k,v in b.items() if k not in ('rows','mini_rows')})
+                for name in ('rows','mini_rows'):
+                    self.assertEqual(len(a[name]),len(b[name]))
+                    for row,expected in zip(a[name],b[name]):
+                        self.assertEqual(row['key'],expected['key'])
+                        self.assertEqual([p['passed'] for p in row['phases']],
+                                         [p['passed'] for p in expected['phases']])
+                        self.assertEqual([p['eligibility'] for p in row['phases']],
+                                         [p['eligibility'] for p in expected['phases']])
+                        if any(p['passed'] for p in expected['phases']):
+                            self.assertEqual(row,expected)
+                self.assertEqual(field.support_parent(values[2]),detailed)
+
+    def test_exact_pair_cache_eviction_does_not_reuse_a_previous_source_token(self):
+        image = RGBImage(800,608,bytes((30,40,50))*(800*608))
+        field = SourcePartialVisibilityEvidence(SourceFrame(image,Box(0,0,800,608)),[],source_grid=(25,19))
+        field._rectangle_feature_limit = field._rectangle_pair_limit = 2
+        def variant(x,vector=(1.,0.)):
+            return dict(origin=(x,64),phase=(0,0),physical=(x,64,x+32,96),full=vector,inner=vector)
+        a,b = variant(64),variant(128)
+        field._record_rectangle_variants([a,b])
+        self.assertTrue(field._rectangle_pair_compatible(a,b))
+        self.assertTrue(field._rectangle_pair_compatible(a,b))
+        self.assertEqual(field._pair_hits,1)
+        self.assertFalse(field._rectangle_pair_compatible(a,a))
+        old_tokens = a['_source_feature_token'],b['_source_feature_token']
+        field._record_rectangle_variants([variant(192),variant(256)])
+        aa,bb = variant(64),variant(128,(0.,1.))
+        field._record_rectangle_variants([aa,bb])
+        self.assertGreater(min(aa['_source_feature_token'],bb['_source_feature_token']),max(old_tokens))
+        self.assertFalse(field._rectangle_pair_compatible(aa,bb))
+        with self.assertRaises(AssertionError):
+            field._record_rectangle_variants([variant(64,(0.,1.))])
+
+    def test_mode_is_explicit_boolean_and_compact_grid_stays_unknown(self):
+        values = partial_scene()
+        field = SourcePartialVisibilityEvidence(values[0],values[1],source_grid=(25,19))
+        for mode in (None,0,1,'yes'):
+            with self.subTest(mode=mode),self.assertRaises(ValueError):
+                field.support_parent(values[2],short_circuit=mode)
+        compact = SourcePartialVisibilityEvidence(values[0],values[1],source_grid=(19,13))
+        with patch.object(compact,'_measure_parent',side_effect=AssertionError('No compact fitting')):
+            result = compact.support_parent(values[2],short_circuit=True)
+        self.assertFalse(result['qualified'])
+        self.assertTrue(result['unknown'])
+        self.assertIsNone(result['evidence'])

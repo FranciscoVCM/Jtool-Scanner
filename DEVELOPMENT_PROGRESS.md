@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — All-parent partial caller recovers thirteen real spikes; decision API qualified
+
+Three isolated experimental ordinary wholes evaluated ALL235 Golden2,232
+Golden5 and85 CN3-19 original rectangle parents. Unchanged source-stage replays
+reproduced complete baselines. Golden2 adds8 source-supported ordinary32 partial
+spikes, Golden5 adds5, CN3-19 is ENTIRE unchanged. ZERO old Detection metadata
+lost; ordered nongeometry/crop/grid/options/reference retained. Whole/every-delta
+source review covers all13 additions and their original witnesses. All13 were
+absent B235 on the same input mapping; these are NOT shipped/default gains.
+
+Golden5's separately frozen25-object reserve improves22->25 exact,5->2 errors,
+three real recoveries and no new negatives/loss. The two old false blocks remain.
+Two other LEFT additions are outside that corridor, not new labels. Golden2's
+old six positives improve5->6 exact without expanding the denominator. Both
+rooms share one visual family; old failed reserves stay failed. No room approval.
+
+The still-UNBOUND public API now reuses exact bounded source features/pairs and
+physical probes, and original contours during FRESH pruned glyph-library fitting.
+Explicit short_circuit=True defers only unused negative diagnostics. Any positive
+full/mini key rehydrates its ENTIRE nine-phase proof; default queries remain
+complete and cannot receive cached deferred negatives. No threshold, model-role,
+native pose, selector/default or scanner binding changed;37 helpers remain.
+
+182 affected/app public methods PASS (9new), NOT full suite.50 ENTIRE default
+full wrappers and552 all-parent mask/cohort/key/phase/eligibility comparisons
+with ENTIRE positive rows also PASS. Audit76 retains71 default findings/ZERO
+room approvals or new shipped/default gains; optimized actual callers remain open.
+
+One fresh canonical CN3-18 research whole (NOT the near-exact fixture) matches
+the original physical/world mapping. Its frozen lower region retains4864/4864
+solid pixels and4/4 typed positives; known-background excess18176->0. Whole/all79
+removed hypotheses and actual lost-union source QA complete. Nine oversized
+boxes overlapped terrain still covered by retained primitives; edge-unknown
+fractions stay unknown, not new negative labels. Other room errors remain MAJOR.
+This freshly verifies earlier research consumers, not an unbound API accuracy
+gain or a recertified default scan. The many-minute diagnostic path stays disabled.
+
+Actual optimized ordinary callers, full candidate41/601/139/16 protections,
+quiet-AC whole timing and original primary/family/goal requirements remain OPEN.
+The many-minute diagnostic caller is not fit for app activation. Profiling and
+concurrent helper timings are not controlled speed evidence. All6 consumersOFF;
+no new default/B235 shipped gains, room approvals or fresh71 sweep.
+
 ## 2026-10-23 — Portable partial-visibility API; untuned prototype fills three reserve misses
 
 Added UNBOUND `SourcePartialVisibilityEvidence`, with plain tracked source and

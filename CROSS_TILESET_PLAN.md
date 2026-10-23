@@ -1,5 +1,36 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-23): all-parent partial caller and negative-work deferral
+
+All original parents tested in three actual isolated wholes: Golden2 gains8 real
+partial full32s, Golden5 gains5, CN3-19 ENTIRE unchanged; no old Detection metadata
+loss or ordered nongeometry change. Whole/every-delta/source-witness QA complete.
+All13 are absent original B235 on the same source/crop/grid/options. This is
+research evidence, not activation or a complete-room/generalization guarantee.
+
+Untuned Golden5 original25 reserve22->25 exact/5->2 errors, three real recoveries,
+zero new frozen negatives/loss; two old false blocks remain. Golden2 original6
+positives5->6 exact; additional observations never change that denominator.
+G2/G5 SAME visual family. Earlier failed Halls7/other mechanisms remain failed.
+
+Public partial API stays UNBOUND. Exact raw features/probes/contours shared;
+query-pruned models/teacher roles still freshly fitted. Optional short_circuit
+defers only negative diagnostics after a required edge fails; every positive
+keeps its entire original nine-phase proof. Default diagnostics stay complete.
+182 affected/app methods PASS (9new), NOT full suite.50 ENTIRE default full
+wrappers and552-parent metadata/all-phase/ENTIRE-positive comparisons PASS.
+Fresh canonical CN3-18 research measurement also preserves4864/4864 solid and4/4
+typed positives while clearing original frozen background excess18176->0.
+Whole/all79delta source QA checks actual union loss, not removed bounding boxes;
+retained narrow terrain and unknown edge fractions remain explicit. This verifies
+earlier research consumers, not a new API/default gain or room approval.
+
+No caller/default/selector or fixture change. Current optimized whole-caller
+qualification,41/601/139/16, quietAC whole cost and other primary/family/goal gates
+remain OPEN. Audit76 preserves71 default findings/ZERO approvals or new app gains.
+Do not enable the expensive diagnostic caller or convert one-family
+partial recovery into a universal tileset claim. No new app gains/room approvals.
+
 ## Latest (2026-10-23): tested public partial API; reserve prototype, not shipped gain
 
 Unbound `SourcePartialVisibilityEvidence` combines independent source-tile masks,
