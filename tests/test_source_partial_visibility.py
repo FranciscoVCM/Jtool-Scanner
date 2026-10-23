@@ -1,5 +1,7 @@
 """Procedural full/mini/unknown evidence; no game, archive or reference maps."""
 from copy import deepcopy
+from math import sqrt
+from random import Random
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import Mock, patch
@@ -13,6 +15,7 @@ from scripts.source_glyph_prototypes import _contains
 from scripts.source_contours import EdgeEvidence
 from scripts.source_partial_visibility import (
     SourcePartialVisibilityEvidence, _PartialVisibilitySession, intersects,
+    _mean_rectangle_signature,
 )
 from scripts.source_sampling import SourceFrame
 
@@ -222,6 +225,35 @@ class SourcePartialVisibilityTests(TestCase):
 
 
 class SourcePartialDecisionTests(TestCase):
+    def test_rectangle_mean_keeps_exact_float_order_including_cancellation(self):
+        random = Random(9341)
+        groups = [tuple(tuple(random.uniform(-1,1) for _ in range(768)) for _ in range(n))
+                  for n in (1,3,8,17)]
+        groups += [tuple(tuple((1e16,1.,-1e16)[n] if i%3 == 0 else
+                               (-0. if i%3 == 1 else (n+1)*1e-12)
+                               for i in range(768)) for n in range(3))]
+        for vectors in groups:
+            with self.subTest(teachers=len(vectors)):
+                values = tuple(sum(v[i] for v in vectors)/len(vectors) for i in range(768))
+                norm = sqrt(sum(v*v for v in values))
+                expected = tuple(v/norm for v in values)
+                self.assertEqual(tuple(v.hex() for v in _mean_rectangle_signature(vectors)),
+                                 tuple(v.hex() for v in expected))
+
+    def test_rectangle_mean_refits_changed_and_reordered_groups_without_mutation(self):
+        vectors = [[(i+1)*(n+1)/769 for i in range(768)] for n in range(3)]
+        before = deepcopy(vectors)
+        first = _mean_rectangle_signature(vectors)
+        self.assertEqual(vectors,before)
+        vectors[1][0] = -1000.
+        changed = _mean_rectangle_signature(iter(vectors))
+        self.assertNotEqual(changed,first)
+        for group in (vectors,list(reversed(vectors)),before):
+            values = tuple(sum(v[i] for v in group)/len(group) for i in range(768))
+            norm = sqrt(sum(v*v for v in values))
+            self.assertEqual(tuple(v.hex() for v in _mean_rectangle_signature(group)),
+                             tuple((v/norm).hex() for v in values))
+
     def session(self, *, raw=12, unknown=False, directed=12):
         edge = EdgeEvidence(raw,unknown,tuple((i,0) for i in range(raw)))
         field = SimpleNamespace(field=SimpleNamespace(edge=Mock(return_value=edge)),

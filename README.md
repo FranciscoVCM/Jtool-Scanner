@@ -68,6 +68,10 @@ Deferred negative diagnostics are marked, not cached as full answers; a later
 default query still measures the complete proof. Bounded exact source-feature,
 pair and physical-probe caches do not share fitted models or teacher roles.
 Pruned glyph libraries fit afresh while reusing original raw contours.
+Fresh rectangle-signature means use column sums in the same teacher and floating-
+point order as the original indexed calculation. This reduces arithmetic-kernel
+overhead without caching fitted models or changing the evidence contract; it is
+not a whole-scan speed qualification.
 
 Neither tracked standard nor opt-in scanning binds this API yet. Isolated
 whole-caller experiments recover real partial spikes, but public tests and proof

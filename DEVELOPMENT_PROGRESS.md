@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Exact fresh means; optimized callers reproduce reviewed outputs
+
+Replaced indexed per-column generators with same-order column sums for fresh
+rectangle-signature fitting. No model cache, threshold, teacher, native pose,
+selector or scanner binding changed. Two new tests cover bit-exact floating-
+point results (including cancellation/zeros) and independently refitted groups.
+An isolated arithmetic-kernel comparison improved 46–70% across 3/17/64/128
+witnesses; this is NOT source-helper or ordinary whole-scan latency evidence.
+
+184 affected/app public methods PASS, not the full suite. All 50 complete default
+diagnostic wrappers and 552 original-parent mask/cohort/key/phase/eligibility
+comparisons retain ENTIRE positive proofs. A Windows progress-file replacement
+error interrupted reporting after 371 comparisons; that error remains preserved.
+Only the remaining 181 were resumed, with shared-delete status reads. No scanner
+implementation change hid the environment error or repeated the completed tests.
+
+Three fresh isolated ordinary callers evaluate all 235 Golden2, 232 Golden5 and
+85 CN3-19 parents. Complete raw results and ordered metadata equal the reviewed
+earlier experiment. SourcePNG/JMap/JTool/Blend bytes match. Projects differ ONLY
+in the source-image path pointing to a new byte-identical PNG; every other project
+field matches. The earlier 8+5 real partial-spike recoveries remain, with zero old
+Detection metadata lost; CN3-19 is ENTIRE unchanged. Prior whole/every-delta QA
+carries through these complete checks, not through counts or a new visual review.
+
+Audit77 preserves all 71 default findings with zero new approvals/default scans
+or shipped gains. Its compact rows checksum-link the complete preserved audit76
+history. Golden5's original 25-object scope stays at 25 exact/2 old errors; both rooms remain
+one visual family. The partial API stays UNBOUND, all six consumers default OFF.
+Quiet-AC whole cost, generic protection of confirmed CN3-31 DOWN(416,128), full
+candidate 41/601/139/16, other primary/family criteria and final 71+16 remain OPEN.
+Do not rerun the completed 184/50/552 or three callers merely to resume.
+
 ## 2026-10-23 — All-parent partial caller recovers thirteen real spikes; decision API qualified
 
 Three isolated experimental ordinary wholes evaluated ALL235 Golden2,232

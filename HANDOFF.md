@@ -4,7 +4,25 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-23
+## Current checkpoint — 2026-10-24
+
+Fresh source-rectangle signature means use same-order column sums without caching
+fitted models or changing recognition thresholds. 184 affected/app tests (2 new),
+50 ENTIRE default diagnostic wrappers and 552 original-parent phase/mask/cohort/
+key/eligibility comparisons with ENTIRE positive proofs PASS, not the full suite.
+Three fresh isolated optimized ordinary callers reproduce the earlier complete
+Golden2/Golden5/CN3-19 raw outputs and ordered metadata. Source/JMap/JTool/Blend
+bytes match; the project differs ONLY in its pointer to a new byte-identical PNG.
+Earlier 13 real partial recoveries are retained, not new recoveries this batch.
+
+Compact audit77 preserves all 71 default findings and references the complete old
+history, with zero new approvals/default scans/shipped gains. API remains UNBOUND,
+all six consumers default OFF. Arithmetic-kernel timing is not whole-scan cost.
+Quiet-AC whole cost, C31 confirmed-positive integration, full candidate controls,
+other primary/family requirements and final 71+16 remain OPEN. See latest progress/
+next-thread notes for qualified receipts and concrete continuation.
+
+### Earlier checkpoint — 2026-10-23
 
 Newest continuation supersedes the older entries below: three isolated actual
 all-parent partial-caller wholes add8 real full32 partial spikes on Golden2 and5

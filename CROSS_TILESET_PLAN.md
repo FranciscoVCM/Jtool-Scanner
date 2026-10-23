@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): output-equivalent fresh-mean optimization
+
+Fresh rectangle means now use same-order column sums, never cached fitted roles.
+184 affected/app methods, 50 complete default wrappers and all 552 original-parent
+decisions/masks/cohorts/ENTIRE positive proofs PASS. Three fresh isolated ordinary
+callers retain complete earlier raw outputs and ordered metadata on Golden2,
+Golden5 and CN3-19. Four exported artifacts are byte-identical; the project differs
+only in its pointer to the new byte-identical source image, explicitly verified.
+
+The previous 13 real partial recoveries remain, not 13 new gains. Golden5's original
+25-object scope stays at 25 exact/2 old errors; CN3-19 is unchanged. Both Golden
+rooms share one visual family. Source QA
+carries by full equality, not fresh room approval. Compact audit77 preserves all
+71 default findings/history with zero upgrades. Kernel-only timing is NOT whole
+latency. API UNBOUND/all six consumers OFF; original protection/control, quiet-AC
+cost, C31 positive integration, primary/family/reserve and final 71+16 gates OPEN.
+
 ## Latest (2026-10-23): all-parent partial caller and negative-work deferral
 
 All original parents tested in three actual isolated wholes: Golden2 gains8 real

@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-23. Continue in the existing repository at
+Updated 2026-10-24. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -12,6 +12,42 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
+
+### Latest continuation: exact fresh means and three output-equivalent optimized callers
+
+Read the top of `.artifacts/general-recognition-20261014/DEFERRED_VETO_ACTIVE_v1.md`,
+then `exact-partial-mean-checkpoint-v313.json` and the compact
+`71-screen-general-recognition-checkpoint-v77.md` in the same directory.
+`exact-partial-mean-publication-v315.json` records published commit/live Git/app
+state. Complete earlier rows/history remain checksummed in audit76. No source
+archive or baseline sweep is needed.
+
+184 affected/app tests PASS (2 new), NOT full suite; 50 ENTIRE default wrappers and
+552 original-parent masks/cohorts/ordered keys/phase/eligibility/ENTIRE positive
+proofs PASS. Worker311 hit a Windows progress-file replacement PermissionError
+after 371 comparisons; error/logs preserved. Worker317 resumed ONLY 181, retained
+the prior 371 unchanged,
+and is TERMINAL/PASS. All producers exited. Use FileShare.ReadWrite|Delete for
+Windows status readers; do not block atomic replacement with ordinary reads.
+
+312 completes THREE fresh isolated ordinary optimized wholes on all 235 Golden2,
+232 Golden5 and 85 CN3-19 parents. ENTIRE raw maps and ordered metadata equal
+reviewed264. PNG/JMap/
+JTool/Blend bytes equal; project ONLY /source/image relocated to byte-identical
+PNG, every other field equal. Earlier 13 real partial recoveries retained, NOT new
+recoveries; C19 ENTIRE unchanged. Whole/every-delta source QA carries by equality.
+Golden5's original 25-object scope remains at 25 exact/2 old errors; same Golden
+family, no new approvals.
+
+Only fresh mean arithmetic changed; same floating-point/teacher order, no fitted
+model cache or thresholds/binding. Kernel-only improvement is NOT whole cost.
+API remains UNBOUND/all six default consumers OFF. Audit77 keeps all 71 default findings,
+zero fresh default scans/approvals/shipped gains. Do NOT rerun 184/50/552 or312 just
+to resume. Next pre-freeze quiet-AC serial ordinary cost (>=2 samples/mode/source),
+then address its actual bottleneck rather than activate a many-minute helper.
+Generic C31 real DOWN(416,128) protection/integration, candidate 41/601/139/16,
+original primary/family/reserve requirements and final stable 71+16 remain OPEN.
+Read GOAL_PLAN in full each logical goal turn; none of the six gates is waived.
 
 ### Latest continuation: public decision API qualified; optimized caller/cost next
 

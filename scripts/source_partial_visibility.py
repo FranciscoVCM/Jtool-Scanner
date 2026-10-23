@@ -31,6 +31,13 @@ def centered(values):
     length = sqrt(sum((v * v for v in vector)))
     return None if length == 0 else tuple((v / length for v in vector))
 
+def _mean_rectangle_signature(vectors):
+    """Fit afresh; zip avoids indexed generators without changing sum order."""
+    vectors = tuple(vectors)
+    values = tuple(sum(column) / len(vectors) for column in zip(*vectors, strict=True))
+    norm = sqrt(sum(v * v for v in values))
+    return tuple(v / norm for v in values)
+
 class SourcePartialVisibilityEvidence:
     """Frozen original-source context; an additional proof, never a veto.
 
@@ -175,9 +182,7 @@ class SourcePartialVisibilityEvidence:
             seen.add(key)
 
             def mean(name):
-                values = tuple((sum((v[name][i] for v in group)) / len(group) for i in range(768)))
-                norm = sqrt(sum((v * v for v in values)))
-                return tuple((v / norm for v in values))
+                return _mean_rectangle_signature(v[name] for v in group)
             groups.append(dict(teachers=key, full=mean('full'), inner=mean('inner')))
         masks, rect_rows = ([], [])
         # Complete every source-supported rectangle phase before triangle scores.
