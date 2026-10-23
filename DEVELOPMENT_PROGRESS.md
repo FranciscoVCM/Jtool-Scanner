@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-23 — Partial-source diagnosis now uses generic, independent query fans
+
+The missing ceiling-hidden Golden2 UP64,16 has two causes: its unmasked body
+does not match, and the existing finite proposal set does not include it.
+A private prototype builds conservative masks from independently corroborated
+original rectangle pixels, then generates partial full-spike poses from those
+rectangles' faces. Each parent's complete proposal neighborhood and potential
+mask-query windows are excluded before fitting witnesses. No room identity,
+review ROI, desired spike coordinate or corrected map enters that helper.
+
+All22 predeclared original rectangle parents were measured:2,178 parent/pose
+measurements, including repeated native keys, produce only the source-confirmed
+UP64,16. Appearance, original RGB paint and exposed original contours must agree
+at ONE coherent physical sampling phase; native origins never move. Nearby
+16px geometry challenges produce no positive alternative. Four procedural
+positive expectations and five negative expectations pass, including a genuine
+mini that must not become a full spike. These are diagnostic checks, NOT new
+public unittest methods or unrelated real transfer. Main source QA covers the
+positive, all eight newly used rectangle witnesses and three actual glyph
+witnesses. Hidden geometry and multiple-object/decorative alternatives remain
+uncertainties, not certified unique instances.
+
+No runtime, defaults, fixtures or detections changed; prototype remains private
+and unbound. Prior154 public tests/1,114 proof comparisons carry by unchanged
+runtime, not another execution/full suite. Audit73 preserves71 default findings
+and ZERO new app/B235 gains or room approvals. Generic diagnostic364.55s is NOT
+a controlled whole-scan comparison; repeated fitting needs efficient equivalent
+reuse before integration. Next pre-freeze that reuse and independent real
+partial transfer, then actual caller/protections/cost. Original goal minima,
+failed Halls7 reserve, separate cost HOLD and finalstable71+16 remain open.
+
 ## 2026-10-23 — Tested closed-body API recovers flat member; reserve remains unsuccessful
 
 Added UNBOUND `SourceClosedInteriorGlyphEvidence`: the complete existing

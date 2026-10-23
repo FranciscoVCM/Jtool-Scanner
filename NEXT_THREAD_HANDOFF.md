@@ -13,6 +13,40 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: generic partial-source fans; no live-app change
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md and audit73, then checkpoint228. Private
+209-228 diagnosis isolates missing Golden2 UP64,16: masked source appearance
+can support it, but current finite proposals never generate it. Generic helper
+222 accepts only frozen source/original detections/one original rectangle parent;
+no room, review ROI or known spike key. Parent's entire seed fan AND potential
+rectangle-query sampling windows excluded BEFORE witness fitting. Conservative
+phase-intersection masks are finished before coherent raw/directed/body/paint
+queries. Native object origins never move and no query becomes a teacher.
+
+223 TERMINAL all22 original development parents:2,178 parent/pose measurements
+(duplicates included), ONE provisional UP64,16; no competing mini geometry.
+224 four procedural positives pass;226 five negatives pass, NOT public unittest
+methods or real transfer.225 preserved harness-only output Path error,0completed;
+226 changes only that path type, not the detector. Main viewed220 source board
+and BOTH227 boards (eight new rectangle/three actual glyph witnesses); prior79
+rectangle witness QA carries through source hashes. No live producer remains.
+
+No runtime/default/fixture/detection changes this batch.154 public tests/1114
+proofs are byte-compatible prior evidence, NOT newly run/full suite. All6 default
+consumersOFF; closed-body API remains unbound and failed Halls7 reserve untuned.
+Audit73 preserves all71 default findings/ZERO new gains or approvals.364.55s
+generic diagnostic includes repeated fitting/concurrent work, NOT controlled
+whole cost. Do not integrate that cost or imply universal semantic opacity.
+
+NEXT bounded batch: pre-freeze exact immutable source-feature reuse with query
+pruning BEFORE cohort fit; prove complete proof parity against223 before relying
+on it. Then pre-freeze unrelated real partial transfer (original later reserve
+pool only for a compatible, distinct mechanism), instance/mini/decorative
+alternatives and actual caller tests. Keep current correct partial RIGHT64,112
+even though this channel abstains. No baseline/archive resweep or failed reserve
+retuning. Original real gains/protections/cost/final71+16/six goal gates OPEN.
+
 ### Latest continuation: tested unbound closed-body API; Halls7 gives zero gain
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit72 and checkpoint206. Current public

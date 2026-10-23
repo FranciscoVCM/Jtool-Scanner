@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-23
 
+Newest continuation: a PRIVATE source-qualified partial-visibility prototype
+now uses generic per-rectangle proposal neighborhoods, excluding all potential
+query pixels before independent witness fitting. It automatically proposes and
+supports the confirmed ceiling-hidden Golden2 UP64,16; all22 tested parents
+produce only that one provisional native object. Four procedural positive and
+five negative expectations pass, with source-photo QA of the positive and new
+witnesses. No runtime/default/detection changes, real-transfer qualification or
+new app gain is claimed. Prototype remains unbound; instance alternatives,
+efficient exact reuse, real transfer and whole-cost checks remain open. Audit73
+preserves71 default findings/ZERO approvals. Prior154 tests/1114 proofs carry
+by unchanged runtime, not a new/full-suite run. Original goal gates remain open.
+
 Newest: an UNBOUND closed-body API combines complete original interior material
 and directed RGB edges without requiring recognizable artwork.154 affected
 tests (17new) and1,114 entire proof comparisons pass. Four actual temporary/

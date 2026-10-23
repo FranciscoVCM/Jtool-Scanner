@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-23): partial-source proposal and ownership gaps isolated
+
+Private original-only rectangle masks plus relative face proposals support the
+confirmed ceiling-hidden Golden2 UP64,16 without a supplied answer pose or
+hand-selected recognition ROI. All potential query neighborhoods are excluded
+before independent witness fitting; masks precede spike scoring. All22 original
+parents yield only that one provisional native object across2,178 parent/pose
+measurements. Four procedural positive/five negative expectations pass; this is
+NOT real transfer, a public test-suite run or a new scanner detection.
+
+No runtime/default changes; all6 consumersOFF. Source-photo QA verifies the
+specific positive/new witnesses, not universal opacity or unique decomposition.
+The prototype is deliberately unbound: multiple-mini/decorative alternatives,
+unrelated real transfer/reserve, actual caller/protections and controlled cost
+remain open. Repeated independent fitting is expensive; establish exact feature
+reuse with pruning before cohort fitting, rather than silently adding that work
+to every scan. Audit73 keeps71 default findings/ZERO new approvals or gains;
+prior154 tests/1114 proofs carry unchanged. Original goal gates remain intact.
+
 ## Latest (2026-10-23): closed-body evidence tested, not adopted
 
 New unbound API combines complete original interior material/paint/contour
