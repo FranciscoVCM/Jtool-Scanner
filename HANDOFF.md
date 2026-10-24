@@ -6,6 +6,22 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-24
 
+Latest verification: a fresh default Golden2 scan matches the previously published
+310-object capture-site map, including complete metadata and source/map/render
+artifacts. Four recoveries relative to B235 predate this batch; they must not be
+removed to force equality with that older baseline. Audit82 records one fresh
+default scan, strict prior visual-QA carry and no room upgrades or new app gains.
+
+An existing default-OFF phase repair is verified in shadow on the actual original
+source field. A private nominal-old-retention schedule passes 48 portable groups
+and 272 real probe/complete-repair comparisons, with consumer-only median cost
+9.552->6.622s (-30.68%). It is not promoted or whole-runtime-qualified. 54 relevant
+public tests pass; no implementation change was used to hide the initial sandbox
+temporary-file permission error. All6 consumers remain OFF, full controls/cost/
+families/reserve/final71+16 gates remain open, and the goal stays ACTIVE.
+
+### Maintained runtime from the preceding checkpoint
+
 Latest maintained optimization: internal source/mean signatures cache their native
 tuple hash lazily, retaining values, tuple equality and the original value-keyed
 score LRU. No recognition/teacher/model/pose/caller/default/dependency changes.

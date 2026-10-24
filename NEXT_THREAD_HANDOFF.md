@@ -13,7 +13,55 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: cached value hashes qualified; identity-only trial rejected
+### Latest continuation: actual default verified; nominal old-retention candidate
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, phase-retention-checkpoint-v419.json and
+phase-retention-publication-v420.json, audit82, phase-only-shadow-replay-v413.json
+and nominal-old-real-v417.json in the
+ignored goal directory. Original GOAL_PLAN applies unchanged; do not create a new
+goal, baseline, repository or archive sweep. All workers are terminal at this
+checkpoint. Runtime is still e3ca410's code; only public documentation changes.
+
+ONE fresh ordinary default Golden2 scan completed in411. Its initial comparison
+to B235 failed because B235 predates FOUR approved capture-site recoveries.
+Keep that failure, do not rerun or remove them. Current310 ordered Detection
+metadata and sourcePNG/JMap/JTool/Blend/input/project exactly match the PUBLISHED
+capture activation checkpoint, verified413. A single source-stage replay of411's
+actual before-input equals its ENTIRE ordinary final; no second upstream scan.
+Audit82 records that one fresh default scan and strict prior visual-QA carry.
+Other70 findings remain prior; no room approvals/new default gains/full71 run.
+
+Existing SourceFullSpikePhaseEvidence already solves confirmed DOWN64,56->64,48
+in the rich profile and in413 shadow on the ACTUAL retained original field.
+It remains OFF by default; don't reimplement it or confuse before-source input
+with rich final output. Shadow consumer9.060s is NOT whole-cost qualification.
+59/68 old-probe retentions pass nominal phase0, but full diagnostics compute8
+more phases. Private415 tests the SAME nominal conjunction to KEEP old objects;
+other old failures/new poses/actual repairs retain complete original proofs.
+Validation416 passes48 portable groups;417 passes272 real probes with complete
+repair/registration metadata. Fresh original constructors reproduce413's baseline.
+ABBA consumer medians9.55215525->6.6220037s (-30.6753%) are CONSUMER ONLY.
+
+Next: profile remaining phase-consumer cost; qualify an explicit optional fast
+old-retention path with unchanged full-diagnostic default/complete repair proofs.
+Then actual phase-only ordinary caller, fixed controls/protections and quiet-AC
+dense/sparse whole runtime BEFORE any flag activation. Even6.622s consumer cost
+may still be material; don't silently waive5%. Other primary causes/families/
+reserve/8real+4conflict minima/final71+16/original6gates remain OPEN.
+
+54 tests across four unchanged public phase modules pass (418), NOT fullsuite.
+The initial54 run had1 sandbox Temp PermissionError; host permissions resolved it,
+no code workaround. Earlier380/385/389/393/401/405 candidates were HELD on their
+fixed performance gates.397 raw upstream overlap963/18028=5.34% also failed;
+don't build that legacy-frame cache bridge or repeat microcache experiments.
+
+App was offline, restarted OWNED hidden CLI PID5968 with--no-browser; root and
+health200, loaded==disk27b3b3032f7d22438a9676ad1f9cf59f0d1100b7c77d9db5038f87202510089d.
+Logs app-resume-nominal-checkpoint-v418.stdout/.stderr. Earlier approval service
+error cleared through normal reviewed host operations, not a CIM bypass.
+No implementation/default/fixture/index edits; private files stay ignored.
+
+### Prior checkpoint: cached value hashes qualified; identity-only trial rejected
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, `public-exact-dot-checkpoint-v374.json`, audit81
 and publication375 in the ignored goal directory. Full original GOAL_PLAN applies.

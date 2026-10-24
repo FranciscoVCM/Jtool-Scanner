@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): qualify existing repairs instead of duplicating them
+
+Fresh default Golden2 equals the published capture-site 310-object map, including
+complete ordered metadata and all four source/map/render artifacts. B235 has
+306 objects because four source-reviewed recoveries shipped subsequently; the
+failed old-baseline comparison is preserved, not treated as a regression or
+four new gains. An ENTIRE source-stage replay validates current input reuse.
+
+The existing default-OFF phase consumer already repairs DOWN64,56 to64,48 in
+shadow on the actual original source field. Do not write another room-specific
+fix. A private nominal-old-retention schedule preserves all repair/registration
+proofs and original decisions while avoiding unused diagnostics for already-
+proved old spikes: 48 portable groups and272 real probes pass; standalone
+consumer median9.552->6.622s (-30.68%). This does not establish whole-scan speed
+or authorize activation. Six earlier small optimization/scheduling candidates
+remain held; no threshold/model/teacher/reference/default changes were made.
+
+54 relevant public methods pass with normal temporary-directory permissions;
+the sandbox failure was environmental, not fixed by changing scanner logic.
+Audit82 keeps71 conservative findings/zero approvals; one fresh default scan,
+not a new corpus sweep or visual review. Next profile/qualify the complete phase
+caller and cost, preserve all protected interfaces and then continue the other
+source-identity/family causes. Original six goal gates and all71 aspirations
+remain intact; all6OFF/partial API unbound/goal ACTIVE.
+
 ## Latest (2026-10-24): value-compatible cached signature hashes
 
 Only internal source/mean vector representation changes: native tuple hashes are

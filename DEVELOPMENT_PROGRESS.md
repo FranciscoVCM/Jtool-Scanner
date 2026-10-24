@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Default map reverified; bounded phase-retention speed candidate
+
+One fresh ordinary DEFAULT Golden2 scan matches the published capture-site
+checkpoint: 310 detections, identical ordered metadata, source/JMap/JTool/Blend
+bytes, inputs/crop/grid and project apart from its owned source-image locator.
+Its four additions relative to immutable B235 were published earlier, not new
+gains. An initial check incorrectly required equality to the older 306-object
+B235 map; that failed receipt is preserved. Comparison to the correct published
+default and an ENTIRE source-stage replay qualify the new scan without rescanning
+upstream or discarding the four approved recoveries.
+
+The existing, default-OFF full-spike phase consumer corrects only the known
+Golden2 DOWN(64,56) to (64,48) in a shadow application using that replay's ACTUAL
+original filled-source field. It preserves count, unrelated metadata and ordered
+nongeometry. This is not a new algorithm, enabled ordinary whole or app gain.
+Standalone consumer time was 9.060 seconds, not controlled whole-scan latency.
+
+Of its 68 original probes, 59 retain a source-proved old spike, all on the first
+nominal geometry phase. A private candidate keeps that original after the SAME
+complete nominal conjunction, deferring only the other eight unused diagnostic
+phases. Failed nominal tests and every proposed repair still use the complete
+original geometry/paint/exclusive-FG/BG/registration proof. No thresholds, models,
+teachers, native positions, public API or runtime defaults changed.
+
+The candidate passes 48 portable groups and 272 real original-probe comparisons,
+including ENTIRE repair/registration/output metadata and exact nominal retention
+proofs. Fresh original constructors reproduce the actual source-stage baseline.
+Consumer-only ABBA medians improve 9.552 to 6.622 seconds (-30.68%); this is NOT
+quiet-AC or ordinary whole qualification. Earlier raw-work and two scheduling
+candidates were held below their fixed benefit gate rather than promoted for
+correctness alone. Do not repeat those failed caches or claim fewer calls alone
+as an improvement.
+
+Fresh 54 public phase/evidence/consumer/integration/registration tests pass, NOT
+the full suite. The first identical run had one sandbox temporary-file permission
+error; normal host permissions resolved it without implementation changes.
+Audit82 retains all 71 conservative findings and zero approvals; only Golden2
+has a new default scan, with prior visual QA carried through full artifact/input
+equality, not a new visual review. All six consumers remain OFF, the partial API
+remains unbound, and no new geometry gain is shipped. Next qualify the bounded
+retention optimization and actual phase-only caller/whole cost before activation;
+full protections, other families/reserve and final stable 71+16 remain open.
+
 ## 2026-10-24 — Cached signature hashes preserve value reuse and complete proofs
 
 Internal normalized source/mean signatures now cache their native tuple hash
