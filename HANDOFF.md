@@ -6,6 +6,25 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-24
 
+The phase backend now has an optional exact nominal-original retention shortcut
+and exact background-radius predicate, with legacy-oracle fallback. Full
+diagnostics and every repair proof remain complete. 114 affected tests pass
+(ten new; NOT full suite). Three actual phase-only ordinary callers preserve
+expected outputs: the known Golden2 DOWN64,56->64,48 repair, unchanged Halls3 and
+Golden5. Fresh Source/JTool/Blend reviews retain substantial unresolved errors;
+no room approval or new research recovery is claimed.
+
+Separate quiet-AC OFF/ON ABBA whole cost passes: Golden2 68.131/69.358s (+1.80%),
+sparser Halls3 64.363/63.670s (-1.08%, within observed variation). All eight
+samples qualify complete raw maps/metadata/inputs/exports/projects. This is not
+an old/new-code speed comparison or all71 speed guarantee. Audit83 retains71
+conservative findings and zero new default gains. All6 consumers remain OFF and
+the partial API is unbound. Full41/601/139 and16 exact controls for the phase-only
+profile are next BEFORE activation; other families/reserve/final71+16 and the
+original goal gates remain OPEN. Do not enable other consumers by association.
+
+### Prior checkpoint — default map and private retention qualification
+
 Latest verification: a fresh default Golden2 scan matches the previously published
 310-object capture-site map, including complete metadata and source/map/render
 artifacts. Four recoveries relative to B235 predate this batch; they must not be

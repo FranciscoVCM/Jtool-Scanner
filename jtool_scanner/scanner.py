@@ -3115,7 +3115,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
         merged, phase = refit_source_full_spike_phases(result.detections, original_source_detections,
             source_frame=frame, source_grid=result.source_grid,
             source_filled_evidence=original_context.filled_source(original_source_detections, frame),
-            retired=recovery_retired)
+            retired=recovery_retired, short_circuit=True)
         if phase['corrected']:
             result.detections = merged
             result.structural_warnings = structural_scan_warnings(result.detections)

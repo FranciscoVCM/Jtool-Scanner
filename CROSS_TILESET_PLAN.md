@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): phase-only actual caller and whole-cost gate pass
+
+Exact-work phase optimization is implemented with an explicit optional nominal
+OLD-positive retention path and an exact original-background radius predicate.
+Full diagnostics default to all nine phases; every proposed repair retains its
+complete original proof. Unsupported/custom paint protocols use the old oracle.
+No recognition thresholds, teachers, fitted roles, palettes or poses change.
+
+114 affected methods pass, not the full suite; the initial custom-oracle failure
+is preserved and covered by a new regression. Three actual single-phase-ON
+ordinary scans preserve expected complete outputs: Golden2 only the known
+DOWN64,56->64,48 correction, Halls3/Golden5 unchanged. Fresh whole and delta
+Source/JTool/Blend review still finds substantial errors; ZERO room approvals.
+
+Quiet-AC ordinary ABBA, two samples/mode/source, passes the fixed whole-cost gate:
+Golden2 OFF68.131/ON69.358s (+1.80%); sparser Halls3 OFF64.363/ON63.670s (-1.08%,
+near-flat variation). All eight full map/metadata/input/export/project checks
+pass. These compare feature OFF/ON on current code, not old/new-code speed or
+all71 runtime. Accuracy-only extra source replays are excluded from timing.
+
+Audit83 retains71 findings/zero default gains. All6 defaults remainOFF; partial
+API unbound. Next full41/601/139 and16 exact phase-only controls BEFORE activation,
+then continue independent positive/ownership/family causes. Do not bundle the
+other5 switches or repeat held microcache work. Original six gates, reserve/
+3rooms/2families/8positive+4conflict requirements and final71+16 remain OPEN.
+
 ## Latest (2026-10-24): qualify existing repairs instead of duplicating them
 
 Fresh default Golden2 equals the published capture-site 310-object map, including

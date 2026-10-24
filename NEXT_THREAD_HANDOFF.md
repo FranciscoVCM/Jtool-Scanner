@@ -13,7 +13,63 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: actual default verified; nominal old-retention candidate
+### Latest continuation: actual phase-only caller and whole-cost pass; controls next
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, public-phase-fast-validation-v435.json,
+phase-fast-actual-callers-v437.json, phase-fast-source-QA-v438.json,
+phase-fast-whole-cost-v440.json and phase-fast-checkpoint-v441.json plus audit83
+in the ignored goal directory. Original GOAL_PLAN applies IN FULL unchanged;
+no new goal/baseline/archive sweep. All these producers are terminal.
+
+Public changes: source_directional_body.py factors the EXACT scalar phase
+equation, retaining full-nine default/cache and separate non-caching nominal
+phase. source_full_spike_phase.py adds actual-bool short_circuit=False for ONLY
+complete positive OLD-retention; other phases/repairs remain full. Exact original
+BG closed-radius complement replaces an unused nearest distance. Custom or
+unsupported paint protocols fall back to the old oracle. scanner.py's existing
+phase-ON branch explicitly requests the shortcut. Global phase/all6 flags stay
+OFF; no partial caller binding/model/threshold/teacher/palette/native pose change.
+
+435 passes114 affected methods across8 modules (10new; NOT full suite) and
+FULL68-probe default diagnostics/FAST68-probe complete repair+registration.
+59 positive old-retention reports defer only unused diagnostics. Preserve failed
+434 (112/113): custom paint oracle/minimal model KeyError; fixed by compatibility
+fallback plus regression, NOT altered tests. Failed source copy preserved locally.
+
+437 actual ordinary G2/H3/G5 scans change ONLY phase False->True in explicit8
+profile; matched default source stages replay DEEP COPIES of the SAME incoming
+results. G2 ENTIRE output equals413 known DOWN64,56->64,48; H3/G5 unchanged.
+This extra source replay is accuracy-only, NOT valid whole latency. 438 original
+Source/JTool/Blend whole and delta QA complete: missingUP64,16/false solids and
+other substantial errors remain, no new reserve success or room approvals.
+CN3-31 DOWN416,128 is again user-confirmed real32 (partner UP400,128), an OLD
+protected positive, not a new gain or reason to re-ask.
+
+440 actual quietAC serial ABBA has NO extra source replay: two/mode/source,
+G2 OFF68.1312044/ON69.35762195s (+1.80008%), sparserH3
+OFF64.36345355/ON63.66996565s (-1.07746%, near-flat variance). All8 ENTIREraw/
+orderedmetadata/input/crop/grid/fourartifact/project-ownedlocator/cache/AC/
+appquiet guards PASS. Fixed5% whole-overhead gate passes for these two rooms;
+not old/new-code or all71 speed. Sandbox appCPU read denied; normal reviewed
+host context resolved permissions, no implementation workaround.
+
+Audit83 preserves all71 findings/ZERO approvals/new app gains. Three accuracy
+ON wholes +4timeddefault+4timedON wholes and3matched default source-stage replays,
+NOT11freshdefault scans. Next full ORIGINAL41/601/139 and16 exact controls for
+this SINGLE phase-only profile BEFORE activation; old v100/v168 profiles also
+enable other consumers and are NOT a confound-free current-default qualification.
+Use fixed definitions/current inputs/full metadata; no arbitrary rebaseline or
+old B235 equality that drops previously shipped capture recoveries. Do not bundle
+other5 switches. Other original family/reserve/8positive+4conflict/final71+16
+requirements remain OPEN; goal ACTIVE. Retain earlier held candidates, don't
+repeat unhelpful microcaches or confuse an optimization checkpoint with completion.
+
+App must reload the tested runtime after publication, with root/health200 and
+loaded-source==disk. Verify current owned command/port before stopping any PID;
+5968 was the last verified hidden CLI app. See latest ignored active/publication
+receipt for final PID/hash/live Git state. Private indexes/images/JMaps unchanged.
+
+### Prior continuation: actual default verified; nominal old-retention candidate
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, phase-retention-checkpoint-v419.json and
 phase-retention-publication-v420.json, audit82, phase-only-shadow-replay-v413.json

@@ -7,15 +7,57 @@ is not a scanner correction; the consumer/caller require separate qualification
 and default OFF. Neither API is proof of unseen-tileset generalization.
 """
 from copy import deepcopy
-from math import dist
+from math import dist, inf, isfinite
+from sys import float_info
 from types import SimpleNamespace
 
 from jtool_scanner.spike_shape import VERTICES
 from scripts.source_physical_patch import physical_exclusive_patch,_full_key
 from scripts.source_directional_body import SourceDirectionalBodyEvidence
 from scripts.source_glyph_prototypes import _contains
-from scripts.source_interior_glyphs import INTERIOR_POINTS,_mean,_normalized,_oriented
+from scripts.source_interior_glyphs import (
+    INTERIOR_POINTS, _mean, _normalized, _oriented, _OriginalPaintIndex,
+    SourceInteriorGlyphEvidence,
+)
 from scripts.source_local_background import SourceLocalBackground
+from scripts.source_phase_registration import _paint_within
+
+
+def _legacy_background_support(body, model, rgb):
+    paint = body._paint_support(model, (rgb,))
+    distance = dist(rgb, model['background'])
+    return distance <= model['limit'] and distance < .5 * paint['max_original_paint_distance']
+
+
+def _original_background_support(body, model, rgb):
+    """Exact original BG decision, without computing an unused nearest value.
+
+    Raw uint8 distances are zero or at least one: halving them is exact. The
+    old strict ``d < .5*nearest`` is exactly ``nearest > 2*d``. An empty CLOSED
+    radius therefore preserves boundary ties; unsupported data keeps the old
+    nearest-distance path. This fits no model and changes no paint threshold.
+    """
+    # Extensions may supply their own paint oracle/minimal model. The radius
+    # identity applies only to the standard original-nearest implementation;
+    # do not bypass an override or impose new fields on that older protocol.
+    if (getattr(body._paint_support, '__func__', None) is not SourceInteriorGlyphEvidence._paint_support
+            or 'original_paints' not in model or not hasattr(body, '_paint_indices')):
+        return _legacy_background_support(body, model, rgb)
+    paints = model['original_paints']
+    if paints not in body._paint_indices:
+        body._paint_indices[paints] = _OriginalPaintIndex(paints)
+    index = body._paint_indices[paints]
+    if not index.exact_raw or not index._raw_rgb(rgb):
+        return _legacy_background_support(body, model, rgb)
+    distance, limit = dist(rgb, model['background']), model['limit']
+    try:
+        supported_limit = (isinstance(limit, (int, float)) and not isinstance(limit, bool)
+                           and isfinite(limit))
+    except OverflowError:
+        supported_limit = False
+    if not supported_limit or not isfinite(distance) or distance > float_info.max / 2:
+        return _legacy_background_support(body, model, rgb)
+    return distance <= limit and not _paint_within(index, rgb, 2 * distance, inf)
 
 
 def _glyph_polygon(key):
@@ -38,7 +80,9 @@ class SourceFullSpikePhaseEvidence:
         self.body=SourceDirectionalBodyEvidence(filled,self.original,source_grid=source_grid)
         self.frame=filled.frame
 
-    def probe(self,old,current):
+    def probe(self,old,current,*,short_circuit=False):
+        if not isinstance(short_circuit, bool):
+            raise ValueError('Phase short-circuit flag must be a boolean')
         old=_full_key(old)
         current=tuple(current)
         keys=frozenset((d.type_id,d.x,d.y) for d in current)
@@ -52,7 +96,16 @@ class SourceFullSpikePhaseEvidence:
             return {**result,'abstained':'original locator metadata no longer current'}
         if not self.frame.rectangle_available(old[1],old[2],32,32,margin=4):
             return {**result,'abstained':'unknown original old footprint'}
-        old_geometry=self.body.geometry(old)
+        nominal = self.body._nominal_geometry(old) if short_circuit else None
+        if nominal is not None and nominal['passed']:
+            # A complete positive phase only RETAINS an original. Never place
+            # this partial diagnostic in the all-nine-phase result cache.
+            old_geometry = dict(passed=True, phases=[nominal],
+                common_phase_NOT_native_origin_change=True, RGB_normal_alignment=.95,
+                existing_required_support=9, diagnostics_deferred=True,
+                ONLY_proven_original_retention_NOT_new_pose=True)
+        else:
+            old_geometry=self.body.geometry(old)
         if old_geometry['passed']:
             return {**result,'abstained':'positive old original contour retained','old_geometry':old_geometry}
         old_values=self.body._body(old)
@@ -150,9 +203,7 @@ class SourceFullSpikePhaseEvidence:
                     if len(new_only)<4 or lost_old:
                         continue
                     def bg(rgb):
-                        p=self.body._paint_support(model,(rgb,))
-                        d=dist(rgb,model['background'])
-                        return d<=model['limit'] and d<.5*p['max_original_paint_distance']
+                        return _original_background_support(self.body, model, rgb)
                     if not all(bg(rgb) for rgb in patch_values):
                         m['abstained']='old-only patch not coherently original BG-like'
                         continue
@@ -179,7 +230,8 @@ class SourceFullSpikePhaseEvidence:
 
 
 def refit_source_full_spike_phases(detections, original_detections, *, source_frame,
-                                  source_filled_evidence, source_grid, retired=()):
+                                  source_filled_evidence, source_grid, retired=(),
+                                  short_circuit=False):
     """Apply only unique original-source phase proofs; preserve every other object.
 
     Query one frozen current snapshot, never an incrementally corrected teacher
@@ -193,6 +245,8 @@ def refit_source_full_spike_phases(detections, original_detections, *, source_fr
     from scripts.source_filled_pipeline import FilledGlyphEvidence
     from scripts.source_sampling import SourceFrame
 
+    if not isinstance(short_circuit, bool):
+        raise ValueError('Phase short-circuit flag must be a boolean')
     current, original = tuple(detections), tuple(original_detections)
     if any(not isinstance(d, Detection) or any(isinstance(v, bool) or not isinstance(v, int)
             for v in (d.type_id, d.x, d.y)) for d in (*current, *original)):
@@ -221,7 +275,7 @@ def refit_source_full_spike_phases(detections, original_detections, *, source_fr
     proposed = []
     for detection in eligible:
         old = key(detection)
-        proof = evidence.probe(old, current)
+        proof = evidence.probe(old, current, **({'short_circuit': True} if short_circuit else {}))
         report['evaluated'] += 1
         report['source_proofs'].append(proof)
         if proof['proposed'] is None:

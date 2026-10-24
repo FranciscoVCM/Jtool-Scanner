@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Actual phase-only caller and controlled whole cost qualified
+
+The phase-refinement backend now avoids unused diagnostics only when the same
+complete nominal contour proof already retains an ORIGINAL spike. Failed nominal
+tests and every proposed repair still run the full original nine-phase,
+exclusive-foreground/background and registration checks. The full diagnostic API
+defaults remain unchanged; the optional shortcut never poisons the full-result
+cache. An exact closed-radius background predicate avoids an unused nearest
+distance, retaining the original oracle for unsupported or overridden protocols.
+No model, teacher, threshold, palette, object pose or dependency changes.
+
+Fresh validation passes 114 affected methods across eight modules, including ten
+new portable tests; NOT the full suite. An initial 112/113 run exposed a custom
+paint-oracle compatibility gap. That failure is preserved and fixed with the
+legacy fallback and an additional regression, not a weakened test. Full and fast
+real 68-probe applications preserve the complete corrected output/registration;
+only 59 already-proved old-retention diagnostics defer unused phases.
+
+Three fresh ordinary experimental scans change ONLY the full-phase selector in
+the complete eight-switch profile. Golden2 makes exactly the known DOWN(64,56)
+to (64,48) correction; Halls3 and Golden5 are unchanged. Matched default source
+stages replay the same incoming results for accuracy, not a second upstream scan.
+Fresh Source/JTool/Blend whole reviews and every changed-object review confirm
+the delta. Missing/incorrect compound members, false solids and marker/water
+errors remain visible; none of these rooms is approved or a new reserve success.
+
+Separate quiet-AC serial ABBA scans, two per mode/source, qualify actual
+feature-OFF versus feature-ON whole cost on this code: Golden2 medians
+68.131 -> 69.358 seconds (+1.80%); sparser Halls3 64.363 -> 63.670 (-1.08%,
+effectively similar within observed variation). All eight samples preserve the
+complete expected raw outputs, ordered metadata, inputs/crop/grid, four exported
+artifacts and projects apart from their owned source-image locators. These are
+whole scans without the extra accuracy replay, not helper timings or a universal
+speed claim. Both satisfy the fixed 5% overhead gate.
+
+Audit83 retains all 71 conservative findings and ZERO approvals/new default
+geometry gains. This batch has three accuracy phase-ON wholes, four timed default
+and four timed phase-ON wholes, plus three matched default source-stage replays;
+it is not a new 71-screen sweep. All six experimental consumers remain OFF by
+default and the partial API remains unbound. Next qualify the full original
+41/601/139 protections and all 16 exact controls for this phase-only profile
+before activation; do not enable the other five consumers by association. Other
+families, reserve/gain minima, final stable 71+16 and all original goal gates
+remain open. The original goal stays ACTIVE.
+
 ## 2026-10-24 — Default map reverified; bounded phase-retention speed candidate
 
 One fresh ordinary DEFAULT Golden2 scan matches the published capture-site

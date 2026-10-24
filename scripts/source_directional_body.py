@@ -95,8 +95,8 @@ class SourceDirectionalBodyEvidence(SourceInteriorGlyphEvidence):
                 native_hypothesis_unchanged=True)
         return old
 
-    def geometry(self, key):
-        """Return an isolated diagnostic shared-phase full32 proof."""
+    @staticmethod
+    def _geometry_key(key):
         try:
             key = tuple(key)
         except TypeError as error:
@@ -105,31 +105,39 @@ class SourceDirectionalBodyEvidence(SourceInteriorGlyphEvidence):
                 or any(isinstance(v, bool) or not isinstance(v, (int, float)) or not isfinite(v)
                        for v in key[1:])):
             raise ValueError('Directed body geometry needs full type3..6,x,y')
+        return key
+
+    def _geometry_phase(self, key, dx, dy):
+        """The unchanged scalar conjunction for one physical sampling phase."""
+        kind, x, y = key
+        if not self.frame.rectangle_available(x+dx, y+dy, 32, 32, margin=4):
+            return dict(phase=(dx, dy), known=False, passed=False)
+        poly = [(x+a+dx, y+b+dy) for a, b in VERTICES[kind]]
+        triangle = [self.directed_field.directed(a, b)
+                    for a, b in zip(poly, poly[1:]+poly[:1])]
+        if min(triangle) < 9:
+            return dict(phase=(dx, dy), known=True, passed=False, triangle=triangle)
+        box = [(x+dx, y+dy), (x+32+dx, y+dy),
+               (x+32+dx, y+32+dy), (x+dx, y+32+dy)]
+        rectangle = [self.directed_field.directed(a, b)
+                     for a, b in zip(box, box[1:]+box[:1])]
+        raw = self.field.rectangle(x+dx, y+dy, 32)
+        competing = min(rectangle) >= 9 or all(e.support >= 9 and not e.unknown for e in raw)
+        return dict(phase=(dx, dy), known=True, passed=not competing,
+                    triangle=triangle, rectangle=rectangle,
+                    raw_rectangle=[dict(support=e.support, unknown=e.unknown) for e in raw])
+
+    def _nominal_geometry(self, key):
+        """One complete old-retention phase, never a cached full diagnostic."""
+        return deepcopy(self._geometry_phase(self._geometry_key(key), 0, 0))
+
+    def geometry(self, key):
+        """Return an isolated diagnostic shared-phase full32 proof (all nine)."""
+        key = self._geometry_key(key)
         if key not in self.new_geometry:
-            kind, x, y = key
             px, py = self.frame.pitch
-            phases = []
-            for dx in (0, -px, px):
-                for dy in (0, -py, py):
-                    known = self.frame.rectangle_available(x+dx, y+dy, 32, 32, margin=4)
-                    if not known:
-                        phases.append(dict(phase=(dx, dy), known=False, passed=False))
-                        continue
-                    poly = [(x+a+dx, y+b+dy) for a, b in VERTICES[kind]]
-                    triangle = [self.directed_field.directed(a, b)
-                                for a, b in zip(poly, poly[1:]+poly[:1])]
-                    if min(triangle) < 9:
-                        phases.append(dict(phase=(dx, dy), known=True, passed=False, triangle=triangle))
-                        continue
-                    box = [(x+dx, y+dy), (x+32+dx, y+dy),
-                           (x+32+dx, y+32+dy), (x+dx, y+32+dy)]
-                    rectangle = [self.directed_field.directed(a, b)
-                                 for a, b in zip(box, box[1:]+box[:1])]
-                    raw = self.field.rectangle(x+dx, y+dy, 32)
-                    competing = min(rectangle) >= 9 or all(e.support >= 9 and not e.unknown for e in raw)
-                    phases.append(dict(phase=(dx, dy), known=True, passed=not competing,
-                        triangle=triangle, rectangle=rectangle,
-                        raw_rectangle=[dict(support=e.support, unknown=e.unknown) for e in raw]))
+            phases = [self._geometry_phase(key, dx, dy)
+                      for dx in (0, -px, px) for dy in (0, -py, py)]
             self.new_geometry[key] = dict(passed=any(p['passed'] for p in phases), phases=phases,
                 common_phase_NOT_native_origin_change=True, RGB_normal_alignment=.95,
                 existing_required_support=9)
