@@ -36,7 +36,32 @@ def _mean_rectangle_signature(vectors):
     vectors = tuple(vectors)
     values = tuple(sum(column) / len(vectors) for column in zip(*vectors, strict=True))
     norm = sqrt(sum(v * v for v in values))
-    return tuple(v / norm for v in values)
+    return _SourceSignature(v / norm for v in values)
+
+
+class _SourceSignature(tuple):
+    """Internal immutable float values with their native tuple hash cached once.
+
+    Value equality is unchanged, so independently refitted equal signatures keep
+    the original bounded value-LRU reuse. This caches no fitted model or role.
+    Only the hash representation changes; scalar arithmetic and order do not.
+    """
+
+    def __new__(cls, values):
+        instance = tuple.__new__(cls, values)
+        object.__setattr__(instance, '_cached_hash', None)
+        return instance
+
+    def __hash__(self):
+        value = self._cached_hash
+        if value is None:
+            value = tuple.__hash__(self)
+            object.__setattr__(self, '_cached_hash', value)
+        return value
+
+    def __setattr__(self, name, value):
+        raise AttributeError('Source signature values and cached hash are immutable')
+
 
 class SourcePartialVisibilityEvidence:
     """Frozen original-source context; an additional proof, never a veto.
@@ -90,7 +115,7 @@ class SourcePartialVisibilityEvidence:
         sy = tuple((sum((b * rgb[c] for a, b, rgb in samples)) / dy for c in range(3)))
         residual = tuple((rgb[c] - means[c] - sx[c] * a - sy[c] * b for a, b, rgb in samples for c in range(3)))
         norm = sqrt(sum((v * v for v in residual)))
-        return None if norm <= sqrt(768) else tuple((v / norm for v in residual))
+        return None if norm <= sqrt(768) else _SourceSignature(v / norm for v in residual)
 
     def faces(self, x, y):
         px, py = self.frame.pitch

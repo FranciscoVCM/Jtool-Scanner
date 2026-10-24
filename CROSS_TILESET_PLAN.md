@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): value-compatible cached signature hashes
+
+Only internal source/mean vector representation changes: native tuple hashes are
+cached lazily, preserving values/equality and the original bounded value-LRU.
+No threshold, teacher/model role, geometry, caller, selector or dependency change.
+An identity-only trial was rejected for a 31.12% recorded fresh-model arithmetic
+regression; replacement prototype traces improve 61.12%/43.63% with identical
+original cache-hit counts. These are arithmetic kernels, NOT whole-scan speed.
+
+Fresh191 affected methods/50 full diagnostic wrappers/552 all-parent decisions
+and ENTIRE positive proofs pass. Three current source-stage replays match the
+reviewed ordinary G2/G5/C19 maps/metadata, retaining old8/5/0 additions. Audit81
+preserves71 default findings/ZERO upgrades; no new geometry gains. All6OFF/API
+unbound; controlled whole cost/full controls/combined binding/families/reserve/
+final71+16 gates remain open. Original goal ACTIVE, not complete.
+
 ## Latest (2026-10-24): actual compact caller accuracy; runtime still unqualified
 
 Three fresh private ordinary scans G2/G5/C19 retain complete reviewed maps,

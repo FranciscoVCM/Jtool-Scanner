@@ -1,5 +1,8 @@
 """Procedural full/mini/unknown evidence; no game, archive or reference maps."""
 from copy import deepcopy
+from functools import lru_cache
+import json
+import math
 from math import sqrt
 from random import Random
 from types import SimpleNamespace
@@ -16,8 +19,68 @@ from scripts.source_contours import EdgeEvidence
 from scripts.source_partial_visibility import (
     SourcePartialVisibilityEvidence, _PartialVisibilitySession, intersects,
     _mean_rectangle_signature,
+    _SourceSignature,
 )
 from scripts.source_sampling import SourceFrame
+
+
+class SourceSignatureTests(TestCase):
+    scalar = staticmethod(SourcePartialVisibilityEvidence.exact_dot)
+
+    @staticmethod
+    def fingerprint(value):
+        return type(value).__name__, value.hex() if type(value) is float else str(value)
+
+    def test_float_order_nonfinite_and_threshold_neighbors_are_exact(self):
+        pairs = [((1e16, 1., -1e16, 2.), (1., 1., 1., 1.)),
+                 ((0., -0., 1e-200), (1., 1., 1e-200)),
+                 ((float('nan'),), (1.,)), ((float('inf'), float('-inf')), (1., 1.)),
+                 ((), ()), ((math.nextafter(.9, 0.),), (1.,)),
+                 ((math.nextafter(.9, 1.),), (1.,)), ((1, 2, 3), (4, 5))]
+        for first, second in pairs:
+            self.assertEqual(self.fingerprint(self.scalar(_SourceSignature(first), _SourceSignature(second))),
+                             self.fingerprint(self.scalar(first, second)))
+
+    def test_fresh_equal_model_values_preserve_original_value_LRU_hits(self):
+        cache = lru_cache(maxsize=200000)(self.scalar)
+        for _ in range(256):
+            cache(_SourceSignature((.1, .2, .3)), _SourceSignature((.4, .5, .6)))
+        self.assertEqual(cache.cache_info().hits, 255)
+        self.assertEqual(cache.cache_info().misses, 1)
+
+    def test_native_hash_and_value_equality_match_plain_tuples(self):
+        for values in ((), (0., -0., .9), (1., 2., 3.), (float('inf'), float('-inf'))):
+            value = _SourceSignature(values)
+            self.assertEqual(value, values)
+            self.assertEqual(hash(value), hash(values))
+            self.assertEqual(hash(value), tuple.__hash__(value))
+
+    def test_contents_and_normal_hash_attribute_cannot_be_mutated(self):
+        value = _SourceSignature((.1, .2))
+        before = hash(value)
+        with self.assertRaises(TypeError):
+            value[0] = 1.
+        with self.assertRaises(AttributeError):
+            value._cached_hash = 123
+        self.assertEqual(hash(value), before)
+
+    def test_deepcopy_and_JSON_preserve_values_and_native_hash(self):
+        value = _SourceSignature((.1, .2))
+        copied = deepcopy(value)
+        self.assertEqual(copied, value)
+        self.assertEqual(hash(copied), hash(value))
+        self.assertEqual(json.dumps(value), json.dumps(tuple(value)))
+
+    def test_unhashable_contents_still_raise(self):
+        with self.assertRaises(TypeError):
+            hash(_SourceSignature(([1.],)))
+
+    def test_hash_is_lazy_and_plain_tuple_dictionary_lookup_is_compatible(self):
+        value = _SourceSignature((.1, .2))
+        self.assertIsNone(value._cached_hash)
+        mapping = {value: 7}
+        self.assertIsNotNone(value._cached_hash)
+        self.assertEqual(mapping[(.1, .2)], 7)
 
 
 def partial_scene(kind=3, *, placement=None, scale=1, transform=lambda c:c,

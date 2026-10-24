@@ -13,6 +13,43 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: cached value hashes qualified; identity-only trial rejected
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, `public-exact-dot-checkpoint-v374.json`, audit81
+and publication375 in the ignored goal directory. Full original GOAL_PLAN applies.
+All372/373 producers are terminal; do not repeat these gates/archive/baseline work.
+
+Public source_partial_visibility.py now wraps internally generated normalized
+source/mean vectors in _SourceSignature, caching NATIVEtuplehash lazily. Scalar
+values/order/equality remain; ORIGINAL exact_dot value-LRU200000 is retained.
+Fresh equal-valued fitted means still reuse scores. No models/teacher roles cached,
+new dependencies/caller/selector/default changes. All6consumersOFF/APIunbound.
+
+IMPORTANT367 rejected the unpublished identity-only design:2630 actual fresh-
+model dot calls lost1315 oldvaluehits, cold arithmetic+31.12%. It was NEVER
+committed. Old359/361functional passes refer to that rejected candidate, not the
+published replacement.370 replacement two actual traces cold/warmABBA preserve
+original hit counts/float.hex results; cold compact-61.12%, fullmodels-43.63%
+ARITHMETIC ONLY.376 replays the lossless full-model trace from370 and reproduces
+old1315hits/rejectedidentity0/current1315 without another source scan. Do not
+restore identity-only code or mistake old362/363 publication plans for current.
+
+NEW372 passes191 affected public methods (7new;NOT fullsuite),50 ENTIRE default
+diagnostic wrappers and552 original-parent/allphase/key/eligibility/mask/cohort/
+ENTIRE positive proofs. NEW373 verifies25266 public cached-hash scalar scores
+and THREE complete current source-stage bridges to reviewed346 ordinary wholes,
+ALL235G2/232G5/85C19 compact parent proofs equal. Complete final maps/metadata/
+source-frame/input/export integrity match; earlier whole/ALLdelta QA carries only
+through these full checks+343/344 source QA. NOT new fresh upstream scans/gains.
+
+Audit81 retains all71 default findings/ZERO approvals/default scans/shipped
+geometry gains. C31 known realDOWN416128 bridge348 remains PRIOR, not freshly
+rerun in373. Next profile the current compact caller and target original raw
+glyph-feature duplication only if justified, with exact frame/unknown/source
+qualification and fresh per-query teacher exclusions/models. Do not reuse stale
+365 identity-design costs as current. Whole cost/full41/601/139/16/combinedpublic
+binding/other families/reserve/final71+16/original6gates remainOPEN; goalACTIVE.
+
 ### Latest continuation: actual compact caller and current generic positive bridge
 
 The existing goal has resumed and is ACTIVE; older BLOCKED notes below are

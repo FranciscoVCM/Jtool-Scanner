@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Cached signature hashes preserve value reuse and complete proofs
+
+Internal normalized source/mean signatures now cache their native tuple hash
+lazily. The original 200,000-entry value-keyed score LRU remains unchanged;
+freshly fitted equal vectors still reuse scores. Scalar arithmetic/order, values,
+query exclusions, fresh model fitting and native poses are unchanged. No new
+module/dependency, recognition rule, caller, selector or default activation.
+
+An earlier identity-only candidate was rejected before commit: its recorded
+complete-API fresh-model arithmetic trace lost 1,315 value-cache hits and slowed
+31.12%, despite correct results and a compact-trace gain. The replacement keeps
+the original hit counts on both traces. Prototype cold arithmetic medians improve
+61.12% on the compact trace and 43.63% on the fresh-model trace; these are NOT
+source-helper or ordinary whole-scan latency results. A lossless trace replay
+preserves this counterexample without another scan or archive review.
+
+Fresh validation passes 191 affected public methods, including seven new portable
+representation tests (NOT the full suite), 50 ENTIRE default diagnostic wrappers
+and all 552 original-parent masks/cohorts/ordered keys/nine-phase decisions/
+eligibility/ENTIRE positive proofs. The maintained representation reproduces all
+25,266 recorded compact scalar scores exactly. Three current source-stage replays
+on all 235G2/232G5/85C19 parents reproduce the reviewed ordinary final maps and
+ordered metadata; source/frame/input/export integrity is verified. Prior whole/
+every-delta QA carries only through complete equality plus current witness/query
+QA. These are not three new upstream scans, room approvals or geometry gains.
+
+Audit81 retains all 71 default findings with zero upgrades/default scans/new
+shipped geometry. All six consumers remain OFF; the partial API stays UNBOUND.
+Earlier CN3-31 positive bridge remains prior evidence, not a newly rerun stage.
+Combined binding, full candidate 41/601/139/16, other families/reserve, quiet-AC
+whole cost and final stable 71+16 remain open. The original goal stays ACTIVE.
+
 ## 2026-10-24 — Compact full-scanner accuracy qualified; generic positive bridge retained
 
 Three fresh experimental ordinary scanner runs now qualify the compact caller

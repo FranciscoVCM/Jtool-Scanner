@@ -73,6 +73,12 @@ point order as the original indexed calculation. This reduces arithmetic-kernel
 overhead without caching fitted models or changing the evidence contract; it is
 not a whole-scan speed qualification.
 
+Internal source and freshly fitted mean signatures cache their native tuple hash,
+while retaining tuple value equality and the original bounded value-keyed score
+cache. Scalar values/order, query exclusions and independently fitted models stay
+unchanged. Seven portable tests cover this representation; arithmetic-only trace
+measurements are not app latency or a new detection-accuracy claim.
+
 Neither tracked standard nor opt-in scanning binds this API yet. Isolated
 whole-caller experiments recover real partial spikes, but public tests and proof
 equality do not replace full protections and controlled whole-speed qualification.
@@ -83,9 +89,10 @@ A quiet serial comparison within the same explicit research profile measured
 the exhaustive partial caller at 373.54s versus 90.84s baseline on one dense room
 (two samples per mode, complete output checks). This is a cost HOLD, not a speed
 pass; the second timing source was left unrun under the declared stop rule.
-A private compact positive-proof experiment retains the earlier 13 proposals in
-targeted proposal-layer replays, but has not qualified final ordinary outputs,
-full protections or whole runtime. Neither experiment changes normal app scans.
+A private compact positive-proof experiment retains the earlier 13 additions in
+three reviewed ordinary outputs. Current source-stage replays reproduce their
+complete maps, metadata and export-derived results; full protections and controlled
+whole runtime remain unqualified. Neither experiment changes normal app scans.
 
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
