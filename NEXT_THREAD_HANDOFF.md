@@ -13,6 +13,39 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: valid cost HOLD; compact experiment retains 13 at proposal layer
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, `compact-cost-checkpoint-v328.json` and compact
+audit78 in `.artifacts/general-recognition-20261014/`. Publication329 records live
+Git/app state. All319/321/324/325/327 experiments are terminal; do not repeat them
+to resume. No archive/source-baseline sweep is needed. Public runtime unchanged.
+
+319: four quiet serial AC Golden2 ABBA ordinary samples pass ENTIRE mode-specific
+raw/metadata/four artifact bytes/project owned-source relocation. Baseline 89.860/
+91.816s; exhaustive candidate 372.154/374.927s. Medians 90.838/373.541s (+311.22%):
+COST HOLD. Sparse CN3-19 explicitly UNRUN under the declared stop rule. Never
+call this a two-source speed pass or enable the exhaustive caller.321 profiles
+the post-mean API, not superseded old code; no more blind cache/mean tinkering.
+
+322 freezes PRIVATE compact323: original query-linked three-tile clique proof,
+all 9 physical phases kept POSSIBLE, unchanged visible-source eligibility/RGB/raw/
+directed/body/paint rules, lazy original glyph context and positive-phase proof
+only. No output-generated teachers or native-pose change. 324's 17 procedural scenes
+PASS. 325 proposal replays ALL 235G2/232UNTUNEDG5/85C19 retain 8/5/0 old new-keys,
+0outside/0missing/unchanged originals. These are NOT final source stages or wholes.
+Do not turn observed helper times into whole speed or old QA into compact witness
+QA. New witness source review, actual complete callers/protections/cost are pending.
+
+327 compact first 32 profile/result parity PASS. One-time variant build 16.286s
+must not be extrapolated per parent. Steady visibility/contour work is the next
+causal performance target; preserve exact unknown/crop/physical-point semantics
+and scalar reference checks. No NumPy/project dependency or public API was added.
+Existing 184 public tests/50 full wrappers/552 parents are carried under unchanged
+runtime, NOT fresh reruns. Audit78 keeps all 71 default findings/ZERO upgrades. Source
+helpers 37/all six consumers OFF/app behavior unchanged. C31 confirmed real DOWN
+(416,128), original41/601/139/16, primary/family/reserve/final71+16 and all six goal
+gates remain OPEN. Read GOAL_PLAN in full next logical turn; do not shrink success.
+
 ### Latest continuation: exact fresh means and three output-equivalent optimized callers
 
 Read the top of `.artifacts/general-recognition-20261014/DEFERRED_VETO_ACTIVE_v1.md`,

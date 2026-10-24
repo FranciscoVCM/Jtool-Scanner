@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): exhaustive cost rejects adoption; compact proposal evidence only
+
+The exhaustive partial caller fails a valid quiet-AC dense ABBA cost comparison:
+90.838s baseline versus 373.541s candidate medians, +311.22%. All four ordinary
+mode-specific output/metadata/export checks pass. Sparse CN3-19 timing is UNRUN,
+not a speed pass. This rules out app activation of the exhaustive diagnostic path.
+
+A distinct PRIVATE compact positive-proof method retains the prior 8 Golden2 and
+5 untuned Golden5 proposal keys, with no outside/missing proposals; CN3-19 stays
+at zero. 17 procedural scenes and 32-parent stored-result profile parity pass.
+All original teachers/query exclusions/RGB/body/edge thresholds stay; source tile
+phase uncertainty is deliberately conservative. These proposal-layer replays do
+not qualify final ordinary maps, witnesses, full controls or compact whole cost.
+Both Golden rooms remain one visual family. Audit78 preserves all 71 default findings,
+zero new room approvals/default scans/shipped gains. Public runtime is unchanged,
+all six consumers OFF; original six gates remain open. Next isolate exact visibility
+and contour work instead of weakening recognition rules or accepting the slowdown.
+
 ## Latest (2026-10-24): output-equivalent fresh-mean optimization
 
 Fresh rectangle means now use same-order column sums, never cached fitted roles.

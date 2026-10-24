@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Measured exhaustive cost HOLD; compact proposal experiment retains 13
+
+Four fresh, quiet serial AC Golden2 ordinary scans used the same complete
+research profile in ABBA order. Each mode matches its reviewed ENTIRE raw result,
+ordered metadata, source/JMap/JTool/Blend bytes and project content except the
+verified owned source-image relocation. App activity stayed below the declared
+limit. Baseline samples 89.860/91.816s, candidate 372.154/374.927s: medians 90.838/
+373.541s, +311.22% (4.112x). This is a valid measured cost HOLD, not an accuracy
+failure or runtime pass. CN3-19 timing is explicitly UNRUN under the frozen early-
+stop rule; no two-source speed qualification is claimed. No feature was activated.
+
+The current exhaustive profile confirms distributed work, not just averaging:
+2.68 million rectangle-pair calls and 11,022 mean fits across 32 parents. A PRIVATE
+compact alternative requires three disjoint original tiles matching the query
+and each other, keeps all nine physical phases uncertain, tests original visible
+geometry before lazy pruned glyph fitting, and stores a proved positive sampling
+phase rather than every unused negative diagnostic. RGB, original teachers,
+whole-query exclusion, body/paint/edge thresholds and native keys remain intact.
+
+That private method passes 17 procedural scenes. Proposal-layer replays over all
+235 Golden2/232 untuned Golden5/85 CN3-19 parents retain 8/5/0 prior new-proposal
+keys, with zero missing/outside keys or mutated original detections. These are
+NOT final-source-stage replays, ordinary scans or controlled compact speed tests.
+New compact witness choices still require original-source review. Earlier 13 real
+objects are retained proposals, not 13 new gains, shipped fixes or room approvals.
+
+A compact 32-parent profile passes stored-result parity. Its source-pool build is
+one-time work, not steady per-parent cost; visibility and contour operations are
+the next measured bottlenecks. Audit78 preserves all 71 default findings/history
+and zero upgrades. Public runtime/dependencies remain unchanged; earlier 184/50/552
+qualification is carried, not rerun. All six consumers stay OFF. Full caller/
+witness/control/cost/family/final71+16 requirements remain OPEN; goal ACTIVE.
+
 ## 2026-10-24 — Exact fresh means; optimized callers reproduce reviewed outputs
 
 Replaced indexed per-column generators with same-order column sums for fresh
@@ -11,7 +44,7 @@ rectangle-signature fitting. No model cache, threshold, teacher, native pose,
 selector or scanner binding changed. Two new tests cover bit-exact floating-
 point results (including cancellation/zeros) and independently refitted groups.
 An isolated arithmetic-kernel comparison improved 46–70% across 3/17/64/128
-witnesses; this is NOT source-helper or ordinary whole-scan latency evidence.
+synthetic signature vectors; this is NOT source-helper or ordinary whole-scan latency evidence.
 
 184 affected/app public methods PASS, not the full suite. All 50 complete default
 diagnostic wrappers and 552 original-parent mask/cohort/key/phase/eligibility

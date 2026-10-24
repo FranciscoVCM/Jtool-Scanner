@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-24
 
+Current adoption gate: a valid quiet-AC Golden2 ABBA ordinary comparison takes
+90.838s baseline versus 373.541s exhaustive partial candidate (+311.22%,4.112x).
+All four output/metadata/export checks pass, but COST HOLD blocks activation.
+Sparse CN3-19 timing is explicitly UNRUN, not a two-source speed pass.
+
+A PRIVATE compact positive-proof alternative passes 17 procedural scenes and
+proposal-layer replays over 235G2/232UNTUNEDG5/85C19 parents: 8/5/0 old new-proposals
+retained, none missing/outside, original inputs unchanged. This is not a public
+API, final source-stage/ordinary scan or controlled compact speed result. New
+witness choices need source review. Audit78 preserves all 71 default findings and
+zero upgrades; earlier 184/50/552 evidence is carried under unchanged public code,
+not rerun. All six consumers stay OFF. Actual callers, full protections, runtime,
+other primary/family requirements and final71+16 remain OPEN. See latest progress/
+next-thread sections before older details below. The goal remains ACTIVE.
+
+### Earlier arithmetic checkpoint — 2026-10-24
+
 Fresh source-rectangle signature means use same-order column sums without caching
 fitted models or changing recognition thresholds. 184 affected/app tests (2 new),
 50 ENTIRE default diagnostic wrappers and 552 original-parent phase/mask/cohort/

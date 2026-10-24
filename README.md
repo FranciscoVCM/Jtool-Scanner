@@ -79,6 +79,14 @@ equality do not replace full protections and controlled whole-speed qualificatio
 Do not equate helper timings with app scan latency. Run its procedural tests with
 `python -m unittest tests.test_source_partial_visibility`.
 
+A quiet serial comparison within the same explicit research profile measured
+the exhaustive partial caller at 373.54s versus 90.84s baseline on one dense room
+(two samples per mode, complete output checks). This is a cost HOLD, not a speed
+pass; the second timing source was left unrun under the declared stop rule.
+A private compact positive-proof experiment retains the earlier 13 proposals in
+targeted proposal-layer replays, but has not qualified final ordinary outputs,
+full protections or whole runtime. Neither experiment changes normal app scans.
+
 The deferred-platform recovery consumer currently remains disabled: its first
 controlled whole-scan comparison exceeded the5% speed gate. Exact feature reuse
 has passed affected tests/source-proof checks, but helper timings are not a
