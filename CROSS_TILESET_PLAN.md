@@ -1,5 +1,23 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): exact private batches; no new app activation
+
+Visibility batching matches 17,280 procedural and 527,436 actual full scalar
+records. Raw contour batching retains original RGB/physical source identity and
+strict scalar norms: 34,818 independent comparisons and 131,669 integrated cached
+edges match complete evidence. All 235G2/232G5/85C19 parent proofs preserve the
+same compact 8/5/0 proposals and unknown states, without new/missing proposals.
+No palette, teacher, object threshold or native-pose change is involved.
+
+Selected tile/glyph witness identity carries through exact old-reviewed variants
+on identical inputs; all 49 current mask-query source patches were reviewed as
+real tile frames. No new truth labels or denominators. This private proposal
+qualification is not final caller/whole-delta/protection or whole-speed evidence.
+NumPy remains private, not a new project dependency. Audit79 keeps all 71 default
+findings and zero upgrades; earlier public qualification is carried, not rerun.
+CN3-31 real DOWN(416,128) remains protected. Exhaustive 4.112x HOLD/all six OFF;
+other-family, full caller/control/cost and final 71+16 gates remain open.
+
 ## Latest (2026-10-24): exhaustive cost rejects adoption; compact proposal evidence only
 
 The exhaustive partial caller fails a valid quiet-AC dense ABBA cost comparison:

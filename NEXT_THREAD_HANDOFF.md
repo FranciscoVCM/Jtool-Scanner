@@ -13,6 +13,44 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: exact private batches and selected-source QA sealed
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, `exact-batches-checkpoint-v341.json`, audit79
+and `COMPACT_SELECTED_SOURCE_QA_v344.md` in the existing ignored goal directory.
+Publication342 records live Git/app state after this docs checkpoint. All332/
+334/337/340 producers are terminal; do not repeat them or reopen the archive.
+
+331 visibility:17,280 procedural/527,436 actual ENTIRE scalar records match.
+336 raw RGB contours:34,818 independent ENTIRE evidence comparisons pass across
+seven procedural/three real frames, both scalar norm modes. Keep original
+coordinate order, floor-before-crop, physical identities, unknowns, strict norms
+and full source-position sets. No approximate acceptance/gray scan/new model.
+339 prebatch scheduling retains all235G2/232G5/85C19 ENTIRE parent/positive-proof/
+unknown outputs versus323/334, 8/5/0 proposals/zero outside or missing. Every
+131,669 actual cached raw edge independently scalar-matches. NumPy2.3.5 exists
+bundled but remains PRIVATE; no public dependency/runtime/selector change.
+
+343 bridges selected37+21 rectangle variants/12+12 glyphs to exact previously
+reviewed witnesses on byte-identical source/ENTIRE input; physical boxes match.
+Main viewed all3 boards/49 current query patches in344: genuine tile frames,
+unobserved border stays unknown. No new labels/denominator, gain or approval.
+This source identity/query QA is complete; final ordinary caller/whole-delta/
+full41/601/139/16 and compact quiet-AC dense+sparse cost are NOT complete. Old
+exhaustive319 4.112x HOLD remains; no private helper time is a whole-speed pass.
+
+Audit79 preserves all71 default findings/zero fresh default scans or upgrades.
+Earlier184/50/552 public qualification carries unchanged, not fresh reruns.
+All6consumersOFF/APIunbound/app unchanged. CN3-31 DOWN(416,128) human-reconfirmed
+ordinary32 again; protect generically, never count again as a new recovery.
+Next bounded work: qualify actual compact caller/retained metadata and generic
+CN3-31 positive preservation before adoption, then full protections/quiet cost.
+Keep original family/reserve and final71+16 requirements; do not shrink them.
+
+The saved goal was last observed BLOCKED, not complete. Its resume status is
+user-controlled; do not create a replacement goal or falsely claim it is active.
+The latest source clarification is recorded. Check the existing goal's status
+and resume control before promising automatic continuation.
+
 ### Latest continuation: valid cost HOLD; compact experiment retains 13 at proposal layer
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, `compact-cost-checkpoint-v328.json` and compact

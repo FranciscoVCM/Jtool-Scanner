@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Exact private visibility/contour batches; selected source QA complete
+
+Private array experiments preserve complete source evidence, not only acceptance
+bits. Visibility matches 17,280 procedural and 527,436 actual candidate records,
+including every hidden/visible/uncertain index, physical-pixel count and unknown
+flag. Contours match 34,818 independent full evidence comparisons across seven
+procedural and three real frames/both norm modes. Original RGB, fractional/crop
+mapping, strict Python scalar norm comparisons and independent source positions
+remain intact; no grayscale pass or relaxed threshold was introduced.
+
+Integrated proposal replays cover all 235 Golden2/232 Golden5/85 CN3-19 parents.
+Every parent, accepted proof and unknown status matches the prior compact method;
+8/5/0 proposals remain, zero outside/missing keys or original-input mutation.
+All 131,669 actual cached contours independently match the original scalar field.
+These are NOT final ordinary scans or quiet whole-latency measurements. NumPy is
+used only in ignored experiments; no public dependency or runtime change.
+
+Selected witnesses are exact subsets of earlier source-reviewed evidence on
+byte-identical inputs: 37+21 tile sampling variants and 12+12 directional glyphs.
+Physical boxes and complete original inputs match, not just counts. Main also
+reviewed all 49 current mask-query source patches: genuine tile frames, no new
+truth denominator. This closes selected-witness identity/query QA, not final
+caller/whole-delta or room qualification. CN3-31 DOWN(416,128) is again confirmed
+ordinary32; it remains a known positive protection, never a new recovery.
+
+Audit79 preserves all 71 default findings with zero upgrades/default scans or
+shipped gains. Earlier 184 public methods/50 wrappers/552-parent qualification
+is carried under unchanged runtime, NOT rerun. All workers are terminal. The old
+exhaustive 4.112x cost HOLD remains; compact whole cost, full caller/protections,
+generic CN3-31 positive integration, other families and final 71+16 remain open.
+All six consumers stay OFF. Original milestone requirements are unchanged.
+
 ## 2026-10-24 — Measured exhaustive cost HOLD; compact proposal experiment retains 13
 
 Four fresh, quiet serial AC Golden2 ordinary scans used the same complete
