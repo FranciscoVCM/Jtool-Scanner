@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-24): actual compact caller accuracy; runtime still unqualified
+
+Three fresh private ordinary scans G2/G5/C19 retain complete reviewed maps,
+ordered metadata and exports on all235/232/85 parents. Prior8/5/0 additions remain;
+whole/every-delta QA carries by full equality plus current witness/query QA.
+Two separate current source-stage bridges retain generic closed-body C31's known
+real DOWN416,128 and unchanged C19 negatives. C31's extended frame correctly
+makes partial evidence abstain as unknown. Not five fresh wholes/new app gains.
+
+The current32-parent profile points to tile raw-similarity work and newly pruned
+glyph-library construction; one-time source-pool cost is distinct. Optimize pure
+source features/bookkeeping, not fitted roles or recognition thresholds. Compact
+quiet-AC whole cost and full protections/public combined binding remain open;
+old exhaustive4.112x HOLD is not waived. Audit80 keeps71 default findings/ZERO
+upgrades. No public runtime/dependency change/all6OFF; original goal ACTIVE.
+
 ## Latest (2026-10-24): exact private batches; no new app activation
 
 Visibility batching matches 17,280 procedural and 527,436 actual full scalar

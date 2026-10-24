@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-24 — Compact full-scanner accuracy qualified; generic positive bridge retained
+
+Three fresh experimental ordinary scanner runs now qualify the compact caller
+on Golden2/Golden5/CN3-19, evaluating all 235/232/85 original parents. ENTIRE
+final ScanResults, ordered Detection metadata, warnings, input/crop/grid/options
+and references equal the reviewed results. SourcePNG/JMap/JTool/Blend bytes match;
+the project changes ONLY its owned pointer to the new byte-identical source PNG.
+The prior 8/5/0 additions remain; no new recovery or room approval is counted.
+Prior whole/every-delta QA carries through full equality and current selected
+witness/query source QA, not a fresh visual-review claim.
+
+Two separate current source-stage bridges reproduce the earlier reviewed
+closed-body CN3-31/CN3-19 wholes. These are NOT two more fresh ordinary scans.
+The generic closed-body path retains CN3-31's confirmed UP400,128/DOWN416,128
+pair. Its extended capture makes compact partial evidence abstain as unknown;
+no crop coercion, object lookup or room exception. CN3-19's 85 compact proofs
+and complete output stay unchanged; the confirmed false fragments remain absent.
+This known positive is not a new B235 gain or a combined public caller binding.
+
+A current exact-batched 32-parent profile preserves ENTIRE stored proofs. It
+identifies tile-witness comparisons and freshly pruned glyph-library construction
+as remaining costs; source-pool initialization remains one-time work. Observed
+helper/concurrent/individual-whole times are NOT controlled runtime qualification.
+Next test exact source-only similarity bookkeeping, retaining independent query
+exclusions and newly fitted roles/models; do not relax recognition or repeat the
+known failed exhaustive path. Compact quiet-AC dense/sparse cost remains open.
+
+Audit80 preserves all 71 default findings, zero upgrades/default scans/shipped
+gains. Public code/dependencies/defaults are unchanged, all six consumers OFF;
+184/50/552 public qualification is carried, not rerun. Full candidate protections,
+controls, combined public binding, other families and final 71+16 remain open.
+The existing goal is resumed and ACTIVE; none of its six gates is waived.
+
 ## 2026-10-24 — Exact private visibility/contour batches; selected source QA complete
 
 Private array experiments preserve complete source evidence, not only acceptance

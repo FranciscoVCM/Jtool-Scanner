@@ -13,6 +13,41 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: actual compact caller and current generic positive bridge
+
+The existing goal has resumed and is ACTIVE; older BLOCKED notes below are
+historical. Read TOP DEFERRED_VETO_ACTIVE_v1.md, `compact-actual-checkpoint-v351.json`,
+audit80 and publication352 in the ignored goal directory. GOAL_PLAN still applies
+in full. All346/348/350 workers are terminal; no baseline/archive resweep needed.
+
+346: THREE fresh actual ordinary compact wholes G2/G5/C19 ALL235/232/85 parents.
+ENTIRE raw final maps/ordered metadata/warnings/options/frame/reference equal
+reviewed264/312; source/JMap/JTool/Blend bytes equal; project ONLY owned source
+path relocated to byte-identical PNG. Retains prior8/5/0 additions; zero new gain.
+Whole/ALLdelta QA carries through complete equality plus343/344 current witness
+identity/query QA. No new visual approval or source labels/denominators.
+
+348: TWO source-stage bridges, NOT fresh upstream scans, reproduce reviewed194
+C31/C19 actual wholes. Generic closed-body path preserves known UP400128 and
+real DOWN416128; generic direct-frame contract makes C31 extended frame partial
+channel abstain asUNKNOWN. C19 all85 compact parent proofs/ENTIRE map unchanged,
+false fragments absent. No name/coordinate branch in evidence; keys evaluate only.
+This does NOT qualify a combined public caller across all other source rooms.
+
+350 current exact-batched32-parent profile/proof parity PASS: tile comparisons
+6.197s, fresh glyph-library contexts4.335s, source-variant initialization4.039s
+ONE-TIME (instrumented/concurrent, NOT whole speed). Next bounded causal target:
+exact original query/tile similarity bookkeeping with source-local identities;
+compare ENTIRE proofs before any new whole. Keep all query/fan exclusions before
+teacher/model selection, independent original teachers, exact thresholds/native
+poses. Do not blindly repeat old scalar caches or exhaustive319 failed4.112x path.
+
+Audit80 retains all71 default findings/ZERO upgrades; old184/50/552 public tests
+carried under unchanged code, not rerun. Compact controlled quietAC dense+sparse
+whole cost, full41/601/139/16, combined public binding, other-family/reserve and
+finalstable71+16 remainOPEN. All6consumersOFF/APIunbound/privateNumPy only. No new
+images/source clarification needed. Preserve original six goal gates; goalACTIVE.
+
 ### Latest continuation: exact private batches and selected-source QA sealed
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, `exact-batches-checkpoint-v341.json`, audit79
