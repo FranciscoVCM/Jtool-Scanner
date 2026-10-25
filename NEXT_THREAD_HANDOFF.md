@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-24. Continue in the existing repository at
+Updated 2026-10-25. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,7 +13,60 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: actual phase-only caller and whole-cost pass; controls next
+### Latest continuation: qualified source-mode phase activation; broader goal OPEN
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md and audit84 in the ignored goal directory.
+Completed receipts: phase-only-protection44-v451, phase-only-original41-numerical-
+v451, phase-only-activation-qualification-v452, phase-default-activation-validation-
+v458, phase-default-unpatched-wholes-v455, phase-activated-source-QA-v460 and
+phase-mixed-integration-v464 (all .json). Original GOAL_PLAN applies unchanged.
+
+458passes159methods;464passes73additional caller methods,232affected NOTfullsuite.
+Preserve failed456/462 and originaltest snapshots. Test doubles record requested
+ORIGINAL filledfield; individual tests of disabled consumers isolatephaseOFF.
+All old assertions in the four later-updated modules are AST-preserved. Strict
+production missing-field guard and real default combined coverage stay intact.
+
+Public runtime delta from6aa9503 is ONLY phase flag False->True plus comments/
+module documentation. Other5 consumers stayOFF; repeat/capture stayON; partial
+API staysunbound. Opt-in Experimental source geometry uses the qualified phase
+consumer; standard mode is untouched. Do not activate the other consumers by
+association. Evidence/consumer full-diagnostic defaults stayFalse for shortcuts;
+actual source-mode caller explicitly requests exact nominal-old retention.
+
+44bindings=41fresh(40sealedbeforeobserverfailure444+1newin451)+3strict437reuses.
+All original41/601/139/16 numerical gates PASS. Preserve FAILED444 observer lock
+receipt and all original result/cache identities; no completed scan was rerun.
+FTFA926/928/noextra/shift/wrong; CURRENT Flames254/42extra/19miss/20shift/2wrong,
+not richer private255. 455fresh UNPATCHED G2/H3/F189 match complete qualified
+raw maps/metadata/inputs/exports/projects; no selector/helper identity patches.
+460fresh G2 whole/delta QA confirms ONLY knownDOWN64,56->48. CeilingUP64,16,
+false solids/water/vines/compound errors remain; zero room approvals. H3/F189
+prior QA carries by ENTIRE equality, not new visual reviews. QuietAC440 whole
+OFF/ON ABBA +1.80%G2/-1.08%H3 satisfies5% gate, not all71 speed or old/new code.
+
+Audit84 retains71 findings:28 canonical current-profile controls,43 older rows
+NOT revalidated under new default.16 exact controls are separate. Golden7 known
+mask49504matched/5376miss/0excess in BOTH currentbaseline/candidate; old576excess
+is historical, not a phase gain. Most importantly CN3-31 user-confirmed real
+DOWN416,128 is MISSING in both CURRENT default and B235; UP400,128 exists.
+Older “protected pair” wording is superseded. The existing generic closed-body
+research path recovers it but has no public binding. Do not re-ask or implement
+a coordinate answer; evaluate the existing path with actual source inputs.
+
+Next bounded batch: source-evidence/caller compatibility for existing closed-body
+identity, preserving original teachers/unknown-not-empty/protected negatives,
+then cost/source QA before adoption. Inspect prior replay_closed_compact_frames_
+v348 and generic SourceClosedInteriorGlyphEvidence instead of duplicating them.
+All original family/reserve/8positive+4conflict/final71+16 gates remainOPEN and
+goal ACTIVE. Do not treat this deployment as finishing the71 or the goal.
+
+See latest ignored publication receipt/active note for exact commit, owned app
+PID, live origin equality, clean Git and root/health200 loaded==disk verification.
+Reload only the verified owned CLI app, never unrelated Python processes. Private
+indexes/source images/JMaps/reviews are preserved/ignored and must not be staged.
+
+### Prior continuation: actual phase-only caller and whole-cost pass; controls next
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, public-phase-fast-validation-v435.json,
 phase-fast-actual-callers-v437.json, phase-fast-source-QA-v438.json,

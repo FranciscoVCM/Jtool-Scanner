@@ -187,7 +187,9 @@ class RejectedPrimaryScannerBindingTests(TestCase):
 
     def test_default_off_does_not_build_pending_context_or_invoke_recovery(self):
         self.assertIs(scanner._SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED,False)
-        with patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as producer, \
+        # Isolate the disabled primary consumer from the enabled phase caller.
+        with patch.object(scanner,'_SOURCE_FULL_SPIKE_PHASE_ENABLED',False), \
+             patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as producer, \
              patch('scripts.source_rejected_primaries.recover_rejected_primaries',side_effect=AssertionError('Disabled')):
             out=scanner._apply_source_geometry(self.result(),self.image,rejected_primary_spikes=(self.candidate,))
         self.assertNotIn('record_filled_source',producer.call_args.kwargs)
@@ -212,6 +214,7 @@ class RejectedPrimaryScannerBindingTests(TestCase):
                 ((25,19),SourceFrame(self.image,self.room,extent=Box(-8,0,816,608),canonical=self.image),(self.candidate,))):
             result=self.result();result.source_grid=grid
             with self.subTest(grid=grid,pending=pending), \
+                 patch.object(scanner,'_SOURCE_FULL_SPIKE_PHASE_ENABLED',False), \
                  patch.object(scanner,'_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED',True), \
                  patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as producer, \
                  patch('scripts.source_rejected_primaries.recover_rejected_primaries',side_effect=AssertionError('Unqualified')):

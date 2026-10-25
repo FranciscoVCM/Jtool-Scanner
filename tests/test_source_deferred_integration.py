@@ -11,10 +11,19 @@ from scripts.source_registered_rectangles import original_rgb_models
 from scripts.source_sampling import SourceFrame
 from tests.test_source_rgb_distribution import scene, PARENTS, GLYPHS
 from tests.test_source_registered_rectangles import material
+from tests.source_geometry_stubs import record_requested_original_filled_source
 
 
 def det(t, x, y):
     return scanner.Detection('original', t, x, y, .67, Box(x, y, 32, 32))
+
+
+def recorded_proposals(response):
+    """Keep the stub's original field separate from its returned proposals."""
+    def produce(image, room, original, **options):
+        record_requested_original_filled_source(original, options)
+        return response
+    return produce
 
 
 class DeferredSourceIntegrationTests(unittest.TestCase):
@@ -33,7 +42,9 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         self.assertIs(scanner._SOURCE_DEFERRED_PLATFORMS_ENABLED, False)
         result = self.result()
         before = deepcopy(result)
-        with patch('scripts.source_geometry_pipeline.source_proposals',
+        # Isolate the disabled deferred consumer, not the enabled phase caller.
+        with patch.object(scanner, '_SOURCE_FULL_SPIKE_PHASE_ENABLED', False), \
+             patch('scripts.source_geometry_pipeline.source_proposals',
                    return_value=(set(), set(), {})) as proposals, \
              patch('scripts.source_registered_rectangles.original_rgb_models',
                    side_effect=AssertionError('Disabled path must not discover models')):
@@ -46,8 +57,9 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         result = self.result()
         original = tuple(result.detections)
         proposed = (2, 416, 320)
+        response = ({proposed}, set(), {'source_material':material()})
         with patch('scripts.source_geometry_pipeline.source_proposals',
-                   return_value=({proposed}, set(), {'source_material':material()})) as proposals, \
+                   return_value=response, side_effect=recorded_proposals(response)) as proposals, \
              patch('scripts.source_registered_rectangles.original_rgb_models',
                    wraps=original_rgb_models) as factory:
             out = scanner._apply_source_geometry(result, self.image, platform_vetoes=self.vetoes)
@@ -55,6 +67,9 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         self.assertEqual(factory.call_args.args[:3], (self.image, self.frame.room, original))
         self.assertIs(factory.call_args.kwargs['source_context'], proposals.call_args.kwargs['source_context'])
         self.assertIs(factory.call_args.kwargs['source_frame'], proposals.call_args.kwargs['source_frame'])
+        context=proposals.call_args.kwargs['source_context']
+        self.assertIs(context.filled_source(original,proposals.call_args.kwargs['source_frame']).frame,
+            factory.call_args.kwargs['source_frame'])
         self.assertIs(factory.call_args.args[3], proposals.return_value[2]['source_material'])
         self.assertTrue(any(d is self.block for d in out.detections))
         self.assertTrue(all(any(d is old for d in out.detections) for old in original))
@@ -67,8 +82,9 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         result = self.result()
         original = tuple(result.detections)
         retired = (1, *PARENTS[0])
+        response = (set(), {retired}, {'source_material':material()})
         with patch('scripts.source_geometry_pipeline.source_proposals',
-                   return_value=(set(), {retired}, {'source_material':material()})), \
+                   side_effect=recorded_proposals(response)), \
              patch('scripts.source_registered_rectangles.original_rgb_models',
                    wraps=original_rgb_models) as factory:
             out = scanner._apply_source_geometry(result, self.image, platform_vetoes=self.vetoes)
@@ -80,7 +96,7 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         result = self.result([self.platform])
         before = tuple(result.detections)
         with patch('scripts.source_geometry_pipeline.source_proposals',
-                   return_value=(set(), set(), {'source_material':material()})):
+                   side_effect=recorded_proposals((set(), set(), {'source_material':material()}))):
             out = scanner._apply_source_geometry(result, self.image, platform_vetoes=self.vetoes)
         self.assertEqual(tuple(out.detections), before)
         self.assertFalse(any(d is self.block for d in out.detections))
@@ -89,6 +105,7 @@ class DeferredSourceIntegrationTests(unittest.TestCase):
         mixed = original_platform_vetoes([self.block, self.platform, det(12, 352, 160)])
         for vetoes in ((), mixed):
             with self.subTest(vetoes=vetoes), \
+                 patch.object(scanner, '_SOURCE_FULL_SPIKE_PHASE_ENABLED', False), \
                  patch('scripts.source_geometry_pipeline.source_proposals',
                        return_value=(set(), set(), {})) as proposals, \
                  patch('scripts.source_registered_rectangles.original_rgb_models',

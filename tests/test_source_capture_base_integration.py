@@ -12,6 +12,7 @@ from scripts import source_filled_pipeline as filled
 from scripts.source_geometry_pipeline import source_proposals
 from tests.test_source_capture_base import TARGETS, edge_scene
 from tests import test_source_geometry_pipeline as pipeline_fixtures
+from tests.source_geometry_stubs import record_requested_original_filled_source
 
 
 class CaptureBaseRecoveryIntegrationTests(TestCase):
@@ -114,14 +115,21 @@ class CaptureBasePipelineRoutingTests(TestCase):
     def test_actual_final_call_routes_enabled_and_explicit_bypass(self):
         image = RGBImage(800, 608, bytes(800*608*3))
         for enabled in (True, False):
+            fields=[]
+            def stage(image,room,detections,**kwargs):
+                fields.append(record_requested_original_filled_source(detections,kwargs))
+                return set(),set(),{}
             with self.subTest(enabled=enabled), \
                  patch.object(scanner, '_CAPTURE_BASE_CONTEXT_ENABLED', enabled), \
                  patch('scripts.source_geometry_pipeline.source_proposals',
-                       return_value=(set(), set(), {})) as proposal:
+                       side_effect=stage) as proposal:
                 result = scanner.ScanResult(800, 608, Box(0, 0, 800, 608), [],
                                             source_grid=(25, 19))
                 scanner._apply_source_geometry(result, image)
             proposal.assert_called_once()
+            self.assertEqual(len(fields),1)
+            self.assertIs(proposal.call_args.kwargs['source_context'].filled_source(
+                (),proposal.call_args.kwargs['source_frame']),fields[0])
             if enabled:
                 self.assertIs(proposal.call_args.kwargs['include_filled_capture_base'], True)
             else:

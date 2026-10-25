@@ -15,6 +15,7 @@ from jtool_scanner.geometry import Box
 from jtool_scanner.image import RGBImage
 from jtool_scanner.runtime_sources import source_geometry_files
 from scripts.source_sampling import SourceFrame
+from tests.source_geometry_stubs import record_requested_original_filled_source
 
 
 class SourceGeometryIntegrationTests(TestCase):
@@ -33,7 +34,11 @@ class SourceGeometryIntegrationTests(TestCase):
         result = self.result()
         initial = deepcopy(result)
         proposed = {(1, 160, 160), (1, 176, 160), (2, 176, 160)}
-        with patch('scripts.source_geometry_pipeline.source_proposals', return_value=(proposed, {(1, 160, 160)}, {})) as proposal:
+        fields=[]
+        def stage(image,room,detections,**kwargs):
+            fields.append(record_requested_original_filled_source(detections,kwargs))
+            return proposed,{(1,160,160)},{}
+        with patch('scripts.source_geometry_pipeline.source_proposals', side_effect=stage) as proposal:
             out = scanner._apply_source_geometry(result, self.image)
         self.assertEqual(proposal.call_count, 1)
         self.assertEqual(proposal.call_args.args, (self.image, self.room, initial.detections))
@@ -41,6 +46,9 @@ class SourceGeometryIntegrationTests(TestCase):
         self.assertIs(proposal.call_args.kwargs['include_growth_confidence'], True)
         self.assertIs(proposal.call_args.kwargs['include_filled_glyphs'], True)
         self.assertIs(proposal.call_args.kwargs['include_filled_joint_phase'], True)
+        self.assertEqual(len(fields),1)
+        self.assertIs(proposal.call_args.kwargs['source_context'].filled_source(
+            tuple(initial.detections),proposal.call_args.kwargs['source_frame']),fields[0])
         self.assertIs(out, result)
         self.assertNotIn(self.old, out.detections)
         self.assertTrue(any(d is self.mini for d in out.detections))

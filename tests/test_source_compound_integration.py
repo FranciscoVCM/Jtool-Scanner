@@ -149,7 +149,9 @@ class CompoundScannerBindingTests(TestCase):
 
     def test_consumer_default_off_does_not_request_context_or_run_checker(self):
         self.assertIs(scanner._SOURCE_COMPOUND_CONFLICTS_ENABLED,False)
-        with patch('scripts.source_geometry_pipeline.source_proposals',side_effect=self.proposals) as proposals, \
+        # With phase disabled, the disabled compound consumer adds no context.
+        with patch.object(scanner,'_SOURCE_FULL_SPIKE_PHASE_ENABLED',False), \
+             patch('scripts.source_geometry_pipeline.source_proposals',side_effect=self.proposals) as proposals, \
              patch('scripts.source_compound_conflicts.source_compound_conflicts',
                    side_effect=AssertionError('Disabled checker')):
             scanner._apply_source_geometry(self.result(),self.image)

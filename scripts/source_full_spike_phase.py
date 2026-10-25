@@ -3,8 +3,8 @@
 Reports a unique bounded same-instance alternative only with original material,
 complete directed geometry and independent positive exclusive FG/BG evidence.
 No references, emitted-object teachers or caller mutation. An evidence proposal
-is not a scanner correction; the consumer/caller require separate qualification
-and default OFF. Neither API is proof of unseen-tileset generalization.
+is not a correction by itself; the separately qualified scanner caller is used
+only in opt-in source-aware mode. Neither API proves unseen-tileset generalization.
 """
 from copy import deepcopy
 from math import dist, inf, isfinite

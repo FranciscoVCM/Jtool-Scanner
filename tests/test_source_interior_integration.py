@@ -10,6 +10,7 @@ from scripts.source_geometry_pipeline import source_proposals
 from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence
 from scripts.source_sampling import SourceFrame
 from tests.test_source_interior_glyphs import scene, cropped_scene
+from tests.source_geometry_stubs import record_requested_original_filled_source
 
 
 class InteriorRecoveryIntegrationTests(TestCase):
@@ -121,13 +122,19 @@ class InteriorPipelineRoutingTests(TestCase):
 
     def test_actual_scanner_default_off_and_direct_opt_in_only(self):
         self.assertIs(scanner._SOURCE_INTERIOR_GLYPHS_ENABLED,False)
+        def proposals_with_original_field(image,room,original,**options):
+            record_requested_original_filled_source(original,options)
+            return set(),set(),{}
         for enabled in (False,True):
             with self.subTest(enabled=enabled),patch.object(scanner,'_SOURCE_INTERIOR_GLYPHS_ENABLED',enabled), \
-                 patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as proposals:
+                 patch('scripts.source_geometry_pipeline.source_proposals',side_effect=proposals_with_original_field) as proposals:
                 result=scanner.ScanResult(800,608,self.room,[],source_grid=(25,19))
                 scanner._apply_source_geometry(result,self.image)
             if enabled:self.assertIs(proposals.call_args.kwargs['include_filled_interior'],True)
             else:self.assertNotIn('include_filled_interior',proposals.call_args.kwargs)
+            options=proposals.call_args.kwargs
+            self.assertIs(options['source_context'].filled_source((),options['source_frame']).frame,
+                options['source_frame'])
 
     def test_compact_bypasses_but_extended_world_routes_only_explicit_opt_in(self):
         for compact in (False,True):

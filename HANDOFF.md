@@ -4,7 +4,30 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-24
+## Current checkpoint — 2026-10-25
+
+The full-spike phase selector is now enabled ONLY for opt-in Experimental source
+geometry (app and CLI `--source-geometry`). Standard mode remains unchanged;
+the other five private consumers remain OFF and partial evidence stays unbound.
+44 fixed image/control bindings qualify all original41 groups/601 miniblocks/
+139 terrain footprints/16 exact controls. FTFA remains926/928 exact without
+extras/shifts/wrong types; current Flames254 exact/42extra/19miss/20shift/2wrong
+is unchanged, not the richer private255 baseline. Three fresh unpatched actual
+production scans G2/H3/F189 preserve full qualified outputs/metadata/exports.
+232 affected tests pass (159+73), not the complete suite. Old mock-contract
+failures are preserved and fixed in test setup; production guards stay strict.
+
+Fresh Golden2 whole/delta QA confirms only the known DOWN64,56->64,48 correction.
+Missing ceilingUP64,16, false solids and other room errors remain. Quiet-AC
+two-source whole overhead qualification passes +1.80%/-1.08%; no all-screen speed
+or unseen-tileset guarantee. Audit84 retains all71 conservative findings and
+zero room approvals. CN3-31's user-confirmed DOWN416,128 is still missing in both
+current default and B235; only unbound closed-body research currently recovers
+it. The older “protected pair” wording was misleading, not a new default loss.
+Other families, reserve/gain minima, final stable71+16 and original goal remain
+OPEN/ACTIVE. Follow the latest next-thread checkpoint rather than older logs.
+
+### Prior checkpoint — phase backend qualification before activation
 
 The phase backend now has an optional exact nominal-original retention shortcut
 and exact background-radius predicate, with legacy-oracle fallback. Full

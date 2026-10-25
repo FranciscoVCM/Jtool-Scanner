@@ -92,8 +92,8 @@ _SOURCE_INTERIOR_GLYPHS_ENABLED = False
 _SOURCE_FRAME_ARBITRATION_ENABLED = False
 # Exact legacy rejections remain outside source teachers until final recovery.
 _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = False
-# Same-instance phase correction has separate source QA, control and cost gates.
-_SOURCE_FULL_SPIKE_PHASE_ENABLED = False
+# Qualified same-instance phase refit in source-aware mode; standard scans bypass.
+_SOURCE_FULL_SPIKE_PHASE_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,

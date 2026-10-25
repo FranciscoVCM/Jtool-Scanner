@@ -15,6 +15,7 @@ from scripts.source_glyph_prototypes import _contains
 from scripts.source_interior_glyphs import SourceInteriorGlyphEvidence, INTERIOR_POINTS, _oriented
 from scripts.source_sampling import SourceFrame
 from tests.test_source_interior_glyphs import scene
+from tests.source_geometry_stubs import record_requested_original_filled_source
 
 
 def textured_scene(*, rotation=0, scale=1, transform=lambda c:c,
@@ -246,10 +247,17 @@ class SourceDirectionalTextureTests(TestCase):
     def test_scanner_opt_in_always_requests_the_qualified_positive_channel(self):
         from unittest.mock import patch
         values=textured_scene();image,room,_,_,_=values
+        fields=[]
+        def stage(image,room,detections,**kwargs):
+            fields.append(record_requested_original_filled_source(detections,kwargs))
+            return set(),set(),{}
         with patch.object(scanner,'_SOURCE_INTERIOR_GLYPHS_ENABLED',True), \
-                patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as proposal:
+                patch('scripts.source_geometry_pipeline.source_proposals',side_effect=stage) as proposal:
             scanner._apply_source_geometry(scanner.ScanResult(800,608,room,[],source_grid=(25,19)),image)
         self.assertIs(proposal.call_args.kwargs['include_filled_interior_texture'],True)
+        self.assertEqual(len(fields),1)
+        self.assertIs(proposal.call_args.kwargs['source_context'].filled_source(
+            (),proposal.call_args.kwargs['source_frame']),fields[0])
 
     def test_pipeline_forwards_texture_only_on_explicit_interior_request(self):
         from unittest.mock import patch

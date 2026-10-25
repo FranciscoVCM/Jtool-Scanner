@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): activate only the qualified source-mode phase consumer
+
+The phase selector is now ON only within opt-in Experimental source geometry;
+standard scans remain unchanged. Other five selectors remain OFF and the
+partial API is unbound. This binds existing generic original-source geometry,
+RGB/body and exclusive-pixel proofs, not image names, coordinates or JMap answers.
+
+44 fixed bindings / original41 groups / 601 minis / 139 footprints / 16 exact
+controls PASS, preserving current FTFA926/928 and Flames254 exact with unchanged
+error counts. Three fresh unpatched production scans G2/H3/F189 match entire
+qualified maps/metadata/exports/projects. Fresh G2 whole/every-delta review
+confirms ONLY the known DOWN64,56->64,48 correction; no new research recovery,
+reserve success or room approval. Prior two-source quiet-AC whole overhead
+qualification passes +1.80%/-1.08%, not universal runtime or recognition proof.
+
+Audit84 keeps all71 conservative findings. CN3-31 real DOWN416,128 is still
+missing in current default AND B235, despite unbound closed-body research
+success. Never call it a protected current positive or count it as a new gain.
+Next evaluate that existing generic closed-body path on actual incoming source
+evidence, not another coordinate-specific repair or held microcache. Preserve
+the same controls/unknown-not-empty rule; independently qualify cost and actual
+caller compatibility before any adoption. Full other-family/reserve/8positive+
+4conflict/final71+16 and original six goal gates remain OPEN; goal ACTIVE.
+
 ## Latest (2026-10-24): phase-only actual caller and whole-cost gate pass
 
 Exact-work phase optimization is implemented with an explicit optional nominal

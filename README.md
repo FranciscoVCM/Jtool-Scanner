@@ -20,13 +20,16 @@ Current records require all eight selectors and schema version2; legacy records
 need an explicitly proved compatibility bridge, not automatic default filling.
 Profile validation does not replace input, full-output, accuracy or speed checks.
 
-The bounded full-spike phase-correction consumer remains separately disabled.
+The bounded full-spike phase-correction consumer is enabled only in opt-in
+Experimental source geometry mode; standard scans do not enter it.
 An independent source-evidence ambiguity guard prevents three unsupported F189
 shifts in actual caller pilots while preserving the confirmed Golden2 correction.
 It may withhold a unique8/16px local move, but never exports a fitted camera
-frame or learns corrected objects as teachers. Complete control/protection and
-quiet whole-speed qualification still precede adoption. This is not a claim of
-perfect rooms, universal tileset recognition or permission to delete overlaps.
+frame or learns corrected objects as teachers. The single-feature profile passed
+the original 41 protection groups, 601 miniblocks, 139 terrain footprints and all
+16 exact controls, with controlled whole-scan overhead within the 5% gate on two
+rooms. Other experimental consumers remain separately gated. This is not a claim
+of perfect rooms, universal tileset recognition or permission to delete overlaps.
 
 Interior artwork matching retains RGB but refuses to normalize residuals no
 larger than the conservative8-bit rounding bound into texture identity. A
@@ -911,13 +914,15 @@ Focused tests:
 python -m unittest tests.test_source_filled_short_circuit tests.test_source_filled_pipeline tests.test_source_geometry_pipeline tests.test_source_geometry_integration
 ```
 
-### Source-exclusive full-spike phase evidence (unbound research API)
+### Source-exclusive full-spike phase evidence and source-mode caller
 
 `scripts/source_full_spike_phase.py` exposes `SourceFullSpikePhaseEvidence`.
 Given the already-built original `FilledGlyphEvidence`, immutable original
 detections and a qualified direct25x19 source frame, `probe(old_key, current)`
 reports a unique same-direction alternative among axial8/16px displacements.
-It does **not** emit, retire or modify detections, and is not bound to app scans.
+The evidence API does **not** emit, retire or modify detections. A separately
+qualified caller applies only proved same-instance corrections in Experimental
+source geometry mode, including app scans and CLI `--source-geometry`.
 
 The conjunction requires complete directed RGB geometry, independent original
 sprite paint/body, new-exclusive foreground, preservation of old positive body
@@ -931,9 +936,17 @@ Portable tests cover directions, hue/polarity/brightness, isoluminant RGB,
 fractional/anisotropic captures, touching shapes and real partial occlusion.
 Complete real-source evaluation proposes one confirmed Golden2 phase correction
 and zero on the historically exposed Golden5 reserve. That is not a successful
-reserve, shipped correction, whole-room approval or arbitrary-sprite guarantee.
-Caller integration, protected outputs/source QA and additional phase-expert
-whole-cost qualification are still required before adoption.
+reserve, whole-room approval or arbitrary-sprite guarantee. The Golden2 move is
+the only correction in the qualified 44-case protection/control set; other known
+missing objects, false solids, compound directions and marker errors remain open.
+Whole/every-delta source QA and quiet-AC OFF/ON whole comparisons qualify this
+specific caller, not the other experimental consumers or all future screens.
+
+`probe` and `refit_source_full_spike_phases` retain full diagnostic defaults.
+The source-mode caller explicitly uses `short_circuit=True` only to retain an
+already-proved original at the nominal sampling phase without computing eight
+unused diagnostic phases. Failed nominal checks and every actual repair retain
+the complete original geometry, paint, exclusive-pixel and registration proofs.
 
 ```powershell
 python -m unittest tests.test_source_full_spike_phase tests.test_source_physical_patch

@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Qualified phase correction enabled in source-aware mode
+
+The existing full-spike phase consumer is now enabled ONLY inside opt-in
+Experimental source geometry mode (app or CLI `--source-geometry`). Standard
+scanning is unchanged; the other five experimental consumers remain disabled
+and the partial evidence API remains unbound. No recognition threshold, model,
+teacher, reference-answer lookup or object-specific exception was added.
+
+232 affected methods pass (159 plus 73 additional caller tests), NOT a full
+suite run. Initial mock-contract failures and their original test files remain
+preserved locally. Test doubles now record only incoming original evidence;
+individual disabled-consumer tests explicitly isolate the phase selector. All
+pre-existing assertions in the four later-updated modules are AST-verified as
+retained. The strict production missing-evidence guard was not relaxed.
+
+The single-feature profile passes all 44 fixed bindings: 41 fresh ordinary
+scans with matched source-stage replay, plus three strictly verified prior
+scans. All original 41 numerical protection groups, 601 source miniblocks,
+139 terrain footprints and 16 exact controls pass. A Windows observer-write
+failure after 40 fresh scans is preserved; continuation validated and reused
+every sealed result rather than rerunning or discarding it. FTFA remains
+926/928 exact with no extra, shifted or wrong-type objects. Current-default
+Flames is unchanged at 254 exact / 42 extra / 19 missing / 20 shifted / 2 wrong;
+the richer private 255-exact result is not the production baseline.
+
+Three fresh UNPATCHED production scans (Golden2, Halls3, F189) match complete
+qualified ordered metadata, crop/grid, exports and project-owned image identity.
+Fresh Golden2 whole/delta Source/JTool/Blend review confirms DOWN(64,56) moves
+to (64,48). Ceiling-hidden UP(64,16), false solids, water/vines and compound
+errors remain; no whole-room approval or successful new reserve is claimed.
+Earlier quiet-AC whole OFF/ON cost remains +1.80% on Golden2 and -1.08% on
+Halls3, within the fixed 5% gate, not an all-screen speed guarantee.
+
+The current CN3-31 default AND the older B235 baseline still MISS the confirmed
+real DOWN(416,128); UP(400,128) is present. Older text describing the pair as
+protected must not be read as a current-default success. Existing generic
+closed-body research recovers it but is not production-bound. Audit84 preserves
+all 71 findings, labels current-profile controls versus older evidence, and
+keeps zero room approvals. Golden7's scoped mask has 5,376 missing / zero
+excess pixels in BOTH matched current default and candidate; the old 576 excess
+figure is historical, not a gain from this phase activation. Other families,
+reserve/gain minima, final stable 71+16 and all original goal gates remain OPEN.
+
 ## 2026-10-24 — Actual phase-only caller and controlled whole cost qualified
 
 The phase-refinement backend now avoids unused diagnostics only when the same
