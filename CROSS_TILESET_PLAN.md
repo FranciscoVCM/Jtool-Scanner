@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): isolate closed-body identity before broader qualification
+
+The existing generic closed-body path now passes isolated CURRENT source-stage
+compatibility: CN3-31 gains ONLY the confirmed missing32px DOWN416,128, preserving
+all originals; CN3-19 remains ENTIRE unchanged. Only the interior selector and
+generic factory change, not the other four disabled consumers. Two fresh whole
+and one sole-delta source reviews confirm this limited result and major remaining
+errors, including an old false opposing member beside the C31 recovery.
+
+Audit85 retains all71 findings/zero approvals. No new upstream scan, complete
+protection/cost qualification, reserve success or runtime adoption is claimed.
+Next broader isolated actual-input pilots G2/H3/G5, then full controls/source QA/
+whole cost before binding. Interior remains OFF in the app; standard mode and
+the qualified phase activation are unchanged. Original six goal gates stay OPEN.
+
 ## Latest (2026-10-25): activate only the qualified source-mode phase consumer
 
 The phase selector is now ON only within opt-in Experimental source geometry;

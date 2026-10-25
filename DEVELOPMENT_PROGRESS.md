@@ -4,6 +4,25 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Closed-body caller isolated from unrelated consumers
+
+Two CURRENT saved actual source-stage inputs now isolate the existing generic
+closed-body identity path: only the interior selector/factory changes, with
+frame/compound/rejected-primary/deferred consumers still disabled. Unpatched
+default replay first matches each ENTIRE sealed ordinary result. CN3-31 adds
+ONLY its confirmed DOWN(416,128), 583->584 objects, without removals or retained-
+metadata/nongeometry changes; CN3-19 remains ENTIRE unchanged at255 objects and
+keeps both known false fragment poses absent. No runtime implementation changed.
+
+Fresh whole Source/JTool/Blend reviews of both rooms and the sole C31 delta use
+the exact application's source viewport. The added spike fits; an old false
+opposing triangle nearby and extensive other room errors remain. Audit85 keeps
+all71 conservative findings/zero approvals. These are two source-stage replays,
+NOT fresh upstream wholes, full controls, controlled speed, new research gains
+or app adoption. Broader isolated pilots, original protections and whole cost
+remain required before binding. Published source mode still has interior OFF;
+the earlier phase correction remains enabled. Original goal stays ACTIVE.
+
 ## 2026-10-25 — Qualified phase correction enabled in source-aware mode
 
 The existing full-spike phase consumer is now enabled ONLY inside opt-in

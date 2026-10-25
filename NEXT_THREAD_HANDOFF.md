@@ -13,7 +13,34 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: qualified source-mode phase activation; broader goal OPEN
+### Latest continuation: isolated closed-body compatibility; broader qualification next
+
+Latest phase deployment is9624bf7; follow-on documentation does not alter runtime.
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit85, isolated-closed-body-current-v468.json
+and isolated-closed-source-QA-v470.json in the ignored goal directory. All their
+workers are terminal. Original GOAL_PLAN still applies; no new baseline/goal.
+
+Two current saved ACTUAL source-stage inputs first reproduce ENTIRE unpatched
+default results, then change ONLY interior selector+generic closed-body factory.
+Other4 disabled consumers remainOFF. CN3-31 addsONLYconfirmedDOWN416128,
+583->584/no removals/retainedmetadata/nongeometry changes. CN3-19 ENTIRE255object
+output unchanged; known falseUP200456/DOWN568192 stayabsent. Original sourceRGB/
+teachers unchanged; all patched selectors/factories restored. No implementation
+or live-app behavior change. Fresh2whole/1soledelta sourceQA uses exact appsource
+viewport. C31addedmember fits BUT oldfalseopposingmember remains nearby; both
+rooms stillMAJOR. Audit85 keeps71 findings/zeroapprovals, currentappC31stillmisses
+DOWN because interior remainsOFF. This requalifies oldresearchpositive; NOTnew
+researchgain/freshupstreamscan/reservesuccess/fullprotection/cost/adoption.
+
+Next bounded work: broaden the SAME isolated caller to current G2/H3/G5 actual
+incoming source inputs, first requiring full default replay equality. Record ALL
+new/removed/metadata/nongeometry deltas and source-review every new proposal;
+do not count retention alone as accuracy. Then fixed original41/601/139/16 and
+actual whole cost before a public caller binding. Reuse existing closed-body
+API, don't duplicate it or enable unrelated consumers. All original goal gates
+remain OPEN/ACTIVE. Latest ignored publication note records exact HEAD/PID.
+
+### Maintained runtime: qualified source-mode phase activation; broader goal OPEN
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md and audit84 in the ignored goal directory.
 Completed receipts: phase-only-protection44-v451, phase-only-original41-numerical-

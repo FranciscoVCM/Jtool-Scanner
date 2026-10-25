@@ -6,6 +6,14 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-25
 
+Latest follow-on verification isolates the existing closed-body research caller
+on current actual source inputs: CN3-31 adds only its confirmed DOWN416,128;
+CN3-19 remains ENTIRE unchanged. Two fresh whole/one delta source reviews confirm
+the limited improvement but major errors persist. Audit85 retains71 findings/
+zero approvals. This is research source-stage compatibility, NOT new upstream
+wholes/full protection/cost qualification or app adoption. Interior stays OFF;
+the phase activation described below is the maintained runtime change.
+
 The full-spike phase selector is now enabled ONLY for opt-in Experimental source
 geometry (app and CLI `--source-geometry`). Standard mode remains unchanged;
 the other five private consumers remain OFF and partial evidence stays unbound.
