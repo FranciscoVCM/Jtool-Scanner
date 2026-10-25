@@ -13,7 +13,48 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: isolated closed-body compatibility; broader qualification next
+### Latest continuation: canonical DEFAULT attribution fixed; faster partial positives next
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit86 and terminal475/477,479/483,481
+receipts in ignored goal directory. Original GOAL_PLAN applies unchanged; no
+new baseline/archive/goal. No runtime edit this batch;232 affected tests remain
+compatible, not rerun/fullsuite. Source-mode phase ON; other5 consumers OFF.
+
+475/477 SAME isolated closed-body generic factory/profile on G2/H3/G5: G2adds
+ONLYrealRIGHT624128 (310->311), H3/G5 ENTIREunchanged. MainVIEWED3whole+1delta;
+newmember fits BUT oldmisplacedRIGHT640120 remains. G5ZEROgain => reserveFAIL,
+not a successful reserve or reason to retune it. No runtime adoption.
+
+479ONE fresh ordinary CURRENTDEFAULT canonicalCN3_18 (NOTtracked cn3-18)
+has495objects and ENTIREraw/input/frame/order/meta equals oldresearch295.
+All4 source/JMap/JTool/Blend bytes equal;projectONLYownedsourcePNG pointer.
+483PASS whole/region+all79/actualunion-loss sourceQA: B2350adds/79terrainremovals,
+frozen4864/4864positivepixels+4/4typed retained,18176excess->0. Allotherobjects
+unchanged. Existing cleanup is DEFAULT, not just private research; earlier audit
+wording stale. Older fixedROI verification already knew it. DO NOT re-tune or
+launch selector ablations on this cleared carpet. Whole stillMAJOR elsewhere.
+
+481diagnostic observesREALoriginalFilledfield during same475G2candidate; existing
+phaseproof conjunction, single already-proposed same-type pair within16peraxis.
+OldRIGHT640120 is ORIGINAL full_spike_shape_recovery. No map mutation; ENTIRE
+475candidate reproduced. Pair(640120)->(624128) abstains: physical old-exclusive
+patch has0eligiblecentres after masking othercurrentpolygons. Do not relaxguards/
+blanketdelete/assume unknown==empty just to merge it; ambiguous structure persists.
+
+NEXT: genuine positive gains via existing faster native partial-visibility path.
+Read run_compact_actual_callers_v346.py and FastCompactPartial in339 plus323/331/
+333/336 dependencies. Its algorithm is compact, NOTthe19x13compact-grid component;
+COMPACT_WHOLE_COST_FREEZE_v1 belongs to that DIFFERENT component. Old exhaustive
+native partial4.112xHOLD is not current fast-path cost evidence. Reuse checksummed
+source inputs/outputs, not full baseline sweeps or repeated held microcaches.
+Consider additive partial consumer AFTER current default source/phase result,
+using ONLY frozen incoming originals as teachers and excluding final current
+keys, so new proposals cannot suppress an already-qualified phase correction.
+Freeze/compare ALL parents and all-delta sourceQA before adoption; no easy
+retention-only success. Need full41/601/139/16 and quietAC dense/sparse whole cost,
+then portable maintained binding if qualified. All original6 goal gates OPEN.
+
+### Prior continuation: isolated closed-body compatibility; broader qualification next
 
 Latest phase deployment is9624bf7; follow-on documentation does not alter runtime.
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit85, isolated-closed-body-current-v468.json

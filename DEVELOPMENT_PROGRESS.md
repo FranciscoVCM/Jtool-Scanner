@@ -4,6 +4,36 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Canonical default corrected; closed-body transfer remains limited
+
+ONE fresh ordinary DEFAULT canonical CN3-18 scan now certifies the previously
+unresolved audit attribution. The lower frozen region has zero known-background
+excess versus B235's18,176, retaining4,864/4,864 true solid pixels and4/4 typed
+positives. The entire495-object result, ordered metadata/nongeometry and source/
+JMap/JTool/Blend bytes equal the older reviewed research result; only the
+project's owned source-image locator changes. All79 terrain removals match it.
+Fresh whole/region review plus reinspection of all79 removal and actual-loss
+panels found no visible true-terrain loss. This is an ALREADY-SHIPPED improvement,
+not a new fix. Do not retune the cleared mountain region. The canonical room
+still has major compound/pose/ownership errors; it is not the tracked control.
+
+The same isolated closed-body path was evaluated without tuning on G2/H3/G5.
+It adds one source-confirmed RIGHT(624,128) in G2 (310->311); H3/G5 are ENTIRE
+unchanged. All old metadata/nongeometry are retained. Fresh whole/every-delta QA
+confirms the new member BUT the old misplaced RIGHT(640,120) remains beside it.
+Golden5 has ZERO corrections, so this mechanism fails reserve-success criteria.
+No room approvals, new app binding or universal-material claim follow.
+
+A diagnostic using the REAL original field and existing pair-proof conjunction
+abstains: no guarded old-exclusive physical patch is available after excluding
+other current shapes. No guard was relaxed or object deleted. Audit86 retains
+all71 conservative findings; one new default whole is distinguished from three
+saved-input experiments. No runtime code changed and232 prior affected tests
+remain byte-compatible, not a new full-suite run. Next qualify the faster native
+partial-visibility path for real positive gains; do not confuse its compact
+algorithm with the separate19x13 compact-grid component or revive held exhaustive
+cost claims. All original six goal gates remain OPEN/ACTIVE.
+
 ## 2026-10-25 — Closed-body caller isolated from unrelated consumers
 
 Two CURRENT saved actual source-stage inputs now isolate the existing generic

@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): canonical18 verified in DEFAULT; do not retune cleared carpet
+
+Fresh ordinary canonical CN3-18 DEFAULT equals the complete older reviewed
+research result:79 false terrain removals versus B235, zero lower-region excess,
+all4864 source-positive pixels/4typed positives retained. Main rechecked whole/
+region and all79/actual-union-loss source panels. This corrects stale private-
+only audit wording, NOT a new rule or a whole-room approval. Other compound and
+ownership errors remain. The different tracked cn3-18 control is not substituted.
+
+Untuned isolated closed-body G2/H3/G5 pilots add ONLY real RIGHT624,128 in G2;
+H3/G5 unchanged. G5 is a FAILED reserve success evaluation, not a reason to lower
+criteria. The new G2 member still coexists with old displaced RIGHT640,120.
+The existing exclusive-source pair proof abstains (no guarded old-only patch),
+so no merge/guard relaxation is adopted. Audit86 keeps all71/zero approvals.
+
+Next move to the faster native partial-visibility positive path and actual cost
+qualification, preserving original teachers and all old phase/negative controls.
+Do not repeatedly rescan the cleared C18 region, weaken ambiguous overlap rules,
+or substitute19x13 compact-grid timings for native partial-algorithm timings.
+Original positive/conflict/family/reserve/71+16 gates stay OPEN/ACTIVE.
+
 ## Latest (2026-10-25): isolate closed-body identity before broader qualification
 
 The existing generic closed-body path now passes isolated CURRENT source-stage

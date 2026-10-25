@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-25
 
+Audit86 now verifies canonical CN3-18's existing mountain cleanup in CURRENT
+DEFAULT:79 old false terrain instances absent, lower-region known excess0 versus
+B23518176, all4864 positive pixels/4typed positives retained. Complete raw output
+and source/JMap/JTool/Blend match the reviewed older research result; this is
+corrected attribution, not a new scanner fix. The room remains MAJOR elsewhere.
+Further untuned closed-body G2/H3/G5 tests add only one correct G2 RIGHT624,128;
+H3/G5 unchanged, so no reserve success or runtime adoption. A nearby wrong old
+instance remains; the existing source-exclusive merge proof abstains. See latest
+next-thread instructions before old research-only audit wording below.
+
 Latest follow-on verification isolates the existing closed-body research caller
 on current actual source inputs: CN3-31 adds only its confirmed DOWN416,128;
 CN3-19 remains ENTIRE unchanged. Two fresh whole/one delta source reviews confirm
