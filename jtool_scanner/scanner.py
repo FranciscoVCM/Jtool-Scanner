@@ -91,7 +91,7 @@ _SOURCE_COMPOUND_CONFLICTS_ENABLED = False
 _SOURCE_INTERIOR_GLYPHS_ENABLED = False
 _SOURCE_FRAME_ARBITRATION_ENABLED = False
 # Exact legacy rejections remain outside source teachers until final recovery.
-_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = False
+_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = True
 # Qualified same-instance phase refit in source-aware mode; standard scans bypass.
 _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(

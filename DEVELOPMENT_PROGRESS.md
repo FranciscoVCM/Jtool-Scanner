@@ -4,6 +4,48 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Qualified discarded-original spikes restored in source-aware mode
+
+The existing discarded-primary consumer is now enabled ONLY in opt-in
+Experimental source geometry. One runtime boolean changes; no recognition
+threshold, model, teacher, fixture, answer lookup or new dependency changes.
+It restores exact original Detection metadata using the existing independent
+source RGB/body/geometry and same-instance proofs. Pending/restored objects
+never teach, no new poses are enumerated, and standard scanning is unchanged.
+
+Current-profile qualification restores13 real32px spikes: Halls3+1, Golden2+1,
+Golden7+11. Main reviewed all three whole boards and every addition. All current
+objects, ordered metadata, nongeometry and phase corrections survive. The44
+fixed bindings (42fresh+2strict current reuses), original41 groups/601minis/
+139terrain/16exact controls pass. FTFA remains926/928 without extras/shifts/
+wrong types; Flames254exact/42extra/19miss/20shift/2wrong remains unchanged.
+Additional canonicalCN3-18 stays ENTIRE495 unchanged and carries the already-
+reviewed mountain cleanup by full artifact/project equality, not a new gain.
+
+233 deduplicated affected tests pass, NOT the full suite. The explicitOFF
+contract and prior assertions remain protected; the new default also exercises
+real restoration without learning from its output. Quiet serial AC ABBA,
+two samples/mode/source: Golden2 medians66.565->66.516s(-0.07%), Halls3
+62.162->61.003s(-1.86%), heavier Golden7 73.213->73.794s(+0.79%). Full output,
+input, power and app-quiet checks pass; these are limited cost measurements,
+not a universal speed promise. Three fresh unpatched production scans H3/G2/G7
+match ENTIRE qualified ScanResults, ordered metadata, inputs and normal app
+exports/projects. Previous whole/every-delta QA carries through that equality,
+not a new visual review. App reload is part of the publication verification.
+
+Separate PRIVATE pending-domain partial research reduces queries, not proof
+requirements: ALL actual pending originals yield G2+4/G5+4/CN3-19 unchanged;
+whole/every-delta source QA and8portable methods/19frame comparisons pass.
+All selected accepted proofs equal the original full search after generation.
+This does not replace its full scope, qualify whole cost or bind NumPy to the
+app. Golden5's original reserve17->16errors/one correction/5.88% still FAILS
+two corrections/25%; other additions are outside its fixed region.
+
+No room approvals. The restored G2 member coexists with an old misplaced one;
+G2 ceilingUP64,16 and confirmed CN3-31 DOWN416,128 remain missing. False solids,
+opposing fragments, occlusions and other families still need work. The original
+six goal gates remain OPEN/ACTIVE; final stable71+16 qualification is pending.
+
 ## 2026-10-25 — Current-profile partial accuracy verified; cost qualification incomplete
 
 The private native partial-visibility pass now runs AFTER current source/phase

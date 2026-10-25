@@ -1,5 +1,33 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): original-candidate restoration enabled; no room/reserve approval
+
+Only the qualified discarded-original consumer is newly enabled in opt-in source
+mode: Halls3+1/Golden2+1/Golden7+11 real32px spikes, no removals or old metadata/
+nongeometry/phase losses. One runtime bool; standard scans unchanged. Existing
+original-source RGB/body/geometry proofs restore original candidates, not answers
+or generated teachers. Main reviewed whole/ALL13delta source boards. Original
+44bindings/41groups/601minis/139terrain/16exact pass;233affected tests pass,
+not fullsuite. QuietAC ABBA medians G2-0.07%/H3-1.86%/G7+0.79% pass the5% gate.
+Three actual unpatched production calls H3/G2/G7 match ENTIRE raw/input/export/
+project results; prior whole/every-delta QA carries by equality. Audit88 retains
+all71 conservative findings; app reload is checked separately at publication.
+
+Original fixed errors stay honest: H3upper2->1 and G2side2->1; lower/central G2
+remain6/3. Golden7's11 real additions do not invent a new complete negative
+denominator. Existing false overlapping/shifted members remain; no blanket
+deletion. CN3-31 DOWN416,128 and G2ceilingUP64,16 still need new-proposal evidence.
+
+Next candidate: algorithmic partial-query restriction to ALL actual discarded
+originals, with unchanged independent per-parent masks/cohorts/RGB proofs.
+Private G2+4/G5+4/C19unchanged;8portable methods/19frame comparisons and every
+changed-object QA pass. Original G5 reserve17->16/one correction/5.88% FAILS
+two/25%; full native search and earlier cost holds are not redefined around
+this subset. Real controls/whole cost remain required before any binding.
+Keep original41/601/139/16 protections and investigate unresolved ownership/
+missing-proposal causes, not repeated failed microcaches. All six original goal
+gates stay OPEN/ACTIVE; final stable71+16 and other-family transfer remain pending.
+
 ## Latest (2026-10-25): partial positives retained; no cost or reserve pass
 
 Current-default source/phase plus a PRIVATE additive native partial pass yields

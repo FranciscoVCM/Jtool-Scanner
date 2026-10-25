@@ -6,6 +6,32 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-25
 
+The qualified discarded-original full-spike consumer is now enabled ONLY in
+Experimental source geometry, alongside the existing phase/repeat/capture
+callers. Standard scans are unchanged; the other four experimental consumers
+remainOFF and partial visibility stays unbound. One runtime boolean changes,
+not recognition thresholds, teachers, fixtures or dependencies. It restores
+exact original metadata from independent source RGB/body/geometry proofs.
+
+44 current-profile bindings (42fresh+2strict reuses) preserve original41 groups,
+601minis,139terrain and16exact controls.13 real spikes are restored across
+Halls3(+1),Golden2(+1),Golden7(+11); main reviewed each whole and ALL13delta.
+All old objects/metadata/nongeometry/phase repairs remain.233affected tests
+pass, not fullsuite. Three quietAC ABBA median changes-0.07%/-1.86%/+0.79%
+pass the5% gate, not universal latency proof. Three fresh unpatched production
+calls H3/G2/G7 match ENTIRE raw/input/export/project results and carry sourceQA
+by equality. Audit88 keeps all71 conservative findings; publication/app parity
+are verified separately, not assumed from a code edit.
+
+No whole-room or reserve approvals. G2's old misplaced member still coexists
+with the newly restored real spike; ceilingUP64,16 and confirmed C31DOWN416,128
+remain missing. Private pending-only partial search preserves old proofs and
+addsG2/G5four each, but original G5 reserve17->16 errors still fails two/25%.
+Eight portable methods/19frame cases pass; full controls/whole cost/binding
+remain required. Original goal/final stable71+16 remain OPEN/ACTIVE.
+
+### Prior private partial checkpoint
+
 Audit87 requalifies PRIVATE partial-after-phase research: Golden2+8 real full
 spikes, Golden5+5, CN3-19 ENTIRE unchanged; all552 parents/old metadata/phase
 repairs retained,3whole/13delta source reviews. No implementation changed or

@@ -13,6 +13,46 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source-only original restorations; reduced partial domain next
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md and successor audit88 in the ignored goal
+directory; original GOAL_PLAN remains unchanged. Existing source-only original
+restoration consumer nowON; phase/repeat/capture remainON, other fourOFF and
+partial APIUNBOUND. Standard scans unchanged. Runtime changes only one boolean;
+do not re-run/reinterpret the old mixed-profile experiments as current evidence.
+
+529preflip qualification,50744bindings(42fresh+2strict reuses)/original41/601/
+139/16,501+515 sourceQA ALL13additions,519/522 canonical495 equality,505+517
+three-source serialAC ABBA PASS. CurrentFTFA926/928/zeroextras-shifts-wrong and
+Flames254/42/19/20/2 preserved. H3+1/G2+1/G7+11 source-positive originals are
+restored; all current objects/metadata/nongeometry/phase repairs survive.
+531233deduplicated affected methods PASS (not fullsuite), preserving explicitOFF
+contracts and adding actualDEFAULTTrue restoration. Runtime ENTIREAST differs
+only by declared flag; every other runtime byte is unchanged.532 three actual
+unpatched production calls H3/G2/G7 PASS ENTIREraw/inputs/4exports/project equality,
+carrying sourceQA by equality, not new visual review.533 audit88 keeps71
+conservative rows/zero approvals; final publication/app checks are recorded
+separately in the latest local note/receipt, not assumed from these tests.
+
+Separate algorithmic-domain prototype510/524/511/525: restrict finite queries to
+ALL actual discarded originals, never just known positive answers. G2+4/G5+4,
+C19 ENTIREunchanged. Main sourceQA512/528 whole/ALL8delta;5278portablemethods/
+19framecases PASS. Exact accepted proofs equal full old487 after generation.
+New NumPy binary explicitly pinned. No production binding, full-protection or
+real whole-cost certificate yet. Full native8/five scope and old cost/reboot
+failures remain preserved, not replaced by this subset. Original G5 reserve
+17->16/ONEcorrection/5.88% FAILS2/25%; boundaryLEFT288368 counts, three new subset
+additions outside originalROI. No retuning reserve, changed labels or approvals.
+
+NEXT: complete any live producer first (inspect latest private note/PIDs), then
+qualify reduced partial algorithm on controls/cost if justified, or pursue a
+distinct shared missing-proposal/ownership cause. G2ceilingUP6416 and confirmed
+C31DOWN416128 remain missing; G2newRIGHT624128 coexists with oldwrongRIGHT640120.
+No blanket overlap deletion/newteachers/room branches; preserve all source maps,
+indexes/projects and original41/601/139/16. No archive/baseline resweep. Allsix
+original goal gates OPEN/ACTIVE; final stable71+16 and other-family gains remain
+pending. Public commit/push/app parity receipts are separate, never assumed.
+
 ### Latest continuation: native partial source positives; interrupted cost HOLD
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit87,487/489 accuracy/sourceQA,

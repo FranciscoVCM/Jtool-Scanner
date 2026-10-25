@@ -19,6 +19,10 @@ OLD = ('_SOURCE_FRAME_ARBITRATION_ENABLED', '_SOURCE_INTERIOR_GLYPHS_ENABLED',
 
 class ScannerFeatureProfileTests(TestCase):
     def setUp(self):
+        # Freeze the comparator's old profile explicitly, not the app default.
+        baseline = patch.object(scanner, NEW, False)
+        baseline.start()
+        self.addCleanup(baseline.stop)
         self.before = snapshot_feature_profile(scanner)
 
     def test_snapshot_records_all_eight_actual_values_without_mutating_runtime(self):

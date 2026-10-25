@@ -19,7 +19,7 @@ class PhaseDefaultActivationTests(TestCase):
         profile=snapshot_feature_profile(scanner)
         self.assertEqual({k for k,v in profile['switches'].items() if v}, {
             '_SOURCE_REPEATED_IDENTITY_ENABLED','_CAPTURE_BASE_CONTEXT_ENABLED',
-            '_SOURCE_FULL_SPIKE_PHASE_ENABLED'})
+            '_SOURCE_FULL_SPIKE_PHASE_ENABLED','_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED'})
 
     def test_actual_default_source_caller_reuses_original_field_and_fast_mode(self):
         scene=values();original=tuple(scene[3]);fields=[];calls=[]

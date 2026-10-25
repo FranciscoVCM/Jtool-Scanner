@@ -185,16 +185,27 @@ class RejectedPrimaryScannerBindingTests(TestCase):
             context.record_filled_source(original,kwargs['source_frame'],self.filled)
         return set(),set(),{'source_material': {}}
 
-    def test_default_off_does_not_build_pending_context_or_invoke_recovery(self):
-        self.assertIs(scanner._SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED,False)
+    def test_explicit_off_does_not_build_pending_context_or_invoke_recovery(self):
         # Isolate the disabled primary consumer from the enabled phase caller.
-        with patch.object(scanner,'_SOURCE_FULL_SPIKE_PHASE_ENABLED',False), \
+        with patch.object(scanner,'_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED',False), \
+             patch.object(scanner,'_SOURCE_FULL_SPIKE_PHASE_ENABLED',False), \
              patch('scripts.source_geometry_pipeline.source_proposals',return_value=(set(),set(),{})) as producer, \
              patch('scripts.source_rejected_primaries.recover_rejected_primaries',side_effect=AssertionError('Disabled')):
+            self.assertIs(scanner._SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED,False)
             out=scanner._apply_source_geometry(self.result(),self.image,rejected_primary_spikes=(self.candidate,))
         self.assertNotIn('record_filled_source',producer.call_args.kwargs)
         self.assertNotIn('source_context',producer.call_args.kwargs)
         self.assertEqual(out.detections,list(self.original))
+
+    def test_qualified_default_restores_original_metadata_without_new_teachers(self):
+        self.assertIs(scanner._SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED,True)
+        with patch('scripts.source_geometry_pipeline.source_proposals',side_effect=self.proposals) as producer:
+            out=scanner._apply_source_geometry(self.result(),self.image,source_frame=self.frame,
+                rejected_primary_spikes=(self.candidate,))
+        self.assertTrue(any(d is self.candidate for d in out.detections))
+        self.assertIs(producer.call_args.kwargs['source_context'].filled_source(self.original,self.frame),self.filled)
+        self.assertNotIn((self.candidate.type_id,self.candidate.x,self.candidate.y),self.filled.original_spikes)
+        self.assertEqual((out.infinite_jump,out.dot_kid,out.recognized_text),(1,1,'unchanged'))
 
     def test_enabled_consumer_shares_actual_field_and_original_teachers(self):
         with patch.object(scanner,'_SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED',True), \

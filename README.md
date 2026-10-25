@@ -31,6 +31,18 @@ the original 41 protection groups, 601 miniblocks, 139 terrain footprints and al
 rooms. Other experimental consumers remain separately gated. This is not a claim
 of perfect rooms, universal tileset recognition or permission to delete overlaps.
 
+Discarded-original full-spike recovery is also enabled in Experimental source
+geometry mode. `scripts/source_rejected_primaries.py` rechecks exact original
+detector candidates lost during legacy arbitration, using the already-built
+original RGB/body/geometry field. It does not enumerate new poses, change old
+survivors or learn from restored candidates. The qualified44-case profile
+restores13 source-reviewed spikes across Halls3/Golden2/Golden7 while preserving
+the original41 groups/601 miniblocks/139 terrain footprints/16 exact controls.
+Three-source quiet-AC comparisons stay within the5% cost gate;233 affected tests
+pass, not the full suite. Standard scanning is unchanged. Missing proposals and
+existing false/shifted/overlapping objects can still remain; no room is approved.
+Run caller tests with `python -m unittest tests.test_source_rejected_primaries tests.test_source_primary_capture_sites tests.test_scanner_feature_profiles tests.test_source_phase_default_activation`.
+
 Interior artwork matching retains RGB but refuses to normalize residuals no
 larger than the conservative8-bit rounding bound into texture identity. A
 rounded linear gradient is not reliable artwork just because it repeats.
