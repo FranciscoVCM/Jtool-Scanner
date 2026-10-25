@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-25
 
+Latest research, NOT an app change: the existing calibrated rectangle consumer
+removes17 source-confirmed false original blocks in actual current source-stage
+trials (Golden2 ten, Golden5 seven), retaining every other object/metadata/phase.
+Main and second reviewer inspected both wholes/all17 deltas; no visible true
+tiled-terrain loss. Halls3 is entirely unchanged, carried by exact artifact/input
+equality. G2central10 errors3->0 with all positives; lower37 still six errors.
+G5's original reserve17->13/23.53% STILL FAILS25%, with all33792 positives/33 tiles
+retained. Compound remainsOFF; whole cost and full protections are pending.
+Audit89 conservatively records this separately from the published outputs below.
+
 The qualified discarded-original full-spike consumer is now enabled ONLY in
 Experimental source geometry, alongside the existing phase/repeat/capture
 callers. Standard scans are unchanged; the other four experimental consumers

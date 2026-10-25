@@ -13,6 +13,39 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source-verified rectangle ownership; cost before broad controls
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit89,536/537/539 and542/545/546 in the
+ignored goal directory. Original GOAL_PLAN unchanged. Public runtime still
+primary/phase/repeat/captureON, compound/interior/deferred/frameOFF; no detector
+or fixture changed this research batch.534 already verified published5bec112,
+live origin equality/cleanGit/private indexes/app HTTP200/loaded-disk parity.
+
+Current calibrated compound source-stage actuals: G2 311->301 (-10 originals),
+G5 313->306 (-7), H3 ENTIRE171 unchanged. Every surviving ordered metadata,
+nongeometry and phase stays exact. Main AND independent reviewer VIEWED both
+wholes/ALL17 removal boards; no visible real orange-tile loss. H3 carries QA by
+ENTIRE raw/input/source/JMap/JTool/Blend/project equality, not a new visual review.
+G2 originalcentral10 errors3->0, all4096 positives; lower37 still6/28672positive.
+G5 originalreserve17->13/23.53% FAILS25, all33792 positive pixels/33 tiles retained.
+No new source-stage rule/threshold/model/teacher/palette/answer lookup. Prior
+legacy zero-removal reserve lacked calibrated module; preserve that old failure.
+
+541 lost its tool host before sealing any case; PID14500 was authoritatively
+absent, old files preserved.542 SAME algorithm detachedPID8888 finished2/2;
+all producers now terminal.543 display preflight compared LF strings with CRLF
+bytes;545 fixes only that preflight/new paths, actual H3 four-byte-artifact
+checks staySTRICT. No needrerun completed537/542/539/546 or old baseline/archive.
+
+NEXT: prepare expected Golden5 exports for real paired WHOLE cost (G2/H3 exports
+already545, raw results537/542). Freeze current eight-selector profile: ONLY
+compoundFalse->True, all others fixed. Measure quietAC dense/sparse,2samples/mode,
+full ordinary raw/input/export/project equality. >5% HOLD, no helper-timing waiver.
+Use cost early to avoid wasteful broad-controls qualification of an expensive
+path; all original44/41/601/139/16 controls/affected tests still required before
+activation. Prior233 tests byte-compatible, not rerun/new fullsuite. Audit89 has
+zero approvals; original reserved/other-family/final71+16/six gates OPEN/ACTIVE.
+
 ### Latest continuation: source-only original restorations; reduced partial domain next
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md and successor audit88 in the ignored goal

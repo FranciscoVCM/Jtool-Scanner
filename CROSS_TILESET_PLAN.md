@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): competing rectangle ownership, not more add-only work
+
+Actual unchanged calibrated-consumer source-stage trials remove17 independently
+source-reviewed false rectangles: Golden2 ten, Golden5 seven. Main and second
+reviewer checked every removal/whole; no visible true-tile loss. All other
+metadata/nongeometry/phase survive. Halls3 is ENTIRE unchanged with full artifact
+equality carry, not a new visual review or another-family gain.
+
+Original G2central10 errors3->0/4096 positive pixels preserved; lower37 still
+six errors/28672 positives preserved. Original G5reserve17->13 (23.53%) retains
+33792 positive pixels/33 tiles and STILL FAILS25%. No denominator/threshold
+change, reserve success or room approval. This explains why an add-only partial
+path alone cannot meet the reserve target: most errors are false terrain.
+
+No new predicate or app activation. Existing source-local calibrated background,
+verified original glyph ownership and rectangle/marker/unknown vetoes are used;
+no new outputs teach. Audit89 keeps71 conservative rows. Cost BEFORE expensive
+broad controls, then original41/601/139/16 protections/all-delta QA before any
+binding. Production stays compoundOFF; published primary/phase changes remain.
+Required reserve/other-family/final71+16 and original six gates stay OPEN.
+
 ## Latest (2026-10-25): original-candidate restoration enabled; no room/reserve approval
 
 Only the qualified discarded-original consumer is newly enabled in opt-in source

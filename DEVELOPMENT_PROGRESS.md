@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Calibrated rectangle ownership: 17 source-verified research corrections
+
+The existing calibrated compound consumer now has actual current-source-stage
+evidence under the published primary/phase profile. Golden2 removes ten false
+original rectangles (311->301 objects); Golden5 removes seven (313->306).
+Every other object, ordered metadata, nongeometry and phase is unchanged.
+Main and an independent reviewer inspected both whole rooms and all17 removal
+crops: no visible real tiled-terrain loss. Halls3 remains ENTIRE171 unchanged;
+full raw/input/four-artifact/project equality carries its prior source review.
+These are source-stage calls, not new upstream whole scans or app adoption.
+
+Golden2's original central10 keeps all ten expected objects/4096 solid pixels
+and improves3->0 errors. Lower37 keeps28672 positive pixels and still has six
+errors; side5 is unchanged. Golden5's original complete reserve preserves all
+33792 positive pixels/33 true tiles, reducing excess3584->2304 pixels and
+errors17->13 (23.53%). That STILL FAILS the25% criterion; no rounding, changed
+labels or room approval. Other errors remain throughout both rooms.
+
+No detector predicate, model, threshold, fixture or runtime default changed.
+This uses the existing original context/material/block/filled field; generated
+objects never teach. The old failed legacy consumer did not include the newer
+calibrated-background module, and its zero-removal result remains preserved.
+An interrupted pilot worker sealed no result; the identical detached successor
+finished with durable progress/logs. Review preparation needed only a Windows
+newline-preflight correction; strict artifact-byte checks remain intact.
+
+Audit89 retains all71 conservative findings and separates private results from
+the unchanged published source-mode outputs. Prior233 affected tests remain
+runtime-byte-compatible, NOT rerun/fullsuite. Compound remainsOFF. Next measure
+quiet paired whole cost before expensive broad controls; then qualify all
+original41/601/139/16 protections and source-review every additional change.
+The original six goal gates remain OPEN/ACTIVE.
+
 ## 2026-10-25 — Qualified discarded-original spikes restored in source-aware mode
 
 The existing discarded-primary consumer is now enabled ONLY in opt-in
