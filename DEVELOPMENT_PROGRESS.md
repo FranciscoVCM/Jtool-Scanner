@@ -4,6 +4,39 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-25 — Current-profile partial accuracy verified; cost qualification incomplete
+
+The private native partial-visibility pass now runs AFTER current source/phase
+correction, using only original pre-source detections as witnesses. All 552
+original parents were evaluated. Golden2 gains eight real full spikes (310 to
+318), Golden5 gains five (313 to 318), and CN3-19 remains entirely unchanged at
+255 objects. Main reviewed all three whole boards and all 13 addition crops;
+retained objects, ordered metadata, nongeometry and phase repairs are unchanged.
+These requalify existing research under the current feature profile, not new
+shipped gains. The separate closed-body experiments are not combined with them.
+
+Original complete domains remain fixed: Golden2's lower37/central10 retain six
+and three errors respectively. Its upper-left positive-only labels improve5/6
+to6/6, not a complete-negative-domain pass. Golden5's boundary LEFT(288,368)
+counts in its original reserve region; the other four additions are outside it.
+Reserve errors17->16 (5.88%, one correction) FAIL the25%/two-correction criterion.
+No room is approved. Audit87 retains all71 conservative findings.
+
+Two actual ordinary Golden2 scans sealed full raw/metadata/input/export equality
+and AC/app-quiet checks:212.907s baseline versus328.287s candidate (+54.19%).
+The reboot interrupted the second candidate at21/235 parents; final baseline
+and sparse control never ran. Preserve original incomplete receipts: this is a
+single-pair cost WARNING, NOT completed ABBA medians/two-source qualification.
+The bundled NumPy binary also changed across reboot; its exact old/new hashes
+are recorded, not silently accepted as fresh experiment-environment parity.
+
+Partial stays PRIVATE/UNBOUND; no implementation or fixture changed. The tested
+app was restarted unchanged after reboot. Prior232 affected tests remain
+byte-compatible, NOT rerun/fullsuite. Do not repeat the unchanged expensive
+batch or previously held microcaches for a green result. Next reduce algorithmic
+work or investigate another shared identity/compound cause; full protections,
+runtime and original six goal gates remain OPEN/ACTIVE.
+
 ## 2026-10-25 — Canonical default corrected; closed-body transfer remains limited
 
 ONE fresh ordinary DEFAULT canonical CN3-18 scan now certifies the previously

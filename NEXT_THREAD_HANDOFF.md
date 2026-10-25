@@ -13,6 +13,44 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: native partial source positives; interrupted cost HOLD
+
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit87,487/489 accuracy/sourceQA,
+494 original fixed-domain metrics and497 interruption record in the ignored
+goal directory. Original GOAL_PLAN applies unchanged. No runtime edit this batch.
+
+Private native partial pass AFTER current default source/phase uses ONLY original
+PRE-source teachers. All552 parents evaluated; G2 310->318(+8),G5 313->318(+5),
+C19 ENTIRE255 unchanged. Main VIEWED3whole+13delta panels; all old metadata/
+nongeometry/phase repairs retained. Existing research requalified, NOT13new app
+gains. Isolated closed-body RIGHT624128/C31DOWN416128 remain DIFFERENT experiments.
+
+494 fixed scoring: G2 lower37 exact37/errors6 and central10 exact10/errors3 stay
+unchanged. Upper-left SIX positive-only5->6 is NOT complete negative-domain
+success. G5 full original reserve17->16 errors (5.88%, ONEcorrection) FAILS25%/
+two. Boundary LEFT288368 IS included; four other additions outside originalROI.
+Do not shrink/expand labels, ignore boundary objects or call whole rooms accepted.
+
+492 original timing receipts MUST remain incomplete/preserved: baseline0 and
+candidate1 sealedPASS full raw/input/metadata/exports/project/cache/AC/appquiet;
+scan212.9071025s vs328.2867925s (+54.19%WARNING). Reboot interrupted candidate2
+at21/235parents; baseline3 and sparseC19 UNRUN.497 independently confirms old
+PIDs26528/37720 absent and boot13:35UTC. NOT completed ABBA/median/two-source
+cost gate. External NumPy binary changed across reboot; exact old/new hashes
+recorded, NOT fresh environment parity. No unchanged rerun for green.
+
+App restarted documented CLI hidden; latest verified PID30760/root+health200/
+loaded==disk fingerprint unchanged/37helpers. No partial binding; existing phase/
+repeat/capture selectorsON, other5OFF. Prior232 affected tests byte-compatible,
+NOT rerun/fullsuite. Preserve private indexes/fixtures/maps/source images.
+
+NEXT: change algorithmic work level or investigate another shared identity/
+compound cause rather than repeating held383/387/391/395/403/407 caches or this
+unchanged expensive whole batch. Any future NumPy-backed experiment must explicitly
+qualify its new binary against preserved source proofs; production currently has
+no NumPy dependency. Need real other-family/fixed-domain gains, original41/601/139/
+16 controls and valid cost BEFORE adoption. All original six goal gates OPEN.
+
 ### Latest continuation: canonical DEFAULT attribution fixed; faster partial positives next
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit86 and terminal475/477,479/483,481

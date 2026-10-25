@@ -6,6 +6,20 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-25
 
+Audit87 requalifies PRIVATE partial-after-phase research: Golden2+8 real full
+spikes, Golden5+5, CN3-19 ENTIRE unchanged; all552 parents/old metadata/phase
+repairs retained,3whole/13delta source reviews. No implementation changed or
+room was approved. Fixed G2 complete regions remain unchanged; G5 reserve17->16
+errors (5.88%, one correction) does not meet25%/two. The boundary LEFT288,368
+counts; four other G5 recoveries are outside its original region.
+
+One sealed ordinary AC pair212.907->328.287s warns of54.19% added cost; reboot
+interrupted the second candidate21/235 parents, leaving last baseline/sparse
+source UNRUN. NOT completed ABBA/two-source qualification. Exact external NumPy
+binary drift across reboot is recorded. Partial stays unbound; the existing
+tested app was restarted unchanged. See latest next-thread/progress sections;
+original incomplete receipts and all images/maps/indexes remain preserved.
+
 Audit86 now verifies canonical CN3-18's existing mountain cleanup in CURRENT
 DEFAULT:79 old false terrain instances absent, lower-region known excess0 versus
 B23518176, all4864 positive pixels/4typed positives retained. Complete raw output

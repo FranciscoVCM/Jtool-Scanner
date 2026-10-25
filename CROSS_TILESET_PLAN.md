@@ -1,5 +1,25 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-25): partial positives retained; no cost or reserve pass
+
+Current-default source/phase plus a PRIVATE additive native partial pass yields
+eight verified Golden2 and five Golden5 full spikes; CN3-19 remains ENTIRE
+unchanged. All552 original parents and all old metadata/nongeometry/phase repairs
+are retained. Main inspected3whole/13delta source boards. Original complete
+G2 regions do not improve; G5 original reserve17->16 errors is only5.88%/one
+correction, not25%/two. Four G5 recoveries are outside its original scope; the
+boundary LEFT288,368 IS included. Do not change the scoring domain or call this
+a reserve/whole-room success. Upper-left G2 positive-only5/6->6/6 stays separate.
+
+Cost remains HOLD: one sealed ordinary AC pair212.907->328.287s (+54.19%) warns
+of material overhead, but a reboot interrupted the second candidate21/235;
+last baseline/sparse source UNRUN. NOT completed ABBA or two-source evidence.
+External NumPy binary drift across reboot is explicit; existing source outputs
+remain preserved, not newly qualified under the changed experiment environment.
+No runtime activation. Audit87 keeps71 conservative findings/zero approvals.
+Change algorithmic work level/causal mechanism, not repeated held microcaches or
+unchanged expensive scans. Original six goal gates remain OPEN/ACTIVE.
+
 ## Latest (2026-10-25): canonical18 verified in DEFAULT; do not retune cleared carpet
 
 Fresh ordinary canonical CN3-18 DEFAULT equals the complete older reviewed
