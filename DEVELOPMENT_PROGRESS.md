@@ -4,6 +4,57 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Five real compact supports recovered; sub-1% measured overhead
+
+A different upstream cause, not another partial-recovery timing variant, is
+now repaired: learned compact-room material was queried only on32px origins.
+Three NANG128r and two NANG130r metal supports occupy16px phases. Existing
+material/block predicates already recognize them when sampled at those phases.
+The new bounded query domain retains the native palette fit and every existing
+native object, without game IDs, coordinates, reference maps or new dependencies.
+
+Broad phase expansion initially displaced four real minis on NANG130r; that
+failed prototype is preserved, not shipped. New candidates must instead show
+four coherent RGB rectangle sides at ONE observed phase, allowing only half a
+physical pixel of sampling quantization. No per-side maxima across inconsistent
+rectangles, weakened contour threshold or blanket spike-overlap deletion.
+Probes must stay inside known compact pixels, not normalized padding.
+
+Current ordinary outputs add exactly3 blocks on128r (127->130objects) and2 on
+130r (261->263), retaining ALL old objects/metadata/order, including the minis.
+Main reviewed both whole maps/all5 deltas; final raw/input/four-artifact/project
+equality carries those reviews through the availability guard. Eight quietAC
+ABBA whole samples pass all integrity checks, two/mode/source:128r
+25.152->25.328s(+0.70%),130r22.252->22.283s(+0.14%). Both meet preferred5%.
+These small noisy differences establish no material slowdown, not acceleration.
+
+Nine new portable methods cover palette/background, polarity/dimming,
+fractional scale, opposed minis, triangles, incoherent sides and unknown/padded
+evidence. The pre-availability port passed88 affected methods/six whole parity
+cases and is archived; FINAL guarded code passed the identical22-test packet
+on normalHOST after two sandbox OS-Temp permission errors, without skips/hacks.
+Not the full unittest suite. All17 compact inputs were evaluated at the changed
+early function: only the same two rooms change;15 early outputs are identical.
+This is not17 whole scans. Whole-scanner AST otherwise equals prior main.
+
+Original41/601minis/139terrain/CN3-7 mask and16 exact controls pass, using actual
+FINAL whole results for the two changes plus explicit unchanged-branch/leaf
+carries elsewhere. All16 post-scan JMap metrics were recomputed: FTFA926/928,
+0extras/shifts/wrong; Flames254exact/42extra/19miss/20shift/2wrong. Private8-spike
+partial results are NOT substituted for the actual default. A non-exact-room
+comparison-to-None harness error was corrected without altering these criteria.
+
+Reserved NANG138r has a newly source-reviewed complete105-cell terrain mask;
+striped bars are solid, not platforms. Fresh whole before/after are ENTIRE
+equal:9missing cells/9216missing pixels,0excess, no positive loss. FAIL2/25;
+no reserve success, room approval or tuning against that result. Audit94 keeps
+all71 conservative rows/zero approvals. Core compact scans in BOTH standard
+and source-aware modes receive this fix;25x19 routing/8selectors are unchanged.
+All6 original goal gates/finalstable71+16 remainOPEN. Next address long/striped
+solid continuity and alias/overlap cases with independent source evidence;
+do not weaken the now-qualified rectangle/mini protections or resume failed
+partial latency variants. Deployment/publication verified separately.
+
 ## 2026-10-26 — Pending partial recovery qualified for accuracy; final cost HOLD
 
 Runtime and the live app are unchanged from `dd691fd`. Validated original-body

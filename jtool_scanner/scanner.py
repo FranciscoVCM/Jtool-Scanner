@@ -5263,7 +5263,109 @@ def _detect_adaptive_compact_room_blocks(
         )
         for x, y in sorted(positions, key=lambda item: (item[1], item[0]))
     ]
+    detections = _recover_adaptive_compact_block_phases(
+        detections, image, room, background, learned
+    )
     return detections, learned
+
+
+def _compact_rectangle_contour_closed(
+    contours,
+    x: int,
+    y: int,
+    pixel_pitch: tuple[float, float],
+) -> bool:
+    """Require four coherent RGB sides at one observed sampling phase.
+
+    Normalization can put a sprite edge between physical pixel centres. A
+    half-pixel translation is observation uncertainty, not a new JTool origin.
+    Never combine good sides belonging to different observed rectangles.
+    """
+    half_x, half_y = (value * 0.5 for value in pixel_pitch)
+    for dx in (0.0, -half_x, half_x):
+        for dy in (0.0, -half_y, half_y):
+            for inset in (False, True):
+                left = x + dx + (half_x if inset else 0.0)
+                top = y + dy + (half_y if inset else 0.0)
+                right = x + dx + GRID_SIZE - (half_x if inset else 0.0)
+                bottom = y + dy + GRID_SIZE - (half_y if inset else 0.0)
+                corners = ((left, top), (right, top), (right, bottom), (left, bottom))
+                for index in range(4):
+                    edge = contours.edge(corners[index], corners[(index + 1) % 4])
+                    if edge.unknown or edge.support < 9:
+                        break
+                else:
+                    return True
+    return False
+
+
+def _recover_adaptive_compact_block_phases(
+    native_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+    background: tuple[int, int, int],
+    learned: _ColorProfile,
+) -> list[Detection]:
+    """Query isolated half-phase tiles using the existing learned material.
+
+    A material match and broad block score alone can accept opposing minis or
+    a slice of a neighbouring tile. Only the additional phase candidates need
+    the independent four-sided contour check; existing native objects and the
+    palette fit stay intact. The normal 28px dedup buffer is applied before
+    marker arbitration so a rejected phase cannot displace a real mini/save.
+    """
+    compact_left = ((ROOM_WIDTH // GRID_SIZE - 19) // 2) * GRID_SIZE
+    compact_top = ((ROOM_HEIGHT // GRID_SIZE - 13) // 2) * GRID_SIZE
+    compact_right = compact_left + (19 - 1) * GRID_SIZE
+    compact_bottom = compact_top + (13 - 1) * GRID_SIZE
+    extra: list[Detection] = []
+    contours = None
+    pixel_pitch = (ROOM_WIDTH / room.width, ROOM_HEIGHT / room.height)
+    for y in range(compact_top, compact_bottom + 1, MINI_BLOCK_SIZE):
+        for x in range(compact_left, compact_right + 1, MINI_BLOCK_SIZE):
+            if x % GRID_SIZE == 0 and y % GRID_SIZE == 0:
+                continue
+            # The normalized canvas contains padding outside the real compact
+            # capture. A closed-side probe must never use that unknown region
+            # as though it were observed contrasting background.
+            if (
+                x < compact_left + 4 + pixel_pitch[0] * 0.5
+                or y < compact_top + 4 + pixel_pitch[1] * 0.5
+                or x > compact_right - 4 - pixel_pitch[0] * 0.5
+                or y > compact_bottom - 4 - pixel_pitch[1] * 0.5
+            ):
+                continue
+            if any(math.hypot(block.x - x, block.y - y) < 28 for block in native_blocks):
+                continue
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            if (
+                _compact_foreground_ratio(colors, background) < 0.20
+                or _compact_red_ratio(colors) >= 0.925
+            ):
+                continue
+            profile = _patch_color_profile(image, room, x, y, GRID_SIZE)
+            if _color_profile_distance(profile, learned) > 22:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            block = _classify_block(patch)
+            spike = _classify_full_spike(patch)
+            if block.score < 0.30 or block.score < (spike.score if spike else 0.0):
+                continue
+            if contours is None:
+                from scripts.source_contours import SourceContours
+
+                contours = SourceContours(image, room)
+            if not _compact_rectangle_contour_closed(contours, x, y, pixel_pitch):
+                continue
+            extra.append(
+                _geometry_detection(
+                    "compact_adaptive_block", OBJ_BLOCK, x, y, 0.84,
+                    image, room, GRID_SIZE,
+                )
+            )
+    if not extra:
+        return native_blocks
+    return _dedupe_detections([*native_blocks, *extra], min_distance=28)
 
 
 def _compact_foreground_ratio(

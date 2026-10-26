@@ -155,6 +155,18 @@ adoption. The private NumPy experiment adds no installation requirement.
 Audit93 retains all71 conservative findings/zero approvals. Public runtime and
 default selectors remain unchanged; see progress/handoff for the next cause.
 
+The newer compact-block correction repairs a sampling blind spot: an already
+learned material is checked at16px phases, with four coherent RGB rectangle
+sides and known-source availability. It recovers3 real supports on NANG128r
+and2 on NANG130r without changing old objects/minis/metadata. No stored room
+answers, new palette threshold, dependency or feature flag; it applies to core
+compact geometry in standard and source-aware scans. Native25x19 routing stays
+unchanged. New portable tests: `python -m unittest tests.test_compact_block_phases`.
+Final paired whole overhead is+0.70%/+0.14% on those rooms (two/mode/source,
+all8 output/provenance checks pass), not a speedup claim. Audit94 still has zero
+room approvals; NANG138r's9missing solid cells and other known errors remain.
+See current progress/handoff for exact test/protection and compatibility scope.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and

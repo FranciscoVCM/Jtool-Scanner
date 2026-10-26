@@ -1,5 +1,34 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): phase-complete compact material queries, five verified supports
+
+The current change repairs an upstream sampling blind spot, not a remembered
+tileset: learned compact material now queries isolated16px phases as well as
+native32px cells. Four coherent RGB sides at ONE bounded physical sampling
+phase distinguish a full tile from neighbouring mini pairs/partial fragments.
+Known-source availability excludes normalized padding. Native objects/palette
+and thresholds stay intact; no game/coordinate/map lookup or new dependency.
+
+Actual128r127->130 and130r261->263 outputs retain all old objects/metadata/minis;
+five new real supports reviewed whole/every-delta. FINAL AC ABBA2/mode/source:
+128r+0.70%,130r+0.14%,all8 complete checksPASS5. Nine new portable methods;
+88affected/sixwhole pre-guard qualification preserved, FINAL22methodsPASSnormal
+HOST (sandboxTemp errors did not prompt skips/code workarounds). Not fullsuite.
+
+All17 compact early-function inputs evaluated:2change/15ENTIREequal, NOT17fresh
+wholes. Other scanner AST is unchanged. Actual current changed maps plus explicit
+branch/leaf compatibility carries pass original41/601/139/CN7mask/16; all16 exact
+metrics recomputed. FTFA926/928/0extras-shifts-wrong; Flames254exact/42extra/
+19miss/20shift/2wrong. No private8-spike partial output used as app truth.
+
+NANG138r complete105-source-cell reserve, frozen before evaluation, still has
+9misses/0excess in BOTH fresh whole modes; ENTIREequal, FAIL2/25. Not a reserve
+success. Long striped terrain/overlapping alias poses need a distinct causal
+repair; no tuning/threshold waiver here. Audit94 all71/0approvals, finalstable
+71+16 and all6 original gatesOPEN. This is bounded compact-room generalization,
+not proof of arbitrary new sprites/tilesets or full71 perfection. Earlier partial
+631/638 cost HOLDs remain unchanged and that batch's latency variants stay closed.
+
 ## Latest (2026-10-26): partial accuracy evidence complete; whole-cost HOLD, change cause next
 
 No new runtime/default/app activation after `dd691fd`. Validated-body reuse had

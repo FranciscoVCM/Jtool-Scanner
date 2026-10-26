@@ -6,6 +6,32 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Latest maintained improvement: adaptive compact block material now checks
+isolated16px phases, requiring four coherent RGB rectangle sides and known
+source pixels. This recovers3 real supports on NANG128r and2 on NANG130r while
+retaining every old object/metadata/minispike. No game/coordinate/map lookup,
+new palette thresholds, dependency or feature flag. The correction applies to
+both standard and source-aware compact geometry, not native25x19 routing.
+
+Whole/every-delta source QA and final output/provenance checks pass. Eight
+quietAC ABBA samples:128r+0.70%,130r+0.14%, both within preferred5%. Nine new
+portable methods;88pre-guard affected tests/sixwhole comparisons archived and
+FINAL22methodsPASSnormalHOST; not fullsuite. Original41/601/139/CN7mask/16pass
+with actual changed maps and explicit unchanged-branch/leaf carries, NOT44fresh
+wholes. All16 exact metrics recomputed: FTFA926/928/0extras-shifts-wrong;
+Flames254exact/42extra/19miss/20shift/2wrong. Earlier private8-spike partial
+recoveries remain unadopted; their cost holds are not reclassified.
+
+NANG138r reserve still has9missing solid cells/0excess, ENTIREbefore/after equal;
+its striped bars are confirmed solid terrain, not platforms. No reserve success,
+whole-room approval or arbitrary-tileset guarantee. Audit94 retains71 conservative
+rows/zero approvals; all6 original gates/finalstable71+16 remainOPEN. Continuous
+striped terrain, genuine overlapping tile poses and other object errors remain.
+Publication/app parity is checked separately in the latest supplement.
+
+Entries below describe previous checkpoints; newest evidence above supersedes
+their next-action wording without changing their original failed results.
+
 Latest follow-up is an accuracy-qualified PRIVATE partial-recovery experiment,
 not an app/code change. Forty-four source cases (41 fresh source-stage replays
 and3 strict current reuses, not44 fresh upstream scans) pass original41 groups,

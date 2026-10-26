@@ -13,6 +13,59 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: maintained compact phase repair — five source-correct blocks
+
+This supersedes older next-action/partial/body-reuse instructions below. Read
+GOAL_PLAN IN FULL, TOP ignored active note, audit94 and current compact checkpoint/
+publication supplement. Same main checkout/originalACTIVEgoal, no archive sweep.
+
+Core adaptive19x13 block learning queried only native32px origins; isolated
+half-phase source tiles were never tested. New query domain uses SAME learned
+material/old broad predicates, keeps every native object and requires all4 known
+RGB sides of ONE rectangle at0/+-.5physical-pixel translation (outer/inset).
+No per-face maxima, source answers, new palette thresholds/dependency/flags.
+Onlynew probes stay4native+halfphysicalpixelINSIDEknowncompactsource. No-op
+returns original native list. Standard AND source-aware compact geometry benefit;
+25x19 routing/other scanner AST remainsENTIREequal to06dab12 after removing only
+the two new helpers/call. SourceContours is already among37registered helpers.
+
+FINAL actual outputs: NANG128r+3ordinary blocks127->130;NANG130r+2blocks261->263;
+all old objects/minis/metadata/order retained. Main whole/all5delta QA; final
+guarded raw/input/4exports/project equality carries it.666quietAC ABBA8samples
+PASSpreferred5:128r25.152->25.328s(+0.70%),130r22.252->22.283s(+0.14%). Not a
+speedup claim. Nine new public procedural methods.661pre-guard88tests/662six
+wholeparities archived in663;664FINAL22methodsPASSnormalHOST after identical
+sandbox22had2OS-Temp errors. No skips/source hacks. Not fullsuite.
+
+669all17compact EARLY function pairs: only same2rooms change/15ENTIREequal;
+NOT17wholes.672original41/601minis/139terrain/CN7mask/16PASS using final actual
+changed wholes+explicit unchanged-branch/leaf carries.16postscan JMap metrics
+recomputed:FTFA926/928/0extras-shifts-wrong;Flames254/42extra/19miss/20shift/2wrong.
+Private partial8restorations NOT used as default.671canonical-reference-to-None
+assertion error preserved/fixed only harness scope, not limits. Other harness
+errors657invalidpartition/623Counter remain preserved, not detector failures.
+
+Failed broad-phase646/650 displaced4realminis on130r; preserve it, don'tport.
+Nominal-closed652/653 got only1of2required130r supports; not a success.654/655
+coherenthalfphysicalpixel quantization resolves both without face-mixing. No
+more predicate/phase variants needed for this qualified repair. Old631/638
+partial cost HOLDs unchanged/CLOSED, not adoption of those private experiments.
+
+NANG138r complete105solid-cell source labels667/668 include user-confirmed
+striped terrain, not platforms.670actualreserve before/after ENTIREequal188
+objects/9missing cells/9216missingpixels/0excess. FAIL2/25; no reserve success or
+room approval. Entire label/negative domain now available; don't adjust truth
+to fit output. Next different causal work: long/striped solid continuity and
+genuine overlapping/alias tile poses, using separate development examples and
+prefrozen transfer; keep mini/unknown/partial-visibility protections. Compact
+phase repair does NOT solve unknown sprites/allbackgrounds/all71. Audit94 retains
+71conservative rows/zero approvals; original reserve/3rooms2families/finalstable
+71+16/all6gates remainOPEN. No new user images required for initial trace.
+
+Check final publication supplement for exact commit/live/appPID/fingerprint;
+do not trust old25028/e171 entries below. Only reviewed scanner.py,new public
+test and five docs may be staged. All artifacts/images/JMaps/indexes staylocal.
+
 ### Latest continuation: accuracy-qualified partial experiment cost-HOLD; do not repeat scheduling
 
 This supersedes older NEXT/body-reuse/closed-transfer/timing instructions below.
