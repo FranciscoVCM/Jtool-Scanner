@@ -1,5 +1,35 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): continuous source identity research, NOT app activation
+
+New causal evidence on CN3-19: isolated32px queries miss continuous solid bodies;
+a full-tile frame is also misclassified by ONLY the low-contrast platform route.
+Human review confirms solid/no-platform and four touching lower blocks, not
+exact origins. Coarse span poses failed152newnegativepixels and stay rejected.
+Signed source FG/BG intervals/native pose proposals fix that registration error.
+
+Private competing identity needs SAME3OTHER original registered block parents
+(2closed) matching full32/interior24/actualplatformcore28x12 RGB patterns>=.90.
+Real platform/sprite alternative routes retain veto. No new teachers, colour-only
+deletion, source answer lookup, global transform adjustment or overlap blanket.
+
+Actual experimental upstream/source rebuild matches the ENTIRE published
+default BEFORE the correction, then reproduces all64source pose proofs and
+reviewed276-object replay:22new blocks/1falseplatform retired, all other old
+ordered metadata retained. Complete fixed5structures7251->16366positive,
+9115->0missing, negative40unchanged/0loss/0newnegative. Whole/all changed-object
+source QA passes; remaining compound/text/nongeometry errors keep roomMAJOR.
+No exact editor-origin claim. Nine private portable/54existing methodsPASS,
+not fullsuite. Tuple/list postscan comparison failure preserved; independent
+normalized verification passes without detector/label/threshold changes.
+
+Unoptimized research engine is NOT deployed and has NO controlled-cost or new
+all41/16 qualification. Next: exact behavior-preserving efficiency, actual real
+platform transfers/all protections, separately frozen reserved evaluation and
+wholeAC timing before a maintained port/activation. Audit96 all71/zeroapprovals;
+app retains earlier seven compact support gains. All original6gates OPEN.
+Old partial/compound latency HOLDs and closed scheduling variants stay unchanged.
+
 ## Latest (2026-10-26): source-supported continuous strips, not blanket overlap deletion
 
 New compact candidate repair restores two16x32 solid strips on NANG131r using

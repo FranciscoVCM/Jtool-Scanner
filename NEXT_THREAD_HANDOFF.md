@@ -13,6 +13,57 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source-span identity evidence; efficiency/transfer next
+
+This supersedes next-action wording below. Same checkout/originalACTIVEgoal.
+Read GOAL_PLAN fully, TOP active note and audit96. Runtime/app remains the
+qualified10ad15d code; this checkpoint publishes documentation, NOT activation.
+All research workers must be terminal;731worker5900/session42046 is terminal.
+
+CN3-19 continuous bodies need whole-span source material/contours, not interior
+tile seams. Coarse16px span positions failed152newnegativepixels; preserve703-
+705failure, do not relax labels.707/709signed FG/BG physical boundary intervals
+and source-derived integer origins recover the whole structures. User confirms
+four lower blocks TOUCH/no overlap, NOT exact origins. User719also confirms
+beam-end framed tile SOLID/NOplatform. Actual low-contrast-only false platform
+vetoed the final real beam block; do not hardcode its observed coordinates.
+
+721freezes competing frame/platform identity;722generic PRIVATE proof needs
+SAME3OTHER original registered parents (2closed) matching full32/interior24/
+actualplatforminner28x12 spatial RGB>=.90. Core must lie inside candidate tile;
+known source coverage required. Alternate platform/sprite routes prevent removal.
+No query teacher, colour-only deletion or blanket overlap rule.723C19passes;
+725nine portable methodsPASS,54relevant existing methodsPASS,not fullsuite.
+724failed harness remains preserved; no predicate changes to make tests green.
+
+726replay/727unchanged mask:22new real blocks,1confirmedfalseplatform removed,
+ALLother old ordered metadata retained;255->276objects. Original5structures:
+7251->16366positive,9115->0missing,negative40unchanged,0loss/0newnegative.
+Both missing structures complete AFTER packing. Main728whole/729bothnewdeltas
+QA; prior21additions ENTIREequal714 and all directly reviewed717. RoomMAJOR:
+compound/text/other errors remain, source-derived origins NOT editor-certified.
+
+730PRIVATE generic engine rebuilds models/spans/registration FROM actual original
+source snapshot, reuses EXACT pure gate bodies704/708/710, no cached answer input.
+731actual upstream scan first ENTIREdefault==current, then rebuilds all source
+decisions. Final tuple/list comparison failed (preserved).732normalizes ONLY
+that comparison: all155original locators/64ENTIREselectedposeproofs/finalraw/
+four source-JMap-render-blend artifacts equal reviewed replay. Not a scanner
+failure, not a reason to rescan the identical source or weaken a source predicate.
+733seals evidence/audit96; not a deployed or cost-qualified improvement.
+
+NEXT bounded batch: efficient behavior-equivalent source-span generator before
+production adoption. Avoid duplicating complete material/contour passes. Exact
+quarter-sample/role caches must include eligible ORIGINAL parents/background
+and immutable frame/phase; query self-exclusion varies. Cheap independent mean
+gates may precede expensive colour/contour work ONLY with unchanged complete
+accepted sets/proofs. Do not reuse legacy global16coverage for nonaligned poses.
+Then actual real-platform transfers, all41/601/139/CN7mask/16, separately frozen
+reserve and controlledAC whole cost/main QA before activation. Current engine
+is deliberately unoptimized; no overhead waiver or performance claim. All6gates/
+finalstable71+16 OPEN. Older631/638partial cost variants stayCLOSED/OFF.
+No baseline/archive resweep, new user images or new branch/worktree required.
+
 ### Latest continuation: continuous compact strips — two additional verified recoveries
 
 This supersedes next-action wording below. Read GOAL_PLAN in full, TOP active

@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Source-span/platform identity research; not activated
+
+CN3-19 exposes two related causes. Continuous solid bodies lack internal32px
+tile seams, so isolated-tile queries miss genuine terrain. Its framed beam-end
+tile also passes ONLY the loose low-contrast platform route, blocking a real
+block. Human review independently confirms solid/no-platform and four touching,
+nonoverlapping lower square blocks; it does NOT establish exact editor origins.
+
+Private whole-span queries use original source-local RGB material and coupled
+contours, never reference maps or emitted teachers. Coarse16px poses alone
+recovered positives BUT added152negative pixels: rejected. Signed foreground/
+background boundary intervals plus source-derived integer poses recover the
+complete structures without that excess. Unknown remains unknown, no frame warp.
+
+Competing platform identity requires the SAME3OTHER registered original block
+parents (2closed) to explain full32px artwork, inner24px artwork AND the actual
+platform inner28x12 artwork at its relative offset, all correlation>=.90.
+Independent platform routes/default sprite proof retain their veto. This is
+not colour-only rejection, blanket overlap deletion or arbitrary-sprite proof.
+
+Fresh actual experimental upstream scan rebuilds the155original locators and
+all source decisions, not cached answers. ENTIRE ordinary default first matches
+the current published map. Experimental result adds22source-reviewed blocks,
+retires1confirmedfalseplatform, retains ALLother old ordered metadata, and
+exactly reproduces the reviewed replay/source/JMap/two renders. Fixed complete
+5structure mask:7251->16366positive pixels,9115->0missing, negative40unchanged,
+zero positive loss/new negative. Both missing bodies complete AFTER packing.
+The entire room remainsMAJOR; source-derived poses are not editor-exact certified.
+
+Nine private portable methods and54relevant existing methods pass,not fullsuite.
+A tuple-versus-JSON-list comparison failed AFTER the actual scan; that receipt
+is preserved. A separate normalized comparison verifies all64complete selected
+pose proofs/raw/source/exports, without changing detector gates or source truth.
+
+NO runtime/default/app change or latency qualification. The deliberately
+unoptimized whole-image search needs an efficient, behavior-equivalent port,
+real-platform transfer/all protections/exact controls, independent reserved
+evaluation and controlledAC whole cost before activation. No new all41/16 claim.
+Audit96 keeps71conservative rows/zero approvals, distinguishing experimental
+gains from the unchanged app. Original6gates/finalstable71+16 remainOPEN.
+
 ## 2026-10-26 — Two continuous solid strips recovered without sacrificing old geometry
 
 NANG131r exposed a different cause: a16px-wide solid extension needs a legitimate

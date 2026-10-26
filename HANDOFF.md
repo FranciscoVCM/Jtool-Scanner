@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Subsequent research (NOT deployed) now identifies continuous solid spans and a
+framed-tile/platform impostor on CN3-19 from independent original source pixels.
+A fresh experimental upstream scan recovers22blocks/removes1confirmedfalse
+platform, completing two missing fixed terrain structures without new negative
+coverage. Other errors keep the roomMAJOR; source-derived poses are not exact
+editor truth. Nine private portable/54existing relevant tests pass,not fullsuite.
+Efficient source search, real-platform transfer/protections/reserve/whole-cost
+qualification remain before activation. Audit96 distinguishes this experiment
+from the unchanged maintained scanner below; all original goal gates stayOPEN.
+See development/next-thread documents for exact evidence and continuation.
+
 Newest bounded improvement also recovers two continuous16x32 solid strips on
 NANG131r using legitimate overlapping blocks, not blanket overlap deletion.
 Only original coarse source-material parents propose; require one coherent
