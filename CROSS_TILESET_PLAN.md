@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): exact original-pair work reuse; rectangle still cost-HOLD
+
+Conditional10% investigation is explicitly approved for genuine multi-screen
+accuracy improvements, not automatic adoption. The existing PRIVATE calibrated
+consumer removes17 source-confirmed false rectangles across G2/G5 without
+verified positive loss; all12 ordinary maintained-consumer samples are valid.
+G2+8.46%,H3+1.10%,G5+16.15%: heavy case FAIL10. Earlier5% holds remain intact.
+
+An exact ordered-original texture-pair cache changes work reuse only, not
+source teachers, thresholds, query exclusions, greedy models or proof contents.
+355 affected tests/8new methods and three actual source ENTIRE-map/metadata/
+FULL-proof comparisons PASS. No new source recovery or fresh visual approval.
+Private-pool/scheduling prototypes are not ported. All default selectors remain.
+
+Correction-OFF/ON with this cache still FAIL10 on G5(+24.96%), H3/G2UNRUN;
+no cross-session ranking or outlier deletion. Separate same-session cache-only
+ABBA, compoundON in BOTH modes, passes5% no-regression on G5(-0.48%) and
+H3(-2.85%), all8 full checks. These small noisy changes do not establish a
+material app-speed improvement or qualify the17-block correction for adoption.
+
+Audit92 retains71 conservative rows/zero approvals. Compound/interiorOFF,
+original G5reserve23.53% FAIL25, other-family/positive recovery/final71+16 and
+all6 goal gates remainOPEN. Next address dominant proof work with validated
+original-domain reuse, not fewer teachers/looser ownership/room-specific filters.
+All44/41/601/139/16 and every new delta require qualification before activation.
+
 ## Latest (2026-10-26): exact candidate metadata retained; closed-body channel still unbound
 
 Current source testing reproduced a general ordering defect: a valid interior

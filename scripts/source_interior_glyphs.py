@@ -140,6 +140,7 @@ class SourceInteriorGlyphEvidence:
         self._texture_originals = frozenset(k for cohort in self._cohorts for k in cohort)
         self._texture_vectors, self._texture_models = {}, {}
         self._texture_eligibility = {}
+        self._texture_pairs = {}
         self._paint_indices = {}
 
     def _texture_vector(self, key):
@@ -149,6 +150,19 @@ class SourceInteriorGlyphEvidence:
         mean = _mean(body)
         values = tuple(v-mean[c] for rgb in body for c, v in enumerate(rgb))
         return _normalized(values) if any(values) else None
+
+    def _texture_compatible(self, first, second):
+        # Both callers have already selected known ORIGINAL texture vectors.
+        # Cohort/query pruning changes the greedy cliques, not this fixed
+        # ordered pair's disjointness or exact dot product. Keep the order so
+        # the arithmetic is identical, and never share across evidence frames.
+        pair = first, second
+        if pair not in self._texture_pairs:
+            self._texture_pairs[pair] = (
+                (abs(first[1]-second[1]) >= 32 or abs(first[2]-second[2]) >= 32)
+                and sum(a*b for a, b in zip(self._texture_vectors[first],
+                                           self._texture_vectors[second])) >= .9)
+        return self._texture_pairs[pair]
 
     def _has_directional_texture(self, kind):
         """Cheap necessary condition, not a substitute for per-query proof.
@@ -172,9 +186,7 @@ class SourceInteriorGlyphEvidence:
                 neighbors = {t: set() for t in candidates}
                 for index, first in enumerate(candidates):
                     for second in candidates[index+1:]:
-                        if ((abs(first[1]-second[1]) >= 32 or abs(first[2]-second[2]) >= 32)
-                                and sum(a*b for a, b in zip(self._texture_vectors[first],
-                                                          self._texture_vectors[second])) >= .9):
+                        if self._texture_compatible(first, second):
                             neighbors[first].add(second)
                             neighbors[second].add(first)
                 possible = any(neighbors[first] & neighbors[second]
@@ -211,10 +223,7 @@ class SourceInteriorGlyphEvidence:
                 for teacher in sorted(candidates):
                     if teacher == seed:
                         continue
-                    if all((abs(teacher[1]-other[1]) >= 32 or abs(teacher[2]-other[2]) >= 32)
-                           and sum(a*b for a, b in zip(self._texture_vectors[teacher],
-                                                       self._texture_vectors[other])) >= .9
-                           for other in clique):
+                    if all(self._texture_compatible(teacher, other) for other in clique):
                         clique.append(teacher)
                 clique = tuple(sorted(clique))
                 if len(clique) < 3 or clique in seen:

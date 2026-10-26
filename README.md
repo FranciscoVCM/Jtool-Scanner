@@ -128,6 +128,22 @@ from independently qualified original spikes; terrain colours are not treated
 as universal background labels. This is opt-in research, not default scanner
 activation. Full control and whole-scan cost checks are required before adoption.
 
+Original directional-texture comparisons now reuse each exact ordered teacher
+pair within one evidence instance. The disjointness test, dot-product order,
+threshold, pruned cohorts and greedy models are unchanged; query pixels never
+become teachers and nothing is shared across frames. Eight new portable methods
+and355 affected tests pass; three actual source cases retain complete maps,
+metadata and full compound proofs. Run `python -m unittest tests.test_source_texture_pairs tests.test_source_directional_texture tests.test_source_directional_body`.
+
+Separate cache-only ordinary ABBA checks, with compound enabled in BOTH test
+modes, measured96.994->96.530s on Golden5 and59.067->57.382s on Halls3. These
+small, noisy differences pass the5% no-regression gate, not a claim of substantial
+app acceleration. They do NOT qualify enabling compound detection. A prospective
+10% accuracy/cost investigation is approved for that useful multi-screen repair,
+but the maintained consumer still exceeds it on Golden5 (+16.15% in the complete
+three-case trial). All earlier holds remain; compound staysOFF and broader
+accuracy/protection qualification is still required.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and

@@ -69,7 +69,7 @@ class SourceDirectionalTextureTests(TestCase):
                 ([(a,(3,72,64),c)],{a:(1.,0.),(3,72,64):(1.,0.),c:(1.,0.)},False),
                 ([(a,b,(4,320,64))],{a:(1.,0.),b:(1.,0.),(4,320,64):(1.,0.)},False)):
             with self.subTest(cohorts=cohorts,vectors=vectors):
-                field._cohorts=cohorts;field._texture_vectors={};field._texture_eligibility={}
+                field._cohorts=cohorts;field._texture_vectors={};field._texture_eligibility={};field._texture_pairs={}
                 with patch.object(field,'_texture_vector',side_effect=vectors.get) as sample:
                     self.assertIs(field._has_directional_texture(kind),expected)
                     count=sample.call_count
@@ -99,7 +99,7 @@ class SourceDirectionalTextureTests(TestCase):
             greedy.append(clique)
         self.assertEqual(max(map(len,greedy)),2)
         field=object.__new__(SourceInteriorGlyphEvidence)
-        field._cohorts=[tuple(vertices)];field._texture_vectors={};field._texture_eligibility={}
+        field._cohorts=[tuple(vertices)];field._texture_vectors={};field._texture_eligibility={};field._texture_pairs={}
         with patch.object(field,'_texture_vector',side_effect=vectors.get):
             self.assertTrue(field._has_directional_texture(3))
 

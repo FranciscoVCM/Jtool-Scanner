@@ -13,6 +13,46 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: conditional10% tested; original texture-pair reuse qualified separately
+
+This subsection supersedes older continuation/UNANSWERED/cap/next-action text.
+Read GOAL_PLAN fully (including26Oct user-approved10% addendum), TOP active note,
+audit92 and593/594/595/596/597/598/600/601/602/599 publication receipts. Continue
+existingmain/originalgoal; no archive sweep, baseline reset or new worktree.
+
+ONE runtime file now caches exact ordered ORIGINAL texture-pair compatibility
+inside each evidence instance. Same disjointness/dot arithmetic/.9 threshold,
+pruned cohorts/greedy order/templates/proofs; no teachers, geometry or default
+selector changes. Eight new portable methods;355 affected tests PASS, not
+fullsuite/new41/16.594actual G2/G5/H3 calls retain ENTIRE prior maps/metadata/
+FULL compound proofs against authentic aed1 methods AND590 whole outputs.
+
+590 maintained consumer, all12valid whole samples: G2+8.46%,H3+1.10%,G5+16.15%
+FAIL10.597cache-code correctionOFF/ON G5+24.96%HOLD, H3/G2UNRUN; all4 full checks
+pass. Corrected114.557/95.575s vary, but both exceed10 over both controls. No
+outlier removal/retry-until-green/cross-session ranking. Existing17real false-
+rectangle removals remain PRIVATE/compoundOFF; user approval is not adoption.
+
+602 DIFFERENT causal ablation: compoundON BOTH, all other7flags fixed, only
+authentic old pair METHODS vs current cache varies. G5 96.994->96.530(-0.48%),
+H3 59.067->57.382(-2.85%);8full ordinary samplesPASS5% no-regression. Small/noisy,
+not a substantial app-speed claim or correction cost pass. No bodypool/lazy
+legacy API port.355/594/597/602 producers TERMINAL; do not restart them.
+
+Audit92 all71/0approvals; no new geometry gain or fresh visual review. G5original
+17->13/23.53% STILLFAIL25, finalstable71+16/other-family/positive minima/all6gates
+OPEN. NEXT bounded cause: validated ORIGINAL body evidence reuse across existing
+backdrop/recovery/phase, or another actual dominant proof cost. Every old ctor
+guard must still run on hits; full source/frame/raw-library/model/original-meta/
+grid/class/texture-option binding; no global constructorpatch/privatepool port.
+Never truncate backdrop anchors or let pending/new output teach. Prove benefit
+early with controlled whole cost; no unchanged repeated timing experiments.
+Original44/41/601/139/16/new-delta source QA mandatory before compound activation.
+
+Publication/app verification is recorded in the final supplement and active
+note, not inferred from these docs. Keep existing private indexes/projects and
+all original hold receipts; current docs/code only may be staged.
+
 ### Latest continuation: metadata arbitration fixed; current closed-body qualification next
 
 This subsection supersedes older continuation instructions below. Read original

@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Conditional10% investigation; exact texture work reuse, not correction adoption
+
+The user approved investigating10% whole-scan overhead for a genuine useful
+multi-screen accuracy repair;5% remains preferred. This is not an automatic
+waiver, a global speed-policy change or permission to relabel prior holds.
+The maintained calibrated consumer removes17 source-reviewed false original
+blocks (Golden2 ten, Golden5 seven), retaining verified positives/other metadata.
+It improves accuracy, rather than merely preserving the old result, but remainsOFF.
+
+Fresh quietAC serial ABBA, two samples/mode/source, completed all12 valid whole
+samples: G2 62.743->68.051s(+8.46%), H3 56.533->57.154s(+1.10%), G5
+81.474->94.635s(+16.15%). G5 FAILS10, so no activation. Full raw/input/four
+artifacts/project/cache/runtime/HEAD/power/app-idle checks pass. Original5% holds
+are unchanged. This does not satisfy the original reserve/accuracy minima.
+
+An actual G5 helper profile identifies repeated original texture-pair dot
+products. A narrow local cache now reuses the EXACT ordered pair boolean in
+one evidence frame; no predicates, teachers, thresholds, greedy order, query
+exclusions, model/proof fields or default selectors change.355 affected tests
+PASS, including8 new portable methods; not fullsuite/new41/16 qualification.
+Six actual source calls compare original methods/current cache across G2/G5/H3:
+ENTIRE maps, ordered metadata and COMPLETE compound proofs agree with the old
+methods and prior qualified whole outputs. No new geometry or visual review.
+
+The prototype's correction-OFF/ON cost trial still HOLDs: G5 84.080->105.066s
+(+24.96%), four valid samples; H3/G2 explicitlyUNRUN. Corrected samples vary
+114.557/95.575s; even the faster exceeds10% over both controls. No discarded
+outlier, retry-until-green or across-session ranking against the earlier trial.
+
+A DIFFERENT causal ablation holds compoundON in both modes and varies ONLY
+authentic original pair methods versus cached methods. All8 ordinary samples
+pass complete output/provenance checks: G5 96.994->96.530s(-0.48%), H3
+59.067->57.382s(-2.85%). Both pass5% no-regression, but differences are small
+and noisy. Retain exact work reuse; do not claim a meaningful whole-speed win
+or that it solves the correction's cost. Instrumented32.619->26.707s is not
+ordinary scan latency. No private constructor pool/lazy schedule was ported.
+
+Audit92 preserves all71 conservative findings/zero approvals. Compound/interior
+remainOFF; standard scan semantics/default objects are unchanged. G5's original
+17->13 errors/23.53% STILL FAIL25; all6 gates/finalstable71+16 remainOPEN.
+Next investigate validated original-body evidence reuse across existing consumers
+or another measured dominant proof cost, preserving every old constructor guard,
+all witnesses and role isolation. Full44/41/601/139/16/new-delta source QA remains
+mandatory before any correction activation. No more unchanged cost repeats.
+
 ## 2026-10-26 — Preserve original metadata when independent interior proof wins first
 
 A fresh current-profile closed-body replay exposed a real ordering conflict:

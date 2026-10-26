@@ -6,6 +6,32 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Latest runtime change is exact work reuse: ordered ORIGINAL texture-pair
+compatibility is cached inside one evidence instance. Identical dot-product
+order/disjointness/thresholds/teacher subsets/greedy models/proof contents; no
+new geometry, palettes, witnesses or default selectors.355 affected tests PASS,
+including8new methods, and three actual source FULL-proof/map/metadata comparisons
+pass. Not fullsuite/new41/16 or a whole-room approval. Audit92 retains all71
+conservative findings and zero approvals.
+
+The user approved a prospective10% cost investigation for the existing useful
+17-false-block repair (G2ten/G5seven), with full qualifications;5% preferred.
+Complete maintained-consumer three-source ABBA has12valid samples but G5+16.15%
+FAIL10 (G2+8.46%,H3+1.10%). Cached OFF/ON G5 also HOLDs(+24.96%), with H3/G2
+explicitlyUNRUN. Earlier holds are unchanged; different sessions do not rank
+prototypes. No compound/interior activation or accuracy-gate waiver.
+
+Separate cache-only ordinary ABBA holds compoundON in both modes: G5
+96.994->96.530s(-0.48%), H3 59.067->57.382s(-2.85%), all8 full checks PASS.
+This meets5% no-regression, not a significant app-speed claim or a solution to
+the correction cost. Instrumented helper gains are not whole-scan latency.
+Next investigate validated original-body proof reuse without private constructor
+patches, truncated witnesses or weakened provenance. Original44/41/601/139/16/
+new-delta QA, G5reserve25%, finalstable71+16 and all6 gates remainOPEN.
+
+The following entries are earlier checkpoints; their holds and qualification
+scopes remain historical evidence, superseded only by explicit results above.
+
 Latest code fixes metadata arbitration, not room geometry or feature activation:
 a complete independently proved interior proposal at an original candidate's
 typed origin retains its exact kind/score/image box. Pending candidates do not
