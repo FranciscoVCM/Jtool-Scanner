@@ -1,5 +1,32 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): source-supported continuous strips, not blanket overlap deletion
+
+New compact candidate repair restores two16x32 solid strips on NANG131r using
+valid overlapping full blocks AFTER normal deduplication. Only original coarse
+source-material parents may propose; require one coherent48x32/32x48 RGB envelope
+and BOTH new half-cells favouring learned material over observed exterior.
+Brightness-centered RGB resolves fractional border aliasing while retaining colour;
+unknown/padded evidence and achromatic ambiguity abstain. Old native/isolated
+phase rules/objects/flags stay intact. No game coordinates or stored answers.
+
+Fixed complete structure errors3->1, missing1536->512pixels, excess0;173->175
+objects, all old metadata/order retained. Whole/all2delta source review passes.
+Third strip and other object errors remain; NANG135r ENTIRE154-object control
+unchanged, including no invented solid in its thin-platform region.10new portable
+methods/57affectedHOST methods pass (not fullsuite).17actual affected compact
+whole scans:14canonical+3tracked controls;16ordered maps unchanged.
+
+Original41/601/139/CN7mask/16pass with actual compact scans and unchanged native
+branch AST carries, NOT44fresh wholes.16metrics recomputed: FTFA926/928/noextras-
+shifts-wrong; Flames254/42extra/19miss/20shift/2wrong. Earlier five supports stay.
+Eight valid quietAC ABBA samples:131r+1.04%,135r-1.61%,bothPASSpreferred5; no10%
+waiver/speedup claim. Frozen reserve138r still9missing solid cells/0excess,
+ENTIRE188-object result unchanged. No reserve success or arbitrary-tileset claim.
+Audit95 all71/zeroapprovals; finalstable71+16/all6originalgates remainOPEN.
+Long striped bars/third strip/other families need independent evidence; do not
+loosen the current mini/phase/known-source safeguards or reopen old cost variants.
+
 ## Latest (2026-10-26): phase-complete compact material queries, five verified supports
 
 The current change repairs an upstream sampling blind spot, not a remembered

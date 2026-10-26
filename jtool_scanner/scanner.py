@@ -4764,6 +4764,15 @@ def _replace_compact_room_geometry(
     # killer cells are known, so a terrain cell cannot be promoted merely by
     # sharing the platform window's 16px phase.
     result.extend(_detect_compact_room_relative_platforms(result, image, room))
+    if adaptive_profile is not None:
+        # A source-supported narrow extension sometimes needs overlapping full
+        # blocks. Append only after distance deduplication, retaining every old
+        # object; the newly added hypotheses must not extend one another.
+        result.extend(
+            _recover_adaptive_compact_continuous_blocks(
+                result, adaptive_blocks, image, room, background, adaptive_profile
+            )
+        )
     return _dedupe_exact_detections(result)
 
 
@@ -5274,6 +5283,9 @@ def _compact_rectangle_contour_closed(
     x: int,
     y: int,
     pixel_pitch: tuple[float, float],
+    *,
+    width: int = GRID_SIZE,
+    height: int = GRID_SIZE,
 ) -> bool:
     """Require four coherent RGB sides at one observed sampling phase.
 
@@ -5287,8 +5299,8 @@ def _compact_rectangle_contour_closed(
             for inset in (False, True):
                 left = x + dx + (half_x if inset else 0.0)
                 top = y + dy + (half_y if inset else 0.0)
-                right = x + dx + GRID_SIZE - (half_x if inset else 0.0)
-                bottom = y + dy + GRID_SIZE - (half_y if inset else 0.0)
+                right = x + dx + width - (half_x if inset else 0.0)
+                bottom = y + dy + height - (half_y if inset else 0.0)
                 corners = ((left, top), (right, top), (right, bottom), (left, bottom))
                 for index in range(4):
                     edge = contours.edge(corners[index], corners[(index + 1) % 4])
@@ -5366,6 +5378,128 @@ def _recover_adaptive_compact_block_phases(
     if not extra:
         return native_blocks
     return _dedupe_detections([*native_blocks, *extra], min_distance=28)
+
+
+def _compact_material_chroma(profile: _ColorProfile) -> tuple[float, float, float]:
+    """Keep RGB differences while removing a patch's average brightness."""
+    values = (profile.avg_r, profile.avg_g, profile.avg_b)
+    center = sum(values) / 3
+    return tuple(value - center for value in values)
+
+
+def _compact_extension_material_supported(
+    image: RGBImage,
+    room: Box,
+    x: int,
+    y: int,
+    dx: int,
+    dy: int,
+    learned: _ColorProfile,
+) -> bool:
+    """Both new half-cells must favour material over observed local exterior.
+
+    The existing parent must not dilute the proposed strip's colour evidence.
+    Equal/achromatic roles are ambiguous, not positive terrain. This is a
+    conservative extra-candidate gate, not a rewrite of native classification.
+    """
+    left = x + (MINI_BLOCK_SIZE if dx > 0 else 0)
+    top = y + (MINI_BLOCK_SIZE if dy > 0 else 0)
+    cells = (
+        (left, top),
+        (left + (MINI_BLOCK_SIZE if dy else 0),
+         top + (MINI_BLOCK_SIZE if dx else 0)),
+    )
+    material = _compact_material_chroma(learned)
+    compact_left = ((ROOM_WIDTH // GRID_SIZE - 19) // 2) * GRID_SIZE
+    compact_top = ((ROOM_HEIGHT // GRID_SIZE - 13) // 2) * GRID_SIZE
+    for a, b in cells:
+        outer_x, outer_y = a + dx, b + dy
+        # The compact capture, not its padded canvas, owns these RGB samples.
+        if not (compact_left <= outer_x <= compact_left + 19 * GRID_SIZE - MINI_BLOCK_SIZE
+                and compact_top <= outer_y <= compact_top + 13 * GRID_SIZE - MINI_BLOCK_SIZE):
+            return False
+        inside = _compact_material_chroma(
+            _patch_color_profile(image, room, a, b, MINI_BLOCK_SIZE)
+        )
+        outside = _compact_material_chroma(
+            _patch_color_profile(image, room, outer_x, outer_y, MINI_BLOCK_SIZE)
+        )
+        if sum((v - m) ** 2 for v, m in zip(inside, material)) >= sum(
+            (v - o) ** 2 for v, o in zip(inside, outside)
+        ):
+            return False
+    return True
+
+
+def _recover_adaptive_compact_continuous_blocks(
+    detections: list[Detection],
+    native_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+    background: tuple[int, int, int],
+    learned: _ColorProfile,
+) -> list[Detection]:
+    """Propose one observed half-tile extension of an original coarse block.
+
+    Require a coherent complete 48x32/32x48 RGB envelope and independent new-
+    strip material evidence. This does not relax isolated-tile closure, delete
+    overlaps, infer missing pixels from padding, or use generated teachers.
+    """
+    parents = [d for d in native_blocks if d.kind == "compact_adaptive_block"
+               and d.x % GRID_SIZE == 0 and d.y % GRID_SIZE == 0]
+    occupied = {
+        (d.x + a, d.y + b)
+        for d in detections if d.type_id in (OBJ_BLOCK, OBJ_MINI_BLOCK)
+        for a in (range(0, GRID_SIZE, MINI_BLOCK_SIZE) if d.type_id == OBJ_BLOCK else (0,))
+        for b in (range(0, GRID_SIZE, MINI_BLOCK_SIZE) if d.type_id == OBJ_BLOCK else (0,))
+    }
+    seen: set[tuple[int, int]] = set()
+    extra: list[Detection] = []
+    contours = None
+    pixel_pitch = (ROOM_WIDTH / room.width, ROOM_HEIGHT / room.height)
+    compact_left = ((ROOM_WIDTH // GRID_SIZE - 19) // 2) * GRID_SIZE
+    compact_top = ((ROOM_HEIGHT // GRID_SIZE - 13) // 2) * GRID_SIZE
+    for parent in parents:
+        for dx, dy in ((16, 0), (-16, 0), (0, 16), (0, -16)):
+            x, y = parent.x + dx, parent.y + dy
+            if (x, y) in seen:
+                continue
+            seen.add((x, y))
+            if all((x + a, y + b) in occupied for a in (0, 16) for b in (0, 16)):
+                continue
+            left, top = min(x, parent.x), min(y, parent.y)
+            width, height = GRID_SIZE + abs(dx), GRID_SIZE + abs(dy)
+            if (left < compact_left + 4 + pixel_pitch[0] * .5
+                    or top < compact_top + 4 + pixel_pitch[1] * .5
+                    or left + width > compact_left + 19 * GRID_SIZE - 4 - pixel_pitch[0] * .5
+                    or top + height > compact_top + 13 * GRID_SIZE - 4 - pixel_pitch[1] * .5):
+                continue
+            colors = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            if (_compact_foreground_ratio(colors, background) < .20
+                    or _compact_red_ratio(colors) >= .925):
+                continue
+            profile = _compact_material_chroma(
+                _patch_color_profile(image, room, x, y, GRID_SIZE)
+            )
+            material = _compact_material_chroma(learned)
+            if math.sqrt(sum((v - m) ** 2 for v, m in zip(profile, material))) > 22:
+                continue
+            if _classify_block(_patch_features(image, room, x, y, GRID_SIZE)).score < .30:
+                continue
+            if not _compact_extension_material_supported(image, room, x, y, dx, dy, learned):
+                continue
+            if contours is None:
+                from scripts.source_contours import SourceContours
+
+                contours = SourceContours(image, room)
+            if not _compact_rectangle_contour_closed(
+                contours, left, top, pixel_pitch, width=width, height=height
+            ):
+                continue
+            extra.append(_geometry_detection(
+                "compact_continuous_block", OBJ_BLOCK, x, y, .84, image, room, GRID_SIZE
+            ))
+    return extra
 
 
 def _compact_foreground_ratio(

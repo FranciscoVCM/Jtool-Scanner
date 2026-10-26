@@ -6,6 +6,29 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Newest bounded improvement also recovers two continuous16x32 solid strips on
+NANG131r using legitimate overlapping blocks, not blanket overlap deletion.
+Only original coarse source-material parents propose; require one coherent
+48x32/32x48 RGB envelope and independent new-strip material versus observed
+exterior. Brightness-centered RGB prevents fractional border-sampling alias;
+achromatic/unknown/padded ambiguity abstains. No game IDs, reference answers,
+new dependency/selector or changes to native/isolated-phase classification.
+
+Actual173->175objects: fixed structure errors3->1,missing1536->512pixels,
+excess0,all old objects/metadata/order retained. Third strip/other errors remain.
+Main whole/all2delta QA;135r ENTIRE154-object negative unchanged.10new portable
+methods,57affectedHOST methodsPASS (notfullsuite),17actual current compact whole
+scans/16ordered maps unchanged. Original41/601/139/CN7mask/16pass, with explicit
+unchanged native-branch carries, NOT44freshwholes. FTFA926/928/noextras-shifts-
+wrong; Flames254/42extra/19miss/20shift/2wrong. Earlier five support gains retained.
+Eight valid quietAC ABBA samples:131r+1.04%,135r-1.61%,bothPASSpreferred5; not
+a speedup claim. Audit95 retains71rows/zeroapprovals. Reserve138r is unchanged
+at9missing solid cells/0excess; no reserve success. All6original gates/finalstable
+71+16 remainOPEN. Publication/app parity is recorded separately. More detail in
+the progress/next-thread documents; existing saved projects are not overwritten.
+
+The previous maintained checkpoint below remains preserved:
+
 Latest maintained improvement: adaptive compact block material now checks
 isolated16px phases, requiring four coherent RGB rectangle sides and known
 source pixels. This recovers3 real supports on NANG128r and2 on NANG130r while

@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Two continuous solid strips recovered without sacrificing old geometry
+
+NANG131r exposed a different cause: a16px-wide solid extension needs a legitimate
+overlapping32px block, which ordinary distance deduplication discards. The new
+compact post-dedup candidate pass uses ONLY original coarse material-supported
+parents, never emitted phases or recursive hypotheses. It requires one coherent
+48x32/32x48 RGB envelope and independent evidence for BOTH new half-cells against
+observed local exterior. Padding/unknown pixels cannot supply background truth.
+The isolated-tile gate, native classification and eight selectors stay unchanged.
+
+Parent-diluted average colour plus outer contours initially invented background
+blocks; that prototype is rejected/preserved. A second source-local role check
+rejects those proposals. Centering RGB by average brightness fixes a fractional
+border-sampling alias without changing the contour threshold or erasing colour.
+Achromatic material/background ambiguity abstains; this is not universal texture
+or sprite recognition and does not justify a full grayscale second scan.
+
+Actual maintained NANG131r173->175objects restores TWO source-confirmed16x32
+strips: fixed structure errors3->1, missing1536->512pixels, excess0, all old
+objects/metadata/order retained. Nonunique block packing is measured as solid
+occupancy, not duplicated tiles. The third strip and nongeometry errors remain.
+Main reviewed both whole maps and all2deltas. NANG135r's ENTIRE154-object map
+is unchanged; its real thin platform is not filled with an invented full block.
+
+Ten new portable methods cover four directions, palette/background/polarity/
+brightness, fractional/double capture, holes, minis, emitted teachers, occupied
+mini coverage and unknown evidence.57affected methods pass on normalHOST; not
+fullsuite. All17 affected compact inputs received actual current whole scans
+(14canonical+3tracked controls);16ordered maps unchanged. Full prior raw
+equality is asserted only where that prior raw exists, not inferred from counts.
+
+Original41/601minis/139terrain/CN3-7mask/16controls pass, using these actual compact
+outputs plus explicit unchanged native-branch AST carries, NOT44fresh wholes.
+All16 postscan metrics recomputed: FTFA926/928/0extras-shifts-wrong; Flames
+254exact/42extra/19miss/20shift/2wrong. Earlier five compact supports remain intact.
+QuietAC ABBA2/mode/source, all8 full integrity checks pass: NANG131r
+24.095->24.344s(+1.04%), NANG135r19.865->19.546s(-1.61%). Preferred5%gate passes;
+no10%waiver or speedup claim. No new dependency, flag, game/hash/answer lookup.
+
+Frozen reserve NANG138r remains ENTIREequal188objects: complete105-cell source
+mask still9missing cells/9216pixels,0excess. No reserve success or label tuning.
+Audit95 retains71 conservative rows/zero approvals; all6original gates and final
+stable71+16 remainOPEN. Next investigate long-bar material/occlusion ownership
+with separate development evidence, not a weakened gate to force the reserve.
+Old partial/compound cost holds remain unchanged. Publication/app parity is
+recorded separately; saved user projects are not silently regenerated.
+
 ## 2026-10-26 — Five real compact supports recovered; sub-1% measured overhead
 
 A different upstream cause, not another partial-recovery timing variant, is

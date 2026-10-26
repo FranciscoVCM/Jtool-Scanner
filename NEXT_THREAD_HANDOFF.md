@@ -13,7 +13,61 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: maintained compact phase repair — five source-correct blocks
+### Latest continuation: continuous compact strips — two additional verified recoveries
+
+This supersedes next-action wording below. Read GOAL_PLAN in full, TOP active
+note and audit95. Same main checkout/originalACTIVEgoal; do not resweep baseline
+or image archive. Current bounded repair is not all71 completion.
+
+New compact post-dedup candidates use ORIGINAL coarse source-material parents
+only, coherent48x32/32x48 RGB envelopes and independent material/exterior role
+for BOTH new half-cells. Brightness-centered RGB fixes fractional border alias;
+no contour waiver, unknown/padding-as-background, emitted teachers or recursive
+extensions. Native classifier/isolated-phase gate/eight flags/dependencies stay.
+Achromatic ambiguity abstains. The naive parent-diluted prototype invented
+background blocks and was rejected; failed receipts remain preserved.
+
+FINAL NANG131r173->175objects: two real16x32 strips, fixed complete errors3->1,
+missing1536->512pixels/excess0, ALLoldobjects/metadata/order retained. Third strip
+and nongeometry errors remain. Main whole/ALL2delta QA carried by ENTIRE final
+raw/source/render equality.135r ENTIRE154-object control unchanged; real thin
+platform not converted to a full block.10new public portable methods;57affected
+methodsPASSnormalHOST,notfullsuite.692all17affectedcompact ordinary whole scans
+(14canonical+3trackedcontrols);16orderedmaps unchanged. Historical full raw only
+exists for a subset; do not call ordered/count equality full metadata equality.
+
+696original41/601minis/139terrain/CN7mask/16PASS: actual compact whole outputs
+plus explicit native25x19/default-equivalent helper AST carries, NOT44freshwholes.
+16metrics recomputed, FTFA926/928/0extras-shifts-wrong; Flames254/42extra/19miss/
+20shift/2wrong. Earlier128r3/130r2 support recoveries retained.695quietAC ABBA
+two/mode/source,all8fullintegrityPASS5:131r24.094922->24.344440s(+1.03556%),
+135r19.865178->19.545930s(-1.60708%). No10%waiver or speedup claim.
+
+Reserve138r candidate frozen before evaluation, independently scored after:
+105sourcecells,9missingcells/9216pixels,0excess; ENTIRE188objects equal670.
+Producer's reserve_successFalse placeholder is NOT the proof;697complete-mask
+postscan evaluation is. No reserve success/tuning. Audit95 all71/zeroapprovals;
+finalstable71+16/original3rooms2families/reserve/8positiveAND4false-corrections
+and all6originalgates remainOPEN. No broad new-tileset/sprite guarantee.
+
+Read697checkpoint/700publication supplement for exact currentGit/app state,
+not older27980/97bd9ba below. Only scanner.py,new test_compact_block_continuity.py
+and five publicdocs may be staged. All source/corrections/JMaps/private indexes/
+artifacts stayignored. Source archive691 preserves pre-port scanner byte-for-byte.
+689sandbox atomicreplace error preserved;690 identical host evaluation succeeds,
+no detector/environment workaround. Failed684/685/686 scale tests led to an
+actual brightness-normalized candidate fix, not weakened/removed tests.
+
+NEXT different bounded cause: long/striped solid material and occlusion/alias
+ownership using separately frozen development structures. Third131r strip and
+138r long bars remain; do not force them by relaxing existing gates or tune from
+reserve scores. Preserve minis/real embedded spikes/old five supports/nongeometry.
+Old631/638partial latency variants CLOSED; private partial8/compound17 stillOFF.
+No new user images required for the initial trace. Rescan in app to use changes;
+saved projects remain untouched. All research workers should be terminal before
+publication/deployment; verify process/app/source fingerprint from700.
+
+### Previous continuation: maintained compact phase repair — five source-correct blocks
 
 This supersedes older next-action/partial/body-reuse instructions below. Read
 GOAL_PLAN IN FULL, TOP ignored active note, audit94 and current compact checkpoint/

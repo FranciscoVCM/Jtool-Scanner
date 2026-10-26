@@ -167,6 +167,20 @@ all8 output/provenance checks pass), not a speedup claim. Audit94 still has zero
 room approvals; NANG138r's9missing solid cells and other known errors remain.
 See current progress/handoff for exact test/protection and compatibility scope.
 
+The following compact continuity repair permits legitimate overlapping blocks
+for source-supported narrow solid extensions. Original coarse material parents,
+one coherent48x32/32x48 RGB envelope and BOTH new half-cells' local material/
+exterior role are required. Brightness-centered RGB handles fractional border
+sampling; achromatic/unknown/padded ambiguity abstains, with no native-classifier
+or isolated-phase gate changes. NANG131r gains two real16x32 strips: fixed errors
+3->1,missing1536->512pixels,excess0,all old objects/metadata retained. Third strip
+and other room errors remain.17affected compact whole scans/57focused tests pass;
+16ordered maps unchanged,41original groups and16exact controls protected. QuietAC
+whole paired cost+1.04%/-1.61% on131r/135r,all8integrity checksPASSpreferred5,
+not a speedup claim. Audit95 has zero room approvals/reserve138r remains unresolved.
+Run new portable tests with `python -m unittest tests.test_compact_block_continuity`.
+No new dependencies/flags or arbitrary-tileset guarantee; see progress/handoff.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and
