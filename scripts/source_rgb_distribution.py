@@ -145,7 +145,24 @@ class SourceRGBDistribution:
                 self._palette_colors = tuple(dict.fromkeys(
                     color for group in (self.parents, self.background)
                     for row in group for color in row.palette))
-            distances = {color: _distance2(rgb, color) for color in self._palette_colors}
+                self._integer_rgb_palette = all(
+                    type(color) is tuple and len(color) == 3
+                    and all(type(channel) is int for channel in color)
+                    for color in self._palette_colors)
+            if (type(rgb) is tuple and len(rgb) == 3
+                    and all(type(channel) is int for channel in rgb)
+                    and self._integer_rgb_palette):
+                # Source pixels are integer RGB. Python integers do not overflow,
+                # so these three products/sums are exactly the generic squared
+                # distance, without millions of per-channel generator calls.
+                # Other iterables/nonintegers retain the original generic order.
+                red, green, blue = rgb
+                distances = {}
+                for color in self._palette_colors:
+                    dr, dg, db = red - color[0], green - color[1], blue - color[2]
+                    distances[color] = dr * dr + dg * dg + db * db
+            else:
+                distances = {color: _distance2(rgb, color) for color in self._palette_colors}
             self._distances[rgb] = tuple(tuple(min(distances[color] for color in row.palette)
                 for row in group)
                 for group in (self.parents, self.background))

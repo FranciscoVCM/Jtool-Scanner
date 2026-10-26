@@ -13,6 +13,67 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: exact RGB arithmetic checkpoint; spans remain PRIVATE/OFF
+
+This supersedes next-action/runtime wording below. Read GOAL_PLAN fully, TOP
+active note and audit97. Same main/originalACTIVEgoal, no archive/baseline sweep.
+Maintained change is ONLY scripts/source_rgb_distribution.py::_rgb_distances:
+native built-in integer tuples/palette tuples use EXACT Python integer products/
+sums; floats/bools/subclasses/other iterables/lengths preserve generic order.
+No predicate/threshold/teacher/flag change. Other runtime bytes/AST unchanged.
+This leaf is UNREACHED in current ordinary selectors (deferred platform path
+disabled), so do NOT claim new ordinary accuracy or app scan speed from it.
+
+Nine new public arithmetic methods;63relevant publicPASS/notfullsuite. Two real
+non-tuple prototype bugs were found by added tests and fixed by FINALtuple
+guards, not hidden;752pre-edit/757pre-guard bytes and failure preserved. Six
+private cache equivalence methods/648material decisions/6240index checks and
+nine private platform-identity methodsPASS. Final helper760serialABBA over ALL
+21198source RGBs: ENTIREdistance vectors equal, median11.357572->4.799265s.
+This is NOT controlled whole latency/5%/10%pass or ordinary app acceleration.
+
+735cache/744bound-index scheduling preserve ALLsource decisions.740/748are
+source-only rebuilds, not fresh wholes.743C19actualoriginalcontext reuse builds
+4->4,hits2->5;743Irkara harness wrongly demanded context for extended frame.
+Preserve that failure, do not relax frame guard.741Halls4provisional platform
+control had NONE;742corrects scope.749actual3upstreams/751verification: C19
+matches reviewed experiment; directK3-ex-Hades366/both reference platforms and
+extendedIrkara89250/one platform ENTIREunchanged/exactmetricsunchanged. These
+are ABSTENTIONS (K3no cohort/Irkaraunsupported frame), not classifier wins.
+
+FINAL761actualC19upstream with maintained tuple-guard arithmetic: ordinary255
+ENTIREequal baseline; rebuilt ALL235phases/64fullposeproofs/276raw and four
+source/JMap/JTool/blend artifacts equal726reviewed replay. No extra complete
+material pass.22experimentalblocks/1confirmedfalseplatform correction still
+gives fixed5structuremissing9115->0,negative40unchanged,0loss/newnegative.
+Exact editor origins NOT certified, full room remainsMAJOR. No new sourceQA
+claim beyond ENTIREraw/source/artifact equality to main-reviewed728/729/717.
+Spans/packing/ownership remainPRIVATE/OFF; they are not the maintained fix.
+
+759re-evaluates original41/601/139/CN7mask/16 through explicit unchanged-default
+disabled-leaf compatibility,NOT44fresh scans;all16metrics recomputed. FTFA926/
+928/noextras-shifts-wrong;Flames254/42extra/19miss/20shift/2wrong.753missing
+preflight harness input preserved;756/759supply existing unchanged input.
+763seals evidence/audit97all71/zeroapprovals. App32516NEW (old25900positively
+identified/stopped),37helpers unchanged, root/health/actualordinaryscanHTTP200,
+loaded==disk fingerprint52b2319baa720186ed70cdc83dcfbf71c2a9187cda366845a0ce1bb306e39ef8.
+762ENTIREactual255ordinaryproject==CLI, not private276. Verify publication
+supplement/TOP active note for exact finalGit; all research workers TERMINAL.
+
+NEXT: substantially reduce source cohort/contour/query work, or change source
+seeding cause if profiling shows the current design cannot meet whole cost.
+The exact bounds/index conserved decisions but did NOT materially change
+diagnostic finite-querytime(~14.08->13.66s); stop promoting that microvariant.
+750profile identifies RGBpalette and contour/cohort work. Integer optimization
+helps, but FINAL diagnostic source stages still~8.70scohorts/10.71squeries/
+2.00sregistration before consumer/export work. NOT controlled latency and NOT
+ready to enable; no10%waiver/cost-pass. Prefer existing ORIGINAL scan context/
+exact direct-frame evidence reuse, not duplicate complete material/contour work.
+Require real positive transfer/independent reserved success, all41/16/all-delta
+QA and quietAC whole comparisons before any activation. All original6gates/
+finalstable71+16OPEN. Old631/638partial variants CLOSED. Do not rerun identical
+wholes merely to repair already-understood harness representation errors.
+
 ### Latest continuation: source-span identity evidence; efficiency/transfer next
 
 This supersedes next-action wording below. Same checkout/originalACTIVEgoal.

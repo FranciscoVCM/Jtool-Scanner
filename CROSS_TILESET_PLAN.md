@@ -1,5 +1,33 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): exact RGB helper optimization, not new room accuracy
+
+Maintained source RGB palette distances now use exact arbitrary-precision
+integer arithmetic for native integer tuples; ALLother inputs keep the old
+generic path/order. Nine new public methods/63relevant methodsPASS,not fullsuite.
+Genuine non-tuple regressions found during prototyping are fixed/preserved.
+Six private cache and nine platform-identity methods alsoPASS. No thresholds,
+colour information, teachers, source semantics, dependencies or selectors change.
+
+ALL21198source-colour distance vectors equal in serial helperABBA; median
+11.357572->4.799265s. Helper-only/power-unqualified, NOT whole speed or5/10%pass.
+The helper is UNREACHED in the ordinary default. App geometry remains unchanged;
+the source-span prototype staysPRIVATE/OFF pending substantive whole-cost work.
+
+Final actual C19source rebuild retains255ordinary objects, then privately
+reproduces235phases/64full proofs/276map/source-JMap-renders. No new material
+builds(4->4). Earlier22blocks/1falseplatform gain remains experimental; editor
+poses uncertified/roomMAJOR. Actual K3both-platform366 and Irkaraone-platform250
+controls entirely unchanged; both are ABSTENTION, not positive new recognition.
+No relaxed frame/source gates. Original41/601/139/CN7mask/16PASS via explicit
+unchanged-default leaf carries,not44freshwholes;16metrics recomputed unchanged.
+
+App32516root/health/actualscanHTTP200 loaded==disk/ENTIREordinaryproject==CLI.
+Audit97all71/zeroapprovals, original6gates/finalstable71+16OPEN. Next substantial
+profile-backed source cohort/contour/query reduction or improved source seeding,
+then actual positive transfer/reserve/all protections/controlledAC whole cost.
+Do not loop on low-yield exact-index tweaks or reopen old partial cost variants.
+
 ## Latest (2026-10-26): continuous source identity research, NOT app activation
 
 New causal evidence on CN3-19: isolated32px queries miss continuous solid bodies;

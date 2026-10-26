@@ -4,6 +4,55 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Exact RGB arithmetic accelerated; experimental recognition stays off
+
+Profiling the source-span prototype identified millions of generic RGB palette
+distance/component-generator calls. The maintained helper now specializes ONLY
+built-in integer RGB tuples/palette tuples: three arbitrary-precision squared
+differences/sums, exactly the old integer result. Floats, bools, subclasses,
+other iterables and other tuple lengths retain generic arithmetic/order.
+No thresholds, palettes, teachers, object rules, dependencies or flags change.
+
+Nine new public methods cover source palettes/fractional captures, arbitrary
+integers, floating rounding/types, group minima/order, cache reuse and legacy
+iterables.63relevant public methodsPASS,not fullsuite. Two adversarial tests
+exposed genuine non-tuple prototype regressions; the final tuple guard fixes
+them, with pre-fix bytes/failures preserved. Six private cache-equivalence and
+nine private platform-identity methods also pass; no removed/relaxed assertions.
+
+Serial helperABBA over ALL21198source colours produces ENTIREequal distance
+vectors: median11.357572->4.799265s. This is helper-only/power-unqualified,
+NOT whole-scan speed, ordinary app acceleration or a5%/10%cost qualification.
+The changed method is UNREACHED under current ordinary selectors. The new
+source-span correction remainsPRIVATE/OFF; ordinary app accuracy is unchanged.
+
+Final actual experimental C19scan retains ENTIREordinary255-object default,
+then rebuilds ALL235physical phases/64complete selected pose proofs/276raw
+and source/JMap/two renders equal reviewed replay. The22experimental solid
+recoveries/1falseplatform correction and complete mask gains are unchanged.
+Actual original context reuse adds no material builds(4->4,hits2->5).
+Native origin uncertainty/MAJOR remaining room errors remain explicit.
+
+Actual K3-ex-Hades366map/both reference platforms and extended Irkara89250map/
+one reference platform are unchanged, including full exact-reference details.
+Both ABSTAIN: K3has no qualified cohort; Irkara uses an unsupported extended
+frame. They are protection evidence, NOT positive classifier generalization.
+The provisional Halls4platform control was corrected before testing: it exports
+none, so could not supply that positive evidence. No frame guard was relaxed.
+
+Original41/601minis/139terrain/CN7mask/16PASS; all16metrics recomputed through
+explicit unchanged-default/disabled-leaf compatibility carries,NOT44fresh scans.
+FTFA926/928/noextras-shifts-wrong;Flames254/42extra/19miss/20shift/2wrong.
+App32516root/health/actualscanHTTP200,loaded==disk; ENTIREordinaryproject==CLI.
+Audit97all71/zero approvals; no new default geometry gain/room approval.
+
+Whole-span search is still too much unqualified work to enable. Exact bound/
+index experiments preserved decisions but yielded little diagnostic benefit;
+do not promote them as a speed win. Next profile-backed target is substantial
+cohort/contour/query-work reduction or a better source-seeding mechanism, with
+real positive transfer/reserve, all protections and controlledAC whole cost
+before activation. All6original gates/finalstable71+16 remainOPEN.
+
 ## 2026-10-26 — Source-span/platform identity research; not activated
 
 CN3-19 exposes two related causes. Continuous solid bodies lack internal32px

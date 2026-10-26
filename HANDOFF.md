@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Newest maintained work optimizes exact integer RGB palette arithmetic only.
+Nine new public methods/63relevant tests pass,not fullsuite. Source-colour
+helperABBA preserves all21198distance vectors (median11.358->4.799s), NOT a
+whole-scan speed claim. The changed leaf is unreachable under current ordinary
+selectors; no new default geometry improvement. Experimental source spans remain
+PRIVATE/OFF pending meaningful cost reduction and positive transfer/reserve checks.
+Final actual source decisions/maps remain equal; original41/16protections and
+all16recomputed metrics unchanged. App32516root/health/actualscanHTTP200 and
+loaded==disk; entire ordinaryproject==CLI. Audit97all71/zeroapprovals, all6goal
+gates stillOPEN. Current details in development/next-thread documents below.
+
 Subsequent research (NOT deployed) now identifies continuous solid spans and a
 framed-tile/platform impostor on CN3-19 from independent original source pixels.
 A fresh experimental upstream scan recovers22blocks/removes1confirmedfalse
