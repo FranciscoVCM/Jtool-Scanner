@@ -41,7 +41,14 @@ the original41 groups/601 miniblocks/139 terrain footprints/16 exact controls.
 Three-source quiet-AC comparisons stay within the5% cost gate;233 affected tests
 pass, not the full suite. Standard scanning is unchanged. Missing proposals and
 existing false/shifted/overlapping objects can still remain; no room is approved.
-Run caller tests with `python -m unittest tests.test_source_rejected_primaries tests.test_source_primary_capture_sites tests.test_scanner_feature_profiles tests.test_source_phase_default_activation`.
+When an independently proved interior proposal wins before original-candidate
+recovery, it now retains that candidate's exact kind, score and image box.
+Only complete, explicitly known original-source proofs and genuinely new,
+non-retired full-spike keys qualify; pending candidates never teach the proof.
+This does not enable interior or compound detection. Those consumers remain
+disabled pending their separate accuracy and speed qualifications. The metadata
+change passes186 affected tests, not the full suite or a new16-control benchmark.
+Run caller tests with `python -m unittest tests.test_source_primary_metadata tests.test_source_rejected_primaries tests.test_source_primary_capture_sites tests.test_scanner_feature_profiles tests.test_source_phase_default_activation`.
 
 Interior artwork matching retains RGB but refuses to normalize residuals no
 larger than the conservative8-bit rounding bound into texture identity. A

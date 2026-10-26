@@ -26,6 +26,33 @@ def rejected_primary_candidates(before, after):
     return tuple(d for d in before if d not in after and _PRIMARY.get(d.type_id) == d.kind)
 
 
+def source_proved_primary_metadata(candidates, qualified_keys):
+    """Select exact original metadata AFTER an independent source proof passed.
+
+    This does not evaluate or emit geometry. Callers may supply only new,
+    non-retired full-spike poses already proved from the original source scene;
+    pending candidates never enter that proof's teacher set.
+    """
+    values = tuple(map(tuple, qualified_keys))
+    if any(len(k) != 3 or k[0] not in _PRIMARY or any(type(v) is not int for v in k)
+           for k in values):
+        raise ValueError('Source-proved metadata needs integer full-spike keys')
+    keys = set(values)
+    if not keys:
+        return {}
+    pending = {}
+    for detection in _snapshot(candidates):
+        key = detection.type_id, detection.x, detection.y
+        if any(type(v) is not int for v in key):
+            raise ValueError('Source-proved candidate needs integer full-spike metadata')
+        if _PRIMARY.get(detection.type_id) != detection.kind:
+            raise ValueError('Source-proved candidate is not an original primary full spike')
+        if key in pending and pending[key] != detection:
+            raise ValueError('Ambiguous original primary metadata for one pose')
+        pending[key] = detection
+    return {key: pending[key] for key in keys if key in pending}
+
+
 def recover_rejected_primaries(detections, candidates, original_detections, *,
                               source_frame, source_filled_evidence, source_grid,
                               retired=()):

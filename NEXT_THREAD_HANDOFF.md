@@ -13,7 +13,55 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: both whole-cost gates HOLD; bounded evidence-reuse diagnosis next
+### Latest continuation: metadata arbitration fixed; current closed-body qualification next
+
+This subsection supersedes older continuation instructions below. Read original
+GOAL_PLAN fully, TOP DEFERRED_VETO_ACTIVE_v1.md, audit91,575/578/579/580 and final
+publication supplement. Continue existing main; original goal remainsACTIVE.
+
+Latest runtime changes ONLY scanner.py's guarded metadata selection and ONE new
+source_rejected_primaries helper. Complete accepted interior proof/new key can
+select exact discarded original Detection AFTER source qualification. All8flags
+literalTrue/unknownliteralFalse, exactint keys beforededup, original kind and
+ambiguity validated. Pending never teach; retired/surviving/incomplete/unknown/
+primaryOFF/unqualified cases protected. All8defaults unchanged: primary/phase/
+repeat/captureON, interior/compound/deferred/frameOFF. No new object detector,
+threshold, fixture or dependency; code is no longer byte-identical to5bec112.
+
+Sixteen new tests plus affected packet186 PASS in normalHOST environment, NOT
+fullsuite/41/16 requalification. Initial577 two sandbox OS-temp PermissionErrors
+preserved;578 identical tests pass without skips/source hacks. 576source checker
+saved correctC31raw but tuple-vs-JSON-key comparison failed;579 only fixes that
+postscan comparison/new outputs. Actual source frames/pending are mandatory:
+C31 has physicalroom0,0,981,748 / extent-3,1,984,748 even though incomingextentNone.
+572empty recovery-list access and573missing-frame baseline failure are preserved,
+not detector regressions. Never guess away an explicit frame or missing pending.
+
+579 current source checks: PRIVATE closed-only C31+realDOWN416128/no other delta,
+C19ENTIRE unchanged, G2ENTIRE default restored (oldinterior candidate stole its
+original RIGHT624128kind/score).580 full ordinary exports/project equality G2/C19;
+C31 raw/input/source/frame and reviewed469candidate/blend bytes match old468/470.
+Old candidateJMap/project never existed:580NEW reconstructed old expectations
+match too, NOT a historical export certificate/freshQA. No room approval.
+
+Separate565PRIVATE body pool:56611methods17scenes PASS,567sixsourceOFF/ONcases,
+1164 complete body/geometry proofs+12wholeconsumer comparisons PASS;568exports6/6.
+570actualAC denseABBA45.535356->48.888391s(+7.3636%), all4checks PASS, H3/G5UNRUN.
+Three-to-one instance reuse confirmed but stillHOLD; DO NOTport/activate it.
+551/559oldholds intact/no between-session ranking. Preport binding gaps also
+remain: any maintained context API must revalidate all old ctor provenance,
+never use global constructor patches. No unanswered question waives5%limit.
+
+NEXT: bound existing SourceClosedInterior proposal channel under current primaryON,
+preserving exactmetadata; source predicates/complete-edge/body guards unchanged.
+First actual whole cost on frozen dense/sparse inputs, then original44/41/601/
+139/16 protections and all-delta QA before any activation. Partial occlusions
+(e.g G2ceilingUP6416) are distinct; do not promise closed-body proof there.
+G5original17->13/23.53% stillFAIL25; other-family/reserve/finalstable71+16/all6
+goal gates OPEN. Audit91 keeps all71 conservative rows/zero approvals. App new
+ownedPID42820/root+apihealth200/newsourcea9af68b0...; verify actualPID/parity next.
+
+### Prior continuation: both whole-cost gates HOLD; bounded evidence-reuse diagnosis next
 
 Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit90 and551/554/555/556/557/559/561 in the
 ignored goal directory. Original GOAL_PLAN unchanged. Public runtime remains

@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Latest code fixes metadata arbitration, not room geometry or feature activation:
+a complete independently proved interior proposal at an original candidate's
+typed origin retains its exact kind/score/image box. Pending candidates do not
+teach; unknown/incomplete/retired/surviving/unqualified cases cannot select them.
+186 affected tests PASS, not fullsuite/new16-control qualification. Fresh current
+source checks preserve G2 ENTIRE default and C19 unchanged; private closed-body
+C31 still adds only the confirmed DOWN416128. That channel remainsOFF, so the
+default still misses it. Earlier source review carries by strict equality, not
+fresh visual QA; reconstructed old candidate JMap/project are labelled as new.
+Audit91 retains71 conservative findings/zero approvals. App reloaded on tested
+code; no default switches, source predicates, teachers or fixtures changed.
+
+Private shared-body reuse also preserves exact proofs/outputs but dense whole
+45.535->48.888s(+7.36%) fails5%; sparse/heavy sources explicitlyUNRUN. No pool
+port/activation. Preserve the earlier speed holds below; no between-session
+ranking or implied user speed waiver. Closed-body qualification remains next.
+
 Rectangle research is now cost-HOLD, NOT app-adopted. Quiet AC dense Golden2
 ABBA, two samples/mode: existing consumer43.105->46.736s(+8.42%); private
 unchanged-proof lazy schedule42.246->46.597s(+10.30%). All raw/input/export/

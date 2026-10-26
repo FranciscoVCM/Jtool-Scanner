@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): exact candidate metadata retained; closed-body channel still unbound
+
+Current source testing reproduced a general ordering defect: a valid interior
+proposal could replace an already-correct original spike's kind/score while
+keeping its JMap coordinates. A narrow arbitration fix retains the original
+Detection only after complete independent original-source proof, with explicit
+known pixels/new non-retired keys/typed metadata checks. No new teachers,
+thresholds, geometry or default switches. Interior/compound remainOFF.
+
+186 affected tests PASS (16new methods), not fullsuite/41/16 recertification.
+Current G2 ENTIRE default now survives interiorON research; C19 unchanged.
+C31's real DOWN416128 is reproduced by the existing private closed-body path;
+old source QA carries by full input/raw/frame/render equality, not fresh review
+or app adoption. Its default still misses that spike; ceilingG2UP6416 remains
+outside complete closed-body proof. No room or reserve approval.
+
+Shared-original body reuse also passed six source cases/1164 proof comparisons,
+but dense whole45.535->48.888s(+7.36%) remains HOLD; H3/G5 UNRUN. Do not port the
+private constructor pool or truncate backdrop witnesses. All three cost holds
+remain intact; five percent is still the limit. Audit91/all71/0approvals.
+
+Next bound the isolated closed-body proposal channel under CURRENT primaryON
+without metadata loss; early actual whole cost before broad controls, and all
+original protections before activation. No source-specific fixes or blind old
+profile reuse. Required reserve/other-family/final71+16/all6 goal gates OPEN.
+
 ## Latest (2026-10-26): valid speed holds; shared-original evidence next
 
 Both frozen compound experiments fail the5% quietAC whole-cost gate. Dense G2

@@ -3066,7 +3066,20 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
     if rejected or added:
         hollow = {tuple(row['key']) for row in diagnostics.get('source_hollow', {}).get('accepted', ())}
         filled = {tuple(row['key']) for row in diagnostics.get('source_filled', {}).get('accepted', ())}
-        new = [_geometry_detection('source_hollow_glyph' if (t, x, y) in hollow else
+        original_metadata = {}
+        if _SOURCE_INTERIOR_GLYPHS_ENABLED and recover_original_primaries:
+            # A complete interior proof can win before the later primary
+            # consumer. Keep its exact original score/provenance/image box;
+            # pending candidates located the pose but never taught the proof.
+            from scripts.source_rejected_primaries import source_proved_primary_metadata
+            required = ('passed', 'interior_appearance_recovery', 'complete_physical_source',
+                        'original_source_only', 'original_teachers_only', 'no_new_teachers',
+                        'no_retirement', 'native_hypothesis_unchanged')
+            qualified = {tuple(row['key']) for row in diagnostics.get('source_filled', {}).get('accepted', ())
+                         if all(row['evidence'].get(flag) is True for flag in required)
+                         and row['evidence'].get('unknown') is False} & added
+            original_metadata = source_proved_primary_metadata(rejected_primary_spikes, qualified)
+        new = [original_metadata.get((t, x, y)) or _geometry_detection('source_hollow_glyph' if (t, x, y) in hollow else
             'source_filled_glyph' if (t, x, y) in filled else 'source_material_size',
             t, x, y, .9, image, frame.extent if (t, x, y) in hollow | filled else result.room_box,
             16 if t == OBJ_MINI_BLOCK else 32)

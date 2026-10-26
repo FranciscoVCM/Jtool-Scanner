@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Preserve original metadata when independent interior proof wins first
+
+A fresh current-profile closed-body replay exposed a real ordering conflict:
+Golden2's already-restored RIGHT624,128 was emitted earlier as a synthetic
+source_filled_glyph/.9, replacing its original spike_right/.746261 metadata.
+Geometry alone hid that regression. The generic arbitration now selects the
+EXACT original Detection only after a complete independent interior proof has
+passed for a genuinely new, non-retired typed origin. All eight proof flags
+must be literalTrue and unknown literalFalse. Pending candidates never teach.
+Ambiguous metadata, malformed native keys, existing survivors, missing proofs,
+retirements, unqualified frames and explicitOFF retain their protections.
+
+No source predicate, teacher set, threshold, pose or default selector changes.
+The branch requires interiorON and qualified primary recovery; interior and
+compound remainOFF. Standard/default room geometry is unchanged. Sixteen new
+portable methods include real source proofs across four directions/two scales.
+186 affected tests PASS; not the full suite or a fresh41/16 qualification. The
+first sandbox packet hit two OS-temp permission errors; the identical packet
+passed with normal host permissions, without skips or implementation workarounds.
+
+Fresh source replays with actual pending inputs and capture transforms prove:
+G2 ENTIRE default restored; C19 ENTIRE unchanged; PRIVATE C31 adds only its
+confirmed DOWN416,128, without old metadata or nongeometry changes. C31's
+published default still lacks it. Strict raw/input/source/frame/render equality
+carries the earlier whole/sole-delta review, NOT fresh visual QA. Old candidate
+JMap/project were not saved; reconstructed expectations are explicitly labelled
+new, while candidate/blend bytes match the originally reviewed SVGs.
+
+Separate PRIVATE shared-body research passed11methods/17scenes, six source
+OFF/ON cases,1164 complete body/geometry proofs and12 full consumer comparisons;
+all six export sets matched. Actual three-to-one instance reuse is confirmed,
+but quietAC dense ABBA still costs45.535->48.888s(+7.36%), four valid samples.
+H3/G5 UNRUN after the hold. No pool port or activation; prior8.42%/10.30% holds
+are preserved, not ranked across sessions. Five percent remains the limit.
+
+Audit91 retains all71 conservative findings/zero approvals. The app is reloaded
+on tested code; publication verifies HTTP/source parity. Next qualify the
+isolated closed-body proposal channel under the current profile, with original
+metadata protected and early whole-cost checks; partial occlusions remain a
+different proof problem. Reserve/other-family/final71+16 and all6 gates OPEN.
+
 ## 2026-10-26 — Rectangle ownership cost gate held; published scanner unchanged
 
 Quiet AC serial ABBA completed for dense Golden2, two samples per mode. The
