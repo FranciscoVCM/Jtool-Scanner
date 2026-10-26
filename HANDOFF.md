@@ -4,7 +4,19 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-25
+## Current checkpoint — 2026-10-26
+
+Rectangle research is now cost-HOLD, NOT app-adopted. Quiet AC dense Golden2
+ABBA, two samples/mode: existing consumer43.105->46.736s(+8.42%); private
+unchanged-proof lazy schedule42.246->46.597s(+10.30%). All raw/input/export/
+project/cache/power/app-idle checks pass, but both fail5%; sparse Halls3/extra
+Golden5 explicitlyUNRUN. Different sessions do not rank the prototypes. Nine
+portable methods/23 comparisons and actual3-case proof/map parity pass; full
+input/raw/four-artifact/project equality carries all17 prior removal reviews,
+not new visual QA or full protections. One instrumented helper profile points
+to backdrop qualification work; next investigate validated scan-local ORIGINAL
+body-evidence reuse across consumers, without changing witnesses or predicates.
+Audit90 keeps all71 conservative rows/zero approvals. Runtime remains unchanged.
 
 Latest research, NOT an app change: the existing calibrated rectangle consumer
 removes17 source-confirmed false original blocks in actual current source-stage
@@ -13,8 +25,8 @@ Main and second reviewer inspected both wholes/all17 deltas; no visible true
 tiled-terrain loss. Halls3 is entirely unchanged, carried by exact artifact/input
 equality. G2central10 errors3->0 with all positives; lower37 still six errors.
 G5's original reserve17->13/23.53% STILL FAILS25%, with all33792 positives/33 tiles
-retained. Compound remainsOFF; whole cost and full protections are pending.
-Audit89 conservatively records this separately from the published outputs below.
+retained. Compound remainsOFF; whole cost nowHOLD and full protections pending.
+Audit89 records that earlier accuracy checkpoint; audit90 adds the cost evidence.
 
 The qualified discarded-original full-spike consumer is now enabled ONLY in
 Experimental source geometry, alongside the existing phase/repeat/capture

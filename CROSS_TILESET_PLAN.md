@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): valid speed holds; shared-original evidence next
+
+Both frozen compound experiments fail the5% quietAC whole-cost gate. Dense G2
+ABBA medians: existing consumer43.105->46.736s(+8.42%); private lazy-proof
+schedule42.246->46.597s(+10.30%). Two samples/mode, all eight complete output/
+input/export/project/cache/power/app-quiet checks PASS. H3/G5 explicitlyUNRUN
+after each hold. Different sessions are not a prototype speed ranking.
+
+Nine portable methods/23 cases and actual3-case source/proof parity pass; all17
+previously reviewed removals carry by full input/raw/four-artifact/project
+equality, not fresh visual reviews or new geometry gains. Original23.53% G5
+reserve remainsFAIL25; broad controls still unqualified. Compound staysOFF.
+
+One diagnostic-only helper profile locates substantial backdrop-body work.
+Next freeze validated scan-local ORIGINAL directional-body evidence reuse among
+backdrop/recovery/phase consumers, preserving full snapshot/frame/grid/class/
+texture-option identity and all teacher/proof semantics. Do not stop backdrop
+anchors at three: the old fit uses all eligible disjoint anchors. Reuse/savings
+are hypotheses, not results. No duplicate baseline/archive sweep or more unchanged
+cost repeats. Audit90 retains71 conservative rows/zero approvals; all6 gates OPEN.
+
 ## Latest (2026-10-25): competing rectangle ownership, not more add-only work
 
 Actual unchanged calibrated-consumer source-stage trials remove17 independently

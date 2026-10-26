@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-25. Continue in the existing repository at
+Updated 2026-10-26. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,38 +13,46 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
-### Latest continuation: source-verified rectangle ownership; cost before broad controls
+### Latest continuation: both whole-cost gates HOLD; bounded evidence-reuse diagnosis next
 
-Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit89,536/537/539 and542/545/546 in the
-ignored goal directory. Original GOAL_PLAN unchanged. Public runtime still
-primary/phase/repeat/captureON, compound/interior/deferred/frameOFF; no detector
-or fixture changed this research batch.534 already verified published5bec112,
-live origin equality/cleanGit/private indexes/app HTTP200/loaded-disk parity.
+Read TOP DEFERRED_VETO_ACTIVE_v1.md, audit90 and551/554/555/556/557/559/561 in the
+ignored goal directory. Original GOAL_PLAN unchanged. Public runtime remains
+primary/phase/repeat/captureON, compound/interior/deferred/frameOFF; NO detector,
+fixture, dependency or app-default change this batch. App24768 last root and
+api/health200/source8810dc92 parity; verify its actual state before future timing.
+All known accuracy/cost producers terminal; do not restart completed workers.
 
-Current calibrated compound source-stage actuals: G2 311->301 (-10 originals),
-G5 313->306 (-7), H3 ENTIRE171 unchanged. Every surviving ordered metadata,
-nongeometry and phase stays exact. Main AND independent reviewer VIEWED both
-wholes/ALL17 removal boards; no visible real orange-tile loss. H3 carries QA by
-ENTIRE raw/input/source/JMap/JTool/Blend/project equality, not a new visual review.
-G2 originalcentral10 errors3->0, all4096 positives; lower37 still6/28672positive.
-G5 originalreserve17->13/23.53% FAILS25, all33792 positive pixels/33 tiles retained.
-No new source-stage rule/threshold/model/teacher/palette/answer lookup. Prior
-legacy zero-removal reserve lacked calibrated module; preserve that old failure.
+551 actual serial quietAC ABBA: G2 medians43.105190->46.735812s,+8.4227%.
+559 separately frozen PRIVATE554 lazy-proof schedule:42.246469->46.596551s,
++10.2969%. Two samples/mode, all8 raw/meta/input/four-artifact/project/cache/AC/
+appquiet checks PASS. Both FAIL5%, H3/G5 explicitlyUNRUN. Preserve both negative
+results; no between-session prototype ranking, unchanged rerun or speed waiver.
+Private554 retains original veto/calibrated body, legacy fallback/dynamic owners,
+and legitimate lazy construction; skipped legacy diagnostics explicitly DEFERRED.
+555 portable9methods/23 comparisons PASS.556 actual G2/G5/H3 ENTIRE maps/actions/
+checked proofs/models equal;557 full input/raw/source/JMap/JTool/Blend/project
+equality carries prior17 QA, not freshvisualQA. First557 bookkeeping failure's
+partial G2 folder is preserved; new recovered folders carry successful exports.
 
-541 lost its tool host before sealing any case; PID14500 was authoritatively
-absent, old files preserved.542 SAME algorithm detachedPID8888 finished2/2;
-all producers now terminal.543 display preflight compared LF strings with CRLF
-bytes;545 fixes only that preflight/new paths, actual H3 four-byte-artifact
-checks staySTRICT. No needrerun completed537/542/539/546 or old baseline/archive.
+Accuracy remains PRIVATE G2ten/G5seven false rectangles removed, H3 unchanged.
+G2central10 errors3->0/4096positives retained; lower37 still6/28672positive.
+G5original17->13/23.53% FAILS25, all33792positive/33tiles retained. No new accuracy
+gain/room approval. Original44/41/601/139/16 under compound stillUNQUALIFIED.
 
-NEXT: prepare expected Golden5 exports for real paired WHOLE cost (G2/H3 exports
-already545, raw results537/542). Freeze current eight-selector profile: ONLY
-compoundFalse->True, all others fixed. Measure quietAC dense/sparse,2samples/mode,
-full ordinary raw/input/export/project equality. >5% HOLD, no helper-timing waiver.
-Use cost early to avoid wasteful broad-controls qualification of an expensive
-path; all original44/41/601/139/16 controls/affected tests still required before
-activation. Prior233 tests byte-compatible, not rerun/new fullsuite. Audit89 has
-zero approvals; original reserved/other-family/final71+16/six gates OPEN/ACTIVE.
+561 ONE actual-source helper cProfile terminalPASS with identical oldON proofs/
+output. About4.94s of10.92s INSTRUMENTED helper time is backdrop construction/
+68original body-support queries; not ordinary scan latency. Actual caller already
+reuses filled/block libraries: don't invent duplicate-constructor claims there.
+Code does construct directional-body evidence separately for backdrop, original
+candidate recovery and phase. NEXT freeze explicit scan-local ORIGINAL body
+reuse, validating same filled/frame/full metadata/grid/class/texture option.
+Prove actual same-snapshot reuse and full proof parity before runtime edits;
+no output teachers, shared mutable caller results or cross-source cache. Do NOT
+truncate calibrated backdrop anchors to three; old model uses all disjoint ones.
+If reuse is viable, portable tests/source equality/whole cost before broad
+controls/adoption; otherwise change causal work level, not days of microcaches.
+Audit90 retains71 conservative rows/0approvals. Prior233 affected tests remain
+byte-compatible, not rerun/fullsuite. All original6 gates/final71+16 OPEN/ACTIVE.
 
 ### Latest continuation: source-only original restorations; reduced partial domain next
 

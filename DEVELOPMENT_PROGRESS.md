@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Rectangle ownership cost gate held; published scanner unchanged
+
+Quiet AC serial ABBA completed for dense Golden2, two samples per mode. The
+existing compound consumer measured43.105->46.736s (+8.42%). A separately frozen
+private lazy-proof schedule measured42.246->46.597s (+10.30%). All eight samples
+passed complete raw/ordered metadata/input/source/JMap/JTool/Blend/project/cache,
+power and app-idle checks. Both experiments FAIL the5% speed gate; their different
+sessions do not establish a between-prototype speed ranking. Halls3 and Golden5
+were explicitly UNRUN after each dense hold. No unchanged rerun or speed waiver.
+
+The scheduling prototype changes no recognition predicate: original vetoes and
+complete calibrated proofs remain, full legacy fallback survives, and skipped
+legacy diagnostics are explicitly deferred rather than falsely negative. Nine
+portable methods/23 comparisons pass. Actual G2/G5/H3 source calls retain ENTIRE
+prior maps/per-key decisions and checked proofs, with original models unchanged.
+Full input/raw/four-artifact/project equality carries the prior17 removal reviews;
+this is NOT fresh visual QA, a new accuracy gain, full-suite or protection pass.
+
+One instrumented G2 compound-helper profile preserves the same output/proofs.
+Backdrop construction accounts for about4.94s of10.92s instrumented helper time;
+these are diagnostic, NOT ordinary scan times. Code inspection identifies
+separate directional-body evidence construction in backdrop, original-candidate
+recovery and phase consumers. Next investigate explicitly validated scan-local
+ORIGINAL evidence reuse, not another raster-order variant or truncated backdrop
+witness set. No saving or safe reuse is assumed before equality and cost checks.
+
+No implementation, fixture or app default changes. Compound remainsOFF; the
+published primary/phase/repeat/capture path is unchanged. Audit90 retains all71
+conservative rows/zero approvals, both speed holds and pending broad protections.
+Golden5's original23.53% reduction STILL FAILS25%; final71+16 and all six original
+goal gates remain OPEN/ACTIVE. Private experiments/output remain ignored.
+
 ## 2026-10-25 — Calibrated rectangle ownership: 17 source-verified research corrections
 
 The existing calibrated compound consumer now has actual current-source-stage
