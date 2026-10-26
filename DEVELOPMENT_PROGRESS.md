@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-26 — Pending partial recovery qualified for accuracy; final cost HOLD
+
+Runtime and the live app are unchanged from `dd691fd`. Validated original-body
+reuse passed76 host tests and complete proof comparisons but showed no useful
+benefit; all seven prototype files were preserved locally before reversing only
+those unshipped edits. A separate Golden5 closed-body transfer addedZERO objects
+and retained the ENTIRE result. Neither experiment is an adopted improvement.
+
+The existing PRIVATE pending-only partial caller reproduces four real32px spikes
+each on Golden2 and Golden5, preserving every old object/metadata/nongeometry.
+Forty-four current source cases qualify:41 fresh source-stage default/candidate
+replays plus3 strict current reuses, NOT44 fresh upstream scans. Original41
+groups,601 source miniblocks,139 terrain footprints,CN3-7's168448-pixel mask and
+all16 exact controls pass. FTFA926/928 with0extras/shifts/wrong; Flames254exact/
+42extra/19miss/20shift/2wrong. The initial aggregate evaluator lacked Counter;
+the failed receipt remains intact, and only that import was repaired using
+already saved results. No detector workaround or extra scan hid the error.
+
+Eight portable methods/19 scenes pass. Exact first-compatible witness streaming
+and necessary-parent-first scheduling retain COMPLETE parent proofs/candidate
+raws across all44 helper replays, without changing teachers/predicates/thresholds.
+The earlier streamed whole G5 result82.517->90.882s(+10.137%) remains HOLD10.
+One separately predeclared FINAL combination completed eight valid ordinary
+AC ABBA samples (two/mode/source): G5 80.765->87.024s(+7.750%), G2
+62.992->69.395s(+10.166%). All raw/input/four-artifact/project/cache/runtime/
+HEAD/power/app-idle checks pass, but G2 exceeds10; C19 is explicitlyUNRUN.
+No rounding, outlier deletion, unchanged retry or cross-session speed ranking.
+STOP further latency variants for this batch; no port or partial activation.
+
+Main freshly reviewed both actual latest whole outputs andALL8 delta boards.
+The eight additions fit the source, including partly wall-hidden ordinary32px
+bodies, but substantial false solids/opposing/pose/water/platform errors remain.
+These are previously known PRIVATE recoveries, not eight new discoveries or app
+gains. G5's original fixed reserve17->16errors/one correction/5.88% FAILS2/25;
+three other additions lie outside it. Do not combine separate untested experiments.
+Audit93 retains all71 conservative findings/zero approvals; private images,
+receipts and NumPy2.3.5 experiment dependency remain ignored. No full unittest
+suite or final stable71+16 regeneration was run in this batch. All6 gates OPEN.
+
+Next causal batch: trace a complete NANG128r missing-support structure using
+its sealed current capture, freeze surrounding positives/negatives before any
+predicate change, and investigate the different material family rather than
+another scheduling variant. Keep NANG138r reserved for a later pre-frozen,
+compatible no-tuning transfer and compactNANG130r protected. No archive resweep.
+
 ## 2026-10-26 — Conditional10% investigation; exact texture work reuse, not correction adoption
 
 The user approved investigating10% whole-scan overhead for a genuine useful

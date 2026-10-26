@@ -6,6 +6,30 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-26
 
+Latest follow-up is an accuracy-qualified PRIVATE partial-recovery experiment,
+not an app/code change. Forty-four source cases (41 fresh source-stage replays
+and3 strict current reuses, not44 fresh upstream scans) pass original41 groups,
+601miniblocks,139terrain footprints,CN3-7 mask and16 exact controls. FTFA926/928
+with0extras/shifts/wrong; Flames254exact/42extra/19miss/20shift/2wrong. Eight
+portable methods/19 scenes and all44 complete combined-helper proof/raw checks
+pass. A Counter-only postprocessing failure was preserved and repaired from
+saved results without changing scanner code or rescanning.
+
+Eight previously known private spikes (four each G2/G5) fit fresh actual latest
+whole/every-delta source review; substantial room errors remain. Final ordinary
+AC ABBA cost (two/mode/source): G5 80.765->87.024s(+7.750%), G2
+62.992->69.395s(+10.166%). Eight full integrity checks pass but G2 FAIL10;
+C19UNRUN. Earlier+10.137% hold is unchanged. STOP scheduling variants for this
+batch; no cap rounding/waiver, partial activation or NumPy runtime dependency.
+Body reuse gave no benefit and was safely preserved/reversed; G5 closed-body
+transfer addedZERO. Audit93 retains71 conservative rows/zero approvals; G5fixed
+17->16 errors still FAIL2/25, all6gates/finalstable71+16 remainOPEN. Next trace
+different-family NANG128r missing supports, reserving NANG138r for later frozen
+transfer and protecting compactNANG130r. Public runtime remains `dd691fd`.
+
+The following exact-pair section is the latest SHIPPED runtime change; the
+newer checkpoint above changes documentation/evidence only.
+
 Latest runtime change is exact work reuse: ordered ORIGINAL texture-pair
 compatibility is cached inside one evidence instance. Identical dot-product
 order/disjointness/thresholds/teacher subsets/greedy models/proof contents; no

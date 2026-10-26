@@ -1,5 +1,29 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-26): partial accuracy evidence complete; whole-cost HOLD, change cause next
+
+No new runtime/default/app activation after `dd691fd`. Validated-body reuse had
+no benefit (prototype preserved, public bytes restored); closed-body G5 addsZERO.
+Existing PRIVATE pending-only partial recovery retains four real spikes each
+on G2/G5. Current44source qualification (41fresh source-stage+3strict reuses,
+not44upstream wholes) passes original41/601minis/139terrain/CN7mask/16 controls.
+FTFA926/928/no extras-shifts-wrong; Flames254exact/42extra/19miss/20shift/2wrong.
+Eight portable methods/19 scenes; all44 combined-helper FULL proofs/raws equal.
+
+Final distinct combined exact scheduling: wholeAC ABBA2/mode/source, G5
+80.765->87.024s(+7.750%), G2 62.992->69.395s(+10.166%). All8 complete sample
+checks pass; G2 FAIL10, C19UNRUN. Prior streamedG5+10.137% HOLD stays intact.
+STOP scheduling variants for this batch. No rounding/retries/waiver/NumPy port.
+Neither a source-helper speedup nor a single passing room qualifies adoption.
+
+Fresh main review of actual latest2whole/8delta boards confirms all8known real
+partial recoveries, not new discoveries/shipped gains. Major errors persist;
+G5fixed17->16/one correction FAIL2/25. Audit93 all71/zero approvals, all6gates/
+finalstable71+16 OPEN. Counter-only aggregate error preserved and repaired from
+saved outputs, no detector change. Next trace NANG128r missing supports under
+a different material family; freeze full positive/negative structure before
+tuning, reserve NANG138r for later pre-frozen transfer, protect compactNANG130r.
+
 ## Latest (2026-10-26): exact original-pair work reuse; rectangle still cost-HOLD
 
 Conditional10% investigation is explicitly approved for genuine multi-screen

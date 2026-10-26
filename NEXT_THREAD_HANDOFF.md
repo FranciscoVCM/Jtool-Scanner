@@ -13,6 +13,55 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: accuracy-qualified partial experiment cost-HOLD; do not repeat scheduling
+
+This supersedes older NEXT/body-reuse/closed-transfer/timing instructions below.
+Read GOAL_PLAN IN FULL, TOP ignored DEFERRED_VETO_ACTIVE_v1.md, audit93 and
+pending-partial-checkpoint-v641.json plus its final publication supplement.
+Continue existingmain/originalACTIVEgoal; no baseline/archive resweep/worktree.
+
+Public runtime/app remain `dd691fd`; this checkpoint is DOCUMENTATION ONLY.
+605body reuse:76 normalHOST tests/proof parity but no benefit; seven prototype
+files preserved608 and public runtime restored EXACTLY. 610G5closed addsZERO,
+ENTIRE raw unchanged. Do not reopen those failed/no-gain variants as successes.
+
+632qualifies44source cases (41fresh SOURCE-stage+3strict current reuses, ZERO
+fresh upstream wholes in that packet), original41/601minis/139terrain/CN7mask/
+16 exact controls. FTFA926/928/0extras-shifts-wrong; Flames254exact/42extra/
+19miss/20shift/2wrong. 623all44per-casePASS then Counter postprocessing error
+preserved;632repairs only evaluator import using saved outputs, no rescan.
+NEVERdump623worker.current: it accidentally contains44 full raw payloads.
+
+635combined helpers retain all44 COMPLETE parent proofs/ENTIRE candidate raws;
+8portablemethods19scenes PASS. This is not another44default/upstream sweep.
+Existing private pending-only partial caller restores SAME4G2+4G5 originals;
+pending inputs never teach. 639/640main actual latest2whole/8delta sourceQA PASS
+for those additions, but both rooms remainMAJOR. G5fixed17->16/one correction/
+5.88% FAIL2/25; three additions outsideROI. No room/reserve approval or new gain.
+
+631TERMINAL G5+10.137%HOLD10. FINAL prospective combined638TERMINAL:8valid quiet
+AC ABBA wholes, G5 80.765->87.024s(+7.750%), G2 62.992->69.395s(+10.166%).
+All raw/input/four-artifact/project/cache/runtime/HEAD/power/app-idle checks pass,
+but G2 FAIL10; C19explicitUNRUN. STOP latency variants for this batch: do not
+round, discard outliers, rerun unchanged, rank across sessions or waive caps.
+No partial port/default activation/NumPy runtime requirement. Compound/interior
+remainOFF; never sum different PRIVATE experiments into an untested result.
+
+NEXT bounded causal investigation: NANG128r missing supports, different visual
+material family. Use sealed current source-stage/control capture; trace original
+proposal -> classification -> final arbitration for a COMPLETE contiguous
+positive/negative structure before changing any predicate. NANG138r stays
+reserved for a later pre-frozen compatible no-tuning test, compactNANG130r
+protected. No case/palette/coordinate answers in production. Original3rooms/
+2families/reserve/geometry-conflict minima and finalstable71+16/all6gates OPEN.
+No new user images are required for the first trace. Keep progress causal and
+bounded; do not spend another turn merely restating these holds.
+
+No638/635/623 producers remainLIVE; confirm actual OS state, not old PIDs.
+App last observed25028/HTTP8765,37eagerhelpers/sourcefp e171306b10785c77f315539e69c47fe22fb3478bb41ed698b51e6bf6dfa64cc8;
+verify final supplement/current health rather than trusting this historical PID.
+Private indexes unchanged/ignored/untracked; only five public docs may be staged.
+
 ### Latest continuation: conditional10% tested; original texture-pair reuse qualified separately
 
 This subsection supersedes older continuation/UNANSWERED/cap/next-action text.

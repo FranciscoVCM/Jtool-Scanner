@@ -144,6 +144,17 @@ but the maintained consumer still exceeds it on Golden5 (+16.15% in the complete
 three-case trial). All earlier holds remain; compound staysOFF and broader
 accuracy/protection qualification is still required.
 
+A separate PRIVATE pending-only partial caller is now source-qualified across
+44 cases (41 fresh source-stage replays plus3 strict reuses, not44 fresh whole
+scans): original41 protection groups,601miniblocks,139terrain footprints and16
+exact controls pass. Four real spikes each on Golden2/Golden5 fit current whole
+and every-delta source review, but major room errors persist. Final combined
+exact scheduling AC ABBA gives G5+7.750%, G2+10.166% (two/mode/source, all8 full
+integrity checks pass); G2 exceeds10%, C19UNRUN. This is a cost HOLD, not app
+adoption. The private NumPy experiment adds no installation requirement.
+Audit93 retains all71 conservative findings/zero approvals. Public runtime and
+default selectors remain unchanged; see progress/handoff for the next cause.
+
 See [HANDOFF.md](HANDOFF.md) for architecture, corpora, workflows and design
 principles; [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md) for an interrupted
 run's continuation; [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) and
