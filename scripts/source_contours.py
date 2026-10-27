@@ -14,7 +14,6 @@ import hashlib
 import json
 from math import hypot, sqrt
 from pathlib import Path
-from statistics import median
 import sys
 
 if __package__ in (None, ""):
@@ -30,6 +29,43 @@ class EdgeEvidence:
     support: int
     unknown: bool
     independent_source_positions: tuple[tuple[int, int], ...]
+
+
+def _median_four(first, second, third, fourth):
+    """The same sorted middle-pair arithmetic as median for four values."""
+    ordered = sorted((first, second, third, fourth))
+    return (ordered[1] + ordered[2]) / 2
+
+
+def _rgb_probe_phases(values, points, squared_norm):
+    """Exact fixed-RGB arithmetic; mapping and independent support stay outside.
+
+    Avoid per-channel generators and a per-probe departure closure. Retain the
+    original division, median, norm, comparison and floating-operation order.
+    In squared mode keep Python's sum rather than changing its float semantics.
+    """
+    derivatives = []
+    for j in range(8):
+        first, second = values[j], values[j + 1]
+        spacing = hypot(points[j + 1][0] - points[j][0],
+                        points[j + 1][1] - points[j][1])
+        derivatives.append(((second[0] - first[0]) / spacing,
+                            (second[1] - first[1]) / spacing,
+                            (second[2] - first[2]) / spacing)
+                           if spacing else (0., 0., 0.))
+    first, second, third, fourth = (derivatives[0], derivatives[1],
+                                     derivatives[6], derivatives[7])
+    gradient = (_median_four(first[0], second[0], third[0], fourth[0]),
+                _median_four(first[1], second[1], third[1], fourth[1]),
+                _median_four(first[2], second[2], third[2], fourth[2]))
+    departures = []
+    for value in derivatives:
+        dr, dg, db = (value[0] - gradient[0], value[1] - gradient[1],
+                      value[2] - gradient[2])
+        departures.append(sqrt(sum((dr * dr, dg * dg, db * db)))
+                          if squared_norm else hypot(dr, dg, db))
+    reference = max(departures[0], departures[1], departures[6], departures[7])
+    return {j - 3.5 for j in (2, 3, 4, 5) if departures[j] > reference}
 
 
 class SourceContours:
@@ -104,20 +140,7 @@ class SourceContours:
             if cache is not None:
                 self.probe_cache_misses += 1
             values = [self.image.pixel(*point) for point in points]
-            derivatives = []
-            for j in range(8):
-                spacing = hypot(points[j + 1][0] - points[j][0],
-                                points[j + 1][1] - points[j][1])
-                derivatives.append(tuple((values[j + 1][c] - values[j][c]) / spacing
-                                         for c in range(3)) if spacing else (0., 0., 0.))
-            gradient = tuple(median(derivatives[j][c] for j in (0, 1, 6, 7))
-                             for c in range(3))
-            def departure(value):
-                delta = tuple(value[c] - gradient[c] for c in range(3))
-                return sqrt(sum(v*v for v in delta)) if self._squared_norm else hypot(*delta)
-            reference = max(departure(derivatives[j]) for j in (0, 1, 6, 7))
-            phases = {j - 3.5 for j in (2, 3, 4, 5)
-                      if departure(derivatives[j]) > reference}
+            phases = _rgb_probe_phases(values, points, self._squared_norm)
             if cache is not None:
                 cache[probe_key] = frozenset(phases)
                 if len(cache) > self.probe_cache_limit:

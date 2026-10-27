@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-26. Continue in the existing repository at
+Updated 2026-10-27. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -12,6 +12,56 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
+
+### Latest continuation: exact contour checkpoint; triggered source queries next
+
+This supersedes every older runtime/next-action section below. Read the full
+GOAL_PLAN, active note and audit98. Same main/original ACTIVE goal; no archive or
+baseline sweep. Current maintained delta: scripts/source_contours.py fixed-RGB
+numeric kernel ONLY; all surrounding mapping/unknown/cache/API control flow
+passes structural AST equality792. Seven new numerical differential methods,
+one integer-cache method;962 selected public methods PASS760.866s/zero skips,
+not fullsuite. The stale generic RGB call-count failure was reproduced with
+old45c6f45; generic float queries keep its original unique-call assertion and
+integer queries now separately prove exact minima/cache identity/no fallback.
+
+Six actual ordinary OLD/NEW upstreams on C19/Halls4/CN9 retain ENTIRE255/132/499
+maps and byte-equal source/JMap/JTool/blend. Project ALL other fields equal after
+authenticating its relocated cache source.image path. Source artifacts are in
+contour-actual-maps-v795.json, including two already-completed791 C19 scans.
+Do not repeat those scans.962 methods: contour-source-tests-v793.json.
+792 original41/601/139/CN7 mask/all16 PASS with explicit exact-kernel carries,
+NOT44 fresh scans; all16 metrics recomputed. FTFA926/928/no extras-shifts-wrong;
+Flames254/42 extras/19 misses/20 shifts/2 wrong.801 seals audit98/all71/zero
+approvals. App34780 root/health/actual scan HTTP200, loaded==disk, entire ordinary
+project==CLI (800). Helper787 ABBA5148 edges is private-prototype/helper-only,
+NOT controlled whole speed,5%/10% pass or new ordinary recognition.
+
+778..783 glyph-paint research FAILED complete703 mask:5094 positives gained,
+4021 missing, zero loss/new fixed negatives; both target bodies incomplete.
+One genuine bright artwork pixel is falsely background-like. Do NOT weaken
+zero-knownBG/fraction thresholds or call this an adopted repair. Old complete
+22block/1false-platform experiment also remains PRIVATE/OFF. No room approval.
+
+NEXT bounded causal experiment:797 freezes a query domain using ORIGINAL pending
+geometry footprints and ORIGINAL platforms as locators ONLY, NEVER teachers.
+Same16px lattice/eight dimensions.798 builds2146/13304 rectangles BEFORE reading
+old answers, retaining19/64 old experimental poses and omitting45.799 POSTRESULT
+source-union still completes both fixed703 bodies/missing0/excess40unchanged.
+This is NOT fresh source generation, packing, marker arbitration, whole/delta
+QA, cost or transfer. It is deliberately narrower, NOT exact equivalence.
+Do not enlarge it from omitted answer coordinates. Next rebuild the unmodified
+original-parent factory/source queries on that domain; test actual full mask,
+typed packing/ownership and every map delta, then reserve/protections/AC cost.
+775 own evidence bundles are now runtime-stale: recapture rather than relaxing
+their source/runtime hash checks. All six original gates/final71+16 remain OPEN.
+
+Prior failures are preserved:789 namespace discovery preflight,790 Windows
+progress-receipt lock (424tests/no assertion failures),791 cache-path comparison,
+794 syntax preflight and796 Windows Git UTF8 decoding.793 reran ALL962 tests.
+Do not treat stale complete=false workers as live: all these processes exited.
+No source/fixture/JMap/private archive/index changes; publication/app identity
+is verified separately in the newest ignored receipt and Git, not this prose.
 
 ### Latest continuation: exact RGB arithmetic checkpoint; spans remain PRIVATE/OFF
 

@@ -4,7 +4,20 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-26
+## Current checkpoint — 2026-10-27
+
+The latest maintained change streamlines exact three-channel contour arithmetic,
+preserving RGB/gradient/median/norm, predicates, mapping, unknowns and caches.
+962 relevant public methods pass, zero skips; NOT the full suite. Six actual
+old/new scans preserve entire C19/Halls4/CN9 maps and render artifacts. All41/16
+protections pass with explicit exact-kernel carries where not freshly scanned;
+FTFA remains926/928 without extras/shifts/wrong directions. Helper-only timing
+improves; no controlled whole-scan speed or new accuracy claim is made.
+App34780 root/health/actual scan HTTP200, loaded==disk/project==CLI. Audit98
+keeps71 conservative findings/zero approvals. All original goal gates stay OPEN.
+The failed glyph-paint experiment and proposed narrower source-query domain
+remain PRIVATE/OFF; neither is a shipped accuracy improvement. Read the current
+development/next-thread tops; the following checkpoint entries are historical.
 
 Newest maintained work optimizes exact integer RGB palette arithmetic only.
 Nine new public methods/63relevant tests pass,not fullsuite. Source-colour

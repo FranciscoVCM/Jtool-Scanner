@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Exact RGB contour arithmetic; broader checks and audit98
+
+The shared contour probe now computes its fixed three RGB channels directly,
+avoiding per-channel generators and a departure closure. Gradient subtraction,
+the sorted four-value median, norm, thresholds, physical phase/support/ties,
+unknown/crop mapping and cache policy are unchanged. Squared mode retains
+Python's original sum semantics. No recognition predicate, dependency, teacher
+or selector changes. An independent AST check verifies the surrounding module.
+
+Seven new differential methods cover integer/float RGB, repeated/fractional
+spacing, NaN/extremes, both norms, scales, isoluminance, unknowns and cache
+eviction. A pre-existing cache test still expected the generic RGB function to
+run for integer inputs; the same failure was reproduced with the previous
+published contour code. Generic float queries retain its unique-call assertion;
+a separate integer test checks exact minima, cache identity and no fallback.
+962 selected public methods pass in 760.866s, with zero skips/errors/failures.
+This is a broad relevant suite, NOT the complete unittest suite.
+
+Six actual ordinary scans compare old/new CN3-19, Halls4 and CN3-9. Their entire
+255/132/499-object maps and source/JMap/JTool/blend bytes are equal. Project
+content is equal except the authenticated path to each cache's source copy.
+Original41/601 miniblocks/139 terrain/CN3-7 mask pass; all16 exact metrics are
+recomputed using explicit exact-kernel carries plus the three fresh pairs,
+NOT44 fresh scans. FTFA926/928 with no extras/shifts/wrong directions;
+Flames254 exact/42 extras/19 misses/20 shifts/2 wrong directions.
+
+Private prototype helper ABBA preserves all5148 original source-edge proofs and
+cache state: CN3-19 median0.581242->0.410207s; Golden2 1.040186->0.654511s.
+Helper-only: NOT controlled whole latency, an app speedup or a5%/10% cost pass.
+App34780 root/health/actual scan HTTP200, loaded==disk and entire project==CLI.
+Audit98 retains all71 conservative findings and zero new approvals.
+
+The separate glyph-only paint experiment remains PRIVATE/OFF: it gains5094
+fixed positive pixels without new fixed negatives, but leaves4021 missing and
+both target structures incomplete. Bright framed artwork can resemble the
+background; no zero-background/fraction gate was weakened. Full-map QA is not
+complete. The earlier complete source-span repair also remains unadopted.
+
+Next experiment797 freezes a narrower query domain from original pending
+geometry/platform locators, never new teachers. Its2146/13304 rectangles keep
+19 old experimental poses and omit45; this is NOT exact equivalence. A later
+post-result source-union score still covers both complete target bodies, but
+is NOT fresh generation, packing, marker arbitration, accuracy or cost proof.
+Fresh source-only evaluation and real transfer/reserve/runtime checks are next.
+All six original goal gates and final stable71+16 qualification remain OPEN.
+Failed experiments and Windows/harness failures remain preserved locally.
+
 ## 2026-10-26 — Exact RGB arithmetic accelerated; experimental recognition stays off
 
 Profiling the source-span prototype identified millions of generic RGB palette

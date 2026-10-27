@@ -98,12 +98,14 @@ class SourceFeatureReuseTests(unittest.TestCase):
             actual = registered_rectangle_models(image,frame.room,detections(),**args)
             self.assertEqual(actual,expected)
 
-    def test_shared_colour_distances_preserve_all_minima_and_compute_each_once(self):
+    def test_generic_shared_colour_distances_compute_each_unique_color_once(self):
         frame = scene()
         model = rgb.SourceRGBDistribution(frame,PARENTS,GLYPHS)
         witnesses = model.parents,model.background
         colors = {color for group in witnesses for row in group for color in row.palette}
-        queries = [(0,0,0),(255,255,255),(31,75,129),(128,127,126)]
+        # Float queries deliberately exercise the generic arithmetic contract.
+        # Native integer RGB now has its separately tested exact fast path.
+        queries = [(0.,0.,0.),(255.,255.,255.),(31.,75.,129.),(128.,127.,126.)]
         expected = [tuple(tuple(min(rgb._distance2(query,c) for c in row.palette)
             for row in group) for group in witnesses) for query in queries]
         with patch.object(rgb,'_distance2',wraps=rgb._distance2) as distances:
@@ -111,6 +113,25 @@ class SourceFeatureReuseTests(unittest.TestCase):
                 self.assertEqual(model._rgb_distances(query),value)
                 self.assertEqual(model._rgb_distances(query),value)
             self.assertEqual(distances.call_count,len(colors)*len(queries))
+        self.assertEqual((model.parents,model.background),witnesses)
+
+    def test_integer_shared_colour_distances_preserve_minima_and_cache_identity(self):
+        model = rgb.SourceRGBDistribution(scene(),PARENTS,GLYPHS)
+        witnesses = model.parents,model.background
+        queries = [(0,0,0),(255,255,255),(31,75,129),(128,127,126)]
+        expected = [tuple(tuple(min(rgb._distance2(query,c) for c in row.palette)
+            for row in group) for group in witnesses) for query in queries]
+        with patch.object(rgb,'_distance2',wraps=rgb._distance2) as fallback:
+            for query,value in zip(queries,expected):
+                actual = model._rgb_distances(query)
+                self.assertEqual(actual,value)
+                self.assertIs(model._rgb_distances(query),actual)
+                self.assertIs(model._distances[query],actual)
+            self.assertEqual(fallback.call_count,0)
+        colors = {c for group in witnesses for row in group for c in row.palette}
+        self.assertEqual(len(model._palette_colors),len(colors))
+        self.assertEqual(set(model._palette_colors),colors)
+        self.assertEqual(len(model._distances),len(queries))
         self.assertEqual((model.parents,model.background),witnesses)
 
     def test_source_palettes_and_pixel_scopes_do_not_share_between_sources(self):

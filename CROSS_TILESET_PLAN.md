@@ -1,5 +1,32 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): exact contour efficiency, not new room accuracy
+
+The shared fixed-RGB contour calculation is streamlined without changing any
+threshold, colour information, source mapping, phase/support, unknown handling
+or cache policy. Seven new numerical differential tests and one integer-cache
+test;962 selected public methods pass, zero skips, NOT the complete suite.
+A stale generic-distance call-count test was independently reproduced on the
+previous implementation and split into explicit generic/integer contracts.
+
+Six actual old/new ordinary scans retain entire C19/Halls4/CN9 maps and four
+source/map/render files; project content differs only by authenticated cache
+source relocation. Original41/601/139/CN7 mask/all16 protections pass through
+three fresh pairs and explicit exact-kernel carries, NOT44 fresh scans.
+Private helper5148-edge ABBA is faster, but is NOT whole-scan speed or a cost
+qualification. App34780 HTTP200/loaded==disk/entire project==CLI; audit98 has
+all71 conservative findings, zero approvals and no new accuracy claim.
+
+Glyph-only paint research fails the unchanged complete-structure test:4021
+positive pixels remain missing. Do not relax negative/coverage gates to pass it.
+Next797 query-domain experiment uses original unresolved geometry/platforms as
+locators ONLY. It drops45 old experimental poses while reducing13304 candidate
+rectangles to2146; post-result source union still covers both target bodies.
+This is intentionally narrower, not exact-equivalent or freshly validated.
+Rebuild from original source, evaluate packing/marker ownership/full deltas,
+then positive transfer/reserve/all protections/controlled cost before adoption.
+All six original gates/final stable71+16 remain OPEN; spans stay PRIVATE/OFF.
+
 ## Latest (2026-10-26): exact RGB helper optimization, not new room accuracy
 
 Maintained source RGB palette distances now use exact arbitrary-precision
