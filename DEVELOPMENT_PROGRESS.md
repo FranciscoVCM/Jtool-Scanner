@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Recognize source-sized miniblock extensions, not familiar artwork
+
+The compact scanner can now recover an independently supported16x16 extension
+from an original coarse material parent. Four distributed8x8 RGB material proofs
+against observed, unoccupied exterior patches plus four coherent16px RGB sides
+identify the source size without weakening the old silhouette classifier. This
+handles striped artwork and a procedural nearly isoluminant sprite whose legacy
+block score is below.30. No duplicated grayscale scan, game/hash/answer origin,
+new dependency/switch, emitted teacher, old-object deletion or full32-to-mini
+tessellation. Unknown/padded/actor-covered and achromatic ambiguity abstain.
+
+A source-label error was resolved before adoption: NANG131r A(576,256) is a real
+16x16 miniblock; B(576,272) is empty. The old frozen mask incorrectly counted B
+as solid. Preserve that144896-pixel mask and its old512/new256missing scores;
+the label correction itself is NOT a scanner improvement. A separate human-
+corrected144640-pixel mask scores actual256missing->0,0excess. The new ONE real
+mini restores256pixels; all175 previous objects/metadata/order and the two prior
+16x32 solid extensions remain. Other object semantics/poses are not exact-certified.
+
+Seventeen actual maintained compact scans reproduce the reviewed experiment
+ENTIRELY, including all ordered metadata, four source/JMap/JTool/blend files and
+project except authenticated source relocation. Only131r175->176 changes;
+the other16maps remain identical, including135r's real-platform negative and
+188-object138r. Whole/all1delta source review passes; NOT a room approval or
+new positive reserve success. An isolated-mini channel is not a compatible
+positive test for138r's missing full bars.
+
+19new portable methods cover directions/half positions, palette/background/
+polarity/dim/capture, unfamiliar low-luminance-score artwork, digits/outlines,
+holes/triangles/bars, unknown/crop/padding/actors/exterior ownership and coverage.
+502affected public methods pass in593.118s,zero failures/errors/skips,NOTfullsuite.
+Entire scanner AST differs only by one helper and one compact call; other
+runtime files/eight switches and legacy full32 rules are unchanged. Original41/
+601minis/139terrain/CN7mask/all16 metrics pass using actualcompact and explicit
+native AST carries, NOT44fresh scans. FTFA926/928/zeroextras-shifts-wrong;
+Flames254/42/19/20/2 unchanged.
+
+Eight quietAC serial ABBA whole samples pass all integrity and preferred5% cost
+checks:131r25.1880->25.0820s(-0.42%),135r20.7552->20.7957s(+0.20%). No speedup
+claim. Audit101 has71 conservative rows/zero approvals:38canonical cases with
+current evidence,33historical/pending current qualification; fresh generation
+does not imply fresh visual review. All original goal gates/final stable71+16
+remain OPEN. Private pending/compound/span costHOLDs and failed reserves stay
+unchanged/OFF. Resume general long-material/partial/compound source identity,
+with genuinely compatible prospective reserves rather than another old cost retry.
+
 ## 2026-10-27 — Source-arrow ownership, with faint-hazard protection
 
 The source-aware scanner now prevents late recovery from reintroducing a false

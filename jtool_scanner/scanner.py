@@ -4783,6 +4783,11 @@ def _replace_compact_room_geometry(
                 result, adaptive_blocks, image, room, background, adaptive_profile
             )
         )
+        result.extend(
+            _recover_adaptive_compact_mini_extensions(
+                result, adaptive_blocks, image, room, background, adaptive_profile
+            )
+        )
     return _dedupe_exact_detections(result)
 
 
@@ -5509,6 +5514,107 @@ def _recover_adaptive_compact_continuous_blocks(
             extra.append(_geometry_detection(
                 "compact_continuous_block", OBJ_BLOCK, x, y, .84, image, room, GRID_SIZE
             ))
+    return extra
+
+
+def _recover_adaptive_compact_mini_extensions(
+    detections: list[Detection],
+    native_blocks: list[Detection],
+    image: RGBImage,
+    room: Box,
+    background: tuple[int, int, int],
+    learned: _ColorProfile,
+) -> list[Detection]:
+    """Independently prove a source-sized16px extension, not a failed32px tile.
+
+    Only original coarse material parents locate queries. Four spatial RGB
+    quarter proofs and four coherent original sides can identify unfamiliar
+    artwork without weakening the legacy luminance silhouette classifier.
+    Existing coverage/actors, unknown source and paired mini tessellation abstain;
+    no emitted phase/mini becomes a parent, and no old object is removed.
+    """
+    if (min(room.width, room.height) <= 0 or room.x < 0 or room.y < 0
+            or room.right > image.width or room.bottom > image.height):
+        return []
+    parents = tuple(d for d in native_blocks
+                    if d.kind == 'compact_adaptive_block'
+                    and d.x % GRID_SIZE == d.y % GRID_SIZE == 0)
+    if not parents:
+        return []
+    observed = []
+    for detection in detections:
+        size = (MINI_BLOCK_SIZE if detection.type_id in
+                (OBJ_MINI_BLOCK, 7, 8, 9, 10) else GRID_SIZE)
+        height = 8 if detection.type_id == OBJ_PLATFORM else size
+        observed.append((detection.x, detection.y,
+                         detection.x + size, detection.y + height))
+
+    def intersects(first, second):
+        return (max(first[0], second[0]) < min(first[2], second[2])
+                and max(first[1], second[1]) < min(first[3], second[3]))
+
+    pitch = ROOM_WIDTH / room.width, ROOM_HEIGHT / room.height
+    material = _compact_material_chroma(learned)
+    compact_left = ((ROOM_WIDTH // GRID_SIZE - 19) // 2) * GRID_SIZE
+    compact_top = ((ROOM_HEIGHT // GRID_SIZE - 13) // 2) * GRID_SIZE
+    seen: set[tuple[int, int]] = set()
+    extra: list[Detection] = []
+    contours = None
+    for parent in parents:
+        for dx, dy in ((16, 0), (-16, 0), (0, 16), (0, -16)):
+            a = parent.x + (32 if dx > 0 else -16 if dx < 0 else 0)
+            b = parent.y + (32 if dy > 0 else -16 if dy < 0 else 0)
+            side = []
+            for x, y in ((a, b), (a + (16 if dy else 0), b + (16 if dx else 0))):
+                if (x, y) in seen:
+                    continue
+                seen.add((x, y))
+                box = x, y, x + 16, y + 16
+                ox, oy = x + dx, y + dy
+                exterior = ox, oy, ox + 16, oy + 16
+                if any(intersects(box, other) or intersects(exterior, other)
+                       for other in observed):
+                    continue
+                # Actual compact capture, never its surrounding padded canvas.
+                if not (compact_left + 4 + pitch[0] * .5 <= min(x, ox)
+                        and compact_top + 4 + pitch[1] * .5 <= min(y, oy)
+                        and max(x, ox) + 16 <= compact_left + 19 * GRID_SIZE - 4 - pitch[0] * .5
+                        and max(y, oy) + 16 <= compact_top + 13 * GRID_SIZE - 4 - pitch[1] * .5):
+                    continue
+                inside = _compact_material_chroma(_patch_color_profile(image, room, x, y, 16))
+                outside = _compact_material_chroma(_patch_color_profile(image, room, ox, oy, 16))
+                material_distance = sum((i - m) ** 2 for i, m in zip(inside, material))
+                exterior_distance = sum((i - o) ** 2 for i, o in zip(inside, outside))
+                if math.sqrt(material_distance) > 22 or material_distance >= exterior_distance:
+                    continue
+                colors = _sample_map_patch_colors(image, room, x, y, 16)
+                if (_compact_foreground_ratio(colors, background) < .20
+                        or _compact_red_ratio(colors) >= .925):
+                    continue
+                supported = True
+                for qx, qy in ((0, 0), (8, 0), (0, 8), (8, 8)):
+                    candidate = _compact_material_chroma(
+                        _patch_color_profile(image, room, x + qx, y + qy, 8))
+                    comparison = _compact_material_chroma(
+                        _patch_color_profile(image, room, ox + qx, oy + qy, 8))
+                    if sum((i - m) ** 2 for i, m in zip(candidate, material)) >= sum(
+                            (i - o) ** 2 for i, o in zip(candidate, comparison)):
+                        supported = False
+                        break
+                if not supported:
+                    continue
+                if contours is None:
+                    from scripts.source_contours import SourceContours
+
+                    contours = SourceContours(image, room)
+                if not _compact_rectangle_contour_closed(
+                        contours, x, y, pitch, width=16, height=16):
+                    continue
+                side.append(_geometry_detection('compact_source_mini_extension',
+                    OBJ_MINI_BLOCK, x, y, .84, image, room, MINI_BLOCK_SIZE))
+            # A full32 extension must not be replaced by a pair of mini tiles.
+            if len(side) == 1:
+                extra.extend(side)
     return extra
 
 

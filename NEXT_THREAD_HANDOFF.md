@@ -13,6 +13,58 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source-sized mini recovered; long/compound identity next
+
+Supersedes every older live PID/next-action claim below. Read full GOAL_PLAN,
+TOP active note and audit101, existingmain/originalACTIVEgoal; no archive/baseline
+resweep, clone/branch/worktree or new goal. One new plain scanner helper and one
+common compact call; no private imports/compiled wrappers/dependency/flag changes.
+
+USER899clarification: NANG131r A(576,256) is SOLIDMINIBLOCK16x16; B(576,272)
+NOTHING. Old679mask mistakenly includedB.901separate human erratum keeps old
+144896mask and original175object512missing/new176object256missing scores intact.
+Corrected144640mask: actual256missing->0/excess0, all old solids/objects/order/
+metadata retained. The label correction is NOT scanner gain; one new source mini
+is256truepixels. Do not force a32px block intoB to satisfy an obsolete label.
+
+902first private attempt rejectedA via legacyblockscore.218<.30; preservedFAIL.
+905/906 independent positive channel: original coarse parents, material-vs-known
+exterior in four8x8 RGB quarters AND four coherent16sides, no legacy score change.
+Public availability guards abstain on invalid physical source/covered candidate
+or comparator patches. Full32 representations/logic unchanged; no new teachers,
+answer poses/room hashes, gray rescan or source-unknown-as-background claim.
+19new public portable methods include low-legacy-score nearlyisoluminant sprite,
+four faces/two halves/palette/dim/capture, digits0/8/9/outlines, holes/triangles/
+bars, unknown/padding/actors/exterior ownership and partial old coverage.
+
+915 ENTIRE old module AST equal after removeONEhelper+ONEcompactcall; all other
+runtime files/eight flags unchanged.916502affected public methods PASS593.118s,
+zero fail/error/skip, NOTfullsuite.917 ALL17actual maintained maps/entry outputs
+equal qualified private910; four source/JMap/JTool/blend bytes/project parity.
+ONLY131r175->176, other16ENTIREequal incl135r154/platform negative and138r188.
+912whole/all1delta MAINreview +914seal carried ONLYthrough917entireartifacts.
+918original41/601/139/rails/CN7mask/all16 definitions/metrics PASS via current17
+compact and exact native AST carries, NOT44fresh wholes. FTFA926/928zeroextras-
+shifts-wrong; Flames254/42/19/20/2 unchanged. Earlier seven compact supports kept.
+
+919 EIGHT valid quietserialACABBA whole samples,131r/135r2permode:
+25.1880->25.0820s(-0.42%),20.7552->20.7957s(+0.20%),all raw/input/artifact/project/
+cache/runtime/HEAD/8flags/power/app-idle gates PASS5; no10waiver/speedup claim.
+App served earlier tested version during timing.922postpublication must verify
+BOTHstandard/source actual176object appprojects==CLI,root/health/scanHTTP200 and
+loaded==disk.923stores actual live PID/Git/privacy state; do not assume old PID
+survived.920audit101all71zeroapprovals,38canonical current evidence/33historical
+pending; fresh generation not equivalent to fresh visual approval.
+
+Next genuinely general positive cause: long-material/partial/compound geometry
+with independent source evidence and compatible prospective reserve.138r9missing
+full cells is NOT positive reserve for isolated16channel; unchanged is negative
+protection, not success. G5addition-only reserve was incompatible with16falsecells/
+1miss and staysFAILED; pending614alreadyproves half-hidden missingLEFT288368,
+but631/638costHOLDs remain CLOSED/OFF. No duplicate inference/latency retry or
+new-discovery claim. C19spans stillOFF+20.05%HOLD10. All originalsixgoalgates/
+3rooms/2families/reserve/8positive/4negative/25%/finalstable71+16 remainunchangedOPEN.
+
 ### Latest continuation: source-arrow fix qualified; positive recovery still open
 
 This supersedes every older live PID/next-action claim below. Read full GOAL_PLAN,

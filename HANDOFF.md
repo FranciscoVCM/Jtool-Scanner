@@ -6,6 +6,32 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-27
 
+Newest maintained change: `_recover_adaptive_compact_mini_extensions` in
+`jtool_scanner/scanner.py` recognizes independently source-supported16px terrain
+next to original coarse material parents. Four spatial RGB material regions
+and a coherent16px source rectangle can identify unfamiliar/near-isoluminant
+artwork without lowering legacy silhouette thresholds. Unknown/padded/covered
+comparators, achromatic ambiguity and paired-mini tessellation abstain. Existing
+full32 logic/objects/metadata are preserved; no new dependency/switch or duplicate
+full-image scan. Standard and source compact modes share this stage.
+
+NANG131r175->176 adds one human-confirmed miniblock; B below stays empty. The
+old source label wrongly treated A+B as a16x32 strip. Preserve its old mask/
+scores; corrected terrain mask144640pixels has256missing->0/0excess. Changing
+the label is NOT recovery; the new actual mini is256true pixels. Whole/all1delta
+review; other object semantics/poses not exact-certified. Other16 affected
+compact maps unchanged through17actual maintained scans and complete export/
+project parity. NANG138r's missing full bars remain unresolved, not reserve success.
+
+19new portable methods and502affected public methods PASS,notfullsuite; original
+41/601/139/CN7/all16 metrics preserved via explicit actual/AST carries. Eight
+quietACABBA whole samples pass5%:131r -0.42%,135r +0.20%. Audit10171rows/zero
+approvals,38canonical current evidence/33historical pending. All original goal
+gates/final stable71+16 remain OPEN. Run the new portable checks with
+`python -m unittest tests.test_compact_mini_extensions` and retain the broader
+compact/scanner/source/regression checks. Latest publication/app receipts hold
+actual live status; following checkpoint paragraphs are historical.
+
 Latest maintained change: source-verified gravity-arrow ownership prevents a
 late-recovered false full spike from surviving over the arrow. New module
 `scripts/source_arrow_ownership.py` is registered in runtime fingerprints. It

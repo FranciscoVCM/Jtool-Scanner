@@ -1,5 +1,35 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): source-sized mini proof across artwork/brightness changes
+
+New compact16px extension proof uses an original coarse material parent,
+four distributed RGB regions and four coherent source sides, not a familiar
+luminance silhouette. Original classifiers/full32 phase and continuity remain
+unchanged. No answer origins/room IDs, emitted teachers, duplicate grayscale
+scan, new dependency/flag or overlap deletion; unknown/covered/padded/achromatic
+ambiguity abstains. Generated near-isoluminant, differently painted rectangles
+pass despite legacy block score<.30; this is not proof of arbitrary unseen sprites.
+
+Human source clarification corrected an OLD label:131r A is16x16 solid, B below
+is empty, not another16px of block. Old144896mask/results retained (512->256
+missing), not relabelled. Corrected144640mask has actual256->0missing/0excess;
+ONEnew mini/256truepixels recovered, all old objects and two full supports kept.
+Actual17maintained scans/complete maps/artifacts/project match the experiment;
+other16 maps unchanged, including135r platform and188-object138r. Whole/all1delta
+QA; no whole-room approval or positive reserved success.
+
+19new portable methods/502affected public methods PASS,zero fail/error/skip,
+NOTfullsuite. Original41/601/139/CN7/all16 definitions/metrics pass via fresh
+compact and exact native AST carry. Eight quietACABBA whole samples pass5%:
+131r -0.42%,135r +0.20%; no speedup claim. Audit10171rows/zero approvals,
+38canonical current evidence/33historical pending, not71fresh visual reviews.
+
+All original six gates/final stable71+16 still OPEN. An isolated-mini rule cannot
+be credited as a positive reserve success on missing full-bar138r. Private
+pending/compound/native-span costHOLDs and earlier reserve failures remain OFF,
+not new gains. Next general positive cause: long-material/compound/partial source
+identity with independent evidence and a genuinely compatible prospective reserve.
+
 ## Latest (2026-10-27): qualified arrow alias correction, not room completion
 
 The final direct-frame source consumer now checks an existing gravity arrow's
