@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Source-span accuracy passes; cost hold and proposal-gap diagnosis
+
+The narrower original-triggered source-span experiment now runs on an actual
+CN3-19 upstream scan, not answer-pose replay. The ordinary255-object map stays
+unchanged; the private265-object result adds11 source-supported solid tiles and
+retires1 source-proved false platform. Both fixed missing solid structures are
+complete:16366/16366 positive pixels,9115 missing->0, excess40 unchanged, zero
+lost positives/new known negatives. Whole Source/JTool/Blend and all12 deltas
+were reviewed. The framed beam-end tile is human-confirmed solid/no platform.
+These source-derived tilings do NOT certify unique editor origins; the room
+still has major compound, text and pose errors.
+
+Four controlled quiet-AC ABBA scans preserve all input/output/artifact gates,
+but cost rises52.4749->62.9986s median (+20.0548%). This FAILS the10% cap; later
+sparse/heavy checks are unrun. The correction remains PRIVATE/OFF. No app
+accuracy or speed improvement is claimed, and unchanged retries are stopped.
+
+Golden2 has no qualified background-exterior seeds for that factory and no
+eligible intrinsic-solid parent cohort. Expanded texture teachers are not
+certified solids. Postscan evaluation corrects stale audit wording: its lower
+finite scope already contains37/37 typed objects; this is not a new gain.
+Seven additional geometry hypotheses need source arbitration, not automatic
+deletion. Its real platform is protected; other major errors remain.
+
+Two performance investigations are closed: an exact negative-pair bound keeps
+all2916 source-pair decisions but is slower; the published contour kernel in
+the first3 actual partial-parent queries preserves complete proofs/caches but
+saves7.32%, below the prospective10% helper threshold. Neither is adopted.
+23 private methods pass with zero skips, not the full suite. A seal harness
+initially rediscovered an obsolete imported test class; the existing qualified
+entrypoint was then run unchanged. The failure is preserved, not hidden.
+
+New causal evidence: the human-confirmed missing Golden2 ceiling spike is absent
+from original, pending and final objects, although it lies in existing geometric
+parent fans. A pending-only recovery cannot restore a never-proposed object.
+Next: trace partial-visibility candidate generation/admission on a complete
+frozen structure, then test source-backed transfer, not coordinate exceptions.
+
+Maintained scanner runtime/selectors are unchanged. Prior962 public methods and
+original41/all16 protections are exact-runtime carries, NOT rerun this batch.
+Audit99 retains all71 conservative rows and zero approvals; final stable71+16
+and all six original goal gates remain OPEN. Private evidence stays ignored.
+
 ## 2026-10-27 — Exact RGB contour arithmetic; broader checks and audit98
 
 The shared contour probe now computes its fixed three RGB channels directly,

@@ -13,6 +13,58 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: span cost HOLD; partial-proposal admission next
+
+This supersedes every older next-action/live-worker statement below. Read full
+GOAL_PLAN, TOP active note and audit99. Existing main/original ACTIVE goal;
+no baseline resweep/archive reopening/new checkout. Maintained runtime remains
+the published fa7d7ed contour checkpoint; this new checkpoint changes DOCS ONLY.
+
+807 actual CN3-19 original-only triggered-domain repair: ordinary255 unchanged,
+private265 with11 solid additions/1 false-platform retirement.808 unchanged703
+mask PASS:16366/16366 positive,9115missing->0,excess40 unchanged, no loss/new
+negative, BOTH bodies complete.809 whole/two delta sheets actually reviewed;
+810 records all12 deltas. Human beam-end answer: SOLID BLOCK, NO PLATFORM.
+Occupancy is supported; unique editor coordinates remain uncertified/roomMAJOR.
+
+814 controlled quietACABBA TERMINAL:52.4748995->62.9986372s,+20.05480296%.
+All four samples pass all integrity checks; speed FAILS10%, sparse/heavy UNRUN. Correction
+PRIVATE/OFF. Stop this unchanged span/latency variant.815 Golden2 registered
+factory has zero coherent-BG-exterior closed seeds;818 intrinsic route has zero
+eligible parents/cohorts. Do not promote54 expanded texture teachers to solids.
+
+820 corrects stale lower-Golden2 audit wording:37/37 typed already present, not
+a new gain. Seven other geometry hypotheses need source QA, not blanket deletion;
+real platform64,496 protected. UpperUP64,16 absent, DOWN64,48 present/source-proved.
+831 validates entire original/pending/default against821 source bundles: that
+confirmed missingUP is in NEITHER original nor pending proposals, despite lying
+inside existing geometric parent fans. Pending-only recovery CANNOT restore it.
+
+NEXT bounded accuracy investigation: trace partial-visibility proposal generation
+and admission on the complete upper structure before tuning. Distinguish absent
+proposals from rejected evidence, and require independent source witnesses,
+true occlusion/size/direction/phase, fixed negatives and real cross-family transfer.
+Do not inject the diagnostic coordinates into detection, relax teacher/unknown
+guards, or reopen full archives. No new source images/question needed to start.
+
+825 exact integer-negative pair helper is slower despite2916 equal decisions:
+STOP.828 firstTHREE actual partial-parent queries, unchanged maintained full
+constructor/short-circuit API, old45c6f45 edge vs current edge: ENTIRE proofs/raw
+caches/telemetry equal, median10.154564->9.411507s (7.32% saving), FAIL prospective
+10%substantial-helper gate. STOP that optimization route, no whole-cost rerun.
+827 frozenset serialization failure preserved;828 only fixes private serialization
+and adds full in-memory equality.829 generic test discovery imported obsolete724
+tests;830 uses725's existing explicit qualified class, all23 private methods PASS.
+No scanner/assertion workaround.830 seals audit99/all71/zero approvals;831 is the
+additional causal membership proof, not new accuracy. Every worker is terminal.
+
+Prior962 public methods/original41/601/139/CN7mask/all16 are exact current-runtime
+carries, NOT rerun now. FTFA926/928/zero extras-shifts-wrong; Flames254/42/19/20/2.
+App34780 stays on unchanged tested runtime. Verify HTTP/loaded parity and liveGit
+from the newest publication receipt. All original6gates/finalstable71+16 OPEN;
+do not mark goal complete at this research checkpoint. Stage only reviewed public
+docs; images/JMaps/local corrections/private indexes/artifacts remain ignored.
+
 ### Latest continuation: exact contour checkpoint; triggered source queries next
 
 This supersedes every older runtime/next-action section below. Read the full

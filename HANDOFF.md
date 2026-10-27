@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-27
 
+The newest checkpoint is documentation of measured PRIVATE research; it does
+not change the maintained scanner or app. An actual CN3-19 experiment recovers
+two complete solid structures (11 solid additions/1 false-platform retirement,
+9115missing positive pixels->0, no new fixed negatives). Whole/all12delta QA
+passes, but four controlled scans add20.0548% median time, exceeding the10%cap.
+It remains OFF; the room still has major errors and editor tiling is nonunique.
+
+Golden2 seed diagnostics reject treating repeated texture as certified solids.
+Its lower finite scope is already37/37 typed objects, not a new improvement.
+A confirmed missing ceiling spike is absent from original/pending proposals;
+next work must diagnose partial-visibility candidate admission rather than only
+speed up pending recovery. Two measured performance alternatives are stopped.
+23 private methods pass; prior962 public tests/original41/all16 protections are
+exact-runtime carries, not rerun here. Audit99 has71 conservative rows/zero
+approvals. All original goal gates/final stable71+16 remain OPEN. Consult the
+current development/next-thread sections; paragraphs below are historical.
+
 The latest maintained change streamlines exact three-channel contour arithmetic,
 preserving RGB/gradient/median/norm, predicates, mapping, unknowns and caches.
 962 relevant public methods pass, zero skips; NOT the full suite. Six actual

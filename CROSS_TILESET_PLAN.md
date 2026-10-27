@@ -1,5 +1,35 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): close costly span route; trace missing proposals next
+
+Actual CN3-19 source-only experiment completes both fixed missing solid bodies:
+11 solid additions/1 false-platform retirement,16366/16366 positive pixels,
+9115missing->0, excess40 unchanged, no positive loss/new fixed negatives.
+Whole/all12delta QA supports occupancy, not unique editor coordinates. Human
+confirms framed beam end is solid/no platform. Other room errors remain MAJOR.
+Four quiet-AC ABBA scans cost+20.0548% (52.4749->62.9986s median): HOLD10,
+sparse/heavy unrun; correction PRIVATE/OFF. Stop unchanged cost retries.
+
+Golden2 offers zero qualified background-exterior seeds or intrinsic-solid
+cohorts; repeated texture alone must not be promoted to terrain truth. Its
+lower finite typed scope is already37/37, not this batch's improvement. Protect
+the real platform and source-positive objects; additional hypotheses require
+independent source evidence before removal. Whole room remains MAJOR.
+
+Exact integer negative-pair filtering is slower; partial-consumer contour ABBA
+saves7.32%, below its prospective10% helper threshold. Both routes stopped.
+23 private methods pass; no new public implementation or app behavior change.
+Prior962 public methods/original41/all16 are exact-runtime carries, not reruns.
+
+Next bounded accuracy cause: a confirmed missing ceiling spike exists in neither
+original nor pending proposals. The pending-only recovery cannot emit it even
+with unlimited speed. Trace partial-visibility proposal generation/admission,
+freeze the complete positive/negative structure, and seek general source-backed
+geometry witnesses. Do not add answer poses or weaken semantic teacher roles.
+Require multiscreen/2-family gains, new reserved success, controls, every-delta
+QA and controlled whole cost before adoption. Audit99: all71 conservative,
+zero approvals; original six gates/final stable71+16 still OPEN.
+
 ## Latest (2026-10-27): exact contour efficiency, not new room accuracy
 
 The shared fixed-RGB contour calculation is streamlined without changing any
