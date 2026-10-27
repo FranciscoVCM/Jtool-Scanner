@@ -13,6 +13,35 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: long-body shortcuts CLOSED; new witness proof needed
+
+Supersedes older next-action/live-worker statements. GOAL_PLAN unchanged/ACTIVE;
+read it IN FULL, then TOP active note and audit102. Runtime remains published
+mini code d789192; this checkpoint changes public documentation ONLY. App33244
+was verified on that code in BOTH actual standard/source modes by922/923; recheck
+live PID/fingerprint after reboot.936 records the documentation publication state.
+
+925 actual C19 ordinary raw/order/metadata and all four exports equal current;
+926 complete703mask postscore: qualified foreground supports only4132/9115missing
+positive pixels and40negative pixels. No new source gain; BOTH bodies incomplete.
+927/931 exact-original witness domain:85fulls/23known-three-face rows/1closed/
+ZEROmodels.932/934 +/-ONEphysical-source-pixel observation:39rows/1closed/ZEROmodels.
+Keep both domains CLOSED, all existing parent/background/closure guards unchanged;
+do NOT enlarge phases/native-neighbor search or lower thresholds to rescue them.
+929 private harness frame/cache mismatch correctly rejected, failure preserved;
+930 only fixes library wiring,931/934 isolated source replays NOT whole scans.
+No new public runtime/test/fixture changes; no speed/full-suite/reserve claim.
+
+935 audit102 preserves ALL71/ZEROapprovals,38canonical current evidence/33historical
+pending. C19 fresh current925 does not approve the room; other scope carries are
+explicit. NANG137r lower beams ALREADY represented, not new recovery. Next distinct
+cause: geometry-qualified source-material witnesses for connected/compound shapes,
+possibly original full source-glyph interiors, but no assumed paint equivalence
+or weaker constructor. Freeze a NEW proof and compatible reserve before tuning.
+Old805/814span+20.05%HOLD10/631/638partialcostHOLDs remain CLOSED/OFF. All original
+six gates/minima/positive+negative/reserve/final stable71+16 remain OPEN. All new
+research workers925/929/931/934/935 TERMINAL; do not resume old handles/own pickles.
+
 ### Latest continuation: source-sized mini recovered; long/compound identity next
 
 Supersedes every older live PID/next-action claim below. Read full GOAL_PLAN,

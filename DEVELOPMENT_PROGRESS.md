@@ -4,6 +4,37 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Long-body diagnosis: close insufficient source-witness shortcuts
+
+No scanner change or accuracy gain in this research batch; published miniblock
+code remains unchanged. One completed actual CN3-19 scan reproduces the entire
+current ordered result and four source/JMap/JTool/blend files. The two frozen
+solid bodies still lack 9,115 source-positive pixels. The existing qualified
+foreground model supports only 4,132 of those pixels, so it cannot certify both
+bodies. Material-only evidence also covers 40 labelled negative pixels. Its
+foreground/separation/mean thresholds were NOT relaxed and no terrain was emitted.
+
+Two prospectively frozen narrower witness domains also fail eligibility. Of 85
+original full-block locators, exact poses yield 23 known three-face candidates
+but only one closed/coherent parent. Allowing observation registration of one
+physical source pixel per axis yields 39 candidates, still only one such parent.
+Both produce ZERO eligible RGB models under the unchanged independent-parent,
+two-closed and background guards. Close these shortcuts; do not widen the domain
+or lower witness requirements to manufacture success. No reserve was tuned.
+
+A private diagnostic initially mixed framed/unframed contour caches and correctly
+hit the provenance guard; that failure is preserved. Only the harness wiring was
+repaired. The subsequent witness censuses are isolated source replays, NOT new
+whole scans, speed qualifications or production changes. Existing tests/exact
+controls remain evidence of unchanged code; no new full-suite run is claimed.
+
+Audit102 preserves all 71 conservative rows/zero approvals and the prior 38
+current-evidence/33 historical-pending distinction. Next investigate a DIFFERENT
+geometry-qualified source-material witness design for connected shapes, including
+whether original complete glyph interiors provide usable independent evidence.
+Do not assume glyph paint equals solid terrain or weaken existing constructors.
+All original goal gates, private cost holds and final stable 71+16 remain open.
+
 ## 2026-10-27 — Recognize source-sized miniblock extensions, not familiar artwork
 
 The compact scanner can now recover an independently supported16x16 extension

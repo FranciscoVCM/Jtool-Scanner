@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): insufficient witness domains closed, no new detector claim
+
+Current CN3-19 ordinary output/export equality verified. Existing qualified
+foreground roles support only 4,132/9,115 missing source-solid pixels, not both
+complete bodies. Exact-original witness selection has only one closed/coherent
+parent; one-physical-pixel observation registration still has one. Both have
+zero eligible RGB models without changing the existing guards. Do not adopt
+material-only filling, relax source-witness requirements or keep enlarging these
+domains. These are failed eligibility shortcuts, NOT accuracy or speed gains.
+
+The next distinct causal direction is geometry-qualified material witnesses for
+attached/compound shapes, potentially from original complete source glyph bodies.
+That requires a NEW independent proof, not blind glyph-to-block paint transfer.
+Freeze complete positive/negative/unknown structures and a compatible prospective
+reserve before tuning. Published mini/arrow gains and all original protections
+remain; audit102 has 71 rows/zero approvals. All original goal gates remain open.
+
 ## Latest (2026-10-27): source-sized mini proof across artwork/brightness changes
 
 New compact16px extension proof uses an original coarse material parent,

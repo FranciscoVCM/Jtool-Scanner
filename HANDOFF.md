@@ -6,6 +6,13 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-27
 
+Latest research does NOT change the published scanner: existing source roles and
+two narrower original-rectangle witness domains cannot certify CN3-19's missing
+long bodies under their unchanged guards. No terrain was added or threshold
+relaxed. Audit102 retains 71 rows/zero approvals; see the newest progress/plan
+entries for failed eligibility and the next distinct source-witness direction.
+The following miniblock change remains the latest maintained implementation.
+
 Newest maintained change: `_recover_adaptive_compact_mini_extensions` in
 `jtool_scanner/scanner.py` recognizes independently source-supported16px terrain
 next to original coarse material parents. Four spatial RGB material regions
