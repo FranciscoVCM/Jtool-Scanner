@@ -1,5 +1,36 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): qualified arrow alias correction, not room completion
+
+The final direct-frame source consumer now checks an existing gravity arrow's
+shaft and whole local RGB silhouette before explaining a false full spike.
+All tied best fits must own the observed geometry edges. A necessary ORIGINAL
+RGB exposed-slope guard protects faint/isoluminant coexisting hazards and
+unknown/insufficient source evidence. It was added after a genuine faint-hazard
+failure in an otherwise green978-test prototype; that unsafe prototype was NOT
+deployed. No coordinate/room/palette-answer branch, emitted teacher, bbox-only
+deletion, native pose move, feature switch or duplicated full-image scan.
+
+Halls3 actual171->170, only false DOWN224,64 removed; real blue arrow/all other
+ordered objects retained. Whole/all1delta source QA; room remains MAJOR, including
+false save/compound/pose errors. F189/Halls4 actual pairs entirely unchanged.
+982 relevant public +28 supplementary methods pass, zero failures/errors/skips,
+NOTfullsuite. Original41/601/139/CN7/all16 definitions/metrics preserved through
+six actual scans plus explicit full-AST/final-consumer carries, NOT44fresh scans.
+FTFA926/928/zeroextras-shifts-wrong; Flames254/42/19/20/2 unchanged.
+
+Twelve quietAC serial ABBA whole samples pass complete integrity and preferred5%
+cost gate: Halls3 -1.56%, Halls4 +1.68%, denseCN3-9 -2.14%. No speedup claim.
+Standard scanning/unsupported transforms unchanged. Audit100all71/zeroapprovals;
+other43canonical findings outside28canonical+16controls explicitly historical,
+not freshly current-qualified. Final stable71+16/all six original gates OPEN.
+
+Positive research is NOT shipped: two Golden2 counterpart recoveries failed the
+untuned Golden5 reserve(0gain/17->17); CN3-19 span recovery still costs+20.05%,
+HOLD10. Keep both OFF. Resume positive partial/compound proposal/source-role and
+phase diagnosis; suppression alone cannot satisfy the milestone. No unchanged
+latency retry, failed-reserve retuning or denominator changes.
+
 ## Latest (2026-10-27): close costly span route; trace missing proposals next
 
 Actual CN3-19 source-only experiment completes both fixed missing solid bodies:

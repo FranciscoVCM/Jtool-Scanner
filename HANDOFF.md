@@ -6,6 +6,38 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-27
 
+Latest maintained change: source-verified gravity-arrow ownership prevents a
+late-recovered false full spike from surviving over the arrow. New module
+`scripts/source_arrow_ownership.py` is registered in runtime fingerprints. It
+requires the existing coloured shaft, complete local RGB silhouette, all tied
+best fits owning observed edges, and an ORIGINAL RGB exposed-slope coexistence
+guard. Faint/isoluminant hazards and unknown evidence survive; no blanket overlap
+deletion, answer lookup or second full scan. Only direct standard-grid source
+mode enters this stage, not standard scanning or unsupported transforms.
+
+Actual Halls3:171->170, one source-proved false DOWN removed, real flipper/other
+objects retained; whole/all1delta reviewed. False save and compound/pose errors
+remain MAJOR. Actual F189/Halls4 outputs unchanged.982 relevant public methods
++28 correction/export/platform methods pass, zero failures/errors/skips, NOT
+fullsuite. Original41/601minis/139terrain/CN7mask/all16 protections and metrics
+preserved with explicit carries, not44fresh scans. FTFA926/928/zeroextras-shifts-
+wrong. Twelve quietAC whole ABBA samples pass preferred5%: Halls3 -1.56%, Halls4
++1.68%, CN3-9 -2.14%; these small changes are not a speedup claim.
+
+Run `python -m unittest tests.test_source_arrow_ownership` for the20 portable
+methods, including faint/isoluminant overlap, style/gradient/capture, unknowns,
+clipping, tied-fit uncertainty and retained-object identity/order. The broader
+source-geometry/integration and fixed-corpus protections remain necessary.
+
+Audit100 retains all71 conservative rows/zero approvals. Other43canonical rooms
+outside the28canonical+16control evidence set are explicitly historical/pending
+current-code qualification. Private Golden2 two-UP counterpart experiment stays
+OFF after Golden5 reserve failed; CN3-19 spans stay OFF at+20.05% cost. Human
+beam-end answer is solid/no platform. All six original goal gates/final stable
+71+16 remain OPEN; next work must include positive partial/compound recovery.
+Consult the latest development/next-thread section and publication/app receipt;
+the following checkpoint paragraphs are historical.
+
 The newest checkpoint is documentation of measured PRIVATE research; it does
 not change the maintained scanner or app. An actual CN3-19 experiment recovers
 two complete solid structures (11 solid additions/1 false-platform retirement,

@@ -4,6 +4,52 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Source-arrow ownership, with faint-hazard protection
+
+The source-aware scanner now prevents late recovery from reintroducing a false
+full spike over a verified gravity arrow. `scripts/source_arrow_ownership.py`
+rechecks the existing coloured shaft and complete local RGB silhouette, retaining
+every tied best source fit. All legacy candidate edges must belong to observed
+arrow ink. This is a final direct-frame source consumer, not a bounding-box veto;
+standard scanning and unsupported compact/extended mappings remain unchanged.
+
+An additional procedural counterexample exposed a real safety failure AFTER
+the earlier978-test prototype passed: a faint real triangle behind a bright
+arrow could be erased. The adopted guard checks ORIGINAL RGB contours along
+exposed portions of the candidate's original slopes, with local-gradient
+subtraction and distinct physical support. Faint/nearly isoluminant hazards and
+unknown/insufficient evidence retain the candidate. No weakened thresholds,
+answer poses, emitted teachers, native-coordinate shifts or duplicate full scan.
+
+Actual Halls3 changes171->170: only the source-proved false DOWN(224,64) is
+removed; its blue flipper and every other ordered object/metadata remain.
+Whole and ALL1delta Source/JTool/Blend reviewed. The false save and other compound/
+pose errors remain MAJOR. Actual old/new F189261 and Halls4 132 maps and four
+source/map/render files are identical; project differences are only authenticated
+source-copy relocation. Six fresh accuracy scans, NOT44fresh upstream scans.
+
+982 selected public methods pass in778.510s, plus28 supplementary correction/
+export/platform methods; zero failures/errors/skips, NOT the full suite. An
+initial focused run's two sandbox temporary-folder errors are preserved; proper
+HOST access resolves them without an implementation workaround. Original41
+groups/601minis/139terrain/rails/CN7 mask/all16 metrics pass unchanged definitions
+using the three fresh pairs and explicit full-AST/final-consumer carries.
+FTFA926/928 with zero extras/shifts/wrong directions; Flames254/42/19/20/2.
+
+Twelve quiet serial AC ABBA whole scans pass every raw/input/export/project/
+cache/runtime/selector check. Medians old->new: Halls3 57.1374->56.2475s(-1.56%),
+Halls4 57.1411->58.1021s(+1.68%), CN3-9 127.6376->124.9046s(-2.14%). All pass
+the preferred5% limit; small negative changes are NOT a speedup claim.
+
+Audit100 preserves71 conservative rows/zero approvals. Its28canonical+16control
+evidence set is explicit; the other43canonical findings remain historical,
+not freshly current-code-qualified. Private Golden2 counterpart recovery of two
+reviewed UPs stays OFF after the frozen Golden5 reserve failed(17->17errors,
+zero gain). CN3-19 spans remain OFF at+20.05% cost; beam end is solid/no platform.
+Next: positive partial/compound proposal and source-role/phase causes, not
+suppression alone or retuning a failed reserve. All six original goal gates and
+final stable71+16 remain OPEN. Publication/app proof is recorded separately.
+
 ## 2026-10-27 — Source-span accuracy passes; cost hold and proposal-gap diagnosis
 
 The narrower original-triggered source-span experiment now runs on an actual

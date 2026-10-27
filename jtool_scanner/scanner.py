@@ -3132,6 +3132,16 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
         if phase['corrected']:
             result.detections = merged
             result.structural_warnings = structural_scan_warnings(result.detections)
+    if original_direct_frame:
+        # A late recovery can reintroduce an arrow head after early marker
+        # arbitration. Require complete ORIGINAL source sprite ownership,
+        # not bounding-box overlap; visible overlapping hazards stay intact.
+        from scripts.source_arrow_ownership import prune_arrow_owned_spikes
+        merged, ownership = prune_arrow_owned_spikes(result.detections, image,
+            result.room_box, source_grid=result.source_grid, source_frame=frame)
+        if ownership['retired']:
+            result.detections = merged
+            result.structural_warnings = structural_scan_warnings(result.detections)
     return result
 
 

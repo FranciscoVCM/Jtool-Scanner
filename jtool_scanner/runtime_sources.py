@@ -27,6 +27,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_full_spike_phase',
     'source_phase_registration',
     'source_partial_visibility',
+    'source_arrow_ownership',
 )
 
 

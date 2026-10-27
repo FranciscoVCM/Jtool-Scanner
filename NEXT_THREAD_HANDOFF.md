@@ -13,6 +13,57 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: source-arrow fix qualified; positive recovery still open
+
+This supersedes every older live PID/next-action claim below. Read full GOAL_PLAN,
+TOP active note and audit100; existing main/ACTIVE original goal, no archive/
+baseline resweep or new checkout. The new maintained source consumer is
+`scripts/source_arrow_ownership.py`, with ONE final direct-frame scanner call
+and runtime dependency registration. Eight feature selectors remain unchanged.
+
+Reverify an existing arrow's coloured shaft/whole local RGB silhouette; every
+tied best source fit must own all legacy geometry edges. Original-RGB contours
+on exposed ORIGINAL candidate slopes veto retirement when an independent faint/
+isoluminant hazard or unknown/insufficient source support exists. No bbox-only
+veto, hidden-absence proof, answer pose, newly emitted teacher, native move,
+duplicate full-image scan or compact/extended-frame activation. Earlier871 policy
+failed a genuine faint-hazard adversary despite978green tests; it was NOT shipped.
+
+881 entire scanner AST/eight selectors and44 final-consumer maps: only H3false
+DOWN22464 retired; other43ordered maps/metadata unchanged. NOT44fresh upstreams.
+883 SIX actual old/new H3/F189/H4 scans: H3 171->170, real blue flipper and every
+other object retained; F189261/H4 132 entire raw and four artifacts equal, project
+only owned source relocation. 887 MAIN whole/all1delta888 reviewed, H3 still
+MAJOR(false save/compound/pose errors). 884 original41 numerical definitions/
+601minis/139terrain/rails/CN7mask/all16 pass; FTFA926/928zeroextra-shift-wrong,
+Flames254/42/19/20/2. Three fresh pairs plus exact AST/consumer carries, not44scans.
+
+882 broad982methods PASS778.510s,0fail/error/skip;885 additional28 public correction/
+export/platform methods PASS. NOTfullsuite. Initial focused35run had2sandbox-temp
+PermissionErrors; normal HOST access resolved them with no code hiding the error.
+886/891 TWELVE quietAC serial ABBA whole samples pass ALLraw/input/render/project/
+cache/runtime/eight-selector checks and preferred5%cap: H3 57.1374->56.2475s(-1.56%),
+H4 57.1411->58.1021s(+1.68%),CN9 127.6376->124.9046s(-2.14%). No speedup claim.
+App was verified absent during timing; no stale34780/phantom appCPU assertion.
+
+889 seals71-screen-general-recognition-checkpoint-v100.md/JSON (all71rows,zero
+approvals). Its28canonical+16control evidence scope is explicit; other43canonical
+findings are historical, not freshly current-runtime-qualified. All original six
+goal gates/finalstable71+16 remain OPEN. Do not complete from one false alias.
+Postpublication verification uses890 actual live H3project==CLI/root-health-scan
+HTTP200/loaded==disk;893 holds actual live PID/Git/privacy result. Read its newest
+receipt rather than assuming a process survived. Private indexes stay ignored.
+
+Next bounded POSITIVE cause: real partial/compound proposal/source-role/phase
+arbitration, not suppression alone. 840/843 PRIVATE Golden2 recovers two real UPs
+but845 pre-frozen Golden5 reserve FAILED(0gain/17->17errors); both OFF, no retuning
+this reserve or presenting historical shape identities as new generalization.
+807/808C19 spans complete two fixed bodies, but814cost+20.0548% HOLD10/OFF. Human
+beam-end answer remains SOLID/NOPLATFORM. Stop unchanged expensive retries; seek
+a distinct source-supported mechanism, protect positives/nongeometry/all41/16,
+source-review every delta and measure whole cost before adoption. No new image
+or semantic question is currently needed. Preserve all sources/JMaps/projects.
+
 ### Latest continuation: span cost HOLD; partial-proposal admission next
 
 This supersedes every older next-action/live-worker statement below. Read full
