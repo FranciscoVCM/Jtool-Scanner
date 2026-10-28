@@ -17,16 +17,20 @@ IN FULL, then the latest active note and audit named below. The original
 ### User-authorized replacement goal — 2026-10-28
 
 The user NOW explicitly requested a new goal replacing the former unfinished one.
-Creation succeeded and the new stored status is ACTIVE. This supersedes older
+Creation succeeded; recovery later returned usageLimited, NOT complete or paused.
+The objective and plan remain preserved. This supersedes older
 instructions below to retain the former objective; it does not mark it achieved.
 Preserve the new goal from further resets unless explicitly requested again.
 
-Starting checkpoint791b05e/runtimeEb/audit107, no new scanner change. The complete
+Starting checkpoint791b05e/runtimeEb/audit107. The complete
 ignored replacement plan preserves all prior masks/labels/failures/protections
-and six gates. First independent solid-footprint/phase batch uses1031/1041/1043
-Dotkid3 evidence; peach A/B semantics remain pending, original1035crop re-shown.
-Then different-family development/prospectively compatible reserved evaluation,
-small-batch refresh of32historical rooms and final stable71+16/current audit.
+and six gates. The first material-only body/mini replacement and joint-frame
+attempts failed and remain OFF. Dotkid3 peach A/B semantics are now ANSWERED:
+static standard full/mini compounds, intentional halfembedded minis/shared-edge
+alternating chains/180degree counterpart. Exact native origins/counts NOT given.
+Read DOTKID3_PEACH_HUMAN_CLARIFICATION_v1085.md; sealed pending notes are history.
+Next compound/ownership batch, different-family/compatible reserved evaluation,
+small-batch refresh of31historical rooms and final stable71+16/current audit.
 Require NEW gains after791b05e, not re-credit old fixes or report/tool work.
 
 Completion still requires >=3rooms/2families including compatible reserve,
@@ -36,6 +40,47 @@ reduction/>=2per successful room/zero lost positives/new negatives, all41/601/
 qualified wholecost, reviewed push/liveHEAD/cleanGit/privatepreservation/app200.
 Five percent cost preferred; justified5-10% investigation, >10%HOLD. No arbitrary
 future-screen or full71perfection claim. Full plan defines exact criteria.
+
+### Latest maintained batch: native compact killblock identity / audit108
+
+In the ignored research folder read:
+`native-killer-public-current-scope-v1101.json`,
+`native-killer-maintained-current-carry-v1101.json`,
+`native-killer-original41-v1101.json`,
+`native-killer-controlled-whole-cost-v1102.json`,
+`native-killer-live-app-v1103.json` and
+`native-killer-audit-recovery-v1104.json`.
+All receipts are complete; no old worker/session to resume. The1103report
+generator failed AFTER saving both successful live scans;1104recovered only
+the audit from authenticated data, without rescanning. Preserve that failure.
+Audit:71-screen-general-recognition-checkpoint-v108.md/.json, ALL71/0approvals,
+40cumulative current-evidence/31historical-pending, NOT71fresh currentruntime scans.
+
+Maintained scanner.py + killer_shape.py: old red rule unchanged, additional dim
+red/two-dark-diagonal proof at native detail; unique physical sampling/unknown
+guards. Both compact consumers apply it LATE; new killers cannot teach old
+arbitration. Retag only samecell safe labels for NEWkillers, preserve oldK+safe
+backings/minis/spikes/markers. No source names/reference answers/runtime teachers.
+NANG11actual0/39->31/39K,+31true/-6falseSafe,12/12safe retained,errors50->13,
+25->50objects. Whole/ALL31changed-cellQA1086/1088, raw/8selectors/exports intact.
+Remaining8Kmiss/5wrongSafe/topplatform =>MAJOR/not approved. NANG139reserved
+unchanged150objects,10/27K,17missing =>NOpositive reserve transfer success.
+
+42focused tests/23newPASS, NOTfullsuite. Exact ASTscope plus17compactconsumer
+identity census and authenticated complete actuals preserve original41/601/139/
+16bounds; NOT44freshwhole scans. FTFA926/928zeroextras/shifts/wrong;Flames254exact/
+42extra/19miss/20shift/2wrong.12currentquietAC ABBAwholes pass5%gate: scan medians
++1.01/+3.98/+0.87%,wall+2.73/+4.04/+0.81% (NANG11/139/130r). ALLsamples complete
+raw/exports/project/profile equality, power/idle/appquiet/frozenHEAD checks.
+1098timing belongs to PREphysicalguard revision only; preserve snapshot/failures.
+
+Live both modes/ENTIRENANG11project/JMap/preview equalCLI; root/healthHTTP200 and
+loaded==disk fingerprint in1103. Publication receipt gives exactPID/commit/live
+origin/privacy checks; do not assume old17856 still active. New appchanges need
+safe restart and same checks. No final71+16/fullsuite/multifamily/goalcompletion.
+Next use Dotkid3humanstaticcompounds with frozen truth; protect intentional
+overlaps. Failed material-only replacement/forcedframe and platform/C19cost
+families remain OFF. Do not repeat variants or relabel the failed139reserve.
 
 ### Latest bounded batch: independent body positives, unsafe replacement rejected
 

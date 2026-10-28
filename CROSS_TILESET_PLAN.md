@@ -5,11 +5,36 @@
 The new active goal starts at791b05e/audit107 and preserves the former unfinished
 goal's protections and quantitative completion standards. Read the complete
 local GOAL_PLAN_20261028_REPLACEMENT.md linked from NEXT_THREAD_HANDOFF.
-First freeze complete Dotkid3 solid/BG/unknown roof evidence, then test whole-
-footprint/phase correction, real different-family/reserved transfer and small-
-batch refresh of32historical rooms. Old gains/tools/reports cannot count as NEW
+Complete Dotkid3 solid/BG/unknown roof evidence is frozen. Material-only whole/
+mini replacement and joint-frame proposals failed and stay OFF. Next use the
+confirmed static full/mini compound semantics for geometry/ownership, real
+different-family/reserved transfer and small-batch refresh of31historical rooms.
+Old gains/tools/reports cannot count as NEW
 recognition improvement. Final stable71+16, sourceQA, full public tests, whole
-cost, push/privacy/app gates remain required. No recognition change in this update.
+cost, push/privacy/app gates remain required; this milestone is not finished.
+
+## Latest shipped batch: dim crossed killblocks in native compact rooms
+
+The maintained late compact pass keeps the old colour rule and adds source-
+visible two-diagonal shape proof for dim red tiles. Physical pixel identity,
+complete coverage and late arbitration protect small captures and other objects.
+No room/hash/reference-answer branch. NANG-11 gains31real killers and corrects
+six false safe labels: frozen errors50 ->13,12/12safe positives retained, zero
+new negatives/lost positives. Remaining8missing killers/5wrong safe labels and
+platform miss keep the room MAJOR. Reserved NANG-139 unchanged10/27killers;
+NOTpositive transfer or multi-family success. Generalization gates remain open.
+
+42focused public tests/23new pass, not fullsuite. Current41/601/139/16bounds
+requalified with explicit AST/consumer/complete-output carry, not44fresh scans.
+Twelve serial quiet-AC whole samples pass5%: scan +1.01/+3.98/+0.87%, wall incl
+exports +2.73/+4.04/+0.81% for NANG11/139/130r. Live both modes/project/JMap/
+preview verified. Audit108all71/0approved/40cumulativecurrent31historical,
+NOT71fresh scans. Goal still requires more rooms/families/reserved success.
+
+Dotkid3peach A/B semantics ANSWERED: staticstandardfull/mini chains with real
+halfembedded protrusions. Exact poses/counts uncertain, not rotating/custom.
+Preserve these positives in the next compound/ownership batch; do not delete
+all nested minis. Earlier pending statements below are historical.
 
 ## Latest bounded result: material-body evidence is not a safe map replacement
 

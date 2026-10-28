@@ -4,6 +4,59 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Native compact killblock identity, not a brightness cutoff
+
+Small embedded rooms bypassed the established compact killblock pass. Reusing
+that pass alone found only 5 of 39 source killblocks: its absolute brightness
+assumption also missed dark crossed tiles. The maintained repair reuses the old
+colour rule unchanged and adds a separate brightness-relative red channel that
+requires both source-visible dark diagonals. Native-resolution contour samples
+avoid thin-stroke aliasing; duplicated physical pixels and unknown coverage
+cannot supply independent support. This is a bounded red-cross identity channel,
+not recognition of every coloured hazard or a universal tileset solution.
+
+Apply it late in both compact consumers, so new killblocks cannot teach earlier
+terrain/spike/marker decisions. Retag only an exact same-cell safe label at a
+newly identified killer; preserve established killer/backing-solid pairs, minis,
+spikes and other genuine overlaps. No room names, private references, expected
+coordinates or corrected-map teachers enter the recognizer.
+
+Measured NANG-11 result: 0/39 -> 31/39 real killblocks, all 12 source-safe blocks
+retained, six false safe-block labels corrected. Frozen typed errors fall from
+50 to 13 (74%), with no lost source positive or new false label. Actual objects
+increase from 25 to 50. Whole Source/JTool/Blend and every changed cell reviewed.
+Eight killblocks remain missing, five still have wrong safe labels, and a thin
+platform is still missing: the room remains MAJOR, not approved. Prospectively
+reserved NANG-139 stays unchanged at 10/27 killers; this is NOT positive transfer.
+
+42 focused public tests pass, including 23 new shape/consumer methods; NOT the
+full suite. Tests cover brightness, native/fractional/double captures, physical
+sampling, negative textures, partial cells and overlap/metadata preservation.
+Original 41 protection groups, 601 minis, 139 terrain footprints and all 16 exact
+bounds are requalified through explicit unchanged-AST, source-consumer and
+authenticated complete-output scopes, not 44 fresh whole scans. FTFA remains
+926/928 with zero extras/shifts/wrong directions; Flames stays 254 exact,
+42 extras/19 misses/20 shifts/two wrong directions.
+
+Current-revision quiet-AC ABBA checks use 12 whole scans, two samples per mode
+and source. Scan medians: NANG-11 +1.01%, NANG-139 +3.98%, NANG-130r +0.87%.
+Wall including exports: +2.73%, +4.04%, +0.81%; all within the unchanged 5% gate.
+Every timed output matches its complete expected raw/project/exports/profile.
+The earlier pre-physical-guard timing remains separate historical evidence.
+
+The live application and cumulative audit108 are verified at publication:
+both NANG-11 modes match the complete CLI correction project, exported JMap and
+preview. All 71 audit rows remain unapproved; cumulative current-evidence rises
+to 40, with 31 historical-pending. This is NOT 71 new current-runtime scans.
+No final stable71+16 or full-suite/goal-completion claim.
+
+The Dotkid3 A/B question is now answered: STATIC standard full/mini compounds,
+including real half-in/half-out minis and shared-edge alternating chains. Exact
+origins/counts were not supplied. Preserve those real overlaps; the next geometry
+batch must not use blanket nested-mini deletion. Earlier sealed pending notes
+are historical. Material-only whole/mini replacement and forced joint-frame
+prototypes remain rejected; neither proved complete safe geometry.
+
 ## 2026-10-28 — Independent material proof tested; destructive replacement rejected
 
 The first replacement-goal batch froze complete source solid/open/unknown labels

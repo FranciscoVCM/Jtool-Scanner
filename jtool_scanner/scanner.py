@@ -52,6 +52,7 @@ from .image import RGBImage, load_png
 from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
+from .killer_shape import red_cross_shape_supported
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .interstitial_geometry import interstitial_triangle_aliases
 from .spike_size import contour_size_changes
@@ -4788,7 +4789,9 @@ def _replace_compact_room_geometry(
                 result, adaptive_blocks, image, room, background, adaptive_profile
             )
         )
-    return _dedupe_exact_detections(result)
+    return _recover_native_compact_killer_tiles(
+        _dedupe_exact_detections(result), image, room, (19, 13),
+    )
 
 
 def _replace_embedded_compact_room_blocks(
@@ -4870,7 +4873,9 @@ def _replace_embedded_compact_room_blocks(
                 )
             )
     if not recovered:
-        return detections
+        return _recover_native_compact_killer_tiles(
+            detections, image, room, source_grid,
+        )
     # The broad candidates are not trustworthy once an embedded room has
     # been localized: they were sampled from the surrounding screenshot.
     # Keep all other object classes and replace only blocks.
@@ -4879,7 +4884,91 @@ def _replace_embedded_compact_room_blocks(
         for detection in detections
         if detection.type_id != OBJ_BLOCK
     ]
-    return _dedupe_exact_detections([*result, *recovered])
+    return _recover_native_compact_killer_tiles(
+        _dedupe_exact_detections([*result, *recovered]), image, room, source_grid,
+    )
+
+
+def _recover_native_compact_killer_tiles(
+    detections: list[Detection],
+    image: RGBImage,
+    room: Box,
+    source_grid: tuple[int, int] | None,
+) -> list[Detection]:
+    """Add native colour/cross identities after the old compact arbitration.
+
+    Small embedded rooms otherwise bypass the established compact killer pass.
+    Reuse its unchanged colour predicate, with a separate dim-cross proof. Run
+    late so newly recovered killers cannot teach terrain or change earlier
+    spike/save decisions. Only an exact same-cell safe label is contradicted;
+    preserve all minis, spikes, markers and other genuine overlaps.
+    """
+    if source_grid is None:
+        return detections
+    columns, rows = source_grid
+    if not (4 <= columns < 25 and 4 <= rows < 19):
+        return detections
+    if (room.x < 0 or room.y < 0 or room.width <= 0 or room.height <= 0
+            or room.right > image.width or room.bottom > image.height):
+        return detections
+    left = ((25 - columns) // 2) * GRID_SIZE
+    top = ((19 - rows + 1) // 2) * GRID_SIZE
+    right = left + (columns - 1) * GRID_SIZE
+    bottom = top + (rows - 1) * GRID_SIZE
+    if right >= room.width or bottom >= room.height:
+        return detections
+    existing = {(d.type_id, d.x, d.y) for d in detections}
+    new: list[Detection] = []
+    positive: set[tuple[int, int]] = set()
+    for y in range(top, bottom + 1, GRID_SIZE):
+        for x in range(left, right + 1, GRID_SIZE):
+            colours = _sample_map_patch_colors(image, room, x, y, GRID_SIZE)
+            relative_red = sum(r > g * 1.25 and r > b * 1.30 for r, g, b in colours) / len(colours)
+            red_ratio = _compact_red_ratio(colours)
+            if red_ratio < 0.925 and relative_red < 0.97:
+                continue
+            patch = _patch_features(image, room, x, y, GRID_SIZE)
+            colour_killer = red_ratio >= 0.97 or (
+                red_ratio >= 0.925 and patch.edge_density >= 0.12
+            )
+            crossed = False
+            if not colour_killer and relative_red >= 0.97:
+                detail = _sample_map_patch_colors(image, room, x, y, GRID_SIZE, sample_size=32)
+                physical_axes = None
+                if room.width < ROOM_WIDTH or room.height < ROOM_HEIGHT:
+                    # Padding compact rooms copies original body pixels; it
+                    # does not resample them. Preserve those physical identities
+                    # when several native probes land on one smaller source pixel.
+                    def source_index(origin, position, length, native_length, limit):
+                        value = math.floor(origin + position * length / native_length)
+                        return value if 0 <= value < limit else None
+                    physical_axes = (
+                        tuple(source_index(room.x, x + i + 0.5, room.width, ROOM_WIDTH, image.width)
+                              for i in range(GRID_SIZE)),
+                        tuple(source_index(room.y, y + i + 0.5, room.height, ROOM_HEIGHT, image.height)
+                              for i in range(GRID_SIZE)),
+                    )
+                crossed = red_cross_shape_supported(colours, detail, physical_axes=physical_axes)
+            if not (colour_killer or crossed):
+                continue
+            positive.add((x, y))
+            if (OBJ_KILLER_BLOCK, x, y) not in existing:
+                new.append(_geometry_detection(
+                    "native_compact_killer_cross" if crossed else "native_compact_killer_colour",
+                    OBJ_KILLER_BLOCK, x, y,
+                    0.9 if crossed else min(0.99, 0.70 + red_ratio * 0.25),
+                    image, room, GRID_SIZE,
+                ))
+    if not positive:
+        return detections
+    retained = [d for d in detections if not (
+        d.type_id == OBJ_BLOCK and (d.x, d.y) in positive
+        # Existing arbitration can intentionally retain a backing solid under
+        # an already established killer. A new positive channel is not evidence
+        # against that prior coexistence; retag only newly identified cells.
+        and (OBJ_KILLER_BLOCK, d.x, d.y) not in existing
+    )]
+    return _dedupe_exact_detections([*retained, *new])
 
 
 def _recover_embedded_compact_room_full_spikes(

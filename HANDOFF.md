@@ -6,23 +6,32 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-28
 
-The user authorized a replacement goal starting from791b05e/audit107. It is
-active, preserving prior evidence/protections and measurable completion gates;
+The user-authorized replacement goal starts at791b05e and remains unfinished;
 the former goal was not declared complete. NEXT_THREAD_HANDOFF identifies the
-full replacement plan and next solid-footprint/phase batch. No scanner change.
+full local plan, current receipts and remaining multiroom/transfer/final gates.
 
-Audit107 is current: 71 conservative rows, zero approvals, 39 current-evidence
-and 32 historical-pending rooms. New public code is an offline, read-only case
-comparator, not a detector change; 54 focused tests pass, including 29 new ones.
-It checks duplicate objects, ordered metadata, full raw/profile evidence and
-artifact identity without converting equality into an accuracy claim.
+Maintained compact-room killblock recognition now combines the unchanged old
+colour rule with brightness-relative red/two-diagonal source shape evidence.
+Native-detail/physical-pixel guards protect aliasing and unknown coverage; late
+arbitration preserves existing markers and real overlaps. No room names, maps
+or expected-coordinate answers enter recognition. NANG-11 gains31real killblocks
+and corrects six false safe labels: frozen errors50 ->13,12/12safe positives
+retained, zero new false/lost positives. Eight killblocks and a platform remain
+missing; this is not a finished room. NANG-139reserved case unchanged, NOT a
+positive transfer success. Different families and future unseen skins remain open.
 
-Fresh Dotkid3 whole/every-delta review still finds major problems. Three spikes
-added since B235 are historical gains, not new work. An unchanged actual trace
-shows mixed center profiles becoming full-block footprints on misphased walls.
-Next freeze complete source solids/empty/unknowns before testing that cause.
-Peach compound semantics remain uncertain. Platform prototypes remain OFF and
-CN3-19 packing/cost holds unresolved. Runtime and the original goal are unchanged.
+Audit108:71rows/zeroapprovals,40cumulativecurrent-evidence/31historical-pending,
+NOT71fresh scans.42focused public tests/23new pass, NOTfullsuite. Original41/
+601mini/139terrain/16bounds preserved through explicit AST/consumer/complete-
+output scopes, not44newscans. FTFA926/928zeroextras/shifts/wrong;Flames254exact/
+42extra/19miss/20shift/2wrong.12quietAC serial whole samples pass unchanged5%cost
+gate; both live modes/project/JMap/preview matchCLI with HTTP200/sourceparity.
+
+Dotkid3 peach A/B semantics are answered: static standard full/mini formations,
+including intentional halfembedded protrusions/shared-edge chains. Exact origins
+and counts remain uncertain. Its material-only replacements/joint-frame proposal
+failed and stay OFF; do not remove all overlaps. Platform prototypes and CN3-19
+packing/cost holds remain. The older checkpoint notes below are historical.
 
 Audit106 supersedes the research notes below. One current ordinary NANG128r scan
 matches the earlier complete output/exports/project. Two real platforms remain
