@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-27. Continue in the existing repository at
+Updated 2026-10-28. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -12,6 +12,44 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
+
+### Latest continuation: audit104; useful local evidence, no safe full-body pose yet
+
+Original GOAL ACTIVE/unchanged; full GOAL_PLAN, TOP active note and audit104 first.
+This publication changes four public docs ONLY. Runtime remains d789192/Eb;
+app17856 restored/host-confirmed root200 (old33244 was absent after interruption).
+Both actual app-mode/CLI parity carries from922/923 through EVERY runtime byte
+unchanged; recheck live PID/loaded fingerprint.978 holds final publication proof.
+
+961..965 direct distant-glyph BG proof:10portable methods/4accepted envelopes,
+ZERO of9115missing703pixels gained. Four contours can pass while predictedBG
+fails local exterior verification. Keep failure/guards; no wider tolerance.
+966..971 NEW local original-role exterior BG proof:15methods, physical checkerboard
+fit/held-out validation, same2146querydomain/ninephases.36accepted envelopes cover
+all9115missingpixels/BOTHcomplete but add77knownnegative ->FAIL/OFF. ALL77physical
+x116along lower square's rightedge, not permission to relabel BG or shrink labels.
+
+972..976 separate signed BG boundary registration:11newmethods/26combined,
+ALL12source-generated coarse groups, one qualified32x64strip. POST703score
+2516missingpixels supported/0newnegative,6599stillmissing/BOTHcompleteFAIL.
+Attached/uncertain faces and incompatible signed intervals abstain. NOemission,
+packing/public code change/app gain/new whole scan/timing/reserve result.
+Two initial portable sampling failures preserved (2xcheckerboard parity and
+fractional duplicate identities), fixed by actual physical pixel enumeration,
+not threshold changes. Final36distinct private methods pass, NOT public tests.
+
+977seals audit104ALL71/ZEROapprovals, prior38current-evidence/33historical-pending
+scope carried. C19 app still255ordinary/9115missing703pixels/false platform/text/
+compound errors; private partial results are NOT the app. NANG131r A miniblock/B
+empty already implemented and preserved, no new question needed. All sources,
+JMaps, labels/denominators/indexes/old failure holds remain intact. Workers terminal.
+
+NEXT inspect source transition/pose uncertainty and attached-object identity
+BEFORE a new predicate. Anti-aliased paint boundaries need not equal exact JTool
+object origins; do not force incompatible intervals or weaken9ray/known/role/
+body guards. No more BG-radius/paint/cache variants, answer-origin teaching or
+partial-fill adoption. All original six gates/3rooms/2families/reserve/8positive/
+4negative/25%/41+16/finalstable71+16 remain OPEN. No archive/baseline resweep.
 
 ### Latest continuation: audit103; stop paint/kernel variants, new shape proof next
 

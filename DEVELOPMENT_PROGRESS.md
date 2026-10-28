@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Local background evidence improves; exact object poses still unqualified
+
+No maintained scanner change or new app accuracy claim. Independent distant
+glyph-background prediction fails at the actual CN3-19 query despite valid
+contours: zero of 9,115 missing source-solid pixels supported. Preserve this
+failed experiment; do not widen its background tolerance.
+
+A separately frozen local-exterior proof uses original calibrated background
+roles, physically disjoint fit/validation pixels, four source contours and
+distributed body contrast. It supports all 9,115 missing pixels without learning
+the target texture. However, its coarse envelopes add 77 labelled background
+pixels along one right-edge column: FAIL the no-new-negative gate, not adoption.
+
+A separate signed-boundary/native-pose experiment certifies one strip supporting
+2,516 missing pixels with zero new negatives, but leaves 6,599 missing and fails
+the complete-bodies criterion. Attached/uncertain boundaries and incompatible
+opposite-face intervals remain unresolved. Neither partial support nor nearby
+contours justify forcing object origins or shipping the prototype.
+
+36 distinct private portable methods pass. Two initial sampling failures remain
+documented: integer-magnified native sampling lost held-out checkerboard parity;
+fractional pitch stepping duplicated physical pixels. Private prototypes now
+enumerate actual physical identities/centers. No public detector/test changes,
+full-suite run, new whole scan, controlled timing or reserve success is claimed.
+
+Audit104 retains all 71 rows/zero approvals and the prior 38 current-evidence/
+33 historical-pending scope; maintained maps are unchanged. NANG131r's previously
+published one-miniblock gain remains: A solid, B empty. All fixtures, source
+labels, original denominators, indexes and old results stay intact.
+
+Next investigate source transition/pose uncertainty and attached-object identity,
+not another paint/background-radius/cache variant. Anti-aliased artwork edges
+are not automatically exact object boundaries. All original goal gates, protected
+controls, compatible reserve, whole/all-delta QA and final stable 71+16 remain open.
+
 ## 2026-10-27 — Source-proof experiments: preserve failures, no kernel adoption
 
 Maintained scanner unchanged. A stricter source-filled-glyph material probe

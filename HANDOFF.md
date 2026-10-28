@@ -4,9 +4,19 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-27
+## Current checkpoint — 2026-10-28
 
-Audit103 is the latest conservative report. Private paint/arithmetic/palette-index
+Audit104 supersedes audit103 below. Maintained scanner remains the tested
+miniblock implementation, not any private source-span prototype. A new local
+background proof supports the missing CN3-19 bodies without familiar paint but
+adds 77 background pixels; separate signed positioning only qualifies part of
+the structure. Both fail their adoption criteria and remain OFF. No new app gain,
+screen approval or full-suite claim. Source-boundary/pose uncertainty is the next
+causal issue, not permission to relax thresholds. NANG131r A is a real miniblock,
+B empty; that earlier maintained fix remains. Consult the latest progress/plan/
+handoff entries for the precise evidence and unchanged original goal gates.
+
+Audit103 was the previous conservative report. Private paint/arithmetic/palette-index
 experiments were NOT adopted: whole-operation cost remains above the 10% cap
 despite an attractive lookup microbenchmark. No maintained implementation or
 scanner accuracy changed in that research batch. Consult the newest progress/

@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-28): source background separation is not exact object positioning
+
+Maintained runtime unchanged; no new app recovery or approval. The separate
+local-exterior RGB proof supports all 9,115 missing CN3-19 solid pixels without
+requiring familiar target paint, but adds 77 known-background pixels: FAIL/OFF.
+All excess lies in one thin right-edge column. Separate signed source-boundary
+registration supports 2,516 pixels/zero new negatives but fails BOTH-complete-body
+criterion (6,599 still missing). Do not relax the guards or call this deployment.
+
+36 private portable methods pass; initial physical-sampling failures/fixes remain
+recorded. No new public/full-suite run, actual whole scan, cost qualification or
+reserve success. Audit104 preserves all 71 conservative rows/zero approvals and
+38current-evidence/33historical-pending scope. Prior mini/arrow gains unchanged.
+
+Next causal issue is source transition/pose uncertainty and attached geometry:
+nearby anti-aliased paint contours need not identify exact native object origins.
+No background-radius/paint/cache retry, answer poses, label shrinking or partial
+fill adoption. Original six gates/minima/protections and final stable71+16 OPEN.
+
 ## Latest (2026-10-27): whole-operation evidence rejects private kernel variants
 
 Source-glyph paint still cannot certify both complete CN3-19 solid bodies.
