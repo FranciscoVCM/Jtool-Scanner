@@ -13,6 +13,55 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: audit105; complete source evidence, packing marker conflict
+
+Original GOAL ACTIVE/unchanged. Read fullGOAL_PLAN, TOPactive note and audit105.
+This commit changes FOURpublicdocs only; runtime remains d789192/Eb. App17856
+HOSTconfirmedlive/health200; actual BOTHappmodeCLIparity carries from922/923 via
+every runtimebyte unchanged.1003records final publication/liveapp/privacy proof.
+No archive/baseline resweep, newbranch/worktree or goal-scope reduction.
+
+979..982local inside-paint observation:12portable methods/ALL48faces; old18
+coherent->6local,204insidepaintincoherent/216noexteriorBG/156qualified. No9ray
+relaxation or poseadoption.983..987NEWstronger whole-rectangle certificate:
+UNCHANGED967localBG/4contours/actors/known/body + EVERYphysical center inside
+exactrectangle must be outside SAMEBG envelope.11methods/972nativequeries/
+11qualified rectangles. Maxrawcontour pose selection leaves31missing; retainedFAIL.
+
+988..992separate independently observed exteriorBG ownership ranking among SAME
+qualified candidates (no newposes/teachers/thresholds),11methods. Frozen703source
+union16366/16366positive,9115missing->0,40oldexcess unchanged,0loss/newnegative.
+All11source rectangles reviewed; overlappingsubregions NOT independentobjects;
+no uniqueeditororigin claim. Sourceproof alone is NOT the scanner/app output.
+
+993zoom overlays were wrongly composited after resize. Preserve those invalid
+ZOOMviews; wholepanel correct.994/996diagnosis,995corrected source zooms with
+ALL11projectedstroke assertions; ONLYcorrectedviews used forsource QA. No source
+transform/detector changed.990two initial tests had unqualifiedsynthetic bodies;
+fixtures repaired with real internalframe/partialattachment, guards unchanged.
+
+997freeze/998UNCHANGED713nativepacking: actual925ordinary255 cached source-
+decision REPLAY ->263,8newsource-reviewedblocks/7758true703pixels,0loss/newBG;
+1357stillmissing inupperbeam. Marker13(128,96) vetoes endpointtile(125,96).
+This is an OLDhuman-confirmed falseplatform onsolid frame, NOTnewdiscovery or a
+question torepeat. Newroute lacks costly805independent3frame-impostor proof;
+do NOTmake type13exception or delete bybbox to turn scoregreen. All255oldordered
+objects/metadata/nongemetry retained; existing spikes/text/pose/overlaperrors stay.
+999cachedREPLAYexports/1000wholeSource-current-replay-blend AND every8delta QA
+completed, documented1001. These are NOT actualupstream/wholescans or appgains.
+
+1002seals audit105 ALL71/ZEROapprovals,38current/33historical scope carried;
+34DISTINCTprivate methods pass (12edge+11footprint+11exterior). No newpublic/
+fullsuite/exactcontrol/wholecost/reserve claim. All research workers terminal.
+All sources/fixtures/JMaps/indexes/labels/denominators/old failedholds preserved.
+
+NEXT independent competing platform/frame/solid identity without erasing real
+platforms or using emittedteachers/answerposes. Retain newrectangle proof but
+require complete POSTpacking bodies, actualcaller/whole/everydeltaQA, another
+family/compatibleNEWreserve/all41+16/quietwholecost before adoption. Old805cost
+HOLD remains original result, not permission to revive costly cohorts unchanged.
+All original six gates/minima/finalstable71+16 remain OPEN.
+
 ### Latest continuation: audit104; useful local evidence, no safe full-body pose yet
 
 Original GOAL ACTIVE/unchanged; full GOAL_PLAN, TOP active note and audit104 first.

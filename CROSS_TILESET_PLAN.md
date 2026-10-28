@@ -1,5 +1,24 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-28): complete source bodies, not yet complete scanner output
+
+Private exact-footprint evidence plus source-exterior ownership ranking supports
+all 16,366 frozen CN3-19 solid pixels: 9,115 missing -> zero, old 40 excess
+unchanged/zero new negatives. No familiar target-paint teacher or changed role/
+contour threshold; all actual physical centers are checked. Strongest raw-contour
+selection's prior 31-pixel miss remains its failed result. All 11 source bodies
+reviewed; footprint correctness is not unique editor-origin certification.
+
+Conservative packing REPLAY adds eight source-reviewed blocks/7,758 true pixels,
+but still misses 1,357 pixels because the known false platform blocks a solid
+endpoint. Keep that protection until independently explained; no type13/bbox
+exception. Existing spike/solid conflicts remain. NOT actual scans/app adoption.
+
+34 private portable methods pass. Audit105 retains all71/zero approvals and prior
+38current/33historical scope. No new public/full-suite/control/cost/reserve claim.
+Next independent frame/platform identity, actual caller/whole QA/transfer/reserve/
+41+16 and quiet whole latency. Original six gates/finalstable71+16 remain OPEN.
+
 ## Latest (2026-10-28): source background separation is not exact object positioning
 
 Maintained runtime unchanged; no new app recovery or approval. The separate

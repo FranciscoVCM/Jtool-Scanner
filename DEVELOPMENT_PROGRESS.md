@@ -4,6 +4,45 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Source-complete rectangle proof; conservative packing still incomplete
+
+New private source evidence identifies both missing CN3-19 solid structures
+without requiring familiar target paint. Keep the distinctions precise: this
+is not a maintained scanner change, actual upstream scan or app improvement.
+
+Local normal-paint comparison is insufficient (48 faces: 18 old coherent versus
+six local); do not weaken its nine-independent-ray guard. A separate stronger
+rectangle proof instead checks EVERY original physical pixel center inside the
+exact footprint, including its boundary, against independently validated local
+background. All old four-contour, actor, unknown and distributed-body guards
+remain. Across 972 native queries, 11 rectangles qualify. Strongest raw contour
+selection still misses 31 pixels; that failed result is preserved.
+
+A separately frozen source-exterior ownership ranking selects among the SAME
+qualified candidates, adding no poses, teachers or threshold changes. Complete
+frozen source score: 7,251 -> 16,366 positive pixels matched, 9,115 -> zero
+missing, old 40 excess unchanged, zero loss/new negatives. All 11 whole source
+rectangles reviewed. This is footprint evidence, not unique editor-origin proof.
+
+Unchanged conservative native packing yields a PRIVATE cached decision replay:
+255 -> 263 objects/eight real added blocks, 7,758 fixed true pixels recovered,
+zero losses/new negatives, but 1,357 still missing on the upper beam. Its real
+endpoint is vetoed by the already-known false platform at (128,96). No marker
+was deleted or protection bypassed. Whole Source/current/replay/blend and every
+eight-object delta reviewed; all 255 old ordered objects/nongeometry retained.
+Other incorrect spikes/overlaps/text/poses remain. No deployment or room approval.
+
+34 distinct private portable methods pass, not public/full-suite tests. A source
+review zoom-overlay scaling bug was corrected before QA and all 11 annotation
+projections checked; old invalid views/failures remain preserved. No actual whole
+scan, cost qualification or reserve success is claimed. Audit105 retains all 71
+conservative rows/zero approvals and prior 38 current/33 historical evidence scope.
+
+Next: independent competing frame/platform versus solid identity, retaining real
+platforms and original metadata. This is a known marker conflict, not a new human
+question. Actual caller, transfer/reserve, all protections, controlled whole cost
+and final stable71+16 remain required. All original goal gates stay open.
+
 ## 2026-10-28 — Local background evidence improves; exact object poses still unqualified
 
 No maintained scanner change or new app accuracy claim. Independent distant

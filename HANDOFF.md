@@ -6,7 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-28
 
-Audit104 supersedes audit103 below. Maintained scanner remains the tested
+Audit105 now supersedes the older research notes below. A new private source
+rectangle proof/ranking supports both complete CN3-19 bodies without familiar
+target paint: 9,115 missing source pixels -> zero, zero new background pixels.
+Conservative block packing still leaves 1,357 missing because the known false
+platform vetoes an endpoint. Eight replay additions are source-reviewed, but NOT
+deployed; all old objects/metadata remain. No new app or room-approval claim.
+Independent competing platform/frame identity and actual transfer/protection/
+whole-cost qualification are next. Maintained code remains the tested miniblock
+implementation. See the latest progress/plan/next-thread entries; all original
+goal requirements remain open.
+
+Audit104 preceded this checkpoint. Maintained scanner remains the tested
 miniblock implementation, not any private source-span prototype. A new local
 background proof supports the missing CN3-19 bodies without familiar paint but
 adds 77 background pixels; separate signed positioning only qualifies part of
