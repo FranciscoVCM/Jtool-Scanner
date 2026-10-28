@@ -11,6 +11,21 @@ batch refresh of32historical rooms. Old gains/tools/reports cannot count as NEW
 recognition improvement. Final stable71+16, sourceQA, full public tests, whole
 cost, push/privacy/app gates remain required. No recognition change in this update.
 
+## Latest bounded result: material-body evidence is not a safe map replacement
+
+Complete source labels were frozen before a private, original-contact body proof.
+Ten procedural methods pass across palette/polarity/brightness and capture scales.
+The blind real-source run supports166 bodies with zero frozen background pixels;
+its union covers only73,546/235,850 visible solid pixels. It does not establish
+object identity or complete geometry. Naively replacing coarse terrain worsens
+whole frozen errors5,500 ->91,487 and loses90,483 old positives: REJECTED/OFF.
+
+No threshold or label changed, no runtime/app update or new recovery claimed.
+Next address independently proved capture boundaries/partial coverage and safe
+ownership, preserving unknowns and old positives. Do not delete all unsupported
+tiles or tune another material filter to the mask. Whole source/transfer/reserve/
+protections/cost/final71+16 gates remain open; Dotkid3 A/B semantics are pending.
+
 ## Latest (2026-10-28): current solid-phase cause and safer review workflow
 
 New offline case comparator plus 29 new methods; 54 focused tests pass, not the

@@ -37,6 +37,24 @@ qualified wholecost, reviewed push/liveHEAD/cleanGit/privatepreservation/app200.
 Five percent cost preferred; justified5-10% investigation, >10%HOLD. No arbitrary
 future-screen or full71perfection claim. Full plan defines exact criteria.
 
+### Latest bounded batch: independent body positives, unsafe replacement rejected
+
+Read TOP active note and `CONTACT_BODY_VERDICT_v1056.md` in the ignored research
+folder before resuming. Complete source masks were frozen first. Ten private
+procedural methods pass; the blind proposer evaluates all1,404 frozen queries
+without reference maps, evaluation labels or emitted-object teachers.166 material
+bodies qualify, all with zero fixed open-background pixels, but cover only73,546
+of235,850 source-positive pixels. Material proof is NOT complete object geometry.
+
+Naive coarse-map replacement FAILS:5,500 ->91,487 whole pixel errors,90,483 old
+positives lost and24,257 unknown pixels uncovered. Keep it OFF; no weaker guard,
+label shrink, global shift or blanket retirement. Interior quarters can pass
+while complete capture footprints fail, so investigate independent capture-edge/
+partial-coverage geometry rather than another colour/filter/pitch variant. No
+implemented fix or new gain claimed. All workers terminal; source/runtime Eb and
+audit107 unchanged. Three public progress docs record this rejection, not a new
+scanner release. Goal ACTIVE; A/B peach-hazard semantics still pending.
+
 ### Latest continuation: audit107; tested offline comparator, original solid-phase cause
 
 Keep ORIGINAL GOAL_PLAN and completion criteria. User explicitly says /goal warns

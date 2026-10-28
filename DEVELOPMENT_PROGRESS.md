@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Independent material proof tested; destructive replacement rejected
+
+The first replacement-goal batch froze complete source solid/open/unknown labels
+before testing any new predicate. A private original-contact material-body channel
+passes 10 procedural methods, including palette/polarity/brightness changes,
+fractional capture scales, incomplete bodies, query exclusion and unknown colours.
+The real-source proposer never reads evaluation labels or reference maps.
+
+Across all 1,404 predeclared source queries, 166 material bodies qualify; each has
+zero frozen open-background pixels. This is a useful component observation, not
+solid-object identity, complete geometry or a scanner recovery. Their union covers
+only 73,546 of 235,850 frozen source-positive pixels.
+
+A naive replacement of the coarse terrain is rejected: whole frozen pixel errors
+rise from 5,500 to 91,487 and 90,483 previously covered positives are lost. Removing
+4,496 old excess pixels cannot justify that loss. No labels, denominators or guards
+were weakened. Maintained recognition/app behavior remain unchanged; no new room
+approval, actual scan, full-suite, transfer or timing claim. The next causal issue
+is complete boundary/capture coverage and safe ownership, not more colour fitting
+or deletion of unsupported tiles. The Dotkid3 peach-shape question remains pending.
+
 ## 2026-10-28 — User-authorized replacement goal, no recognition change
 
 At the user's explicit request, a new goal replaces the former unfinished
