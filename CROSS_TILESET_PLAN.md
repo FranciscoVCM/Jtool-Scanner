@@ -7,11 +7,29 @@ goal's protections and quantitative completion standards. Read the complete
 local GOAL_PLAN_20261028_REPLACEMENT.md linked from NEXT_THREAD_HANDOFF.
 Complete Dotkid3 solid/BG/unknown roof evidence is frozen. Material-only whole/
 mini replacement and joint-frame proposals failed and stay OFF. Next use the
-confirmed static full/mini compound semantics for geometry/ownership, real
+confirmed static full/mini compound semantics and source paint/edge coverage for
+geometry/ownership, real
 different-family/reserved transfer and small-batch refresh of31historical rooms.
 Old gains/tools/reports cannot count as NEW
 recognition improvement. Final stable71+16, sourceQA, full public tests, whole
 cost, push/privacy/app gates remain required; this milestone is not finished.
+
+## Latest causal result: painted boundary is not collision geometry
+
+Maintained code/outputs unchanged. Dotkid3 has source-verified appearance models,
+but isolated full-triangle proofs reject all386A/Bcandidates and search no minis.
+Frozen physical source labels precede inference; exact native origins remain
+uncertified. Private partial-boundary proof passes8initial methods but gains
+zeroA/Bobjects; an additional2-method feather counterexample has1FAILURE.
+A valid original full with softened paint is rejected despite qualified source
+teacher/RGBmodels. Shared physical phase also fails independent source witnesses.
+Both shortcuts stay OFF; no relaxed opacity cutoff, forced frame or snapped pose.
+
+Next learn independently supported paint/edge coverage before complete compound
+geometry, with held-out original shapes and the preserved failing counterexample.
+Audit109all71/zeroapprovals/40cumulativecurrent31historical, no new actual scans,
+runtime gains, public tests or cost runs. Prior maintained protections remain.
+This cause directly concerns unfamiliar sprite/blur styles, not a room-name fix.
 
 ## Latest shipped batch: dim crossed killblocks in native compact rooms
 

@@ -4,6 +4,43 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Compound-spike paint assumption isolated; shortcuts remain off
+
+No new runtime change or source recovery in this batch. Dotkid3 A/B now have
+frozen physical source hazard/open/unknown labels, made before new inference.
+Their missed-plus-excess pixel errors are 3,521 and 2,709 respectively; exact
+primitive origins are not certified. Blur, solids and other colours remain
+unknown for hazard occupancy, never presumed empty. Detectors do not read labels.
+
+The original filled pass already has seven source-verified anchors and three
+qualified models. Nevertheless all 386 full-spike hypotheses in A/B fail its
+isolated-silhouette proof, and this channel searches no minispike hypotheses.
+This is not simply missing palette training. A private partial-boundary proof
+passes eight initial procedural methods, including real protruding minis, but
+recovers nothing in A/B on the ordinary lattice. Fine-origin observations are
+not editor-coordinate truth. A shared one-physical-pixel phase shortcut fails
+independent original-witness calibration and remains off; no forced frame.
+
+A subsequent two-method counterexample has one failure: soften only the paint
+of an otherwise identical known full spike, and the private proof rejects it,
+although its source teacher and RGB appearance models still qualify. Real
+original-source failures likewise occur at shallow interior pixels that are
+foreground/background mixtures, not empty space. Thus the initial eight passes
+do NOT establish portability. Preserve this failure and do not ship the prototype.
+
+Next separate visible paint/edge softness from object footprint, using only
+independently source-verified original examples and held-out original geometry.
+First pass the preserved feather counterexample and negative/overlap protections;
+then freeze any new proof before blind source evaluation. Do not merely lower
+opacity thresholds, increase erosion, snap fine origins, delete nested minis or
+repeat the rejected shared-phase/whole-terrain replacements.
+
+Audit109 preserves all 71 rows/zero approvals and cumulative 40 current-evidence/
+31 historical-pending scope. Outputs and maintained killblock repair are unchanged;
+prior public tests, exact-control scopes, timing and live-mode checks are carried,
+not rerun here. No new app gain, full-suite or goal-completion claim. The next-thread
+handoff names the frozen evidence and bounded paint-profile continuation.
+
 ## 2026-10-28 — Native compact killblock identity, not a brightness cutoff
 
 Small embedded rooms bypassed the established compact killblock pass. Reusing

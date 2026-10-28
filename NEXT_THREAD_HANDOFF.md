@@ -41,6 +41,46 @@ qualified wholecost, reviewed push/liveHEAD/cleanGit/privatepreservation/app200.
 Five percent cost preferred; justified5-10% investigation, >10%HOLD. No arbitrary
 future-screen or full71perfection claim. Full plan defines exact criteria.
 
+### Latest continuation: audit109; real paint/blur counterexample, shortcuts OFF
+
+Runtime d5ace640/c6aba991 and app remain unchanged. No new source recovery,
+actual scan, public test or wholecost run in this batch. Audit109 retains all71/
+zero approvals/40cumulative current-evidence/31historical. Original output scopes
+and current41/601/139/16bounds remain, not a fresh71or44scan claim.
+
+FIRST read `.artifacts/general-recognition-20261014/COMPOUND_PAINT_PROFILE_NEXT_BATCH_v1116.md`
+and TOP active note. All workers TERMINAL; do not resume oldsession77682 or rerun
+source baselines. Goal is ACTIVE again; no replacement/completion/pause.
+
+1106frozen physicalA/Bhazard/open/unknown truth BEFOREinference: A3781positive/
+8468negative/errors3521; B2890positive/17658negative/errors2709. Unknown feather/
+solids/other colours are NOTempty. No proposer reads labels/exemplars. Human1085
+standardstaticfull/mini compounds and real halfprotrusions remain binding.
+
+1107original source-stage199inputs (notfinal223/learner18):7source-verified
+anchors/3qualifiedfullmodels;144A+242Bfullhypotheses allfail isolatedsilhouette,
+mini hypothesesZERO.1108PRIVATEpartialcore/two-edge proof,1109eightmethodsPASS;
+1110blindall-source8grid1686bodycandidates->5proofs/3nonredundant, NONEinA/B.
+1111exactobserverA117edgefail2physical/B58edgefail1physical, decisions unchanged.
+1112samepredicatefineorigins17A/7B, ZERO8grid; NOTeditoranswers.1113threeoriginal
+trainingfulls/fouroriginalheldoutfulls: NONEof9sharedsourcepixelphases passes
+alltraining. KeepOFF; do NOTsnapcoords/forceframe/widenoffsetsearch.
+
+1114all63phase decisions unchanged:49native-corefail/5edgefail. Real original
+fulls fail at physicalRGB172,164,122 and179,170,129, mixed FG/BG in shallow core.
+1115TWOgenerated tests: unfeatheredknownfullPASS, SAMEgeometry/colourwith2.4blur
+FAILS privateproof even though existing sourcefilled teacher/RGBmodels qualify.
+Thus final private portability is NOT8/8: preserve the later1failure. No public
+runtime adoption.1117sealsaudit109; original1115failure/test/prototypes immutable.
+
+NEXT genuine cause: independently learned sourcepaint/edge-opacity coverage,
+separate from full collision footprint. Must firstpasspreserved1115counterexample,
+initial8plusnegative/overlap/unknown/scale tests and heldoutoriginalfulls; no
+target-fitting witnesses/labels/answers or merely lowered opacity/coreerosion.
+Then freeze BEFOREblindA/Bproposal/typedwholeQA/actualcaller/protections/quietcost.
+Dotkid4prospectivecompatible reserve named1106remainsUNCONSUMED/historically
+exposed/notdifferentfamily. Multiscreen/family/reserve/minima/final71+16 remain.
+
 ### Latest maintained batch: native compact killblock identity / audit108
 
 In the ignored research folder read:

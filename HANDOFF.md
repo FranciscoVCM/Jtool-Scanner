@@ -20,8 +20,8 @@ retained, zero new false/lost positives. Eight killblocks and a platform remain
 missing; this is not a finished room. NANG-139reserved case unchanged, NOT a
 positive transfer success. Different families and future unseen skins remain open.
 
-Audit108:71rows/zeroapprovals,40cumulativecurrent-evidence/31historical-pending,
-NOT71fresh scans.42focused public tests/23new pass, NOTfullsuite. Original41/
+Audit109:71rows/zeroapprovals,40cumulativecurrent-evidence/31historical-pending,
+NOT71fresh scans. Prior42focused public tests/23new pass, NOTfullsuite. Original41/
 601mini/139terrain/16bounds preserved through explicit AST/consumer/complete-
 output scopes, not44newscans. FTFA926/928zeroextras/shifts/wrong;Flames254exact/
 42extra/19miss/20shift/2wrong.12quietAC serial whole samples pass unchanged5%cost
@@ -31,7 +31,12 @@ Dotkid3 peach A/B semantics are answered: static standard full/mini formations,
 including intentional halfembedded protrusions/shared-edge chains. Exact origins
 and counts remain uncertain. Its material-only replacements/joint-frame proposal
 failed and stay OFF; do not remove all overlaps. Platform prototypes and CN3-19
-packing/cost holds remain. The older checkpoint notes below are historical.
+packing/cost holds remain. The latest private compound proof is also OFF: eight
+initial methods pass, but one of two later methods fails when the same known
+full spike has feathered paint. A shared pixel-phase shortcut fails original-
+witness calibration. Next separate source paint coverage from object footprint,
+not lower thresholds or force coordinates. No new runtime gain in audit109.
+The older checkpoint notes below are historical.
 
 Audit106 supersedes the research notes below. One current ordinary NANG128r scan
 matches the earlier complete output/exports/project. Two real platforms remain
