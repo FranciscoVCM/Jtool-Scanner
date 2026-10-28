@@ -4,6 +4,38 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-27 — Source-proof experiments: preserve failures, no kernel adoption
+
+Maintained scanner unchanged. A stricter source-filled-glyph material probe
+corroborates the earlier paint-transfer limitation: only 7,364/9,115 missing
+CN3-19 solid pixels are supported, with both complete bodies still incomplete.
+Material also covers 704 labelled negative pixels; it is not object identity.
+No material-only fill or relaxed threshold was adopted.
+
+The current full-cohort profile reproduces the earlier proof exactly. Private
+exact interpolation and combined signature arithmetic preserve every result but
+save only 17.74% and 15.65% of factory time, respectively, failing their frozen
+20% gate. Both variants are closed, not published performance improvements.
+
+A separate exact integer nearest-palette index passes all lookup/cache proofs
+and saves 63.39% in its primitive test. Actual current source-span integration
+preserves every proposal, source model, ordered object and export. However, six
+quiet AC whole scans reject adoption: ordinary median 57.8733s, legacy private
+span 71.1015s, indexed private span 72.1217s. Indexed is +24.62% versus ordinary,
+above the 10% cap, and shows no whole-operation benefit over legacy. It stays
+private/off; the older +20.05% span hold remains its original result. No claimed
+app speedup, new recovery or screen approval from these experiments.
+
+33 distinct private portable methods pass; no maintained code changed or new
+public/full-suite run is claimed. Audit103 preserves all 71 conservative rows,
+zero approvals and the prior 38 current-evidence/33 historical-pending scope.
+Next review existing intrinsic/container/local-background primitives before a
+DIFFERENT direct shape/background proof: complete known source contours plus
+distributed interior separation from independently calibrated local background,
+with actors, hollow/compound shapes, text, gradients, quantization and unknowns
+protected. No weaker RGB constructor, palette-only fill or further cache/kernel
+retry. All original goal gates and final stable 71+16 remain open.
+
 ## 2026-10-27 — Long-body diagnosis: close insufficient source-witness shortcuts
 
 No scanner change or accuracy gain in this research batch; published miniblock

@@ -1,5 +1,22 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-27): whole-operation evidence rejects private kernel variants
+
+Source-glyph paint still cannot certify both complete CN3-19 solid bodies.
+Arithmetic factory variants fail their pre-set 20% saving gate. An exact
+nearest-palette index passes a 63.39% lookup microbenchmark but NOT whole-use
+qualification: indexed span 72.1217s versus ordinary 57.8733s (+24.62%), above
+10%, with no demonstrated benefit over legacy span 71.1015s. All remain private/
+off; no new scanner accuracy, app speed or room approval. Existing guards and
+old holds/results unchanged. Audit103 retains all 71 conservative findings.
+
+Next distinct direction: direct known-source shape/background evidence, not
+further palette sharing or feature-cache optimization. Inspect existing intrinsic/
+container/local-background work first. Freeze full bodies, complete contour and
+distributed local-background proofs, actors/text/hollow/compound/gradient/unknown
+negatives and a compatible reserve before predicates. All six goal gates remain
+open; do not turn a microbenchmark into a claim of general recognition progress.
+
 ## Latest (2026-10-27): insufficient witness domains closed, no new detector claim
 
 Current CN3-19 ordinary output/export equality verified. Existing qualified

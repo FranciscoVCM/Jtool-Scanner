@@ -13,6 +13,39 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: audit103; stop paint/kernel variants, new shape proof next
+
+Original GOAL unchanged/ACTIVE; read full GOAL_PLAN, TOP active note and audit103.
+This checkpoint changes four public docs ONLY. Maintained runtime remains tested
+d789192; app33244 previously verified BOTH actual scan modes/current CLI parity.
+960 holds final documentation publication/live-app/privacy state; recheck PID.
+
+937..942 stricter original filled-glyph paint probe:4witnesses/471materialcells,
+11portable methods, only7364/9115missing703pixels; BOTH bodies FAIL,704negative
+pixels ALSOmaterial. Exploratory old/new union also fails. This corroborates
+older777..783paint failures; NOT a new cause/discovery or terrain recovery.
+944current profile ENTIRE==807.948interpolation17.74%/951combinedsignature15.65%
+factory savings FAIL frozen20%minimum, proofs equal; both CLOSED/OFF. No repeats.
+955exact integerpalette index7portablemethods/ENTIRElookupcache parity,-63.39%
+primitive time.956ACTUALordinary255/private265 entire poses/cohorts/consumer/
+raw/4exports/project except ownedsourcecopy ==807; actual index exercised.
+958SIXquietserialACABCCBA whole samples all integrityPASS. Medians ordinary
+57.8733s/legacyspan71.1015s/indexedspan72.1217s. Index+24.62%vsordinary HOLD10,
++1.43%vslegacy is NO demonstrated benefit. NO public arithmetic/index/span port.
+Old814+20.05%HOLD preserved, not relabelled.33distinct private methods pass; no
+new public/full-suite run or scanner gain. All research workers TERMINAL.
+
+959audit103 ALL71/ZEROapprovals,38current-evidence/33historical-pending scope.
+C19 ordinary still misses9115solid pixels/false platform/text/compound errors;
+private265 is NOT the app. Keep original source/fixture/JMap/index/masks intact.
+NEXT inspect maintained intrinsic/container/local-background APIs and old trials
+BEFORE a genuinely different direct source-shape/background proof (full known
+contours + distributed interior separation from independently calibrated local
+background). Protect source positives and actor/hollow/compound/text/gradient/
+quantization/crop unknowns; no palette-only fill or weaker constructor. Freeze
+complete source structures and compatible NEW reserve before predicates. All
+original six gates/minima/41+16 and final stable71+16 remain OPEN.
+
 ### Latest continuation: long-body shortcuts CLOSED; new witness proof needed
 
 Supersedes older next-action/live-worker statements. GOAL_PLAN unchanged/ACTIVE;

@@ -6,6 +6,12 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-27
 
+Audit103 is the latest conservative report. Private paint/arithmetic/palette-index
+experiments were NOT adopted: whole-operation cost remains above the 10% cap
+despite an attractive lookup microbenchmark. No maintained implementation or
+scanner accuracy changed in that research batch. Consult the newest progress/
+plan/handoff entries; the miniblock implementation below remains the live code.
+
 Latest research does NOT change the published scanner: existing source roles and
 two narrower original-rectangle witness domains cannot certify CN3-19's missing
 long bodies under their unchanged guards. No terrain was added or threshold
