@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — User-authorized replacement goal, no recognition change
+
+At the user's explicit request, a new goal replaces the former unfinished
+objective. Creation returned ACTIVE; no old-goal completion was claimed.
+The full local replacement plan is preserved under the ignored research folder
+and linked from NEXT_THREAD_HANDOFF. Old plans, measurements and failures remain.
+
+Start from791b05e/audit107, first address the confirmed material-center versus
+whole-footprint/phase cause, then different-family/reserved transfer and refresh
+the32historical-pending rooms in small groups. New gains must be measured after
+this checkpoint. Original protections, quantitative multiroom/error criteria,
+whole-output/sourceQA/cost gates and final stable71+16 remain; the new plan also
+requires final public unittest discovery. A re-shown Dotkid3 A/B crop accompanies
+the pending standard-spike versus custom/rotating-hazard question. Independent
+solid work need not wait. This is planning/lifecycle work, not new detector gains,
+tests, scans, room approvals or deployment.
+
 ## 2026-10-28 — Strict comparison tooling and current Dotkid3 causal review
 
 Added `scripts/corpus_case_comparison.py`, an offline, read-only alternative to

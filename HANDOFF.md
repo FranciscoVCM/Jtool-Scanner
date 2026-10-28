@@ -6,6 +6,11 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-28
 
+The user authorized a replacement goal starting from791b05e/audit107. It is
+active, preserving prior evidence/protections and measurable completion gates;
+the former goal was not declared complete. NEXT_THREAD_HANDOFF identifies the
+full replacement plan and next solid-footprint/phase batch. No scanner change.
+
 Audit107 is current: 71 conservative rows, zero approvals, 39 current-evidence
 and 32 historical-pending rooms. New public code is an offline, read-only case
 comparator, not a detector change; 54 focused tests pass, including 29 new ones.

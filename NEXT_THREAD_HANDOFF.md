@@ -10,8 +10,32 @@ This top section supersedes ALL older “NEWEST”, “Latest”, live PID and g
 wording further below; those entries are historical logs. Do not read the whole
 file/archive just to resume. `HANDOFF.md` is the general project overview;
 `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
-Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
-latest active note and audit named below. Preserve the existing goal/baseline.
+Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
+IN FULL, then the latest active note and audit named below. The original
+`GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### User-authorized replacement goal — 2026-10-28
+
+The user NOW explicitly requested a new goal replacing the former unfinished one.
+Creation succeeded and the new stored status is ACTIVE. This supersedes older
+instructions below to retain the former objective; it does not mark it achieved.
+Preserve the new goal from further resets unless explicitly requested again.
+
+Starting checkpoint791b05e/runtimeEb/audit107, no new scanner change. The complete
+ignored replacement plan preserves all prior masks/labels/failures/protections
+and six gates. First independent solid-footprint/phase batch uses1031/1041/1043
+Dotkid3 evidence; peach A/B semantics remain pending, original1035crop re-shown.
+Then different-family development/prospectively compatible reserved evaluation,
+small-batch refresh of32historical rooms and final stable71+16/current audit.
+Require NEW gains after791b05e, not re-credit old fixes or report/tool work.
+
+Completion still requires >=3rooms/2families including compatible reserve,
+>=8real corrections across2rooms AND4false-conflict fixes, >=25%fixed-error
+reduction/>=2per successful room/zero lost positives/new negatives, all41/601/
+139/16andother protections, final full public tests, whole/every-delta sourceQA,
+qualified wholecost, reviewed push/liveHEAD/cleanGit/privatepreservation/app200.
+Five percent cost preferred; justified5-10% investigation, >10%HOLD. No arbitrary
+future-screen or full71perfection claim. Full plan defines exact criteria.
 
 ### Latest continuation: audit107; tested offline comparator, original solid-phase cause
 

@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Current goal — user-authorized replacement, 2026-10-28
+
+The new active goal starts at791b05e/audit107 and preserves the former unfinished
+goal's protections and quantitative completion standards. Read the complete
+local GOAL_PLAN_20261028_REPLACEMENT.md linked from NEXT_THREAD_HANDOFF.
+First freeze complete Dotkid3 solid/BG/unknown roof evidence, then test whole-
+footprint/phase correction, real different-family/reserved transfer and small-
+batch refresh of32historical rooms. Old gains/tools/reports cannot count as NEW
+recognition improvement. Final stable71+16, sourceQA, full public tests, whole
+cost, push/privacy/app gates remain required. No recognition change in this update.
+
 ## Latest (2026-10-28): current solid-phase cause and safer review workflow
 
 New offline case comparator plus 29 new methods; 54 focused tests pass, not the
