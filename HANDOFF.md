@@ -6,6 +6,30 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-28
 
+Audit107 is current: 71 conservative rows, zero approvals, 39 current-evidence
+and 32 historical-pending rooms. New public code is an offline, read-only case
+comparator, not a detector change; 54 focused tests pass, including 29 new ones.
+It checks duplicate objects, ordered metadata, full raw/profile evidence and
+artifact identity without converting equality into an accuracy claim.
+
+Fresh Dotkid3 whole/every-delta review still finds major problems. Three spikes
+added since B235 are historical gains, not new work. An unchanged actual trace
+shows mixed center profiles becoming full-block footprints on misphased walls.
+Next freeze complete source solids/empty/unknowns before testing that cause.
+Peach compound semantics remain uncertain. Platform prototypes remain OFF and
+CN3-19 packing/cost holds unresolved. Runtime and the original goal are unchanged.
+
+Audit106 supersedes the research notes below. One current ordinary NANG128r scan
+matches the earlier complete output/exports/project. Two real platforms remain
+missing because compact admission assumes dark, isolated bars. New private
+source-pattern prototypes fail capture-scale portability and remain OFF; final
+source-predicate suite17methods/one failure, not a passing caller/full suite.
+No new app accuracy gain, room approval or runtime change. Exact85 original
+CN3-19 parents provide no qualified witnesses; the earlier source-body proof
+still has packing/marker/cost holds. Existing NANG131r A miniblock/B empty fix
+remains. Preserve the saved goal plan and criteria despite inconsistent goal UI;
+do not overwrite/recreate it. See latest progress/next-thread entries.
+
 Audit105 now supersedes the older research notes below. A new private source
 rectangle proof/ranking supports both complete CN3-19 bodies without familiar
 target paint: 9,115 missing source pixels -> zero, zero new background pixels.

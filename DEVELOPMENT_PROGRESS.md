@@ -4,6 +4,80 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-28 — Strict comparison tooling and current Dotkid3 causal review
+
+Added `scripts/corpus_case_comparison.py`, an offline, read-only alternative to
+repeated one-off comparison scripts. It verifies all recorded artifact and input
+checksums, counts duplicate typed objects, preserves ordered detection metadata,
+compares map flags and projects, and normalizes only the authenticated source
+snapshot path. Full raw records and complete selector profiles are required for
+review carry; missing evidence remains unknown. Equality is never an accuracy
+certificate. No scanner call, output mutation or new runtime dependency.
+
+54 focused public tests pass, including 29 new comparator methods; not the full
+suite. Real completed cases validate both historical changes and strict equality.
+The first sandbox run could not access Windows temporary directories; the same
+tests ran on the host without changing test paths or scanner behavior. Subsequent
+project-schema and extended-frame fixture errors were corrected and preserved.
+
+Canonical Dotkid3 now has fresh whole Source/JTool/Blend and every-delta review.
+Two actual source-geometry-ON scans match completely, including full raw records,
+ordered metadata, options/crop, four exports, project and eight selectors. Current
+223 objects versus B235's 220 add three historical downward spikes, with every
+old ordered detection unchanged. These are earlier cumulative gains, not new
+recoveries from this batch. Two upper downs are source-visible; the lower member
+only covers part of a compound. Exact primitive decomposition remains uncertain.
+Many compound/partial-spike and wall-phase errors remain; no room approval.
+
+The unchanged learner observation identifies a concrete next cause: mixed 16px
+center averages on two nominal roof rows both receive the terrain label and are
+exported as full 32px blocks. The original caller has five full blocks, 12 full
+spikes and one save; its supported-cell learner returns 183 blocks. Material
+selection alone is not whole-footprint or phase proof. No new repair or source
+mask has been adopted. One observer keyword-forwarding error was preserved;
+the corrected new attempt passes complete ordinary-output equality.
+
+Existing platform routing is not a safe shortcut: the default-sprite route finds
+no matches, while the whole generic detector yields one real platform and one
+false candidate and misses the other real platform. No threshold was lowered.
+Audit107 retains all 71 rows/zero approvals, now 39 current-evidence and 32
+historical-pending rooms. Recognition runtime and existing controls are unchanged;
+no fresh whole-cost or control-suite claim. Next freeze complete solid/empty/
+unknown roof structures before testing footprint/phase correction, while a narrow
+peach-shape semantic question is pending. Original goal and all six gates remain.
+
+## 2026-10-28 — Platform admission cause measured; scale-limited prototypes rejected
+
+No maintained detector change or new app accuracy gain. One actual ordinary
+NANG128r scan reproduces the complete earlier output, ordered metadata, four
+exports and project except authenticated source relocation. Whole Source/JTool/
+Blend reviewed: the previously missing middle blocks are already fixed; two
+upper-right platforms remain missing. Both pass existing compact shape/material
+gates but fail relative-darkness and material-isolation assumptions. The padded
+analysis contains an exact original-pixel copy; padding is not source evidence.
+
+Private outlined-sprite experiments fail portability before real-source adoption:
+native-normal contours fail at 1.25x, physical-unit normals at 2x, integer pitch
+at 1.75x. Separate source-rim/background ownership qualifies the synthetic boxes
+but point and area-averaged RGB signatures still fail the unchanged peer threshold
+at 1.75x. Final source-predicate suite: 17 methods, one failure; NOT a passing
+suite or actual caller validation. The compact geometry gate was mocked only to
+isolate that predicate. Repeated variants are not independent new test counts.
+All variants remain OFF; no lowered threshold or further filter/pitch retry.
+
+The exact-original CN3-19 parent route also closes: all 85 parents queried, zero
+qualified witnesses/triples; nine portable methods pass. The source-complete
+rectangle proof below remains private because packing/marker/cost are unresolved.
+An interrupted audit-save preflight compared a list to zero; schema handling was
+fixed, preserving the original receipt/domain. Audit106 is now saved with all 71
+conservative rows, zero approvals and prior 38 current/33 historical evidence
+scope. No new full-suite, control, timing or broad-review claim.
+
+Next check existing detector routing before inventing another classifier, then
+refresh one historical-evidence filled/compound room and trace its current
+proposal-to-final failure. Preserve the original goal and every completion gate;
+do not recreate it merely because its UI/status reporting is inconsistent.
+
 ## 2026-10-28 — Source-complete rectangle proof; conservative packing still incomplete
 
 New private source evidence identifies both missing CN3-19 solid structures

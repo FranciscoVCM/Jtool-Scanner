@@ -1,5 +1,43 @@
 # Cross-tileset milestone
 
+## Latest (2026-10-28): current solid-phase cause and safer review workflow
+
+New offline case comparator plus 29 new methods; 54 focused tests pass, not the
+full suite. Duplicate-aware deltas, ordered metadata, complete raw/profile
+equality and artifact checks prevent count-only or missing-evidence approvals.
+Scanner behavior, latency and runtime fingerprint are unchanged.
+
+Two current source-mode Dotkid3 scans match completely; fresh whole/every-three-
+delta QA retains MAJOR status. The three additions versus B235 are historical,
+not new batch gains. Mixed center profiles are assigned whole 32px terrain
+footprints, exposing a material-versus-phase/body-completeness issue. Next freeze
+complete source solids/empty/unknowns before a bounded repair; no output teachers,
+global palette/phase shift or relaxed protections. Peach compound semantics
+remain a separate pending question, not an invented standard-spike answer.
+
+Audit107: all71/zero approvals, 39current-evidence/32historical-pending. Platform
+variants and unsafe routing stay OFF; CN3-19 packing/marker/cost holds remain.
+Original goal/minima/reserve roles/six gates and final stable71+16 are unchanged.
+
+## Latest (2026-10-28): measured platform cause; failed portability is not adoption
+
+Audit106 retains all71/zero approvals and prior38current/33historical scope.
+One actual NANG128r ordinary scan completely matches the earlier map/metadata/
+exports/project. Its two missing platforms pass compact shape gates but fail
+dark-relative/isolation assumptions; old middle-block repairs are not new gains.
+
+New source-pattern variants fail at fractional/double capture scales. Final
+private source-predicate suite has17methods/one failure, with old geometry mocked
+only for isolation. No real-source adoption, lowered thresholds, public runtime
+change or accuracy/cost claim. Close these sampling/filter variants. Exact85
+original CN3-19 parents also yield zero qualified witnesses; no wider teacherposes.
+Prior complete source-footprint proof still has unresolved packing/platform/cost.
+
+Next inspect routing/reuse of existing predicates and one current filled/compound
+structure from historical audit evidence. No archive reload or full baseline
+resweep. Preserve original goal/minima/reserve roles/protections and six gates;
+status-panel inconsistency is not authority to replace or complete the goal.
+
 ## Latest (2026-10-28): complete source bodies, not yet complete scanner output
 
 Private exact-footprint evidence plus source-exterior ownership ranking supports

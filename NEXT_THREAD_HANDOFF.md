@@ -13,6 +13,76 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN.md` IN FULL, then the
 latest active note and audit named below. Preserve the existing goal/baseline.
 
+### Latest continuation: audit107; tested offline comparator, original solid-phase cause
+
+Keep ORIGINAL GOAL_PLAN and completion criteria. User explicitly says /goal warns
+of overwrite despite hidden panel/tool-null after usageLimited; DO NOT create,
+clear or overwrite a goal. No completion claim. Runtime remains d789192/Eb;
+this checkpoint changes offline tooling/tests/docs, NOT recognition or app code.
+
+Read current TOP active note and audit107, not whole archive/history. New public
+scripts/corpus_case_comparison.py is read-only: all artifact/source/reference
+hashes, typed MULTISETS, ordered metadata, JMapflags/project and optional full
+raw plus complete8selector profiles. Unknown evidence is not assumed equality;
+review carry is not source accuracy.29new methods/54focused testsPASS, notfullsuite.
+1037durable real-case qualification and unchangedruntime proof. README has CLI.
+
+1031current Dotkid3 source-modeON223 vsB235220:3historicalDOWN additions/no losses/
+all220oldorderedmetadata retained. Whole1032andALL3delta1038reviewed/MAJOR;
+upper2downs visible, loweronlypartofcompound, no exactprimitive certification.
+1035A/Bsourcecrops shown; standardspikes-vs-rotating/custom semantics PENDING.
+1042sourceQA. No standard-mode fresh scan, new batch gain or room approval.
+
+1039freeze/1040observer FAILED existing cluster_count keyword forwarding, preserved.
+1041corrected NEWattempt TERMINAL matches ENTIRE1031raw/options/crop/4exports/
+project/8selectors via new comparator; actual current QA carries strictly. One
+original learner call:5fulls/12fullspikes/1save =>183fulls, seed0/back2/tip0/direct2.
+Mixed16center averages at BOTHroofrows384/416 labelterrain =>whole32blocks.
+Material selection is not wholefootprint/phase proof.1043NEXT BOUNDEDBATCH plan:
+FIRST freeze complete solid/BG/unknown roof structures/denominators, THEN test
+independent original-source body/phase repair. No emitted183tiles as teachers,
+palette/phase shift, othercolour=>empty or weaker source/geometry safeguards.
+
+1044seals audit107 all71/ZEROapprovals/39current32historical, not71resweep.
+All research workers terminal. Platform variants CLOSED/OFF;1029defaultmatcher0,
+1034wholegenericroute one real+one false/missesone, unsafe activation. C19complete
+source proof/eight-blockREPLAY staysprivate:1357missing/knownmarker/cost holds.
+Next actual multiroom/compatibleuntunedreserve/wholeQA/all41+16/quietwholecost/
+finalstable71+16 remain. No archive reload, newrepo/branch/worktree or goal reset.
+
+### Latest continuation: audit106; portability failures closed, current causal refresh
+
+Original objective/GOAL_PLAN and every gate remain authoritative. User explicitly
+said NOT to overwrite the goal: UI/status reporting is inconsistent (usageLimited,
+then tool null, while /goal warns of an existing goal). Do not infer completion,
+deletion or permission to create a replacement. Continue from existing files.
+
+1027audit106 now sealed: all71/zero approvals, prior38current/33historical scope.
+1007all85exact original C19parents:0qualified/0triples,9portable PASS; close domain.
+1010ONE actual ordinary NANG128r ENTIRE917raw/meta/all4exports/project equality.
+1011source777x536 exactlycopied into analysis at123124; paddingUNKNOWN. Current
+Source/JTool/Blend reviewed: oldmiddleblocks alreadyfixed, TWOrealplatforms absent.
+All oldcompact shape/material gates pass except dark-relative/isolation.
+
+1013/1016/1019generic contour variants fail1.25/2/1.75scales; closed.1022different
+source-rim/BGownership proof qualifies both syntheticboxes but pointRGBpeer
+.833242<.90 at1.75.1025areaRGB .851564<.90 also FAIL. Final1026suite17methods/
+1failure, not17passes; oldcompactgeometry MOCKED only for sourcepredicate tests.
+NOactual candidate source evaluation/appadoption/publiccode/fullsuite/cost claim.
+Preserve defaults/failures/freezes; no more filter/pitch/correlation relaxation.
+1027first seal failed before worker creation because independent_matching_triples
+is a LIST, not int0; fixed len/emptiness schema only and rerun actual tests.
+
+1028/1029separate READONLY routing lead: standard _detect_platforms default-sprite
+matcher skipped in adaptivecompact path. ALL1880originalsamples,145unchanged
+prefilter candidates, ZEROscore>=.80. Lead CLOSED; do not loosen matcher. No gain.
+1030/1031ONE canonical CN3_Dotkid3 current actual refresh started, not71resweep.
+Inspect live handle/terminal receipt before reuse; never read live worker JSON.
+Current progress/active note will identify final state. No archive reload.
+Next whole current Source/JTool/Blend QA then freeze a complete compound structure
+and surrounding negatives BEFORE tuning. Reserved Halls7/Golden5/NANG138r roles,
+all old protections/denominators and finalstable71+16 remain. No room approval.
+
 ### Latest continuation: audit105; complete source evidence, packing marker conflict
 
 Original GOAL ACTIVE/unchanged. Read fullGOAL_PLAN, TOPactive note and audit105.

@@ -437,6 +437,29 @@ code, while retaining both the original scan revision and current run revision.
 Damaged results are regenerated into a new attempt directory without removing
 the old evidence. Keep these outputs ignored; do not publish private images.
 
+### Read-only before/after checks
+
+Compare two **completed case directories**, not summary reports or live workers:
+
+```powershell
+python scripts/corpus_case_comparison.py path/to/before-case path/to/after-case
+python -m unittest tests.test_corpus_case_comparison tests.test_corpus tests.test_scanner_feature_profiles
+```
+
+This verifies every recorded artifact checksum and source/reference identity,
+then reports duplicate-aware typed-object deltas, ordered detection metadata,
+JMap metadata, project changes and source/JTool/blend bytes. Only the authenticated
+project source-image path is normalized; history and other fields stay intact.
+It does not run the scanner, write files, measure latency or certify accuracy.
+
+Legacy cases lack some complete raw-scan and process-local selector information.
+Missing evidence is `null`/unknown, not equality or an assumed disabled feature.
+Optional `--before-raw`/`--after-raw` accept entire `ScanResult` JSON records;
+`--before-profile`/`--after-profile` accept complete recorded selector profiles.
+Both sides are required. Even `review_carry_eligible: true` means only that an
+existing review may carry through verified equality—not that a room is approved.
+The comparator is offline tooling, not a recognition rule or new runtime dependency.
+
 ### Cheap appearance diagnostics
 
 ```powershell
