@@ -4,7 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
-## 2026-10-29 — Gravity experiment save point; no half-validated adoption
+## 2026-10-29 — Private gravity qualification complete; safe continuation
+
+The intrinsic RGB-arrow prototype now passes 25 shape procedures and seven
+late-integration procedures. Correcting head-row count versus zero-based index
+resolves the developer miss without lowering the frozen 35% threshold. Golden1
+and the unchanged, prospectively reserved Entrance3 each recover their two real
+arrows with no extra arrows. Entrance3 is historically exposed, not unseen.
+
+Four distinct actual root scans cover both rooms with source geometry ON/OFF,
+producing eight complete paired raw/eight-selector/export snapshots. One completed
+scan survived a later driver failure and was reused; the repaired driver ran only
+the three remaining scans. All old detections/metadata/frame/options are retained;
+only the two expected arrows per room/mode are added, after earlier arbitration.
+Main-agent whole Source/Before/After/Blend review passes for these additions.
+Both rooms remain MAJOR because substantial terrain/spike/other errors remain.
+
+All 44 authenticated complete-result control consumers remain unchanged.
+Original41/601minis/139terrain/current16 numerical protections pass with original
+denominators. These are not 44 fresh whole scans or a complete unittest run.
+
+This is a PRIVATE qualification, not maintained-code adoption or shipped goal
+credit. Public runtime remains unchanged. Next port the qualified helper with
+per-call colour-packet reuse and original-source guards, verify maintained parity
+and affected tests, then qualify whole-scan cost before app adoption/publication.
+Ignored audit114 retains all71/zero approvals/46 cumulative current-evidence/
+25 historical-pending. All batch workers are terminal; the same goal stays ACTIVE.
+The exact save point and next action are in NEXT_THREAD_HANDOFF.md.
+
+## Earlier 2026-10-29 — Gravity experiment save point; no half-validated adoption
 
 Public scanner code remains unchanged. A private intrinsic-arrow prototype passed
 11 initial procedures, but independent review found cropped-shape and physical-

@@ -1,6 +1,31 @@
 # Cross-tileset milestone
 
-## Latest: gravity developer gate failed; durable model-transition checkpoint
+## Latest: gravity private qualification passes; maintained port is next
+
+Correct head-row/total-height counting, not a lower threshold: 25 shape methods
+and seven late-adapter methods pass. Golden1 and prospectively reserved Entrance3
+each recover two real gravity arrows with zero extras under the unchanged model.
+Entrance3 is historically exposed, not a new unseen sprite-family holdout.
+
+Four distinct actual root calls cover source geometry ON/OFF for both rooms,
+with eight complete paired snapshots. One completed call is reused after a driver
+failure; only three calls are fresh in its successor. All old detections/metadata/
+flags remain intact. Main reviewed all four whole Source/Before/After/Blend views;
+both rooms remain MAJOR, not approved. Four unique arrow gains are private-only,
+not eight gains from mode duplication or shipped successful-room credit.
+
+All44 complete-result late consumers are unchanged; original41/601/139/current16
+numerical bounds pass. Not44 new whole scans, a full unittest run or a cost test.
+Maintained code/app remain unchanged. NEXT: port the qualified intrinsic RGB proof
+and late original-source guards using per-call shared colour packets; preserve
+legacy decisions and unknown physical boundaries. Require port parity/affected
+tests/whole-source QA and controlled dense/sparse/heavy whole timing before adoption.
+
+Audit114 all71/zero approvals/46current-evidence/25historical-pending. Safe effort-
+transition checkpoint, all workers terminal; goal ACTIVE, final gates unfinished.
+Resume GRAVITY_CONTINUATION_SAVEPOINT_v1216.md, not the older failed developer step.
+
+## Prior: gravity developer gate failed; durable model-transition checkpoint
 
 Private RGB-neighbour arrow evidence passes22 procedural methods, including
 preserved scale/shading/brightness counterexamples that broke earlier versions.

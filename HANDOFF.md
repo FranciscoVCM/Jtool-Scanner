@@ -6,6 +6,22 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-29
 
+Newest safe continuation: private gravity-arrow qualification now passes25 shape
+procedures, seven integration procedures, developer and unchanged prospective
+reserve. Four distinct actual root calls cover Golden1/Entrance3 in both modes;
+only the two source-proved arrows per room are added and all old metadata/geometry
+are retained. Main whole Source/Before/After/Blend review passes for additions;
+both rooms still have MAJOR terrain/spike/other errors and are not approved.
+
+All44 complete control results remain unchanged; original41/601minis/139terrain/
+current16 numeric protections pass. Not44 fresh whole scans or a full unittest
+run. Maintained code/app are unchanged: public port, port parity and controlled
+whole-scan cost remain pending. Audit114 retains71/zero approvals/46 cumulative
+current-evidence/25historical-pending. All batch workers terminal; goal ACTIVE.
+NEXT_THREAD_HANDOFF names the exact port/save-point evidence for immediate resume.
+
+Previous save point, superseded by the qualification above:
+
 Newest save point: private gravity-arrow research is not adopted. Its source-RGB
 graph passes22 procedural methods but finds only one of Golden1's two arrows,
 so the developer gate fails and Entrance3's reserve remains unqueried. Next test

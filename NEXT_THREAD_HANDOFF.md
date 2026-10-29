@@ -14,7 +14,60 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — model-transition save point / audit113
+### Latest continuation — qualified private gravity / audit114 / safe effort switch
+
+The user requests a bounded save point, then immediate continuation after changing
+effort. SAME goal ACTIVE; do not pause, replace, complete or restart it. Dotkid3
+remains user-deferred. No maintained implementation/fixture/dependency changes.
+Read `.artifacts/general-recognition-20261014/GRAVITY_CONTINUATION_SAVEPOINT_v1216.md`
+and `GRAVITY_ACTUAL_SOURCE_QA_v1216.md`. These supersede the older next steps below.
+
+Completed, immutable evidence in that directory:
+
+- 1203 corrects head-row count/total-height arithmetic only; 35..70% unchanged.
+  1204 all25 shape procedures PASS, repeating all22 earlier tests unchanged.
+- 1205 Golden1 saved-packet replay: UP608,160/DOWN544,32, two correct/zero extra.
+  Whole/every-proposal source QA1206. Do not rescan to repeat this observation.
+- 1208 FIRST untuned Entrance3 reserve: UP128,256/DOWN112,144, two correct/zero
+  extra; physical978x748/world(-3,0,986,750) correctly separated. Only two original
+  source rechecks. Historically exposed, NOT unseen. Preserve1207 pre-query failure.
+- 1210 PRIVATE root-late add-only adapter;1211 seven integration procedures PASS.
+  RGB collected during old colour reads; new arrows cannot teach earlier geometry.
+- gravity-actual-qualification-v1213.json: FOUR distinct root calls/EIGHT complete
+  paired snapshots, both rooms/sourceON+OFF. ONE completed1212 call reused after
+  a later invalid-manifest driver failure; THREE fresh calls in1213, not four new.
+  ONLY two expected arrow additions per room/mode; all old ordered metadata/frame/
+  options retained. Reused unsealed observer diagnostics UNKNOWN, not invented.
+- Four1214 whole Source/Before/After/Blend panels reviewed by main;1216 QA records
+  correct additions but BOTH rooms still MAJOR. Golden1 source292->294; Entrance3
+  source319->321. Entrance3 standard322->324 is a separate mode, not319->321.
+- gravity-controls-worker-v1215.json, gravity-consumer44-v1215.json and
+  gravity-original41-v1215.json: TERMINAL/PASS, all44 complete results unchanged.
+  Original41/601minis/139terrain/current16 bounds pass with original denominators.
+  These are NOT44 fresh whole scans or a full unittest-suite run.
+
+All batch workers TERMINAL, including session72217/PID38388 and session93497/
+PID37484. Do not restart them or read prior failed/live handles as current work.
+Audit114 ALL71/ZEROapprovals/46cumulativecurrent/25historical; public runtime and
+outputs unchanged. No new maintained recognition adoption, whole cost or app scan.
+
+EXACT NEXT bounded task: port qualified1203/1210 behaviour into maintained code,
+using a pure helper and ephemeral per-call shared RGB packets, not the private
+global observer. Preserve old gravity/refresher choices and every earlier branch;
+apply new arrows only after the entire old root, with exact typed-key dedupe and
+original physical-coverage/source-frame validation. No private paths, references,
+room/hash/palette/coordinate answers, unknown-as-empty or duplicate full scan.
+Require maintained parity against all FOUR frozen actuals/44 controls, original
+protections/current16 and affected public tests. Then quietAC paired dense/sparse/
+heavy WHOLE timing and every new source delta QA before adoption. Safely update
+app and verify both modes/root+health200/loaded==disk after a qualified port.
+
+Current runtime7e0d9ea7/app fingerprint76b5980fb123110f140faff1ed877b38629449c8bec2c7e80146cc46f812fd85.
+Next private publication receipt is gravity-continuation-publication-v1218.json.
+Do not count private four-arrow progress as shipped goal credit. Final71+16,
+25historical refresh/fullsuite/other goal gates remain open; all older holds OFF.
+
+### Prior continuation — model-transition save point / audit113
 
 User asks to close the current bounded task safely and resume immediately after
 the model transition. Goal remains ACTIVE; do not pause, replace or complete it.
