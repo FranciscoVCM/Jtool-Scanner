@@ -4,7 +4,40 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
-## 2026-10-29 — Three historical-source refreshes; unsafe ownership stays off
+## 2026-10-29 — Diverse source refresh; water-role failure and gravity selection cause
+
+Three more ordinary source-mode scans and full Source/JTool/Blend reviews refresh
+CN3-8, Golden1 and Say-7. Complete raw output/eight feature switches were captured
+before exports; historical raw/profile evidence stays unknown. All three retain
+their B235 typed keys: 292, 292 and 304 objects. These are review gains, not new
+recognition gains. CN3-8 and Golden1 remain MAJOR. Say-7 is closely aligned under
+whole-view inspection, with localized uncertainty, not exact-certified. Its source
+is purple brick/white spikes, correcting the initial monochrome assumption.
+
+The water experiment now has frozen physical source labels: 4,008 missed and
+4,370 excess pixels, with boundaries/opaque areas explicitly uncertain. Ranking
+alone fails fractional-scale coverage. A guarded variant passes 13 initial
+procedural methods, but an additional two-appearance water test fails both colour
+orders, losing 1,536 real pixels each. Its inferred exterior colour was another
+real water appearance. Both variants remain PRIVATE/OFF: coverage invariants
+cannot rescue incorrect semantic roles. No real developer or reserve score was
+queried and no threshold was loosened to conceal this failure.
+
+Golden1's current output has no water, platforms or gravity objects despite visible
+examples. A read-only trace matches its empty gravity output: the real blue DOWN
+and pink UP candidates score 0.818 and 0.782, but room-count/viewport selection
+rejects them. Many orange-terrain impostors also score highly. Next investigate
+complete source head/shoulder/shaft proof for single arrows, retaining old positives
+and false-marker/refresher protections; do not merely relax a score or count rule.
+Reserve compatibility must be established before tuning, with no duplicate full scan.
+
+Ignored audit112 preserves all71/zero approvals:46 cumulative current-evidence,
+25 historical-pending, not71 newly scanned rooms. Public runtime and previous
+public tests/original41/601/139/current16/whole-cost/app qualifications are unchanged,
+carried by exact runtime identity, not rerun or a full-suite claim. Dotkid3 remains
+deferred and the active goal's final/multi-family/reserve gates remain unfinished.
+
+## Earlier 2026-10-29 — Three historical-source refreshes; unsafe ownership stays off
 
 Fresh source-mode scans and whole Source/JTool/Blend review completed for Halls1,
 Halls6 and Entrance3. All current raw output/eight feature switches were saved

@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-29
 
+Latest: CN3-8/Golden1/Say-7 have fresh ordinary source-mode scans and whole
+Source/JTool/Blend review. First two remain MAJOR; Say-7 is closely aligned with
+localized uncertainty, not exact-approved. All three typed-key sets match B235;
+no new runtime repair is claimed. Ignored audit112 retains all71/zero approvals,
+46 cumulative current-evidence/25 historical-pending, not71 fresh scans.
+
+Two private water-packing proposals remain off. Ranking fails fractional coverage;
+coverage guards pass initial procedures but fail when another real water colour
+is mistaken for exterior. No inferred colour role may silently become empty.
+Next source-backed cause: Golden1's two real gravity-arrow candidates score well
+but fail room-count/viewport selection. Terrain impostors also score highly;
+investigate complete arrow shape proof, not relaxed thresholds. Public runtime,
+previous regression/cost/app qualifications remain unchanged, not rerun/fullsuite.
+NEXT_THREAD_HANDOFF names the current receipts and conservative continuation.
+
+Prior review:
+
 Latest review: fresh scans and whole Source/JTool/Blend checks for Halls1, Halls6
 and Entrance3 leave all three MAJOR. Ignored audit111 now has43cumulative current-
 evidence/28historical-pending, all71rows/zeroapprovals, not71newscans. No detector

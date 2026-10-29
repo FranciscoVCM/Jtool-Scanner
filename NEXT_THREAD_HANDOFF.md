@@ -14,7 +14,56 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — three current historical reviews / audit111
+### Latest continuation — diverse source review / audit112 / gravity selection cause
+
+Supersedes older next steps. Dotkid3 remains USER-DEFERRED: no new A/B tuning/map
+request. Goal ACTIVE/unachieved; do not replace it or restart earlier work. Runtime
+7e0d9ea7 and app fingerprint76b5980fb123110f140faff1ed877b38629449c8bec2c7e80146cc46f812fd85
+unchanged. Last known appPID5504 after recovery1168; verify before reuse.
+
+In `.artifacts/general-recognition-20261014/`, read:
+
+- diverse-three-actuals-v1180.json: THREE ordinary source-mode actuals, CN3_8,
+  CN3_Golden1, Say_7; ENTIRE raw/eightselectors before exports; authentic B235
+  source/options/artifact comparisons, old raw/profile UNKNOWN. All typed-key
+  deltas EMPTY;292/292/304 objects. Worker25564/session70411 TERMINAL/PASS.
+- DIVERSE_THREE_SOURCE_QA_v1182.md and all three current-whole-v1181.png views:
+  main reviewed ALL whole Source/JTool/Blend/B235. CN3_8/Golden1 MAJOR; Say_7
+  LOCALIZED/UNCERTAIN, not exact-certified. Actual Say_7 purple brick/white
+  spikes, not the frozen selection rationale's mistaken monochrome description.
+  CN3_8 real DOWN0,400 IS present; eight emitted vines conflict with bare walls.
+- HALLS1_WATER_SOURCE_TRUTH_v1170.json: evaluation-only original physical labels,
+ 8378errors=4008missing+4370extra,5regions, explicit blur/occlusion unknowns.
+- WATER_ARBITRATION_HOLD_v1179.md: rank1173 ten methods/one fractional failure;
+  guarded1176 thirteen initial methods PASS, but1178 additional two-appearance
+  same-water test FAILS BOTH orders/1536 real pixels lost each. Another colour
+  is not background. BothPRIVATE/OFF; no real developer score/reserve queries.
+  Failed1177driver stops BEFOREquery on doc-onlyHEAD identity difference;
+  preserve it. Runtime equality is exact files/environment, not pretending
+  unchanged HEAD. No radius/cohort/threshold fitting to hide semantic ambiguity.
+- gravity-candidate-policy-v1184.json: read-only ordinary trace EXACTLY matches
+  Golden1's zero gravity output. Real DOWN544,32 score.818/UP608,160 score.782;
+  existing cohort/viewport policy rejects both. Many warm-terrain impostors also
+  score highly, so dropping the gate blindly is unsafe. No detector adopted.
+- diverse-review-checkpoint-v1185.json and audit112.md/.json: ALL71/0approvals,
+  46cumulative current-evidence/25historical-pending, not71freshscans. One ranked
+  work item in JSON mistakenly calls the gravity trace1174; correct receipt1184.
+
+NEXT bounded batch: establish full original-source head/shoulder/shaft shape proof
+for single gravity arrows, not room-count/edge/score tuning. First inspect ORIGINAL
+Entrance3 for compatible prospective reserve criteria (historically exposed/not
+unseen); no prototype scoring to choose the reserve. Preserve F189 exact arrows,
+Halls3 real blue arrow, all marker/refresher/star/terrain/water negatives. Reuse
+existing colour observations rather than duplicate full scanning. No new teacher
+or coordinate/reference answers. Frozen source truth/portable tests/actual caller/
+reserve/whole QA/protections/whole cost required before adoption.
+
+All1173/1176/1177/1178/1180/1184/1185 workers TERMINAL. No source change, new public
+tests, fullsuite, cost or app uploads this checkpoint. Earlier qualification is
+exact-runtime carry, not new execution. Goal/25historical refreshes/final71+16/
+fullsuite/3rooms2families/compatible positive reserve remain unfinished.
+
+### Prior continuation — three current historical reviews / audit111
 
 This supersedes older next-step directions. Runtime remains7e0d9ea7/9b39eea,
 app fingerprint76b5980fb123110f140faff1ed877b38629449c8bec2c7e80146cc46f812fd85;

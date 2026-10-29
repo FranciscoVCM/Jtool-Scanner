@@ -1,6 +1,31 @@
 # Cross-tileset milestone
 
-## Latest: current Halls/Entrance evidence, audit111
+## Latest: diverse source review, audit112; semantic water shortcut rejected
+
+Fresh ordinary source-mode scans/whole Source/JTool/Blend review: CN3-8/Golden1/
+Say-7,292/292/304objects, all typed keys unchanged versus B235. First two MAJOR;
+Say-7 closely aligned with localized uncertainty, not exact-approved. Actual Say-7
+is purple brick/white spikes, not the selection note's monochrome assumption.
+Audit112 all71/zero approvals/46 cumulative current-evidence/25 historical-pending.
+
+Frozen Halls1 water errors8378. Rank-only fails fractional coverage. A coverage-
+guarded prototype passes13 initial procedures but fails both same-water/two-colour
+semantic counterexamples, losing1536 real pixels each. Contrasting colour is not
+background. Both stay PRIVATE/OFF, without real developer/reserve queries or new
+source recoveries. Do not resume radius/cohort/threshold fitting to hide this.
+
+Concrete next cause: Golden1 has two visible gravity arrows, but zero emitted.
+Read-only ordinary trace finds real DOWN544,32 score.818 and UP608,160 score.782;
+existing room-count/viewport policy rejects both. Warm terrain also scores highly,
+so require complete source head/shoulder/shaft proof rather than a weaker score
+or repetition rule. Establish compatible prospective reserve before tuning; keep
+F189/real markers/refreshers/star/water negatives and full-cost protections.
+
+No maintained code change. Earlier public tests/41/601/139/current16/cost/app
+checks carried by exact runtime identity, not rerun/fullsuite. Dotkid3 deferred;
+goal active, multi-family/positive-reserve/final71+16/full-suite gates unfinished.
+
+## Prior: current Halls/Entrance evidence, audit111
 
 Three real source-mode scans plus whole review refresh Halls1/Halls6/Entrance3.
 All remain MAJOR:430/98/319objects; Halls1/Entrance3 key-unchanged vs B235,
