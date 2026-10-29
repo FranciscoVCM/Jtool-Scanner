@@ -6,6 +6,14 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-29
 
+Latest review: fresh scans and whole Source/JTool/Blend checks for Halls1, Halls6
+and Entrance3 leave all three MAJOR. Ignored audit111 now has43cumulative current-
+evidence/28historical-pending, all71rows/zeroapprovals, not71newscans. No detector
+change in this follow-up: two private marker-ownership variants failed portability
+and stay off. Next prove source water boundaries before changing distance-based
+packing; candidate coverage and broad blue masks are not accuracy truth.
+NEXT_THREAD_HANDOFF names complete current receipts and preserved failures.
+
 The user defers Dotkid3 formation work and asks to move onto other screens;
 preserve its research without requesting another map now. The active goal remains
 unfinished. NEXT_THREAD_HANDOFF names the exact local receipts and continuation.

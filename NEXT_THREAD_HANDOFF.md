@@ -14,7 +14,45 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — original-source registration / audit110
+### Latest continuation — three current historical reviews / audit111
+
+This supersedes older next-step directions. Runtime remains7e0d9ea7/9b39eea,
+app fingerprint76b5980fb123110f140faff1ed877b38629449c8bec2c7e80146cc46f812fd85;
+PID38880verify before reuse. No maintained code/fixture/dependency changes.
+Goal ACTIVE, Dotkid3 deferred. Previous turn made real review/evidence progress,
+not new recognition. In `.artifacts/general-recognition-20261014/` read:
+
+- historical-three-actuals-v1154.json:three current source-mode upstreams,
+  complete raw/eightselectors/source/options/projects/exports. One completed
+  Halls1actual1152 reused after one-sided comparator-driver misuse; no rescan.
+  Missing B235raw/profile UNKNOWN, not inferred. Original1152failure preserved.
+- HISTORICAL_THREE_SOURCE_QA_v1157.md and1153wholeviews:main viewed ALL3whole
+  Source/JTool/Blend and ALL11Halls1marker crops1156. Halls1430/Entrance3319
+  key-unchanged vs B235; Halls698one earlier Up320,448 source-supported in water,
+  NOTnew gain. ALL3MAJOR; real partly hidden spikes/markers protected.
+- ROUNDED_OWNERSHIP_HOLD_v1165.md:private1160tenmethods/7failures;1163same ten
+  plusone/7failures. Physical silhouette fitting improves but one unmodelled
+  stem-tip edge remains unowned. BothOFF, no real developer/reserve query.
+  CN3_27/CN3_25apple reserves UNQUERIED; Halls6 incompatible(noapples).
+- water-packing-observation-v1164.json:read-only ordinary detector output
+  exactly equals current ordered water. Halls1664->61candidate tiles,union
+  73088->57472;Halls610->2,2560->2048 butbluechannelcoverageunchanged. These are
+  candidate/channel observations, NOT truth or accuracy. Broadblue includes BG.
+- historical-refresh-checkpoint-v1166.json/audit111.md/.json:ALL71/0approved/
+  43cumulativecurrent28historical. THREEformerlyhistorical rooms refreshed.
+- historical-refresh-publication-v1167.json:post-push receipt; verify completion,
+  current Git/live origin/privacy/app before relying on it. Script alone is not proof.
+
+ALL1152/1154/1160/1163/1164workers TERMINAL; no old session to restart. Next freeze
+complete Halls1water positive/negative/occluded/unknown physical-source extent,
+trace why candidates win/lose packing, then prospectively reserve compatible
+different-style water evidence BEFORE tuning. Do NOTmaximize old candidate union,
+use blue predicate as truth, blindly fill boundingboxes or retry rounded-marker
+halo/model/threshold variants. Prior public71tests/41/601/139/current16/cost/
+three liveapp uploads carried by EXACTunchanged runtime, NOT rerun/fullsuite.
+Finalstable71+16/fullsuite/three-room/two-family/positive-reserve remain unfinished.
+
+### Prior continuation — original-source registration / audit110
 
 This section overrides older next-step directions below. The user explicitly
 said "Move onto other screens for now" in response to another small Dotkid3 map

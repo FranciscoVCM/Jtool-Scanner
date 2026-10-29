@@ -1,6 +1,29 @@
 # Cross-tileset milestone
 
-## Latest continuation — 2026-10-29 (supersedes older next-step directions)
+## Latest: current Halls/Entrance evidence, audit111
+
+Three real source-mode scans plus whole review refresh Halls1/Halls6/Entrance3.
+All remain MAJOR:430/98/319objects; Halls1/Entrance3 key-unchanged vs B235,
+Halls6one earlier source-supported water spike, not a new gain. Audit111all71/
+zero approvals/43cumulativecurrent28historical, NOT71freshscans. Missing historical
+raw/profile remains unknown; no rescan after the completed Halls1 driver failure.
+
+Repeated false spikes on apples motivate source ownership, not a bbox veto.
+Two PRIVATE variants fail portability and remain OFF: physical pixels improve
+capture-phase fitting but leave an unmodelled thin stem edge unexplained. Do not
+widen halos/drop that edge/add fitted stem lengths merely to pass. Apple reserves
+CN3_27/CN3_25 remain unqueried; Halls6 has no apples and is incompatible here.
+
+NEXT freeze complete source water coverage/negative/unknown evidence. Ordinary
+distance deduplication loses candidate coverage in Halls1; Halls6 loses candidate
+coverage without reducing its observed blue-channel coverage. Neither union nor
+a broad blue mask is truth; do not fill component bounding boxes blindly. Measure a bounded
+source-boundary packing change with a prospectively compatible reserve and all
+protections/cost gates. Runtime7e0d9ea7/app/earlier qualifications unchanged;
+no new public tests, real recognition gains or runtime adoption this batch.
+Dotkid3 deferred; goal active and final71+16/fullsuite/multi-family gates open.
+
+## Prior continuation — original-source registration / audit110
 
 User defers Dotkid3 A/B and asks to move onto other screens. Preserve its private
 work and known static full/mini semantics; no further tuning/map request now.

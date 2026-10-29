@@ -4,6 +4,41 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-29 — Three historical-source refreshes; unsafe ownership stays off
+
+Fresh source-mode scans and whole Source/JTool/Blend review completed for Halls1,
+Halls6 and Entrance3. All current raw output/eight feature switches were saved
+before exports. Halls1's scan survived a comparison-driver failure and was reused,
+not repeated; missing historical raw/profile evidence remains unknown. Three
+distinct real upstream scans, not four. No maintained detector change this batch.
+
+Halls1 has 430 objects and Entrance3 319, with no typed-key changes versus B235.
+Halls6 has 98, including one earlier source-supported upward spike in the water;
+that is not a new gain here. All three remain MAJOR. All eleven Halls1 marker
+crops were reviewed: three false full spikes overlap apples, while real nearby,
+partly hidden and submerged spikes must remain protected.
+
+Two private source-ownership attempts remain OFF. The coarse version has ten
+procedural methods/seven failures; the physical-pixel successor repeats those ten
+plus one, with seven failures. Physical sampling fixes fractional silhouette fit
+but cannot explain a thin stem-tip edge safely. No widened halo, loosened threshold,
+changed test or source-specific model was adopted. No real developer/reserve
+queries were run; no new source recovery or app improvement is claimed.
+
+A read-only ordinary water trace exactly matches current ordered water output.
+Distance deduplication takes Halls1 from 664 candidates to 61, reducing their
+union coverage from 73,088 to 57,472 native pixels. Halls6 goes from ten to two,
+2,560 to 2,048 pixels, without losing observed blue-channel coverage. Candidate
+union and the broad blue predicate are NOT truth: simply retaining more candidates
+risks introducing excess water. Next freeze complete source water boundaries,
+negatives/occlusions/unknowns before testing component-level packing.
+
+Ignored audit111 retains all 71 rows/zero approvals: 43 cumulative current-evidence,
+28 historical-pending, not 71 new scans. Runtime, prior 71 selected public tests,
+original41/601/139/current16, whole-cost and live-app qualifications are unchanged
+and carried by exact runtime identity, not rerun. Dotkid3 stays deferred. The
+overall goal, full-suite/final71+16 and generalization gates remain unfinished.
+
 ## 2026-10-29 — Original-source killblock registration; Dotkid3 deferred
 
 The user asked to move onto other screens rather than provide another Dotkid3
