@@ -4,7 +4,30 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
-## 2026-10-29 — Diverse source refresh; water-role failure and gravity selection cause
+## 2026-10-29 — Gravity experiment save point; no half-validated adoption
+
+Public scanner code remains unchanged. A private intrinsic-arrow prototype passed
+11 initial procedures, but independent review found cropped-shape and physical-
+crop/world-frame gaps. Its RGB-bin successor failed fractional sampling and could
+change its answer after a uniform brightness +1. Those failures are preserved.
+A local RGB-neighbour graph repeats all prior tests plus the brightness matrix:
+22 methods pass, without learned palette/background roles or a second image pass.
+
+The first Golden1 developer query finds the real pink UP, misses the blue DOWN,
+and adds no extra arrows. That fails the frozen two-arrow gate; nothing is adopted.
+The source blue component exists. A cached-packet trace isolates an apparent
+contract error: five head rows out of fourteen meet the written 35% requirement,
+but the implementation tests zero-based index4/13 instead of row count5/14.
+Next verify that counting contract, repeat all tests and replay saved packets;
+do not lower the threshold or query Entrance3's reserved pair prematurely.
+
+User-requested model-transition checkpoint is saved; the goal is ACTIVE, not
+paused or complete. Ignored audit113 retains all71/zero approvals/46 cumulative
+current-evidence/25 historical-pending; all public outputs remain unchanged.
+No new whole scans, public tests, source-room successes or runtime/cost/app-scan
+qualification are claimed. NEXT_THREAD_HANDOFF names the precise continuation.
+
+## Prior 2026-10-29 — Diverse source refresh; water-role failure and gravity selection cause
 
 Three more ordinary source-mode scans and full Source/JTool/Blend reviews refresh
 CN3-8, Golden1 and Say-7. Complete raw output/eight feature switches were captured

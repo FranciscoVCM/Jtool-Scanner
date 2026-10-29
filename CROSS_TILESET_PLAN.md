@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Latest: diverse source review, audit112; semantic water shortcut rejected
+## Latest: gravity developer gate failed; durable model-transition checkpoint
+
+Private RGB-neighbour arrow evidence passes22 procedural methods, including
+preserved scale/shading/brightness counterexamples that broke earlier versions.
+Golden1 developer result: one real UP, one missed DOWN, zero extra arrows. The
+frozen two-recovery gate FAILS; no public adoption or successful-room credit.
+Entrance3's compatible prospective two-arrow reserve remains unqueried.
+
+Cached source blue component has five head rows/14total, but old zero-based
+head-fraction arithmetic rejects4/13. Next test explicit head-row/total-row
+contract and repeat all tests, not a lower threshold or new palette fit. Replay
+existing source packets before any rescan/reserve/actual-caller work. Unknown
+colour components never mean empty world; no earlier geometry may use new arrows.
+
+Audit113 all71/zero approvals/46current-evidence/25historical-pending; public
+runtime/outputs unchanged. Model-transition save point is not a goal pause or
+completion. Final tests/71+16/transfer/whole-cost gates remain open.
+
+## Prior: diverse source review, audit112; semantic water shortcut rejected
 
 Fresh ordinary source-mode scans/whole Source/JTool/Blend review: CN3-8/Golden1/
 Say-7,292/292/304objects, all typed keys unchanged versus B235. First two MAJOR;

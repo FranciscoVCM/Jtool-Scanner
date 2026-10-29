@@ -6,6 +6,14 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-29
 
+Newest save point: private gravity-arrow research is not adopted. Its source-RGB
+graph passes22 procedural methods but finds only one of Golden1's two arrows,
+so the developer gate fails and Entrance3's reserve remains unqueried. Next test
+an apparent head-row count/index arithmetic discrepancy using saved source
+packets; do not loosen thresholds. Audit113 retains all71/zero approvals,
+46 cumulative current-evidence/25 historical-pending with public outputs unchanged.
+The user-requested model transition leaves the goal active, not paused/complete.
+
 Latest: CN3-8/Golden1/Say-7 have fresh ordinary source-mode scans and whole
 Source/JTool/Blend review. First two remain MAJOR; Say-7 is closely aligned with
 localized uncertainty, not exact-approved. All three typed-key sets match B235;

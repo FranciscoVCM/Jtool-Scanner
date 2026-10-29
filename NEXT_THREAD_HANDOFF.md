@@ -14,7 +14,45 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — diverse source review / audit112 / gravity selection cause
+### Latest continuation — model-transition save point / audit113
+
+User asks to close the current bounded task safely and resume immediately after
+the model transition. Goal remains ACTIVE; do not pause, replace or complete it.
+Dotkid3 remains deferred. No maintained implementation/fixture/dependency changes.
+Read `.artifacts/general-recognition-20261014/GRAVITY_SAVEPOINT_v1200.md` first.
+
+Current private evidence:
+
+- 1189 eleven initial methods PASS; independent1190 exposes cropped masks and
+  physical/world-frame defects. Preserved, not silently relabelled.
+- 1193 nineteen methods/two fractional failures;1194 repeats those plus uniform
+  brightness/shading cases:21methods/four failures. RGB-bin version stays OFF.
+- gravity-rgb-graph-tests-v1197.json:22 methods PASS, all21prior methods repeated
+  unchanged plus brightness matrix. Original RGB graph, no background-role labels.
+- gravity-graph-developer-v1198.json: FIRST Golden1 candidate-only observation,
+  RGB captured during existing colour reads,1813packets/no duplicate source pass.
+  One real UP608,160, missing DOWN544,32, zero extras. Two-arrow gate FAILS/OFF.
+  This is NOT a full scan, actual caller, app output or recognition adoption.
+- gravity-blue-failure-v1199.json: cached-packet-only trace. Blue region78samples,
+ 14rows, widths2,6,7,8,11,5,5,5,5,5,5,5,5,4. Five head rows/14=.3571 meets the
+  frozen35% criterion; old guard uses zero-basedk4/(height-1)13=.3077 and rejects.
+- gravity-savepoint-checkpoint-v1200.json/audit113.md/.json:ALL71/0approvals,
+  46cumulativecurrent/25historical. No new public outputs or source-room successes.
+
+NEXT: versioned successor tests explicit head_rows/total_rows contract,5/14valid,
+4/14invalid, upper bound and all22prior tests unchanged. Do NOT lower35% or fit
+a palette/pose. Replay saved Golden1-original-arrow-packets-v1198.json first;
+require2/2and0extras, whole/everyproposal QA. Only then query untouched Entrance3
+prospective reserve. If both pass, qualify late add-only integration preserving
+earlier branches/old gravity/refresher arbitration/order/metadata; reuse colour
+packets, correct original crop/world extent, no duplicate full scan. Original41/
+601/139/current16/actualcaller/bothmodes/wholeQA/wholecost/app gates before adoption.
+
+All research workers and independent reviewers finished/idle. Public runtime
+7e0d9ea7/app fingerprint unchanged; no public tests/fullsuite/cost/app uploads
+this batch. Goal final71+16/25refresh/3rooms2families/positive reserve remain open.
+
+### Prior continuation — diverse source review / audit112 / gravity selection cause
 
 Supersedes older next steps. Dotkid3 remains USER-DEFERRED: no new A/B tuning/map
 request. Goal ACTIVE/unachieved; do not replace it or restart earlier work. Runtime
