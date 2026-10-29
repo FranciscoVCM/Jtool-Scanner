@@ -10,6 +10,18 @@ review corpus. Difficult rooms still need corrections; the project does not
 claim universal or 100% accuracy. Experimental source geometry is opt-in and
 individual research APIs may remain disabled pending accuracy and speed checks.
 
+Gravity-arrow recovery also checks complete head/shoulder/shaft topology in a
+local RGB-neighbour graph, rather than requiring a known pink/blue palette.
+It reuses the existing colour traversal and verifies original physical coverage;
+padding and unavailable pixels cannot prove an arrow. The late, add-only step
+works in standard and source-geometry modes with colour scanning enabled, and
+does not teach earlier terrain detection or delete legitimate overlaps.
+Golden1 and Entrance3 each recover two confirmed arrows, but both rooms still
+have substantial other errors. Procedural palette/brightness/scale tests and
+preserved real controls support this bounded change, not universal sprite support.
+The complete 1,743-test suite passes; controlled whole-scan measurements across
+three sources remain within 5%. See DEVELOPMENT_PROGRESS.md for exact scope.
+
 Experimental scan comparisons must record the complete process-local feature
 profile as well as the code fingerprint. `scripts/scanner_feature_profiles.py`
 provides `snapshot_feature_profile(scanner)` and

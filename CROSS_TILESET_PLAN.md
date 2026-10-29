@@ -1,6 +1,31 @@
 # Cross-tileset milestone
 
-## Latest: gravity private qualification passes; maintained port is next
+## Latest: maintained RGB-arrow recovery passes accuracy, full suite and whole cost
+
+The pure intrinsic RGB helper and per-call colour-packet reuse are maintained.
+Complete original coverage, exact old-score parity and root-late add-only
+integration protect earlier geometry, metadata and legitimate overlaps. There
+are no palette/room/hash/coordinate answer branches or new experimental switches.
+Four maintained actuals cover Golden1/Entrance3 with source geometry ON/OFF;
+two correct arrows per room, four unique gains, zero extra arrows. Both remain
+MAJOR. This does not remove pre-existing spike/solid conflicts or missing water.
+
+All1743 unittest methods pass. All44 complete-result consumers remain unchanged;
+original41/601minis/139terrain/current16 bounds pass. Additional Dotkid3 replay
+unchanged, with its main formation task still user-deferred. Twelve quiet serial
+AC whole ABBA samples pass full-output checks: Golden1 -1.61%, Entrance3 -2.22%,
+NANG128 +1.44% scan median, all within5%. The BEFORE restores all five old functions.
+No duplicate full image pass, inferred-empty colour or unknown-padding evidence.
+
+Audit115: all71/zero approvals/46cumulativecurrent/25historical, not71 fresh
+current-code scans. Goal stays ACTIVE. Save this qualified batch, verify actual
+app modes and public/private Git state, then refresh a bounded historical subset
+(canonical CN3-16/18/26) using complete raw/profile/export/whole-view evidence.
+Tracked alternate captures do not silently refresh those canonical sources.
+Use observed failures to select general mechanisms; retain all old experiment
+holds and prospectively reserved controls. NEXT_THREAD_HANDOFF is authoritative.
+
+## Prior: gravity private qualification passes; maintained port is next
 
 Correct head-row/total-height counting, not a lower threshold: 25 shape methods
 and seven late-adapter methods pass. Golden1 and prospectively reserved Entrance3

@@ -14,7 +14,69 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — qualified private gravity / audit114 / safe effort switch
+### Latest continuation — maintained gravity / audit115 / safe effort switch
+
+SAME goal ACTIVE: user asks for a safe ultra-to-extra-high boundary and immediate
+continuation, not a pause, restart or goal completion. Do not redo the finished
+gravity batch. Dotkid3 A/B remains user-deferred. Existing checkout/main only.
+
+The qualification base was74986264d261d40902a33951fc134807618b968b. An earlier
+publication request failed BEFORE command execution when automatic approval hit
+its usage limit; receipt1230 and GRAVITY_MAINTAINED_SAVEPOINT_v1230.md preserve
+that event. Current publication truth belongs to versioned receipt1231: if absent
+or unsuccessful, publication remains pending. Verify it rather than assuming a
+staged checkpoint was pushed. Do not bypass approvals or repeat the completed
+accuracy/full-suite/timing work. Runtime and app qualification passed.
+
+Maintained runtime19ce21c6 / app fingerprint
+`f0f37d9e4d22f98c2159ef343df338a0a43d58901eb9ec10c4f10dbe37f6528a`.
+New pure `gravity_shape.py`, per-call RGB packets/shared old direction probes,
+original physical-coverage checks and root-late add-only integration. No private
+imports, answer coordinates, new switches or earlier geometry teachers.
+
+Completed immutable evidence in `.artifacts/general-recognition-20261014/`:
+
+- gravity-maintained-port-v1222.json: FOUR maintained full root scans, both
+  modes/rooms; full raw/metadata/export parity. Gold1 source292->294; Entrance3
+  source319->321, standard322->324. Four unique real arrows, not eight gains.
+- gravity-maintained-export-QA-v1224.json: all four source/JMap/JTool/Blend bytes
+  match main-reviewed private actuals; both rooms remain MAJOR, not approved.
+- gravity-maintained-original41-v1222.json / consumer44: all44 complete results
+  unchanged, original41/601minis/139terrain/current16 bounds pass. Not44 new whole
+  scans. Extra Dotkid3late replay1227 unchanged, not a new scan/tuning/approval.
+- gravity-full-unittest-v1225.json +terminal: all1743 PASS,0fail/errors/skips.
+  DO NOT restart it. All38 new public methods/107 selected passed as well, not
+  additional tests to sum with1743. Earlier environment/driver failures preserved.
+- gravity-controlled-whole-cost-v1226.json +terminal:12whole quietserialAC ABBA
+  samples PASS. SourceON;2before/2after/source. BEFORE restores ALL FIVE changed
+  functions. Gold1 59.09->58.14s(-1.61%),Entrance3 89.91->87.91s(-2.22%),NANG128
+  29.82->30.25s(+1.44%); full-output checks, all within5%. No relaxed cap needed.
+- gravity-live-app-v1228.json +terminal: real app scan/project/JMap/preview checks
+  for Gold1 source+standard and Entrance3 source; root/health200/loaded==disk.
+- gravity-maintained-checkpoint-v1229.json / audit115:ALL71/zero approvals,
+  46cumulativecurrent/25historical, not71 fresh scans. Older audit114 is immutable.
+- gravity-maintained-publication-v1230.json records the terminal approval-service
+  failure BEFORE command execution, not a published commit. Use a versioned1231
+  publication successor for exact commit/live Git/privacy/app verification after
+  approval is available; never overwrite the failed attempt or claim Git is clean.
+
+No live batch producer remains at the sealed boundary. App PID33988 was started
+from tested disk code; recheck process/listener/health instead of trusting a stale
+PID after a reboot. Private indexes/artifacts/maps remain ignored and preserved.
+All prior failed experiments remain OFF; universal or whole-room success is not
+claimed. The current goal's final stable71+16/history/transfer gates remain open.
+
+IMMEDIATE NEXT: refresh canonical CN3_16/CN3_18/CN3_26 in a bounded source-mode
+batch. Authenticate their exact canonical inputs and record full raw/eight-switch
+profile before exports; compare complete output and inspect whole Source/JTool/
+Blend plus deltas. Do not count tracked alternate-capture controls as refreshing
+the canonical room. Old clean/accepted impressions are hypotheses, not approval.
+Update audit conservatively; select the next source-independent error mechanism
+from measured evidence. Do not tune palette/coordinates or use reconstructed
+objects as source truth. Preserve exact protections and the user's real overlaps.
+No need to resend/reopen the historical archive or ask another Dotkid3 map.
+
+### Prior continuation — qualified private gravity / audit114 / safe effort switch
 
 The user requests a bounded save point, then immediate continuation after changing
 effort. SAME goal ACTIVE; do not pause, replace, complete or restart it. Dotkid3

@@ -54,6 +54,7 @@ from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .killer_shape import red_cross_shape_supported
 from .source_killers import RegisteredCellEvidence
+from .gravity_shape import ArrowPatch, patch_arrow_proofs, source_query_axes
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .interstitial_geometry import interstitial_triangle_aliases
 from .spike_size import contour_size_changes
@@ -2197,12 +2198,16 @@ def scan_image(
     *,
     _apply_shape_refits: bool = True,
     source_geometry: bool = False,
+    _gravity_packet_sink: list[ArrowPatch] | None = None,
 ) -> ScanResult:
     if not isinstance(source_geometry, bool):
         raise ValueError('source_geometry must be a boolean')
     if source_geometry and not include_geometry:
         raise ValueError('Source geometry requires geometry scanning')
     _PATCH_FEATURE_CACHE.clear()
+    gravity_packets = _gravity_packet_sink
+    if gravity_packets is None and include_color_objects and _apply_shape_refits:
+        gravity_packets = []
     source_image = image
     source_box = room_box or detect_room_box(image)
     embedded_compact_room = False
@@ -2333,7 +2338,9 @@ def scan_image(
     )
     detections.extend(_detect_warps(image, box, grid_step))
     if include_color_objects:
-        detections.extend(_detect_color_objects(image, box, grid_step, detections))
+        detections.extend(_detect_color_objects(
+            image, box, grid_step, detections, gravity_packets=gravity_packets,
+        ))
     if adaptive_compact_room:
         # Compact 19x13 rooms have a reliable native tile phase.  Handle
         # their geometry before broad color-profile branches so a reverse
@@ -2986,7 +2993,72 @@ def scan_image(
             result = _apply_source_geometry(result, source_image, **pending_options)
     if include_geometry:
         result = _recover_source_registered_killers(result, source_image)
+    if include_color_objects and _apply_shape_refits:
+        result = _recover_source_gravity_arrows(
+            result, source_image, gravity_packets,
+            sample_image=image, sample_room=box,
+        )
     return result
+
+
+def _recover_source_gravity_arrows(
+    result: ScanResult,
+    image: RGBImage,
+    packets: list[ArrowPatch] | None,
+    *,
+    sample_image: RGBImage,
+    sample_room: Box,
+    source_extent: Box | None = None,
+) -> ScanResult:
+    """Add source-proved arrows after every earlier geometry/marker decision.
+
+    Working-frame packets are only locators unless they came from this exact
+    original frame. No emitted object teaches the source shape; old objects and
+    overlaps are retained, with exact typed-key deduplication only.
+    """
+    if result.source_grid is None or not packets:
+        return result
+    columns, rows = result.source_grid
+    if not (4 <= columns <= 25 and 4 <= rows <= 19):
+        return result
+    native_size = columns * GRID_SIZE, rows * GRID_SIZE
+    offset = ((25 - columns) // 2) * GRID_SIZE, ((19 - rows + 1) // 2) * GRID_SIZE
+    physical = result.room_box
+    extent = source_extent or result.source_extent or physical
+    direct = (result.source_grid == (25, 19) and sample_image is image
+              and sample_room == physical and extent == physical)
+    existing = {(d.type_id, d.x, d.y) for d in result.detections}
+    additions = []
+    for x, y, raw in packets:
+        proposals = patch_arrow_proofs(raw)
+        for type_id in proposals:
+            if (type_id, x, y) in existing:
+                continue
+            axes = source_query_axes(image, physical, extent, x, y, native_size, offset)
+            if axes is None:
+                continue
+            if not direct:
+                xs, ys = axes
+                original = bytes(v for py in ys for px in xs for v in image.pixel(px, py))
+                if type_id not in patch_arrow_proofs(original):
+                    continue
+            xx, yy = x - offset[0], y - offset[1]
+            x0 = extent.x + xx * extent.width / native_size[0]
+            x1 = extent.x + (xx + GRID_SIZE) * extent.width / native_size[0]
+            y0 = extent.y + yy * extent.height / native_size[1]
+            y1 = extent.y + (yy + GRID_SIZE) * extent.height / native_size[1]
+            additions.append(Detection(
+                'source_gravity_down_arrow' if type_id == OBJ_GRAVITY_DOWN else 'source_gravity_up_arrow',
+                type_id, x, y, .9,
+                Box(math.floor(x0), math.floor(y0),
+                    math.ceil(x1) - math.floor(x0), math.ceil(y1) - math.floor(y0)),
+            ))
+            existing.add((type_id, x, y))
+    if not additions:
+        return result
+    detections = sorted([*result.detections, *additions], key=lambda d: (d.type_id, d.y, d.x))
+    return replace(result, detections=detections,
+                   structural_warnings=structural_scan_warnings(detections))
 
 
 def _recover_source_registered_killers(result: ScanResult, image: RGBImage) -> ScanResult:
@@ -4082,6 +4154,7 @@ def _scan_lattice_normalized_room(
     """
 
     use_consensus = _capture_lattice_consensus_enabled(normalization)
+    gravity_packets = [] if include_color_objects and _apply_shape_refits else None
     source_result = scan_image(
         source_image,
         room_box=normalization.source_room,
@@ -4101,6 +4174,7 @@ def _scan_lattice_normalized_room(
         source_grid=(25, 19),
         recognized_text=recognized_text,
         _apply_shape_refits=False,
+        **({'_gravity_packet_sink': gravity_packets} if gravity_packets is not None else {}),
     )
     extent = normalization.source_extent
 
@@ -4235,6 +4309,13 @@ def _scan_lattice_normalized_room(
         frame = SourceFrame(source_image, normalization.source_room,
             extent=normalization.source_extent, canonical=canonical_image)
         result = _apply_source_geometry(result, source_image, source_frame=frame)
+    if include_color_objects and _apply_shape_refits:
+        result = _recover_source_gravity_arrows(
+            result, source_image, gravity_packets,
+            sample_image=canonical_image,
+            sample_room=Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT),
+            source_extent=normalization.source_extent,
+        )
     return result
 
 
@@ -12944,6 +13025,8 @@ def _detect_color_objects(
     room: Box,
     grid_step: int,
     anchors: list[Detection],
+    *,
+    gravity_packets: list[ArrowPatch] | None = None,
 ) -> list[Detection]:
     detections: list[Detection] = []
     detections.extend(_detect_apples(image, room, grid_step, anchors))
@@ -12959,7 +13042,7 @@ def _detect_color_objects(
             water,
         )
     )
-    detections.extend(_detect_gravity_flippers(image, room))
+    detections.extend(_detect_gravity_flippers(image, room, packets=gravity_packets))
     refreshers = _detect_jump_refreshers(image, room, grid_step)
     if refreshers:
         detections = [
@@ -13113,7 +13196,9 @@ def _component_blue_halo_ratio(
     return broad_blue / len(pixels)
 
 
-def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
+def _detect_gravity_flippers(
+    image: RGBImage, room: Box, *, packets: list[ArrowPatch] | None = None,
+) -> list[Detection]:
     """Detect the standard arrow-shaped gravity flippers.
 
     Color isolates the sprite from the room, while the arrow template decides
@@ -13140,6 +13225,11 @@ def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
     )
     for y in range(0, ROOM_HEIGHT - GRID_SIZE + 1, 16):
         for x in range(0, ROOM_WIDTH - GRID_SIZE + 1, 16):
+            # Both old direction scores consume identical sample coordinates.
+            # Share those reads; keep all old scoring and selection decisions.
+            sampled_rgb = _arrow_rgb_patch(image, room, x, y)
+            if packets is not None:
+                packets.append((x, y, sampled_rgb))
             for kind, type_id, points_down, predicate in classes:
                 score, colored = _arrow_color_shape_score(
                     image,
@@ -13148,6 +13238,7 @@ def _detect_gravity_flippers(image: RGBImage, room: Box) -> list[Detection]:
                     y,
                     predicate,
                     points_down,
+                    sampled_rgb=sampled_rgb,
                 )
                 if colored < 30 or colored > 170 or score < 0.50:
                     continue
@@ -13228,6 +13319,8 @@ def _arrow_color_shape_score(
     map_y: int,
     predicate,
     points_down: bool,
+    *,
+    sampled_rgb: bytes | None = None,
 ) -> tuple[float, int]:
     sample = 16
     scale_x = room.width / ROOM_WIDTH
@@ -13237,12 +13330,16 @@ def _arrow_color_shape_score(
 
     for sy in range(sample):
         for sx in range(sample):
-            image_x = int(room.x + (map_x + (sx + 0.5) * 2) * scale_x)
-            image_y = int(room.y + (map_y + (sy + 0.5) * 2) * scale_y)
-            r, g, b = image.pixel(
-                max(0, min(image.width - 1, image_x)),
-                max(0, min(image.height - 1, image_y)),
-            )
+            if sampled_rgb is None:
+                image_x = int(room.x + (map_x + (sx + 0.5) * 2) * scale_x)
+                image_y = int(room.y + (map_y + (sy + 0.5) * 2) * scale_y)
+                r, g, b = image.pixel(
+                    max(0, min(image.width - 1, image_x)),
+                    max(0, min(image.height - 1, image_y)),
+                )
+            else:
+                start = (sy * sample + sx) * 3
+                r, g, b = sampled_rgb[start:start + 3]
             if predicate(r, g, b):
                 colored.add((sx, sy))
 
@@ -13257,6 +13354,22 @@ def _arrow_color_shape_score(
     overlap = len(colored & expected)
     score = 2 * overlap / max(1, len(colored) + len(expected))
     return score, len(colored)
+
+
+def _arrow_rgb_patch(image: RGBImage, room: Box, map_x: int, map_y: int) -> bytes:
+    """Exact old colour-score probes, including its legacy edge clamping.
+
+    Clamping is retained for old-score parity only. The late source consumer
+    separately requires complete real-pixel coverage before emitting anything.
+    """
+    scale_x, scale_y = room.width / ROOM_WIDTH, room.height / ROOM_HEIGHT
+    xs = tuple(max(0, min(image.width - 1,
+                         int(room.x + (map_x + (sx + .5) * 2) * scale_x)))
+               for sx in range(16))
+    ys = tuple(max(0, min(image.height - 1,
+                         int(room.y + (map_y + (sy + .5) * 2) * scale_y)))
+               for sy in range(16))
+    return bytes(v for py in ys for px in xs for v in image.pixel(px, py))
 
 
 def _detect_apples(

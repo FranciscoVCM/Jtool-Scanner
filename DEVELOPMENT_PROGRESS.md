@@ -4,6 +4,53 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-29 — Maintained source-RGB gravity recovery qualified
+
+The qualified intrinsic-arrow proof is now maintained in `gravity_shape.py`.
+Local RGB adjacency and complete head/shoulder/shaft topology replace dependence
+on a familiar arrow colour for this additional recovery path. Correct head-row
+counting preserves the 35% minimum; no palette, room-name or coordinate answers
+are embedded. Per-call RGB packets share the old UP/DOWN colour probes, with
+exact legacy-score parity. Only fully covered original-source footprints qualify.
+New arrows are added after earlier geometry/marker arbitration, never as teachers;
+old objects, real overlaps, metadata and feature selectors remain protected.
+
+Four maintained full root scans cover Golden1/Entrance3 with source geometry
+ON/OFF. Entire raw results and exports equal the qualified prototype: two real
+arrow additions per room, four unique recoveries, not eight mode-duplicated gains.
+Golden1 source:292->294 objects; Entrance3 source:319->321; Entrance3 standard:
+322->324. Whole Source/Before/After/Blend review carries through byte-identical
+exports. Both rooms remain MAJOR; water, terrain, compound-spike and ownership
+errors have not been fixed by adding these arrows.
+
+Validation: 38 new public test methods; 107 selected methods passed; the complete
+unittest suite passed **1,743 tests, zero failures/errors/skips**. Selected counts
+are not added to the suite total. All44 authenticated complete-result consumers
+remain unchanged, including original41/601minis/139terrain/current16 numerical
+protections. These are not44 fresh whole scans. An additional deferred Dotkid3
+compatibility replay also remains unchanged; no formation tuning or approval.
+
+Twelve quiet serial AC whole-scan samples use two BEFORE/two AFTER per source in
+ABBA order. BEFORE restores all five changed legacy functions, not merely the
+new helper. Entire raw/metadata/project/JMap/render checks pass for every sample.
+Source geometry is ON for these cost measurements; both modes are covered by
+accuracy validation, not separate timing samples for each mode.
+
+| Source | Before median | After median | Scan-time change |
+|---|---:|---:|---:|
+| Golden1, dense positive | 59.09s | 58.14s | -1.61% |
+| Entrance3, heavier positive | 89.91s | 87.91s | -2.22% |
+| NANG-128, sparser control | 29.82s | 30.25s | +1.44% |
+
+All stay within5%; no relaxed speed limit is needed. This is a qualified bounded
+accuracy improvement, not a general speedup claim or evidence of perfect rooms.
+No dependency or fixture changes. Ignored audit115 retains all71/zero approvals/
+46 cumulative current-evidence/25 historical-pending; no71-fresh-scan claim.
+NEXT_THREAD_HANDOFF records app/publication verification and the precise safe
+effort-transition continuation. Goal remains ACTIVE; final71+16 and the historical
+refresh are unfinished. Next refresh a small historical subset before selecting
+another source-independent failure mechanism, rather than repeating this batch.
+
 ## 2026-10-29 — Private gravity qualification complete; safe continuation
 
 The intrinsic RGB-arrow prototype now passes 25 shape procedures and seven

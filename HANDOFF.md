@@ -6,6 +6,23 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-29
 
+Latest: maintained source-RGB gravity recovery passes four actual root scans
+(Golden1/Entrance3, both modes), whole/every-delta QA, all44 complete-result control
+consumers, original41/601minis/139terrain/current16 bounds and the full1743-test
+suite. Four unique confirmed arrows are recovered; both rooms remain MAJOR.
+The late add-only pure helper uses intrinsic local RGB topology and original
+physical coverage, not a known palette or room-coordinate lookup. Earlier
+geometry, metadata, old scores and real overlaps stay protected. Twelve quiet AC
+whole ABBA cost samples across three sources pass: -1.61%/-2.22%/+1.44% medians,
+all within5%. No dependency/fixture changes or universal-recognition claim.
+
+Audit115 retains all71/zero whole-room approvals/46 cumulative current-evidence/
+25 historical-pending, not71 new current-code scans. Goal ACTIVE; Dotkid3 deferred;
+final71+16 and historical refresh remain open. NEXT_THREAD_HANDOFF records the
+app/publication safe point and immediate next bounded source-refresh task.
+
+Previous private qualification, now superseded by the maintained result above:
+
 Newest safe continuation: private gravity-arrow qualification now passes25 shape
 procedures, seven integration procedures, developer and unchanged prospective
 reserve. Four distinct actual root calls cover Golden1/Entrance3 in both modes;
