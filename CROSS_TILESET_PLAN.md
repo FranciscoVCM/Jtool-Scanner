@@ -1,5 +1,37 @@
 # Cross-tileset milestone
 
+## Latest continuation — 2026-10-29 (supersedes older next-step directions)
+
+User defers Dotkid3 A/B and asks to move onto other screens. Preserve its private
+work and known static full/mini semantics; no further tuning/map request now.
+Keep the current goal active, not replaced or complete.
+
+Ship original-source compact-cell registration, not another palette threshold:
+the old RGB rule changes from 10 to 27 NANG-139 positives when measured in real
+source area rather than padded/resampled probes. Integrate fractional pixel area,
+retain the existing crossed-tile predicate/physical guards, require source quorum
+and merge only after earlier arbitration. No expected-map or emitted teachers,
+room/hash/filename/answer branches, grayscale rescan or blanket overlap deletion.
+
+Measured new gains: NANG-139 +17 true killer labels/-17 false-safe labels, typed
+errors34 ->0; NANG-128 +1/-1, errors10 ->8 (20%, NOT successful-room gate).
+NANG-11 registration reserve unchanged31/39: NOT positive reserve/new-family credit.
+N139 platform/size/pose and N128 four killers/two false saves remain unresolved.
+Two successful goal rooms so far share NANG's family; all six goal gates remain.
+
+71 selected public methods/10new pass, not fullsuite. Exact prior AST plus complete
+consumer checks protect original41/601/139/current16, not44fresh scans. FTFA926/928,
+0extras/shifts/wrong; Flames254/42extra/19miss/20shift/2wrong. Whole/every18delta QA,
+four actual upstreams/eight paired snapshots,12quietAC whole samples and3liveapp
+uploads qualify this bounded repair. Scan cost +1.91%139/+0.03%128/-2.63%130r;
+all scan/wall <=5%. Both139 modes and128source project/JMap/preview match, HTTP200.
+
+Audit110 all71/zeroapprovals/40cumulativecurrent31historical, NOT71newscans.
+Next rank historical Halls/Entrance and other different-family errors using current
+Source/JTool/Blend, freeze complete source criteria and a compatible reserve BEFORE
+tuning. Preserve old failed experiments rather than retrying cosmetic variants.
+Final stable71+16/fullsuite/multi-family/positive reserve remain unfinished.
+
 ## Current goal — user-authorized replacement, 2026-10-28
 
 The new active goal starts at791b05e/audit107 and preserves the former unfinished

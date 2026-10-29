@@ -12,7 +12,7 @@ import re
 import shutil
 import subprocess
 from collections import Counter, defaultdict, deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from itertools import combinations
 from pathlib import Path
 from statistics import median
@@ -53,6 +53,7 @@ from .jmap import JMap, JMapObject
 from .save_picker import move_start_to_save
 from .platform_shape import default_platform_shape_score
 from .killer_shape import red_cross_shape_supported
+from .source_killers import RegisteredCellEvidence
 from .spike_shape import SpikeShapeField, _could_have_strong_slopes, _mini_base_transition, corroborated_mini_runs, corroborated_proposals, corroborated_refits, terrain_covered_aliases, terrain_exposed_aliases
 from .interstitial_geometry import interstitial_triangle_aliases
 from .spike_size import contour_size_changes
@@ -2983,7 +2984,56 @@ def scan_image(
                                             **pending_options)
         else:
             result = _apply_source_geometry(result, source_image, **pending_options)
+    if include_geometry:
+        result = _recover_source_registered_killers(result, source_image)
     return result
+
+
+def _recover_source_registered_killers(result: ScanResult, image: RGBImage) -> ScanResult:
+    """Recover original-cell identities only after all earlier arbitration.
+
+    Retag an exact same-cell safe label only for a newly proved killer. Existing
+    killer/backing pairs, real embedded hazards, markers and result flags stay
+    intact; recovered objects cannot teach earlier geometry decisions.
+    """
+    if result.source_extent is not None:
+        return result
+    evidence = RegisteredCellEvidence(image, result.room_box, result.source_grid)
+    if not evidence.active:
+        return result
+    columns, rows = result.source_grid
+    left = ((25 - columns) // 2) * GRID_SIZE
+    top = ((19 - rows + 1) // 2) * GRID_SIZE
+    original = {(d.type_id, d.x, d.y) for d in result.detections}
+    new: list[Detection] = []
+    new_cells: set[tuple[int, int]] = set()
+    room = result.room_box
+    for cy in range(rows):
+        for cx in range(columns):
+            x, y = left + cx * GRID_SIZE, top + cy * GRID_SIZE
+            if (OBJ_KILLER_BLOCK, x, y) in original:
+                continue
+            proof = evidence.proof(cx, cy)
+            if proof is None:
+                continue
+            x0 = math.floor(room.x + cx * room.width / columns)
+            x1 = math.ceil(room.x + (cx + 1) * room.width / columns)
+            y0 = math.floor(room.y + cy * room.height / rows)
+            y1 = math.ceil(room.y + (cy + 1) * room.height / rows)
+            new.append(Detection(
+                'source_registered_killer_colour' if proof['colour']
+                else 'source_registered_killer_cross',
+                OBJ_KILLER_BLOCK, x, y, .9, Box(x0, y0, x1 - x0, y1 - y0),
+            ))
+            new_cells.add((x, y))
+    if not new:
+        return result
+    retained = [d for d in result.detections if not (
+        d.type_id == OBJ_BLOCK and (d.x, d.y) in new_cells
+    )]
+    detections = sorted([*retained, *new], key=lambda d: (d.type_id, d.y, d.x))
+    return replace(result, detections=detections,
+                   structural_warnings=structural_scan_warnings(detections))
 
 
 def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=None,

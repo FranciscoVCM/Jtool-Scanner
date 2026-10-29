@@ -4,7 +4,41 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-28
+## Current checkpoint — 2026-10-29
+
+The user defers Dotkid3 formation work and asks to move onto other screens;
+preserve its research without requesting another map now. The active goal remains
+unfinished. NEXT_THREAD_HANDOFF names the exact local receipts and continuation.
+
+New compact-room killblock repair measures original-source cell area instead of
+padded/resampled probes. It reuses the old RGB and crossed-tile predicates,
+requires independent source colour quorum/known physical coverage and applies
+late after prior geometry arbitration. No reference maps, output-seeded teachers
+or screen-specific answer branches. It preserves existing killer/backing pairs,
+embedded hazards, markers and result flags; only new same-cell false-safe labels
+are retired. It does not implement recognition of every unfamiliar tileset.
+
+NANG-139 killers10/27 ->27/27,17false-safe labels corrected, frozen typed errors
+34 ->0. NANG-1288/13 ->9/13,onefalse-safe corrected,errors10 ->8;20%/one recovery
+does NOT meet the local successful-room gate. NANG-11 registration reserve stays
+31/39, no positive-reserve credit. Other N139/N128 errors remain; no room approval.
+Goal-to-date two successful rooms share NANG's family, not the required3/2families.
+
+71selected public methods/10new pass, NOTfullsuite; original41/601mini/139terrain/
+current16 bounds pass under exact AST/explicit complete-consumer scopes, NOT44
+freshscans. FTFA926/928zeroextras/shifts/wrong;Flames254exact/42extra/19miss/20shift/
+2wrong. Whole/every18delta QA,4actual upstreams/8pairedsnapshots,12quietAC whole
+scans and3live app scans qualify the repair. Scan median changes +1.91%139,
++0.03%128,-2.63%130r control; scan/wall all<=5%, no control-speedup claim.
+App both139modes/128source projects/JMaps/previews match,HTTP200/sourceparity.
+
+Ignored audit110 retains71rows/zeroapprovals/40cumulative current-evidence and
+31historical-pending, NOT71freshscans. Local sources/maps/indexes/private reports
+remain ignored. Finalstable71+16/fullsuite/different-family/positive-reserve and
+remaining goal gates are open. Next ranked historical-room/source review must
+freeze cause/criteria/reserve before another bounded generalized repair.
+
+## Historical checkpoint — 2026-10-28
 
 The user-authorized replacement goal starts at791b05e and remains unfinished;
 the former goal was not declared complete. NEXT_THREAD_HANDOFF identifies the

@@ -4,6 +4,57 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-29 — Original-source killblock registration; Dotkid3 deferred
+
+The user asked to move onto other screens rather than provide another Dotkid3
+formation map. Preserve its research and human clarifications; do not continue
+its tuning or repeat that request now. The active replacement goal is unfinished.
+
+NANG-139 exposed a capture-registration cause: the unchanged colour predicate
+finds 27 killblock cells in original source area, but only 10 after working-image
+padding/resampling. A new pure source-cell evidence module integrates the same
+RGB predicate over fractional original-pixel area, retaining the existing dim
+cross shape/physical-sample guards. Three independent source colour positives
+are required; emitted objects and corrected maps are not teachers. Apply once
+at the final geometry-only stage, preserving earlier decisions and real overlaps.
+Retag only a newly proved killer's exact same-cell false safe label.
+
+NANG-139: 10/27 -> 27/27 real killblocks, 17 false safe labels corrected, frozen
+typed killer errors 34 -> 0, zero new killer false positives/lost positives.
+NANG-128: 8/13 -> 9/13, one false safe label corrected, errors 10 -> 8 (20%).
+That single recovery does NOT pass the local two-recovery/25% room-success gate.
+Its four remaining missed/mislabelled killers and two false saves remain open;
+NANG-139 still has platform/size/pose errors. Neither is whole-room approved.
+The prospectively reserved registration case NANG-11 stays 31/39: no positive
+reserve credit. Earlier failed cross/spectral reserve results remain failures.
+Two successful canonical rooms to date share the NANG family; multi-family and
+positive-reserve goal gates are not met. This is not universal tileset recognition.
+
+Validation: 71 selected public methods pass, including 10 new methods; NOT full
+unittest discovery. Original 41 groups/601 minis/139 terrain/current 16 bounds
+pass unchanged numeric definitions. Scope is exact prior scanner AST except the
+late gate plus authenticated complete-result consumer checks, not 44 fresh scans.
+FTFA remains 926/928 with zero extras/shifts/wrong directions; Flames remains
+254 exact, 42 extras/19 misses/20 shifts/two wrong directions. Twenty replay
+cases match private/public complete results; four independent upstream scans
+produce eight paired snapshots. Whole and every one of 18 retagged cells reviewed.
+
+Twelve current quiet-AC serial ABBA whole scans pass the 5% gate: scan medians
+NANG-139 +1.91%, NANG-128 +0.03%, heavier NANG-130r control -2.63%; wall including
+exports +1.64%, -0.30%, -3.00%. The control variation is not a claimed speed fix.
+All timed raw/profile/project/exports match. Three real live app scans verify
+NANG-139 both modes and NANG-128 source mode, entire projects/JMaps/previews,
+HTTP 200 and loaded/disk source parity. No new runtime dependency.
+
+Ignored audit110 retains all 71 rows/zero approvals, cumulative 40 current-evidence/
+31 historical-pending, NOT 71 fresh scans. NANG-128's fresh full raw/profile gap
+is now closed. The first protection driver wrongly demanded identity even for
+that intended correction; preserve its failure. Its successor accepts only the
+authenticated actual before/after pair, without weakening numeric protections.
+Next choose another source-backed cause/different-family developer and compatible
+prospective reserve, plus ranked historical-room refresh. Dotkid3 remains deferred;
+final stable 71+16, full suite and the remaining goal gates are still open.
+
 ## 2026-10-28 — Compound-spike paint assumption isolated; shortcuts remain off
 
 No new runtime change or source recovery in this batch. Dotkid3 A/B now have

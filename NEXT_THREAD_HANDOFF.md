@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-28. Continue in the existing repository at
+Updated 2026-10-29. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,65 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — original-source registration / audit110
+
+This section overrides older next-step directions below. The user explicitly
+said "Move onto other screens for now" in response to another small Dotkid3 map
+request. Defer Dotkid3 tuning/questions, preserve all paint/component experiments
+and human static/full-mini clarification; do not reset or complete the goal.
+
+New maintained files: source_killers.py, scanner's final geometry-only late call,
+and ten procedural tests in test_source_killers.py. Runtime code SHA256
+7e0d9ea7b9c2db67d3064b2321f148465f712489f227673b45b18de358ea83e0.
+Original RGB cell-area integration avoids padded/resampled sample aliasing;
+old colour/cross thresholds unchanged. Source quorum, known physical coverage,
+existing killer/backing/marker overlaps and all result flags remain protected.
+No answer/reference/filename branches. Earlier scanner AST otherwise identical
+9e80511. App PID38880 (verify before reuse), loaded/disk fingerprint
+76b5980fb123110f140faff1ed877b38629449c8bec2c7e80146cc46f812fd85.
+
+In `.artifacts/general-recognition-20261014/`, completed qualification receipts:
+
+- registered-public-port-v1144.json: exact AST scope, complete20private/public
+  replay parity and33selected tests. Replay is not fresh scans/source accuracy.
+- registered-original41-v1147.json: original41/601/139/current16 unchanged
+  numerical definitions; explicit44complete-result consumer checks, not44scans.
+  FTFA926/928/0extras-shifts-wrong; Flames254/42extra/19miss/20shift/2wrong.
+- registered-killer-actual-qualification-v1141.json: four real upstream calls,
+  eight paired before/after materializations. Export-only times are not latency.
+- REGISTERED_SOURCE_QA_v1143.md and1142views: whole139/128andALL18retagged cells.
+- registered-selected-public-tests-v1150.json:71selected methods/10newPASS,
+  NOTfullsuite. Portable area/cross/crop/physicalguards/late coexistence coverage.
+- registered-controlled-whole-cost-v1146.json:12quietACserialABBAwholes,
+  two samples/mode/source. Scan +1.91%139/+0.03%128/-2.63%130r; wall
+  +1.64%/-0.30%/-3.00%, all<=5%. Every raw/metadata/selector/project/export checked.
+- registered-live-app-v1148.json:THREEactual live uploads;139standard/source and
+  128source ENTIREprojects/JMaps/previews match;root/healthHTTP200/sourceparity.
+- registered-audit-checkpoint-v1149.json and audit110.md/.json:all71rows,
+  zeroapprovals,40cumulativecurrent/31historical. Not71fresh current scans.
+- registered-publication-v1151.json: post-push verification; inspect terminal
+  receipt/currentGit, never assume publication merely because script exists.
+
+Measured NANG13910/27->27/27killers,17falseSafe corrected/errors34->0. NANG128
+8/13->9/13/onefalseSafe/errors10->8 (20%/one real), NOTsuccessful-room gate.
+Four killers/twofalse saves remain in128;139platform/size/pose errors remain.
+NANG11prospective registration reserveUNCHANGED31/39,NOTreservedpositive.
+Prior139cross/128spectral failed reserve records preserved; developers are not
+unseen. Goal-to-date49semantic killer recoveries/24false-safe corrections, but
+onlyTWOsuccessfulcanonicalrooms (11,139), samefamily. No universal/room approval.
+
+1145driver failed by demandingidentity on intended128delta; preservedunchanged.
+1147acceptsONLYthe authenticated1141ENTIREbefore/after pair, keepsallnumeric
+protections. Earlier spectral/compound prototypes remainOFF; not runtime gains.
+All1141/1144/1146/1147/1148/1150workers TERMINAL; no old session to poll/restart.
+
+NEXT read TOPactive note and full replacement goal, then rank another historical
+source/different-family developer (Halls/Entrance errors are candidates), freeze
+source-complete criteria and compatible reserve BEFORE tuning. Current generated
+views, not old thumbnails, decide the cause. Do not resume Dotkid3 merely because
+the original plan starts there.31historical refresh/finalstable71+16/fullsuite/
+three-room/two-family/positive-reserve and remaining gates are unfinished.
 
 ### User-authorized replacement goal — 2026-10-28
 
