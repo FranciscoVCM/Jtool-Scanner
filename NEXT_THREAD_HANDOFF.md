@@ -14,7 +14,56 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — raw-body proof / audit118 / safe effort-change point
+### Latest continuation — five private phase fixes / audit119 / transfer next
+
+Read LATE_BODY_QA_AND_NEXT_v1259.md IN FULL, then1246roles/1250proof lineage as
+needed. All are in the ignored general-recognition directory above. Goal ACTIVE;
+all batch workers TERMINAL. Maintained runtime19ce21c6/appf0f37d9e unchanged.
+Do not repeat1743suite/12cost/3live-app qualification for private/docs changes.
+
+1252private priority contracts12PASS.1253/session51410/PID32620 observation
+completed but adoptionFAIL:266->219,all9760knownsolid pixels lost,localerrors
+1920->9760. FalseDOWN8->0isNOTa gain whilebeamdisappears. Sourceproof25queries/
+46poses/392.375s exploratory wall time; production cost unresolved, no cost pass.
+1254/session68391/PID3292 observer ENTIREequalsrejected219/project/exports.
+Actual listreducers adaptiveprune/cellrebuild erase supported poses. Bool/profile
+query empty-after events are NOT removals. Main whole rejected view confirms loss.
+
+1255late adapter12MORE private contractsPASS: full ordinary pipeline unchanged,
+then only exactkind/score/mappedbox original NMS rivals with mutual one-to-one
+source-proved alternatives may move. RGB/crop/extent/grid must match. Recovered/
+many-to-one overlaps and nonblocks untouched. Duplicate guard currently in driver;
+move it into any maintained consumer. No labels/reference/file IO in consumer.
+
+1256/session27527/PID30704 COMPLETE/PASS observation:ONE fresh root ENTIREequals
+ordinary1232 BEFOREadapter; bothraw/eightselectors beforeexports. Reuse authenticated
+same-source original proof, no refit/generated teachers. Five block phase moves
+(480/512/544/576/608,0)->samex,y8;266objects, all NONBLOCK records identical.
+1258exact pixels:0lostlabelledpositive/0newnegative,1146falsepixelscleared,
+localerrors1920->774(-59.6875%).1257reporting API failure preserved;1258repair
+changes only evaluator, no detector/label/scan rerun. Main viewed whole and ALLfive
+Source/before/after/Blend rows1257.5corrections, NOT10 or a whole-room approval.
+Eight falseDOWNs/late overlapping row/beam-end hazard/water/portal remain open.
+
+late-body-checkpoint-v1260.json/audit119:ALL71/zero approvals/49cumulativecurrent/
+22historical. First1259sealer stopped BEFOREoutputs on docsHEAD equality;
+1260uses verified1251unchanged-runtime bridge, no source/gate changes. Publication
+and liveGit/privacy/app checks are late-body-publication-v1261.json; if absent
+publication pending. Parent105d3832bf4ef8cbd96a5a99134268611bcf5b20.
+
+EXACT NEXT: frozen late method on prospectively selected different-family Halls2,
+using1247baseline and genuine accepted original pre-NMS poses. Full source/raw/
+frame/eightselectors/actualcaller/everydelta/whole/exactpixel review. If ownership
+blocks16px group rephasing, inspect source/conflict graph before a general
+equal-count translation method; preserve unequal/nonunique packing. No Halls2
+or27new-model query yet. Freeze before FIRST27reserve query, no reserve tuning.
+Require useful transfer before proof-equivalent native-decision performance work;
+no witness/phase/contrast loosening, query caps, new emitted teachers or endless
+cache variants. Original41/601/139/current16/portable/modes/wholecost precede
+maintained adoption. All sourcebody gains PRIVATE; old failed consumersOFF,
+Dotkid3deferred, remaining22refresh/finalstable71+16/all six final gates open.
+
+### Prior continuation — raw-body proof / audit118 / safe effort-change point
 
 Read RAW_BODY_SAFE_CONTINUATION_v1250.md IN FULL, then freeze1246/helper1248/proof1249
 as needed. All files are in the ignored general-recognition directory above.

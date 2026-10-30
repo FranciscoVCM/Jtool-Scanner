@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Five private body-phase corrections; unsafe early route rejected
+
+A frame-bound late adapter corrects five original CN3-26 block positions by8px.
+The fresh ordinary root equals its complete baseline before the adapter runs;
+all nonblock detections and other scan metadata remain unchanged. Main reviewed
+the whole room and all five Source/before/after/Blend pairs. Frozen local solid
+errors fall1920->774(-59.6875%):1146false solid pixels cleared, zero lost labelled
+positive pixels and zero new labelled negatives. Five corrections, not ten.
+
+This remains PRIVATE, not deployed or credited as shipped progress. The eight
+false DOWNs and overlapping late terrain row remain, alongside other MAJOR errors.
+An earlier global-priority prototype lost all9760labelled beam pixels and was
+rejected. An identical-output trace locates later score pruning and cell-average
+reconstruction discarding supported candidates. The late method leaves those
+learners and capture/marker inputs untouched; exact original provenance and
+one-to-one ownership protect recovered and nonunique overlapping geometry.
+
+Twenty-four new private decision contracts pass; not a public-suite rerun or
+source-accuracy certification. Independent source fitting took392.375seconds
+exploratory wall time, NOT controlled whole latency; production cost remains
+unresolved. Next test the frozen method on different-family Halls2, then freeze
+before first CN3-27 reserve query. Transfer, portable tests, protected controls,
+both modes, cost and maintained integration remain pending. Audit119 keeps all71/
+zero approvals/49cumulativecurrent/22historical. Goal ACTIVE; live code unchanged.
+
 ## 2026-10-30 — Raw-body source proof saved; no runtime adoption
 
 Original-source solid/empty/hazard/unknown regions and local occupancy baselines

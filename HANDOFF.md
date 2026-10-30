@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest private experiment: five source-reviewed CN3-26 blocks move8px onto the
+real beam after the unchanged ordinary pipeline. Frozen local solid errors
+1920->774, zero lost labelled positives/new negatives; all nonblocks unchanged.
+An earlier early-priority trial destroyed real terrain and remains rejected.
+Later score/cell-average stages can erase good candidates: positive body evidence
+must survive ownership/phase arbitration without becoming generated teachers.
+No maintained change or deployment yet. Transfer, controls, both modes and
+production cost remain pending; eight falseDOWNs/late overlapping terrain and
+other major room errors remain. Audit119 preserves71/zero approvals/49current/
+22historical; goal ACTIVE. Latest next-thread handoff records exact continuation.
+
+Previous source-proof checkpoint:
+
 Latest safe continuation: source roles/local error baselines are frozen for
 CN3-26/Halls2 developers and prospective untuned CN3-27 reserve (historically
 exposed, not unseen). Fresh ordinary Halls2/27 scans and whole reviews still

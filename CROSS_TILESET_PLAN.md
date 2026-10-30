@@ -1,6 +1,25 @@
 # Cross-tileset milestone
 
-## Latest: raw-body proof qualified, consumer and transfer still pending
+## Latest: five private phase corrections; transfer and production gates open
+
+Early global body priority fails: later score pruning/cell reconstruction removes
+real beam terrain. Reject it, retain its source counterexample. A late, source-
+frame-bound adapter instead changes only exact surviving original candidates with
+one-to-one independently supported alternatives; no early learner feedback or
+blanket removal of recovered/overlapping solids. CN3-26:five8px phase corrections,
+localerrors1920->774,0lostlabelledpositive/0newnegative; main whole/allfiveQA done.
+All nonblocks unchanged; eight falseDOWNs and other MAJOR errors remain.
+
+PRIVATE only, no runtime adoption.24private contracts pass, not full qualification.
+Source fitting cost is unresolved:392.375s exploratory work, no whole-cost pass.
+Next frozen different-family Halls2 trial; inspect real ownership limitations
+without coordinate/teacher shortcuts, freeze before first27reserve trial. Useful
+transfer precedes proof-equivalent performance work and maintained adoption.
+All original protections/modes/portable/wholecost/final71+16 gates stay open.
+Audit119 all71/zero approvals/49cumulativecurrent22historical; goal ACTIVE.
+See LATE_BODY_QA_AND_NEXT_v1259.md and latest handoff; all workers terminal.
+
+## Prior: raw-body proof qualified, consumer and transfer still pending
 
 Freeze source roles/local error baselines before model trials:26framed developer,
 Halls2different-family developer,27prospective untuned reserve (historically
