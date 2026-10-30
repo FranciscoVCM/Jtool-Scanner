@@ -4,6 +4,32 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Three canonical historical sources freshly reviewed
+
+Published gravity checkpoint41f19f7 is verified against live origin/main, clean
+Git, preserved ignored indexes and appHTTP200/loaded==disk. Three subsequent
+ordinary source-geometryON scans refresh the exact canonical CN3-16/18/26 inputs,
+not their tracked alternate captures:590/495/266objects. Full raw/eight selectors
+were saved before exports; main inspected all three whole Source/JTool/Blend/
+B235 views. Historical B235 raw/profile remains UNKNOWN, not automatic carry.
+
+CN3-16 is closely aligned under whole view, not exact-certified. CN3-18 remains
+MAJOR; its previously removed79terrain keys/background carpet stay cleared, with
+all79source-box locations re-inspected. That old gain is not re-credited. Narrow/
+tall cyan and compound/partial size/pose/ownership still need independent truth.
+CN3-26 remains MAJOR and byte-equal to B235: eight false DOWN32s hang below a
+framed ceiling beam into source-empty space. Water/portal are missing, platforms
+incomplete, and other phase/vine/overlap errors remain. No obvious current floor
+number/minus impostors were found in these three whole views.
+
+No runtime/test/reference changes, new recognition gain, suite or timing rerun.
+The1743-test/12-cost/3-live-app qualification belongs to unchanged gravity code.
+Ignored audit116 retains all71/zero approvals/49cumulativecurrent/22historical,
+not49or71 fresh current-code scans. Next trace the beam aliases and freeze full
+original-source positive/empty/unknown roles before a general discriminator;
+protect real beam-end and occluded/opposing triangles, no coordinate/bbox filter.
+Goal ACTIVE, final71+16/remaining source refresh and completion gates unfinished.
+
 ## 2026-10-29 — Maintained source-RGB gravity recovery qualified
 
 The qualified intrinsic-arrow proof is now maintained in `gravity_shape.py`.

@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Latest: maintained RGB-arrow recovery passes accuracy, full suite and whole cost
+## Latest: canonical16/18/26 refresh; framed-tile body aliases are the next cause
+
+Three fresh ordinary sourceON scans/full raw/eight selectors and main whole
+Source/JTool/Blend review:16=590,18=495,26=266objects. Exact canonical sources,
+not alternate tracked captures.16closelyaligned/uncertain;18and26MAJOR. Prior18
+carpet clearing is still present but NOTnew gain.26has eight clearly false DOWN
+spikes under its framed ceiling, absent water/portal and incomplete platforms.
+Framed diagonals are a plausible alias cause, not yet a traced algorithmic cause.
+
+Next freeze original physical positive/empty/unknown roles and body boundaries,
+then trace why those existing proposals survive. Retain real beam-end and hidden/
+opposing/mini triangles; no output teachers, coordinate answer or overlap filter.
+Predeclare compatible different-family developer/reserve before tuning. Old failed
+platform/water/compound variants remainOFF. No new runtime/test/reference change.
+Audit116 all71/zero approvals/49cumulativecurrent/22historical, not49fresh scans
+on this runtime. Published gravity41f19f7/1743suite/cost/app qualification retained.
+GoalACTIVE; finalstable71+16 and historical refresh remain open. See latest handoff.
+
+## Prior: maintained RGB-arrow recovery passes accuracy, full suite and whole cost
 
 The pure intrinsic RGB helper and per-call colour-packet reuse are maintained.
 Complete original coverage, exact old-score parity and root-late add-only

@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-29. Continue in the existing repository at
+Updated 2026-10-30. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -14,7 +14,50 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — maintained gravity / audit115 / safe effort switch
+### Latest continuation — three canonical fresh reviews / audit116
+
+Gravity code41f19f7accd1982221ad49a734f2bd6bf3462504 was committed/pushed and
+verified by gravity-maintained-publication-v1231.json:live origin parity/cleanGit/
+private preservation/app200+loaded==disk. Its failed earlier approval attempt1230
+is preserved, not current. Runtime19ce21c6/appf0f37d9e unchanged. Do not repeat the
+completed1743suite/12wholecost/4actual/3app qualification or private gravity work.
+
+Completed THREE ordinary canonical source-geometryON scans1232, full raw/eight
+selectors before exports, exact inputs/options and complete artifact comparisons:
+CN3_16=590,CN3_18=495,CN3_26=266objects. Main freshly reviewed all original sources
+and three1233whole Source/current JTool/current Blend/B235 panels, plus1234all79
+historical18terrain-removal positions/two midroom details/eight26ceiling aliases.
+Not alternate tracked-capture reuse, held-out evaluation or recognition gains.
+
+Read CANONICAL_THREE_SOURCE_QA_v1235.md.16closelyaligned/uncertain, not exact;
+18MAJOR with old carpet clearing retained (not new gain), unresolved narrow/tall
+and compound/partial size/pose/ownership;26MAJOR, all output bytes equalB235,
+eight falseDOWN32s at x384..608step32,y32 beneath framed beam into empty source.
+Real beam-end LEFTtriangle must remain; do not guess its corrected origin/solid
+packing. Water/portal missing, platforms incomplete, many other false/shifted
+spikes/vine conflicts. No obvious floor16/-45/18/26 aliases in these whole views.
+
+canonical-three-actuals-v1232.json/+terminal COMPLETE/PASS;session51699/PID41988
+TERMINALexit0. No live producer. canonical-refresh-checkpoint-v1237.json/audit116
+sealed all71/zero approvals/49cumulativecurrent/22historical. Historical B235full
+raw/profiles UNKNOWN; no automated carry. Initial1236sealer failed BEFOREoutputs
+because audit115preceded its publication HEAD;1237uses1231exact unchanged-runtime/
+dependency bridge. All3actuals/QA preserved, no scan repeated or detector changed.
+Versioned canonical-refresh-publication-v1238.json verifies this docs-only commit
+and current live Git/privacy/app state; if absent, publication remains pending.
+
+IMMEDIATE NEXT: trace why the eight26ceiling candidates survive. Freeze complete
+original physical positive/empty/unknown roles, transforms and beam/body boundary
+truth BEFORE prototype; do not infer world emptiness from another colour or emitted
+solids. Repeated diagonal tile art is only a causal hypothesis. Protect real
+beam-end/partly wall-hidden/opposing/mini triangles and original41/601/139/16.
+Predeclare compatible different-family developer/reserve before tuning. No room/
+palette/origin answers, bbox/ceiling filter, output teachers or blanket overlap
+deletion. Old platform/water/compound holds stayOFF. Keep refreshing22historical
+sources in bounded groups. GoalACTIVE/finalgatesopen/Dotkid3USERDEFERRED. Noarchive
+reload, new broad review request or another Dotkid3map needed for this step.
+
+### Prior continuation — maintained gravity / audit115 / safe effort switch
 
 SAME goal ACTIVE: user asks for a safe ultra-to-extra-high boundary and immediate
 continuation, not a pause, restart or goal completion. Do not redo the finished

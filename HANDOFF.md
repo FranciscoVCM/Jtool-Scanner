@@ -4,7 +4,20 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-29
+## Current checkpoint — 2026-10-30
+
+Gravity checkpoint41f19f7 is published/verified with cleanGit, preserved private
+indexes and appHTTP200/loaded==disk. Three subsequent canonical sourceON scans
+and fresh main whole Source/JTool/Blend reviews cover CN3-16/18/26(590/495/266
+objects).16closelyaligned but not exact-certified;18and26remainMAJOR.18's older
+background carpet clearing is retained, not new progress.26still has eight false
+DOWNs beneath its framed ceiling and missing water/portal/partial platforms.
+Next trace original-source body/empty-space evidence; no coordinate/bbox filter.
+No new scanner/test/reference change, suite or timing rerun in this review batch.
+Audit116 all71/zero approvals/49cumulativecurrent/22historical, not49or71fresh
+current-code scans. GoalACTIVE; finalstable71+16 and remaining gates unfinished.
+
+Previous maintained-code checkpoint (still the current runtime):
 
 Latest: maintained source-RGB gravity recovery passes four actual root scans
 (Golden1/Entrance3, both modes), whole/every-delta QA, all44 complete-result control
