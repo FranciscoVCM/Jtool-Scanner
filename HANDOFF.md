@@ -6,6 +6,15 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest diagnostic refresh: Golden6 and Redcube2 have fresh actual scans and whole
+Source/JTool/Blend reviews; both still MAJOR. Redcube2 frozen source truth shows
+45/56 full spikes exact,11missing,7false fulls and one separate wrong-size mini.
+Read-only primary scoring rejects all11misses but accepts all7false fulls; causal
+sampling/edge/body-ownership work is next, not a threshold-only fix. No new
+runtime deployment. Audit121:71/zero approvals/51cumulativecurrent20historical,
+not51 current-revision scans. Exact terminal save point/continuation are in the
+latest next-thread handoff. Goal ACTIVE. Older checkpoint paragraphs follow.
+
 Latest Halls2 trial: a private source-supported block addition fills a missing
 strip, reducing frozen local errors831->783(5.78%) without losing labelled
 positives or adding labelled false terrain. Allold objects retained. Whole and

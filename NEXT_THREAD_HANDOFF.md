@@ -14,7 +14,31 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — Halls2 partial gain / audit120 / diagnostic refresh next
+### Latest continuation — terminal diagnostic checkpoint / audit121
+
+Read `.artifacts/general-recognition-20261014/REDCUBE_DIAGNOSTIC_SAFE_RESUME_v1280.md`
+IN FULL and audit121. User requested a safe checkpoint for an effort change,
+followed by immediate continuation; goal ACTIVE, not paused/completed/replaced.
+1275 actual producer session46866/PID31468 TERMINAL exit0; two scans complete.
+1276/1277 views and1279read-only probe complete. No live batch to restart and no
+maintained code edit half-applied. Commit/publication details in1281receipt.
+
+Golden6/Redcube2 fresh complete raw/eightselectors/exports and whole QA done.
+Both MAJOR. Redcube2 all56 source outlines reviewed/frozen before tuning:
+45matches/11misses/7falsefulls; extra miniature separate. Diagnostic all63poses:
+all11misses fail primary acceptance, all7falsefulls pass. No new recognition gain.
+EXACT NEXT: bounded original-sampling/directed-edge/foreground-body diagnostic,
+not blind threshold lowering. Preserve45true matches; local gate >=5/18 errors
+corrected with no new false/lost true. Freeze compatible transfer/reserve before
+further family tuning. Golden6 currently diagnostic,27bodyreserveuntuned,
+Dotkid3userdeferred. Audit121all71/zeroapprovals/51cumulativecurrent20historical.
+
+Use pinned `.artifacts/verification-env-pillow-12.3-v1271/Scripts/python.exe`;
+shared bundled13.0.0 is not qualified. Runtime19ce21c6/appf0f37d9e unchanged.
+Prior1743tests/12whole-cost/three-app results are not new runs here. Preserve
+all private source/map/report/index data; publish only reviewed public docs.
+
+### Previous continuation — Halls2 partial gain / audit120
 
 Read the latest checkpoint:
 `.artifacts/general-recognition-20261014/HALLS2_RECOVERY_QA_AND_RESUME_v1273.md`

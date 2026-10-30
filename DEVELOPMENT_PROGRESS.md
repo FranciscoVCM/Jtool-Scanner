@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Two historical rooms refreshed; early spike errors measured
+
+Fresh ordinary scans and complete Source/JTool/Blend reviews cover Golden6 and
+Redcube2. Both remain MAJOR; neither is accepted. Audit121 retains all71/zero
+approvals, with51 cumulative current-evidence rooms and20historical pending.
+This does not mean51 fresh scans under one revision. No detector change shipped.
+
+Redcube2 now has a source-reviewed, frozen denominator of56 ordinary full spikes:
+45exact,11missing and7false full spikes, plus one wrong-size miniature separately.
+All four real cornerblocks remain missing. A read-only diagnostic of all63
+expected/current full poses shows all11 misses fail primary acceptance and all7
+false spikes pass it; several true UPs receive a RIGHT direction score. This
+locates an early classification problem, not its complete cause. Sampling,
+directed edges and foreground/background ownership are the next bounded inquiry;
+lowering acceptance alone is not a justified fix. Labels remain evaluation-only.
+
+Both scans, exports and diagnostics are terminal and preserved. Whole review and
+all56 source outlines are checked; historical B235 differences are not credited
+as new recovery. No maintained implementation, reference, threshold or tests
+changed. Prior qualification remains scoped to unchanged code/Pillow12.3.0.
+The safe effort-change checkpoint records the exact next task; goal ACTIVE.
+
 ## 2026-10-30 — Halls2 partial recovery measured; dependency checkpoint saved
 
 Different-family Halls2 exposes an ownership limit: all final full blocks are

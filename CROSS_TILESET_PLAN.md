@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: Halls2 partial gain below gate; next diagnostic refresh
+## Latest: source-complete Redcube2 spike baseline; diagnostic batch closed
+
+Golden6/Redcube2 current scans and whole reviews are complete; both MAJOR.
+Redcube2 full-spike truth:45/56 exact,11missing,7false fulls; one false mini
+tracked separately. All11 misses fail primary classification acceptance while
+all7false fulls pass. Do not infer a safe threshold change or universal cause.
+Next isolate sampling/directed-edge/body ownership with original-source evidence,
+then freeze compatible transfer/reserve roles before tuning beyond one family.
+Local frozen gate: >=5 of18 full errors corrected, no lost45true matches or new
+false full/mini; known cornerblocks and other defects still prevent approval.
+
+No runtime adoption. Audit121 all71/zero approvals/51cumulativecurrent20historical;
+only two new current-room reviews. Existing private body gains/failures remain
+preserved, not forced to pass. CN3-27 body reserve untuned; Dotkid3 deferred.
+Safe effort-change checkpoint is terminal; resume exact next task, not rescans.
+All original protections, both modes, whole cost and final goal gates unchanged.
+
+## Previous: Halls2 partial gain below gate; next diagnostic refresh
 
 Halls2's reconstructed final records prevent the old exact-original phase route.
 Unchanged independent source matching with separate teacher/query eligibility
