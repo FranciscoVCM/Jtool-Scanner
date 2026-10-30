@@ -1,6 +1,22 @@
 # Cross-tileset milestone
 
-## Latest: candidate discovery fixes eleven private Redcube2 misses
+## Latest: compound-size regression blocks candidate-discovery adoption
+
+Frozen different-family CN3-7 trial: one true new full spike and one false full
+alias over a miniature formation; full errors35->35, no lost true, localgateFAIL.
+Fresh ordinary raw exactly matches control. Whole/all2delta QA complete. Existing
+source proof alone does not safely disambiguate this compound after wider search.
+Keep method PRIVATE/OFF despite eleven real Redcube2 recoveries. No runtime edit.
+
+Next complete the unchanged prospectively reserved Redcube1 test after source
+denominator/frame freeze, then diagnose compound-size/edge ownership. Reserve
+success cannot cancel the known regression. Preserve genuine mini/full overlap
+and occluded full spikes; do not add a blanket overlap or coordinate veto.
+Audit12371/zeroapprovals/51cumulativecurrent20historical. All workers terminal at
+requested effort-change checkpoint. Read HOLLOW_TRANSFER_SAFE_RESUME_v1292.md.
+Goal ACTIVE; no new fullsuite/cost qualification or shipped gain.
+
+## Previous: candidate discovery fixes eleven private Redcube2 misses
 
 Existing independent source proof already verifies all11misses; old spike-only
 neighborhoods never query them. Candidate-only reuse of original full-block-face

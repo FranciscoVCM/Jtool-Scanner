@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Cross-family trial catches a compound-size regression
+
+The unchanged private candidate-discovery method was tested on CN3-7 with two
+actual scans. Ordinary334 objects exactly reproduce the authenticated raw control;
+private336 adds one correct full UP and one false full UP covering a smaller
+spike formation. Full-spike reference counts90/3/32 exact/missing/extra become
+91/2/33: total errors35 unchanged. No old positives lost. Whole Source/JTool/Blend
+and both changes reviewed; local acceptance gate FAIL. Keep this method OFF.
+
+All non-full ordered records and other scan fields remain equal. Human maps
+were evaluated only after scanning. Prior eleven private Redcube2 recoveries
+remain preserved, not shipped; they do not cancel this cross-family regression.
+No implementation or fixture changes, new full-suite run or controlled speed
+claim. Audit123 retains71/zeroapprovals/51cumulativecurrent20historical.
+
+Current producer and review are terminal at the requested effort-change save
+point. Next: finish the prospectively reserved Redcube1 experiment unchanged,
+after source-denominator verification, then investigate compound-size ownership.
+Reserve success alone cannot justify deployment. Goal remains ACTIVE.
+
 ## 2026-10-30 — Private discovery repair recovers eleven real Redcube2 spikes
 
 An identical-output caller trace finds a search blind spot: the existing source

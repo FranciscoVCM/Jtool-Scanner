@@ -14,7 +14,29 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — eleven private discoveries / audit122
+### Latest continuation — failed transfer safely saved / audit123
+
+Read `.artifacts/general-recognition-20261014/HOLLOW_TRANSFER_SAFE_RESUME_v1292.md`
+IN FULL, plus the full current goal plan.1290/session8661/PID30996 TERMINAL exit0;
+1291 whole/all2delta review complete. No live batch or half-applied code edit.
+User requests a safe Ultra-to-Extra-High transition, then continuation; do not
+pause/complete/reset the goal or repeat finished scans. Publication receipt1293.
+
+CN3-7 ordinary334 ENTIREraw equals control. Fixed private method336 adds one true
+UP512,176 and one false full UP488,336 over a smaller compound. Full errors35->35,
+90/3/32 exact/missing/extra ->91/2/33. Source QA confirms both. LocalgateFAIL;
+non-full ordered records/other fields unchanged. Method PRIVATE/OFF, room MAJOR.
+The prior eleven Redcube2 discoveries are preserved but cannot establish safety.
+
+EXACT NEXT: source-review/freeze Redcube1's complete denominator/frame, then run
+its prospectively reserved ordinary/fixed-method actual scans and whole/delta QA.
+Do not tune on reserve or claim it erases CN3-7 failure. Then diagnose compound-
+size ownership with independent source evidence and portable positives/negatives;
+no blanket overlap deletion. Memo has source lookup and unverified row checklist.
+Dotkid3 remains user-deferred. Audit12371/zeroapprovals/51current20historical.
+Pinned12.3; runtime19ce21c6/appf0f37d9e unchanged. All six goal gates still open.
+
+### Previous continuation — eleven private discoveries / audit122
 
 Read `.artifacts/general-recognition-20261014/HOLLOW_DISCOVERY_GAIN_AND_RESUME_v1288.md`
 IN FULL. All1282/1283/1285/1286/1287 producers TERMINAL. Actual1283 ENTIREbaseline

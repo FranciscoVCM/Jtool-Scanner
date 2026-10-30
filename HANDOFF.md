@@ -6,7 +6,15 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
-Latest private recognition result:11real Redcube2 full spikes recovered by fixing
+Latest cross-family test catches a regression: the fixed private discovery method
+adds one correct CN3-7 full spike AND one false full spike over a smaller compound.
+Full errors35->35; no lost positives, but acceptance gate FAIL. Whole/all2delta
+review complete; keep method OFF. Prior eleven Redcube2 private fixes survive as
+evidence, not shipped improvements. Audit12371/zeroapprovals/51current20historical.
+Safe effort-change checkpoint is terminal; resume from the latest next-thread
+handoff without resetting the ACTIVE goal. Stable runtime/app unchanged.
+
+Previous private recognition result:11real Redcube2 full spikes recovered by fixing
 candidate discovery, not source acceptance. Existing source proof already knew
 the shapes; original terrain-adjacent queries reach positions omitted by the old
 spike-only search.45/56->56/56 exact, full errors18->7, no new false/lost true.
