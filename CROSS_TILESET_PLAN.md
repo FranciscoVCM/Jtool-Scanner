@@ -1,6 +1,27 @@
 # Cross-tileset milestone
 
-## Latest: five private phase corrections; transfer and production gates open
+## Latest: Halls2 partial gain below gate; next diagnostic refresh
+
+Halls2's reconstructed final records prevent the old exact-original phase route.
+Unchanged independent source matching with separate teacher/query eligibility
+supports one original body. Private late recovery fills a strip: localerrors
+831->783(5.78%), no lost labelled positive/new negative, allold objects preserved.
+Whole/single-delta QA done; room MAJOR and BELOW25%/two-correction gate. No port.
+Eleven consumer contracts pass in pinned Pillow12.3.0; not full qualification.
+The colour/material hypothesis learned background gaps and stays disabled.
+
+Cap this low-yield hypothesis family; preserve its results, not force thresholds
+or teacher poses. Next current Source/JTool/Blend refreshes: historical Golden6
+and Redcube2, role DIAGNOSTIC. Freeze a distinct causal developer batch from
+actual mistakes; do not presume the same cause or label them unseen reserves.
+CN3-27 stays untuned. All protection/mode/cost/final71+16 gates remain open.
+
+Audit120:71/zero approvals/49cumulativecurrent22historical. Stable runtime19ce21c6
+unchanged. Shared Pillow13 triggered the provenance guard; an ignored isolated
+12.3.0 environment preserves comparisons and app qualification. Do not silently
+carry12.3.0 measurements to13.0.0. Read latest handoff for interpreter and receipts.
+
+## Previous: five private phase corrections; transfer and production gates open
 
 Early global body priority fails: later score pruning/cell reconstruction removes
 real beam terrain. Reject it, retain its source counterexample. A late, source-

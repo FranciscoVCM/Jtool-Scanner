@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Halls2 partial recovery measured; dependency checkpoint saved
+
+Different-family Halls2 exposes an ownership limit: all final full blocks are
+rebuilt records, so the previous exact-original phase adapter cannot act there.
+Separating query eligibility from the unchanged strict source-teacher pool finds
+one independently supported original body. A private late add-only consumer
+fills a missing strip without removing any existing detection or changing other
+scan metadata. The actual ordinary root equals its saved baseline before use.
+
+Frozen local errors831->783 (5.78%); positive coverage3012->3060/3240; false solid
+coverage603 unchanged; hazards795/795 retained. Main reviewed the whole room and
+the single delta. This is one partial-body correction, BELOW the25%/two-correction
+gate, not deployed or counted as shipped progress. Major geometry errors remain.
+Eleven new consumer contracts pass; no new public-suite or whole-cost claim.
+A separate material experiment chose five background gaps as candidate anchors
+and remains disabled. No threshold, teacher-count or coordinate widening adopted.
+
+The shared bundled environment changed from Pillow12.3.0 to13.0.0. Exact
+provenance checks stopped the first trial BEFORE scanning. An ignored isolated
+environment restores12.3.0 for comparison and the stable app, without changing
+the shared installation. The same11contracts were rerun there, not22new tests.
+Prior1743-test/cost qualification does not certify Pillow13 or this private fix.
+
+Audit120 retains all71/zero approvals/49cumulativecurrent/22historical. CN3-26's
+five private phase corrections remain preserved; production recognition is
+unchanged. Next refresh historical Golden6/Redcube2 as diagnostic cases and
+freeze a distinct causal batch. Do not keep varying teachers/thresholds to force
+the Halls2 gate. CN3-27 remains untuned for these models. Goal ACTIVE.
+
 ## 2026-10-30 — Five private body-phase corrections; unsafe early route rejected
 
 A frame-bound late adapter corrects five original CN3-26 block positions by8px.

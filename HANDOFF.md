@@ -6,6 +6,21 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest Halls2 trial: a private source-supported block addition fills a missing
+strip, reducing frozen local errors831->783(5.78%) without losing labelled
+positives or adding labelled false terrain. Allold objects retained. Whole and
+single-delta review confirms only a partial repair; the25%/two-correction gate
+is NOTmet. No runtime adoption; room still MAJOR. Audit120 preserves all71/
+zeroapprovals/49cumulativecurrent22historical. PriorC26private fixes retained.
+Next historical Golden6/Redcube2 refreshes will inform a distinct causal batch.
+
+Shared bundled Pillow changed12.3.0->13.0.0; strict provenance checks stopped
+before scanning. An ignored isolated12.3.0 environment now serves comparisons
+and the stable app; shared runtime untouched. Eleven private consumer contracts
+pass there, but this is not a new public-suite/cost qualification or an upgrade
+validation. See latest next-thread handoff for exact interpreter and receipts.
+Goal ACTIVE; all unfinished gates preserved. Following paragraphs are history.
+
 Latest private experiment: five source-reviewed CN3-26 blocks move8px onto the
 real beam after the unchanged ordinary pipeline. Frozen local solid errors
 1920->774, zero lost labelled positives/new negatives; all nonblocks unchanged.

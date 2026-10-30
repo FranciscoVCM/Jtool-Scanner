@@ -14,7 +14,40 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — five private phase fixes / audit119 / transfer next
+### Latest continuation — Halls2 partial gain / audit120 / diagnostic refresh next
+
+Read the latest checkpoint:
+`.artifacts/general-recognition-20261014/HALLS2_RECOVERY_QA_AND_RESUME_v1273.md`
+IN FULL and audit120.1262/1264/1266/1268/1270/1272 are TERMINAL; do not restart.
+1270/session24451/PID16680 actual ordinary root ENTIREequals1262 before private
+late recovery. One original body fills a real strip; errors831->783, knownsolid
+3012->3060/3240, falsecoverage603unchanged, hazards795/795. Alloriginal detections
+and other metadata retained. Main whole/all-one-delta QA1272 done. LocalgateFAIL
+(5.78%,one correction); NOTdeployed. C26five private fixes remain preserved.
+
+Exact-kind phase route structurally cannot act on Halls2's rebuilt finalfulls.
+1268query/teacher separation kept six strict original teachers and all matching
+rules; one body from57eligible queries.13.235s exploratory fitting is NOTwholecost.
+1266material anchors are ALLbackground gaps, source-reviewed; keepOFF.
+1269consumer11contracts pass, rerununchanged1271:11distinct tests, not22.
+
+IMPORTANT environment change: bundled Python now Pillow13.0.0. First1270preflight
+failed BEFOREscan, preserved in RECOVERY_PREFLIGHT_FAILURE_v1270.md. Use ignored
+`.artifacts/verification-env-pillow-12.3-v1271/Scripts/python.exe` for comparable
+work. It has originalPillow12.3.0 without shared-runtime downgrade or waived
+identity checks. Stable app restarted with it; root/health200, f0f37d9e loaded
+fingerprint. Verify listener before restart. Old1743suite/12cost qualify unchanged
+runtime19ce21c6 on12.3.0, not13.0.0/private methods.
+
+EXACT NEXT: refresh still-historical CN3_Golden6 and CN3_Redcube2 in a small
+diagnostic batch, current Source/JTool/Blend and complete raw/eightselectors.
+Freeze useful source truth and a distinct causal repair from those results;
+do not keep widening body teachers/poses/thresholds to force Halls2's gate.
+Do not tune CN3-27 reserve. Dotkid3userdeferred. Audit120all71/zeroapprovals/
+49cumulativecurrent22historical; no new current-room count here. Public checkpoint
+docs-only; goal ACTIVE, final71+16/recognition/protection/cost gates unfinished.
+
+The remainder of this subsection is preserved PRIOR119 history, not live state.
 
 Read LATE_BODY_QA_AND_NEXT_v1259.md IN FULL, then1246roles/1250proof lineage as
 needed. All are in the ignored general-recognition directory above. Goal ACTIVE;
