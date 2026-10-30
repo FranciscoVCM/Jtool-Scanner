@@ -14,7 +14,30 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — terminal diagnostic checkpoint / audit121
+### Latest continuation — eleven private discoveries / audit122
+
+Read `.artifacts/general-recognition-20261014/HOLLOW_DISCOVERY_GAIN_AND_RESUME_v1288.md`
+IN FULL. All1282/1283/1285/1286/1287 producers TERMINAL. Actual1283 ENTIREbaseline
+equal; existing original-only source proof passes all11misses but search never
+visits them.1284candidate-only trial reuses filled_hypotheses(original) for hollow
+recovery, keeping teachers/proof/thresholds unchanged.1285actual227->238objects,
+45/56->56/56 true fulls, errors18->7, no losttrue/newfalse. Seven provenance-tag
+changes are not seven more corrections. Main whole/all11delta QA1286 complete.
+Ten focused tests pass, including six synthetic colour/scale scenes/24directions.
+PRIVATE ONLY; not deployed or counted in shipped goal totals. Room still MAJOR.
+
+EXACT NEXT: frozen CN3_7 different-family actual transfer, human-map evaluation
+AFTER scan, then prospective untuned Redcube1 reserve. Read1284rolefreeze first.
+Both historically exposed, not unseen. Neither queried with new method yet.
+Find compatible complete baselines, do not repeat archive or71sweep. Qualification
+still needs all41/601mini/139terrain/current16, both modes, affected/full tests and
+quiet AC wholecost.132.909sactual/32.046shelper exploratory timings are NOTcost pass.
+No source/candidate shortcuts to force speed. Keep method private until qualified.
+
+Audit12271/zeroapprovals/51cumulativecurrent20historical. Runtime19ce21c6/appf0f37d9e
+unchanged; pinned12.3 interpreter required. Goal ACTIVE/allsixgatesunfinished.
+
+### Previous continuation — terminal diagnostic checkpoint / audit121
 
 Read `.artifacts/general-recognition-20261014/REDCUBE_DIAGNOSTIC_SAFE_RESUME_v1280.md`
 IN FULL and audit121. User requested a safe checkpoint for an effort change,

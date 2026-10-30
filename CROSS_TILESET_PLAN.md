@@ -1,6 +1,21 @@
 # Cross-tileset milestone
 
-## Latest: source-complete Redcube2 spike baseline; diagnostic batch closed
+## Latest: candidate discovery fixes eleven private Redcube2 misses
+
+Existing independent source proof already verifies all11misses; old spike-only
+neighborhoods never query them. Candidate-only reuse of original full-block-face
+neighborhoods recovers11:45/56->56/56, full errors18->7, no lost true/new false.
+No new palette thresholds or teachers. Whole/all11graphical deltas reviewed;
+remaining seven falsefulls/wrongmini/terrain defects keep room MAJOR.
+Ten focused/portable tests pass; real transfer and cost still unqualified.
+
+Frozen BEFORE trial: CN3-7 different-family transfer, Redcube1 untuned prospective
+reserve for this method (both historically exposed). They are next, not queried
+yet. No maintained adoption until protections/current16/both modes/wholecost pass.
+Audit122all71/zeroapprovals/51cumulativecurrent20historical; shipped count unchanged.
+Read HOLLOW_DISCOVERY_GAIN_AND_RESUME_v1288.md. Goal ACTIVE.
+
+## Previous: source-complete Redcube2 spike baseline; diagnostic batch closed
 
 Golden6/Redcube2 current scans and whole reviews are complete; both MAJOR.
 Redcube2 full-spike truth:45/56 exact,11missing,7false fulls; one false mini

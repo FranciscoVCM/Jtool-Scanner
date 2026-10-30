@@ -6,6 +6,15 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest private recognition result:11real Redcube2 full spikes recovered by fixing
+candidate discovery, not source acceptance. Existing source proof already knew
+the shapes; original terrain-adjacent queries reach positions omitted by the old
+spike-only search.45/56->56/56 exact, full errors18->7, no new false/lost true.
+Whole/all11delta QA and10focused tests pass. Remaining false spikes/mini/terrain
+keep room MAJOR. NOT deployed: real-family transfer, reserve, protections and
+whole-cost remain pending. Audit122all71/zeroapprovals/51current20historical.
+See latest next-thread handoff; the following paragraphs are older checkpoints.
+
 Latest diagnostic refresh: Golden6 and Redcube2 have fresh actual scans and whole
 Source/JTool/Blend reviews; both still MAJOR. Redcube2 frozen source truth shows
 45/56 full spikes exact,11missing,7false fulls and one separate wrong-size mini.

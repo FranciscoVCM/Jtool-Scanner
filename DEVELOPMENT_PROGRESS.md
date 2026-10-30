@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Private discovery repair recovers eleven real Redcube2 spikes
+
+An identical-output caller trace finds a search blind spot: the existing source
+model verifies all11missing spikes, but the spike-only search visits none of
+their positions. Reusing the established original-terrain-adjacent candidate
+generator finds them without changing source teachers, proof or thresholds.
+
+Actual private scan:45/56->56/56 exact full spikes; frozen misses+extras18->7
+(-61.11%). Zero lost true matches/new false full or mini. Whole and all11graphical
+deltas reviewed. Seven existing records only change their source-provenance tag;
+they are not additional corrections. Seven false fulls, one wrongmini, missing
+cornerblocks and other terrain errors remain; room MAJOR, not approved.
+
+Ten focused tests pass, including six synthetic scenes/24directions across
+bright/dark/near-isoluminant colours and native/fractional captures. Not real-family
+transfer or full qualification. Method is PRIVATE, not enabled in the app.
+Next frozen transfer CN3-7, then untuned-for-this-method Redcube1 reserve; all
+protections/current16 and whole-cost checks precede adoption. Exploratory timings
+are not a speed pass. Audit122 retains71/zeroapprovals/51current20historical;
+shipped recognition registry unchanged. Goal ACTIVE.
+
 ## 2026-10-30 — Two historical rooms refreshed; early spike errors measured
 
 Fresh ordinary scans and complete Source/JTool/Blend reviews cover Golden6 and
