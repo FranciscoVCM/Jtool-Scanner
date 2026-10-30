@@ -4,6 +4,30 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Raw-body source proof saved; no runtime adoption
+
+Original-source solid/empty/hazard/unknown regions and local occupancy baselines
+are frozen before new model trials. Developers are CN3-26 and materially different
+CN3-Halls2; CN3-27 is a prospective untuned, historically exposed reserve, not an
+unseen room. Two fresh ordinary sourceON scans and whole Source/JTool/Blend reviews
+cover Halls2(125objects) and27(341objects). Both remain MAJOR; no new repair.
+
+The genuine accepted pre-NMS pool preserves bodies previously discarded by grid
+priority. A private, exact rectangle-only prefix of the existing source proof
+passes four portable tests, retaining witness counts, matching, physical phases
+and query exclusions. One predeclared26parent now obtains independent source
+paint/body evidence. Its three local query masks are NOT three corrections or an
+empty-space certificate. No consumer, runtime/test/reference change or shipped
+recognition gain; Halls2/reserve have not been queried with the new model.
+
+Audit118 retains all71/zero approvals/49cumulativecurrent/22historical. The two
+fresh rooms were already current-evidence entries, so counts do not increase.
+All batch workers are terminal; exact continuation is saved before the requested
+effort change. Next qualify a generic raw-body/phase consumer, not score-first
+sorting or overlap deletion, then developer/transfer/reserve, whole QA, protections
+and cost. Prior1743public-suite/cost qualification remains on unchanged runtime.
+Goal ACTIVE; final gates unfinished. See latest next-thread handoff.
+
 ## 2026-10-30 — Framed-body and alignment causes traced; unsafe veto rejected
 
 One observer-instrumented CN3-26 caller equals ordinary1232 ENTIRE raw/profile/

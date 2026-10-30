@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest safe continuation: source roles/local error baselines are frozen for
+CN3-26/Halls2 developers and prospective untuned CN3-27 reserve (historically
+exposed, not unseen). Fresh ordinary Halls2/27 scans and whole reviews still
+show MAJOR errors. Preserving genuine accepted pre-NMS proposals allows one
+predeclared26parent to qualify the unchanged independent-witness body proof.
+Four private prefix tests pass; no consumer/runtime/test/reference change or
+shipped gain. Positive masks are not empty-space evidence or permission to
+delete overlaps. Audit118 retains71/zero approvals/49cumulativecurrent/22historical.
+All workers terminal; goal ACTIVE. Exact next consumer/transfer/protection task
+is recorded in NEXT_THREAD_HANDOFF; no completed producer needs restarting.
+
+Previous causal checkpoint:
+
 Latest causal checkpoint: a behaviour-preserving CN3-26 trace confirms false
 triangles accepted from base/texture edges and stronger8px block candidates
 discarded by32px alignment priority. Five discarded poses have complete original

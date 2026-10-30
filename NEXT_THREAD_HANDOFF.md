@@ -14,7 +14,48 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — framed-body causes / audit117 / next raw-body batch
+### Latest continuation — raw-body proof / audit118 / safe effort-change point
+
+Read RAW_BODY_SAFE_CONTINUATION_v1250.md IN FULL, then freeze1246/helper1248/proof1249
+as needed. All files are in the ignored general-recognition directory above.
+User requested completing the current bounded task and saving before ultra changes
+to extra high; keep goal ACTIVE, no pause/replacement/completion. All workers are
+TERMINAL. Runtime19ce21c6/appf0f37d9e remain qualified gravity41f19f7. Do not rerun
+1743suite/12cost/3app checks for private source work or docs alone.
+
+1246:physical source roles confirmed by main before trials, unknown elsewhere.
+Developers26framed/Halls2checkerboard; prospective untuned27reserve is historically
+exposed, NOT unseen. Four27pillar interiors protected;116/120origin unresolved.
+1247/session64574/PID35440 TERMINALexit0:ordinary sourceON Halls2=125/27=341objects,
+fullraw/eightselectors beforeexports, main whole Source/current/Blend/B235 viewed.
+BothMAJOR; already current-evidence entries, not increments to49.26reuses1232.
+Frozen local solid-error pixels26=1920,Halls2=831,27=3090; not whole accuracy.
+Separate26falseDOWNs8 and real beam-end hazard currently0/338covered remain open.
+
+1248:PRIVATE exact AST rectangle-prefix extraction from existing source model,
+four portable testsPASS, no public suite/test additions or changed proof rules.
+1249/session27570/PID38600 TERMINALexit0:4271genuine accepted pre-NMS proposals,
+944ordinary helper objects ENTIREequal1242 (NOT root266).2301rectangle origins,
+85full originalRGBclosed bodies; one predeclared26parent576,8 qualifies469variants/
+124cohorts/3local masks. Cohorts are not globally disjoint; masks are NOT emitted
+corrections or known empty space. No threshold/phase/witness relaxation or output
+teachers. Halls2/reserve have NOT been queried with this model. No runtime gain.
+
+raw-body-checkpoint-v1250.json/audit118:ALL71/zero approvals/49cumulativecurrent/
+22historical. Publication/cleanGit/liveorigin/privateindex/app verification is
+raw-body-publication-v1251.json; if absent publication is pending. Public parent
+d80931f86254f2b6d040602f4814729c78d8a8c9. No scan/model process needs restarting.
+
+EXACT NEXT: implement a PRIVATE generic raw-body/phase consumer, never reading
+evaluation masks/room names/palettes/origin answers. Positive body proof is NOT
+a negative veto; unknown stays unknown. Protect late recovered/nonunique solid
+packing, real occluded/opposing/minis and ordered metadata. No global score-first
+or overlap deletion. Evaluate26then different-family Halls2, freeze before first27
+reserve query; no tuning from reserve. Actualcaller/whole-everydeltaQA/original41/
+601/139/current16/affectedtests/wholecost before maintained adoption. Old failed
+consumers stayOFF; Dotkid3deferred; all final goal gates and stable71+16 unfinished.
+
+### Prior continuation — framed-body causes / audit117 / next raw-body batch
 
 Read FRAMED_BODY_CAUSE_AND_NEXT_v1244.md in full, plus freeze1239. No runtime/
 test/reference/dependency changes; still19ce21c6/appf0f37d9e. Gravity41f19f7 is

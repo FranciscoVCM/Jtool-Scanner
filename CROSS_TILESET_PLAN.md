@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Latest: source-body and alignment causes measured, no unsafe adoption
+## Latest: raw-body proof qualified, consumer and transfer still pending
+
+Freeze source roles/local error baselines before model trials:26framed developer,
+Halls2different-family developer,27prospective untuned reserve (historically
+exposed, NOT unseen). Fresh ordinary Halls2/27 whole reviews remain MAJOR.
+Preserved actual pre-NMS proposals let the unchanged independent-witness source
+proof qualify one predeclared26parent. Four private portable prefix tests pass.
+Positive body masks are not empty truth, a negative veto or emitted corrections.
+
+No runtime/test/reference change or new recognition gain. Audit118 all71/zero
+approvals/49cumulativecurrent/22historical. All workers terminal at the requested
+safe effort-change checkpoint; goal ACTIVE. Next a bounded generic body/phase
+consumer, no room/coordinate answers, score-first sorting, blanket overlap
+deletion or query-fitted witnesses. Preserve late/nonunique solids, real hidden/
+opposing/minis and all protections. Freeze before first27model test; no reserve
+tuning. Whole QA/actual caller/affected tests/cost precede adoption. See latest
+handoff and RAW_BODY_SAFE_CONTINUATION_v1250.md; do not restart completed scans.
+
+## Prior: source-body and alignment causes measured, no unsafe adoption
 
 CN3-26 traced caller equals current266-object raw/profile/project/exports. False
 DOWNs already exist in both geometry passes, despite outlined routing. Base edges
