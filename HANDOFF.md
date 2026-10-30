@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-30
 
+Latest causal checkpoint: a behaviour-preserving CN3-26 trace confirms false
+triangles accepted from base/texture edges and stronger8px block candidates
+discarded by32px alignment priority. Five discarded poses have complete original
+RGB rectangle faces. A simple side/tip veto fails real-occlusion counterexamples
+and stays OFF. Existing originalRGB contours retain information legacy grayscale
+misses; no duplicate scan or colour-as-empty role. Next independently source-
+qualified raw-body/phase selection, not unconditional score-first or overlap
+deletion. No runtime/test/reference change or new shipped gain. Audit117 preserves
+all71/zero approvals/49current22historical; goalACTIVE, final gates unfinished.
+
+Previous source-refresh checkpoint:
+
 Gravity checkpoint41f19f7 is published/verified with cleanGit, preserved private
 indexes and appHTTP200/loaded==disk. Three subsequent canonical sourceON scans
 and fresh main whole Source/JTool/Blend reviews cover CN3-16/18/26(590/495/266

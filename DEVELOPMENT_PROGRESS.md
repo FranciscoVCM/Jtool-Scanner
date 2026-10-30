@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-30 — Framed-body and alignment causes traced; unsafe veto rejected
+
+One observer-instrumented CN3-26 caller equals ordinary1232 ENTIRE raw/profile/
+project/exports. Both generic geometry passes already emit the eight false DOWNs;
+outlined routing is active, so merely recognizing another tileset is not enough.
+A base/texture-dominated patch scores as a triangle with no lower-body edges.
+Original RGB contours show1..3/12 support per slope versus8..10/12 at the base.
+
+A proposed half-side support gate would reject the eight canonical aliases but
+also loses four valid procedurally occluded spikes. It stays OFF; no tip/side
+threshold or overlap filter is adopted. Existing RGB contours also preserve a
+colour-only triangle with zero legacy grayscale edges, including brightness+1.
+Reuse that evidence rather than adding another grayscale scan or global colour
+role: identical pale RGB occurs inside solid framed tiles and in empty space.
+
+The second cause is fixed grid priority: all eight stronger8px-phase block
+candidates pass original classification but lose to32px-aligned competitors.
+Five discarded poses have complete original-RGB rectangle faces; their retained
+coarse competitors do not. Paired dedupe replays confirm alignment ranks before
+score. This does not justify unconditional score-first sorting or declare every
+discarded rectangle semantically correct. Next preserve raw accepted proposals
+before NMS and qualify competing bodies/visibility from independent source.
+
+No runtime/test/reference change or shipped gain. Audit117 retains all71/zero
+approvals/49cumulativecurrent/22historical. Prior1743suite/12cost/3live-app checks
+remain bound to unchanged gravity code; not rerun. Whole71+16 and other goal
+gates remain open. Latest handoff names exact receipts, failed counterexample
+and the next bounded source-qualified body/phase batch.
+
 ## 2026-10-30 — Three canonical historical sources freshly reviewed
 
 Published gravity checkpoint41f19f7 is verified against live origin/main, clean

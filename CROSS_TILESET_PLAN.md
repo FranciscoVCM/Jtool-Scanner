@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Latest: canonical16/18/26 refresh; framed-tile body aliases are the next cause
+## Latest: source-body and alignment causes measured, no unsafe adoption
+
+CN3-26 traced caller equals current266-object raw/profile/project/exports. False
+DOWNs already exist in both geometry passes, despite outlined routing. Base edges
+can outscore a block without a complete body; originalRGB slopes1..3/12 versus
+bases8..10/12. A half-side/tip veto loses valid occluded spikes and remainsOFF.
+Existing originalRGBcontours retain colour-only geometry invisible to legacy
+grayscale; use those, not another image scan or a global pale-colour empty role.
+
+Eight stronger original8px block candidates lose to32grid priority before score;
+five have complete originalRGBrectangle faces. Next preserve accepted raw proposals
+before alignment NMS, then independently qualify body/paint/visibility and phases.
+Do not globally sort byscore, widen teacher phases or use emitted objects as truth.
+Select compatible different-family developer/reserve before tuning; preserve
+old failed consumers, hidden/opposing/minis and all original protections.
+Audit117 all71/zero approvals/49current22historical, output/runtime unchanged.
+GoalACTIVE/finalstable71+16unfinished. See FRAMED_BODY_CAUSE_AND_NEXT_v1244.md.
+
+## Prior: canonical16/18/26 refresh; framed-tile body aliases are the next cause
 
 Three fresh ordinary sourceON scans/full raw/eight selectors and main whole
 Source/JTool/Blend review:16=590,18=495,26=266objects. Exact canonical sources,

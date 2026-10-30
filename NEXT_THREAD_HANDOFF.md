@@ -14,7 +14,54 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — three canonical fresh reviews / audit116
+### Latest continuation — framed-body causes / audit117 / next raw-body batch
+
+Read FRAMED_BODY_CAUSE_AND_NEXT_v1244.md in full, plus freeze1239. No runtime/
+test/reference/dependency changes; still19ce21c6/appf0f37d9e. Gravity41f19f7 is
+shipped and qualified1743suite/cost12/actual4/live3; don't restart those runs.
+All workers terminal. GoalACTIVE, Dotkid3deferred, old failed consumersOFF.
+
+framed-body-trace-v1239.json/+terminal:ONE observer-instrumented current CN3-26
+root, ENTIRE266raw/eightselectors/project/exports equal ordinary1232. Session42593
+TERMINALexit0. Two internal geometry passes are not two new rooms. Both already
+emit8falseDOWNs; bright-outlined routingTRUE; late interstitial/source geometry
+keep8. At448,32 canonical edges occupy only upper4of16rows butspike.414>block.262.
+
+triangle-body-gate-observation-v1240.json:half-side gate rejects0physical/8canonical
+aliases, but losesFOURvalid occluded procedural positives. AdoptionFAIL/OFF.
+Do not lower thresholds/whitelist poses or require visible tips. original-rgb-body-
+observation-v1241.json reuses existing SourceContours+SourceFrame:8physicallyknown
+false bodies have slopes1..3/12,bases8..10/12. Independent colour-only triangle:
+0legacy luma edges vs12/12/12RGB, unchanged afterbrightness+1. Pale RGB occurs
+in BOTHsolid interiors/empty region; colour is not a semantic visibility role.
+
+original-rectangle-candidates-v1242.json/+terminal:ONE pure generic geometry
+helper,session85441/PID in receipt,terminalexit0; not a fullroot/resweep. All8y8
+original proposals passblock/notspike, stronger than y0, but originalreturn keeps
+8y0/0y8. OriginalRGBclosed4faces:0/8y0,5/8y8,2/8y16,0/8y24. These are EXISTING
+8pxstride candidates, not expanded teacher poses. block-alignment-priority-v1243
+pairedreplays,bothorders, prove32alignment ranks before score. No source-semantic
+identity claim or permission to globally change sorting. Do not fit missing edges.
+
+framed-cause-checkpoint-v1244.json/audit117:ALL71/zero approvals/49cumulativecurrent/
+22historical, output/runtime unchanged. New source accuracy gainsZERO. Existing
+whole source review carries by strict full equality. Public docs publication/live
+Git/privacy/app verification is framed-cause-publication-v1245.json; if absent,
+publication pending. Parent wasd31542b66b350aacbe93ae8173b5216eb0a881d0.
+
+EXACT NEXT: freeze complete original body/empty/unknown/occlusion truth and select
+compatible different-family developer/reserve BEFORE tuning. Preserve accepted
+RAWrectangle proposals before NMS; qualify competing phases with independent
+originalRGBclosed-body/paint/visibility evidence. Raw proposals locate tests, NOT
+teachers; query pixels cannot fit their own witnesses. This missing original-pool
+cause does not authorize widening old phases/counts or reenabling C19/platform/
+water/compound holds. Existing SourceContours/SourcePartialVisibilityEvidence may
+help; the latter is additional proof, not a ready-made negative veto. Preserve
+beam-end/hidden/opposing/minis, original41/601/139/16 and ordered metadata. No
+score-first, ceiling/coordinate/bbox filter or unknown-as-empty shortcut. Continue
+22historical refreshes in bounded groups; finalstable71+16 and goal gates open.
+
+### Prior continuation — three canonical fresh reviews / audit116
 
 Gravity code41f19f7accd1982221ad49a734f2bd6bf3462504 was committed/pushed and
 verified by gravity-maintained-publication-v1231.json:live origin parity/cleanGit/
