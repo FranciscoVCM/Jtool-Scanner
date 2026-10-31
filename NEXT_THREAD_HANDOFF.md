@@ -14,7 +14,34 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — reserve terminal / background prerequisite / audit124
+### Latest continuation — private safe recall / paint-invariant query / audit125
+
+Read `.artifacts/general-recognition-20261014/OBJECT_LOCAL_GAIN_AND_RESUME_v1321.md`
+IN FULL and full current goal plan.1313/1314/1317 actual/profile producers are
+TERMINAL, all tests/renderers terminal, no live batch or maintained code edit.
+Do not repeat scans/profile or reopen the archive. Publication1322 verifies state.
+
+Older1312coupled private caller:CN3-7 retains trueUP512,176 without its earlier
+private falseUP488,336 (334->335); CN3-8untuned reserve adds realRIGHT384,352
+(292->293). Allold ordered records/metadata retained, main whole/all2delta QA
+complete. One correction/room is below success gate. Golden6unchanged350/no
+hollowmodel, NOT a positive different-family gain. Stable app unchanged.
+
+NEWER1319source-body query component passes6tests/27palette-BG-scale scenes,
+including cosmetic paint variation and pixel-verified empty/open negatives.
+Strict original teacher artwork remains; query uses stronger geometric border
+ownership/body identity instead of exact whole-sprite paint correlation.
+Original1311/1316/1318FAILs preserved; newer component NOT actual-qualified.
+EXACT NEXT: integrate1319body class into1312private coupler, actual CN3_7 then
+prospective untouched CN3_9reserve (frozen1316/1319). Do not retune CN3_8 and call
+it reserved. Old27bodyreserve untouched; Dotkid3 deferred. Qualify Redcube2/old
+protections/current16/modes before adoption. Profile1317 exactcaller-equal points
+to raw RGB bands repeatedly sampled across models: proof-equivalent lazy bounded
+sharing is next cost batch, not threshold shortcuts or a speed claim.
+Audit12571/zeroapprovals/52current19historical; runtime19ce21c6/appf0f37d9e,
+pinned12.3 unchanged. Goal ACTIVE, all six completion gates still open.
+
+### Previous continuation — reserve terminal / background prerequisite / audit124
 
 Read `.artifacts/general-recognition-20261014/RESERVE_AND_BACKGROUND_CAUSE_RESUME_v1305.md`
 IN FULL and the full current goal plan. All1295–1304 producers TERMINAL; no live

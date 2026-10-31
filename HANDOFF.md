@@ -6,6 +6,19 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-31
 
+Latest private caller retains CN3-7's real recovery without its compound alias
+and adds one real CN3-8reserve spike; all old records/metadata preserved and
+whole/delta review complete. One correction per room is below goal criteria;
+both remain MAJOR. Golden6unchanged is not positive family transfer. Stable
+app/code unchanged; these private additions are NOT deployed.
+Newer source-local geometry/body queries pass6tests/27colour/background/scale
+scenes including cosmetic sprite variation, but still need actual qualification.
+Old failed receipts preserved. Raw-sampling profile gives a proof-equivalent
+speed target, not a latency pass. Audit125 remains71/zeroapprovals/52current19
+historical. Latest next-thread handoff has exact continuation; goal ACTIVE.
+
+Previous checkpoint:
+
 The untouched Redcube1 reserve gives no improvement:45/50 full spikes,5missing,
 1extra; fresh whole review complete. Source analysis now locates a background-
 sensitive prerequisite:32original closed RGB frames fail the coherent-exterior

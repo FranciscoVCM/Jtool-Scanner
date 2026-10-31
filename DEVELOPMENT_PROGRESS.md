@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-31 — Source-local body proof prevents a private alias; reserve recall
+
+The private coupled caller now retains CN3-7's earlier real UP recovery without
+its false compound alias:334->335 objects, full-spike errors35->34. A frozen
+CN3-8 reserve adds one real RIGHT:292->293. Every old ordered record, frame,
+option and non-geometry flag remains equal. Whole Source/JTool/Blend and both deltas reviewed;
+both rooms still MAJOR, one correction each BELOW the successful-room gate.
+Golden6 is unchanged at350/no owned hollow model, not positive family transfer.
+No maintained adoption; these improvements are not yet visible in the stable app.
+
+New source-local body queries separate geometric identity from exact paint:
+strict disjoint original-source teacher triples, closed RGB geometry, body error
+relative to object contrast and owned borders replace a uniform-background query
+assumption. Near-flat interior noise and one cosmetic missing border exposed two
+overly restrictive template checks. The newer read-only revision passes six tests
+across27palette/background/scale scenes, including valid paint variation and a
+pixel oracle for empty/open negatives. Earlier failed fixtures/results remain
+preserved. This newer revision still needs actual-caller/reserve qualification.
+
+An exact-output helper profile finds repeated raw RGB fallback sampling dominant
+(20.4million original-sample calls). Profiler duration is NOT app latency; next
+speed work must preserve proof semantics and pass controlled whole timings.
+Audit125 retains71/zeroapprovals/52cumulativecurrent19historical. Goal ACTIVE;
+no new full-suite, all-protection or cost qualification claimed.
+
 ## 2026-10-31 — Reserve closed; variable-background qualification gap located
 
 Fresh Redcube1 reserve scans are identical at214 objects:45/50 full spikes,

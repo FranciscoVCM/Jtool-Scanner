@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: object identity is blocked by variable-background qualification
+## Latest: source-local geometry/body identity, with private reserve evidence
+
+Older private coupled caller preserves the real CN3-7 recovery while rejecting
+its earlier false compound alias, and adds one real CN3-8reserve spike. Complete
+source whole/delta QA and allold records/metadata preservation checked. Both
+rooms remain MAJOR/below successful-room gate; Golden6unchanged is not transfer.
+No maintained adoption. The stable app does not include these private additions.
+
+Newer source-local component retains strict original teacher triples but queries
+geometry/body agreement rather than exact paint or uniform exterior appearance.
+Six tests/27palette-background-scale scenes pass, with cosmetic sprite variation
+and pixel-verified negative fixtures; old failed receipts preserved. Actual
+caller/new CN3_9reserve and all protections/cost remain pending. Exact helper
+profile locates duplicated raw sampling across colour models; optimize reuse
+without changing proof or treating microtimings as whole-cost qualification.
+Audit12571/zeroapprovals/52current19historical. Read1321resume; goal ACTIVE.
+
+## Previous: object identity is blocked by variable-background qualification
 
 Redcube1 unchanged reserve has zero gain:45/50full spikes,5misses/1extra,
 six errors unchanged; fresh whole QA complete. Candidate discovery remains OFF.
