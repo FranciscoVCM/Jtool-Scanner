@@ -14,7 +14,34 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — measured cost hold and textured-body limitation / audit127
+### Latest continuation — six private body-phase corrections / terminal effort change
+
+Read `.artifacts/general-recognition-20261014/FILTERED_BODY_SAFE_RESUME_v1349.md`
+IN FULL, then the current goal plan. All1340–1348workers TERMINAL; final1348/
+session37667 exits0. Safe Ultra-to-Extra-High continuation, NOT a goal reset,
+pause or completion. Publication1350 verifies this four-doc checkpoint.
+
+FilteredRGB interiors/bounded source-pixel registration retain independently
+closed/owned geometry/fullcoverage/disjoint original teachers.11/18/10method
+runs PASS, overlapping contracts NOT39unique tests. Actual1343 captures genuine
+original proposals in ONE root, no duplicate helper/private answer input.
+Six source-supported block phase pairs, allnonblocks unchanged; frozen LOCAL
+solid errors1920->774, no lost labelled positive/new negative. Whole/all6pairs
+and all48teacher footprints reviewed; some teacher windows span tile seams,
+not canonical JMap origins.1224changed pixels outside masks remain unlabelled.
+Room MAJOR/eight false DOWNs and other defects remain; no broad approval.
+
+1346coordinate adapter handles canonical vs direct physical-source packets.
+1348 ENTIREactual raw/proof parity for canonical consumer. No transfer/cost
+qualification or adoption yet; stable app unchanged. EXACT NEXT: generic
+actual packet harness using1340/1346UNCHANGED, Halls2 exposed diagnostic
+(direct physical image_boxes, do not double-map), then still-untouched CN3_27
+prospective reserve. Truth POSTscan only; unique frame binding or abstention.
+No archive/baseline resweep. Keep old cost-HOLD variants OFF/capped.
+Audit12871/zeroapprovals/52cumulativecurrent19historical; goal ACTIVE,
+all qualification/final gates unfinished. Dotkid3 user-deferred.
+
+### Previous continuation — measured cost hold and textured-body limitation / audit127
 
 Read `.artifacts/general-recognition-20261014/BODY_TEXTURE_AND_COST_RESUME_v1338.md`
 IN FULL, then the current goal plan. All1329–1337producers TERMINAL; no live

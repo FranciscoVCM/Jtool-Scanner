@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-31
 
+Actual private textured-body phase repair makes six source-supported block
+corrections, retaining all nonblock records. Frozen LOCAL errors1920->774,
+no known positive loss/new negative; whole/all6deltas/48teacher crops reviewed.
+Not whole-room accuracy, approval or deployment; CN3-26 remains MAJOR.
+Coordinate adapter passes actual canonical-output/proof parity; cross-family
+Halls2 and untouched CN3-27reserve are next, protections/whole cost still pending.
+Audit128all71/zeroapprovals/52current19historical; stable app/code unchanged.
+All workers terminal for the requested effort change. Goal ACTIVE, no reset;
+NEXT_THREAD_HANDOFF points to the exact1349resume. Following entries are history.
+
+Previous checkpoint:
+
 Newer actual caller retains all11Redcube2private recoveries, but controlled
 dense whole-scan cost is+12.601%, so adoption is HELD. A proof-equivalent
 reorder passes41focused tests but is slower; cost variants capped/OFF.

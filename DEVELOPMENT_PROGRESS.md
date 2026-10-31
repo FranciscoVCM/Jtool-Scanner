@@ -4,6 +4,29 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-31 — Private textured-body phase gain; terminal effort-change checkpoint
+
+Filtered RGB interiors and bounded physical-pixel sampling registration address
+the raw-texture mismatch without relaxing original geometry/ownership/coverage
+or independent-teacher rules. Test runs of11,18and10methods pass; contracts
+overlap, so these are not39unique tests. A genuine actual root captures original
+proposals once and makes six source-supported block phase corrections, retaining
+all nonblock records. Whole Source/JTool/Blend, all six deltas and48teacher
+footprints reviewed. Some teacher windows span seams, not exact JMap tile origins.
+
+Frozen LOCAL solid errors1920->774 (-59.6875%),0lost labelled positive/0new
+negative,1146false-solid pixels cleared.1224changed pixels outside masks are
+not automatically certified. Five older private shifts retained plus one new
+source-supported shift; none shipped. CN3-26 remains MAJOR with false spikes
+and other geometry errors. No whole-screen accuracy percentage or approval.
+
+Coordinate-complete adapter distinguishes canonical and direct physical source
+passes. Final replay exactly reproduces the actual raw/source proofs. Next:
+unchanged cross-family Halls2 diagnostic, then prospectively reserved CN3-27;
+all protections/modes/whole-cost qualification still pending. Runtime/app
+unchanged, old over-budget methods OFF. Audit128 all71/zeroapprovals/52current
+19historical. All workers terminal for effort change; goal ACTIVE, no reset.
+
 ## 2026-10-31 — Requalified recall, measured cost hold, textured-body blocker
 
 A fresh actual with the newer coupler retains all11private Redcube2 recoveries:

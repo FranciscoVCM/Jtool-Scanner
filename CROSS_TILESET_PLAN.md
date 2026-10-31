@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: preserve recall, respect cost hold, test textured-body registration
+## Latest: private textured-body phase gain; unchanged transfer is next
+
+FilteredRGB interior registration, independent native RGB geometry/ownership
+and original-only disjoint teacher triples now give six source-supported block
+phase corrections in an actual private root. Local frozen solid errors1920->774,
+no known positive loss/new negative; whole/all6deltas/48teacher crops reviewed.
+This is local evidence, not whole-room accuracy or a shipped fix. Other defects
+keep CN3-26 MAJOR.11/18/10overlapping-contract test runs pass.
+
+Coordinate adapter passes canonical actual-output/proof parity and physical
+frame contracts. Next fixed-method actual Halls2 diagnostic (direct physical
+boxes), then untouched CN3_27reserve; unique original packet binding, truth only
+after scan. Cross-family benefit and whole cost remain UNKNOWN. Old over-budget
+hollow/cache/order variants OFF/capped. No maintained code/fixture edit.
+Audit12871/zeroapprovals/52current19historical. All workers terminal for safe
+effort change; read1349resume. Stable app unchanged, goal ACTIVE/all gates open.
+
+## Previous: preserve recall, respect cost hold, test textured-body registration
 
 Newcoupler retains all11Redcube2private gains under actual full-output equality;
 no new accuracy credit. Quiet dense WHOLE ABBA1330 adds12.601%scan/12.167%wall,
