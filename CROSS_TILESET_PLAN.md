@@ -1,6 +1,22 @@
 # Cross-tileset milestone
 
-## Latest: compound-size regression blocks candidate-discovery adoption
+## Latest: object identity is blocked by variable-background qualification
+
+Redcube1 unchanged reserve has zero gain:45/50full spikes,5misses/1extra,
+six errors unchanged; fresh whole QA complete. Candidate discovery remains OFF.
+CN3-7 mini-size source proof verifies8real minis and5portable tests pass, but
+bounded discovery adds0true/1unmatched; do not deploy it or the boundary veto.
+
+The existing solid verifier sees32original four-face RGB frames but zero coherent
+exteriors, learning0models across702candidates. All have interior texture. This
+is a measured background-sensitive prerequisite, not evidence for a colour or
+threshold exception. Next freeze real/false-frame denominators and test source
+object-local identity under structured backgrounds. Preserve false gap controls,
+genuine occlusion and independent original-only teachers. New method needs new
+prospective roles and full protections/cost before adoption. Audit12452current/
+19historical,71retained/zeroapprovals. Read1305resume. Goal ACTIVE.
+
+## Previous: compound-size regression blocks candidate-discovery adoption
 
 Frozen different-family CN3-7 trial: one true new full spike and one false full
 alias over a miniature formation; full errors35->35, no lost true, localgateFAIL.

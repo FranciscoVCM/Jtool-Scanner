@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-30. Continue in the existing repository at
+Updated 2026-10-31. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -14,7 +14,30 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — failed transfer safely saved / audit123
+### Latest continuation — reserve terminal / background prerequisite / audit124
+
+Read `.artifacts/general-recognition-20261014/RESERVE_AND_BACKGROUND_CAUSE_RESUME_v1305.md`
+IN FULL and the full current goal plan. All1295–1304 producers TERMINAL; no live
+job or half-applied maintained edit. Do not repeat scans or reopen the archive.
+Redcube1 reserved actual214 ENTIREordinary/private equal;45/50fulls,5misses,
+1extra, errors6 unchanged. Main whole QA complete; room MAJOR, reserveFAIL.
+Audit12471/zeroapprovals/52cumulativecurrent19historical; no new shipped gain.
+
+Unchanged CN3-7 observer reproduces334raw and saves authentic original inputs.
+Eight real minis pass read-only size proof; five portable tests pass, but bounded
+mini discovery adds0true/1unmatched. Both mini discovery and boundary veto OFF.
+1304 locates the solid prerequisite failure:32original four-face source frames,
+but zero coherent exteriors/models across702candidates; interior texture exists.
+EXACT NEXT: freeze genuine-frame/false-rectangle source/portable denominators
+under structured backgrounds; test independently learned object-local identity
+without a uniform-exterior assumption. No threshold/teacher widening to force it.
+Freeze new different-family/reserve roles before further tuning. Old Redcube1
+discovery reserve consumed;27bodyreserve untouched, Dotkid3 deferred. Preserve
+partial walls/minis/metadata/all controls and known failures. See memo for scopes.
+Runtime19ce21c6/appf0f37d9e unchanged; pinned12.3 required. Publication1306.
+Goal ACTIVE, all six gates unfinished. Older sections below are historical.
+
+### Previous continuation — failed transfer safely saved / audit123
 
 Read `.artifacts/general-recognition-20261014/HOLLOW_TRANSFER_SAFE_RESUME_v1292.md`
 IN FULL, plus the full current goal plan.1290/session8661/PID30996 TERMINAL exit0;

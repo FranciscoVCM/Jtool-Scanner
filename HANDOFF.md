@@ -4,7 +4,18 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-30
+## Current checkpoint — 2026-10-31
+
+The untouched Redcube1 reserve gives no improvement:45/50 full spikes,5missing,
+1extra; fresh whole review complete. Source analysis now locates a background-
+sensitive prerequisite:32original closed RGB frames fail the coherent-exterior
+condition, so the rectangle verifier learns no models despite real body texture.
+Next investigate object-local identity under structured backgrounds, protecting
+false rectangles/occluded glyphs rather than relaxing thresholds. Mini-size
+source proof has5portable passing tests but discovery still adds a false object;
+all these experiments remain OFF. Audit12471/zeroapprovals/52current19historical.
+Stable app/code unchanged; latest next-thread handoff has exact continuation.
+Goal ACTIVE. The following checkpoints are historical.
 
 Latest cross-family test catches a regression: the fixed private discovery method
 adds one correct CN3-7 full spike AND one false full spike over a smaller compound.

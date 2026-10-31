@@ -4,6 +4,32 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-31 — Reserve closed; variable-background qualification gap located
+
+Fresh Redcube1 reserve scans are identical at214 objects:45/50 full spikes,
+five missing and one extra, six errors unchanged. Whole Source/JTool/Blend review
+confirms missing spikes/corner blocks and a false bottom spike. No reserve gain
+or approval. Audit124 now has52 cumulative current-evidence rooms/19 historical,
+all71 retained and zero broad approvals; not52 same-revision fresh scans.
+
+An unchanged CN3-7 observer exactly reproduces334 objects and preserves original
+source inputs. A read-only16px query verifies eight real minis using independently
+learned full-glyph RGB identity. Five portable tests pass across nine colour/scale
+scenes, including closed-gap negatives. A malformed synthetic tile-base fixture
+was corrected separately; its original failed receipt remains preserved.
+Bounded mini discovery nevertheless finds zero new correct objects and one
+unmatched mini, so it stays OFF. The competing-boundary veto also stays OFF.
+
+The solid prerequisite trace locates a concrete background-sensitive assumption:
+32 original frames have four qualified source RGB faces, but none satisfies the
+existing coherent-exterior condition. Across702 candidates the rectangle verifier
+learns zero models. Interior texture is present; missing contours/texture are not
+the cause in this case. Next test object-local identity under structured/variable
+backgrounds against genuine frames AND false rectangles, without simply relaxing
+thresholds or teacher rules. No maintained code/fixture change or new shipped
+recognition gain; prior private improvements and failures remain intact.
+Goal ACTIVE; full-suite/current16/whole-cost/adoption gates remain unfinished.
+
 ## 2026-10-30 — Cross-family trial catches a compound-size regression
 
 The unchanged private candidate-discovery method was tested on CN3-7 with two
