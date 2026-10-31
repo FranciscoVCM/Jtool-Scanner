@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-31
 
+Newer source-local body queries now have private actual-caller evidence: safe
+CN3-7 recovery retained, one real CN3-9reserve spike added. Whole/everydelta
+review complete, allold records retained; both rooms MAJOR/below room gate.
+Private raw-band reuse passes36focused tests and two exact actual-output/proof/
+project/export comparisons, but no latency gain is established; keep OFF.
+No maintained implementation/fixture change or deployment. Audit126 retains
+71/zeroapprovals/52cumulativecurrent19historical. All workers terminal at the
+requested effort-change checkpoint; NEXT_THREAD_HANDOFF has the exact resume.
+Goal ACTIVE, unfinished qualifications preserved. Following entries are history.
+
+Previous checkpoint:
+
 Latest private caller retains CN3-7's real recovery without its compound alias
 and adds one real CN3-8reserve spike; all old records/metadata preserved and
 whole/delta review complete. One correction per room is below goal criteria;

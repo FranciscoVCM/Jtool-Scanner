@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-31 — New query reserve gain; exact cache parity; terminal save point
+
+The newer geometry/body query now runs in the private actual caller. CN3-7's
+safe recovery is unchanged at335 objects; prospectively reserved CN3-9 gains
+one source-confirmed UP at160,384 (499->500). Allold ordered records retained;
+whole and every graphical delta reviewed. Both remain MAJOR, one correction
+below room criteria. Compatible ordinary baselines reused, not freshly scanned;
+CN9's older export-code hash is bridged by the authenticated current1222control.
+No maintained implementation/fixture change or app-visible deployment.
+
+Private lazy raw-band reuse passes36focused tests and two actual comparisons:
+ENTIREraw/proofs/eight selectors/project/map/renders equal uncached outputs.
+Sampling calls fall sharply, but exploratory whole times show no latency gain;
+these are not paired controlled measurements. Cache stays OFF, further work
+bounded. No new full-suite/protection/cost qualification claimed.
+
+Audit126 retains71/zeroapprovals/52cumulativecurrent19historical. All workers
+terminal at the requested effort-change save point; exact next steps are saved.
+Goal ACTIVE, no reset or completion; prior gains/failures/private material intact.
+
 ## 2026-10-31 — Source-local body proof prevents a private alias; reserve recall
 
 The private coupled caller now retains CN3-7's earlier real UP recovery without

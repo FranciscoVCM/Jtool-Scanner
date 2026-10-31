@@ -14,7 +14,35 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — private safe recall / paint-invariant query / audit125
+### Latest continuation — terminal effort-change checkpoint / audit126
+
+Read `.artifacts/general-recognition-20261014/RAW_BAND_PARITY_AND_SAFE_RESUME_v1327.md`
+IN FULL, plus the full current goal plan. User requests safe Ultra-to-Extra-High
+continuation, not a goal reset.1323/session86486/PID24516 and1326/session52352/
+PID44332 TERMINALexit0; tests/renderer terminal. No live producer or maintained
+edit to restart. Publication1328 verifies the new docs-only checkpoint.
+
+New1319body component is now tested in actual private callers: CN3-7 retains
+its safe UP512,176 (334->335, ENTIREprevious private335equal); prospectively
+reserved CN3-9 adds realUP160,384 (499->500). No old records removed/changed;
+whole/everydelta1324 reviewed. Both MAJOR/one correction below room gate.
+CN9 consumed for1319; CN8's earlier gain not rerun, Golden6 not positive transfer.
+Compatible ordinary baselines reused, not new ordinary scans; memo explains
+CN9's current1222 raw-compatibility bridge to its older export directory.
+
+Private bounded lazy raw-band cache passes36focused tests and two actual
+ENTIREraw/helper-proof/8selector/project/export comparisons. Pixel reuse is NOT
+a speed win: exploratory whole times slightly slower, no controlled speed pass.
+Keep OFF; bound further cache work, do not loop on counters. EXACT NEXT: at most
+one causally justified low-overhead experiment, then recognition qualification
+of the new coupler on Redcube2/all41/601/139/current16/both modes; reserve any
+new compatible different-family case before tuning. All qualification/adoption
+gates remain open. Dotkid3 deferred; no archive/baseline resweep.
+Audit12671/zeroapprovals/52cumulativecurrent19historical; runtime19ce21c6/
+appf0f37d9e pinned12.3 unchanged. No new shipped gain. Goal ACTIVE; resume from
+these completed receipts immediately after the effort change.
+
+### Previous continuation — private safe recall / paint-invariant query / audit125
 
 Read `.artifacts/general-recognition-20261014/OBJECT_LOCAL_GAIN_AND_RESUME_v1321.md`
 IN FULL and full current goal plan.1313/1314/1317 actual/profile producers are

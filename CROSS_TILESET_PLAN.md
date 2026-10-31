@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: source-local geometry/body identity, with private reserve evidence
+## Latest: new body query reaches a reserve; exact cache parity, not speed
+
+Actual newer1319coupler retains safe CN3-7 recovery and adds one real CN3-9UP
+at the prospectively frozen reserve. Main whole/everydelta QA done; no old
+ordered records lost/changed. One correction each, both MAJOR/below room gate.
+CN9 consumed; Golden6 unchanged is not positive different-family transfer.
+No maintained adoption. Compatible ordinary baselines are reuse, not fresh scans.
+
+Private raw-band caching passes36focused tests and two actual ENTIREraw/proof/
+8selector/project/export parity checks. Fewer reads do not demonstrate speed:
+exploratory whole times slightly slower, controlled cost unqualified. Keep OFF;
+cap further variants and continue recognition qualification/transfer rather
+than optimize counters. Redcube2's eleven gains/all protections/current16/both
+modes and final71+16/fullsuite/wholecost remain pending for the newer method.
+Audit12671/zeroapprovals/52current19historical. Read1327resume; workers terminal
+for effort-change continuation. Stable runtime/app unchanged; goal ACTIVE.
+
+## Previous: source-local geometry/body identity, with private reserve evidence
 
 Older private coupled caller preserves the real CN3-7 recovery while rejecting
 its earlier false compound alias, and adds one real CN3-8reserve spike. Complete
