@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-10-31 — Requalified recall, measured cost hold, textured-body blocker
+
+A fresh actual with the newer coupler retains all11private Redcube2 recoveries:
+56/56full spikes, frozen errors18->7, complete oldprivate output equality.
+Whole/all11source-review carry is validated; not11additional or shipped gains.
+Seven false fulls, wrongmini and cornerblocks remain; room MAJOR.
+
+Four quiet serial AC whole-scan ABBA samples on dense CN3-7 preserve each
+expected output exactly, but add12.601%scan time/12.167%including exports.
+This exceeds10%, so adoption is HELD. A proof-equivalent predicate reorder
+passes41focused tests but is17.4%slower in a cold helper pair; keep it OFF.
+Raw-cache/cost variants are capped. No controlled sparse/heavy pass claimed.
+
+A distinct source-body phase probe processes genuine original proposals, not
+emitted answers:78teachers/4models/65contested queries, zero corrections in
+REPLAY. All65have disjoint models;34pass ownership but none pass raw pixelwise
+body matching, including five previously confirmed positives. Filtered RGB and
+bounded sampling registration improve a read-only matching diagnostic; this
+is not a detector fix or15correct objects. Next test that causal hypothesis
+with textured/unknown/scale negatives before actual phase/transfer/reserve work.
+
+Audit127 preserves71/zeroapprovals/52cumulativecurrent19historical. No maintained
+code/fixture change, new deployment or full-suite claim. Earlier private gains
+and failures remain preserved. Goal ACTIVE; all unfinished gates carry forward.
+
 ## 2026-10-31 — New query reserve gain; exact cache parity; terminal save point
 
 The newer geometry/body query now runs in the private actual caller. CN3-7's

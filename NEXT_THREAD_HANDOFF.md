@@ -14,7 +14,41 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — terminal effort-change checkpoint / audit126
+### Latest continuation — measured cost hold and textured-body limitation / audit127
+
+Read `.artifacts/general-recognition-20261014/BODY_TEXTURE_AND_COST_RESUME_v1338.md`
+IN FULL, then the current goal plan. All1329–1337producers TERMINAL; no live
+worker or maintained edit. Publication1339 verifies this docs-only checkpoint.
+Do not repeat the archive, Redcube2 actual or completed timing/probe batches.
+
+Newcoupler actual1329 retains all11Redcube2true recoveries, ENTIREoldprivate
+raw/8selectors/project/exports equal; strict whole/all11sourceQA carry valid.
+Not11additional gains. Controlled dense WHOLE1330ABBA gives+12.601%scan/
+12.167%wall: HOLD>10%, no adoption.41focused tests pass, but exact-proof
+predicate-order prototype is17.4%slower in helper test. Keep it/rawcache OFF;
+cap this cost family instead of chasing counters or weakening source proof.
+
+Distinct body-phase probe1335: actual original4271/finalhelper944 records
+authenticated; first-NMS844 is a separate scope. Same1319body rule sees
+78teachers/4models/65contested queries but0proof/0phase corrections in REPLAY.
+Older five true phase fixes remain separately preserved. All65have disjoint
+models/34pass ownership/none pass native rawbody RMS, including known positives.
+Read-only filtered-RGB/source-pixel registration improves the matching signal,
+NOT15real objects or an implemented fix. Earlier metadata preflight failures
+are preserved, not scanner regressions or reasons to waive checks.
+
+EXACT NEXT: freeze/test filteredRGB interior sampling and bounded registration
+while retaining independently closed/owned geometry/fullcoverage/fixed disjoint
+teachers. Include textured bodies/fractional captures/empty gaps/unknown extent,
+not just old flat-core scenes. Then source-only replay/actual phase correction,
+Halls2exposed diagnostic and unchanged CN3_27reserve if gates pass. Do not
+relax .1/.9/9/three-witness rules or turn sampling registration into map shifts.
+Source raw must come from the correct actual canonical pass, not private files
+or a duplicate geometry scan. Memo has detailed invariants and remaining gates.
+Audit127all71/zeroapprovals/52current19historical, runtime19ce21c6/appf0f37d9e/
+pinned12.3 unchanged. No new ship/fullsuite claim. Dotkid3 deferred; goal ACTIVE.
+
+### Previous continuation — terminal effort-change checkpoint / audit126
 
 Read `.artifacts/general-recognition-20261014/RAW_BAND_PARITY_AND_SAFE_RESUME_v1327.md`
 IN FULL, plus the full current goal plan. User requests safe Ultra-to-Extra-High

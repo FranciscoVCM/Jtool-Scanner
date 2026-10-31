@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: new body query reaches a reserve; exact cache parity, not speed
+## Latest: preserve recall, respect cost hold, test textured-body registration
+
+Newcoupler retains all11Redcube2private gains under actual full-output equality;
+no new accuracy credit. Quiet dense WHOLE ABBA1330 adds12.601%scan/12.167%wall,
+so keep OFF. Exact predicate reordering passes41focused tests but slows the
+helper17.4%; rawcache also unhelpful. Cap those variants, no threshold shortcuts.
+
+New body-phase application produces0replay corrections: raw pixelwise body RMS
+rejects known textured source positives despite closed geometry and available
+independent models. Source filtering/registration improves a fixed-teacher
+read-only diagnostic, not emitted accuracy. Next bounded sampler/registration
+proof must preserve RGB/ownership/coverage/disjoint teachers and pass textured,
+empty-gap, fractional and unknown-frame tests before actual/transfer/reserve.
+CN3_27reserve still unqueried; Halls2exposed diagnostic, Dotkid3deferred.
+Audit127all71/zeroapprovals/52current19historical. Stable app/code unchanged;
+read1338resume. All workers terminal, goal ACTIVE, all final gates unfinished.
+
+## Previous: new body query reaches a reserve; exact cache parity, not speed
 
 Actual newer1319coupler retains safe CN3-7 recovery and adds one real CN3-9UP
 at the prospectively frozen reserve. Main whole/everydelta QA done; no old

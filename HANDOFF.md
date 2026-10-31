@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-10-31
 
+Newer actual caller retains all11Redcube2private recoveries, but controlled
+dense whole-scan cost is+12.601%, so adoption is HELD. A proof-equivalent
+reorder passes41focused tests but is slower; cost variants capped/OFF.
+Separate body-phase replay finds0corrections and locates raw texture/sample
+registration as a blocker on real framed bodies. FilteredRGB diagnostic is
+promising, not a shipped fix. Audit127 retains71/zeroapprovals/52current19
+historical. All evidence/next tests saved; stable app/code unchanged and goal
+ACTIVE. NEXT_THREAD_HANDOFF has exact continuation. Following entries are history.
+
+Previous checkpoint:
+
 Newer source-local body queries now have private actual-caller evidence: safe
 CN3-7 recovery retained, one real CN3-9reserve spike added. Whole/everydelta
 review complete, allold records retained; both rooms MAJOR/below room gate.
