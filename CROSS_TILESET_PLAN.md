@@ -1,6 +1,20 @@
 # Cross-tileset milestone
 
-## Latest: exact sampling parity measured; whole qualification still required
+## Latest: whole-output parity and dense cost viable; remaining families pending
+
+Unchanged private recognizer plus exact-sampling optimization retains the full
+Redcube2 output/proof/project/exports and11previously verified recoveries. Four
+quiet AC dense ABBA samples yield+5.13%scan/+5.15%wall, all output checks pass.
+Explicit preflight interruption preserved, no sample selection. Old+12.601%
+recognizer-only hold remains distinct. No adoption from a dense-only result.
+
+Golden1 and compact NANG whole controls are ENTIREmaintained equal. The compact
+guard bypasses the new helper, so NANG cannot substitute for active sparse cost;
+Redcube2 is that representative, Golden1 the heavier protected control. These
+and all protections/modes/fullsuite/maintainable port remain required. Read1387
+resume. Audit131all71/zeroapprovals/54current17historical; stable app unchanged.
+
+## Previous: exact sampling parity measured; whole qualification still required
 
 Private arithmetic-only sampling preserves complete original position/RGB/
 unknown behavior and the existing one-conversion contract.67focused tests pass.

@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Whole parity and dense cost; sparse/heavy qualification next
+
+The exact-sampling/private-recognizer combination preserves Redcube2's ENTIRE
+raw output, source proof, project and export bytes; all11prior real recoveries
+retained, not new accuracy credit. Four serial AC dense before/after/after/before
+samples pass full output and quietness checks: +5.13%scan/+5.15%including exports.
+The preflight host-busy interruption is preserved; no completed sample dropped
+or rerun. Old recognizer-only+12.601%HOLD remains a separate historical result.
+
+NANG-128 and Golden1 whole safety controls also preserve maintained raw/project/
+exports exactly. The compact NANG path correctly bypasses the new helper; a
+reporting assumption was corrected from saved output, without rescanning or
+changing detection. It is not active sparse-method timing evidence. Use Redcube2
+for active sparse cost and Golden1 for the heavier control next. No adoption,
+maintained edit or new full suite. Audit131:71/zeroapprovals/54current17historical.
+Goal ACTIVE; NEXT_THREAD_HANDOFF points to1387resume and remaining protections.
+
 ## 2026-11-01 — Exact-sampling comparison finished; safe effort-change checkpoint
 
 One private arithmetic-only prototype preserves finite/floor/crop/unknown/RGB

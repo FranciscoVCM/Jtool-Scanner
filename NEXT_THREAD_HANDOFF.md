@@ -14,7 +14,40 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — terminal exact-sampling checkpoint / effort change
+### Latest continuation — whole parity / dense cost viable / audit131
+
+Read `.artifacts/general-recognition-20261014/SAMPLING_WHOLE_DENSE_AND_CONTROLS_RESUME_v1387.md`
+IN FULL and the current goal plan. All1381–1385workers TERMINAL. No maintained
+code/test/fixture edit/adoption/app change; runtime19/Pillow12.3/appf0 unchanged.
+1381actualRedcube2ENTIRE1329raw/sourceproof/project/eightflags/exports equal,
+all11prior recoveries retained/56of56fulls/sevenfalsefulls remain; not new credit.
+
+1382parent stopped after two valid samples, hostbusy BEFOREchild2started.
+1383sameunchangedworker completes ONLYafter2/before3. AllfourACABBAoutputs/
+appquiet/HEAD/flags/dependency checksPASS; no drop/rerun/selection. Scan medians
+155.4179746->163.3951637(+5.1327%), wall160.7937798->169.07856425(+5.1524%).
+DenseONLY, not full cost qualification; old1330+12.601%HOLD stays preserved.
+
+1384NANGactual136saved before reporter's incorrect one-helper-call assertion.
+Native19x13 correctly bypasses helper;1385seals ENTIREraw/project/export equality
+from completed output, no rescan/fake proof/scanner edit.1385Golden1actual294
+also ENTIREmaintained equal; arrows retained. Strict QA carry, not fresh approval.
+
+EXACT NEXT after publication1388: pinned Python runs
+`measure_sampling_family_cost_v1386.py --id CN3_Golden1 --app-pid34984`, then
+(ifpass) `--id CN3_Redcube2 --app-pid34984`, after verifying listeningPID/AC.
+Golden1heavier, Redcube2ACTIVE sparse; compactNANG NOTactive sparse cost.
+Same1375/1323implementation, fourfresh serialACABBAchildren/family, entireoutput
+checks; no code/HEAD edits/other scans/tests while live. >10%HOLD;5-10requires
+meaningful tradeoff review. Do not repeat dense or completed accuracy controls.
+
+Then all41/601/139/current16/modes/portable/fullsuite/wholeQA and exact-private
+maintainable port before adoption. Audit131all71/zeroapprovals/54current17old;
+17historical refreshes remain. Material sourceFAIL/new256positive protection
+preserved/OFF; CN27frame unresolved/Dotkid3deferred. Goal ACTIVE/all gates open.
+Publication1388checks fourdocsONLY/liveorigin/clean/privacy/indexes/app200parity.
+
+### Previous continuation — terminal exact-sampling checkpoint / effort change
 
 Read `.artifacts/general-recognition-20261014/SAMPLING_ARITHMETIC_SAFE_RESUME_v1379.md`
 IN FULL, then current goal plan. All1375–1378workers TERMINAL: test/micro62998

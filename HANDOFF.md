@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+Whole private-recognizer/sampling equivalence now passes, retaining all11prior
+Redcube2 recoveries. Four AC dense whole samples add5.13%scan/5.15%wall; all
+outputs verified, preflight interruption preserved without sample selection.
+Golden1/compact NANG controls are ENTIREmaintained equal. Active sparse/heavy
+cost and all protections/port/modes/fullsuite remain pending; no adoption or new
+recognition claim. Audit131unchanged71/zeroapprovals/54current17historical.
+NEXT_THREAD_HANDOFF points to1387resume. Goal ACTIVE, stable app unchanged.
+
+Previous checkpoint:
+
 Exact-sampling private experiment finished at an effort-change save point.
 67focused tests pass; unchanged real-source helper proposals/proofs match the
 saved actual exactly. Helper84.80->77.73s (-8.34%); micro19.96% is a different,
