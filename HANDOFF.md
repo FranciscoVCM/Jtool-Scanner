@@ -4,7 +4,18 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-10-31
+## Current checkpoint — 2026-11-01
+
+Actual Halls2 transfer leaves125objects/local831errors unchanged:10closed
+candidates pass contrast but none meets ridge ownership. CN3-27 remains341/
+local3090 unchanged, with explicit frame incompatibility before classification;
+not valid reserve accuracy evidence. Eight binding contracts pass; whole reviews
+still MAJOR. Next test unframed material ownership against gap/background
+negatives, preserving all provenance and old gains. Audit129all71/zeroapprovals/
+52current19historical. Stable app restored after interruption; no new deployment.
+NEXT_THREAD_HANDOFF has exact1356resume. Goal ACTIVE, final gates unfinished.
+
+Previous checkpoint — 2026-10-31:
 
 Actual private textured-body phase repair makes six source-supported block
 corrections, retaining all nonblock records. Frozen LOCAL errors1920->774,

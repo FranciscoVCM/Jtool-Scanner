@@ -4,6 +4,29 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Transfer limits measured; no new recognition claimed
+
+Eight packet-binding contracts pass. Halls2's actual trial selects the correct
+physical-source packet but leaves all125objects unchanged: local errors831->831,
+zero models or corrections. A source-only trace finds10closed candidates, all
+passing contrast, none satisfying three ridge-owned faces. This identifies a
+framed-border prerequisite that does not cover the checkerboard material; it
+does not justify a lower threshold or another palette-specific rule.
+
+CN3-27's actual trial also stays unchanged at341objects/local3090errors, but
+classifies nothing: original geometry was evaluated in physical source space,
+while the final source extent refers to a different canonical view. The adapter
+correctly abstains. This is frame incompatibility, NOT a valid classifier failure
+or successful reserve. An earlier interrupted attempt is preserved separately;
+the completed Halls2 run was not repeated. Both whole-room reviews remain MAJOR.
+
+Next test independent material/step ownership for unframed surfaces against
+closed-gap/textured-background/polarity negatives before any actual emission.
+Do not waive source-frame provenance or use expected coordinates. Earlier six
+private CN3-26 phase corrections remain preserved, not deployed or recredited.
+Audit129 retains all71/zero approvals/52current19historical. App restored after
+interruption; tested runtime unchanged. No new full-suite, cost or adoption claim.
+
 ## 2026-10-31 — Private textured-body phase gain; terminal effort-change checkpoint
 
 Filtered RGB interiors and bounded physical-pixel sampling registration address

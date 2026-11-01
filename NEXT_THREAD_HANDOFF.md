@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-10-31. Continue in the existing repository at
+Updated 2026-11-01. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -14,7 +14,37 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — six private body-phase corrections / terminal effort change
+### Latest continuation — terminal transfer limits / audit129
+
+Read `.artifacts/general-recognition-20261014/BODY_TRANSFER_LIMITS_AND_RESUME_v1356.md`
+IN FULL.1352eight capture/binding tests PASS. Halls2actual1353/session33437/
+PID21932 TERMINALexit0:125objects ENTIREbaseline/adapted equal,0models/0pairs,
+local831errors unchanged.1355trace:10closed/10contrast-pass/0ridge-qualified
+teachers. Next cause is unframed surface ownership, not another palette rule.
+
+27attempt1353/session72421/PID17144 stopped with ONLYstartreceipt; hostprocess
+and handle absent, no saved result/proof. Separate shell0xc0000142 causeUNKNOWN.
+1354same-method new-output-ID actual/session21067/PID33076 TERMINALexit0:
+341unchanged/local3090, NOcompatible packet/model query. Original geometry is
+physical978x745, finalsourceextent(-3,5,986,754) has only a resampler view, NOTa
+canonical geometry packet. Correct abstention, not valid reserve accuracyFAIL.
+No provenance/extent waiver or116/120guess. Both fresh whole views1355 reviewed,
+MAJOR/zero deltas. Allworkers TERMINAL. Earlier CN26six private shifts preserved.
+
+EXACT NEXT: freeze/test a distinct independent material/step ownership hypothesis
+on Halls2 developer, including closed-gap/textured-background/polarity/unknown
+negatives and old ridge positives BEFOREactual emission. Golden6direct frame
+metadata is compatible for a provisional prospective NEW-method reserve;
+historically exposed/not unseen, no new-model query. Freeze role/localtruth
+before use. Do not tune from an incompatible27reserve or repeat completed scans.
+Memo has criteria/risks/protections. All original/mode/cost/final gates remain.
+
+App restored with pinned12.3 after interruption (launcher34908); root200/source
+fingerprint unchanged. Publication1357 verifies four-doc checkpoint/Git/privacy/
+indexes/app. Audit12971/zeroapprovals/52cumulativecurrent19historical; no new
+recognition/maintainededit/ship/fullsuite claim. Goal ACTIVE/Dotkid3deferred.
+
+### Previous continuation — six private body-phase corrections / terminal effort change
 
 Read `.artifacts/general-recognition-20261014/FILTERED_BODY_SAFE_RESUME_v1349.md`
 IN FULL, then the current goal plan. All1340–1348workers TERMINAL; final1348/

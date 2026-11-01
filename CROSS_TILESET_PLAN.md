@@ -1,6 +1,23 @@
 # Cross-tileset milestone
 
-## Latest: private textured-body phase gain; unchanged transfer is next
+## Latest: transfer limits require a different ownership proof
+
+Fixed-method actual Halls2 has no gain:0teachers/models,125unchanged objects,
+local831errors unchanged. All10closed candidates pass contrast but fail the
+three-ridge-face teaching prerequisite. A framed-border assumption is not a
+general material boundary. Next independently test source-owned step/texture
+evidence, retaining closed-gap/background/polarity negatives and old positives;
+do not merely lower thresholds. Freeze new roles before querying the new method.
+
+CN3-27 actual341unchanged/local3090, but no model query: its original physical
+geometry packet does not belong to the final canonical source extent. Correct
+abstention, not valid reserve accuracy evidence. Frame semantics remain unresolved;
+never reinterpret original proposals or guess origins to force compatibility.
+Eight capture contracts pass; both fresh whole reviews MAJOR. Earlier CN3-26
+six private corrections preserved, no adoption. Audit12971/zeroapprovals/
+52current19historical; stable app restored/unchanged. Read1356resume. Goal ACTIVE.
+
+## Previous: private textured-body phase gain; unchanged transfer is next
 
 FilteredRGB interior registration, independent native RGB geometry/ownership
 and original-only disjoint teacher triples now give six source-supported block
