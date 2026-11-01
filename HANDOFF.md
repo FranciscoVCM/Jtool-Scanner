@@ -6,6 +6,18 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+New pixel-checked synthetic fixture/tests preserve closed16px sprite bases;
+four public oracle methods pass. A separate corrected fixture passes unchanged
+private mini assertions; old failures remain preserved. This is test/workflow
+progress, not a detector improvement or a fresh full-suite qualification.
+Halls7 backdrop experiment cannot safely explain any of nine terrain conflicts
+and stays OFF. Golden3/4 now have fresh complete source reviews, both MAJOR.
+Audit133all71/zeroapprovals/58cumulativecurrent13historical. App restored200,
+loaded==disk. Sparse17.34%HOLD unchanged; proposed25/50timing policy awaits human
+approval. Read1411resume via NEXT_THREAD_HANDOFF; goal ACTIVE, detector unchanged.
+
+Previous checkpoint:
+
 The private candidate is HELD/OFF: active-sparse cost+17.34%scan/+16.53%wall
 despite all12sampleoutputs matching. Dense/heavy results cannot waive the limit.
 No adoption or maintained edit. Two more historical rooms, CN3-29/Halls7, have

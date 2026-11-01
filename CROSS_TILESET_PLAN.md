@@ -1,6 +1,21 @@
 # Cross-tileset milestone
 
-## Latest: full cost matrix HOLD; fresh solid/hazard ownership evidence
+## Latest: valid mini fixtures; backdrop capped; audit133
+
+The new public pixel-centre fixture prevents an even-width outline losing its
+base at a clipped16px tile edge. Four public pixel-oracle methods pass; a
+separate corrected raster passes all unchanged private mini assertions. Old
+malformed-fixture failures are preserved, not relabelled. No detector adoption.
+
+Halls7 filled-source anchors fit locally but cannot explain all pixels of any
+of nine terrain conflicts. Cap the affine-backdrop family; no residual/unknown
+waiver. Golden3/4 now have fresh whole/every-delta reviews, both MAJOR. Audit133
+retains71/zeroapprovals/58cumulativecurrent13historical. Existing sparse17.34%
+cost HOLD remains pending human approval of the proposed25/50policy. Next use
+authentic original-stage Golden4 evidence to distinguish early/late ownership
+causes before a new rule. Read1411resume; goal ACTIVE, detector unchanged.
+
+## Previous: full cost matrix HOLD; fresh solid/hazard ownership evidence
 
 Despite correct expected outputs in all12whole samples, the private combined
 recognizer/sampler costs+17.34%scan/+16.53%wall on active-sparse Redcube2.

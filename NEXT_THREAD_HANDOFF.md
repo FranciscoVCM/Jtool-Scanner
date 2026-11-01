@@ -14,7 +14,41 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — cost matrix FAIL/OFF / fresh ownership evidence / audit132
+### Latest continuation — pixel-checked fixtures / capped backdrop / audit133
+
+Read `.artifacts/general-recognition-20261014/FILLED_EXTERIOR_AND_FIXTURE_RESUME_v1411.md`
+IN FULL and current goal plan. This supersedes the continuation below. All1398–
+1410workers TERMINAL. No detector change or new recognition. New public fixture
+helper/tests only; runtime19/Pillow12.3 unchanged. App restarted hidden: launcher
+33976/listener34272, root+/api/health200 and loaded==disk verified before commit.
+
+1398authentic95originals/3proposals/98final ENTIREmaintainedraw/exports equal;
+1399old-pruner gates fail allthreeHalls7conflicts.1400–1402filled backdrop has
+good anchor fits but0of9conflicts completely explained; OFF/cap, no threshold/
+unknown relaxation. Query/teacher/negative truth and old failed receipts intact.
+
+1403focused92methods have9private mini subcaseFAILs.1404unpatched reproduces
+exact IDs; old1301receipt ALREADYFAIL9. Cause: even-width2line at y=16clipped
+away in16tile. Separate public pixel-centre fixture/4oracle methods pass;
+1406same unchanged private assertions on new raster:9methodsPASS/0errors/skips.
+Do not claim the old suite passed or sum overlapping runs into a full suite.
+
+1407actualGolden3=318/Golden4=325, both1408wholeviews/ALLtwoGolden4delta panels
+main-reviewed. BothMAJOR. Golden3zero typedchanges; Golden4historicalRIGHT
+640480/672496 overlap768/1024and512/1024solidpixels, NOTentireboxes. Use1410
+corrected QA; old1409prose error retained. No new fixes/approval. Audit133all71/
+ZEROapprovals/58cumulativecurrent13historical; no baseline/archive resweep.
+
+Next inspect authentic Golden4original-stage inputs/proofs for early/late
+supported-terrain conflicts; saved compatible evidence preferred, one missing-
+intermediate root only if necessary. Never train from final outputs. Do not retry
+capped affine-backdrop or arithmetic/cache families. Preserved1323/1375still
+needs original protections/current16/modes/port/wholeQA. Human25/50timing-policy
+approval is PENDING; automatic old-goal continuation is not approval,10%HOLD
+still binding. Keep goal ACTIVE, indexes/private material excluded. Publication
+1412will verify explicit public files/Git/liveorigin/privacy/app source parity.
+
+### Previous continuation — cost matrix FAIL/OFF / fresh ownership evidence / audit132
 
 Read `.artifacts/general-recognition-20261014/SPARSE_HOLD_AND_OWNERSHIP_RESUME_v1395.md`
 IN FULL and current goal plan. All1381–1393workers TERMINAL. Maintained runtime

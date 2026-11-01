@@ -4,6 +4,32 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Pixel-checked mini fixtures; two historical Golden reviews
+
+An unchanged pending candidate's92-method focused run has nine failed private
+mini subcases, no errors/skips. The same failures reproduce unpatched and are
+already present in the old receipt. Pixel inspection identifies a missing base:
+an even-width line at the exclusive16px tile edge was clipped away. Preserve
+the old fixture and failed receipts; do not tune detector code to satisfy it.
+
+A separate geometry-first fixture explicitly rasterizes pixel centres. Four new
+public methods verify closed faces across directions/sizes/palettes, hollow
+cores, exact footprints and unchanged neighbours. With that separate fixture,
+all original private mini assertions pass:9methods including the4pixel oracles.
+This is evaluation infrastructure, NOT recognition, a full-suite pass or adoption.
+
+Halls7 authentic95-original/98-final observation exactly reproduces maintained
+output. An independent filled-exterior model has valid anchor fits but unresolved
+pixels in all9terrain conflicts; keep it OFF/cap that family. No blanket overlap
+deletion. Fresh Golden3=318/Golden4=325 scans and complete whole/every-delta source
+reviews remain MAJOR. Golden4's two historical spike recoveries still overlap
+768/1024and512/1024solid pixels respectively; neither is a new gain this batch.
+
+Audit133:71/zeroapprovals/58cumulativecurrent13historical. App restored, root and
+/api/health200, loaded==disk. Detector unchanged. Proposed25/50%timing policy
+awaits explicit approval; existing17.34%sparse HOLD remains. Read1411resume via
+NEXT_THREAD_HANDOFF. Goal ACTIVE; all final qualification gates remain.
+
 ## 2026-11-01 — Sparse cost fails; two more rooms freshly reviewed
 
 The complete cost matrix holds the private candidate OFF. All12whole samples
