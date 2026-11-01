@@ -14,7 +14,26 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — query-independent pixel ownership / audit134
+### Latest continuation — current Dotkid evidence / audit135
+
+Read `.artifacts/general-recognition-20261014/DOTKID_CURRENT_AND_PARTIAL_RESUME_v1443.md`
+IN FULL.1439session21964/PID33912TERMINALexit0: Dotkid2=448/Dotkid4=236fresh
+ordinary sourceON/fullraw/eightflags/originalsource-stage snapshots.1438observer
+serializationFAIL preserved;1439preflight fixes diagnostics only. Main1440BOTH
+whole/ALLone historical delta reviewed; Dotkid4realLEFT416224not newbatch gain.
+Main1441ALL18Dotkid2pending crops reviewed;1442truth8positive/6negative/4unknown,
+candidate-local NOTwhole-roomtruth. Next reproduce ENTIRE448from394originals/
+rejected18 and trace existing partial occluder/body/geometry gates before a new
+proof. No colour-only flat fallback or full/mini ambiguity guessing. CN19three
+queried windows contain real terrain, useful negative control. All old masks/
+reserves/failures unchanged. Runtime/app unchanged;178affected tests remain prior
+checkpoint, not newfullsuite. Audit135all71/zeroapprovals/60cumulativecurrent11
+historical. FourpublicdocsONLY; verify1444publication/liveorigin/privacy/app200.
+GoalACTIVE; optional25/50budget question pending, old10%HOLDstillapplies.
+
+Previous continuation:
+
+### Query-independent pixel ownership / audit134
 
 Read `.artifacts/general-recognition-20261014/PIXEL_OWNERSHIP_PORT_RESUME_v1435.md`:
 read it IN FULL before acting. All1413–1431workers TERMINAL. New maintained

@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+Fresh sourceON Dotkid2/4 baselines448/236 and whole/all-delta QA now replace
+historical-only evidence. No new app fixes; Dotkid4's one intervening real spike
+is not credited anew. Genuine pre-source snapshots preserve Dotkid2's18rejected
+primaries; independent review freezes8partial-full positives/6gap negatives/
+4unknowns for prerequisite tracing before a new rule. Audit135all71/zeroapprovals/
+60cumulativecurrent11historical. Runtime unchanged this batch, pixel-only
+defaultOFF, old gates/holds preserved. Read1443resume via NEXT_THREAD_HANDOFF.
+
+Previous checkpoint:
+
 Maintained query-independent pixel-only ownership is available behind the
 existing compound switch, still OFF by default. Six source-reviewed Golden4
 false-block removals retain exact whole output/export parity after excluding

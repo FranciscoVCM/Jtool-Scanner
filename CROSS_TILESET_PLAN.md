@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest: current partial-spike evidence; audit135
+
+Dotkid2/4 now have fresh ordinary sourceON baselines and complete whole/delta
+reviews,448/236objects; no new app improvements. Dotkid2's actual pre-source
+snapshot preserves18rejected primaries. Source-only review freezes8clear partial
+full-spike positives/6gap negatives/4unknowns for a bounded next experiment.
+Trace independent occluder/material proof, visible size and body evidence before
+changing rules; a flat half-full glyph can sometimes look identical to a mini.
+No unknown-as-empty, texture-gate relaxation or output/reference teachers.
+
+CN19's three pixel-ownership windows include real solids: a useful negative
+control, not positive transfer. Existing pixel-only component stays defaultOFF;
+Golden4original1472failure/reserves/cost holds unchanged. Audit135all71/zero
+approvals/60cumulativecurrent11historical. Read1443resume; goal ACTIVE.
+
 ## Latest: query-independent pixel ownership port; audit134
 
 Maintain a separately selectable pixel-only compound expert, without the failed

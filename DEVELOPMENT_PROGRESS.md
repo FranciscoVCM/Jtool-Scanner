@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Current Dotkid baselines and partial-spike truth
+
+Two previously historical canonical sourceON rooms now have fresh fullraw,
+eight-selector profiles and whole/all-delta source reviews: Dotkid2=448,
+Dotkid4=236. Dotkid2 has no typed changes from B235; Dotkid4 has one intervening
+real LEFT416224 recovery, not new recognition this batch. Both remain unresolved.
+Audit135retains71/zeroapprovals/60cumulativecurrent11historical, not60new scans.
+
+Saved genuine pre-source inputs, including all18 rejected Dotkid2 primaries.
+Independent review freezes8clear partial full-spike positives,6green-gap aliases
+and4unknowns before any new classifier query. Next trace existing occluder/body/
+geometry prerequisites; flat colour alone cannot resolve every full/mini ambiguity.
+CN19's three ownership windows contain real partial solids, so wholesale block
+removal is not a valid improvement there. No detector/test/fixture change or new
+app fix. Old masks, cost holds and reserve roles remain. Read1443resume via
+NEXT_THREAD_HANDOFF; goal ACTIVE, timing-policy approval pending.
+
 ## 2026-11-01 — Query-independent pixel ownership, not default activation
 
 Separated original-pixel artwork from the affine background expert. The opt-in
