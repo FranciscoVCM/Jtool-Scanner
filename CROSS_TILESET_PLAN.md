@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest: query-independent pixel ownership port; audit134
+
+Maintain a separately selectable pixel-only compound expert, without the failed
+body-query expansion or affine background fallback. Exclude query-overlapping
+original teachers for both point/cell evidence; reset dependent caches per query.
+Six real Golden4 false-block removals remain after hardening, and two actual
+port scans exactly reproduce default325/opt-in319.178affected tests pass.
+
+DefaultOFF: no app fixes claimed. Original1472target-pixel failure unchanged;
+CN3-19 earlier actual unchanged, Golden3reserve held/unqueried. Need cross-family
+positive/protections/current16/modes/cost/fullsuite before activation. No new
+denominator around selected successes or old-cost waiver. Audit134all71/zero
+approvals/58cumulativecurrent13historical; other rows retain explicit prior scope.
+Read PIXEL_OWNERSHIP_PORT_RESUME_v1435.md via NEXT_THREAD_HANDOFF. Goal ACTIVE.
+
 ## Latest: valid mini fixtures; backdrop capped; audit133
 
 The new public pixel-centre fixture prevents an even-width outline losing its

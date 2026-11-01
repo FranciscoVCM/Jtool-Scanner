@@ -20,6 +20,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_frame_arbitration',
     'source_directional_body',
     'source_raster_cells',
+    'source_pixel_artwork',
     'source_glyph_backdrop',
     'source_calibrated_conflicts',
     'source_rejected_primaries',

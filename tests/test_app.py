@@ -34,6 +34,11 @@ class GraphicalAppTests(unittest.TestCase):
         for name in SOURCE_GEOMETRY_MODULES:
             self.assertIn('scripts.' + name, sys.modules)
 
+    def test_pixel_artwork_is_part_of_the_frozen_runtime_snapshot(self) -> None:
+        from jtool_scanner.runtime_sources import SOURCE_GEOMETRY_MODULES, source_geometry_files
+        self.assertIn('source_pixel_artwork', SOURCE_GEOMETRY_MODULES)
+        self.assertIn('source_pixel_artwork.py', {p.name for p in source_geometry_files()})
+
     def test_metadata_exposes_room_and_supported_objects(self) -> None:
         metadata = app_metadata()
 

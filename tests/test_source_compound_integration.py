@@ -173,7 +173,8 @@ class CompoundScannerBindingTests(TestCase):
             for original_d in original if (original_d.type_id,original_d.x,original_d.y)!=self.false))
         self.assertEqual(checker.call_args.args,(self.image,self.room,original))
         self.assertIs(checker.call_args.kwargs['source_material'],self.material)
-        self.assertIs(checker.call_args.kwargs['calibrated_background'],True)
+        self.assertIs(checker.call_args.kwargs['pixel_artwork'],True)
+        self.assertNotIn('calibrated_background',checker.call_args.kwargs)
         self.assertIs(checker.call_args.kwargs['source_filled_evidence'],
             checker.call_args.kwargs['source_context'].filled_source(original,checker.call_args.kwargs['source_frame']))
         self.assertEqual((out.recognized_text,out.infinite_jump,out.dot_kid),('unchanged',1,1))

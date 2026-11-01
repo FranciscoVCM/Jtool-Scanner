@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+Maintained query-independent pixel-only ownership is available behind the
+existing compound switch, still OFF by default. Six source-reviewed Golden4
+false-block removals retain exact whole output/export parity after excluding
+self-query teachers.178affected tests pass, not fullsuite. No app fixes or room
+approval claimed; original two-window gate still fails, CN3-19 transfer unchanged,
+Golden3reserve held. App restored on tested code. Audit134all71/zeroapprovals/
+58cumulativecurrent13historical; remaining global qualifications and10%cost policy
+unchanged. Read1435resume via NEXT_THREAD_HANDOFF; goal ACTIVE.
+
+Previous checkpoint:
+
 New pixel-checked synthetic fixture/tests preserve closed16px sprite bases;
 four public oracle methods pass. A separate corrected fixture passes unchanged
 private mini assertions; old failures remain preserved. This is test/workflow

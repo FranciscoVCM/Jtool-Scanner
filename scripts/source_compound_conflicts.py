@@ -236,17 +236,22 @@ class _ConflictQuery:
 def source_compound_conflicts(image, room, detections, *, source_grid, source_frame,
                              source_context=None, source_material=None,
                              source_block_library=None, source_filled_evidence=None,
-                             calibrated_background=False):
+                             calibrated_background=False, pixel_artwork=False):
     """Return reviewable original full-block keys and source-only evidence.
 
     The caller must freeze ORIGINAL detections before new proposals. Supplied
     material/libraries must belong to that source/context. Reuse existing stages
     during integration; only standalone diagnostics compute absent material.
     No automatic scanner binding, map edits or expanded teacher set. The explicit
-    calibrated-background option retains the legacy path by default.
+    calibrated-background and pixel-artwork options are separate opt-in modes;
+    the latter keeps strict background decisions and adds no affine model.
     """
     if not isinstance(calibrated_background, bool):
         raise ValueError('Calibrated background switch must be a boolean')
+    if not isinstance(pixel_artwork, bool):
+        raise ValueError('Pixel artwork switch must be a boolean')
+    if calibrated_background and pixel_artwork:
+        raise ValueError('Choose calibrated background OR pixel artwork, not both')
     original = tuple(detections)
     if not source_frame.matches_source(image,room):
         raise ValueError('Compound frame must match the original source')
@@ -298,6 +303,9 @@ def source_compound_conflicts(image, room, detections, *, source_grid, source_fr
     if calibrated_background:
         from scripts.source_calibrated_conflicts import CalibratedConflictQuery
         query_type = CalibratedConflictQuery
+    elif pixel_artwork:
+        from scripts.source_pixel_artwork import PixelArtworkConflictQuery
+        query_type = PixelArtworkConflictQuery
     query = query_type(source_frame,context,original,material,library,blocks,filled)
     if query.separation <= 0:
         return set(),{**proof,'abstained':'no source colour separation'}

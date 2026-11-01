@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Query-independent pixel ownership, not default activation
+
+Separated original-pixel artwork from the affine background expert. The opt-in
+compound caller now uses strict pixel-only ownership; its default stays OFF.
+An independent audit caught teachers sampling inside a block being judged.
+Exclude those teachers and isolate decision caches per query; all six reviewed
+Golden4 false-block removals survive the stronger guard. No room/palette lookup.
+
+Two fresh whole scans reproduce default325 and opt-in319 ENTIRE raw/project/
+exports; all nonterrain unchanged. Initial two-window1472false-solid-pixel gate
+still FAILS unchanged. Earlier CN3-19 actual255->255 is safety, not positive
+transfer. Golden3reserve stays held.178affected tests pass; an earlier sandbox
+temp permission error was resolved by a writable test temp directory, not a
+detector/assertion change. This is NOT a full-suite pass or six app fixes.
+
+New module registered in app/cache identity and startup inventory; registry-only
+bridge preserves the completed actual evidence. Audit134keeps71/zeroapprovals/
+58cumulativecurrent13historical, not71same-revision scans. App restored200 with
+tested source. Global protections/current16/cost/reserve/fullsuite still pending;
+defaultOFF, timing-policy approval pending, goal ACTIVE. Read1435resume via
+NEXT_THREAD_HANDOFF. Old body/backdrop/cost failures remain unchanged.
+
 ## 2026-11-01 — Pixel-checked mini fixtures; two historical Golden reviews
 
 An unchanged pending candidate's92-method focused run has nine failed private

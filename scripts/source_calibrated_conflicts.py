@@ -10,57 +10,15 @@ from math import ceil, dist, floor
 from scripts import source_compound_conflicts as compound
 from scripts.source_glyph_backdrop import SourceGlyphBackdrop
 from scripts.source_glyph_prototypes import _contains
-from scripts.source_raster_cells import closest_rgb, source_cell
+from scripts.source_pixel_artwork import RepeatedPixelArtworkQuery
 
 
-class CalibratedConflictQuery(compound._ConflictQuery):
+class CalibratedConflictQuery(RepeatedPixelArtworkQuery):
     """The frozen source-cell + independent-backdrop conjunction."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cells, self.cell_queries, self.new_art_witnesses = {}, {}, []
         self.backdrop = None
-
-    def art_owner(self, nx, ny, rgb):
-        old = super().art_owner(nx, ny, rgb)
-        if old is not None:
-            return old
-        key = nx, ny
-        if key in self.cell_queries:
-            return self.cell_queries[key]
-        limit = .25*self.separation
-        for owner, model in self.artwork.items():
-            t, x, y = owner
-            dx, dy = model['phase']
-            a, b = nx-x-dx, ny-y-dy
-            if not (-4 <= a < 36 and -4 <= b < 36):
-                continue
-            u, v = compound._upright(t, a, b)
-            votes = []
-            for tt, tx, ty in model['teachers']:
-                aa, bb = compound._oriented(tt, u, v)
-                cell_key = tx+aa, ty+bb
-                if cell_key not in self.cells:
-                    self.cells[cell_key] = source_cell(self.frame, *cell_key)
-                local = self.cells[cell_key]
-                if local is None:
-                    continue
-                fitted = closest_rgb(rgb, local['RGB'])
-                error = dist(rgb, fitted)
-                if error > limit:
-                    continue
-                positions = set(map(tuple, local['positions']))
-                if any(positions & set(map(tuple, q['cell']['positions']))
-                       or dist(fitted, q['closest_RGB']) > limit for q in votes):
-                    continue
-                votes.append(dict(teacher=(tt, tx, ty), cell=local, closest_RGB=fitted, error=error))
-                if len(votes) >= 3:
-                    self.cell_queries[key] = owner
-                    self.new_art_witnesses.append(dict(native_point=(nx, ny), RGB=rgb,
-                        owner=owner, limit=limit, witnesses=votes))
-                    return owner
-        self.cell_queries[key] = None
-        return None
 
     def background_evidence(self):
         """Reuse original filled/source context; build only for unresolved queries."""

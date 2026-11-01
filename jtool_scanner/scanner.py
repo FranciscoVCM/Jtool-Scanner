@@ -3230,7 +3230,7 @@ def _apply_source_geometry(result: ScanResult, image: RGBImage, *, source_frame=
             source_material=diagnostics['source_material'],
             source_block_library=libraries[0] if libraries else None,
             source_filled_evidence=original_context.filled_source(original_source_detections, frame),
-            calibrated_background=True)
+            pixel_artwork=True)
         if recovery_retired is not None:
             recovery_retired.update(retired)
         remaining = [d for d in result.detections if (d.type_id, d.x, d.y) not in retired]

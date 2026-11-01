@@ -14,7 +14,23 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — pixel-checked fixtures / capped backdrop / audit133
+### Latest continuation — query-independent pixel ownership / audit134
+
+Read `.artifacts/general-recognition-20261014/PIXEL_OWNERSHIP_PORT_RESUME_v1435.md`:
+read it IN FULL before acting. All1413–1431workers TERMINAL. New maintained
+pixel-only component/query-independent teacher+cache guard; compound defaultOFF.
+1431two real roots default325/opt-in319 ENTIRE reviewed raw/project/exports equal;
+six Golden4 real false-block removals survive stricter independent witnesses.
+Initial1472target-pixel failure unchanged; no app fixes/room approval. CN3-19
+earlier actual255unchanged, Golden3reserve held/unqueried.178affected tests PASS
+after resolving sandbox temp permissions without detector/assertion suppression.
+Runtime registration+startup test added;1435registry-only identity bridge, not
+another scan. Audit134all71/zeroapprovals/58cumulativecurrent13historical. App
+restored1434/root+/api/health200/new fingerprint; verify live1436publication.
+Global protections/current16/modes/cost/reserve/fullsuite/final71+16 unfinished.
+25/50policy approval still pending, old10%cost gate remains. Goal ACTIVE.
+
+Previous continuation:
 
 Read `.artifacts/general-recognition-20261014/FILLED_EXTERIOR_AND_FIXTURE_RESUME_v1411.md`
 IN FULL and current goal plan. This supersedes the continuation below. All1398–
