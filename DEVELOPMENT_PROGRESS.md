@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Sparse cost fails; two more rooms freshly reviewed
+
+The complete cost matrix holds the private candidate OFF. All12whole samples
+reproduce their expected full outputs, but Redcube2 adds17.34%scan/16.53%wall.
+Dense+5.13% and Golden1+1.80% do not waive that failure. A proof-equivalent
+helper profile rules out redundant model construction; expanded queries and
+filtered-pixel work dominate. Cap the arithmetic/constructor direction, no port.
+
+Fresh maintained CN3-29=368/Halls7=98 scans now have full raw/profile and main
+whole/every-historical-delta review. Both MAJOR. Halls7's three intervening real
+spikes remain inside fully solid-covered boxes; detection additions did not fix
+ownership. Middle/lower platforms are detected, upper missing. CN29's old block
+removal changes256solidpixels, not a certified new source correction. No new
+recognition credit. Audit132 retains71/zeroapprovals,56current15historical.
+
+Next investigate authentic pre-source Halls7 solid/hazard ownership, freezing
+complete local truth before any retirement rule. Hazard overlap alone cannot
+prove terrain false. No maintained edit/adoption/full-suite claim; app unchanged,
+goal ACTIVE. NEXT_THREAD_HANDOFF points to1395resume; earlier entries are history.
+
 ## 2026-11-01 — Whole parity and dense cost; sparse/heavy qualification next
 
 The exact-sampling/private-recognizer combination preserves Redcube2's ENTIRE

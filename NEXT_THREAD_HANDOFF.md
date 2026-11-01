@@ -14,7 +14,45 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — whole parity / dense cost viable / audit131
+### Latest continuation — cost matrix FAIL/OFF / fresh ownership evidence / audit132
+
+Read `.artifacts/general-recognition-20261014/SPARSE_HOLD_AND_OWNERSHIP_RESUME_v1395.md`
+IN FULL and current goal plan. All1381–1393workers TERMINAL. Maintained runtime
+19/Pillow12.3/appf0 unchanged, no implementation/test/fixture edit or adoption.
+
+All12controlledwhole samples pass ENTIREexpected raw/project/exports/AC/appquiet/
+flags. Dense+5.13%scan,Golden1+1.80%, but ACTIVE sparseRedcube2+17.34%scan/
++16.53%wall =>HOLD/OFF. No averaging-away/compact substitute/sample selection.
+Old1330HOLD preserved.1389exactactualhelperproof profile: no object-local
+constructors; expanded3180->6129queries and filteredSourceFrame.pixel dominate.
+Kernel already directbytes/exactsum. Cap arithmetic/constructor/cache direction,
+do not port or launch more tiny variants. Profiletime is NOTlatency.
+
+1390/session64544/PID21068exit0 TWOactually historical ordinaryrefreshes:
+CN29=368/Halls7=98. Raw/eightflags beforeexports, artifacts authenticated.
+MainBOTH1391wholeviews/ALL4typed-delta1392panels reviewed;1393receipt sealed.
+CN29oneoldblockremoval changes256solidpixels; source cap/packing not certified,
+no new fix score. Halls7threehistorical realspikes remain1024/1024solid-covered
+per32box; terrain unchanged. Both MAJOR. Middle320256/lower416480platforms
+detected; uppernear528128missing, not old two-upper-missing claim.
+
+EXACT NEXT: inspect existing source_size_repair/material/glyph retirement and
+their old failures; obtain authentic pre-source Halls7 inputs/frame/proofs from
+a compatible saved observation, or ONEinstrumented ordinary root if absent.
+Require ENTIRE1390output parity; never teach from98final/emitted objects. Freeze
+complete local solid/empty/hazard/unknown masks/transforms before ANYnew rule.
+Positive hazard presence/overlap/lack of rectangle proof alone is NOTnegative
+solid evidence. Need independent source contradiction and protect real partial/
+embedded geometry/markers/nonunique packing. Prospectively choose transfer and
+compatible reserve before tuning; Halls7historically exposed/oldfail preserved.
+
+Audit132all71/zeroapprovals/56cumulativecurrent15historical; keep refreshing
+pendingrooms in small groups, no archive/current-room resweep. All41/601/139/
+current16/modes/fullsuite/wholeQA/cost gates remain. MaterialFAIL/new256positive
+protection preserved/OFF, CN27frame unresolved/Dotkid3deferred. Goal ACTIVE.
+Publication1396verifies fourdocsONLY/liveorigin/clean/privacy/indexes/app200parity.
+
+### Previous continuation — whole parity / dense cost viable / audit131
 
 Read `.artifacts/general-recognition-20261014/SAMPLING_WHOLE_DENSE_AND_CONTROLS_RESUME_v1387.md`
 IN FULL and the current goal plan. All1381–1385workers TERMINAL. No maintained

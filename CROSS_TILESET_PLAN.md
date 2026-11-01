@@ -1,6 +1,21 @@
 # Cross-tileset milestone
 
-## Latest: whole-output parity and dense cost viable; remaining families pending
+## Latest: full cost matrix HOLD; fresh solid/hazard ownership evidence
+
+Despite correct expected outputs in all12whole samples, the private combined
+recognizer/sampler costs+17.34%scan/+16.53%wall on active-sparse Redcube2.
+Dense+5.13% and Golden1+1.80% do not override the10%hold. Candidate OFF; no
+public port/adoption. Exact helper profile rules out constructor work; cap the
+arithmetic direction rather than another cache/order/threshold retry.
+
+CN3-29 and Halls7 fresh maintained scans/complete whole and historical-delta
+reviews remain MAJOR. Halls7's recovered spikes still overlap full solid boxes,
+so presence alone did not solve ownership. Next freeze original-source local
+solid/empty/hazard/unknown truth and inspect current retirement predicates before
+a genuinely different rule; never blanket-delete overlaps. Audit132all71/
+zeroapprovals/56current15historical. Read1395resume; app/code unchanged.
+
+## Previous: whole-output parity and dense cost viable; remaining families pending
 
 Unchanged private recognizer plus exact-sampling optimization retains the full
 Redcube2 output/proof/project/exports and11previously verified recoveries. Four

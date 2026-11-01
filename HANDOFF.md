@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+The private candidate is HELD/OFF: active-sparse cost+17.34%scan/+16.53%wall
+despite all12sampleoutputs matching. Dense/heavy results cannot waive the limit.
+No adoption or maintained edit. Two more historical rooms, CN3-29/Halls7, have
+fresh scans and complete whole/delta review; both MAJOR. Halls7 shows real
+recovered hazards still inside false-solid conflicts. Audit132all71/zeroapprovals/
+56current15historical. Next inspect authentic solid/hazard ownership and freeze
+local truth before another rule. NEXT_THREAD_HANDOFF has1395resume. Goal ACTIVE.
+
+Previous checkpoint:
+
 Whole private-recognizer/sampling equivalence now passes, retaining all11prior
 Redcube2 recoveries. Four AC dense whole samples add5.13%scan/5.15%wall; all
 outputs verified, preflight interruption preserved without sample selection.
