@@ -4,6 +4,32 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Material trial rejected; two historical rooms freshly reviewed
+
+Two unframed-material prototypes pass portable tests but produce no Halls2
+replay correction. Pixelwise background certification rejects contaminated
+teaching patches without a fixed palette rule. The separate test runs contain
+17, 20 and 29 methods, with substantial overlap; these are not a full suite or
+66 unique tests. The existing-caller trial then reveals a real safety failure.
+
+That actual trial removes one real miniblock: 125->124 objects. Its old local
+score stays at831 errors because the lost terrain is outside the frozen mask.
+Whole-room and sole-delta source review catches the regression. A separate new
+256-pixel solid-interior protection verifies256/256->0/256 coverage. Old masks
+remain unchanged. The candidate stays OFF; the app retains the real miniblock.
+Removing an unreliable background witness is not negative terrain evidence.
+
+CN3-28 and CN3-30 now have fresh ordinary scans, complete raw/profile/artifacts
+and whole Source/JTool/Blend reviews:371 and387 objects respectively, no typed-
+key changes versus historical output. Both remain MAJOR; this is current evidence,
+not new recognition. Audit130 retains all71/zero approvals,54 cumulative current
+rooms and17 historical-pending. No adoption, new cost qualification or full suite.
+
+Next bounded investigation: proof-equivalent original-pixel lookup arithmetic,
+guided by the existing20.4-million-call profile, to help qualify preserved real
+multiroom gains. Keep all sampling/unknown/crop/RGB contracts and compare actual
+outputs and whole cost before adoption. No further material-threshold retries.
+
 ## 2026-11-01 — Transfer limits measured; no new recognition claimed
 
 Eight packet-binding contracts pass. Halls2's actual trial selects the correct

@@ -1,6 +1,24 @@
 # Cross-tileset milestone
 
-## Latest: transfer limits require a different ownership proof
+## Latest: reject the unsafe material caller; preserve current source truth
+
+The unframed distribution experiments retain original-only witnesses and test
+palette/texture/background/scale portability, but make zero Halls2 replay gains.
+Stricter background-teacher certification addresses mean-colour contamination;
+applying it to both existing material call sites nevertheless removes real terrain.
+Whole/sole-delta review verifies a256-pixel source-positive loss outside the old
+ROI, whose831-error score stayed unchanged. Candidate OFF; no reserve consumed.
+Do not repair it by coordinate, threshold tuning or unconditional output union.
+
+Separate test runs17/20/29 pass with overlapping contracts, not a full suite.
+Fresh CN3-28/30 scans and whole reviews remain MAJOR,371/387objects, no historical
+typed-key changes. Audit130 all71/zero approvals/54current17historical. Runtime/
+app unchanged; all old private gains and cost holds remain preserved.
+Read1373resume. Next one exact-arithmetic source-sampling experiment, not another
+cache/filter/teacher variant; measured benefit and all protections still required.
+Goal ACTIVE, completion gates unfinished.
+
+## Previous: transfer limits require a different ownership proof
 
 Fixed-method actual Halls2 has no gain:0teachers/models,125unchanged objects,
 local831errors unchanged. All10closed candidates pass contrast but fail the

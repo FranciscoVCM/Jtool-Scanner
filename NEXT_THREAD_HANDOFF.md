@@ -14,7 +14,41 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — terminal transfer limits / audit129
+### Latest continuation — real material regression caught / two fresh rooms / audit130
+
+Read `.artifacts/general-recognition-20261014/MATERIAL_GUARD_HOLD_AND_RESUME_v1373.md`
+IN FULL. All1358–1372workers TERMINAL. Step-only family0cohorts capped;
+distribution proof passes17methods but source replay0models/0corrections.
+Pixelwise original BGrole qualifier passes20methods,19->12Halls2BGfronts,
+still0replay gains. Reporting-only failures preserved; saved proof sealed without
+rerunning inference. These overlapping test runs are not a full suite.
+
+Existing-material-caller application passes29methods but actual1370/session
+59223/PID19344 removes REALmini304,144 (125->124). Frozen local831errors stay
+unchanged. Main1371whole/sole-delta review confirms terrain loss; separate1372
+physical positive window verifies256/256->0/256 OUTSIDEoldpos/neg masks. Old
+masks unchanged. Caller OFF/FAIL; stable app125retains mini. Do not lower ratios,
+fit teacher poses, restore by coordinate or consume Golden6reserve after failure.
+Positive growth/negative ownership are coupled; refusing a BGwitness is NOT
+negative terrain evidence. Preserve new protection plus all old gains/failures.
+
+1363/session7094/PID33332 TWOordinary historical refreshes complete:CN3_28=371,
+CN3_30=387, zero typed-key deltas versusB235. Complete raw/eightflags/artifacts;
+oldraw/profile UNKNOWN. Main BOTHfull Source/historical/current/Blend1367views
+reviewed, both MAJOR. Audit130 all71/zeroapprovals/54current17historical.
+
+EXACT NEXT: one proof-equivalent source-pixel arithmetic experiment targeting
+the measured20.4million original_sample calls, not more cache/filter/teacher
+variants. Keep original_position called EXACTLYONCE (existing public test), all
+floor/finite/crop/unknown/RGB/immutability semantics. Test unchanged suites plus
+independent old-arithmetic oracle; cold parity/speed before real output/wholecost
+qualification. No assumed speed win; no gain means cap. Aim to qualify preserved
+real multiroom recognizer, not count workflow/speed as recognition. Memo has
+details/remaining gates. No maintained edit/adoption/newfullsuite/cost claim.
+Publication1374checks four-doc commit/liveorigin/clean/privacy/indexes/app200.
+Goal ACTIVE/Dotkid3deferred/CN27frame uncertainty remains; no archive resweep.
+
+### Previous continuation — terminal transfer limits / audit129
 
 Read `.artifacts/general-recognition-20261014/BODY_TRANSFER_LIMITS_AND_RESUME_v1356.md`
 IN FULL.1352eight capture/binding tests PASS. Halls2actual1353/session33437/

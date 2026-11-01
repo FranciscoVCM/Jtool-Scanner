@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+The latest private material-caller trial is rejected: it removes real terrain
+outside the old evaluation mask. Fresh source review and a new separate256-pixel
+positive protection catch the loss; old masks unchanged. The failed result was
+never deployed. Portable tests alone did not establish safety.
+CN3-28/30 now have fresh scans/whole reviews, both MAJOR. Audit130 retains71/
+zero approvals/54current17historical. Runtime/app unchanged, no new recognition
+or full-suite/cost claim. NEXT_THREAD_HANDOFF points to1373resume and the next
+bounded exact-sampling-cost experiment. Goal ACTIVE; prior entries are history.
+
+Previous checkpoint:
+
 Actual Halls2 transfer leaves125objects/local831errors unchanged:10closed
 candidates pass contrast but none meets ridge ownership. CN3-27 remains341/
 local3090 unchanged, with explicit frame incompatibility before classification;
