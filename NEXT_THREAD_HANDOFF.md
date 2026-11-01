@@ -14,7 +14,39 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — real material regression caught / two fresh rooms / audit130
+### Latest continuation — terminal exact-sampling checkpoint / effort change
+
+Read `.artifacts/general-recognition-20261014/SAMPLING_ARITHMETIC_SAFE_RESUME_v1379.md`
+IN FULL, then current goal plan. All1375–1378workers TERMINAL: test/micro62998
+and real-helper83138/PID35384 exited0. Safe Ultra-to-Extra-High boundary, NOTa
+goal pause/reset/completion. Goal remains ACTIVE; continue exact next step.
+Exact timing transcription erratum: private `SAMPLING_TIMING_CORRECTION_v1379a.md`;
+the original sealed memo is preserved, measured1378receipt remains authoritative.
+
+1375private exact arithmetic/direct frozen-RGB addressing keeps original_position
+called EXACTLYONCE and ALLfinite/floor/crop/unknown semantics.1376:67methodsPASS,
+unchanged public tests plus independent old-arithmetic oracle.1377same-process
+fixed-input ABBA micro original_sample -19.96%.1378authenticated actual-source
+CN3-7 helper BEFORE84.804602s/AFTER77.728139s (-8.3444%); BOTH ENTIREproposals/
+diagnostics equal saved actual1323proof, original inputs unchanged. ONEcoldpair,
+NOTwhole root/export parity, controlledACcost, app-speed or new recognition.
+
+EXACT NEXT: freeze WHOLEcaller parity for SAME1375patch with preserved1329
+Redcube2coupler: ENTIREraw/sourceproof/eightflags/project/JMap/SVGexports, retain
+all11real recoveries and remaining defects. Reuse authenticated old baselines;
+truth POSTscan only. If exact parity, quiet serialACWHOLEABBA maintainedbefore
+versus1323coupler+1375samplingafter,>=2samples/mode/source, densefirst; sparse/
+heavy/protected modes/tests/fullsuite still required. Old1330+12.601%HOLD not
+superseded by helper speed. If newdense>10%, HOLD/cap, no arithmetic variants.
+
+No maintained implementation/test/fixture edit, adoption or app change. Runtime
+19/Pillow12.3/appf0 unchanged. Material callerOFF/new1372real-positive protection
+preserved; no retry by threshold/teacher pose. CN27frame mismatch unresolved,
+Dotkid3USER-DEFERRED. Audit130unchanged71/zeroapprovals/54current17historical,
+not54same-revision fresh. Publication1380verifies fourdocs-only/Git/privacy/
+indexes/app200+parity. Resume without archive reset or repeating finished helper.
+
+### Previous continuation — real material regression caught / two fresh rooms / audit130
 
 Read `.artifacts/general-recognition-20261014/MATERIAL_GUARD_HOLD_AND_RESUME_v1373.md`
 IN FULL. All1358–1372workers TERMINAL. Step-only family0cohorts capped;

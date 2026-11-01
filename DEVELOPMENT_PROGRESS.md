@@ -4,6 +4,25 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-01 — Exact-sampling comparison finished; safe effort-change checkpoint
+
+One private arithmetic-only prototype preserves finite/floor/crop/unknown/RGB
+semantics and the existing exactly-one coordinate-conversion contract. All67
+focused methods pass, including unchanged public sampling/frame/hollow tests
+and an independent old-arithmetic oracle. No public tests or runtime code edited.
+
+Fixed-input ABBA microtiming reduces original-sample time19.96%. An unprofiled
+real-source CN3-7 helper pair preserves ENTIRE saved actual proposals/proofs,
+84.80->77.73s (-8.34%). One helper pair is NOT controlled whole-scanner cost or
+new recognition. No implementation adopted or app-visible change. Old dense
+whole-cost+12.601%HOLD remains; failed material caller stays OFF.
+
+All workers terminal. Exact next step: whole-caller raw/proof/project/export
+parity with preserved private multiroom gains, then quiet AC whole dense/sparse/
+heavy timing and required protections before any adoption. Audit130 unchanged:
+all71/zero approvals/54 cumulative current/17 historical. Goal ACTIVE, not reset
+or completed for the effort change. NEXT_THREAD_HANDOFF points to1379resume.
+
 ## 2026-11-01 — Material trial rejected; two historical rooms freshly reviewed
 
 Two unframed-material prototypes pass portable tests but produce no Halls2

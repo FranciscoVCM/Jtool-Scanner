@@ -6,6 +6,16 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+Exact-sampling private experiment finished at an effort-change save point.
+67focused tests pass; unchanged real-source helper proposals/proofs match the
+saved actual exactly. Helper84.80->77.73s (-8.34%); micro19.96% is a different,
+limited measurement. Neither is controlled whole-scanner speed or new recognition.
+No maintained code/test/fixture edit, adoption or app change. All workers terminal;
+NEXT_THREAD_HANDOFF points to1379resume for whole parity/cost qualification.
+Audit130 unchanged:71/zeroapprovals/54current17historical. Goal ACTIVE, not reset.
+
+Previous checkpoint:
+
 The latest private material-caller trial is rejected: it removes real terrain
 outside the old evaluation mask. Fresh source review and a new separate256-pixel
 positive protection catch the loss; old masks unchanged. The failed result was

@@ -1,6 +1,22 @@
 # Cross-tileset milestone
 
-## Latest: reject the unsafe material caller; preserve current source truth
+## Latest: exact sampling parity measured; whole qualification still required
+
+Private arithmetic-only sampling preserves complete original position/RGB/
+unknown behavior and the existing one-conversion contract.67focused tests pass.
+Fixed-input micro original-sample time falls19.96%; actual-source CN3-7 helper
+pair84.80->77.73s (-8.34%) preserves ENTIRE saved actual proposals/proofs.
+Neither measurement is controlled whole-scanner cost or new recognition. No
+maintained edit/adoption/app change; old+12.601%dense cost HOLD remains intact.
+
+All workers terminal for effort change. Read1379resume: first whole-caller
+proof/raw/export parity for preserved real gains, then quiet AC whole cost and
+all protections before adoption. Do not trade source proof for speed. Failed
+material caller remains OFF with new real-positive protection; no threshold or
+teacher-pose retry. Audit130 unchanged:71/zeroapprovals/54current17historical.
+Goal ACTIVE; six completion gates unfinished.
+
+## Previous: reject the unsafe material caller; preserve current source truth
 
 The unframed distribution experiments retain original-only witnesses and test
 palette/texture/background/scale portability, but make zero Halls2 replay gains.
