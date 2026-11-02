@@ -4,6 +4,63 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Source-owned hollow recovery enabled in source mode
+
+The maintained source-geometry caller now enables the qualified terrain-neighbor
+hollow-spike recovery. Standard scanning, the explicit hollow bypass and the
+low-level helper's default remain unchanged. No new feature selector is added.
+Original terrain supplies bounded hypotheses, not appearance or coordinate
+answers. Independent original RGB/body witnesses and competing mini/solid
+boundaries qualify additions; generated or corrected objects never teach them.
+
+Fourteen source-verified full spikes are now available in Experimental source
+geometry mode: Redcube2 +11, CN3-7 +1, CN3-9 +1 and auxiliary Irkara Arcfox +1.
+These are previously private recoveries now qualified for the maintained caller,
+not fourteen new discoveries in this run. Redcube2's true full spikes improve
+45/56 -> 56/56, with seven old false full spikes remaining; full-class errors
+18 -> 7 (61.11%). CN3-7 improves only one error, 35 -> 34; CN3-9 also gains one.
+Arcfox matches 269/269 reference objects but retains 15 extras. None is a
+whole-room approval or proof of cold-start recognition of every tileset.
+
+All 44 actual control outputs pass the original 41 protection groups, 601
+miniblocks, 139 terrain footprints and current 16 exact-control bounds. Forty-one
+complete raw results are unchanged; CN3-7, CN3-9 and Arcfox each add one real UP.
+The separate Redcube2 anchor retains all eleven verified additions. Two fresh,
+unwrapped production scans and a single-keyword AST comparison bind those
+qualifications to the actual caller. Whole/every-changed-delta source QA remains
+separate from exact-map scores and unchanged-output review carry.
+
+Controlled cumulative whole-scan cost against stable `c998cd9` (legacy sampler
+and pre-activation caller):
+
+| Family | Scan median before -> after | Scan change | Including exports |
+|---|---|---|---|
+| Dense CN3-7 | 151.72 -> 163.65 seconds | +7.86% | +7.78% |
+| Active sparse Redcube2 | 50.62 -> 60.98 seconds | +20.45% | +18.88% |
+| Heavier Golden1 | 57.53 -> 57.25 seconds | Essentially unchanged | Essentially unchanged |
+
+All twelve matched quiet-AC samples pass complete-output checks and the approved
+normal 25% budget; no exceptional allowance or family averaging is needed.
+Each family is paired within its own session. The interrupted pre-reboot sparse
+cohort is preserved separately, not mixed into new medians. Historical cost
+FAIL/HOLD receipts and a native Golden7 process crash remain preserved; the
+successful isolated accuracy retry is not evidence of a native-runtime fix.
+
+Complete documented unittest discovery passes: **1,794 tests, zero failures,
+errors or skips**, 2,792.11 seconds. The earlier complete run's sole stale
+38-vs-41 dependency-inventory assertion is preserved. Its replacement checks the
+independent exhaustive 41-module set and retains every byte-mutation fingerprint
+assertion; no detector, fixture, filter or skip was changed to hide a failure.
+
+Audit139 retains all 71 rows, zero whole-room approvals, 60 cumulative-current
+and 11 historical-pending reviews—not 71 same-revision scans. The source-mode app
+is updated; rescan to obtain new detections, without overwriting saved projects.
+Unframed/occluded/custom artwork and persistent false solid/hazard conflicts
+remain important limitations. Next freeze source-owned conflicts in canonical
+Entrance2/CN3-7, with Arcfox reference-extras as auxiliary leads; preserve real
+half-hidden spikes and nested minis. Goal ACTIVE; final 71+16 and the remaining
+six-gate criteria are unfinished. Read the latest NEXT_THREAD_HANDOFF entry.
+
 ## Approved performance budget; maintained hollow port
 
 The user explicitly approved the25%normal/25–50%exceptional whole-cost budget.

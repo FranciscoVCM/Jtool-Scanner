@@ -19,8 +19,24 @@ does not teach earlier terrain detection or delete legitimate overlaps.
 Golden1 and Entrance3 each recover two confirmed arrows, but both rooms still
 have substantial other errors. Procedural palette/brightness/scale tests and
 preserved real controls support this bounded change, not universal sprite support.
-The complete 1,743-test suite passes; controlled whole-scan measurements across
-three sources remain within 5%. See DEVELOPMENT_PROGRESS.md for exact scope.
+At the arrow checkpoint, the complete 1,743-test suite passed and controlled
+whole-scan measurements across three sources remained within 5%.
+
+Experimental source geometry now also checks hollow full-spike hypotheses near
+original terrain, using independent original-RGB/body witnesses and competing
+mini/solid boundaries. It does not learn from corrected maps or emitted objects.
+Fourteen verified full spikes are recovered across Redcube2, CN3-7, CN3-9 and
+auxiliary Irkara Arcfox; these rooms still have other errors. Standard scanning
+is unchanged. Enable source geometry and rescan to use this recovery; saved
+projects and corrections are not rewritten automatically.
+
+The current complete **1,794-test suite passes**. The 44-case qualification
+retains the original 41 protection groups, 601 miniblocks, 139 terrain footprints
+and current 16 exact-control bounds. Cumulative controlled whole-scan overhead
+is +7.86% dense/+20.45% active sparse/heavier essentially unchanged, within the
+user-approved normal 25% budget. See PERFORMANCE_POLICY.md for the exceptional
+25–50% allowance and never-above-50% limit; correctness protections still apply.
+See DEVELOPMENT_PROGRESS.md for absolute times, evidence scope and limitations.
 
 Experimental scan comparisons must record the complete process-local feature
 profile as well as the code fingerprint. `scripts/scanner_feature_profiles.py`

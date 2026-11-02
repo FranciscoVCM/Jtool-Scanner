@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-01. Continue in the existing repository at
+Updated 2026-11-02. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -14,7 +14,47 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — approved budget / static hollow port / audit136
+### Latest continuation — published source-mode hollow recovery / audit139
+
+Read tracked PERFORMANCE_POLICY.md and the current DEVELOPMENT_PROGRESS.md
+entry, then
+`.artifacts/general-recognition-20261014/HOLLOW_RELEASE_AND_NEXT_OWNERSHIP_RESUME_v1485.md`
+IN FULL. Publication is verified separately in
+`hollow-release-publication-v1484.json`; audit139 was sealed prepublication and
+is preserved unchanged. Verify actual Git/app state, not historical PIDs.
+
+Complete 1,794-test public discovery PASS: zero failures/errors/skips, source and
+tests frozen. Earlier1479 full run's stale 38-vs-41 inventory failure remains;
+corrected test exhaustively names 41 modules and keeps all byte-invalidation
+checks. No detector/filter/skip suppression. All 44 actual controls, original 41
+groups, 601 minis, 139 terrain footprints, current 16 bounds and two unwrapped
+production roots pass. Twelve matched quiet-AC cost samples meet normal 25%:
+dense +7.86%, active sparse +20.45%, heavier essentially unchanged. Old sparse
+interrupted cohort, cost FAILs and native Golden7 crash remain preserved.
+
+The source-mode caller explicitly enables maintained terrain-neighbor hollow
+recovery. Standard mode, explicit bypass, low-level default `False` and 8 selectors
+are unchanged. Fourteen previously private source-verified additions now enabled:
+Redcube2 +11, CN7 +1, CN9 +1, Arcfox +1. No old detections/metadata removed.
+Redcube2 full errors 18->7 but 7 false fulls remain; CN7 errors 35->34 is below
+the room gate; CN9's one correction has no full actionable denominator. Arcfox
+matches 269/269 but 15 reference-extras remain (7 blocks/8 fulls); not automatically source-false.
+
+Audit139: all 71 rows, ZERO whole-room approvals, 60 cumulative-current and 11
+historical reviews, not final same-revision 71+16. Goal remains ACTIVE; no automatic success-registry upgrade
+or all-tileset claim. NEXT freeze original-source positive/negative/unknown
+solid/hazard conflicts in canonical Entrance2/CN7, with auxiliary Arcfox leads, before
+few bounded prototypes. Preserve real occluded/nested hazards; no bbox-only
+deletion, query-fitted teachers or failed-proof-as-empty. Predeclare compatible
+different-family reserve before tuning; historically exposed is not unseen.
+Dotkid3 USER-DEFERRED; Dotkid2 flat partial 8-positive/6-negative/4-unknown truth
+and 18 abstentions saved; do not merely relax texture. Continue 11 historical
+refreshes in small groups. App root/health HTTP200, source parity and private indexes verified in1484;
+rescan in source mode for new detections, never overwrite saved corrections.
+
+Previous continuation:
+
+### Approved budget / static hollow port / audit136
 
 Read tracked PERFORMANCE_POLICY.md, then
 `.artifacts/general-recognition-20261014/APPROVED_BUDGET_AND_STATIC_PORT_RESUME_v1453.md`

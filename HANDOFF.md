@@ -4,7 +4,29 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-11-01
+## Current checkpoint — 2026-11-02
+
+Qualified terrain-neighbor hollow recovery is now enabled in existing
+Experimental source geometry mode, not standard scanning. Fourteen source-proved
+full spikes are recovered across Redcube2(+11), CN3-7(+1), CN3-9(+1) and auxiliary
+Irkara Arcfox(+1); these were previously private results, now maintained-caller
+qualified. Existing objects/metadata remain intact. Whole rooms still have
+errors; no new room approvals or universal/unknown-tileset guarantee.
+
+All 44 controls, original 41 groups, 601 minis, 139 terrain footprints and current
+16 bounds pass, plus two unwrapped production roots and complete 1,794-test discovery with zero
+failures/errors/skips. Whole scan costs +7.86% dense/+20.45% active sparse/heavy
+essentially unchanged meet the approved normal 25% policy; see
+PERFORMANCE_POLICY.md and DEVELOPMENT_PROGRESS.md for scope and absolute times.
+Old failures/interrupted measurements are retained, not relabelled.
+
+App updated; enable source geometry and rescan without overwriting corrections.
+Audit139 retains 71 rows, zero approvals, 60 cumulative-current and 11 historical reviews. Final stable
+71+16 and remaining goal gates are unfinished. Next source-frozen solid/hazard
+ownership batch and small historical refreshes are specified in the newest
+NEXT_THREAD_HANDOFF section; older checkpoints below are historical.
+
+Previous checkpoint — 2026-11-01:
 
 Read PERFORMANCE_POLICY.md: the user approved25%normal/25–50%exceptional scan-cost
 budget, never>50%, retaining all correctness protections. Old10%holds below are

@@ -136,7 +136,10 @@ def source_proposals(image, room, detections, *, source_context=None, source_fra
         source_field = source_glyph_field
         if source_field is None and frame.extent == room:
             source_field = context.glyph_library(image, room, spikes).raw
-        hollow, hollow_diag = recover_source_hollow_glyphs(frame, detections, source_field=source_field)
+        # Original terrain supplies bounded locators, never appearance answers.
+        # Source-owned mini/solid explanations reject competing new full aliases.
+        hollow, hollow_diag = recover_source_hollow_glyphs(
+            frame, detections, source_field=source_field, terrain_neighbors=True)
         proposed |= hollow
         # Only source-proved SAME type/size phase replacements can retire old
         # locators. Unverified terrain labels cannot act as coordinate answers.

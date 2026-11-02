@@ -200,18 +200,24 @@ class SourceGeometryIntegrationTests(TestCase):
 
     def test_fingerprint_includes_transitive_source_dependency_bytes(self):
         paths=source_geometry_files()
-        self.assertEqual(len(paths),38)
+        expected={name+'.py' for name in (
+            'source_contours', 'source_glyph_prototypes', 'source_block_prototypes',
+            'source_evidence_context', 'source_local_background', 'source_full_pose',
+            'source_material_evidence', 'source_material_patterns', 'source_material_ownership',
+            'source_occupancy', 'source_geometry_pipeline', 'source_terrain_agreement',
+            'source_rectangle_prototypes', 'source_sampling', 'source_hollow_glyphs',
+            'source_hollow_pipeline', 'source_hollow_phase', 'source_growth_confidence',
+            'source_hollow_compounds', 'source_object_frames', 'source_filled_pipeline',
+            'source_repeated_identity', 'source_capture_base', 'source_rgb_distribution',
+            'source_registered_rectangles', 'source_deferred_platforms', 'source_pixel_geometry',
+            'source_compound_conflicts', 'source_interior_glyphs', 'source_frame_arbitration',
+            'source_directional_body', 'source_raster_cells', 'source_pixel_artwork',
+            'source_glyph_backdrop', 'source_calibrated_conflicts', 'source_rejected_primaries',
+            'source_physical_patch', 'source_full_spike_phase', 'source_phase_registration',
+            'source_partial_visibility', 'source_arrow_ownership')}
+        self.assertEqual(len(paths),len(expected))
         self.assertEqual(len(set(paths)),len(paths))
-        self.assertIn('source_repeated_identity.py',{p.name for p in paths})
-        self.assertIn('source_capture_base.py',{p.name for p in paths})
-        self.assertTrue({'source_rgb_distribution.py','source_registered_rectangles.py',
-            'source_deferred_platforms.py','source_pixel_geometry.py',
-            'source_compound_conflicts.py','source_interior_glyphs.py',
-            'source_frame_arbitration.py','source_directional_body.py',
-            'source_raster_cells.py','source_glyph_backdrop.py','source_calibrated_conflicts.py',
-            'source_physical_patch.py','source_full_spike_phase.py',
-            'source_phase_registration.py','source_partial_visibility.py',
-            'source_arrow_ownership.py'} <= {p.name for p in paths})
+        self.assertEqual({p.name for p in paths},expected)
         self.assertTrue(all(p.is_file() for p in paths))
         original=app._source_fingerprint()
         read_bytes=Path.read_bytes

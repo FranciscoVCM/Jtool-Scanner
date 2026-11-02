@@ -124,6 +124,21 @@ class SourceGeometryPipelineTests(TestCase):
         frame=recovery.call_args.args[0]
         self.assertTrue(frame.matches_source(self.image,self.room))
         self.assertEqual(recovery.call_args.args[1],tuple(original))
+        self.assertIs(recovery.call_args.kwargs['terrain_neighbors'], True)
+
+    def test_hollow_terrain_caller_keeps_extended_frame_without_legacy_crop_field(self):
+        from scripts.source_sampling import SourceFrame
+        frame = SourceFrame(self.image, self.room, extent=Box(-8, 0, 816, 608),
+                            canonical=self.image)
+        original = deepcopy(self.detections)
+        with patch('scripts.source_geometry_pipeline.recover_source_hollow_glyphs',
+                   return_value=(set(), {'accepted': []})) as recovery:
+            source_proposals(self.image, self.room, self.detections, source_frame=frame)
+        self.assertIs(recovery.call_args.args[0], frame)
+        self.assertEqual(recovery.call_args.args[1], tuple(original))
+        self.assertIsNone(recovery.call_args.kwargs['source_field'])
+        self.assertIs(recovery.call_args.kwargs['terrain_neighbors'], True)
+        self.assertEqual(self.detections, original)
 
     def setUp(self):
         raster = Image.new('RGB', (800, 608))

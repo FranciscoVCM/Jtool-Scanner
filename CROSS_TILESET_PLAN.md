@@ -1,5 +1,33 @@
 # Cross-tileset milestone
 
+## Latest: qualified hollow recovery enabled; audit139
+
+The existing opt-in source-geometry caller now enables the maintained
+terrain-neighbor hollow recovery; standard mode and low-level default `False` are
+unchanged. Independent original RGB/body witnesses and mini/solid explanations
+qualify additions, with no palette/room answers or output teachers. Fourteen
+previously private real recoveries are now enabled: Redcube2 +11, CN3-7 +1,
+CN3-9 +1, auxiliary Arcfox +1. All original detections/metadata are retained.
+Seven Redcube2 false fulls and Arcfox's 15 reference-extras remain; no room is
+approved, and independently qualified teachers are still needed.
+
+All 44 actual controls, original 41 groups, 601 minis, 139 terrain footprints and
+current 16 bounds pass; two fresh unwrapped roots bind the maintained caller.
+Complete 1,794-test discovery passes
+with zero failures/errors/skips. Matched three-family whole cost is +7.86%,
++20.45%, and essentially unchanged, all within the approved normal 25%. Historical
+FAILs and interrupted runs remain immutable. DEVELOPMENT_PROGRESS.md records
+absolute seconds, exact scope and the test-inventory correction.
+
+Audit139 retains 71 rows, zero approvals, 60 cumulative-current and 11 historical
+reviews, not a final same-revision 71+16 qualification. Next bounded batch: original solid/hazard
+ownership conflicts in Entrance2/CN3-7, auxiliary Arcfox leads, source-frozen
+positive/negative/unknown truth before prototypes. No bbox-only deletion or
+failed-proof-as-empty; preserve occluded 32px spikes and genuine nested minis.
+Select a compatible different-family reserve before tuning; do not call exposed
+controls unseen. Refresh historical rows in small groups alongside development.
+Dotkid3 remains user-deferred. Goal ACTIVE; no universal accuracy claim.
+
 ## Latest: approved cost budget and static hollow port; audit136
 
 PERFORMANCE_POLICY.md records explicit user approval:25%normal/25–50%exceptional,
