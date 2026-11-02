@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest: Secret1 human clarification and failed safety probes; audit141
+
+Secret1's pink area is normal 32px terrain beneath/alongside the spike, not a
+notch/miniblock. The separate eight-pixel semantic addendum preserves original
+masks/failures; it is evaluation truth, not a coordinate rule or detector gain.
+The private seven-addition preview remains OFF despite 56.555% local error
+reduction: portable tests expose four false fulls and a missed gradient positive.
+Two stricter body variants recover nothing on Secret1; partitioned texture also
+fails reduced-scale/multicolour positives in the unchanged seven-method/16-scene
+contract. Cap these families; do not lower thresholds, expand teachers or consume
+Golden4's reserve to salvage them. No new runtime adoption.
+
+Two fresh ordinary controls/main whole/all-five-delta reviews: Lap Backwards-1
+250/250 exact; Say-2 288/289 exact with four minis replacing one full at identical
+solid coverage. Do not conflate representation errors with terrain loss or call
+Say-2 perfect. Audit141: all 71/zero approvals/64 cumulative-current/seven historical
+pending (Say-1/3/4/5/6/8/9), not final same-revision coverage. The prior 14 recoveries,
+1,794-test bytes, source-mode app and approved 25% / 50% policy remain unchanged.
+
+Next bounded cause: trace full/mini selection from Say-2's genuine original
+snapshot, then freeze source-supported size/occupancy criteria and genuine-mini
+counterexamples before a rule. Never blindly merge four real minis to improve a
+reference score. A later seamless/variable-material test must separate material
+identity from complete body/phase proof; no more closed-frame/texture retries
+without new causal evidence. Goal ACTIVE; final 71+16 and all six gates unfinished.
+
 ## Latest: source-conflict truth and two historical refreshes; audit140
 
 Redcube3 (224) and Secret1 (29) have fresh ordinary source-mode scans, full raw/

@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Secret1 clarified; two controls refreshed; unsafe texture work held
+
+The user confirms ordinary 32px solid terrain beneath Secret1's upward spike,
+with adjacent blocks—not a notch or miniblock. A separate evaluation addendum
+reclassifies only the eight questioned pixels; original masks and failed results
+remain unchanged. Human clarification is not a new recognition improvement.
+
+A private seven-addition terrain preview reduces its original frozen pixel
+errors by 56.555%, but is **not deployed**: independent procedural tests expose
+four false full blocks on a gradient background and a missed multicolour positive.
+Literal whole-body RGB matching then produces no qualified source models;
+partitioned texture matching also gives no Secret1 recovery. Its unchanged
+seven-method / 16-scene test contract has two positive-recall failures
+(reduced-scale and multicolour-gradient), zero errors/skips and no false full
+footprints in those scenes. These approaches are capped/off; no threshold,
+teacher or phase sweep, weakened test, or reserve-success claim follows.
+
+Fresh ordinary source-mode scans, post-scan supplied-JMap comparisons and main
+whole/every-delta review now cover Lap Backwards-1 and Say-2. Lap Backwards-1
+remains 250/250 exact with no intervening typed changes. Say-2 is 288/289 exact:
+four miniblocks replace one full block, creating five typed differences but
+**exactly the same solid area**. This is a full/mini representation discrepancy,
+not five new physical errors or an accurate claim of perfect typed recreation.
+All five deltas were source-reviewed; no other conspicuous mismatch was found
+under this review scope. Missing historical raw/profile evidence stays UNKNOWN.
+
+Audit141 retains all 71 rows, zero whole-room approvals, 64 cumulative-current
+and seven historical-pending reviews—not final same-revision coverage. Remaining
+historical rooms are Say-1/3/4/5/6/8/9. A private audit assertion initially applied
+a positive-recall requirement to an intentionally occluded test scene; the
+reporter was corrected separately, preserving the unchanged failing test run.
+No detector, test assertion or existing artifact was changed to hide the error.
+
+No runtime/test changes or new app fixes in this checkpoint. The prior 14
+source-mode recoveries and 1,794-test qualification remain bound to unchanged
+bytes, not a new suite run. App root/health return 200 with loaded/disk parity.
+Next trace Say-2's original-full to four-mini decision before any general packing
+rule; retain genuine minis and source-size evidence. Variable/seamless materials
+need a different body representation, not more retries of the capped models.
+Approved 25% / exceptional 50% cost policy and all six unfinished goal gates remain.
+
 ## 2026-11-02 — Two historical rooms reverified; unsafe ownership shortcuts capped
 
 Fresh canonical source-mode scans and complete Source/Historical JTool/Current

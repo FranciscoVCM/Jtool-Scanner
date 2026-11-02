@@ -6,6 +6,25 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-02
 
+Audit141 now retains all 71 rows, zero approvals, 64 cumulative-current and seven
+historical-pending reviews (Say-1/3/4/5/6/8/9), not final same-revision 71+16.
+Fresh Lap Backwards-1 remains 250/250 exact. Say-2 is 288/289 exact: four minis replace
+one full block with identical solid coverage; main whole/all-five-delta review
+confirms representation-only differences, not a perfect typed recreation.
+
+The user clarifies Secret1's questioned pink spot as ordinary 32px solid terrain
+beneath/alongside the spike. A separate eight-pixel evaluation addendum preserves
+old masks/failures. The private terrain preview is not deployed despite 56.555%
+local error reduction: portable safety exposes false fulls/missed positives.
+Stricter RGB/partitioned-texture attempts also fail useful recovery/portability;
+capped/off, no relaxed tests or reserve-success claim. No new app fixes here.
+The prior 14 source-mode recoveries and complete 1,794-test qualification remain bound
+to unchanged runtime/test bytes; app serves that build. Read the newest
+NEXT_THREAD_HANDOFF section for the concrete full/mini trace and resume receipts.
+Goal ACTIVE; approved 25% / 50% cost policy and all correctness gates remain unchanged.
+
+Previous checkpoint — 2026-11-02:
+
 Two previously historical rooms now have fresh source-mode scans and complete
 whole/every-delta review: Redcube3=224 and Secret1=29. Both remain MAJOR.
 Audit140: all 71 rows, zero approvals, 62 cumulative-current and 9 historical

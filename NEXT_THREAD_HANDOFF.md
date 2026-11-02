@@ -14,6 +14,46 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — human Secret1 full block; two controls; audit141
+
+Read `.artifacts/general-recognition-20261014/SECRET1_AND_CONTROL_RESUME_v1532.md`
+IN FULL, audit141 and checkpoint1531. Publication verification1533 follows the
+reviewed four-doc commit; verify its actual existence/status, not a pending claim.
+All workers are terminal; do not trust old live PIDs in earlier notes. Qualified
+source runtime/test bytes remain unchanged from the prior14-recovery release.
+The last full1794-test PASS is retained, not rerun. App/root/health200 and source
+parity checked. PERFORMANCE_POLICY.md supersedes stale automatic goal10% text.
+
+Human1515: Secret1's pink spot is normal32px block terrain below/alongside spike,
+not a notch/miniblock.1516 changes ONLY8unknown pixels in a separate evaluation
+addendum; old masks/FAILs unchanged. Original8360error denominator retained,
+clarified8368 separate. No coordinate teaching or new recognition credit.
+
+Private1509seven-addition preview reduces originalerrors56.555% but1513portable
+FAIL produces4false fulls/misses gradient positive.1519literalRGB and1525spatial-
+texture local runs both produce0models/0recovery.1526unchanged test/factory AST:
+7methods/16scenes,2positive-recall failures/0errors/skips/0false fulls. OFF/capped;
+no patch-size/threshold/teacher/phase sweeps. Golden4reserve remains UNQUERIED.
+1530private sealer's occluded-scene inventory assertion failed before any write;
+1531 fixes only the reporter, preserves failing tests/no new scan or API change.
+
+1528ordinary LapBackwards1=250 and Say2=292 roots;1529mainWHOLE/ALL5typed-delta QA.
+Post-scan supplied-map scores: Lap250/250 exact; Say288/289,4mini extras/1fullmiss,
+but EXACTLYequal solid union. The full160,448 becomes four16px minis; this is
+representation/size selection, not five physical errors. No other conspicuous
+mismatch under review scope, no whole-room approval; legacy raw/profile UNKNOWN.
+Audit141 ALL71/ZEROapprovals/64cumulative-current7historical Say1/3/4/5/6/8/9.
+
+NEXT trace Say2 original-full->four-mini choice from saved original stage, no
+baseline resweep. Freeze source size/wholebody criteria and real-mini controls
+before any packing rule; do not blindly coalesce genuine minis for exact scores.
+Material segmentation/phase-independent representation is a future different
+cause, not permission to revive failed closed-frame/texture variants. Preserve
+all41/601minis/139terrain/current16/humanfacts, final71+16 and all six goal gates.
+Dotkid3 remains USER-DEFERRED. Continue bounded causal work; goal ACTIVE.
+
+Previous continuation:
+
 ### Latest continuation — current Redcube3/Secret1; capped ownership; audit140
 
 Read `.artifacts/general-recognition-20261014/CONFLICT_AND_SECRET1_RESUME_v1497.md`
