@@ -1,5 +1,31 @@
 # Cross-tileset milestone
 
+## Latest: all historical Say rows refreshed; audit143; no new runtime adoption
+
+Seven actual source-mode roots plus seven whole/ALL11intervening-delta reviews
+close the remaining historical-review backlog: 71 cumulative-current/0 pending,
+all 71 rows/ZERO approvals. This is not final same-revision71+16 qualification.
+Say-3 now has a clearly source-visible missing full block (544,512), 1,024px of
+real terrain loss; do not hide it behind the former reference-omission finding.
+It is absent before source geometry and receives no material calibration.
+This is higher priority than cosmetic full-to-four-mini substitutions in Say-1/8.
+
+Say-1's two saves are 8px left/right in opposite directions. Their detected
+palette components are only 7.31 native pixels wide; full-frame/header evidence,
+not a universal offset, is needed. A suspected vertical scale expression is
+separate and remains untested. Say-9's real warp passes cloud morphology but is
+blocked by both background similarity and five-spike enclosure. A frozen RGB
+alternative clears only the first guard and changes no developer outputs;
+portable7/62 is not a real-family/app gain. Do not relax the second guard or
+claim that background-corner contamination was proved.
+
+Next freeze complete source body/negative evidence for the actual Say-3 recall
+failure, preserve all original protections and seek independent different-family
+transfer before adoption. Framed-hierarchy/empty-apex conflict variants are capped
+at zero removals; previous one-room representation and texture failures stay off.
+Default runtime/prior14recoveries remain unchanged; no new fullsuite/cost run.
+All six goal gates and final stable71+16 remain open despite refreshed reviews.
+
 ## Latest: unbound representation component; transfer not established; audit142
 
 `source_full_representation` and twelve tests preserve a bounded source-only

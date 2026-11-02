@@ -14,6 +14,53 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — seven Say refreshes; audit143; actual missing terrain
+
+Read `.artifacts/general-recognition-20261014/SAY_REFRESH_RESUME_v1579.md`
+IN FULL, checkpoint1578/audit143 and publication1580 when present. All three
+ordinary observers are TERMINAL: seven actual source-mode roots, main review of
+seven whole/ALL11intervening typed deltas. All71/ZEROapprovals/71cumulativecurrent/
+0historical-pending, NOT final same-revision71+16. Do NOT repeat these seven roots
+or reopen the archive. No production code or app behavior changed this batch.
+
+NEW PRIORITY: Say-3 full(544,512) is genuinely missing, not equivalent packing.
+The historical full/source-visible blue body accounts for1,024px lost terrain.
+1575 trace: absent already in original stage279/final279; no source-material
+cluster/proposals/rejections; sizing reports no independent source calibration.
+Freeze complete positive body, surrounding negatives/true partials/unknowns,
+then trace existing original full/body identity channels before any recall rule.
+No corrected-map teachers, coordinate rule, lowered cohort thresholds or blind
+four-core/full-cell fill. Seek independent different-family transfer and all
+original protections; a same-Say cosmetic packing win is not the main goal.
+
+Say-1 saves(56,128)/(712,320) versus references(64,128)/(704,320): opposite8px
+horizontal offsets, not both left or vertical. Narrow7.31-native body fragments
+explain centroid bias. Full-frame/header evidence needs a separately bounded
+batch; the inverse vertical-scale suspicion has NOT been validated.
+
+Say-9: cloud morphology passes; brightness-background similarity blocks it.
+Private1571RGB alternative/1573portable7methods62observations clears that veto,
+but1577confirms a second five-spike enclosure veto; developer1574changesZERO
+outputs. Those five neighboring spikes are source-visible, not a proven set of
+false candidates. No background-corner contamination was established. Keep
+candidateOFF and both original safety contracts until independent portal/player
+evidence qualifies a repair.1572invalid brightness-fixture FAIL/1576reporter
+serialization failure preserved;1573/1577repair only those factual/report causes.
+
+Say-1/8full->fourminis have EXACTsame solid union. Say-4nested real mini and
+Say-3/5/8source-visible reference omissions remain; Say-6source/reference support
+phase conflict retained. Do not edit maps or delete source positives to score.
+1559hierarchy/1561empty-apex variants qualifyZEROremovals/capped; no extraBG,
+teacher/phase/threshold salvage. All17false/6real/6unknown conflict labels remain.
+
+App/root/health200/sourceparity unchanged from14-recovery runtime; unbound public
+representation helper stays unbound. No current fullsuite/timing/newappfix claim.
+Seven private portable methods are not57publicfocused or full1794historical tests.
+All41/601/139/current16/final71+16/all six goal gates remain unfinished/goalACTIVE.
+Publish only four root docs; never private sources/JMaps/indexes/reports/prototypes.
+
+Previous continuation:
+
 ### Latest continuation — unbound representation experiment; audit142
 
 Read `.artifacts/general-recognition-20261014/REPRESENTATION_COMPONENT_RESUME_v1556.md`

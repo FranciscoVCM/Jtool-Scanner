@@ -4,6 +4,44 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Seven pending Say reviews refreshed; real terrain loss exposed
+
+Seven fresh ordinary source-mode scans, complete raw/eight-selector/original-
+stage/material/export/project records, and main review of all seven whole views
+and eleven intervening typed deltas are complete. Audit143 retains all 71 rows,
+zero approvals, 71 cumulative-current and zero historical-pending. This is NOT
+71 same-revision fresh scans, final 71+16 qualification or a recognition gain.
+
+| Screen | Supplied-map typed exact | Source-based finding |
+|---|---:|---|
+| Say-1 | 299/303 | Two saves shifted horizontally by 8px in opposite directions; one full becomes four minis at identical solid coverage; offscreen reference entry. |
+| Say-3 | 277/278 | A real full block at (544,512) is missing: 1,024px terrain loss versus the historical/source-visible body. Two other discrepancies are source-visible reference omissions. |
+| Say-4 | 320/320 | The additional nested minispike is a confirmed source positive, not a deletion target. |
+| Say-5 | 275/275 | Additional left spike is source-visible and omitted by the map. |
+| Say-6 | 264/265 | Source block/support and downward spike conflict with the map's phase; preserve both evidence sets. |
+| Say-8 | 284/285 | Four minis replace one full at identical solid coverage; another spike is a known reference omission. |
+| Say-9 | 279/283 | Missing real warp, directional/reference disputes and an offscreen entry; no approval. |
+
+Say-3's missing block is already absent before the source consumer. Material
+calibration selects no cluster and generates no proposals/rejections; original
+retirement is not its cause. Prioritize complete-body/identity recall with
+independent original-source evidence and genuine-mini/partial/background
+counterexamples, not a coordinate patch or four-core-colour merge.
+
+The Say-9 cloud passes morphology. A private RGB-aware shadow comparison clears
+its brightness-only veto, but an independent five-spike-neighbour veto still
+blocks it. Seven portable methods/62 scene observations pass after correcting
+one invalid equal-brightness fixture; the original failed receipt is preserved.
+Real developer outputs remain unchanged. No basis to disable either safety guard
+or claim background-corner contamination. This prototype remains private/OFF.
+Framed-hierarchy and empty-apex conflict observations also qualify zero removals;
+cap them without relaxed teachers, phases or thresholds.
+
+No production code changes, new app fixes, controlled timing or full-suite run
+in this checkpoint. Prior fourteen source-mode recoveries remain enabled; the
+standalone representation component remains unbound. App/root/health and loaded-
+disk parity are verified. Goal and all six completion gates remain unfinished.
+
 ## 2026-11-02 — Guarded representation experiment preserved; no app activation
 
 Added `scripts/source_full_representation.py` as a standalone, unbound experiment,

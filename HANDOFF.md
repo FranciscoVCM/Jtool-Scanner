@@ -6,6 +6,27 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-02
 
+Audit143 closes the historical-review backlog with seven fresh Say source-mode
+scans and whole/eleven-delta review: all71 rows, zero approvals, 71 cumulative-
+current and zero historical-pending. This is NOT final same-revision71+16
+qualification or evidence of perfect scans. No production code changes here.
+
+The refresh exposes real missing terrain in Say-3: a source-visible full block
+at(544,512), already absent before source geometry, with no material calibration.
+That1,024px loss takes priority over equivalent full-to-four-mini packing in
+Say-1/8. Say-1 also has opposite8px horizontal save offsets from narrow body
+components. Say-9's missing warp passes morphology but is blocked by background
+similarity AND a five-spike enclosure rule; an RGB-only private experiment
+clears just the first, recovers nothing and remains undeployed. Preserve
+source/reference conflicts and genuine nested spikes rather than copying maps.
+
+Default runtime/prior14recoveries and unbound representation component are
+unchanged; app200/sourceparity verified. Private7-method/62-scene checks are NOT
+a new complete unittest run. See newest progress/next-thread continuation;
+goal/all six gates and final71+16 remain unfinished.
+
+Previous checkpoint — 2026-11-02:
+
 Audit142 retains all 71/zero approvals/64 cumulative-current/seven historical
 reviews. A standalone `source_full_representation` experiment and twelve tests
 are now maintained, but the scanner/app does not call it. Fifty-seven focused
