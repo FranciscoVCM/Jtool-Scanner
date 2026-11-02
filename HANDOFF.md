@@ -11,6 +11,10 @@ historical-pending reviews (Say-1/3/4/5/6/8/9), not final same-revision 71+16.
 Fresh Lap Backwards-1 remains 250/250 exact. Say-2 is 288/289 exact: four minis replace
 one full block with identical solid coverage; main whole/all-five-delta review
 confirms representation-only differences, not a perfect typed recreation.
+Exact replay establishes that the initial detector missed this full block;
+material growth accepts four quarters, sizing only two. No original block was
+deleted. The next recovery test needs independent body/size proof, not relaxed
+global-colour thresholds or blanket merging of real minis.
 
 The user clarifies Secret1's questioned pink spot as ordinary 32px solid terrain
 beneath/alongside the spike. A separate eight-pixel evaluation addendum preserves

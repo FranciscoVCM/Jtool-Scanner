@@ -19,9 +19,12 @@ Say-2 perfect. Audit141: all 71/zero approvals/64 cumulative-current/seven histo
 pending (Say-1/3/4/5/6/8/9), not final same-revision coverage. The prior 14 recoveries,
 1,794-test bytes, source-mode app and approved 25% / 50% policy remain unchanged.
 
-Next bounded cause: trace full/mini selection from Say-2's genuine original
-snapshot, then freeze source-supported size/occupancy criteria and genuine-mini
-counterexamples before a rule. Never blindly merge four real minis to improve a
+Exact Say-2 replay now reproduces all 292 final objects from 288 originals: the
+full block was absent initially, not retired. Material growth accepts four
+quarters while sizing accepts two; the other two fail different global-colour
+gates and remain unknown, not empty. Next freeze independent complete-body/size
+proof for full recovery and genuine-mini counterexamples before a rule. Do not
+lower those colour thresholds or blindly merge four real minis to improve a
 reference score. A later seamless/variable-material test must separate material
 identity from complete body/phase proof; no more closed-frame/texture retries
 without new causal evidence. Goal ACTIVE; final 71+16 and all six gates unfinished.

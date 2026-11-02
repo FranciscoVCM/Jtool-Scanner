@@ -40,9 +40,16 @@ No detector, test assertion or existing artifact was changed to hide the error.
 No runtime/test changes or new app fixes in this checkpoint. The prior 14
 source-mode recoveries and 1,794-test qualification remain bound to unchanged
 bytes, not a new suite run. App root/health return 200 with loaded/disk parity.
-Next trace Say-2's original-full to four-mini decision before any general packing
-rule; retain genuine minis and source-size evidence. Variable/seamless materials
-need a different body representation, not more retries of the capped models.
+An exact 288-original -> 292-final replay then explains Say-2's representation
+choice: the initial detector never found that full block; no original was
+retired. Material growth qualifies all four quarters, but sizing admits only two.
+One left quarter fails its foreground-pixel fraction (93.75% versus 95%); the
+other fails the global mean-colour distance. Neither is source-empty. This is
+inconsistent positive evidence between consumers, not a reason to lower either
+threshold or invent a full block from the supplied map. Next test independent
+complete-body/size proof for recovery, preserving genuine minis and occupied area.
+Variable/seamless materials need a different body representation, not more
+retries of the capped models.
 Approved 25% / exceptional 50% cost policy and all six unfinished goal gates remain.
 
 ## 2026-11-02 — Two historical rooms reverified; unsafe ownership shortcuts capped

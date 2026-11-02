@@ -44,9 +44,19 @@ representation/size selection, not five physical errors. No other conspicuous
 mismatch under review scope, no whole-room approval; legacy raw/profile UNKNOWN.
 Audit141 ALL71/ZEROapprovals/64cumulative-current7historical Say1/3/4/5/6/8/9.
 
-NEXT trace Say2 original-full->four-mini choice from saved original stage, no
-baseline resweep. Freeze source size/wholebody criteria and real-mini controls
-before any packing rule; do not blindly coalesce genuine minis for exact scores.
+1534 exact 288-original -> 292-final replay and 1535 causal receipt are complete:
+the original snapshot never contains full(160,448); no original objects are retired.
+All four quarters are material-positive/new-growth-qualified, but sizing accepts
+only the right two. Left-top fg fraction .9375 fails .95; left-bottom mean RGB
+error 32.29 exceeds 29.04. Both remain UNKNOWN, not empty. No thresholds changed.
+This corrects the earlier shorthand “original-full->four-mini”: it is recovery
+relative to historical/reference full, not retirement of an original detection.
+1537 verifies the follow-up four-doc publication; audit141/runtime unchanged.
+
+NEXT freeze independent source body/size proof for recovery from qualified
+material, plus real-mini controls before any packing rule. Do not relax global
+colour gates or blindly coalesce genuine minis for exact scores. No new scan
+or reference-coordinate input is needed to inspect the saved causal diagnostics.
 Material segmentation/phase-independent representation is a future different
 cause, not permission to revive failed closed-frame/texture variants. Preserve
 all41/601minis/139terrain/current16/humanfacts, final71+16 and all six goal gates.
