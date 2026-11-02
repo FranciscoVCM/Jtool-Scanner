@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest: approved cost budget and static hollow port; audit136
+
+PERFORMANCE_POLICY.md records explicit user approval:25%normal/25–50%exceptional,
+never>50%; all correctness gates retained. This supersedes older10%wording below.
+Do not rewrite historical costFAILs. The11-real-recovery held candidate now has
+a maintained static port, without private runtime source rewriting.87existing/
+14new tests pass;27body/9mini proof scenes, real helper and two Redcube2whole roots
+match prior evidence exactly. Default227/opt-in238, all11old gains retained.
+
+Terrain-neighbor recognition remains opt-in/defaultFALSE. Finish original41/
+601/139/current16/modes/wholeQA, current-port wholecost and integration/fullsuite
+before activation. Source sampler specialization is exact; no palette/pose rule.
+Audit136all71/zeroapprovals/60cumulativecurrent11historical. Dotkid1445trace saved,
+partial-flat/occluder/size problem unresolved. Read1453resume; goal ACTIVE.
+
 ## Latest: current partial-spike evidence; audit135
 
 Dotkid2/4 now have fresh ordinary sourceON baselines and complete whole/delta

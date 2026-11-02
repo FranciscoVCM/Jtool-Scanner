@@ -64,13 +64,16 @@ def respect_original_terrain_anchors(proposed, original_detections, evidence):
     return retained, abstained
 
 
-def recover_source_hollow_glyphs(frame, original_detections, *, source_field=None):
+def recover_source_hollow_glyphs(frame, original_detections, *, source_field=None,
+                                terrain_neighbors=False):
     """Return new full32 poses/proofs, without changing any original Detection.
 
     Search the same finite 8px/16px neighborhood around original full locators;
     all four directions compete. The frame is the existing capture view, not
     a second inferred normalization. No speculative fill or coordinate whitelist.
     """
+    if not isinstance(terrain_neighbors, bool):
+        raise ValueError('Hollow terrain-neighbor switch must be a boolean')
     original = tuple(original_detections)
     spikes = [(d.type_id, d.x, d.y) for d in original if 3 <= d.type_id <= 10]
     evidence = HollowGlyphEvidence.from_frame(frame, spikes,
@@ -84,6 +87,9 @@ def recover_source_hollow_glyphs(frame, original_detections, *, source_field=Non
     hypotheses = sorted({(t, x+dx, y+dy) for st, x, y in spikes if st <= 6
         for dx in (-16, -8, 0, 8, 16) for dy in (-16, -8, 0, 8, 16)
         for t in (3, 4, 5, 6) if 0 <= x+dx <= 768 and 0 <= y+dy <= 576})
+    if terrain_neighbors:
+        from scripts.source_filled_pipeline import filled_hypotheses
+        hypotheses = sorted(filled_hypotheses(original))
     for key in hypotheses:
         if key in existing:
             continue
@@ -98,13 +104,20 @@ def recover_source_hollow_glyphs(frame, original_detections, *, source_field=Non
                              (evidence.owned_edges, 10000)):
             if len(cache) > limit:
                 cache.clear()
+    if terrain_neighbors:
+        from scripts.source_hollow_compounds import qualify_new_boundaries
+        proposed, compound_abstentions = qualify_new_boundaries(frame, original, evidence, proposed)
+        proofs = [row for row in proofs if tuple(row['key']) in proposed]
     proposed, abstained = respect_original_terrain_anchors(proposed, original, evidence)
     proofs = [row for row in proofs if tuple(row['key']) in proposed]
     phase_repairs = refit_source_hollow_phases(evidence, original, proposed)
-    return proposed, dict(accepted=proofs, original_anchor_abstentions=abstained,
+    result = dict(accepted=proofs, original_anchor_abstentions=abstained,
         phase_repairs=phase_repairs,
         original_teachers_only=True,
         original_source_coverage_checked=True, hypotheses=len(hypotheses),
         nominal_models=evidence.nominal_model_count, inset_models=evidence.inset_model_count,
         no_existing_object_retirement=not phase_repairs,
         no_original_mini_nonterrain_or_source_positive_retirement=True)
+    if terrain_neighbors:
+        result['compound_abstentions'] = compound_abstentions
+    return proposed, result

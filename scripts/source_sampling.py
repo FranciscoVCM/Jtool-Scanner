@@ -116,13 +116,19 @@ class SourceFrame:
         """
         if not (isfinite(x) and isfinite(y) and 0 <= x < 800 and 0 <= y < 608):
             return None
-        sx = floor(self.extent.x + x * self.extent.width / 800)
-        sy = floor(self.extent.y + y * self.extent.height / 608)
-        return (sx, sy) if self.room.contains(sx, sy) else None
+        extent, room = self.extent, self.room
+        sx = floor(extent.x + x * extent.width / 800)
+        sy = floor(extent.y + y * extent.height / 608)
+        return (sx, sy) if room.x <= sx < room.x+room.width and room.y <= sy < room.y+room.height else None
 
     def original_pixel(self, x, y):
         position = self.original_position(x, y)
-        return None if position is None else self._source.pixel(*position)
+        if position is None:
+            return None
+        source = self._source
+        offset = (position[1]*source.width+position[0])*3
+        data = source.data
+        return data[offset], data[offset+1], data[offset+2]
 
     def original_sample(self, x, y):
         """Return physical identity and frozen RGB with one unchanged mapping.
@@ -132,7 +138,12 @@ class SourceFrame:
         padding, caller-mutable wrapper or alternate rounding supplies evidence.
         """
         position = self.original_position(x, y)
-        return position, None if position is None else self._source.pixel(*position)
+        if position is None:
+            return None, None
+        source = self._source
+        offset = (position[1]*source.width+position[0])*3
+        data = source.data
+        return position, (data[offset], data[offset+1], data[offset+2])
 
     def original_patch(self, cx, cy, size=2):
         if not isinstance(size, int) or isinstance(size, bool) or size <= 0:

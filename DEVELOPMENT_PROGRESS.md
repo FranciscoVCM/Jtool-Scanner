@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## Approved performance budget; maintained hollow port
+
+The user explicitly approved the25%normal/25–50%exceptional whole-cost budget.
+Read PERFORMANCE_POLICY.md: it supersedes old10%goal wording, not correctness
+requirements. Old17.34%sparseFAIL remains immutable; the held candidate is now
+eligible for review, not automatically adopted. Prioritize its remaining checks.
+
+Statically ported original-source framed-body models and competing mini/solid
+hollow boundaries, removing private inspect/exec ancestry.87existing and14new
+affected tests pass.27framed-model and9mini-proof scenes reproduce entire private
+evidence; an authentic real-source helper does too. Two fresh Redcube2whole roots
+exactly reproduce default227/opt-in238 raw/project/exports, retaining all11prior
+real recoveries. Default recognition stays unchanged; terrain_neighbors=False.
+Byte/address specialization preserves source/crop arithmetic and coverage.
+
+App restarted on tested source. Audit136all71/zeroapprovals/60cumulativecurrent11
+historical; no new app fixes/fullsuite/cost qualification claimed. Next original
+41/601/139/current16/modes/wholeQA, controlled maintained-port cost and stable
+integration/fullsuite. Dotkid2source-stage replay448exact/all18texture-abstained
+is saved; no speculative partial exception. Read1453resume viaNEXT_THREAD_HANDOFF.
+
 ## 2026-11-01 — Current Dotkid baselines and partial-spike truth
 
 Two previously historical canonical sourceON rooms now have fresh fullraw,

@@ -14,7 +14,32 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — current Dotkid evidence / audit135
+### Latest continuation — approved budget / static hollow port / audit136
+
+Read tracked PERFORMANCE_POLICY.md, then
+`.artifacts/general-recognition-20261014/APPROVED_BUDGET_AND_STATIC_PORT_RESUME_v1453.md`
+IN FULL. User explicitly approved25%normal/25–50%exceptional wholecost; NEVER>50%.
+Supersedes old10%automatic goal/plans wording ONLY; keep all correctness gates
+and oldFAILreceipts. Static maintained hollow/mini/framed-body port, no private
+inspect/exec.87existing+14new tests PASS;27body/9mini component/real helper proofs
+ENTIREequal.1451session91297/PID13816TERMINALexit0twoactual Redcube2roots:
+OFF227baseline/ON238candidate ENTIREraw/helperproof/project/exports equal; all11
+oldrecoveries retained, not new app fixes. Default terrain_neighborsFALSE; eight
+selectors unchanged, explicit research keyword recorded separately. Pure byte/
+address sampling specialization preserves old math/coverage. App restarted1452,
+launcher26984/listener1328/roothealth200/sourcefingerprinteaadddae matches disk.
+
+NEXTprioritize original44bindings/all41/601/139/current16/bothmodes/wholeQA for
+maintainedTruekeyword candidate, then quietwholecost/currentport/integration/
+fullsuite. No more micro-speed variants or oldcase rescans without need.1453resume
+details fair stablec998before sampler/candidate timing and code/proof boundaries.
+Audit136all71/zeroapprovals/60cumulativecurrent11historical. Dotkid1445replay448/
+18texture-abstentions saved, no new partial exception.1454publicationverifies
+12explicitpublicfiles/privacy/liveorigin/app. GoalACTIVE/all6gatesunfinished.
+
+Previous continuation:
+
+### Current Dotkid evidence / audit135
 
 Read `.artifacts/general-recognition-20261014/DOTKID_CURRENT_AND_PARTIAL_RESUME_v1443.md`
 IN FULL.1439session21964/PID33912TERMINALexit0: Dotkid2=448/Dotkid4=236fresh

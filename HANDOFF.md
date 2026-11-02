@@ -6,6 +6,17 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-01
 
+Read PERFORMANCE_POLICY.md: the user approved25%normal/25–50%exceptional scan-cost
+budget, never>50%, retaining all correctness protections. Old10%holds below are
+historical. The held hollow candidate now has a static maintained opt-in port,
+with87existing/14new affected tests and exact27body/9mini/real-helper/two-whole
+parity. Redcube2default227/opt-in238 retains11prior realrecoveries, not new app
+fixes. Recognition remains defaultOFF pending global protections/current16/
+wholeQA/cost/integration/fullsuite. App restarted on tested code. Audit136all71/
+zeroapprovals/60cumulativecurrent11historical; read1453resume viaNEXT_THREAD_HANDOFF.
+
+Previous checkpoint:
+
 Fresh sourceON Dotkid2/4 baselines448/236 and whole/all-delta QA now replace
 historical-only evidence. No new app fixes; Dotkid4's one intervening real spike
 is not credited anew. Genuine pre-source snapshots preserve Dotkid2's18rejected
