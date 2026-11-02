@@ -1,5 +1,37 @@
 # Cross-tileset milestone
 
+## Latest: SAVE-frame evidence maintained, unbound; audit144
+
+An existing palette fragment is not the full object's centre. New standalone
+`source_save_frames` uses a closed lettered header and adaptive local segmentation
+to infer only Save X, preserving all other detection fields/order/counts. This
+tests an object-frame principle across font/layout, brightness/polarity and
+capture variations without a tileset-specific offset or exact sprite template.
+It cannot discover missing saves or guarantee all custom save skins.
+
+68 focused methods pass, including eleven new public methods and the unchanged
+seven-method/25-scene portable contract. A preserved fixed-quartile failure at
+0.9 capture was repaired by local Otsu segmentation, not weaker geometric tests.
+Say-1 private saved-result projection corrects two opposite 8px X errors:
+299/303 ->301/303 typed exact; main whole/ALL4typed-delta QA passes. This is not
+app output, a new primary scan, whole-room approval or four independent fixes.
+All44cached outputs remain unchanged, but ZERO contain eligible saves: thirty
+direct and fourteen explicit domain bypasses. No positive real-family transfer
+or maintained-caller/global/cost qualification follows from that preflight.
+
+NEXT: late original-source SAVE-frame binding with explicit grid/frame/eligibility
+guards, registered dependency, actual workflow/source review, original protections
+and paired whole cost before enabling. Default scanner/import graph remains
+unchanged; this helper and the earlier full-representation helper are unbound.
+Source14prior recoveries remain active. Audit144 ALL71/ZEROapprovals/71cumulative-
+current0historical, not final same-revision71+16; all six completion gates open.
+
+Say-3's pending profile constructs its real missing block, then local-identity
+admission withholds it. Do not confuse that with a source-consumer retirement or
+never-proposed object. Existing source channels and three new full-body variants
+fail/capped; no further tolerance/teacher/pose salvage. The five old Halls3/Golden7
+false-full protections forbid simply disabling the admission guard.
+
 ## Latest: all historical Say rows refreshed; audit143; no new runtime adoption
 
 Seven actual source-mode roots plus seven whole/ALL11intervening-delta reviews

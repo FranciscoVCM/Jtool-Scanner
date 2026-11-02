@@ -4,6 +4,51 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Tested SAVE-header frame component; not yet app-bound
+
+Added `scripts/source_save_frames.py` and eleven public regression methods.
+The helper positions an existing narrow ordinary save-body fragment using a
+closed, lettered header subframe. It uses local Otsu segmentation and geometry,
+not a room name, fixed palette, exact font bitmap or universal coordinate shift.
+Only one 8px horizontal step is allowed; Y, class, confidence, observed image
+box, order and counts remain unchanged. Competing destinations abstain.
+
+All 68 focused methods pass: the prior 57 plus eleven new tests. The original
+seven portable methods/25 scene observations are unchanged, including reduced
+and anisotropic captures, font/layout variations, brightness/polarity, clipping,
+flat/gradient/rail/unlettered negatives. The first fixed-quartile version failed
+two reduced-capture positives; the preserved failure led to adaptive segmentation,
+not weaker geometry assertions or a high-resolution-only bypass.
+
+On Say-1's saved actual result, both saves move to their source-confirmed X
+origins, (64,128) and (704,320). Real JMap/project/JTool/blend exporters and main
+whole/all-four-typed-delta review confirm the private projection. Exact supplied-
+map matches rise 299/303 -> 301/303; the other representation/offscreen-reference
+discrepancies remain. This is TWO candidate position corrections, not four
+independent fixes, a new whole primary scan, room approval or deployed app gain.
+
+All 44 cached protection outputs remain identical, but none has an eligible
+narrow ordinary save: 30 direct-frame controls, seven extended-world and seven
+compact bypasses. This is guard preflight, not active different-family transfer
+or complete maintained-caller/current16/original41 qualification. The helper
+has no scanner import/caller or runtime registry entry yet. App/default code and
+the prior fourteen recoveries remain unchanged; no restart or activation here.
+
+The deeper Say-3 trace corrects the earlier causal simplification: the original
+terrain profile DOES propose and construct the missing full (544,512), then
+local-identity admission withholds that one island. All 192 admission proofs
+replay exactly. Its intrinsic score is below the existing minimum; one rectangle
+face and all three original backing-glyph proofs fail. Three complete-body/
+material alternatives fail and are capped, without relaxed tolerances or teacher
+searches. Do not disable the guard: its old five Halls3/Golden7 false-full fixes
+remain protected. Say-3's real missing terrain is still unresolved.
+
+Audit144 keeps all 71 rows/zero approvals/71 cumulative-current/zero historical-
+pending, NOT final same-revision71+16. Next qualify a late maintained SAVE-frame
+caller, dependency identity, actual developer workflow, protections and paired
+whole cost before activation. No new full-suite/cost/app-fix claim; all six goal
+gates remain open. Both source/index archives and all private reports stay local.
+
 ## 2026-11-02 — Seven pending Say reviews refreshed; real terrain loss exposed
 
 Seven fresh ordinary source-mode scans, complete raw/eight-selector/original-

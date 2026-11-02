@@ -14,6 +14,53 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — SAVE frame component ready for caller qualification
+
+Read `.artifacts/general-recognition-20261014/SAVE_FRAME_COMPONENT_RESUME_v1620.md`
+IN FULL, checkpoint1619/audit144 and publication1621 when present. All workers
+are terminal. Public `scripts/source_save_frames.py` and eleven tests are NEW;
+scanner DOES NOT import/call it and it is NOT in the runtime registry. Do not
+claim an app fix or silently bind it without actual-caller/protection/cost work.
+
+1616 final68focused PASS (old57+new11), NOT full discovery. All seven original
+portable asserted methods remain byte-AST equal,25scenes cover0.9/1.25/aniso/
+font/layout/brightness/polarity/offset and negatives.1609first quartile version
+had2reduced-capture failures;1610Otsu changes segmentation only and1612passes
+unchanged assertions. Public port adds indices/collision-safe position mapper.
+1619seals original asserted-method parity and actual-source private/public parity.
+
+1615genuine saved-result projection: Say1SaveX56->64/712->704, Y128/320unchanged,
+all other fields/order/counts unchanged. Typed299/303->301/303, not a full room
+certificate.1617realexporters and1618mainWHOLE/ALL4typed-delta review pass; titles
+explicitlyUNBOUND/NOTAPP. No newprimary for that projection. All44cachedcontrols
+unchanged but0eligible (30direct/7extended/7compact); these are guard checks, not
+active cross-family evidence or complete original41/current16qualification.
+
+NEXT do not repeat finished portable tests/preflight or another representation
+helper: qualify maintained LATE original-source25x19/direct/eligibility caller,
+dependency registry/complete feature identity and exact bypass/metadata bridge,
+actual unmodified developer wholes/sourceQA, original protections/current16 and
+paired dense/sparse/heavy whole cost under PERFORMANCE_POLICY before activation.
+Keep corrections late so new marker anchors cannot alter earlier geometry.
+The helper does not classify missing saves or promise arbitrary sprite support.
+Default app/source14recoveries/sourcefingerprint remain unchanged; no restart yet.
+
+Say3corrected causal evidence:1585original216hypotheses/profile192includes and
+constructsfull544512; repeated_material_support withholdsONEunsupported island.
+1587ALL192proofs exactreplay: intrinsic.1359<.30,faces12/12/12/0;3originalbacking
+glyphs present butrawownersfail.1588filled/jointfail;1589oldrectanglemodels0.
+1592strictspatialpaint,1595intrinsicbag,1598independently source-closed bag ALL
+FAIL/capped; lastaffinity.90969still136unmatched body samples. No range/teacher/
+phase salvage. DoNOTdisableadmission: oldHalls3two/Golden7threefalsefulls protected.
+The missing1024terrainpixels remain; no new Say3 detector gain.
+
+Audit144ALL71/ZEROapproved/71cumulativecurrent0historical; finalsame-revision71+16
+and all6goal gates unfinished/goalACTIVE. Goal registry not upgraded from private
+corrections. Last1794fullsuite is historical and excludes expanded tests;68focused
+is not a new full run. Preserve all sources/JMaps/indexes/private attempts/FAILs.
+
+Previous continuation:
+
 ### Latest continuation — seven Say refreshes; audit143; actual missing terrain
 
 Read `.artifacts/general-recognition-20261014/SAY_REFRESH_RESUME_v1579.md`

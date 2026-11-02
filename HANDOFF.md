@@ -6,6 +6,26 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-02
 
+Audit144 retains all71/zero approvals/71 cumulative-current0historical-pending;
+final same-revision71+16 remains unfinished. New standalone SAVE-frame evidence
+and eleven tests are maintained, but not called by the scanner/app.68focused
+methods pass; this is not a complete unittest run. The private Say-1 projection
+corrects both horizontal save offsets, raising typed matches299/303->301/303,
+with source whole/delta review. Current app still produces299/303 until binding
+and qualification. The helper refines existing fragments, not missing-save class
+recognition or all custom sprites. All44cached controls stay unchanged, butnone
+is eligible, so that is guard preflight—not active cross-family proof.
+
+Next qualify the late original-source caller, dependency identity, protections,
+actual workflow and paired whole cost before activation. Default runtime/prior14
+recoveries remain unchanged. Say-3's true block is proposed by the terrain learner
+then withheld by local identity, not lost through late source retirement. Three
+new body alternatives fail/capped; its real terrain loss remains unresolved.
+Preserve the old Halls3/Golden7 false-full guard protections. See latest progress
+and next-thread continuation; goal/all six gates remain open.
+
+Previous checkpoint — 2026-11-02:
+
 Audit143 closes the historical-review backlog with seven fresh Say source-mode
 scans and whole/eleven-delta review: all71 rows, zero approvals, 71 cumulative-
 current and zero historical-pending. This is NOT final same-revision71+16
