@@ -4,6 +4,49 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Two historical rooms reverified; unsafe ownership shortcuts capped
+
+Fresh canonical source-mode scans and complete Source/Historical JTool/Current
+JTool/Blend reviews now cover Redcube3 (224 objects) and Secret1 (29). Redcube3's
+two additions versus the historical baseline are real downward spikes, with
+all old ordered records retained; upward-row inversion, missing geometry and
+the decorative-cube false warp remain MAJOR. Secret1's exported map/views are
+unchanged, but fresh review confirms terrain gaps/phase errors, false spike/block
+overlaps and a missing lower-left spike. It remains MAJOR, not accepted.
+
+The corpus audit is now140: all 71 rows, zero whole-room approvals, 62
+cumulative-current and 9 historical-pending reviews. This is not 71 fresh scans
+at one revision. Historical missing full raw/profile evidence stays UNKNOWN,
+even when exported maps match. A private reporting adapter initially supplied
+asymmetric comparison metadata; its failure is preserved, the completed
+Redcube3 scan was authenticated and reused, and only Secret1 was then scanned.
+No detector or public comparison API was changed to hide that reporting error.
+
+Before new ownership queries, source-only review froze all 29 selected original
+conflicts: 17 false, 6 real and 6 uncertain-phase candidates. A real Arcfox spike
+coincides with a false block, explicitly ruling out blanket solid precedence.
+Strict original framed-body coverage explains no complete candidate box.
+A separately frozen mixed paint/background test also leaves unexplained
+physical pixels. Both approaches remain undeployed and capped; no relaxed
+coverage, colour or teacher threshold was used to manufacture removals.
+The prospectively held Halls5 reserve remains unqueried, not a transfer success.
+
+Secret1's genuine 25-original-object source-stage replay reproduces the entire
+29-object result exactly. The material learner selects no clusters and accepts
+zero material cells; the rectangle fallback alone adds the four existing,
+overlapping right-pillar blocks. This establishes a concrete calibration failure,
+not that all unfamiliar rooms fail identically. Next freeze the complete visible
+striped terrain, empty surroundings and uncertain boundaries before an add-only,
+palette-independent texture/boundary experiment. Do not treat missing calibration
+as empty space or use expected coordinates as scanner input.
+
+No recognition code was changed in this batch. The prior 14 qualified source-mode
+recoveries stay enabled; the full 1,794-test result remains bound to unchanged
+runtime/test bytes, not a newly rerun suite. The app continues serving that build.
+Approved 25% normal / 25–50% exceptional cost policy and all correctness protections
+remain unchanged. Goal ACTIVE; final 71+16 and the other six-gate requirements
+are unfinished. See the latest NEXT_THREAD_HANDOFF entry for exact receipts.
+
 ## 2026-11-02 — Source-owned hollow recovery enabled in source mode
 
 The maintained source-geometry caller now enables the qualified terrain-neighbor

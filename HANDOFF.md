@@ -6,6 +6,22 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-02
 
+Two previously historical rooms now have fresh source-mode scans and complete
+whole/every-delta review: Redcube3=224 and Secret1=29. Both remain MAJOR.
+Audit140: all 71 rows, zero approvals, 62 cumulative-current and 9 historical
+reviews pending—not final same-revision 71+16 coverage. No new detector change
+in this batch; the prior 14 recoveries and full 1,794-test qualification remain
+bound to unchanged runtime/test bytes. App build is unchanged.
+
+Source-frozen conflict tests reject both framed-body and mixed paint/background
+shortcuts: zero complete explanations, neither deployed, no weakened thresholds.
+Secret1's exact original-stage replay instead exposes zero calibrated material
+cells; only four existing fallback pillar blocks are added. Next complete source
+truth/texture-boundary work and remaining reviews are specified in
+NEXT_THREAD_HANDOFF.md. Goal ACTIVE; no new room or universal accuracy claim.
+
+Previous checkpoint — 2026-11-02:
+
 Qualified terrain-neighbor hollow recovery is now enabled in existing
 Experimental source geometry mode, not standard scanning. Fourteen source-proved
 full spikes are recovered across Redcube2(+11), CN3-7(+1), CN3-9(+1) and auxiliary

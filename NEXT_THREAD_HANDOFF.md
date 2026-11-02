@@ -14,7 +14,45 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — published source-mode hollow recovery / audit139
+### Latest continuation — current Redcube3/Secret1; capped ownership; audit140
+
+Read `.artifacts/general-recognition-20261014/CONFLICT_AND_SECRET1_RESUME_v1497.md`
+IN FULL and publication verification1498. Current public changes are documentation
+only; the qualified 14-recovery source-mode runtime and all test bytes are unchanged.
+The previous complete 1,794-test PASS remains valid for those bytes, not a new run.
+Tracked PERFORMANCE_POLICY.md overrides old goal 10% wording: 25% normal,
+25–50% exceptional, never above 50%; correctness gates remain unchanged.
+
+1496 seals audit140: all 71 rows, ZERO approvals, 62 cumulative-current and 9
+historical-pending. Fresh Redcube3=224 and Secret1=29 ordinary roots, main whole
+views and all 2 intervening deltas reviewed. Both MAJOR. Redcube3's real
+DOWN(576,160)/(656,288) are intervening, not new
+recognizer work this batch; false up/down clusters and decorative-cube warp remain.
+Secret1 map/render unchanged but terrain gaps/phase/overlap/lower-left spike errors
+remain. Historical raw/profile UNKNOWN. The1492 private asymmetric comparison failure is
+preserved; completed Redcube3 root authenticated/reused without rescan, only
+Secret1 subsequently scanned. No public API/detector/skip modification for error.
+
+1487 freezes all 29 source-only conflicts: 17 false / 6 real / 6 unknown.
+1488 strict framed bodies and1490 complete mixed paint/background explanations yield ZERO complete proofs.
+OFF/capped; no coverage/colour/teacher relaxation, unknown-as-empty or bbox-only
+deletion. Real Arcfox LEFT(576,224) overlaps a false block; protect it. Halls5
+reserve is unqueried, not transfer success. Dotkid3 remains USER-DEFERRED.
+
+1495 EXACT Secret1 genuine 25-original->29 replay: selected material clusters EMPTY,
+accepted material cells ZERO, only four old overlapping right-pillar full additions.
+NEXT freeze complete visible striped terrain, empty and uncertain surroundings,
+then trace/test a palette-independent add-only texture/boundary alternative.
+Do not copy expected poses or use emitted objects as teachers; preserve nonunique
+packing and genuine partial/nested hazards. New method roles/reserves must be
+frozen before tuning. Refresh the remaining 9 historical rows in small groups:
+LapBackwards1 and Say1/2/3/4/5/6/8/9. Final stable 71+16/all 6 goal gates unfinished.
+App/source parity, clean Git/live origin/private indexes are verified in1498;
+do not trust historical PIDs. Continue the goal, not a baseline/archive resweep.
+
+Previous continuation:
+
+### Published source-mode hollow recovery / audit139
 
 Read tracked PERFORMANCE_POLICY.md and the current DEVELOPMENT_PROGRESS.md
 entry, then

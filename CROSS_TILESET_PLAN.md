@@ -1,5 +1,30 @@
 # Cross-tileset milestone
 
+## Latest: source-conflict truth and two historical refreshes; audit140
+
+Redcube3 (224) and Secret1 (29) have fresh ordinary source-mode scans, full raw/
+eight-selector records and main whole/every-intervening-delta source review.
+Both remain MAJOR; two real Redcube3 DOWN additions are intervening public work,
+not new classifier changes this batch. Secret1's matching historical export is
+not proof of accuracy or missing historical raw/profile compatibility.
+Audit140 retains all 71 rows, zero approvals, 62 cumulative-current and 9 pending
+historical reviews. The final same-revision 71+16 requirement remains open.
+
+All 29 selected original conflicts were source-labelled before queries:
+17 false / 6 real / 6 uncertain. Framed-body and complete mixed paint/background
+explanations both fail to qualify any removal. Keep them undeployed and cap
+the family; no threshold/coverage/teacher retry. Halls5 stays an unqueried reserve.
+A real spike inside a false block remains a required counterexample to solid
+precedence; unknown phase never authorizes deleting an original object.
+
+Exact Secret1 original-stage replay confirms the causal starting point: no
+selected material clusters, zero accepted material cells, four old rectangle-
+fallback pillar additions only. Next source-freeze complete striped structures
+and surroundings before a palette-independent, add-only texture/boundary test.
+Keep ambiguous hidden editor packing separate from source occupancy. No output
+teachers, palette branches or reference-coordinate answers. The prior 14 shipped
+recoveries/1,794-test qualification remain unchanged; goal ACTIVE.
+
 ## Latest: qualified hollow recovery enabled; audit139
 
 The existing opt-in source-geometry caller now enables the maintained
