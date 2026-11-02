@@ -1,5 +1,26 @@
 # Cross-tileset milestone
 
+## Latest: unbound representation component; transfer not established; audit142
+
+`source_full_representation` and twelve tests preserve a bounded source-only
+experiment, not a scanner binding. Independent original 32px artwork may select
+one full instead of four new minis at EXACTLY equal solid coverage. Genuine
+original minis, repeated-16/identical-render ambiguity, unknown capture and prior
+rejections remain protected. Final focused scope: 57 methods pass, not fullsuite.
+
+Say-2 private typed score improves 288/289 -> 289/289, one representation change.
+CN3-28 has zero eligible quads; CN3-19 has zero full-appearance models for all 18
+source-reviewed beam candidates. Neither is a positive transfer. Halls1 reserve
+is still unqueried. No new app activation, geometry recovery or successful-room
+registry update. Default runtime/import graph and prior 14 fixes are unchanged.
+
+Audit142 keeps all 71/zero approvals/64 cumulative-current/seven historical.
+Do not narrow the project to texture-matched packing: actual body/material
+calibration, missing geometry and false conflicts remain the priorities. New
+evidence—not more template/teacher/phase variants—is required before binding
+this helper. Old failed experiments, exact controls, original 41/601/139 and
+all six completion gates remain; final stable 71+16 is unfinished.
+
 ## Latest: Secret1 human clarification and failed safety probes; audit141
 
 Secret1's pink area is normal 32px terrain beneath/alongside the spike, not a

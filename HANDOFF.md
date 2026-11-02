@@ -6,6 +6,21 @@ The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
 ## Current checkpoint — 2026-11-02
 
+Audit142 retains all 71/zero approvals/64 cumulative-current/seven historical
+reviews. A standalone `source_full_representation` experiment and twelve tests
+are now maintained, but the scanner/app does not call it. Fifty-seven focused
+tests pass; the last complete 1,794-test run is historical and excludes the new
+test set. Default scanner code/import graph and prior 14 recoveries are unchanged.
+
+Say-2's private projection becomes 289/289 typed-exact at unchanged solid area;
+CN3-28 supplies no eligible groups and CN3-19 forms no appearance models for its
+18 reviewed beam candidates. No positive cross-family transfer, new app fixes or
+room approvals are claimed. Further template/teacher/phase retries are capped;
+actual body/material and geometry/conflict work remains the priority. See the
+newest NEXT_THREAD_HANDOFF continuation. Goal ACTIVE; final 71+16/all gates open.
+
+Previous checkpoint — 2026-11-02:
+
 Audit141 now retains all 71 rows, zero approvals, 64 cumulative-current and seven
 historical-pending reviews (Say-1/3/4/5/6/8/9), not final same-revision 71+16.
 Fresh Lap Backwards-1 remains 250/250 exact. Say-2 is 288/289 exact: four minis replace

@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-02 — Guarded representation experiment preserved; no app activation
+
+Added `scripts/source_full_representation.py` as a standalone, unbound experiment,
+with twelve public regression methods. It can select one source-supported full
+block instead of four NEW material-cell minis, without changing solid area or
+removing original objects. Original, physically disjoint full-block witnesses
+supply appearance; no JMaps, output teachers or room/palette answers are inputs.
+Repeated 16px artwork, uncertain size/capture, insufficient witnesses and prior
+source rejections abstain. The scanner does not import or call this helper.
+
+The final focused run passes **57 tests**, including all twelve new methods;
+this is not complete unittest discovery. The public helper matches the private
+prototype's complete decisions on Say-2/CN3-19, with one additional rejection
+safeguard. The first procedural trial's fractional-size ambiguity failures and
+invalid capture fixture remain preserved. Interior-only 16px comparison removes
+the boundary-blending confound; no correlation threshold or phase search was
+relaxed, and all original asserted methods remain intact.
+
+Say-2's private projection improves typed comparison 288/289 -> 289/289, with
+exactly unchanged solid coverage: one representation correction, not five new
+physical fixes. Transfer is NOT established. A fresh CN3-28 scan (306 originals,
+371 final) has no complete eligible groups among its 23 new minis and uses an
+extended frame. CN3-19's authentic 155-original replay exactly reproduces the
+current 255-object control; main whole/all-18-candidate source review permits
+solid packing but not unique editor origins. The helper forms zero appearance
+models and changes nothing. Halls1's representation reserve remains unqueried.
+
+Audit142 retains all 71 rows, zero whole-room approvals, 64 cumulative-current
+and seven historical-pending reviews. No new scanner/app fixes, cross-family
+success or milestone-object credit is claimed. Default runtime/import graph and
+its prior 14 recoveries remain unchanged; the last full 1,794-test run is
+historical and does not include the newly expanded test set. App root/health
+remain 200 with loaded/disk parity; no restart of unchanged code is needed.
+
+Do not bind this one-room helper or retry teacher/phase thresholds to salvage
+CN3-19. The next substantive work must address actual body/material calibration,
+geometry misses or false conflicts across sprite families, rather than spending
+another batch on equivalent packing. Existing source freezes and failed trials
+remain binding; refresh the remaining Say rooms alongside that work. All six
+goal gates, final stable 71+16 and approved 25% / exceptional 50% cost policy remain.
+
 ## 2026-11-02 — Secret1 clarified; two controls refreshed; unsafe texture work held
 
 The user confirms ordinary 32px solid terrain beneath Secret1's upward spike,

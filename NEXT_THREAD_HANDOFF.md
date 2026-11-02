@@ -14,6 +14,48 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — unbound representation experiment; audit142
+
+Read `.artifacts/general-recognition-20261014/REPRESENTATION_COMPONENT_RESUME_v1556.md`
+IN FULL, checkpoint1555/audit142 and publication1557 when present. All workers are
+terminal. `scripts/source_full_representation.py` and its twelve tests are new,
+but NO scanner caller imports it; registered default runtime/import graph and
+app remain unchanged. Do not wire it in or add it to runtime dependencies until
+actual caller/global protections/current16/source QA/whole cost qualify it.
+
+1552 final focused run:57 methods PASS/12 new, NOT full discovery.1554 proves
+complete private/maintained parity on Say2/CN19 and exact algorithm AST except a
+stronger prior-rejection veto. All ten prior asserted methods remain unchanged.
+Private1541 failures (two fractional ambiguity/one capture-fixture error) stay
+preserved;1542 interior16 evidence/valid canonical fixture correct the causes,
+not thresholds or phase search. Public tests add rejection/output-teacher guards.
+
+1544 Say2 private projection:288/289 ->289/289 typed exact, same solid union,
+one representation correction, not five physical fixes.1545 CN28 ordinary root:
+306 original/371 final, zero complete groups among23new minis/extended frame;
+main1546whole still MAJOR.1548 authentic CN19 155->255 replay ENTIREcurrent44raw
+equal, no newprimary scan. Main1549whole/ALL18source candidate views precede
+1550labels; continuous steam-pipe bodies are solid but unique32packing unknown.
+1551unchanged helper forms0models/18abstentions: no gain or cross-family success.
+Halls1 representation reserve remains UNQUERIED; old Golden4 texture reserve too.
+
+Audit142 ALL71/ZEROapprovals/64cumulativecurrent7historical Say1/3/4/5/6/8/9.
+No new app fixes/goal-registry credit/fullsuite/cost qualification. Previous full
+1794run is historical; public test set expanded. Source-mode14recoveries stay on,
+standard mode unchanged. App/root/health200/sourceparity verified; no new feature
+is available in the app. Keep all source/JMaps/indexes/private material excluded.
+
+NEXT prioritize real geometry/material calibration or false conflicts, not more
+one-room representation/teacher/phase retries. Use saved genuine original stages
+and full-body source freezes; this helper does not solve missing calibration or
+unknown/autotiled artwork. Original 17false/6real/6unknown conflict freeze1487 and
+old Golden4 six pixel-only removals/failed initial1472windows remain separate,
+OFF until their full requirements. Never relabel old failures or invent successful
+rooms from partial metrics. Refresh remaining seven historical Say rooms in
+bounded groups. All41/601/139/current16/final71+16/all six goal gates remain open.
+
+Previous continuation:
+
 ### Latest continuation — human Secret1 full block; two controls; audit141
 
 Read `.artifacts/general-recognition-20261014/SECRET1_AND_CONTROL_RESUME_v1532.md`
