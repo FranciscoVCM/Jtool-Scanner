@@ -8,7 +8,7 @@ a reason to assume an unrecorded selector was False.
 from collections.abc import Mapping
 
 
-SOURCE_FEATURE_SWITCHES = frozenset({
+LEGACY_V2_SWITCHES = frozenset({
     '_SOURCE_FRAME_ARBITRATION_ENABLED',
     '_SOURCE_INTERIOR_GLYPHS_ENABLED',
     '_SOURCE_COMPOUND_CONFLICTS_ENABLED',
@@ -18,19 +18,20 @@ SOURCE_FEATURE_SWITCHES = frozenset({
     '_SOURCE_REPEATED_IDENTITY_ENABLED',
     '_CAPTURE_BASE_CONTEXT_ENABLED',
 })
+SOURCE_FEATURE_SWITCHES = LEGACY_V2_SWITCHES | {'_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED'}
 
 
-def _switch_values(values):
-    if not isinstance(values, Mapping) or set(values) != SOURCE_FEATURE_SWITCHES:
+def _switch_values(values, required=SOURCE_FEATURE_SWITCHES):
+    if not isinstance(values, Mapping) or set(values) != required:
         raise ValueError('A complete, explicitly recorded scanner switch profile is required')
     if any(type(value) is not bool for value in values.values()):
         raise ValueError('Every recorded scanner selector must be an actual boolean')
-    return {name: values[name] for name in sorted(SOURCE_FEATURE_SWITCHES)}
+    return {name: values[name] for name in sorted(required)}
 
 
 def recorded_feature_profile(values):
     """Validate explicit metadata; never infer missing old runtime overrides."""
-    return {'schema_version': 2, 'switches': _switch_values(values)}
+    return {'schema_version': 3, 'switches': _switch_values(values)}
 
 
 def snapshot_feature_profile(scanner_module):
@@ -45,9 +46,10 @@ def snapshot_feature_profile(scanner_module):
 
 def _profile_values(profile):
     if (not isinstance(profile, Mapping) or set(profile) != {'schema_version', 'switches'}
-            or type(profile['schema_version']) is not int or profile['schema_version'] != 2):
+            or type(profile['schema_version']) is not int or profile['schema_version'] not in (2, 3)):
         raise ValueError('Unsupported or incomplete scanner feature-profile record')
-    return _switch_values(profile['switches'])
+    required = LEGACY_V2_SWITCHES if profile['schema_version'] == 2 else SOURCE_FEATURE_SWITCHES
+    return _switch_values(profile['switches'], required)
 
 
 def validate_feature_comparison(baseline, candidate, *, expected_changes):
@@ -60,7 +62,9 @@ def validate_feature_comparison(baseline, candidate, *, expected_changes):
     those remain independent, mandatory qualification checks.
     """
     before, after = _profile_values(baseline), _profile_values(candidate)
-    if not isinstance(expected_changes, Mapping) or not set(expected_changes) <= SOURCE_FEATURE_SWITCHES:
+    if baseline['schema_version'] != candidate['schema_version']:
+        raise ValueError('Incomplete cross-schema comparison: historical selectors are unknown')
+    if not isinstance(expected_changes, Mapping) or not set(expected_changes) <= before.keys():
         raise ValueError('Expected changes must name registered scanner selectors')
     declared = {}
     for name, pair in expected_changes.items():
@@ -72,6 +76,6 @@ def validate_feature_comparison(baseline, candidate, *, expected_changes):
     if actual != declared:
         raise ValueError('Confounded or missing selector change: expected '
                          f'{sorted(declared.items())}, observed {sorted(actual.items())}')
-    return {'schema_version': 2, 'untested_switches_identical': True,
+    return {'schema_version': baseline['schema_version'], 'untested_switches_identical': True,
             'declared_changes': {name: list(pair) for name, pair in sorted(actual.items())},
             'NOT_code_input_output_or_accuracy_qualification': True}

@@ -1,4 +1,4 @@
-"""Experimental source SAVE-header frame evidence, without scanner binding.
+"""Source SAVE-header frame evidence for the guarded late scanner caller.
 
 An ordinary palette-body fragment can be less than half a 32px save sprite.
 An independently visible closed, lettered header supplies horizontal frame

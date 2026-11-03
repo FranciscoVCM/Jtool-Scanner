@@ -4,6 +4,42 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-03 — Late SAVE caller verified on actual scans; still disabled
+
+The maintained SAVE-header helper now has a late scanner caller and registered
+runtime dependency, behind a default-False selector. It runs only after geometry,
+killblock and gravity-arrow decisions on an eligible original direct25x19 frame.
+Standard, inner, compact, extended and no-eligible paths bypass it. It never uses
+canonical padding as original evidence or supplies corrected saves to terrain.
+
+Two fresh ordinary Say-1 OFF/ON scans prove that earlier source stages are
+entirely identical, OFF raw exactly matches the previous saved baseline, and ON
+changes only two Save X values:56->64 at y128 and712->704 at y320. Other raw
+fields/order/count/kind/score/image_box/warnings are unchanged. Postscan exact
+matches299/303->301/303; whole/source/blend and every exported delta reviewed.
+
+The first finalizer failed an incorrect four-export-delta assertion. Existing
+`start_policy=auto` also relocates the derived type20 start with the first Save,
+including player_save_x73->81: SIX typed add/removes, TWO detector corrections,
+ONE policy-derived start move. The failure and completed roots are preserved;
+an explicit export-policy check finalized them without rescan or detector changes.
+All44 authentic cached controls return the same result through the maintained
+wrapper, but ZERO have eligible saves; this is bypass protection, not fresh
+original41/current16 runtime qualification or positive cross-family transfer.
+
+Final82focused tests PASS, including ten new caller/export methods, the existing
+portable helper, profile/comparison, source integration and app tests. Complete
+profiles now require nine selectors/schema3. Historical schema2/eight records
+stay readable without inventing a missingFalse; cross-schema comparisons fail
+closed. README's1794-test claim is now explicitly historical, not current full
+discovery. No new complete-suite or controlled-cost claim.
+
+Audit145 retains all71/ZEROapprovals/71cumulative-current/0historical-pending,
+NOT final stable71+16. No new default/app fixes: the selector stays OFF pending
+actual broader protection/current16 checks and paired whole latency. Source-mode
+fourteen prior recoveries stay enabled. Goal/all six gates remain open; private
+evidence and the old failed export assertion are not published.
+
 ## 2026-11-02 — Tested SAVE-header frame component; not yet app-bound
 
 Added `scripts/source_save_frames.py` and eleven public regression methods.

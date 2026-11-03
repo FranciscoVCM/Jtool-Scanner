@@ -97,6 +97,8 @@ _SOURCE_FRAME_ARBITRATION_ENABLED = False
 _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = True
 # Qualified same-instance phase refit in source-aware mode; standard scans bypass.
 _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
+# Late position-only save evidence requires separate whole-workflow qualification.
+_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2998,7 +3000,34 @@ def scan_image(
             result, source_image, gravity_packets,
             sample_image=image, sample_room=box,
         )
+    if source_geometry and _apply_shape_refits and _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED:
+        result = _align_source_save_headers(result, source_image)
     return result
+
+
+def _align_source_save_headers(result: ScanResult, image: RGBImage, *, source_extent=None) -> ScanResult:
+    """Refine existing saves only after all geometry/marker arbitration.
+
+    The observed palette fragment locates a query, not a teacher or a full
+    object's centre. Only the original, direct 25x19 frame may supply evidence;
+    normalized inner scans and unknown/extended worlds must not fabricate it.
+    """
+    if (not result.source_geometry or result.source_grid != (25, 19)
+            or (source_extent is not None and source_extent != result.room_box)
+            or (result.source_extent is not None and result.source_extent != result.room_box)
+            or not any(d.type_id == 12 and d.kind == 'save'
+                       and d.image_box.width * ROOM_WIDTH < 16 * result.room_box.width
+                       for d in result.detections)):
+        return result
+    from scripts.source_sampling import SourceFrame
+    from scripts.source_save_frames import align_source_save_headers
+
+    frame = SourceFrame(image, result.room_box)
+    detections, evidence = align_source_save_headers(frame, result.detections)
+    if not evidence['changes']:
+        return result
+    return replace(result, detections=detections,
+                   structural_warnings=structural_scan_warnings(detections))
 
 
 def _recover_source_gravity_arrows(
@@ -4315,6 +4344,10 @@ def _scan_lattice_normalized_room(
             sample_image=canonical_image,
             sample_room=Box(0, 0, ROOM_WIDTH, ROOM_HEIGHT),
             source_extent=normalization.source_extent,
+        )
+    if source_geometry and _apply_shape_refits and _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED:
+        result = _align_source_save_headers(
+            result, source_image, source_extent=normalization.source_extent,
         )
     return result
 

@@ -214,7 +214,7 @@ class SourceGeometryIntegrationTests(TestCase):
             'source_directional_body', 'source_raster_cells', 'source_pixel_artwork',
             'source_glyph_backdrop', 'source_calibrated_conflicts', 'source_rejected_primaries',
             'source_physical_patch', 'source_full_spike_phase', 'source_phase_registration',
-            'source_partial_visibility', 'source_arrow_ownership')}
+            'source_partial_visibility', 'source_arrow_ownership', 'source_save_frames')}
         self.assertEqual(len(paths),len(expected))
         self.assertEqual(len(set(paths)),len(paths))
         self.assertEqual({p.name for p in paths},expected)

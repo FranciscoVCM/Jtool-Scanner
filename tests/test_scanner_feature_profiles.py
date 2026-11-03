@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from jtool_scanner import scanner
 from scripts.scanner_feature_profiles import (
-    SOURCE_FEATURE_SWITCHES, recorded_feature_profile, snapshot_feature_profile,
+    SOURCE_FEATURE_SWITCHES, LEGACY_V2_SWITCHES, recorded_feature_profile, snapshot_feature_profile,
     validate_feature_comparison,
 )
 
@@ -25,10 +25,10 @@ class ScannerFeatureProfileTests(TestCase):
         self.addCleanup(baseline.stop)
         self.before = snapshot_feature_profile(scanner)
 
-    def test_snapshot_records_all_eight_actual_values_without_mutating_runtime(self):
+    def test_snapshot_records_all_nine_actual_values_without_mutating_runtime(self):
         self.assertEqual(set(self.before['switches']), SOURCE_FEATURE_SWITCHES)
-        self.assertEqual(len(self.before['switches']), 8)
-        self.assertEqual(self.before['schema_version'], 2)
+        self.assertEqual(len(self.before['switches']), 9)
+        self.assertEqual(self.before['schema_version'], 3)
         with patch.object(scanner, NEW, True):
             after = snapshot_feature_profile(scanner)
             self.assertIs(after['switches'][NEW], True)
@@ -70,7 +70,7 @@ class ScannerFeatureProfileTests(TestCase):
     def test_profile_schema_is_strict_and_never_defaults_unknown_to_false(self):
         for profile in ({}, {'schema_version': True, 'switches': self.before['switches']},
                         {'schema_version': 1, 'switches': self.before['switches']},
-                        {'schema_version': 3, 'switches': self.before['switches']},
+                        {'schema_version': 4, 'switches': self.before['switches']},
                         {**self.before, 'extra': None}):
             with self.subTest(profile=profile),self.assertRaises(ValueError):
                 validate_feature_comparison(profile, self.before, expected_changes={})
@@ -91,6 +91,20 @@ class ScannerFeatureProfileTests(TestCase):
         result = validate_feature_comparison(self.before, loaded, expected_changes={})
         self.assertEqual(result['declared_changes'], {})
         self.assertEqual(original, self.before)
+
+    def test_legacy_eight_selectors_remain_historical_not_assumed_ninth_false(self):
+        legacy = {'schema_version': 2, 'switches': {
+            name: self.before['switches'][name] for name in LEGACY_V2_SWITCHES}}
+        result = validate_feature_comparison(legacy, deepcopy(legacy), expected_changes={})
+        self.assertEqual(result['schema_version'], 2)
+        with self.assertRaisesRegex(ValueError, 'historical selectors are unknown'):
+            validate_feature_comparison(legacy, self.before, expected_changes={})
+        with self.assertRaisesRegex(ValueError, 'historical selectors are unknown'):
+            validate_feature_comparison(self.before, legacy, expected_changes={})
+        invalid = deepcopy(legacy)
+        invalid['switches']['_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED'] = False
+        with self.assertRaises(ValueError):
+            validate_feature_comparison(invalid, invalid, expected_changes={})
 
     def test_undeclared_missing_reversed_and_invalid_expectations_fail(self):
         after = deepcopy(self.before);after['switches'][NEW] = True

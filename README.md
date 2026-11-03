@@ -30,7 +30,8 @@ auxiliary Irkara Arcfox; these rooms still have other errors. Standard scanning
 is unchanged. Enable source geometry and rescan to use this recovery; saved
 projects and corrections are not rewritten automatically.
 
-The current complete **1,794-test suite passes**. The 44-case qualification
+The last complete suite run passed **1,794 tests** at that release; newer
+focused-test checkpoints are not a rerun of full discovery. The 44-case qualification
 retains the original 41 protection groups, 601 miniblocks, 139 terrain footprints
 and current 16 exact-control bounds. Cumulative controlled whole-scan overhead
 is +7.86% dense/+20.45% active sparse/heavier essentially unchanged, within the
@@ -44,9 +45,18 @@ provides `snapshot_feature_profile(scanner)` and
 `validate_feature_comparison(before, after, expected_changes=...)` to reject
 undeclared selector changes before scanning. Keep every untested selector
 constant; missing historical profile metadata is unknown, not implicitly OFF.
-Current records require all eight selectors and schema version2; legacy records
-need an explicitly proved compatibility bridge, not automatic default filling.
+Current records require all nine selectors and schema version3. Historical
+schema2/eight-selector records remain readable, but cross-schema comparisons
+fail closed; the missing ninth value is unknown, not automatically False.
 Profile validation does not replace input, full-output, accuracy or speed checks.
+
+A late SAVE-header position-refinement caller is implemented but disabled while
+broader runtime and whole-cost qualification is pending. In fresh experimental
+OFF/ON scans it corrects two opposite 8px horizontal Save errors on Say-1 without
+changing earlier geometry or other raw fields. The existing automatic-start
+export policy also moves the derived start with its Save; this is not a third
+detected-object correction. The latest affected run passes 82 tests, not full
+discovery. This narrow result is not proof of different-family positive transfer.
 
 The bounded full-spike phase-correction consumer is enabled only in opt-in
 Experimental source geometry mode; standard scans do not enter it.

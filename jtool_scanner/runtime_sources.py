@@ -30,6 +30,7 @@ SOURCE_GEOMETRY_MODULES = (
     'source_phase_registration',
     'source_partial_visibility',
     'source_arrow_ownership',
+    'source_save_frames',
 )
 
 

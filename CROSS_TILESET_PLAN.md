@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Latest: maintained late SAVE caller, actual OFF/ON proof; audit145
+
+Default-False SAVE caller is now bound late and registered, with original direct
+25x19/eligibility bypasses. Two actual Say-1 roots verify TWO source-correct X
+positions299->301/303, identical earlier geometry and all unrelated raw metadata.
+Whole/all SIX exported deltas reviewed: auto-start policy produces one derived
+start relocation as well as the two Save moves. Preserve the initial four-delta
+assertion failure; finalization reused completed roots without changing detection.
+
+82focused tests pass, not full discovery. Explicit profiles are schema3/allnine;
+historical schema2 remains historical, no inventedFalse/cross-schema carry.
+44cached same-instance wrapper bypasses have ZEROactive positives, not different-
+family transfer or fresh global qualification. Only Say1 currently has eligible
+ordinary narrow Save records in the71metadata; do not manufacture transfer claims.
+
+NEXT actual original41/current16 protections and quiet pairedAC dense/sparse/
+heavy whole cost before activation. Do not create another unbound helper or
+repeat completed developer roots/82tests as the next batch. All71/ZEROapprovals,
+71cumulative-current0historical, finalstable71+16/six goal gates remain open.
+No new appfix yet; fourteen prior recoveries remain. General body/identity,
+unknown-tileset recall and false-conflict errors are still project priorities.
+
 ## Latest: SAVE-frame evidence maintained, unbound; audit144
 
 An existing palette fragment is not the full object's centre. New standalone

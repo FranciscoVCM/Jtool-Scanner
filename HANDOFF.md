@@ -4,7 +4,26 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-11-02
+## Current checkpoint — 2026-11-03
+
+Audit145 keeps all71/zero approvals/71cumulative-current0historical-pending,
+not final stable71+16. The SAVE helper is now registered and called late behind
+a default-False selector. Fresh actual OFF/ON Say-1 scans correct two Save X
+offsets299->301/303 with unchanged earlier geometry/all unrelated raw metadata.
+Existing auto-start export follows the first corrected Save: six typed changes,
+two detector corrections and one derived start relocation, not three fixes.
+Whole/all-six-delta source review and82focused tests pass; no new full-suite,
+positive cross-family, global runtime or controlled timing qualification.
+
+All44cached wrapper controls return unchanged but none is eligible. Keep the
+new selector disabled until actual original41/current16 and paired whole-cost
+checks. Standard/default behavior and fourteen prior source-mode recoveries stay
+unchanged. Profiles now require nine switches/schema3; historical schema2 stays
+readable without silently filling a missingFalse. Read latest progress/next-thread
+notes for preserved failed assertion and completed roots; do not rescan them.
+All six goal gates remain open; Say-3's missing block and other major rooms remain.
+
+Previous checkpoint — 2026-11-02:
 
 Audit144 retains all71/zero approvals/71 cumulative-current0historical-pending;
 final same-revision71+16 remains unfinished. New standalone SAVE-frame evidence

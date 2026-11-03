@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-02. Continue in the existing repository at
+Updated 2026-11-03. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,43 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — late SAVE caller qualified on developer, still OFF
+
+Read `.artifacts/general-recognition-20261014/SAVE_LATE_CALLER_RESUME_v1632.md`
+IN FULL, checkpoint1631/audit145/publication1633 when present. New maintained
+caller is registered and default-False, after all geometry/killers/arrows and
+explicit original/direct25x19/narrow ordinary Save guards. Inner/standard/
+compact/extended/no-eligible paths bypass. Profiles require schema3/nine switches;
+historical schema2/eight records remain readable but cannot be silently padded
+or considered equal to a new profile. Earlier representation helper stays unbound.
+
+1628 final82focused PASS, not full discovery. Actual1624 completed both original
+Say1OFF/ON roots: unchanged earlier stages, OFF raw ENTIREequal1563, ON only X56->64
+and712->704.1624 failed its final four-export-delta assertion because existing
+auto-start also moves derived type20/start header.1626 addendum/1627 finalizes
+these SAME roots with EXACT SIX deltas (2Save fixes+1derived start, not3fixes),
+no detector change/rescan. Main1625whole/ALL6delta source QA is in1629. Old FAIL
+and all outputs preserved; do not rerun the roots or treat old4deltaQA as current.
+
+All44authentic cached controls through actual wrapper return SAME instance,
+ZEROeligible: bypass protection only.71existing metadata has eligible narrow
+ordinary saves only onSay1, NOT positive cross-family evidence. No new appfix,
+successful-room certificate, current global16/fullsuite or controlled cost.
+NEXT actual original41/current16 protections and quiet pairedAC dense/sparse/
+heavy WHOLE timing before activation. Do not spend next batch on another unbound
+component/report, repeated82tests/developer roots or cosmetic packing. Other
+general identity/terrain/false-conflict causes remain priorities after qualification.
+
+Audit145ALL71/ZEROapproved/71cumulativecurrent0historical, not finalstable71+16.
+Source14priorrecoveries remain, Save selector OFF. All six gates/goal remain open.
+PERFORMANCE_POLICY25normal/25–50exceptional/never>50 supersedes stale10text.
+No archive/transcript reload; private source/maps/reviews/indexes/oldfailures stay
+ignored/untracked. App was restarted after the registered runtime change;
+checkpoint1631 verifies root/health200 and loaded==disk. Publication1633 will
+verify the pushed commit, clean Git, preserved indexes and app again.
+
+Previous continuation:
 
 ### Latest continuation — SAVE frame component ready for caller qualification
 
