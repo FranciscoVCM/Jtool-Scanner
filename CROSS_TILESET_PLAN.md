@@ -1,5 +1,19 @@
 # Cross-tileset milestone
 
+## Latest: different-paint reserve failed at independent role qualification
+
+Halls4 is direct-frame and has two genuine pending transverse occlusions.
+The unchanged Dotkid2 rule gives zero gains and exact 132-object parity;
+no independently qualified spike/terrain roles reach the geometry proof.
+This is a failed untuned transfer. Keep the tested room unretuned.
+
+An unbound integer physical RGB-bracket helper preserves Dotkid2 evidence
+and needs no new dependency. It separates reusable boundary evidence from
+the flat-paint role limitation. Golden5's frozen corridor offers two real
+pending partials for developing a different textured-role proof; select an
+independent compatible reserve before testing. Audit153 is 71 rows, zero
+approvals, no live behavior change or newly achieved milestone gate.
+
 ## Latest: physical seam evidence yields two actual private partial-spike recoveries
 
 Independent source probes outside the wedge establish wall/exterior roles;

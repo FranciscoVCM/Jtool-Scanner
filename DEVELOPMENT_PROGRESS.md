@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Textured Halls4 transfer failed; RGB bracket extracted
+
+Two actual Source-mode runs on the prospectively frozen Halls4 reserve are
+exactly equal at 132 detections, including complete raw records and exports.
+Both source-confirmed half-occluded spikes remain missing. The unchanged
+Dotkid2 proof stops before shape checks: it finds no independently qualified
+paint roles on these shaded spikes and patterned blocks. No regression or
+transfer success. Keep this failed reserve and do not tune on it.
+
+`source_rgb_bracket` isolates the useful original-pixel blend check without a
+scanner binding or extra dependency. Ten final focused tests pass; 65 adjacent
+sampling/raster/partial-visibility tests pass with their code unchanged. The
+integer helper reproduces all 160 procedural and 18 original Dotkid2 proof
+decisions and physical witnesses. This is component parity, not another gain.
+
+Golden5's frozen corridor remains 22/25 exact; two confirmed transverse
+occlusion misses have original pending poses. Use it as an exposed developer
+for an independent textured-role proof. Freeze a separate compatible reserve
+before testing that proof. Audit153 keeps all 71 rooms, zero approvals and
+unchanged live behavior.
+
 ## 2026-11-08 — Two Dotkid2 full spikes recovered in an actual experiment
 
 Original RGB samples outside the triangle independently establish wall and

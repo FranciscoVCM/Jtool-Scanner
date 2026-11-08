@@ -14,7 +14,23 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — two actual private Dotkid2 partial-spike recoveries
+### Latest continuation — Halls4 transfer failed; reusable bracket preserved
+
+Read `.artifacts/general-recognition-20261014/PARTIAL_TEXTURE_TRANSFER_RESUME_v1714.md`
+in full and audit153. All workers terminal. 1709 prefreezes two real Halls4
+partial spikes; 1710 exact actual 132→132, zero of two recovered. Flat role
+acquisition has no qualified independent witnesses; shape never runs.
+Keep this failed reserve; do not tune against it.
+
+The tracked RGB-bracket helper is unbound; parity matches 160 procedural
+cases and all 18 Dotkid2 source proofs. Dotkid2's actual experimental gains
+remain private. 1713 authentic Golden5 frozen corridor 22/25 and two pending
+real partials support a different textured-role developer batch. Find a
+separate compatible reserve before testing, retain all previous outcomes,
+and do not activate the flat-only experiment. No live change. All original
+protection/full suite/cost/stable71+16 and goal gates remain.
+
+### Previous continuation — two actual private Dotkid2 partial-spike recoveries
 
 Read `.artifacts/general-recognition-20261014/PARTIAL_PHYSICAL_BLEND_ACTUAL_RESUME_v1704.md`
 in full and audit152. All workers terminal. 1699 independent exterior and
