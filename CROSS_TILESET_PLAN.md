@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Latest: a shared physical rail resolves one real ledge, privately
+
+The unchanged Halls2 path has 603 source-negative solid pixels in three
+shifted block footprints that also carry source-positive terrain. Whole
+deletion would lose real solid. A shared four-face original RGB phase check
+moves all three as one band; local errors 831→0, hazard and miniblock positive
+coverage unchanged, other 122 raw records untouched. Golden7 bypasses this
+learner, so the synthetic backdrop mechanism does not explain that room.
+
+Keep the repair private pending portable tests, a prospectively frozen
+different-family transfer, whole protections and controlled cost. Audit154
+records the local result without changing any room approval or live output.
+
 ## Latest: background terrain is seeded before material expansion
 
 A paired background-only swap drives 120 initial false-contaminated full

@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — three Halls2 blocks moved in a private actual scan
+
+Read `.artifacts/general-recognition-20261014/TERRAIN_BAND_RESUME_v1743.md`
+and audit154. All workers terminal. Golden7 bypasses the implicated terrain
+learner. Halls2's three conflicts are one true ledge at a different phase,
+not background. The actual private candidate corrects that band, local
+solid errors 831→0, hazard795/795 and separate mini256/256; all other122 raw
+records and JMap metadata identical. Whole/all three moves reviewed. No
+deployment or reserve query. Next qualify portable physical shared-rail
+evidence and freeze a compatible different-family real reserve first.
+
 ### Latest continuation — appearance shift traces false seed; guard held
 
 Read `.artifacts/general-recognition-20261014/SKIN_TRANSFER_RESUME_v1731.md`

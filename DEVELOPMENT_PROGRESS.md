@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Shared source rails correct one Halls2 ledge in private
+
+Actual unchanged scans reproduce whole raw on Golden7, CN3-25 and Halls2.
+Golden7 bypasses the terrain learner implicated in the synthetic failure.
+Halls2 uses it to reduce false coverage, but three blocks in one ledge remain
+out of phase: their footprints include both real solid and real spike pixels.
+The eight earlier synthetic losses are traced separately to a lost miniblock,
+three full-spike overlap decisions and four missing late minispike recoveries.
+
+Four independent source boundaries across a connected ledge and three
+compatible tile interiors identify a unique shared phase. A private actual
+Halls2 scan moves exactly three blocks, with all other 122 ordered raw
+records and JMap metadata unchanged. Frozen local solid error falls from 831
+pixels to zero, retaining all 795 protected hazard pixels and the separate
+256-pixel miniblock. Whole and all three moves were reviewed. The first strict
+overlap variant abstained; the measured variant preserves existing alternate
+packing fully contained in the source-proven band.
+
+One developer ledge only, not independent transfer or a whole-room approval.
+Production is unchanged. Audit154 retains 71 rows and zero approvals.
+
 ## 2026-11-08 — A background-only swap exposes false terrain seeding
 
 Nine fixed-layout, sprite-based test scenes were scanned in ordinary Source
