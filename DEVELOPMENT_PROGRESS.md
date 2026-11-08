@@ -4,6 +4,29 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Independent contour and rail evidence narrows Redcube corner misses
+
+Original RGB spike contours, split into independent interior rows, give at most
+1.11 physical pixels of held-out X error on both Redcube rooms. Spike-derived Y fails
+the frozen 2px criterion (3.99 and 4.90px worst residuals). A separate test
+of the two outer faces of full-height rails, using disjoint left/right strips,
+gets Y residuals of 0.88 and 1.84px. This qualifies a private geometric
+hypothesis in both rooms; all four FTFA controls bypass it. Synthetic native,
+clipped, anisotropic, low-luminance-contrast and negative checks pass.
+
+The fitted viewport extends beyond the capture on all sides. None of the eight
+held-out corner bodies has complete original-pixel coverage (870–961 of 1024
+sampled native cell centres); only one passes both inward-edge checks in the
+hypothesis. The previously passing corner is a different one. Neither frame
+proves a new block, so all eight misses remain. No scanner or app behavior
+changed. Do not fit the corners or use padding as evidence.
+
+Audit148 retains all 71 rooms and zero approvals. It also separates Redcube2's
+saved Standard baseline (227 objects, 45/56 real full spikes exact) from its
+existing Source result (238 objects, 56/56 exact, seven false fulls). That is an
+audit correction, not another recovery. Next investigate independent source
+evidence for object-role conflicts, rather than another corner-frame fit.
+
 ## 2026-11-08 — Physical edge attribution and boundary-frame diagnosis
 
 Replayed the existing contour observations for all 29 frozen conflict hypotheses

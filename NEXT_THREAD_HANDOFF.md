@@ -14,7 +14,24 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — capped overlap probe; independent frame evidence next
+### Latest continuation — paired rail/contour geometry; corner route capped
+
+Read `.artifacts/general-recognition-20261014/CONTOUR_RAIL_RESUME_v1665.md`
+in full, then audit148. All workers terminal. 1662 original spike slopes give
+independent X on both Redcube developers; Y fails the frozen residual gate.
+1664 independent outer rail-face pairs qualify Y in both, but all eight held-out
+corner bodies extend beyond the capture and only one passes both inward edges.
+This explains a real registration/coverage risk without certifying a block or
+changing the live frame. No correction, no reserve query, no new scanner runs.
+Retain old failures and qualified Save/other source-mode gains.
+
+Next use a distinct source-role/ownership mechanism; a solid beam end mistaken
+for a platform is a candidate. Freeze independent evidence and reserve roles
+first. Do not retry failed platform pattern/routing or held CN3-19 packing
+without new evidence. Audit148 retains 71 rows, zero approvals; neither the
+final stable 71+16 run nor any remaining milestone gate is waived.
+
+### Previous continuation — capped overlap probe and original seam diagnosis
 
 Read `.artifacts/general-recognition-20261014/EDGE_AND_BOUNDARY_RESUME_v1657.md`
 IN FULL, checkpoint1656/audit147/publication1658. All workers terminal. No

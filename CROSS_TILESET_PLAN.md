@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest: independent interior geometry supports clipping, not corner recovery
+
+Split original RGB spike contours support Redcube1/2 horizontal registration,
+but the spike-based vertical fit exceeds the frozen error gate. Independent
+outer rail faces on both sides of the room supply the missing vertical
+agreement. These are two same-family developers, not cross-family transfer.
+Four FTFA controls bypass the joint hypothesis. This fit is not used by the
+scanner.
+
+Every held-out corner loses physical coverage under the inferred extent and
+seven of eight lack both supported inward faces. No block or outer-edge truth
+follows from this mapping. Stop this fit series; preserve unknown coverage
+and move to a distinct source-role problem, such as distinguishing a solid
+material continuation from a standalone platform. Audit148: 71 rows, zero
+approvals, all six milestone gates still open.
+
 ## Latest: paired painted seams are a registration lead, not a frame correction
 
 Physical transition attribution reproduces the full 29-conflict denominator but
