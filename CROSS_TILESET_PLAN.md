@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: background terrain is seeded before material expansion
+
+A paired background-only swap drives 120 initial false-contaminated full
+seeds through unverified spike votes. An original-pixel vote check proves the
+failure path, but restricting the whole learner loses eight genuine authored
+objects in a real scanner invocation on the synthetic image. Keep it off.
+Measure local source-supported terrain footprints and downstream dependencies
+before another edit. Establish the same cause with original real-screen
+evidence, preserve earlier terrain restorations, and freeze a compatible
+reserve before testing transfer. Audit153 and all real-room gates stand.
+
 ## Latest: use sprite diversity to test transfer, not to assume a skin
 
 The offline sprite probe confirms that supplied appearance examples can

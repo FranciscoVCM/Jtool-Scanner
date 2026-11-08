@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — A background-only swap exposes false terrain seeding
+
+Nine fixed-layout, sprite-based test scenes were scanned in ordinary Source
+mode before scoring. The background-only pair changed 36 to 201 unmatched
+typed objects and 11,136 to 122,880 extra solid pixels. Changing only
+brightness in another pair reduced exact objects from 33 to seven of 62
+observable labels. These are controlled diagnostics, not new real-room gains.
+
+An output-identical trace attributes the terrain surge to 120 initial full
+seeds, before expansion to 124 full and 31 mini candidates. Five of the 32
+spike back votes come from exact authored spikes. Original contour and RGB
+checks distinguish four of those five from all 27 other votes. Restricting
+the learner to that evidence in an actual private scan cuts unmatched objects
+from 201 to 60, **but loses eight real authored objects and introduces 15
+new unmatched positions**. The change is held. Two synthetic controls have
+exact raw parity, one by bypassing the affected route.
+
+Next distinguish source-supported local terrain contexts from the false
+room-wide seed, and verify whether the cause also occurs in real screenshots.
+No activation, new room approval, or real corpus change; audit153 stands.
+
 ## 2026-11-08 — Sprite reference audit: useful evidence, not a scanner replacement
 
 An offline skin-library audit indexed 8,130 usable role-labelled images,

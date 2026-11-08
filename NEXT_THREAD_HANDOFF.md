@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — appearance shift traces false seed; guard held
+
+Read `.artifacts/general-recognition-20261014/SKIN_TRANSFER_RESUME_v1731.md`
+and audit153. All workers terminal. Nine ordinary Source-mode synthetic
+scans establish big background and brightness failures without labels as
+scanner inputs. The background-only false-terrain surge starts at the
+120-cell seed, not late expansion. The actual restricted-vote experiment
+loses eight real synthetic objects; preserve that FAIL and do not activate.
+Next isolate local source-backed terrain/context and trace Golden7's actual
+learner before concluding the same cause. No live change, approval or new
+real recognition. The separate Golden5 textured partial problem stays open.
+
 ### Latest continuation — offline sprite reference audit, no live change
 
 Read `.artifacts/general-recognition-20261014/SKIN_REFERENCE_RESUME_v1723.md`
