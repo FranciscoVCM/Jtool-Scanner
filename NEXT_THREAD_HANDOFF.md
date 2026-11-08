@@ -14,7 +14,23 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — paired rail/contour geometry; corner route capped
+### Latest continuation — actual low-contrast platform admission attribution
+
+Read `.artifacts/general-recognition-20261014/PLATFORM_ADMISSION_RESUME_v1675.md`
+in full, then audit149. All workers terminal. Main reviewed all 24 current
+platform crops: six impostors, 18 source-visible ledges. Two physical-body
+alternatives qualify zero removals and stay off. Actual current Source-mode
+Halls2 and Entrance1 traces reproduce whole raw and all exports. Five false
+outputs entered only via low contrast; all four genuine Entrance1 ledges had
+other route support. This is causal evidence, not a removal or fix.
+
+Next audit true low-contrast-only controls with the exact original stage
+frames before any new role guard. Do not disable that path blindly, reorder
+anchor arbitration, retune the failed alternatives, or revive the held CN3-19
+packing route. Audit149 preserves all 71 rooms and zero approvals. All six
+milestone gates remain open.
+
+### Previous continuation — paired rail/contour geometry; corner route capped
 
 Read `.artifacts/general-recognition-20261014/CONTOUR_RAIL_RESUME_v1665.md`
 in full, then audit148. All workers terminal. 1662 original spike slopes give

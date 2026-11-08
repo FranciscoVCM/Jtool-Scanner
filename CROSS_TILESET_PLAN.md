@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Latest: platform admission cause isolated without changing arbitration
+
+Original source review identifies six false platform outputs among 24 reviewed
+poses. The physical-perimeter and same-row RGB prediction routes both qualify
+zero removals and are capped. Two actual unchanged Source-mode traces bind all
+four Halls2 impostors and the Entrance1 striped-tile impostor to the same
+low-contrast-only admission as the earlier CN3-19 beam end. Genuine Entrance1
+ledges use additional routes. This does not prove that all low-contrast-only
+proposals are false. Profile genuine controls before evaluating a new source
+role guard, and retain failed early-reorder evidence and all protections.
+Audit149: 71 rows, zero approvals; no recognition or runtime change.
+
 ## Latest: independent interior geometry supports clipping, not corner recovery
 
 Split original RGB spike contours support Redcube1/2 horizontal registration,

@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Low-contrast platform admission traced in two rooms
+
+Reviewed 24 saved current platform poses against the original source: 18 show
+real ledges (not exact-pose certification), and six are terrain or background
+impostors. Two alternatives were held: the full-perimeter test passed 10/12
+portable checks, and independent adjacent-paint prediction passed 10/10; neither
+qualified any of the six removals. The tests showed that real terrain may lack
+a separate tile perimeter or have different neighboring scenery.
+
+Two unchanged actual Source-mode scans reproduced the complete raw records and
+exports. The four Halls2 impostors and one Entrance1 impostor were each
+admitted only by the low-contrast path. All four genuine Entrance1 ledges had
+other route support. The earlier CN3-19 framed-solid impostor shares this
+admission path. Before changing it, identify which genuine unknown-skin ledges
+depend on it and validate a distinct source-body test. Do not remove platforms
+merely because they overlap terrain or reorder the early anchor pipeline.
+
+Audit149 retains all 71 rooms, zero approvals and the unresolved platform
+errors. No runtime change, new recognition gain or reserve success.
+
 ## 2026-11-08 — Independent contour and rail evidence narrows Redcube corner misses
 
 Original RGB spike contours, split into independent interior rows, give at most
