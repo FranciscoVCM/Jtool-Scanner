@@ -4,6 +4,25 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Partial-spike slope is visible; base and occlusion remain unresolved
+
+Reused Dotkid2's authentic 18-pose original rejected-spike packet. Two
+source-only partial proofs each recover zero of eight confirmed misses. The
+flat-paint model is ambiguous on 17 poses and fails two clipped procedural
+cases (62/64). A stricter attachment proof fixes the clipped tests (64/64)
+but has no qualifying independent original contact witnesses in this room.
+
+Across every independently measured color-role alternative, an optimistic
+diagnostic sees a full-size slope on seven of eight real poses and none of the
+six false or four uncertain ones. Only four have both slope and base support;
+only one has complete body support, even allowing an inadmissible choice of
+role model per query. Better color selection alone cannot reach the frozen
+two-recovery gate. Seek independent base and occlusion-boundary evidence;
+do not adopt either variant or use the long edge alone to emit a full spike.
+
+Audit151 preserves 71 rows, zero whole-room approvals, and unchanged scanner
+behavior. No new whole scan, transfer, controlled timing, or full-suite run.
+
 ## 2026-11-08 — Real low-contrast platforms identified; role variants held
 
 Fixed-locator replay reproduces all 14 traced emitter records exactly. All six

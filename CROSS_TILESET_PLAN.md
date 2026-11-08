@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: Dotkid2 long-edge evidence separates candidates but does not qualify bodies
+
+Two original-RGB probes recover no pending full spikes. Under a deliberately
+optimistic comparison of all pre-existing paint models, seven real misses
+have a visible projected slope longer than a minispike, and none of the ten
+negative or uncertain poses has one. Only four have the base as well; only
+one meets the complete conjunction. Do not pick a model per query or weaken
+the hidden-body check. New work needs independently observed occluder
+boundaries and base evidence, plus compatible prospective cross-family
+transfer. Audit151 retains 71 rooms/zero approvals; runtime unchanged.
+
 ## Latest: protect genuine low-only ledges; cap platform-role variants
 
 Exact locator replay finds three real low-only ledges among 18 genuine ones;

@@ -14,7 +14,21 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — genuine low-only ledges; platform variants capped
+### Latest continuation — Dotkid2 partial-slope ceiling; no adoption
+
+Read `.artifacts/general-recognition-20261014/PARTIAL_SLOPE_CEILING_RESUME_v1692.md`
+in full and audit151. All workers terminal. Authentic original rejected-pose
+snapshot, 8 real/6 false/4 uncertain. Both source-role variants qualify zero
+real corrections. A diagnostic across all independent color fits finds a
+long side on seven real misses and no negatives/unknowns, but only one
+complete candidate, even with inadmissible per-query role selection.
+
+Next investigate an independently observed base/occlusion boundary or a
+different mechanism. Do not rerun flat-role fits, use a slope alone, or
+reopen the held platform variants. No reserve consumed, new runtime gain
+or new whole scan. All six milestone gates remain open.
+
+### Previous continuation — genuine low-only ledges; platform variants capped
 
 Read `.artifacts/general-recognition-20261014/PLATFORM_TRUE_CONTROLS_RESUME_v1683.md`
 in full, then audit150. All workers terminal. Fixed-locator replay matches
