@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — offline shared rail solver, connected challenge held
+
+Read `.artifacts/general-recognition-20261014/TERRAIN_BAND_PORT_RESUME_v1751.md`
+and audit154. All workers terminal. Unbound helper passes 50 focused tests
+and repeats the entire private Halls2 result. CN3-93 107 and pre-frozen
+connected CN3-31 583 are unchanged; CN3-31 still has 450 local errors. Preserve
+this limitation and the held prototypes. Next a genuinely distinct attached
+side proof with independent phase/continuation and a new prospective reserve,
+or the separate Golden5 textured partial developer. No runtime activation.
+
 ### Latest continuation — three Halls2 blocks moved in a private actual scan
 
 Read `.artifacts/general-recognition-20261014/TERRAIN_BAND_RESUME_v1743.md`

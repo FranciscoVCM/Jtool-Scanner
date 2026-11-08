@@ -4,6 +4,21 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Shared rail solver ported; connected ledge transfer held
+
+An unbound source-RGB solver preserves physical crop and world extent without
+resampling. It requires a unique shared phase, both ends, every long-face
+segment, and compatible original interiors; clipped competitors stay unknown.
+Fifty focused tests pass, including native/fractional, near-isoluminant,
+already aligned, interrupted, mixed-body and clipped cases.
+
+An actual private Halls2 run reproduces the earlier 125-record correction
+exactly. CN3-93 stays byte-compatible at 107 records. The pre-frozen,
+boundary-connected CN3-31 challenge stays at 583 records and 450 frozen
+false-solid pixels. Its lower rail is strong, but a joined upper segment and
+one end are not supported. Strict closure does not transfer to that structure;
+do not lower the threshold. No production change or new recognition credit.
+
 ## 2026-11-08 — Shared source rails correct one Halls2 ledge in private
 
 Actual unchanged scans reproduce whole raw on Golden7, CN3-25 and Halls2.

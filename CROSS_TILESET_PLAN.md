@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: strict shared rails preserve uncertainty on connected terrain
+
+The tested offline solver exactly reproduces the private Halls2 correction.
+A different-family connected ledge retains 450 known false-solid pixels:
+the original lower rail is visible but two other required boundary witnesses
+are weak. CN3-93 is unchanged. Do not tune on this challenge or relax closure;
+a separate measured material-continuation and phase witness is needed for
+partly attached ledges. No transfer/adoption or new whole-room audit claim.
+
 ## Latest: a shared physical rail resolves one real ledge, privately
 
 The unchanged Halls2 path has 603 source-negative solid pixels in three
