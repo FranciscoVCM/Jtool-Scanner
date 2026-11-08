@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Latest: physical seam evidence yields two actual private partial-spike recoveries
+
+Independent source probes outside the wedge establish wall/exterior roles;
+only original RGB samples physically bracketed by matching wall and spike
+paint can explain an antialiased boundary. No global palette or invented
+occlusion. The old long-side/base/body and coverage gates remain. The actual
+Dotkid2 caller gives 448 → 450, with two source-reviewed additions and no
+old changes. Frozen errors 8 → 6, zero false or uncertain admissions.
+
+This is one developer room only. A compatible positive reserve, protections,
+whole cost, and final 71+16 still need verification. Audit152 keeps 71 rooms
+and zero approvals; runtime is unchanged.
+
 ## Latest: Dotkid2 long-edge evidence separates candidates but does not qualify bodies
 
 Two original-RGB probes recover no pending full spikes. Under a deliberately

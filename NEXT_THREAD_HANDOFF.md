@@ -14,7 +14,23 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — Dotkid2 partial-slope ceiling; no adoption
+### Latest continuation — two actual private Dotkid2 partial-spike recoveries
+
+Read `.artifacts/general-recognition-20261014/PARTIAL_PHYSICAL_BLEND_ACTUAL_RESUME_v1704.md`
+in full and audit152. All workers terminal. 1699 independent exterior and
+physical blend evidence passes 160 synthetic cases. 1702 actual Source-mode
+448 → 450, original RIGHT (416,240) and LEFT (464,224) only. Exact 448 old
+ordered records/metadata retained; whole and both delta views reviewed.
+Frozen errors 8 → 6, no false or uncertain addition. App remains 448.
+
+Next verify compatible different-family source truth and freeze a prospective
+reserve before querying it. The confirmed Golden2 ceiling spike is not in
+the original pending cohort and the Halls1 examples are not yet compatible.
+No blind transfer, runtime activation or weakened checks. Maintained port,
+all protections/whole costs/full tests/final 71+16 and six milestone gates
+remain open.
+
+### Previous continuation — Dotkid2 partial-slope ceiling; no adoption
 
 Read `.artifacts/general-recognition-20261014/PARTIAL_SLOPE_CEILING_RESUME_v1692.md`
 in full and audit151. All workers terminal. Authentic original rejected-pose

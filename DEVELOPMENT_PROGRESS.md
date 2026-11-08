@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Two Dotkid2 full spikes recovered in an actual experiment
+
+Original RGB samples outside the triangle independently establish wall and
+exterior roles. At the wall/spike seam, an ambiguous pixel counts as an
+observed blend only if distinct original wall and spike pixels bracket it and
+its RGB lies between them. It is not silently counted as solid or empty.
+The long-side, base, complete visible body, and original coverage checks
+remain required. All 160 procedural cases pass, including false blends,
+actual minispikes and clipped coverage. The preceding seam-only attempt
+qualified no real recovery and remains held.
+
+Two real Source-mode runs show 448 → 450 on Dotkid2, adding the original
+RIGHT (416,240) and LEFT (464,224) records. All 448 old records, metadata and
+relative order are retained. Whole-room and both delta views were reviewed.
+In the frozen 18-pose subset, eight real misses become six (25% fewer), with
+no false or uncertain admission. Other room errors remain significant.
+
+This is a private actual developer result, not live activation or
+cross-family success. Audit152 keeps all 71 rooms and zero approvals. Next
+freeze compatible independent transfer before a maintained, default-off
+port and full protection/cost qualification.
+
 ## 2026-11-08 — Partial-spike slope is visible; base and occlusion remain unresolved
 
 Reused Dotkid2's authentic 18-pose original rejected-spike packet. Two
