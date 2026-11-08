@@ -14,6 +14,33 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — capped overlap probe; independent frame evidence next
+
+Read `.artifacts/general-recognition-20261014/EDGE_AND_BOUNDARY_RESUME_v1657.md`
+IN FULL, checkpoint1656/audit147/publication1658. All workers terminal. No
+runtime changes or new recognition gains in this batch; the source-mode SAVE
+release stays active. Do not repeat its qualified controls, tests, or timing.
+
+1650 exact physical-transition replay matches all29 old protections. Exact
+closed-neighbor sharing weakens0; arbitrary locator sharing weakens1 false
+Entrance2, geometric closed-edge crossing weakens1 false CN7. Neither proves
+safe retirement or reaches frozen goals; no removal of any real/unknown.
+Preserve1649 literal-label parser failure and1559/1561 earlier failed variants.
+
+1652 frozen8 real Redcube1/2 corner bodies: only1 inward closure, zero valid
+disjoint artwork proofs, no emit. 1653 independent interior Y32 agreement in
+both; X weak. 1654 RGB improves X agreement but still fails strength gate.
+1655 held-out opposite gradients support a thick-seam lead, not a logical
+boundary/pose certificate. Next seek paired seams with independent body/phase
+anchoring, no global remap, cutoff relaxations, or assumed seam midpoint.
+Halls5 and Redcube3 not queried; the latter is same-family, not cross-family
+transfer. Preserve unknowns, clipping and all existing protected outputs.
+
+Audit147 all71/zero approvals/0 historical-pending, not final stable71+16.
+Goal active/all six gates open. No archive/transcript reload or Dotkid3 A/B retry.
+
+Previous continuation:
+
 ### Latest continuation — SAVE alignment enabled, move to false-conflict ownership
 
 Read `.artifacts/general-recognition-20261014/SAVE_RELEASE_RESUME_v1646.md`

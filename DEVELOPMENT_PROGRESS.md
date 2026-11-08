@@ -4,6 +4,35 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Physical edge attribution and boundary-frame diagnosis
+
+Replayed the existing contour observations for all 29 frozen conflict hypotheses
+against their original RGB snapshots, without rescanning rooms. Recording the
+actual transition pixel pairs reproduces every old protection. Exact sharing
+with fully closed neighboring hypotheses weakens none. Sharing with any original
+locator weakens one false Entrance2 hypothesis; nominal closed-edge crossings
+weaken one false CN3-7 hypothesis. Neither supplies safe retirement evidence or
+meets the frozen local gates. Keep the guard and all real/unknown overlaps intact.
+
+Redcube1 and Redcube2 each have four missing, visibly distinct square corner
+tiles. None of the eight passes the fixed complete inward-edge and disjoint
+artwork test. Independent interior strips agree on shifted vertical 32px lattices
+in both rooms, but horizontal support is insufficient. Preserving RGB contrast
+improves horizontal agreement without passing the existing strength gate.
+
+The competing horizontal peaks are 5–10 source pixels apart. In held-out strips,
+67–74% of rows with both transitions have opposing RGB gradients; stringent
+same-inside/outside observations occur across 17–21 of 24 lines per split. This
+supports investigating a thick painted seam, not using its midpoint as a known
+logical boundary. Next test repeated paired seam geometry with an independent
+body or phase anchor. Do not lower contour thresholds, remap the viewport from
+one axis, or assume unavailable pixels are empty. Redcube3 and Halls5 were not
+queried; no new different-family transfer evidence.
+
+Audit147 retains all 71 rooms and zero approvals. No scanner behavior changed,
+no object was corrected or removed in this batch, and no new full-suite or
+timing run was needed. The qualified source-mode save correction remains live.
+
 ## 2026-11-08 — Qualified SAVE position correction enabled in source mode
 
 Experimental source geometry now enables the late original-source SAVE-header

@@ -1,5 +1,25 @@
 # Cross-tileset milestone
 
+## Latest: paired painted seams are a registration lead, not a frame correction
+
+Physical transition attribution reproduces the full 29-conflict denominator but
+does not justify spike removal. Keep the original protections, including real
+partials and exact-phase unknowns; no more variants of those attribution counts.
+
+The eight Redcube1/2 corner bodies are still missing. Fixed inward contours and
+independent interior artwork do not qualify them. Disjoint interior strips show
+a repeatable vertical 32px lattice; the horizontal gate still fails with both
+luminance and original RGB contrast. Held-out rows often show opposed edges at
+the two competing X peaks, supporting a thick-seam hypothesis. An independent
+logical phase/body anchor is still required; a seam midpoint is not truth.
+
+Next bounded accuracy work: test paired physical seams against coherent body
+geometry and real clipping before using a registered source view. Retain FTFA's
+existing border behavior and all original protections. Redcube3 is an unqueried
+same-family reserve, not the required different-family positive transfer.
+Audit147 has zero approvals; no runtime change or new accuracy gains in this
+diagnosis. The source-mode save release and all six goal gates remain as before.
+
 ## Latest: source-mode SAVE alignment enabled; audit146
 
 The late original-source header caller is enabled only in Experimental source
