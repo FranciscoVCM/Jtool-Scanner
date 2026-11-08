@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Sprite reference audit: useful evidence, not a scanner replacement
+
+An offline skin-library audit indexed 8,130 usable role-labelled images,
+including backgrounds, and found 4,981 distinct nonempty visible-art groups.
+The same artwork sometimes represents different objects: solid terrain and
+killblocks, terrain and background, or different water types. In the native
+full-spike masks, 41 of 44 distinct masks per direction favor the intended
+triangle orientation, but only 17 of 44 reach 0.80 overlap with the filled
+triangle. Animation, transparency and size must be handled separately.
+
+An appearance-only probe on all 12 Lap Around originals agreed with 1,048
+of 2,644 eligible reference positions/types at a fixed tested tolerance,
+with 15 unlisted proposals. Labels were read only after prediction; the
+reference disagreements make unlisted proposals nonfinal. The same direct
+matching strategy over-proposed on monochrome ATK2, and the tested raw block
+bank supplied no convincing textured match for Golden5 or Halls4. Several
+more real source rooms also lacked a strong match; near-flat colors are not
+enough to identify a style. These results are not whole-scan improvements.
+
+Use the library offline to generate exact, controlled appearance-shift and
+ambiguity cases. Keep shared art and related families together when splitting
+cases, retain independent real-screen validation, and only consider a sprite
+match as additional support alongside source geometry and context. No skin
+files, probes, or results are shipped; production and audit153 are unchanged.
+
 ## 2026-11-08 — Textured Halls4 transfer failed; RGB bracket extracted
 
 Two actual Source-mode runs on the prospectively frozen Halls4 reserve are

@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — offline sprite reference audit, no live change
+
+Read `.artifacts/general-recognition-20261014/SKIN_REFERENCE_RESUME_v1723.md`
+and audit153. The archive and five offline probes are ignored; do not publish
+the art. Lap Around shows real appearance evidence, but monochrome aliases,
+unmatched textured rooms and identical sprites across gameplay roles rule out
+using sprite matching as the detector. Use family-separated synthetic stress
+tests and independent real-source qualification. Golden5 still needs its own
+textured-role proof and a separately frozen compatible reserve. No runtime
+change, new scan approval, or milestone gate passed. All workers terminal.
+
 ### Latest continuation — Halls4 transfer failed; reusable bracket preserved
 
 Read `.artifacts/general-recognition-20261014/PARTIAL_TEXTURE_TRANSFER_RESUME_v1714.md`

@@ -1,5 +1,20 @@
 # Cross-tileset milestone
 
+## Latest: use sprite diversity to test transfer, not to assume a skin
+
+The offline sprite probe confirms that supplied appearance examples can
+corroborate genuine source geometry, but coverage varies sharply. Lap
+Around yields many exact appearance matches, ATK2's merged silhouettes
+produce aliases, and Golden5/Halls4 have no established matching material.
+Identical artwork can also label different roles, so do not equate skin
+selection, alpha bounds, or filename labels with gameplay semantics.
+
+Use deterministic appearance swaps with fixed layouts, isolate related art
+and mask families across splits, and include same-art/different-role negatives.
+Use real screenshots as the adoption gate. Continue independent original
+source-role and geometry work; no runtime atlas dependency or published asset
+redistribution. All six milestone gates and audit153 stand unchanged.
+
 ## Latest: different-paint reserve failed at independent role qualification
 
 Halls4 is direct-frame and has two genuine pending transverse occlusions.
