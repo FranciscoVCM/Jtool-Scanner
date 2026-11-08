@@ -97,8 +97,8 @@ _SOURCE_FRAME_ARBITRATION_ENABLED = False
 _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = True
 # Qualified same-instance phase refit in source-aware mode; standard scans bypass.
 _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
-# Late position-only save evidence requires separate whole-workflow qualification.
-_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = False
+# Qualified late position-only save evidence; standard scans bypass this caller.
+_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,

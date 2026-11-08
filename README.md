@@ -50,13 +50,20 @@ schema2/eight-selector records remain readable, but cross-schema comparisons
 fail closed; the missing ninth value is unknown, not automatically False.
 Profile validation does not replace input, full-output, accuracy or speed checks.
 
-A late SAVE-header position-refinement caller is implemented but disabled while
-broader runtime and whole-cost qualification is pending. In fresh experimental
-OFF/ON scans it corrects two opposite 8px horizontal Save errors on Say-1 without
-changing earlier geometry or other raw fields. The existing automatic-start
-export policy also moves the derived start with its Save; this is not a third
-detected-object correction. The latest affected run passes 82 tests, not full
-discovery. This narrow result is not proof of different-family positive transfer.
+Experimental source geometry now refines the X position of an eligible existing
+Save using its visible header frame rather than the centre of a narrow colour
+fragment. On Say-1, it corrects two opposite 8px errors (299 → 301 of 303 exact
+matches), with unchanged Y and earlier geometry. The existing automatic-start
+policy moves its derived start with the corrected Save; this is not a third
+detector fix. Enable Experimental source geometry and rescan to use it. Standard
+scans and already saved projects are unchanged.
+
+All 44 fresh protected scans and 16 exact-control scores are unchanged. Twelve
+paired whole-scan timing samples pass; the largest measured increase including
+exports is +2.10% on Say-1. The enabled profile passes 82 affected tests (not full
+discovery), and the live source-mode project matches the reviewed output. This
+is a bounded position correction, not new Save classification or proof of
+positive transfer to another visual family.
 
 The bounded full-spike phase-correction consumer is enabled only in opt-in
 Experimental source geometry mode; standard scans do not enter it.

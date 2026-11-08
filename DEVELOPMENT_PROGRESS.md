@@ -4,6 +4,47 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Qualified SAVE position correction enabled in source mode
+
+Experimental source geometry now enables the late original-source SAVE-header
+caller. The release changes only the enable setting, matching the measured
+candidate profile; earlier geometry and standard-mode bypasses are unchanged. On Say-1,
+two existing saves move 8px horizontally in opposite directions, raising exact
+matches from 299/303 to 301/303. Y is unchanged. Automatic-start export follows
+the corrected first save under its existing policy; it is not a third fix.
+
+All 44 fresh protected scans preserve complete ordered raw output, metadata and
+exports. All original 41 protection groups, 601 miniblocks, 139 terrain footprints
+and 16 exact controls pass. FTFA remains 926/928 with zero extras, shifts or wrong
+directions; Flames remains 254 exact with its prior error bounds unchanged.
+
+Quiet serial AC timing used two samples per mode and source, with every complete
+output checked. Times below are medians in seconds, against `3d899ed` with the
+SAVE caller disabled; these are not a remeasurement of older cumulative costs.
+
+| Source | Scan OFF → ON | Including exports OFF → ON |
+|---|---:|---:|
+| Say-1 | 85.56 → 86.42 (+1.00%) | 90.77 → 92.67 (+2.10%) |
+| Redcube2 | 63.10 → 63.09 (−0.02%) | 67.08 → 67.17 (+0.13%) |
+| Golden7 | 93.23 → 92.83 (−0.42%) | 107.91 → 107.01 (−0.83%) |
+
+All 82 affected tests pass on the enabled profile, not full discovery. The app
+was restarted, both actual scan/export modes return HTTP 200, and the source-mode
+project and API export exactly match the reviewed candidate through the same
+exporter. The first verifier incorrectly compared API bytes against the corpus
+exporter: only the expanded object-list order differs, both before and after
+activation. Compact data, map metadata and duplicate-aware objects match. The
+failed assertion is preserved. No scan was repeated and no detector or exporter
+code changed to resolve it; only the saved projects were exported again.
+
+Audit146 keeps all 71 rooms, zero whole-room approvals, and no historical review
+backlog; it is not a final same-revision 71+16 sweep. A corrected checksummed
+census covers all 71 saved mixed-revision cases (the initial directory field
+covered 40); only Say-1 has eligible narrow ordinary saves. There is no positive
+different-family transfer claim. Next tackle source ownership of false spike
+conflicts without removing genuine partial or touching spikes. The goal remains
+open; no broad tileset or vertical-save fix is claimed.
+
 ## 2026-11-03 — Late SAVE caller verified on actual scans; still disabled
 
 The maintained SAVE-header helper now has a late scanner caller and registered

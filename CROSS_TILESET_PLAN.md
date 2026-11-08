@@ -1,5 +1,27 @@
 # Cross-tileset milestone
 
+## Latest: source-mode SAVE alignment enabled; audit146
+
+The late original-source header caller is enabled only in Experimental source
+geometry. Two source-verified Say-1 X fixes improve 299 → 301/303 exact; Y and
+all unrelated raw fields stay fixed. Automatic start follows the corrected save
+as before. The actual source-mode app project matches the reviewed candidate.
+Standard scans bypass the caller; no saved projects are rewritten.
+
+44 fresh controls keep complete raw/exports; all original41/601/139/current16
+pass. Quiet AC 12-sample whole timing against `3d899ed` stays within +2.10% on
+all three measured sources, including exports; 82 affected tests pass, not full discovery.
+All71 saved metadata census (mixed revisions) finds eligible saves only in Say-1.
+That is not new Save classification, active different-family transfer, or proof
+of correct whole rooms. All six goal gates remain open; audit146 has zero approvals.
+
+Next: investigate which physical RGB transitions support original false spike
+hypotheses in dense formations. Earlier frame-hierarchy and apex probes found
+no safe removals; preserve their failures. Compare actual edge ownership against
+genuine overlapping and partial spikes before trying a new rule, and reserve a
+compatible different-family evaluation prospectively. No overlap blanket veto,
+coordinate answers, or treating missing edge support as background.
+
 ## Latest: maintained late SAVE caller, actual OFF/ON proof; audit145
 
 Default-False SAVE caller is now bound late and registered, with original direct

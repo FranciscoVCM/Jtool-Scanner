@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-03. Continue in the existing repository at
+Updated 2026-11-08. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,44 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — SAVE alignment enabled, move to false-conflict ownership
+
+Read `.artifacts/general-recognition-20261014/SAVE_RELEASE_RESUME_v1646.md`
+IN FULL, checkpoint1645/audit146/publication1647. No repeat of finished44
+scans,12timing samples,82tests, or actual two-mode app checks. 1636 all44 raw/
+exports unchanged and original41/601/139/current16 pass. 1638 quiet serial AC
+timing PASS all12, max+2.10% including exports vs3d899ed. Complete schema3/nine
+profiles; old schema2/ninth unknown still not silently filled.
+
+Enabled profile is the measured ON setting; only scanner boolean semantics
+changed. 1642 final82affected tests PASS. App restarted and both actual modes
+scan/export HTTP200; source project and exact same-exporter bytes match reviewed
+ON. 1643 failed an invalid cross-exporter byte assertion (expanded order only,
+preexisting OFF/ON); 1644 finalizes both saved actual roots without rescanning
+or changing the detector/exporter. Main whole/all6delta QA from1625/1629 remains
+bound via exact source project/map semantics. TWO Save X fixes299→301/303,
+ONE derived auto-start move, no Y or independent start detection change.
+
+1640 all71 mixed saved metadata census (initial field covered40) confirms only
+Say1's two eligible saves. NOT different-family positive transfer/71fresh scans.
+Audit146 ALL71/ZEROapproved/71cumulative-current0historical; final stable71+16,
+fullsuite and all six goal gates remain open. App source mode enabled, standard
+unchanged, prior14source recoveries retained. No private paths staged/published.
+
+NEXT: source ownership, not another Save variant or qualification resweep.
+Existing 1487 truth has17false/6real/6unknown original full-spike keys; preserve
+all. 1559 frame hierarchy and1561 apex checks found0 safe removals. The latter
+protects15 candidates with >=2 contour edges but does not establish whether
+those probes see the candidate's own transitions or neighbouring artwork.
+Trace that distinction using original RGB/physical probe identities before any
+retirement rule. Preserve true partials, touching spikes, hollow outlines and
+unknowns; require positive competing explanation, not absence of support alone.
+Use Halls5 as the already frozen compatible reserve only if evidence qualifies;
+no tuning on the reserve. Do not reopen user-deferred Dotkid3 A/B or old failed
+teacher/colour thresholds. Source labels and JMaps evaluation only.
+
+Previous continuation:
 
 ### Latest continuation — late SAVE caller qualified on developer, still OFF
 

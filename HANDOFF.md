@@ -4,7 +4,28 @@ This migration-era handoff is not a live Git status report. Consult
 `DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
 The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
 
-## Current checkpoint — 2026-11-03
+## Current checkpoint — 2026-11-08
+
+The late SAVE header caller is now enabled in Experimental source geometry.
+It corrects two Say-1 Save X offsets (299 → 301/303 exact), with unchanged Y,
+geometry and unrelated raw metadata. Standard mode bypasses it. The generated
+auto-start follows its corrected save; existing saved projects are not changed.
+
+All 44 fresh protected scans and 16 exact controls retain their full outputs and
+bounds; original41/601/139 protections pass. Quiet AC paired timing uses 12
+whole samples across active dense, sparse and heavier rooms, with maximum +2.10%
+including exports. All 82 affected tests pass (not full discovery). Both actual
+app modes scan/export HTTP 200; the source project and same-exporter API bytes
+match the reviewed candidate. See latest development progress for timing and
+the preserved cross-exporter order assertion failure.
+
+Audit146 covers all71 with zero approvals and no historical review backlog,
+not final stable71+16. The mixed-revision metadata census finds eligible ordinary
+narrow saves only on Say-1. This release does not prove positive transfer or fix
+vertical Save offsets. Continue with source ownership of false spike conflicts;
+the full milestone and all six completion gates remain open.
+
+Previous checkpoint — 2026-11-03:
 
 Audit145 keeps all71/zero approvals/71cumulative-current0historical-pending,
 not final stable71+16. The SAVE helper is now registered and called late behind

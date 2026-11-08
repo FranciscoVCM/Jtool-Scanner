@@ -159,6 +159,6 @@ class LateSaveFrameTests(unittest.TestCase):
         self.assertIs(late.call_args.args[1], image)
         self.assertEqual(late.call_args.kwargs['source_extent'], normalization.source_extent)
 
-    def test_caller_is_registered_but_not_default_enabled(self):
-        self.assertIs(scanner._SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED, False)
+    def test_qualified_caller_is_registered_and_enabled(self):
+        self.assertIs(scanner._SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED, True)
         self.assertIn('source_save_frames.py', {p.name for p in source_geometry_files()})
