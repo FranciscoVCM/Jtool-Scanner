@@ -14,7 +14,22 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Latest continuation — actual low-contrast platform admission attribution
+### Latest continuation — genuine low-only ledges; platform variants capped
+
+Read `.artifacts/general-recognition-20261014/PLATFORM_TRUE_CONTROLS_RESUME_v1683.md`
+in full, then audit150. All workers terminal. Fixed-locator replay matches
+14 actual emitter signatures, including every route. CN3-25, Golden2 and Golden7
+have genuine low-contrast-only ledges; Irkara-89's white outline uses bright.
+Local and wide original backdrop variants both support just one of six false
+platform cases. Below the frozen gate; both remain off. Do not disable low
+contrast, relax thresholds or rerun these witness variants.
+
+Next pivot to a different geometry mechanism with fresh compatible source
+evidence and predeclared transfer. Do not activate old held variants on the
+same evidence. Audit150 retains 71 rows/zero approvals, no runtime change or
+new whole scans. All six milestone gates remain open.
+
+### Previous continuation — actual low-contrast platform admission attribution
 
 Read `.artifacts/general-recognition-20261014/PLATFORM_ADMISSION_RESUME_v1675.md`
 in full, then audit149. All workers terminal. Main reviewed all 24 current

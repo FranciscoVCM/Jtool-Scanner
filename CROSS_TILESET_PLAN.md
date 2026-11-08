@@ -1,5 +1,18 @@
 # Cross-tileset milestone
 
+## Latest: protect genuine low-only ledges; cap platform-role variants
+
+Exact locator replay finds three real low-only ledges among 18 genuine ones;
+the six source-confirmed impostors share that route. The route is therefore
+not an object-identity test. Independent local and wide RGB background roles
+both support one of six real-source challenges, below the frozen four-of-six,
+two-appearance gate. Wider samples prove the Halls2 backdrop but do not solve
+internal seams or occluded exteriors. No removal or runtime change.
+
+Move to another causal geometry mechanism, with genuinely new positive source
+evidence and predeclared compatible transfer. Preserve every previous failure
+and all six goals. Audit150 keeps 71 rows and zero approvals.
+
 ## Latest: platform admission cause isolated without changing arbitration
 
 Original source review identifies six false platform outputs among 24 reviewed

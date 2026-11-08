@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-08 — Real low-contrast platforms identified; role variants held
+
+Fixed-locator replay reproduces all 14 traced emitter records exactly. All six
+reviewed impostors match the low-contrast-only path, but so do three real
+ledges in CN3-25, Golden2, and Golden7. The white Irkara-89 ledge uses the bright
+path. Disabling low contrast wholesale would therefore remove real platforms.
+
+Local RGB backdrop witnesses passed 12/14 portable checks; independently
+sampled wider witnesses passed 15/15 with the same source predicates. Both
+support only one of six real impostors (Entrance1) with no harm among the 18
+real ledges in the reviewed set. The wider model identifies Halls2's backdrop,
+but genuine seams within solid tiles and occluded exteriors still prevent
+qualifying its removals. Both variants stay off; keep the original gate.
+
+Audit150 retains all 71 rooms and zero approvals. No new whole scan, detector
+change, or recognition gain in this checkpoint. Pivot to a different geometry
+mechanism rather than further platform threshold or witness changes.
+
 ## 2026-11-08 — Low-contrast platform admission traced in two rooms
 
 Reviewed 24 saved current platform poses against the original source: 18 show
