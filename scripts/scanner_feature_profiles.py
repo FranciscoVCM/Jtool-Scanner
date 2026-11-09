@@ -18,7 +18,9 @@ LEGACY_V2_SWITCHES = frozenset({
     '_SOURCE_REPEATED_IDENTITY_ENABLED',
     '_CAPTURE_BASE_CONTEXT_ENABLED',
 })
-SOURCE_FEATURE_SWITCHES = LEGACY_V2_SWITCHES | {'_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED'}
+LEGACY_V3_SWITCHES = LEGACY_V2_SWITCHES | {'_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED'}
+SOURCE_FEATURE_SWITCHES = LEGACY_V3_SWITCHES | {'_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED'}
+_SCHEMA_SWITCHES = {2: LEGACY_V2_SWITCHES, 3: LEGACY_V3_SWITCHES, 4: SOURCE_FEATURE_SWITCHES}
 
 
 def _switch_values(values, required=SOURCE_FEATURE_SWITCHES):
@@ -31,7 +33,7 @@ def _switch_values(values, required=SOURCE_FEATURE_SWITCHES):
 
 def recorded_feature_profile(values):
     """Validate explicit metadata; never infer missing old runtime overrides."""
-    return {'schema_version': 3, 'switches': _switch_values(values)}
+    return {'schema_version': 4, 'switches': _switch_values(values)}
 
 
 def snapshot_feature_profile(scanner_module):
@@ -46,10 +48,9 @@ def snapshot_feature_profile(scanner_module):
 
 def _profile_values(profile):
     if (not isinstance(profile, Mapping) or set(profile) != {'schema_version', 'switches'}
-            or type(profile['schema_version']) is not int or profile['schema_version'] not in (2, 3)):
+            or type(profile['schema_version']) is not int or profile['schema_version'] not in _SCHEMA_SWITCHES):
         raise ValueError('Unsupported or incomplete scanner feature-profile record')
-    required = LEGACY_V2_SWITCHES if profile['schema_version'] == 2 else SOURCE_FEATURE_SWITCHES
-    return _switch_values(profile['switches'], required)
+    return _switch_values(profile['switches'], _SCHEMA_SWITCHES[profile['schema_version']])
 
 
 def validate_feature_comparison(baseline, candidate, *, expected_changes):

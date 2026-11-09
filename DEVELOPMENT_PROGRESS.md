@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Maintained fruit-edge candidate, disabled by default
+
+The original-image off-grid support path can now withdraw edge credit
+from already accepted red fruit pixels. The optional path requires
+matching legacy taps and scores, preserves either independently held
+spike side, and does not touch the canonical resample, compact rooms
+or Standard mode. It is disabled in the app. Experimental profiles
+now record ten selectors (schema 4); older receipts stay readable but
+cannot silently supply a value for the new selector.
+
+Four fresh actual Source scans reproduced both prior endpoints in full,
+including ordered raw, JMap and rendered exports: Halls1 OFF 432 / ON
+430; CN3-25 OFF 255 / ON 254. The ON cases reproduce the three previously
+reviewed removals, not three additional corrections. Eighty-one focused
+tests pass; the initial OS-temp permission error was resolved by using
+an ignored workspace temp directory, not by changing the tests.
+
+Sixteen authored boards using four archive skin folders test fruit
+alone versus fruit over a real spike at native and fractional scales.
+The ordinary support stage gets 36/64 spike poses exactly; of those,
+13 reach the new guard and none are lost. Four of 22 admitted fruit-only
+aliases are withheld. All exercised cases use one art family, so this
+is not cross-family or whole-room accuracy. Keep the archive local.
+No new controlled timing, full suite, or whole-room approval; audit167.
+
 ## 2026-11-09 — Untuned original-branch transfer to CN3-25
 
 Bilinear tap provenance matches 29,618 authored in-bounds samples and

@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Latest: isolate the off-by-default candidate and measure its exposure
+
+Maintained original-source fruit attribution reproduces complete
+ordinary and private whole outputs on Halls1 and CN3-25. It is off by
+default; the bilinear variant stays unbound. A new frozen sprite-board
+stress test protects all 13 true spikes that actually reach the guard
+and removes four fruit-only aliases at the support stage. Other sprite
+styles did not exercise this guard; do not credit them as transfer.
+Next qualify current exact/protected whole controls, genuine exposed
+positives in other visual families and paired cost before activation.
+Audit167 carries the same 71 rooms and zero approvals.
+
 ## Latest: fruit-edge proof transfers across two source-art styles
 
 CN3-25's false LEFT enters via the original-image support list, not the

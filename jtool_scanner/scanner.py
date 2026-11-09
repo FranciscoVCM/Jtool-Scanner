@@ -19,6 +19,7 @@ from statistics import median
 from types import MappingProxyType
 
 from .binary_components import dilated_ink_components
+from .fruit_spike_evidence import FruitBody, original_fruit_support_budget
 from .constants import (
     GRID_SIZE,
     OBJ_APPLE,
@@ -99,6 +100,8 @@ _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = True
 _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
 # Qualified late position-only save evidence; standard scans bypass this caller.
 _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
+# Original-source fruit edge attribution still needs whole-scan qualification.
+_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2201,6 +2204,7 @@ def scan_image(
     _apply_shape_refits: bool = True,
     source_geometry: bool = False,
     _gravity_packet_sink: list[ArrowPatch] | None = None,
+    _original_fruit_support: bool = False,
 ) -> ScanResult:
     if not isinstance(source_geometry, bool):
         raise ValueError('source_geometry must be a boolean')
@@ -2272,6 +2276,15 @@ def scan_image(
         box = Box(0, 0, image.width, image.height)
     else:
         box = source_box
+    fruit_bodies: list[FruitBody] | None = None
+    if (
+        _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED
+        and (source_geometry or _original_fruit_support)
+        and include_geometry and include_color_objects
+        and normalized_grid == (25, 19)
+        and image is source_image and box == source_box
+    ):
+        fruit_bodies = []
     adaptive_compact_blocks: list[Detection] = []
     adaptive_compact_profile: _ColorProfile | None = None
     if include_geometry and compact_room:
@@ -2342,6 +2355,7 @@ def scan_image(
     if include_color_objects:
         detections.extend(_detect_color_objects(
             image, box, grid_step, detections, gravity_packets=gravity_packets,
+            **({'fruit_bodies': fruit_bodies} if fruit_bodies is not None else {}),
         ))
     if adaptive_compact_room:
         # Compact 19x13 rooms have a reliable native tile phase.  Handle
@@ -2383,6 +2397,8 @@ def scan_image(
             primary_mini_spikes=raw_detected_mini_spikes,
             rejected_mini_spikes=raw_rejected_mini_spikes,
         )
+        if fruit_bodies:
+            geometry_detections = _withhold_fruit_owned_support(image, box, geometry_detections, fruit_bodies)
         geometry_detections = _recover_full_spike_mini_pairs(
             geometry_detections,
             image,
@@ -4192,6 +4208,8 @@ def _scan_lattice_normalized_room(
         include_geometry=use_consensus,
         recognized_text=recognized_text,
         _apply_shape_refits=False,
+        **({'_original_fruit_support': True}
+           if source_geometry and use_consensus and _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED else {}),
     )
     canonical_image = _resample_capture_lattice_room(source_image, normalization)
     canonical_result = scan_image(
@@ -13060,9 +13078,13 @@ def _detect_color_objects(
     anchors: list[Detection],
     *,
     gravity_packets: list[ArrowPatch] | None = None,
+    fruit_bodies: list[FruitBody] | None = None,
 ) -> list[Detection]:
     detections: list[Detection] = []
-    detections.extend(_detect_apples(image, room, grid_step, anchors))
+    detections.extend(_detect_apples(
+        image, room, grid_step, anchors,
+        **({'fruit_bodies': fruit_bodies} if fruit_bodies is not None else {}),
+    ))
     detections.extend(_detect_walljumps(image, room, grid_step, anchors + detections))
     non_water_anchors = anchors + detections
     water = _detect_water(image, room, grid_step, non_water_anchors)
@@ -13410,6 +13432,8 @@ def _detect_apples(
     room: Box,
     grid_step: int,
     anchors: list[Detection],
+    *,
+    fruit_bodies: list[FruitBody] | None = None,
 ) -> list[Detection]:
     components = _connected_components(image, room, lambda r, g, b: _is_apple_red(r, g, b))
     detections: list[Detection] = []
@@ -13438,7 +13462,11 @@ def _detect_apples(
     # radius collapsed the three distinct sprites at the top of CN3-27; the
     # red component pass already yields one candidate per sprite, so a small
     # radius is sufficient to merge only alternate routes for the same apple.
-    return _dedupe_detections(detections, min_distance=APPLE_DEDUPE_DISTANCE)
+    accepted = _dedupe_detections(detections, min_distance=APPLE_DEDUPE_DISTANCE)
+    if fruit_bodies is not None:
+        red_boxes = {d.image_box for d in accepted if d.kind == "apple"}
+        fruit_bodies.extend((box, set(pixels)) for box, pixels in components if box in red_boxes)
+    return accepted
 
 
 def _detect_water_tinted_apples(
@@ -17370,6 +17398,31 @@ def _detect_geometry(
     recovered = _recover_dense_adjacent_up_mini_spikes(recovered, image, room)
     recovered = _recover_supported_block_cells(recovered, image, room)
     return _recover_weak_full_spike_companions(recovered, image, room)
+
+
+def _withhold_fruit_owned_support(
+    image: RGBImage, room: Box, detections: list[Detection], fruit_bodies: list[FruitBody],
+) -> list[Detection]:
+    kept = []
+    for item in detections:
+        if item.kind == "full_spike_support" and item.type_id in FULL_SPIKE_TYPES:
+            target = item.image_box
+            ink = set().union(*(points for box, points in fruit_bodies
+                                if max(box.x, target.x) < min(box.right, target.right)
+                                and max(box.y, target.y) < min(box.bottom, target.bottom)))
+            if ink:
+                patch = _patch_features(image, room, item.x, item.y, 32)
+                tagged = _classify_full_spike(patch)
+                if tagged is not None and tagged.type_id == item.type_id and tagged.score == item.score:
+                    outline, _ = _triangle_masks(tagged.kind.removeprefix("spike_"))
+                    budget = original_fruit_support_budget(
+                        image, room, item.x, item.y, item.type_id, ink,
+                        outline=outline, edge_mask=patch.edge_mask,
+                    )
+                    if budget is not None and budget.withholds(FULL_SPIKE_SUPPORT_MIN_SCORE):
+                        continue
+        kept.append(item)
+    return kept
 
 
 def _recover_full_spike_mini_pairs(

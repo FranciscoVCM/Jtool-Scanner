@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — maintained original fruit-edge parity, still off
+
+Read `.artifacts/general-recognition-20261014/FRUIT_MAINTAINED_RESUME_v1855.md`
+and audit167. Four actual workers terminal, Halls1 OFF432/ON430 and
+CN3-25 OFF255/ON254; complete raw/artifact parity to their earlier
+ordinary/private endpoints. Eighty-one focused tests pass. Archive
+sprite boards protect 13/13 exercised positives, all one art family.
+Candidate still disabled, no new recognized objects or room approvals.
+Do not rerun these four parity cases. Qualify protected/exact whole
+controls and different-art genuine near-fruit positives before timing
+and activation. All five previously pictured white cloud markers are
+human-confirmed warps; the separate CN3-7 crop B is a player.
+
 ### Latest continuation — actual untuned CN3-25 original-branch transfer
 
 Read `.artifacts/general-recognition-20261014/FRUIT_FRAME_TRANSFER_RESUME_v1852.md`
