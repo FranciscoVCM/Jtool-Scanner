@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Competing spike and backdrop proof remains held
+
+An offline original-pixel probe tests whether adjacent spikes, backdrop and
+their mixed edges explain both known false blocks. Independent shading
+teachers reduce unexplained pixels from 185/368 to 100/75, but neither
+footprint is fully explained. Three known mixed wall strips are protected.
+
+Both early variants mistake low-contrast authored solid blocks and 8px
+strips for backdrop (16 unsafe cases). Limiting backdrop confidence to
+variation measured from disjoint original witnesses passes all 50 authored
+checks but still authorizes no Golden5 removals. Keep it off and preserve
+the failure. Forty-five focused tests passed; no runtime change or new real
+correction. Audit157 carries all 71 rooms without new approvals.
+
 ## 2026-11-09 — Two Golden5 false solids originate in initial block admission
 
 An actual unchanged Source-mode trace reproduces all 313 ordered detections

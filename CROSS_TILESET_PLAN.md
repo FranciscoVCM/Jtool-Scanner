@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: cap the compound paint-only ownership experiment
+
+Independent same-depth spike shades explain more original pixels, not the
+entire false-block footprint. The early coarse backdrop rule also accepts
+real low-contrast blocks and strips. The stricter source-bounded rule clears
+that authored counterexample, but produces no real corrections. Leave it
+off, keep the portable failure case, and move to a distinct source mechanism
+with a compatible prospectively frozen reserve. Audit157, runtime unchanged.
+
 ## Latest: distinguish borrowed block edges from the material inside
 
 Two frozen Golden5 false blocks enter the initial edge-score classifier, not

@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — competing Golden5 scene proof tested and held
+
+Read `.artifacts/general-recognition-20261014/COMPOUND_VOID_RESUME_v1780.md`
+and audit157. All workers terminal. Two early variants accept real authored
+low-contrast blocks and wall strips; narrower independently measured
+backdrop evidence passes 50 authored checks but leaves 114/101 unexplained
+pixels in the two known false Golden5 boxes. No real correction or binding.
+Cap this variant family; no broader backdrop/halo/unknown allowance. Move
+to a distinct real source mechanism with pre-frozen reserve evidence.
+
 ### Latest continuation — initial block admission explains two Golden5 errors
 
 Read `.artifacts/general-recognition-20261014/GOLDEN5_SOLID_OWNER_RESUME_v1775.md`
