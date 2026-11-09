@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: don't treat all marker overlaps as one failure
+
+Fourteen saved compact summaries contain no second qualifying
+spiral/spike overlap case. The unchanged LEFT rule preserved five
+guard-exposed authored partial spikes; that's not real-room transfer.
+Two additional source fits cannot qualify the remaining false UP.
+Halls1 fruit bodies explain a minority of the false outline votes,
+unlike NANG-138's LEFT. Test the other edge sources before designing
+another suppression rule. No activation; audit164.
+
 ## Latest: withdraw marker-owned edge votes, not overlapping shapes
 
 In NANG-138, 25 of 29 outline votes for one false LEFT spike depend on

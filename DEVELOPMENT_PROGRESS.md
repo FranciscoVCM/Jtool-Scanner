@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Spiral transfer held; Halls1 has mixed edge evidence
+
+No second spiral/spike overlap in fourteen saved compact case summaries.
+Whole merged components are not proof of stroke ownership. A rotated
+concentric fit fails its independent sectors; a finite-line proof adds
+38 source taps but raises false-UP attribution only 4→6 of 31 votes.
+Leave both variants off. The unchanged rule retains all five authored
+partly covered spikes that actually reach it; the stage test does not
+establish real-room transfer or a live fix.
+
+In Halls1, exact red fruit components explain 9/28 and 11/37 outline
+votes for two confirmed false spikes. Both also contain multiple votes
+outside the fruit. The real nearby UP has 54 outline votes, all outside
+the red bodies. Treat this as a mixed-edge problem, not a spiral transfer.
+No new whole scan or production change. Audit164 retains all 71 rooms.
+
 ## 2026-11-09 — One private false spike removed by source-edge attribution
 
 Passive actual Source-mode traces reproduce full raw in NANG-138/137r.

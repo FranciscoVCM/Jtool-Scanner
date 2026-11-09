@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — spiral compatibility held; Halls1 mixed edges
+
+Read `.artifacts/general-recognition-20261014/SPIRAL_TRANSFER_RESUME_v1833.md`
+and audit164. All workers terminal. No second compatible real spiral
+case in the saved compact census. Two new stroke fits do not qualify
+the false UP. Five authored partial positives actually reach the
+unchanged rule and all survive. Next separate Halls1's fruit-owned
+votes from other physical edges, or move to a distinct source cause.
+No relaxation, real transfer, new whole scan, activation or room approval.
+
 ### Latest continuation — actual private NANG-138 false LEFT removal
 
 Read `.artifacts/general-recognition-20261014/SPIRAL_EDGE_OWNERSHIP_RESUME_v1826.md`
