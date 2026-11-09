@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: source-only portal locator still assumes open surroundings
+
+The source-only radial locator recovers the same Halls6 cloud in an actual
+private scan. Frozen CN3-29 and authored three-/four-sided alcoves show
+that surrounding walls can block its locator despite a visible closed shell.
+Don't retune radial thresholds on the reserve. A separate component-led
+discovery mechanism or a different recognition cause is needed. Audit159;
+runtime unchanged.
+
 ## Latest: closed original cloud outline recovers one private portal
 
 Local contrast and source connectivity locate the Halls6 portal despite

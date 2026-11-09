@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Source-only portal search reproduces Halls6, misses CN3-29
+
+Original RGB rim/core contrast locates the Halls6 cloud without an existing
+spike detection. An actual private Source-mode run reproduces the previous
+99→100 geometry, all old ordered records, and byte-identical source/JMap/
+JTool/Blend. This is a different locator, not an additional correction.
+
+The frozen CN3-29 test returns no portal: nearby walls interrupt the
+required outward contrast returns. Authored alcoves reproduce the failure
+at two scales while the supplied local shape remains valid. Forty authored
+whole-source cases and 100 component parity checks pass. Keep radial
+discovery off; no new reserve success, deployment or room approval.
+Audit159 retains all 71 rows.
+
 ## 2026-11-09 — One missing Halls6 portal recovered privately
 
 An original-pixel closed outline encloses a bright core at three local

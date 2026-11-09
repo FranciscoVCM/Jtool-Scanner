@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — source-only cloud developer parity, reserve held
+
+Read `.artifacts/general-recognition-20261014/PORTAL_RADIAL_RESUME_v1797.md`
+and audit159. All workers terminal. Actual source-only Halls6 equals previous
+private marker geometry and render bytes. Frozen CN3-29 returns no marker;
+outward-return prefilter also fails authored alcoves at both scales. Preserve
+this FAIL, no more threshold tweaks on this reserve. Pursue distinct
+component-based discovery with a newly frozen compatible reserve, or a
+separate evidenced error. No new live fix or approval.
+
 ### Latest continuation — private Halls6 portal, false overlap retained
 
 Read `.artifacts/general-recognition-20261014/PORTAL_SOURCE_RESUME_v1789.md`
