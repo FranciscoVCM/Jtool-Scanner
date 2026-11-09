@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: a filled cloud can be a real portal even against a similar background
+
+The corrected CN3-7 map verifies the marker that older output called a
+player-like cloud. Its closed-component trial still fails, but the existing
+filled-cloud stage gets the shape and loses it only at the background veto.
+Independent internal shade structure recovers the marker in that stage;
+neutral-player and enclosure protections stay unchanged. Verify actual
+whole behavior and new transfer before activation. Audit160.
+
 ## Latest: source-only portal locator still assumes open surroundings
 
 The source-only radial locator recovers the same Halls6 cloud in an actual

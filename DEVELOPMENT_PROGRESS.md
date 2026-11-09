@@ -4,6 +4,21 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Corrected map confirms the missed CN3-7 warp
+
+Component-led closed-outline search passes 56 authored cases including
+enclosed alcoves, but the frozen CN3-7 source yields no closed-shell marker.
+The user's corrected map confirms its filled white cloud at `(768,432)`,
+contradicting the older player-like label for that object. Old receipts
+remain intact. The ordinary filled-cloud stage passes its silhouette but
+rejects the shadow as too similar to the background.
+
+Original pixels support the existing sprite's ordered internal shades. A
+private stage-only candidate recovers that one warp and leaves six comparison
+images unchanged. The other player/enclosure gates remain intact. No changed
+whole scan, qualified transfer or deployment. Eight existing cloud tests pass;
+audit160 keeps all 71 rooms and zero approvals.
+
 ## 2026-11-09 — Source-only portal search reproduces Halls6, misses CN3-29
 
 Original RGB rim/core contrast locates the Halls6 cloud without an existing

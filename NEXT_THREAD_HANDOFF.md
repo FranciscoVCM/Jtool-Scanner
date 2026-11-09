@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — CN3-7 warp confirmed; filled-cloud stage gain only
+
+Read `.artifacts/general-recognition-20261014/PORTAL_COMPONENT_RESUME_v1807.md`
+and audit160. All workers terminal. Closed-component trial fails on the
+filled CN3-7 marker; corrected JMap proves the real warp. Original atlas
+shade ordering recovers it in the existing stage only. Actual ordinary
+exports match; full raw not retained by the failed recorder, no strict carry.
+Next actual candidate with complete receipts, preserve all old gates and
+untuned reserve discipline. Older CN3-19/21 labels disputed, no promotions.
+
 ### Latest continuation — source-only cloud developer parity, reserve held
 
 Read `.artifacts/general-recognition-20261014/PORTAL_RADIAL_RESUME_v1797.md`
