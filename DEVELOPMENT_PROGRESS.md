@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Untuned original-branch transfer to CN3-25
+
+Bilinear tap provenance matches 29,618 authored in-bounds samples and
+abstains on 201 unavailable samples. Weighted original links explain one
+of two artificially resampled developer aliases. The unchanged guard
+retains all 22 exercised authored partial/nearby true positives across
+two fractional scales. These are stage-level results only.
+
+Fresh ordinary CN3-25 reproduced the false LEFT and protected objects;
+the canonical candidate was not queried because the target comes from
+original-image off-grid support. The unchanged direct Halls1 proof then
+removes only LEFT(536,112) in a private whole scan, 255→254. All retained
+raw records and map metadata match, and original/whole/delta review
+confirms the removal. Thirty-six existing sampling/frame tests pass.
+No deployment, room approval, final suite or timing; audit166.
+
 ## 2026-11-09 — Two private Halls1 fruit-edge conflicts corrected
 
 Fresh ordinary Halls1 has 432 detections, two more than the earlier

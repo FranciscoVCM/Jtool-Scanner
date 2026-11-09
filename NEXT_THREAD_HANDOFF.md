@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — actual untuned CN3-25 original-branch transfer
+
+Read `.artifacts/general-recognition-20261014/FRUIT_FRAME_TRANSFER_RESUME_v1852.md`
+and audit166. All producers terminal. Canonical trial unqueried:
+the frozen false LEFT originates on the original pass. Fixed v1838
+whole private255→254, only source-confirmed false LEFT removed;
+all 254 remaining records exact. Next maintain the same original
+rule explicitly off until actual parity, genuine near-fruit/hidden
+positives, exact controls, both modes and whole timing qualify.
+Do not bind the bilinear variant or retune from CN3-25. No live fix.
+
 ### Latest continuation — two actual private Halls1 dry-apple removals
 
 Read `.artifacts/general-recognition-20261014/FRUIT_SUPPORT_BUDGET_RESUME_v1842.md`

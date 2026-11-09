@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: fruit-edge proof transfers across two source-art styles
+
+CN3-25's false LEFT enters via the original-image support list, not the
+canonical list. The unchanged Halls1 proof removes it in a private whole
+scan (255→254) without changing the canonical pass or any retained record.
+Original source and the sole delta confirm the correction. This is a
+prospective held-out false-conflict transfer, not room success or a live
+change. The bilinear attribution experiment remains unbound. Audit166.
+
 ## Latest: account for both places a fruit edge inflates a spike score
 
 Two Halls1 false spikes entered as off-grid support; the LEFT was pruned
