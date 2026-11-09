@@ -1,5 +1,21 @@
 # Cross-tileset milestone
 
+## Latest: measure sprite coverage separately from role and room accuracy
+
+The supplied skin library makes appearance changes repeatable. On isolated
+native sprite boards, the current warp stage recognizes 6/105 distinct
+declared warp appearances on dark and 13/105 on a warm gradient, with only
+four detected on both. The same art can label different roles (including
+ordinary/hazardous blocks and multiple waters). Keep these diagnostic
+boards separate from actual screenshot accuracy; split by related art
+families, not folder names, and do not add a runtime atlas dependency.
+
+Independent interior shade evidence adds exactly one confirmed CN3-7 warp
+in a private whole scan. CN3-19/21 are also confirmed warps, not player
+negatives: private stage evidence shows the same shade structure despite
+both old shadow vetoes. No changed whole scans there, no compatible
+cross-family reserve, and no activation. Audit161 retains all 71 rooms.
+
 ## Latest: a filled cloud can be a real portal even against a similar background
 
 The corrected CN3-7 map verifies the marker that older output called a

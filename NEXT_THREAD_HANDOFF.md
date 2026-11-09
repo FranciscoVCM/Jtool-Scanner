@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — supplied skins and actual private CN3-7 warp
+
+Read `.artifacts/general-recognition-20261014/SKIN_WARP_RESUME_v1813.md`
+and audit161. Archive byte-verified and kept local. Authored warp-stage
+coverage exposes background sensitivity and same-art role conflicts.
+Ordinary 335→private 336 on CN3-7, only confirmed Warp(768,432) added,
+full raw and whole/delta review complete; the overlapping false spike
+remains. User-confirmed CN3-19/21 were mislabeled player-like; their new
+dual-veto proof is stage-only. Do not treat editor starts as real gameplay
+lookalike controls. Freeze a materially different real warp family for
+transfer and preserve real actor negatives before adoption. No runtime
+change, timing, or new room approval.
+
 ### Latest continuation — CN3-7 warp confirmed; filled-cloud stage gain only
 
 Read `.artifacts/general-recognition-20261014/PORTAL_COMPONENT_RESUME_v1807.md`

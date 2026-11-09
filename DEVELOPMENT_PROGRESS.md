@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Skin archive warp coverage and private whole CN3-7 recovery
+
+Isolated authored boards with 105 distinct native warp appearances yield
+6 exact origins on dark and 13 on a warm gradient; no editor player-start
+or blank hits. The archive also contains art shared between solid and
+hazardous blocks and between water types. Filename labels and exact
+appearance are not collision or gameplay-role proof.
+
+Fresh private whole CN3-7 comparison: 335→336 with only the confirmed
+warp at `(768,432)` added. Full raw, every old ordered detection, source
+frame and export metadata were checked; whole and delta review retain the
+separate false spike and other major errors. The user also confirmed the
+CN3-19/21 cloud identities. The same original shade proof after either
+shadow guard recovers those markers in the private stage only, leaves four
+other real comparison stages unchanged, and adds three declared warp
+placements on isolated boards. Nineteen focused warp tests passed. Not
+deployed or a qualified transfer; audit161 retains all 71, zero approvals.
+
 ## 2026-11-09 — Corrected map confirms the missed CN3-7 warp
 
 Component-led closed-outline search passes 56 authored cases including
