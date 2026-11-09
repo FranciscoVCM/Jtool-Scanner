@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — One private false spike removed by source-edge attribution
+
+Passive actual Source-mode traces reproduce full raw in NANG-138/137r.
+The two NANG-138 false spikes enter in primary geometry; the two NANG-137r
+false blocks enter in the compact terrain learner. Compact normalization
+copies original pixels into a padded frame; both RGB and physical sampling
+coordinates can be verified exactly. Simple row similarity confused real
+ceiling tiles with backdrop and remains diagnostic only.
+
+25/29 LEFT outline votes in NANG-138 require the spiral's strokes; its
+remaining optimistic score is 0.158 against the 0.24 admission floor.
+Private whole Source-mode 213→212 removes only that false spike, preserving
+all retained ordered records, the warp and nearby minis. UP stays; both
+NANG-137r blocks remain unresolved. Whole and sole delta reviewed; four
+outline-warp tests pass. No deployment or independent reserve; audit163.
+
 ## 2026-11-09 — Actual cloud arbitration and different-art conflict controls
 
 Two private Source-mode whole pairs add the confirmed CN3-19/21 warps.

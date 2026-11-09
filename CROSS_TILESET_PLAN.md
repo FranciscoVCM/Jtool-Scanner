@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: withdraw marker-owned edge votes, not overlapping shapes
+
+In NANG-138, 25 of 29 outline votes for one false LEFT spike depend on
+independently identified spiral strokes in the original pixels. Removing
+those votes from consideration leaves an optimistic score below the
+existing admission floor. A private whole scan removes exactly that
+spike and preserves every other detection in order. The false UP depends
+on only four such votes and stays. This is one developer result, not a
+transfer or deployment. Flat/repeating surface matches can also describe
+real ceiling tiles; don't use them as empty terrain. Audit163.
+
 ## Latest: review whole geometry when a marker is newly recognized
 
 Private whole scans of two confirmed clouds remove four false conflicts,

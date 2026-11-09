@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — actual private NANG-138 false LEFT removal
+
+Read `.artifacts/general-recognition-20261014/SPIRAL_EDGE_OWNERSHIP_RESUME_v1826.md`
+and audit163. All producers terminal. Physical original taps explain
+25/29 false LEFT outline votes by spiral paint; private actual 213→212
+removes exactly that record, with all other detections unchanged. False
+UP and the two compact terrain aliases remain. Freeze a compatible real
+reserve and genuine touching/partly occluded positives before applying
+the unchanged test elsewhere. Row agreement isn't proof of empty terrain.
+No runtime change, timing or room approval.
+
 ### Latest continuation — whole CN3 marker deltas and NANG outline conflicts
 
 Read `.artifacts/general-recognition-20261014/WARP_CALLER_SPIRAL_RESUME_v1818.md`
