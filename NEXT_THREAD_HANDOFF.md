@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-08. Continue in the existing repository at
+Updated 2026-11-09. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,17 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — known sprite tone/capture diagnostics, no activation
+
+Read `.artifacts/general-recognition-20261014/SKIN_TONE_RESUME_v1771.md`,
+then the real Golden5 note below and audit155. All workers terminal. The
+ignored sprite archive was verified byte-for-byte. Split-pixel tone matching
+helps synthetic dim/inverted art, and matched smoothing helps fractional
+capture, but neither adds reference matches over raw on four real Lap rooms.
+Both accept decoration proven pixel-identical to an alternate solid scene.
+Keep these controls, no runtime merger; continue original real source role
+and geometry work. No new room approval or change to audit155.
 
 ### Latest continuation — private Golden5 textured partials; transfer held
 

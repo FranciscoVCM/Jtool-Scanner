@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: keep tone-tolerant sprite matches as diagnostics
+
+Split-pixel tone proof helps known art under dimming or inversion. Matching
+low-frequency interiors helps a fractional capture but hurts another style.
+Neither adds correct reference positions over raw matching on the four real
+Lap rooms checked, and identical decorative art passes both. No runtime
+template merger. Use these stress pairs to test independent source-role,
+contour, and scale proofs; carry audit155 and the real reserve gates forward.
+
 ## Latest: spatial wall and shaded ink recover three private Golden5 spikes
 
 Original same-direction glyphs and exterior-only wall calibration establish

@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Skin texture survives tone changes, but does not resolve real roles
+
+An offline probe fits one tone change on part of each known sprite and checks
+the remainder. On a dim synthetic scene it supports 49/56 observable block
+and spike labels with no unlisted proposals, versus 4/56 exact in the ordinary
+scan. On a fractional-capture scene, comparing the same low-frequency signal
+on both sides recovers 46/56, up from 6/56 for the unfiltered tone proof; the
+same filtering loses most of the dim-scene gain. These are known-art
+diagnostics, not scanner detections or evidence of unseen-family transfer.
+
+Neither variant adds a reference-matching position beyond raw RGB matching
+on four real Lap Around rooms. Both also match identical decorative block
+art. An authored pair has byte-identical source RGB with those two tiles
+either decorative or solid, so image evidence alone cannot resolve that
+case. Keep the library as offline validation and corroboration, not a
+runtime authority. No scanner change, room approval, or new audit155 credit.
+
 ## 2026-11-09 — Three textured partial spikes recovered in private Golden5
 
 Intact original glyphs provide position-specific shading evidence. The wall
