@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — private Golden5 textured partials; transfer held
+
+Read `.artifacts/general-recognition-20261014/TEXTURED_PARTIAL_ACTUAL_RESUME_v1765.md`
+and audit155. All workers terminal. Actual ordinary-path private Golden5
+313→316, exact unchanged old raw, frozen corridor 5→3 errors, all three
+deltas and whole reviewed. 1761 resumed just the failed-manifest transfer
+roots: CN3-19 and Halls4 unchanged, no positive transfer. Keep all prior
+failures, Dotkid2 developer gains and the offline ledge solver. No runtime
+activation. Next separate independently measured texture/registration
+evidence and a compatible pre-frozen untuned source.
+
 ### Latest continuation — offline shared rail solver, connected challenge held
 
 Read `.artifacts/general-recognition-20261014/TERRAIN_BAND_PORT_RESUME_v1751.md`

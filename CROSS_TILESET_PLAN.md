@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: spatial wall and shaded ink recover three private Golden5 spikes
+
+Original same-direction glyphs and exterior-only wall calibration establish
+roles despite shading and dark frame rims. Golden5 private 313→316, frozen
+corridor errors 5→3 with no old changes. The separate CN3-19 and Halls4
+actual challenges remain unchanged; no positive transfer. Preserve the
+failure causes and do not retune on these challenges. A distinct
+independently registered texture proof and a compatible prospective reserve
+are needed before adoption. App unchanged; audit155 records the result.
+
 ## Latest: strict shared rails preserve uncertainty on connected terrain
 
 The tested offline solver exactly reproduces the private Halls2 correction.

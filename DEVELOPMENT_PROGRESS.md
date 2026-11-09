@@ -4,6 +4,21 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Three textured partial spikes recovered in private Golden5
+
+Intact original glyphs provide position-specific shading evidence. The wall
+model uses a separate portion outside the candidate and checks the covered
+half afterwards. An observed seam and independent samples beyond a dark
+frame rim distinguish a real occluder from a background wedge.
+
+An actual private Source-mode scan adds three original full spikes (313→316)
+with every existing detection and map metadata retained. Two are in the
+frozen corridor: 22→24 of 25 exact and 5→3 errors, with no new extras. Whole
+and all three additions were visually reviewed. CN3-19 and Halls4 have
+complete raw and export parity but no recoveries. No positive transfer,
+deployment or whole-room approval. Audit155 retains all 71 rows. Four
+split-fit checks and 38 unchanged focused tests pass; no full-suite claim.
+
 ## 2026-11-08 — Shared rail solver ported; connected ledge transfer held
 
 An unbound source-RGB solver preserves physical crop and world extent without
