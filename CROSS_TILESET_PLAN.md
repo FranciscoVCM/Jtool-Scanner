@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: closed original cloud outline recovers one private portal
+
+Local contrast and source connectivity locate the Halls6 portal despite
+the checkerboard. The actual private scan adds one marker and retains all
+99 old records. It cannot yet prove the overlapping false spike belongs
+solely to that marker. No activation. A different-background candidate
+needs source-driven discovery beyond the current overlapping-spike seed;
+freeze and test it separately. Audit158 has no new room approvals.
+
 ## Latest: cap the compound paint-only ownership experiment
 
 Independent same-depth spike shades explain more original pixels, not the

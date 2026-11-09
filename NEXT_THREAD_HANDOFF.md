@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — private Halls6 portal, false overlap retained
+
+Read `.artifacts/general-recognition-20261014/PORTAL_SOURCE_RESUME_v1789.md`
+and audit158. All workers terminal. Fresh ordinary99→private100 adds one
+verified portal, all old raw ordered records retained. Old 98-snapshot drift
+was separately source-reviewed, not new recognition. False LEFT remains;
+unknown ownership is not permission to prune. CN3-29 is a prospectively
+identified same-sprite/different-background candidate, unqueried and not
+yet compatible with the narrow locator. No live change or room approval.
+
 ### Latest continuation — competing Golden5 scene proof tested and held
 
 Read `.artifacts/general-recognition-20261014/COMPOUND_VOID_RESUME_v1780.md`

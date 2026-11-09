@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — One missing Halls6 portal recovered privately
+
+An original-pixel closed outline encloses a bright core at three local
+contrast levels and matches the existing cloud silhouette. A private
+ordinary Source-mode run adds the visible warp at `(128,96)` (99→100),
+with all old ordered records and export metadata retained. The nearby false
+LEFT remains: the shell does not explain all of its source edge evidence.
+One of two frozen errors corrected, below the room qualification gate.
+
+Whole and delta review also separates two intervening maintained spike
+changes from the new marker. Nineteen existing warp tests and 42 authored
+shape/connectivity checks passed. No production change, successful reserve,
+whole timing, or room approval. Audit158 preserves all 71 rooms.
+
 ## 2026-11-09 — Competing spike and backdrop proof remains held
 
 An offline original-pixel probe tests whether adjacent spikes, backdrop and
