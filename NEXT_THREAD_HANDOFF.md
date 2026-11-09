@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — initial block admission explains two Golden5 errors
+
+Read `.artifacts/general-recognition-20261014/GOLDEN5_SOLID_OWNER_RESUME_v1775.md`
+and audit156. All workers terminal. Ordinary trace 313 exactly unchanged;
+both false blocks originate in the primary classifier. Disjoint original
+wall interiors distinguish the fixed corridor positives and negatives, but
+three of 19 whole-room mismatches partly cover real solid terrain. No global
+veto or activation. Next prove the actual side/extent of wall ownership and
+freeze a compatible different-family reserve. The 316 private result stays
+private, and Halls7's different route and prior failures remain preserved.
+
 ### Latest continuation — known sprite tone/capture diagnostics, no activation
 
 Read `.artifacts/general-recognition-20261014/SKIN_TONE_RESUME_v1771.md`,

@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: distinguish borrowed block edges from the material inside
+
+Two frozen Golden5 false blocks enter the initial edge-score classifier, not
+terrain growth. Independent wall interiors distinguish them from the 18 true
+corridor blocks, but some mismatches elsewhere partly cover real walls. Do
+not turn this into a global texture veto. Next prove which side owns the wall
+and where backdrop or a hazard explains pixels, preserving mixed footprints.
+Audit156 adds the trace only; runtime and room approvals are unchanged.
+
 ## Latest: keep tone-tolerant sprite matches as diagnostics
 
 Split-pixel tone proof helps known art under dimming or inversion. Matching

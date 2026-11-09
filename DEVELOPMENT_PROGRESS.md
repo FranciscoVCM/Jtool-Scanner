@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Two Golden5 false solids originate in initial block admission
+
+An actual unchanged Source-mode trace reproduces all 313 ordered detections
+and metadata. Both source-confirmed false blocks enter the primary block
+classifier, before terrain growth. One even has three strong rectilinear
+faces: neighboring hazard and wall edges can look like a rectangle without
+its interior being terrain.
+
+Independent repeated-wall samples match at least three of four interior
+regions on all 18 true corridor blocks, and none on either false block.
+The whole census has 19 zero-match boxes, including three that partly cover
+real wall strips. A texture mismatch is not an empty footprint. Keep the
+diagnostic private; require independent source-side ownership before pruning.
+39 focused tests passed. No scanner changes, new corrections or approvals;
+audit156 preserves the earlier private spike recoveries and all 71 rows.
+
 ## 2026-11-09 — Skin texture survives tone changes, but does not resolve real roles
 
 An offline probe fits one tone change on part of each known sprite and checks
