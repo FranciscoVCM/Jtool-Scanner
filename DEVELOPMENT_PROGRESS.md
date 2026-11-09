@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Actual cloud arbitration and different-art conflict controls
+
+Two private Source-mode whole pairs add the confirmed CN3-19/21 warps.
+CN3-19, 255→254, removes a false block and false down spike; an 8px upward
+spike relocation remains a false detection, not a correction. CN3-21,
+400→399, removes two false side spikes. Full raw, all eight selectors,
+whole views and every typed delta were checked. Existing common records
+keep their metadata; structural warnings change. These are six reviewed
+private corrections on historically exposed, same-art cases.
+
+Fresh ordinary NANG-138 and NANG-137r scans retain the real square spiral
+and reproduce the overlapping false spikes and blocks respectively.
+Source confirms the disagreements. A separate NANG-138 capture without
+those spikes is not a new fix. Preserve both cases for ownership testing,
+including visible geometry outside the marker. All 29 comparison tests
+pass with normal Windows temp permissions. No production change, qualified
+reserve or room approval; audit162 retains all 71 rooms.
+
 ## 2026-11-09 — Skin archive warp coverage and private whole CN3-7 recovery
 
 Isolated authored boards with 105 distinct native warp appearances yield

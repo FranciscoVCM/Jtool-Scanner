@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — whole CN3 marker deltas and NANG outline conflicts
+
+Read `.artifacts/general-recognition-20261014/WARP_CALLER_SPIRAL_RESUME_v1818.md`
+and audit162. All producers terminal. Both CN3-19/21 private whole pairs
+recover the confirmed warp. Source QA confirms four false removals; one
+CN3-19 false UP moves and remains unresolved. The two whole pairs were
+historically exposed same-art checks, not untuned transfer. Fresh ordinary
+NANG-138/137r reproduce two false spikes/two false blocks around real
+spiral markers. Next prove source ownership outside the marker, preserve
+nearby genuine hazards/terrain, and freeze an independent compatible
+reserve. No activation, controlled timing or room approval.
+
 ### Latest continuation — supplied skins and actual private CN3-7 warp
 
 Read `.artifacts/general-recognition-20261014/SKIN_WARP_RESUME_v1813.md`

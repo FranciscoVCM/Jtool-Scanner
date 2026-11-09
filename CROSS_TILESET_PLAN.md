@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Latest: review whole geometry when a marker is newly recognized
+
+Private whole scans of two confirmed clouds remove four false conflicts,
+but CN3-19 also moves a false upward spike instead of resolving it. Marker
+admission changes downstream geometry; detector-stage parity and warning
+counts cannot validate those changes. Keep the original geometry checks.
+
+Fresh compact NANG scans reproduce false geometry on a real square-outline
+warp: spikes in NANG-138 and blocks in NANG-137r. These are development
+cases for separate original-pixel ownership proof, not cross-family
+recovery. Audit162: no deployed change or new room approval.
+
 ## Latest: measure sprite coverage separately from role and room accuracy
 
 The supplied skin library makes appearance changes repeatable. On isolated
