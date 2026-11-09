@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-09 — Two private Halls1 fruit-edge conflicts corrected
+
+Fresh ordinary Halls1 has 432 detections, two more than the earlier
+capture-equivalent receipt. Both intervening spikes are visible in the
+source and retained. Passive trace shows two false dry-apple spikes enter
+as off-grid support; one is restored after pruning. The private trial
+accounts for original warm-body votes in both outline and density and
+checks original RGB side direction before withdrawing weak support.
+
+Whole private 432→430 removes only false UP(576,536) and LEFT(632,544).
+Every remaining ordered raw record is exact, including the apples and
+real nearby hazards. Whole and all deltas reviewed. The submerged false
+LEFT remains. Twelve existing apple tests pass; three native authored
+positives reached the private guard, none lost. CN3-25 transfer is frozen
+and unqueried pending bilinear provenance. No live change; audit165.
+
 ## 2026-11-09 — Spiral transfer held; Halls1 has mixed edge evidence
 
 No second spiral/spike overlap in fourteen saved compact case summaries.

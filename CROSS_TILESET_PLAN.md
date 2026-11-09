@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: account for both places a fruit edge inflates a spike score
+
+Two Halls1 false spikes entered as off-grid support; the LEFT was pruned
+then restored from that same support list. Exact source fruit edges had
+contributed both outline and global-density credit. A private admission
+trial withdraws that credit and directionally incompatible outline
+votes. Whole output 432→430, only the two false spikes removed. The
+submerged fruit remains unresolved. CN3-25 is frozen but unqueried:
+its bilinear frame needs original-pixel provenance before transfer.
+No activation; audit165.
+
 ## Latest: don't treat all marker overlaps as one failure
 
 Fourteen saved compact summaries contain no second qualifying

@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — two actual private Halls1 dry-apple removals
+
+Read `.artifacts/general-recognition-20261014/FRUIT_SUPPORT_BUDGET_RESUME_v1842.md`
+and audit165. All producers terminal. Fresh ordinary432→private430, only
+two source-confirmed false dry-apple spikes removed; all retained raw
+ordered records exact. Third submerged false remains. CN3-25 original
+false LEFT over apple is frozen, historically exposed, not queried.
+Next validate original physical contributions to bilinear working taps
+on authored/developer sources, then test the fixed candidate on CN3-25
+without tuning. No live change, timing, final full suite or room approval.
+
 ### Latest continuation — spiral compatibility held; Halls1 mixed edges
 
 Read `.artifacts/general-recognition-20261014/SPIRAL_TRANSFER_RESUME_v1833.md`
