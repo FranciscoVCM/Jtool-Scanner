@@ -14,6 +14,22 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — fruit protections qualified; early cloud binding held
+
+Read `.artifacts/general-recognition-20261014/CLOUD_RING_ACTUAL_RESUME_v1866.md`
+and audit168. All producers terminal. v1858 passes all 41/601/139/current
+16 protections for the disabled fruit selector (seven fresh, one prior
+actual, 36 proven bypass bindings). Do not repeat. Quiet controlled whole
+timing for Halls1/CN3-25/Halls2 remains open.
+
+CN3-25 bright ring and neutral-shadow alternative v1860 privately recovers
+Warp(352,16). Whole v1864 adds three new false spikes; keep the trial OFF.
+All eight typed deltas and whole source/reconstructions reviewed. CN3-26
+was not queried by the prototype (ordinary silhouette .81553 < .82).
+Retain both holds. Next trace the actual spike/solid ownership route or
+test a separate late marker-only binding with source proof; don't lower
+the silhouette cutoff or remove all geometry in a marker box.
+
 ### Latest continuation — maintained original fruit-edge parity, still off
 
 Read `.artifacts/general-recognition-20261014/FRUIT_MAINTAINED_RESUME_v1855.md`

@@ -4,6 +4,34 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-10 — Fruit protections pass; cloud recovery changes nearby geometry
+
+The optional fruit-edge rule passes all original 41 groups, the 601 visible
+minis, 139 terrain footprints and all 16 exact bounds. Seven fresh exposed
+controls match complete ordinary output; CN3-25 uses its already verified
+actual pair. The remaining 36 cases use authenticated source/frame bypass
+proofs and an audited scanner-code comparison, not fresh whole scans.
+FTFA stays 926/928 with zero extras, shifts or wrong directions; Flames stays
+254 exact, with 42 extras, 19 misses, 20 shifts and 2 wrong directions.
+The rule remains off pending controlled whole timing and release review.
+
+CN3-25's missing warp passes the old cloud shape check, but the bright room
+fails absolute ring isolation before the shadow checks. A separate private
+original-RGB proof distinguishes the visible dark rim and bright core from
+the independently sampled bright backdrop. It recovers the exact marker at
+the detector stage. Six authored placements using the same gameplay art
+pass across two scales, with four negative proofs exercised and no false
+additions. The first editor-sprite challenge did not reach the proof and
+is retained. CN3-26 was frozen beforehand; it fails an unchanged silhouette
+precondition and was not queried by the new rule.
+
+An actual private CN3-25 run adds the real warp and removes false solid,
+but introduces three false spikes. Whole and all eight typed deltas
+reviewed; every retained ordered record and its metadata matches. The
+candidate is held. Keep marker admission separate from any geometry repair
+until the new spike proposals are explained; no automatic box suppression.
+No activation, room approval, or new full-suite result. Audit168.
+
 ## 2026-11-09 — Maintained fruit-edge candidate, disabled by default
 
 The original-image off-grid support path can now withdraw edge credit

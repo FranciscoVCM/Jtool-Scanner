@@ -1,5 +1,17 @@
 # Cross-tileset milestone
 
+## Latest: isolate a cloud from a bright background without trusting its box
+
+CN3-25's detached cloud has a true dark rim between its bright core and
+the similarly bright backdrop. The private original-pixel proof recovers
+the marker in an actual scan, but nearby geometry arbitration introduces
+three false spikes. Do not deploy the early binding. Next separate marker
+identity from geometry admission, and verify each competing footprint.
+CN3-26 never reached the new proof because it fails the unchanged silhouette
+gate; not positive transfer. Audit168 also qualifies the independent fruit
+candidate on the 41 original protections and 16 exact bounds using seven
+fresh, one prior actual, and 36 proven bypass bindings. Timing still open.
+
 ## Latest: isolate the off-by-default candidate and measure its exposure
 
 Maintained original-source fruit attribution reproduces complete
