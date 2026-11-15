@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — disabled maintained late cloud packet
+
+Read `.artifacts/general-recognition-20261014/CLOUD_MAINTAINED_RESUME_v1877.md`
+and audit170. All scan workers terminal. CN3-25 OFF/ON whole match prior
+ordinary/private outputs exactly (both 255), CN3-31 ON stays exact to all
+583 prior detections and exports. 69 focused tests pass. The original
+component scan supplies provisional proposals; no marker enters geometry
+and no resampled, compact or Standard consumer is enabled. Schema 5
+tracks all eleven selectors. Do not redo parity. Qualify genuinely
+different-art original sources, full affected controls and paired costs
+before activation. Do not spend CN3-26's incompatible reserve.
+
 ### Latest continuation — two late CN3-25 corrections, no activation
 
 Read `.artifacts/general-recognition-20261014/CLOUD_LATE_RESUME_v1874.md`

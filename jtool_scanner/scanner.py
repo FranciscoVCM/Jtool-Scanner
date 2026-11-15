@@ -20,6 +20,7 @@ from types import MappingProxyType
 
 from .binary_components import dilated_ink_components
 from .fruit_spike_evidence import FruitBody, original_fruit_support_budget
+from .source_cloud_ownership import apply_late_clouds, proves_separated_cloud
 from .constants import (
     GRID_SIZE,
     OBJ_APPLE,
@@ -102,6 +103,8 @@ _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
 _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
 # Original-source fruit edge attribution still needs whole-scan qualification.
 _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = False
+# Do not expose unqualified late original cloud proposals in normal scans.
+_SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2205,6 +2208,7 @@ def scan_image(
     source_geometry: bool = False,
     _gravity_packet_sink: list[ArrowPatch] | None = None,
     _original_fruit_support: bool = False,
+    _late_cloud_sink: list[Detection] | None = None,
 ) -> ScanResult:
     if not isinstance(source_geometry, bool):
         raise ValueError('source_geometry must be a boolean')
@@ -2351,7 +2355,16 @@ def scan_image(
         grid_step,
         dark_only=True,
     )
-    detections.extend(_detect_warps(image, box, grid_step))
+    own_clouds = (_SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED and source_geometry and _apply_shape_refits
+                  and include_color_objects and normalized_grid == (25, 19) and not embedded_compact_room)
+    cloud_candidates = None
+    if (_SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED and include_color_objects and normalized_grid == (25, 19)
+            and not embedded_compact_room and image is source_image and box == source_box):
+        cloud_candidates = [] if own_clouds else _late_cloud_sink
+    if cloud_candidates is None:
+        detections.extend(_detect_warps(image, box, grid_step))
+    else:
+        detections.extend(_detect_warps(image, box, grid_step, late_cloud_sink=cloud_candidates))
     if include_color_objects:
         detections.extend(_detect_color_objects(
             image, box, grid_step, detections, gravity_packets=gravity_packets,
@@ -3018,7 +3031,14 @@ def scan_image(
         )
     if source_geometry and _apply_shape_refits and _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED:
         result = _align_source_save_headers(result, source_image)
+    if own_clouds and cloud_candidates:
+        result = _apply_late_cloud_candidates(result, source_image, cloud_candidates)
     return result
+
+
+def _apply_late_cloud_candidates(result, image, candidates):
+    return apply_late_clouds(result, image, _dedupe_detections(candidates, min_distance=20),
+                             bright_pixel=_is_bright_cloud_candidate, warnings=structural_scan_warnings)
 
 
 def _align_source_save_headers(result: ScanResult, image: RGBImage, *, source_extent=None) -> ScanResult:
@@ -4200,6 +4220,8 @@ def _scan_lattice_normalized_room(
 
     use_consensus = _capture_lattice_consensus_enabled(normalization)
     gravity_packets = [] if include_color_objects and _apply_shape_refits else None
+    cloud_candidates = ([] if _SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED and source_geometry
+                        and include_color_objects and _apply_shape_refits and use_consensus else None)
     source_result = scan_image(
         source_image,
         room_box=normalization.source_room,
@@ -4210,6 +4232,7 @@ def _scan_lattice_normalized_room(
         _apply_shape_refits=False,
         **({'_original_fruit_support': True}
            if source_geometry and use_consensus and _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED else {}),
+        **({'_late_cloud_sink': cloud_candidates} if cloud_candidates is not None else {}),
     )
     canonical_image = _resample_capture_lattice_room(source_image, normalization)
     canonical_result = scan_image(
@@ -4367,6 +4390,8 @@ def _scan_lattice_normalized_room(
         result = _align_source_save_headers(
             result, source_image, source_extent=normalization.source_extent,
         )
+    if cloud_candidates:
+        result = _apply_late_cloud_candidates(result, source_image, cloud_candidates)
     return result
 
 
@@ -11917,7 +11942,9 @@ def _cloud_warp_palettes():
     )
 
 
-def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]:
+def _detect_warps(
+    image: RGBImage, room: Box, grid_step: int, *, late_cloud_sink: list[Detection] | None = None,
+) -> list[Detection]:
     allow_tinted_warp = _looks_cyan_tinted(image, room)
     components = _connected_components(
         image,
@@ -11957,7 +11984,10 @@ def _detect_warps(image: RGBImage, room: Box, grid_step: int) -> list[Detection]
             continue
         detections.append(Detection("warp", OBJ_WARP, map_x, map_y, score, box))
     detections.extend(_detect_haloed_red_warps(image, room, grid_step))
-    detections.extend(_detect_filled_cloud_warps(image, room, grid_step))
+    if late_cloud_sink is None:
+        detections.extend(_detect_filled_cloud_warps(image, room, grid_step))
+    else:
+        detections.extend(_detect_filled_cloud_warps(image, room, grid_step, late_cloud_sink=late_cloud_sink))
     detections.extend(_detect_tinted_filled_warps(image, room, grid_step))
     detections.extend(_detect_outline_cloud_warps(image, room, grid_step))
     detections.extend(_detect_dark_silhouette_warps(image, room, grid_step))
@@ -11969,6 +11999,8 @@ def _detect_filled_cloud_warps(
     image: RGBImage,
     room: Box,
     grid_step: int,
+    *,
+    late_cloud_sink: list[Detection] | None = None,
 ) -> list[Detection]:
     """Recognize the filled cloud portal by normalized silhouette topology.
 
@@ -12002,6 +12034,7 @@ def _detect_filled_cloud_warps(
                 predicate,
                 margin=5,
             )
+            late_candidate = (late_cloud_sink is not None and palette_name == "bright" and ring_share > .15)
             if not _is_filled_cloud_warp_metrics(
                 map_width=map_width,
                 map_height=map_height,
@@ -12011,12 +12044,17 @@ def _detect_filled_cloud_warps(
                 run_sum=run_sum,
                 center_fill=center_fill,
                 silhouette_iou=silhouette_iou,
-                ring_share=ring_share,
+                ring_share=0.0 if late_candidate else ring_share,
             ):
                 continue
             map_x, map_y = _image_box_to_jtool_origin(box, room, grid_step)
             if palette_name == "bright":
-                if _filled_cloud_warp_has_ambiguous_neutral_shadow(image, box):
+                if late_candidate:
+                    if not proves_separated_cloud(
+                        image, room, box, pixels, map_x, map_y, bright_pixel=predicate,
+                    ):
+                        continue
+                elif _filled_cloud_warp_has_ambiguous_neutral_shadow(image, box):
                     continue
                 if _filled_cloud_warp_shadow_is_background_like(
                     image,
@@ -12031,16 +12069,14 @@ def _detect_filled_cloud_warps(
                 map_y,
             ):
                 continue
-            detections.append(
-                Detection(
-                    f"warp_filled_cloud_{palette_name}",
-                    OBJ_WARP,
-                    map_x,
-                    map_y,
-                    min(0.96, 0.76 + silhouette_iou * 0.20),
-                    box,
-                )
+            proposal = Detection(
+                f"warp_filled_cloud_{palette_name}", OBJ_WARP, map_x, map_y,
+                min(0.96, 0.76 + silhouette_iou * 0.20), box,
             )
+            if late_candidate:
+                late_cloud_sink.append(proposal)
+                continue  # Never seed ordinary ID/geometry arbitration.
+            detections.append(proposal)
             seen_components.add(component_key)
     return _dedupe_detections(detections, min_distance=20)
 

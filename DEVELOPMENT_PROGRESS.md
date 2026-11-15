@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Maintained late cloud packet, still disabled
+
+The existing original-frame filled-cloud pass now has an optional proposal
+sink. It checks the original pixels of already found components once,
+leaves the early marker list untouched, and consumes qualified proposals
+after geometry. Standard mode, the canonical resample, and compact rooms
+remain on the ordinary path. The selector defaults off. Schema 5 records
+eleven switches without inventing a setting for older receipts.
+
+Three actual Source-mode scans match complete prior raw and exports:
+CN3-25 OFF reproduces the ordinary 255 detections; ON reproduces the
+previously reviewed warp/false-block exchange at 255; a candidate-ON
+CN3-31 control keeps all 583 records. The two authored sprite boards keep
+both ordinary outputs and all six late proposals. Sixty-nine focused
+tests pass. Audit170 does not credit a new correction, full-corpus pass
+or deployment. Real different-art transfer, broader managed protection
+and controlled latency remain open.
+
 ## 2026-11-15 — Late warp recovery avoids the three false spikes
 
 The ordinary and early-experiment traces reproduce both saved whole

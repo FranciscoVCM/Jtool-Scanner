@@ -1,5 +1,12 @@
 # Cross-tileset milestone
 
+## Latest: collect original cloud proposals once, then arbitrate late
+
+The maintained, default-off caller reproduces both whole CN3-25 endpoints
+and leaves the exposed CN3-31 control unchanged. No separate full-image
+marker search is added. Audit170 preserves the two earlier local gains
+as private. Broader controls, real separate-art transfer and cost are open.
+
 ## Latest: separate new marker admission from geometry arbitration
 
 Actual late CN3-25 output adds the source-verified warp and retires one

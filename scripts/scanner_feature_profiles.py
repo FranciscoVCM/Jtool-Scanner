@@ -19,8 +19,9 @@ LEGACY_V2_SWITCHES = frozenset({
     '_CAPTURE_BASE_CONTEXT_ENABLED',
 })
 LEGACY_V3_SWITCHES = LEGACY_V2_SWITCHES | {'_SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED'}
-SOURCE_FEATURE_SWITCHES = LEGACY_V3_SWITCHES | {'_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED'}
-_SCHEMA_SWITCHES = {2: LEGACY_V2_SWITCHES, 3: LEGACY_V3_SWITCHES, 4: SOURCE_FEATURE_SWITCHES}
+LEGACY_V4_SWITCHES = LEGACY_V3_SWITCHES | {'_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED'}
+SOURCE_FEATURE_SWITCHES = LEGACY_V4_SWITCHES | {'_SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED'}
+_SCHEMA_SWITCHES = {2: LEGACY_V2_SWITCHES, 3: LEGACY_V3_SWITCHES, 4: LEGACY_V4_SWITCHES, 5: SOURCE_FEATURE_SWITCHES}
 
 
 def _switch_values(values, required=SOURCE_FEATURE_SWITCHES):
@@ -33,7 +34,7 @@ def _switch_values(values, required=SOURCE_FEATURE_SWITCHES):
 
 def recorded_feature_profile(values):
     """Validate explicit metadata; never infer missing old runtime overrides."""
-    return {'schema_version': 4, 'switches': _switch_values(values)}
+    return {'schema_version': 5, 'switches': _switch_values(values)}
 
 
 def snapshot_feature_profile(scanner_module):
