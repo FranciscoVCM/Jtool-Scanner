@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — frozen Halls6 transfer failed, combined CN3-25 verified
+
+Read `.artifacts/general-recognition-20261014/CLOUD_TRANSFER_RESUME_v1885.md`
+and audit172. v1881 completed the passive 71 compatibility inventory;
+only Halls6 missing/Halls1 known could reach the unchanged late rule in
+the new subset. Halls6 v1882/v1884 fails with 2/6 upper separator rays;
+preserve, don't tune. v1883b whole CN3-25 with fruit ON and cloud ON keeps
+254 and the live fruit correction; merges exactly the reviewed warp and
+block deltas. FTFA-3 complete parity and 233/233 exact. Runtime unchanged,
+late cloud still off. Next investigate independent cloud/terrain positive
+evidence rather than repeating this failed background hold.
+
 ### Latest continuation — fruit Source-mode release qualified and active
 
 Read `.artifacts/general-recognition-20261014/FRUIT_RELEASE_RESUME_v1880.md`

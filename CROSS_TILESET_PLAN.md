@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: current fruit and late cloud are compatible; different-background hold
+
+The verified CN3-25 warp/block exchange still works with the live fruit
+rule enabled. FTFA-3 retains 233/233 exact. Passive coverage of canonical
+sources finds one missing compatible marker beyond the previous test
+set; the frozen Halls6 test fails on insufficient original rim support.
+The same cloud sprite does not prove independent art transfer. Audit172;
+no activation, no new room approval. Do not loosen the failed threshold.
+
 ## Latest: qualified fruit ownership shipped in Source mode
 
 The measured original-RGB rule fixes two false Halls1 spikes and one

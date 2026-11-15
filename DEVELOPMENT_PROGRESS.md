@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Late cloud transfer tested without changing the rule
+
+The passive compatibility census covers the canonical 71: 28 original
+files were already in the 44-source cloud trial; the remaining 43 were
+checked for existing preconditions only. Of 30 eligible original frames,
+Halls1 had an already detected warp and Halls6 had the only compatible
+missing marker. The unchanged Halls6 test did not add it: above the
+checker-backed cloud, only two of six sampled rays qualify, versus the
+required three. Preserve this frozen failure and the other old holds.
+Halls1's complete stage remains unchanged. No independent sprite-family
+transfer is established.
+
+Fresh candidate-ON whole scans on the current fruit-enabled profile:
+CN3-25 has 254 detections on each side, exchanging only the false block
+for the real warp; the fruit-associated false spike stays absent. Whole
+and both differences reviewed. FTFA-3 retains complete raw/exports and
+233/233 exact, but does not exercise the new cloud proof. The cloud
+selector remains off, no newly shipped recognition or room approval;
+audit172. A different source proof is needed for positive transfer.
+
 ## 2026-11-15 — Fruit-edge ownership enabled in Source mode
 
 The release changes only the fruit-edge selector. Experimental Source
