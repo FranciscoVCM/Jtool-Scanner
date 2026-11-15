@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — Say-9 private late recovery, specificity gap
+
+Read `.artifacts/general-recognition-20261014/DENSE_MARKER_NEGATIVE_NEXT_v1893.md`
+and audit174. v1892 is terminal: fresh ordinary raw exactly 282, private
+283, adding only Warp(384,224). Whole and changed crop reviewed; all
+five genuine surrounding spikes, other detections and warnings kept.
+No runtime change, timing or approval. v1891 controls never reached
+the enclosure exception; qualify that case explicitly before release.
+CN3-19 v1889 one-sided RGB failed its real target and removed four
+faint-solid controls. Do not retune that envelope; seek structurally
+independent ownership evidence or a different real cause.
+
 ### Latest continuation — original interior proof recovers CN3-19/21 privately
 
 Read `.artifacts/general-recognition-20261014/CLOUD_LATE_INTERIOR_RESUME_v1887.md`

@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: distinguish marker identity from a dense spike context
+
+Say-9 gains its verified warp in the private late caller, with all
+five real neighboring spikes and other records preserved. This is a
+same-art recovery on a different backdrop; no runtime change or room
+approval. The earlier archive controls never enter the new exception.
+Use enclosed actor/decoration negatives that actually reach the gate
+before assessing release, and keep pursuing independently verified
+different-art positives. The CN3-19 one-sided RGB terrain idea failed
+both the original crop and low-contrast solid controls. Audit174.
+
 ## Latest: interior shade proves marker identity, not geometry ownership
 
 In actual whole-room comparisons CN3-19 and CN3-21 gain their confirmed

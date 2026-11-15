@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Say-9 warp recovered privately inside real spikes
+
+The unchanged four-shade identity proof also recognizes Say-9's filled
+warp. Its old neighborhood veto fires on five real nearby spikes.
+Applying that separate identity proof only to a qualifying bright
+component, then consuming the marker after geometry, adds precisely
+Warp(384,224): 282→283 in a fresh whole-room scan. All existing ordered
+records, structural warnings, and JMap metadata stay unchanged.
+Source, JTool and Blend confirm the added warp and protected spikes.
+Other room errors and reference conflicts remain.
+
+Seven earlier real controls and eight authored skin boards show
+no stage deltas, but none reached the new exception. Actual enclosed
+lookalike controls are still required. This is the same warp art on a
+different backdrop, in an exposed developer room, not an untouched
+reserve or different-sprite transfer. The live scanner is unchanged.
+Audit174 also records the failed CN3-19 one-sided backdrop probe: it
+rejects the real candidate and would remove all four faint-solid
+controls. Do not use the RGB envelope for terrain ownership.
+All 26 warp-filtered tests and four cloud-ownership tests passed on
+the maintained code; this is not a new full-suite result.
+
 ## 2026-11-15 — Interior shading tested after geometry
 
 A separate, previously measured interior-shade proof recovers the
