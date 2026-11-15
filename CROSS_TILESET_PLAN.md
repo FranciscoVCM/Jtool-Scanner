@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: interior shade proves marker identity, not geometry ownership
+
+In actual whole-room comparisons CN3-19 and CN3-21 gain their confirmed
+warp without altering earlier geometry. Their existing overlapping
+false block or spikes remain. Hold this late route offline. The next
+test needs independent evidence for which parts of a conflicting
+footprint are genuine terrain or hazard; keep compatible real reserves
+separate from the development rooms. Do not claim sprite-bank matches
+or same-art positives as independent transfer. Audit173.
+
 ## Latest: current fruit and late cloud are compatible; different-background hold
 
 The verified CN3-25 warp/block exchange still works with the live fruit

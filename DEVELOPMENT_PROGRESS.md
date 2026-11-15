@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Interior shading tested after geometry
+
+A separate, previously measured interior-shade proof recovers the
+source-confirmed CN3-19 warp at (672,288) and CN3-21 warp at (328,408)
+when admitted only after geometry. Fresh whole scans move 255→256 and
+400→401 respectively. The only new detection in each room is the warp;
+all existing ordered detections stay identical. Reviewed Source, JTool
+and Blend confirm both placements. The false block still overlaps the
+CN3-19 warp and correctly raises a new structural warning. CN3-21's
+false side spikes also remain. Both are exposed examples of the same
+sprite, not new independent transfer or room approvals. Audit173; no
+runtime change or timing claim.
+
+The skin archive remains local and is useful for testing differently
+styled appearances and hard negatives. The measured isolated warp
+stage found 15 of 105 authored appearances across two backgrounds,
+only four on both. Some sprites share exactly the same pixels despite
+different object roles. Use family-separated cases as offline stress
+tests and corroborate with independent real source evidence; don't
+promote raw appearance matches into objects.
+
 ## 2026-11-15 — Late cloud transfer tested without changing the rule
 
 The passive compatibility census covers the canonical 71: 28 original

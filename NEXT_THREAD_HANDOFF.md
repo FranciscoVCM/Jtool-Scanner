@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — original interior proof recovers CN3-19/21 privately
+
+Read `.artifacts/general-recognition-20261014/CLOUD_LATE_INTERIOR_RESUME_v1887.md`
+and audit173. v1886 both fresh ordinary scans match prior complete raw.
+Late-only adds exactly the confirmed warps, CN3-19 255→256 at (672,288)
+and CN3-21 400→401 at (328,408). Whole and both changed crops reviewed.
+The false block/side spikes remain; no shipping, new goal credit,
+approval or timing. CN3-7 A is a warp, B is the player; all five
+previously reviewed white cloud sites are real warps. The supplied
+skin archive is already verified and local. Next prove independent
+source geometry ownership or pursue separate-art recovery; leave
+failed Halls6/CN3-26 tests and retained geometry intact.
+
 ### Latest continuation — frozen Halls6 transfer failed, combined CN3-25 verified
 
 Read `.artifacts/general-recognition-20261014/CLOUD_TRANSFER_RESUME_v1885.md`
