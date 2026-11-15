@@ -101,8 +101,8 @@ _SOURCE_REJECTED_PRIMARY_RECOVERY_ENABLED = True
 _SOURCE_FULL_SPIKE_PHASE_ENABLED = True
 # Qualified late position-only save evidence; standard scans bypass this caller.
 _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
-# Original-source fruit edge attribution still needs whole-scan qualification.
-_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = False
+# Qualified original-source fruit edge attribution; Standard mode bypasses it.
+_SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = True
 # Do not expose unqualified late original cloud proposals in normal scans.
 _SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(

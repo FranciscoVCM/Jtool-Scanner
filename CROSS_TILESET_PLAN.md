@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: qualified fruit ownership shipped in Source mode
+
+The measured original-RGB rule fixes two false Halls1 spikes and one
+CN3-25 spike without editing room data. The actual Standard output is
+unchanged. All 12 timed samples preserve expected outputs; maximum
+incremental overhead +1.21% including exports. Audit171. The late cloud
+candidate is still off; new genuine positive recovery and separate-art
+reserved transfer remain the target.
+
 ## Latest: collect original cloud proposals once, then arbitrate late
 
 The maintained, default-off caller reproduces both whole CN3-25 endpoints

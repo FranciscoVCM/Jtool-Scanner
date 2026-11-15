@@ -4,6 +4,31 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Fruit-edge ownership enabled in Source mode
+
+The release changes only the fruit-edge selector. Experimental Source
+Geometry no longer recreates two false spikes over dry apples in Halls1
+and one in CN3-25. Original local source review confirms all three;
+the retained records, apples and other nearby hazards are unchanged.
+The submerged Halls1 conflict remains. The cloud rule is still off.
+
+All 12 OFF/ON/ON/OFF whole samples ran serially on quiet AC and matched
+complete expected outputs. Incremental medians in seconds:
+
+| Source | Scan OFF → ON | With exports OFF → ON |
+| --- | ---: | ---: |
+| Halls1 | 66.75 → 66.05 (−1.05%) | 75.16 → 74.49 (−0.89%) |
+| CN3-25 | 76.10 → 76.24 (+0.19%) | 81.20 → 81.36 (+0.20%) |
+| Halls2 | 38.76 → 39.20 (+1.13%) | 41.34 → 41.84 (+1.21%) |
+
+The previous original-41/current-16 protection proof remains bound to
+the candidate. Fifty-nine release-focused tests pass. Halls1's actual
+Standard project and JMap are unchanged before/after; the actual Source
+project and same-exporter JMap match the qualified ON output. Both app
+modes, root, and health return HTTP 200. Audit171: three shipped false
+positives corrected, zero new real objects recovered and no approved room.
+Different-art positive transfer, final stable 71+16, and full suite remain.
+
 ## 2026-11-15 — Maintained late cloud packet, still disabled
 
 The existing original-frame filled-cloud pass now has an optional proposal

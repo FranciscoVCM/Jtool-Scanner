@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — fruit Source-mode release qualified and active
+
+Read `.artifacts/general-recognition-20261014/FRUIT_RELEASE_RESUME_v1880.md`
+and audit171. v1878 all 12 quiet AC ABBA samples pass final output checks;
+max +1.21% including exports. v1879 exact selector-only semantic diff,
+59 focused tests and actual old/new Standard parity, plus current Source
+project and JMap matching qualified ON. Both app modes pass. Do not rerun.
+Fruit ON only in Experimental Source Geometry: Halls1 432→430 and
+CN3-25 255→254, three false spikes removed, no new real object. Cloud
+remains disabled. Continue new positive recovery and different-art
+untuned transfer, not a repeat of the fruit or cloud parity baselines.
+
 ### Latest continuation — disabled maintained late cloud packet
 
 Read `.artifacts/general-recognition-20261014/CLOUD_MAINTAINED_RESUME_v1877.md`
