@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: separate new marker admission from geometry arbitration
+
+Actual late CN3-25 output adds the source-verified warp and retires one
+wholly false block, with all 254 other ordered records unchanged. The
+early mechanism's three false spikes are absent. Original source and
+both deltas checked; the partial solid remains untouched. A 44-input
+source/saved-output check changes only CN3-25. No app activation or
+different-art reserve. Audit169; separate fruit timing remains pending.
+
 ## Latest: isolate a cloud from a bright background without trusting its box
 
 CN3-25's detached cloud has a true dark rim between its bright core and

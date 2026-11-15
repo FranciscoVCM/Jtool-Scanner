@@ -4,6 +4,26 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-15 — Late warp recovery avoids the three false spikes
+
+The ordinary and early-experiment traces reproduce both saved whole
+outputs. Early marker deduplication removes two blocks before spike
+arbitration, letting three existing spike hypotheses survive. The late
+private trial recovers the CN3-25 warp after geometry and separately
+proves the top false block belongs to the marker/backdrop, not terrain.
+Actual whole output adds Warp(352,16) and removes Block(352,0); all 254
+other ordered records, metadata and warnings match. The partly real
+block below is kept. Whole and both differences were reviewed against
+the original. This is two local corrections, not a room approval.
+
+The same candidate can change only CN3-25 in a 44-input original-source
+check with saved output replay: seven compact bypasses, 351 proof
+queries across 12 rooms. This is not 44 new whole scans or a different-art
+transfer. The early variant remains held, CN3-26 remains unqueried, and
+the app is unchanged. Audit169. Next reuse the existing original marker
+pass for a late-only, disabled implementation and qualify actual caller
+parity, independent real transfer, and whole-scan cost.
+
 ## 2026-11-10 — Fruit protections pass; cloud recovery changes nearby geometry
 
 The optional fruit-edge rule passes all original 41 groups, the 601 visible

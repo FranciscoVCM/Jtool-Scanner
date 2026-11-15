@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-09. Continue in the existing repository at
+Updated 2026-11-15. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,19 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — two late CN3-25 corrections, no activation
+
+Read `.artifacts/general-recognition-20261014/CLOUD_LATE_RESUME_v1874.md`
+and audit169. v1868 whole ordinary/early trace proves block loss precedes
+survival of known false spike proposals. v1871 whole 255→255 adds the
+real Warp(352,16), retires one wholly false Block(352,0), and preserves
+254 ordered records plus warnings. v1872 whole and both deltas reviewed.
+v1873 terminal: seven bypass, 37 source checks, 351 queries, only CN3-25
+changes in saved-output replay. Do not repeat or count as 44 new scans.
+Next implement a disabled late packet that reuses the original component
+scan, retains Standard and compact bypasses and leaves all prior marker
+decisions intact. No new reserve result or timing; early variant held.
 
 ### Latest continuation — fruit protections qualified; early cloud binding held
 
