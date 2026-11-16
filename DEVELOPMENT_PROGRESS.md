@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Registered neighbor edges explain one additional false gap
+
+The unchanged Halls5 helper abstains on all seven Redcube2 gap extras
+while preserving all 56 real full spikes. Preserve the failed transfer.
+It also abstains on all three independently reviewed local false UPs in
+CN3-28's extended capture. One open-base gap has a demonstrably separate
+neighbor; adjacent source rails fail only their shared start position.
+
+A private refinement registers each original row to that neighbor's
+exact contact pixel, with the same RGB/base and original contour guards.
+Eight new authored checks and the six original focused methods pass.
+In two fresh actual CN3-28 scans, the entire upstream is identical;
+private 371→370 removes only false UP(448,288). Both real DOWNs and
+every other ordered detection and map metadata survive. Whole and sole
+delta reviewed. Halls5 replay preserves its four earlier decisions, not
+new gains. This is one developer-known false correction on different
+artwork, not a qualifying reserved room or app change. Audit191.
+
 ## 2026-11-16 — Original edge bridges remove four Halls5 gap aliases privately
 
 Each false downward candidate has one off-polygon dissenting physical

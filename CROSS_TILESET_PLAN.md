@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: authenticate row contact separately from native alignment
+
+Unchanged gap-rule transfer to Redcube2 fails safely (0/7 false,
+56/56 true retained). The private registered-source refinement explains
+one separate CN3-28 opposing UP gap; actual 371→370 and whole/delta
+review verify it alone. Keep other gaps and holds. Developer evidence
+only; no activated path, representative timing or qualifying reserve.
+Audit191.
+
 ## Latest: a physically observed neighbor accounts for opposing-gap dissent
 
 Halls5 actual Source mode 124→120 privately, four previously frozen

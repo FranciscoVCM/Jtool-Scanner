@@ -14,6 +14,22 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — preserved transfer failure, one CN3-28 private fix
+
+Audit191. `redcube2-gap-score-v1963.json`: unchanged published helper
+0/7 real false removals, all 56 true fulls safe. Preserve failed transfer.
+`cn3-28-gap-score-v1964.json`: unchanged helper zero of three local false
+UPs, five local true DOWNs protected. All original extents retained.
+New private `probe-registered-gap-bridge-v1965.py` registers the
+independent physical rows to the verified neighbor edge. Eight authored
+checks and six original unit tests pass; Halls5 readonly replay retains
+the four earlier removals. v1966 two actual roots terminal, ordinary
+371→private 370; only false UP(448,288) removed, all kept records/maps
+and metadata compared. Whole and only delta `qa-v1968.json` reviewed.
+CN3-28 is developer-exposed, one fix below the room gate, no reserve
+success, timing or activation. Next predeclare a new compatible positive
+without revisiting failed Redcube2 or widening base/color tolerances.
+
 ### Latest continuation — four actual private Halls5 gap removals
 
 Audit190; `HALLS5_GAP_NEIGHBOR_BRIDGE_FREEZE_v1959.md` and
