@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Reproduce both NANG-140 removals with stronger source evidence
+
+Original pixel-square coverage yields four independent observations
+of the false upward minispike even under small frame displacements.
+A fixed witness run clears three sites. The nearest geometrically
+clear run covers the fourth without selecting on RGB match. The
+downward correction retains the earlier independent source proof.
+All 12 active authored genuine-tip cases hold; 19 compact-mini unit
+tests pass. Two fresh private comparison scans reproduce 195 → 193
+with exactly the two earlier false detections removed. Whole and both
+deltas reviewed; all other ordered records and JMap metadata retained.
+Both visible right-wall minis already match the current output.
+No new shipped correction, transfer, timing, or room approval. Audit200.
+
 ## 2026-11-16 — Source-only body proof fails at open voids and hollow shapes
 
 An orthogonal edge-pair test passed 36 authored cases, then proposed

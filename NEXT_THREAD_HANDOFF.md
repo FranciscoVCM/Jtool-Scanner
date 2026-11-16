@@ -14,6 +14,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — both NANG-140 mini removals validated privately
+
+Audit200, `MINI_GEOMETRIC_CLEARANCE_RESUME_v2012.md`. Two actual v2010
+Source runs 195→193, exact historical false-UP and false-DOWN removals;
+all other ordered records and metadata stay fixed. v2011 whole/all-delta
+QA and v2012 seal complete. UP now has four robust physically exclusive
+sites, each with an independently selected geometric side witness.
+All 12 active authored tips retained, four legacy misses not counted;
+19 targeted tests pass. The current visible right-facing and left-facing
+wall minis both match. Do not assume an extra remaining right mini from
+the old unspecified review. Candidate remains private. Test compatible
+real transfer and cross-scale evidence before runtime binding, with all
+positive protections and controlled whole latency.
+
 ### Latest continuation — Secret1 geometry series capped
 
 Audit199, `ORTHOGONAL_GEO_VOID_RESUME_v2006.md`. Opposed RGB edge pairs

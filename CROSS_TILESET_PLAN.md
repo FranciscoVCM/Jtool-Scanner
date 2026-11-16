@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: original side witnesses verify both private compact mini corrections
+
+For an otherwise valid compact overlap, pair original pixel-area
+coverage with background evidence from the first geometrically clear
+same-row run. Do not choose witnesses based on their color match.
+NANG-140 reproduces the older two-error private improvement (195 to
+193) and retains all 12 active genuine-tip controls. This does not
+establish real different-art transfer or whole latency. Keep the
+runtime unchanged while those protections are still open. Audit200.
+
 ## Latest: opposing edges do not prove solid occupancy
 
 Orthogonal RGB edge pairs would fill six empty gaps between Secret1's
