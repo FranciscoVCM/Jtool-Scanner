@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Dependency-free rail diagnostic; real spike compound blocks release
+
+The new unbound source diagnostic reads original RGB in either orientation
+without a NumPy dependency. Horizontal profile scores match the previous
+implementation on 14 saved original inputs. The vertical pass finds 38
+phase-supported candidates but adds nothing after existing-object and
+competing-body protection. Thirty-three focused tests pass, including
+fractional captures, both axes, nondefault phase, clipping, and short
+platforms. The web app does not call this diagnostic.
+
+The same horizontal rule would add a false 32px block at (64,288)
+in CN3-21. Human review identifies the shape as one full down spike
+and half of an up spike on each side. A two-sided original contour
+test found too few independent rows to reject the proposal safely.
+Keep the rule offline; the prior verified NANG-138r and CN3-19
+private gains still stand, and CN3-19's beam-end platform was not
+changed. Audit178; no new room approval, runtime timing or fix.
+
 ## 2026-11-16 — Faster rail screening and a private masonry recovery
 
 An exact early contrast screen avoids running the full body-profile test

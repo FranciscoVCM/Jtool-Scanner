@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: textured rail evidence can mistake a slanted spike compound for a solid
+
+The dependency-free two-axis diagnostic reproduces horizontal scores
+on 14 inputs. Vertical candidates yield no unconflicted additions.
+CN3-21 supplies a real false-body control confirmed as a full down spike
+between two partially visible up spikes. The original paired-slope
+trace abstains, so do not bind the rail candidate or delete the
+beam-end platform using the neighbor alone. Preserve current private
+gains. Look for whole-compound topology outside the middle square;
+audit178, no runtime or room approval.
+
 ## Latest: a lossless edge screen and one different-art rail result
 
 The fast screen preserves complete candidate scores on 13 inputs.

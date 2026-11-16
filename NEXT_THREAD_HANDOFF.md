@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — unbound rail port, confirmed compound false proposal
+
+Read `.artifacts/general-recognition-20261014/RAIL_PORT_AND_COMPOUND_HOLD_v1914.md`
+and audit178. v1911 shows complete horizontal score parity on 14 saved
+inputs; 38 vertical candidates, zero unconflicted additions. v1912–13
+CN3-21 (64,288) is human-confirmed spike compound, NOT solid: one full
+DOWN and one half-visible UP on either side. No typed hazard origins
+inferred. Paired outside contour proof fails (3/4 rows). Keep the port
+unbound; stable app source unchanged. CN3-19's confirmed false platform
+is unaltered. Next pursue independent compound topology or a distinct
+original-body cause rather than widening the failed slope/phase gate.
+
 ### Latest continuation — exact faster screen, new actual CN3-19 body
 
 Read `.artifacts/general-recognition-20261014/RAIL_FAST_DUAL_ART_RESUME_v1909.md`
