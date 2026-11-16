@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — Secret1 geometry series capped
+
+Audit199, `ORTHOGONAL_GEO_VOID_RESUME_v2006.md`. Opposed RGB edge pairs
+look convincing across perpendicular axes but nominate six open U-slot
+voids. Confirmed +8,712 false terrain pixels and no real correction.
+Closure alone fills authored outlines. Exterior connectivity plus
+original interior fill passes 44 authored tests but nominates nothing
+on three real originals. Keep all three variants offline and the older
+private NANG-138r evidence separate. Do not tune the threshold or reopen
+the Secret1 texture/phase series. Select a distinct failure mechanism or
+source-compatible transfer with independent positives and negatives.
+
 ### Latest continuation — Secret1 rail transfer rejected
 
 Audit198, `SECRET1_RAIL_TRANSFER_RESUME_v2001.md`. Exact existing rail

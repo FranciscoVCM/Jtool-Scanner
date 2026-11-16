@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: opposing edges do not prove solid occupancy
+
+Orthogonal RGB edge pairs would fill six empty gaps between Secret1's
+U structures. Adding exterior connectivity and independent interior
+evidence passes all 44 authored controls but recovers no real body in
+three original captures. Do not relax the checks or treat a closed
+outline as a filled block. Audit199 closes this experiment, not the goal.
+
 ## Latest: rail-body transfer fails on genuinely periodic skin paint
 
 Secret1's original horizontal stripes repeat best at 8px on all 34

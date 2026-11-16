@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Source-only body proof fails at open voids and hollow shapes
+
+An orthogonal edge-pair test passed 36 authored cases, then proposed
+six false full blocks in Secret1's open U slots. The fixed source mask
+shows 8,712 additional negative and 48 unknown pixels, no recoveries.
+Exterior-connectivity alone failed four authored hollow-frame controls.
+Requiring original-source fill inside the closed region passed all 44
+controls, but proposed no bodies in Secret1, NANG-138r, or CN3-21.
+Leave all variants offline; existing scanner output is unchanged.
+Audit199 retains all rooms and no new approvals.
+
 ## 2026-11-16 — Fixed rail-body rule fails on Secret1's periodic artwork
 
 Two-axis original-source replay checks 167 full profiles and finds no
