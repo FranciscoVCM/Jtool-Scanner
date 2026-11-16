@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: seven private gap corrections, but distal safety fails
+
+Actual frozen-source transfer preserves both visual families and removes
+seven known false gap spikes in Halls7/CN3-29. Halls4 abstains. A distinct
+authored true distal tip is outside the shallow evidence aperture in all
+16 cases and would be discarded. Hold both flavors offline. Add independent
+distal positive/occlusion protection without retuning the transferred
+rooms, then rerun protected actual cases before timing or binding. Audit192.
+
 ## Latest: authenticate row contact separately from native alignment
 
 Unchanged gap-rule transfer to Redcube2 fails safely (0/7 false,

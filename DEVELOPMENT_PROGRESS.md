@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Two actual gap transfers, but a distal shape blocks release
+
+Original-only scopes were frozen before querying three rooms. The unchanged
+published helper and registered variant made the same decisions. Halls4
+abstained on all three blue-ceiling extras. On starfield Halls7 and flat
+CN3-29, four new actual Source-mode scans reproduced the frozen proposals:
+98→96 and 368→363. Only seven reviewed false gap spikes disappear; all
+retained ordered records and map metadata match. Whole and all seven
+deltas reviewed. Local false-error reduction: 2/3 and 5/8; both rooms still
+have other major errors. Previously held experiments are preserved.
+
+The current helper also incorrectly nominates all 16 authored real tips
+whose visible pixels occur beyond the shallow base/core aperture. This
+blocks activation despite the real private gains. Need independent distal
+shape and ownership evidence without discarding human-confirmed occlusions
+or inferring foreign fringe is empty. Twelve existing interstitial tests
+pass but do not cover this new mechanism's safety. Audit192; no live change.
+
 ## 2026-11-16 — Registered neighbor edges explain one additional false gap
 
 The unchanged Halls5 helper abstains on all seven Redcube2 gap extras

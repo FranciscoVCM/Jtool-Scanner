@@ -14,6 +14,27 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — private gap transfer passes locally; safety hold
+
+Audit192. v1969 original panels frozen before v1970 three-room comparison.
+Unchanged v1959 public helper and v1965 registration give identical nominees
+on all three rooms. Halls4 0/3 (preserve hold), Halls7 2/3, CN3-29 5/8 with
+no protected/out-of-scope removal. `gap-transfer-actual-v1971/terminal.json`
+has four terminal actual roots: Halls7 98→96 and CN3-29 368→363, exact
+upstreams/ordered retained records and map metadata. Whole and all seven
+delta panels reviewed; remaining terrain/hazard errors still MAJOR.
+This is new private transferable false-gap evidence, not eight real-object
+recoveries, goal completion, or a live release.
+
+BLOCKER `GAP_DISTAL_SOURCE_SAFETY_v1972.md` and
+`gap-distal-release-block-v1972.json`: the shallow aperture removes 16/16
+authored partly visible distal tips, all four orientations/two scales.
+Next protect distal source evidence independently from nearby fringe and
+isolated texture. Don't just raise RGB tolerance, fit these successful
+rooms, or activate. Negative roofs/old holds remain intact. Test a new
+guard against actual owner-contour/occlusion evidence and prove no loss
+before measuring representative timing or considering a late caller.
+
 ### Latest continuation — preserved transfer failure, one CN3-28 private fix
 
 Audit191. `redcube2-gap-score-v1963.json`: unchanged published helper
