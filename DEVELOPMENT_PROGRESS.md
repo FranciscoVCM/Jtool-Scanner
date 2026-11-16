@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — A real Golden3 water edge survives same-point comparison
+
+An additive transparency diagnostic compares two sides of a boundary
+without assigning either color to background. Raw side samples fail
+both Golden3 stripes: x48 lacks two dry materials and x80 fits two
+inconsistent gains (.721/.526). Extrapolating each side independently
+to the same boundary point removes some texture/shading bias. At x80,
+the folds give .708/.688 and cross-predict 31/32 original RGB pairs.
+Each numerical method passed 12 authored cases at two scales, including
+inverted palettes and clipped/opaque controls. x48 still abstains.
+
+This is source-boundary evidence, not validated water extent or a new
+detected object. Golden3's saved scan still has no water. Check different
+real artwork, closed coverage and non-water transparent controls before
+emitting any tile. Audit185; no scanner, timing or approval change.
+
 ## 2026-11-16 — Detached floor text defeats a backdrop-sparsity test
 
 The existing filter is seeded by nearby full blocks; earlier size-only

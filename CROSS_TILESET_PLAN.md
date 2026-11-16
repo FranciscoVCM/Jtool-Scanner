@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: same-point transmission distinguishes one real water edge
+
+Comparing two differently shaded points failed the fixed Golden3
+folds. Independent original-pixel continuation to the boundary
+instead predicts 31/32 held pairs on one genuine stripe. The flat
+stripe cannot establish transmission. Keep this as additive evidence
+only; unknown extent and non-water transparent effects can still
+confound it. Different-art and closed-coverage gates remain open.
+Audit185.
+
 ## Latest: backdrop agreement is not proof of a thin overlay
 
 CN3-21's detached XXI has recoverable background evidence but ink in

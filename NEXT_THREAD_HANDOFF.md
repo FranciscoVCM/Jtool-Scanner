@@ -14,6 +14,23 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — original Golden3 transparent edge established
+
+Audit185; `WATER_TRANSMISSION_WITNESS_FREEZE_v1939.md`,
+`WATER_TRANSMISSION_GRADIENT_FREEZE_v1940.md` and both terminal
+`water-transmission[-gradient]-v19{39,40}.json` reports. Comparing
+different points failed both edges. Independently continuing each side
+to the same point qualifies one real original Golden3 stripe at x80:
+16+16 pairs, gain .708/.688, held 15/16 and 16/16. x48 lacks independent
+dry material and remains held. Both procedural sets pass 12/12 after
+aperture-fixture-only fixes. No actual rescan, object/room gain, or
+activation. Do not emit based on transmission alone; other transparent
+effects may fit. Next find a source-authenticated second crossing from a
+different appearance, with playable-water truth and untuned solid/tint
+impostors, then prove closed extent before any candidate placement. NR1
+flat water is an incompatibility control; do not consume the separate
+v1175/1178 reserves or assume a contrasting cohort is empty.
+
 ### Latest continuation — detached floor text is not reliably sparse
 
 Audit184; `DETACHED_TEXT_BACKDROP_FREEZE_v1937.md` and
