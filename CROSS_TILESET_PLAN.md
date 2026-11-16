@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: 8px phase cannot exploit the observed water extents
+
+Original mask closure qualifies one Halls1 field and no viable tile.
+An optimistic exact-containment ceiling on all five original fields is
+1,473 known source pixels at 8px versus 2,711 at 4px; no need to chase
+integer phase for 17 extra. This is not an admissible water inference:
+most field boundaries are unqualified and coverage adds unknowns.
+Next validate original extent/ownership alongside bounded finer phase,
+not a wider component-box rule. Audit188.
+
 ## Latest: physical cyan only covers part of the Halls1 selection gap
 
 Paired outside rails nominate zero in the real candidate pool. A strict

@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Water phase and source evidence are separate bottlenecks
+
+A candidate-independent original cyan component probe finds five Halls1
+fields. One qualifies observed four-sided closure, but no rejected tile
+fits it. Twelve two-scale authored shape checks and overflow assertions
+pass as intended; an opaque match is deliberately not water proof.
+
+The optimistic evaluation treats all five component boxes as available
+extents, with exact containment of the entire new footprint. The
+ordinary pool covers at most 1,453 known misses; all grid-8 positions
+cover 1,473. Grid-4 offers 2,711 across three regions, and all integer
+positions only 17 more. No known dry pixels are added by the grid-4
+union, but 2,159 new pixels are unknown. Thus 8px-only exact containment
+cannot meet the local 2,095-pixel gate; 4px registration could in
+principle meet it if supported independently by original evidence.
+Audit188. No changed output, runtime code, reserve or approval.
+
 ## 2026-11-16 — Halls1 water selection trials establish a limited positive subset
 
 An additive selector uses opposite original source edges outside each

@@ -14,6 +14,25 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — a 4px phase can fit real extents the 8px grid cannot
+
+Audit188, terminal `water-component-extents-*` v1951 and
+`water-extent-ceiling-*` v1952/v1953. One of five original cyan fields
+qualifies full-closure; zero nominations under the real source rule.
+Optimistically treating all five component envelopes as usable, exact
+containment covers 1,453 known missed pixels from the ordinary pool,
+1,473 at all possible grid-8 origins, 2,711 on grid-4 and 2,728 at all
+integer origins. Grid-4 has 0 known-negative and 2,159 unknown new
+pixels in its union. Only grid-4/integer can reach the 2,095 known
+pixel local gate. These are evaluation-only ceilings, not placements.
+
+Next require independent source-supported position/extent, apply only
+bounded 4px candidate registration, and protect opaque lookalikes and
+unknowns. Do not use oracle positions, widen the 8px containment
+rule or claim a general water solution. Existing raw candidate and
+phase-independent v1944 ceiling remain distinct. If source ownership
+cannot qualify, pivot rather than continuing threshold retries.
+
 ### Latest continuation — paired water rails hold; full-pixel cyan helps locally
 
 Audit187, `water-rail-selection-v1947.json`,
