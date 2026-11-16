@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — false-save ownership diagnosed, no deletion
+
+Audit206, `SAVE_COMPETING_IDENTITY_RESUME_v2040.md`. Halls3 false
+Save(64,576) comes from an ordinary 73-pixel color component on a real
+UP arrow. Source graph confirms arrow; strict v2038 ownership holds:
+one vote bin and 19 exterior palette bins remain. Real Save(32,32)
+is protected. NANG-128 false saves enter the fragmented red-body/header
+path, not the same rule. The separate hashed tracked source has a
+genuine (160,416) active-layout save. Next verify source ownership of
+its alleged title bands and active genuine controls; no blanket save
+deletion, no arbitrary pose or halo change. Live scanner unchanged.
+
 ### Latest continuation — compact transfer and shifted alias holds
 
 Audit205, `COMPACT_BODY_TRANSFER_RESUME_v2036.md`. Unchanged source

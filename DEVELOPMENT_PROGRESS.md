@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Trace false-save identity to original source pixels
+
+Among 102 saved save records, Halls3 is the only exact coincidence
+with an inspected competing object type. Its false save and real up
+arrow share a pose. Original RGB confirms the arrow, but the strict
+ownership check cannot explain all the save evidence. It passes seven
+authored controls and does not retire the original.
+
+NANG-128's two false saves instead enter the fragmented red-body/header
+route; their physical header bands contain both substantial pale and
+dark ink. A separate tracked capture retains its genuine Save(160,416)
+via the active-layout path. These are different source roles, not a
+vertical alignment problem. No full scan or runtime change. Audit206.
+
 ## 2026-11-16 — Compact transfer stays unproven; two false shifted blocks verified
 
 Fourteen saved canonical sources and three tracked compact fixtures

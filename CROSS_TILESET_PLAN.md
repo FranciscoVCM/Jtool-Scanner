@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: false saves have two different source causes
+
+Halls3's real up arrow supplies an ordinary color-save component.
+A strict ownership check leaves one vote bin and 19 exterior palette
+bins unexplained, so do not remove it by overlap alone. NANG-128's
+false saves instead come from pale/dark fragments above ordinary
+terrain. A separate tracked NANG-128 capture contains a real save
+and must remain protected. No changed output; audit206.
+
 ## Latest: compact backdrop result does not yet transfer
 
 The fixed rule over 17 captures and six scales only qualifies the
