@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from jtool_scanner import scanner
 from scripts.scanner_feature_profiles import (
-    SOURCE_FEATURE_SWITCHES, LEGACY_V2_SWITCHES, LEGACY_V3_SWITCHES, LEGACY_V4_SWITCHES,
+    SOURCE_FEATURE_SWITCHES, LEGACY_V2_SWITCHES, LEGACY_V3_SWITCHES, LEGACY_V4_SWITCHES, LEGACY_V5_SWITCHES,
     recorded_feature_profile, snapshot_feature_profile,
     validate_feature_comparison,
 )
@@ -26,10 +26,10 @@ class ScannerFeatureProfileTests(TestCase):
         self.addCleanup(baseline.stop)
         self.before = snapshot_feature_profile(scanner)
 
-    def test_snapshot_records_all_eleven_actual_values_without_mutating_runtime(self):
+    def test_snapshot_records_all_twelve_actual_values_without_mutating_runtime(self):
         self.assertEqual(set(self.before['switches']), SOURCE_FEATURE_SWITCHES)
-        self.assertEqual(len(self.before['switches']), 11)
-        self.assertEqual(self.before['schema_version'], 5)
+        self.assertEqual(len(self.before['switches']), 12)
+        self.assertEqual(self.before['schema_version'], 6)
         with patch.object(scanner, NEW, True):
             after = snapshot_feature_profile(scanner)
             self.assertIs(after['switches'][NEW], True)
@@ -71,7 +71,7 @@ class ScannerFeatureProfileTests(TestCase):
     def test_profile_schema_is_strict_and_never_defaults_unknown_to_false(self):
         for profile in ({}, {'schema_version': True, 'switches': self.before['switches']},
                         {'schema_version': 1, 'switches': self.before['switches']},
-                        {'schema_version': 6, 'switches': self.before['switches']},
+                        {'schema_version': 7, 'switches': self.before['switches']},
                         {**self.before, 'extra': None}):
             with self.subTest(profile=profile),self.assertRaises(ValueError):
                 validate_feature_comparison(profile, self.before, expected_changes={})
@@ -127,5 +127,12 @@ class ScannerFeatureProfileTests(TestCase):
         legacy = {'schema_version': 4, 'switches': {
             name: self.before['switches'][name] for name in LEGACY_V4_SWITCHES}}
         self.assertEqual(validate_feature_comparison(legacy, legacy, expected_changes={})['schema_version'], 4)
+        with self.assertRaisesRegex(ValueError, 'historical selectors are unknown'):
+            validate_feature_comparison(legacy, self.before, expected_changes={})
+
+    def test_legacy_eleven_selectors_do_not_imply_compact_provenance_was_off(self):
+        legacy = {'schema_version': 5, 'switches': {
+            name: self.before['switches'][name] for name in LEGACY_V5_SWITCHES}}
+        self.assertEqual(validate_feature_comparison(legacy, legacy, expected_changes={})['schema_version'], 5)
         with self.assertRaisesRegex(ValueError, 'historical selectors are unknown'):
             validate_feature_comparison(legacy, self.before, expected_changes={})

@@ -105,6 +105,8 @@ _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
 _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = True
 # Do not expose unqualified late original cloud proposals in normal scans.
 _SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED = False
+# Keep observed-cell provenance opt-in until active compact controls qualify.
+_SOURCE_COMPACT_KILLER_PROVENANCE_ENABLED = False
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,
@@ -2267,11 +2269,14 @@ def scan_image(
         deferred_platform_vetoes = None
     deferred_neutral_fields: list[tuple[tuple[Detection, ...], float]] = []
     compact_room = normalized_grid == (19, 13)
+    compact_killer_scope: dict[str, Box] = {}
     if normalized_grid is not None and normalized_grid != (25, 19):
         normalization = _normalize_room_to_jtool(
             image.crop(source_box),
             *normalized_grid,
         )
+        if compact_room and source_geometry and _SOURCE_COMPACT_KILLER_PROVENANCE_ENABLED:
+            compact_killer_scope = {'observed_killer_cells': normalization.observed_native_box}
         image = normalization.image
         source_translation = (
             source_box.x + normalization.source_offset_x,
@@ -2380,6 +2385,7 @@ def scan_image(
             box,
             adaptive_blocks=adaptive_compact_blocks,
             adaptive_profile=adaptive_compact_profile,
+            **compact_killer_scope,
         )
     elif dark_brick_room:
         detections = _replace_dark_brick_room_geometry(detections, image, box)
@@ -2587,6 +2593,7 @@ def scan_image(
                 detections,
                 image,
                 box,
+                **compact_killer_scope,
             )
         elif outlined_terrain_room:
             detections = _replace_outlined_terrain_room_geometry(
@@ -3608,6 +3615,7 @@ class _RoomNormalization:
     image: RGBImage
     source_offset_x: int
     source_offset_y: int
+    observed_native_box: Box
 
 
 def _infer_source_grid(room: Box) -> tuple[int, int] | None:
@@ -4664,6 +4672,12 @@ def _normalize_room_to_jtool(
         normalized,
         crop_left - pad_left,
         crop_top - pad_top,
+        Box(
+            (missing_columns // 2) * GRID_SIZE,
+            pad_top_rows * GRID_SIZE,
+            min(columns, target_columns) * GRID_SIZE,
+            min(rows, target_rows) * GRID_SIZE,
+        ),
     )
 
 
@@ -4787,6 +4801,7 @@ def _replace_compact_room_geometry(
     *,
     adaptive_blocks: list[Detection] | None = None,
     adaptive_profile: _ColorProfile | None = None,
+    observed_killer_cells: Box | None = None,
 ) -> list[Detection]:
     """Use native tile occupancy in compact rooms instead of scaled legacy profiles."""
 
@@ -4815,9 +4830,14 @@ def _replace_compact_room_geometry(
             foreground = _compact_foreground_ratio(colors, background)
             red_ratio = _compact_red_ratio(colors)
             patch = _patch_features(image, room, x, y, GRID_SIZE)
-            killer = red_ratio >= 0.97 or (
+            # Synthetic fill must not produce lethal objects or inflate the
+            # killer count that governs whether the compact spike branch runs.
+            killer = (red_ratio >= 0.97 or (
                 red_ratio >= 0.925 and patch.edge_density >= 0.12
-            )
+            )) and (observed_killer_cells is None or (
+                observed_killer_cells.contains(x, y)
+                and observed_killer_cells.contains(x + GRID_SIZE - 1, y + GRID_SIZE - 1)
+            ))
             if killer:
                 killers.append(
                     _geometry_detection(

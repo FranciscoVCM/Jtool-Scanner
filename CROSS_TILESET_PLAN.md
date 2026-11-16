@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: maintained Source padding guard, default off
+
+The switch uses the native observed-cell box already implied by room
+normalization; synthetic fill cannot provide early killblocks when the
+switch is on. Three fresh Source-mode pairs reproduce the 228-removal,
+22-spike derived capture result and preserve original NANG-140 and all
+86 exact NANG-135 killblocks. Two retained minis on the derived input
+keep their poses but get a different detector score/provenance. Keep
+OFF before wider protections, Standard-mode and whole cost. Audit202.
+
 ## Latest: compact normalization padding must not vote as terrain
 
 The enlarged NANG-140 reproduction shows a separate scale defect:

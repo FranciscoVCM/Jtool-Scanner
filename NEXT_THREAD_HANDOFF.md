@@ -14,6 +14,22 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — maintained compact padding port held off
+
+Audit202, `MAINTAINED_PADDING_PORT_RESUME_v2020.md`. The new
+`_SOURCE_COMPACT_KILLER_PROVENANCE_ENABLED` switch is **False**.
+Normalization provides the observed native cell box; only Source-mode
+compact killer admission uses it privately. Three OFF/ON Source pairs:
+derived115 reproduces 228 removals / 22 restorations exactly (full raw
+and all four exports equal prior private endpoints), original140 keeps
+195 unchanged, original135 keeps 165 and all 86 exact lethal cells.
+Derived OFF/ON keeps both right minis but changes their detector
+provenance and confidence. Initial derived reporter overrequired that
+metadata; the correction used saved outputs, no rerun. Schema6 has 12
+selectors. 96 distinct targeted tests pass. Next exercise the wider
+protected/Standard callers, and controlled whole cost before activation.
+The enlarged real terrain problem remains separate.
+
 ### Latest continuation — guard synthetic padding before killer quorum
 
 Audit201, `COMPACT_PADDING_PROVENANCE_RESUME_v2018.md`. v2014 ordinary

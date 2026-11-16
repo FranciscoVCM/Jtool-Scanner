@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Port compact killer provenance without enabling it
+
+The maintained Source-mode opt-in rejects padded logical cells before
+the early killer count can disable compact spikes. The feature report
+now records twelve explicit selectors; older profiles are not imputed.
+Across six fresh Source scans, original NANG-140 stays at 195 and
+NANG-135 stays at 165, with all 86 exact killblocks. Their full raw
+results and exports match with the switch off or on.
+
+The enlarged derivative reproduces the private 228 removals and 22
+real full-spike restorations exactly. The two retained right-wall
+minis have different detector provenance/confidence after the compact
+route reopens, but their poses and JMap entries stay fixed. This is
+not a new canonical-room improvement. Ninety-six distinct targeted
+unit tests passed; no full suite, timing or activation. Audit202.
+
 ## 2026-11-16 — Synthetic compact padding suppresses real spikes at larger input size
 
 Full ordinary scans of 90% and 115% bilinear derivatives no longer
