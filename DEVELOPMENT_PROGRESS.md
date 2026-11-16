@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Recover enlarged terrain in a private late pass
+
+The old backdrop histogram chooses brick by 843 to 842 samples on
+the enlarged capture. Disjoint flat original patches select the
+consistent backdrop and restore the evidence for 163 cells. An early
+reference swap is unsafe: it adds 228 synthetic normal blocks and a
+false minispike. A private late observed-cell path adds exactly the
+163 matching terrain placements instead (32 → 195 detections).
+The whole view and all added outlines were checked. Existing records
+and JMap metadata are unchanged; two suspect legacy blocks remain.
+The offline backdrop helper matches five source and six authored
+receipts; six targeted unit tests passed. No terrain change to the
+app or new canonical/cross-tileset gain. Audit204.
+
 ## 2026-11-16 — Enable the observed-cell guard in Source mode
 
 Only the qualified selector changes. The app's live Source scan of the

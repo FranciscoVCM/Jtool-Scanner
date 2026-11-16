@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: native terrain evidence must stay separate from padding and hazard votes
+
+At 115% scale, enlarged NANG-140's sampled palette mode picks brick
+by one vote, removing the real background contrast. Independent
+original flat patches give the same backdrop at all three scales.
+An early swap creates 228 padding blocks and a false minispike.
+Late observed-only terrain recovery adds 163 matching real blocks
+privately, with no new padding or mini. Two old suspect blocks remain.
+Test real different art before using the offline helper live. Audit204.
+
 ## Latest: Source mode excludes synthetic padding from killer admission
 
 The observed-cell guard is now enabled only in Source mode. Actual app

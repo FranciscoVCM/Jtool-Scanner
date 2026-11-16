@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — enlarged terrain restored privately without teaching hazards
+
+Audit204, `COMPACT_LATE_BODY_RESUME_v2031.md`. Same-scene 115% bitmap: old
+histogram selects brick 843/842, independent original flat witnesses
+support backdrop. Early v2028b swap leads to 32→422 with 228 synthetic
+normal blocks plus false DOWN; keep this held. Late v2029 actual Source
+adds 163 observed type1 placements, each matching original scale and
+the reviewed source. No removals, no new padding/mini, and two existing
+suspect blocks remain. v2030b is the correctly registered whole/all-delta
+display. `scripts/source_compact_background.py` is offline only. Freeze
+authentic different-art/ambiguity controls before considering a caller.
+The earlier live killer-padding guard remains enabled.
+
 ### Latest continuation — Source-only compact padding guard released
 
 Audit203, `PADDING_SOURCE_RELEASE_RESUME_v2026.md`. The guard is now
