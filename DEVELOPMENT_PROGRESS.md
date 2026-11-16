@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Isolate Redcube3's decorative cube from the real warp
+
+The maintained haloed-red caller, run by itself on the saved original RGB,
+reproduces the false warp at native (136,456). Its component fill is
+342/483; the patch passes all three existing edge/centre/border tests.
+The real bottom-right cloud uses a separate route. In 58 bound saved
+canonical results, Redcube3 is the only observed output from the orb
+route; 13 results are unbound here. Historical examples need source
+confirmation before narrowing the rule.
+
+Separately, Redcube1/2's eight omitted corner blocks remain unresolved.
+An offline bevel/seam cue mistook gradients and stripes for bodies. A
+variant using same-side colour stability rejected those impostors but
+missed a real clipped corner in a portable test. Neither variant ran
+against the room measurements. Audit197; no live change or room approval.
+
 ## 2026-11-16 — Test killblock transfer and visual ambiguity
 
 Post-scored the fixed curvature rule on 741 original cells across saved

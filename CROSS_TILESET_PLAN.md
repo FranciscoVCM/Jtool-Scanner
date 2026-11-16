@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: boundary bevel tests held; decorative orb route isolated
+
+Two fixed-frame bevel variants failed portable impostor or true clipped-corner
+checks before any real boundary query. Keep all eight Redcube1/2 corner misses;
+no frame retune. The current haloed-red route reproduces Redcube3's decorative
+cube admission from original RGB. No other case in the 58 bound saved outputs
+shows that route; 13 cases are unbound in this census. A fill cutoff would
+encroach on historical positive ranges. Require verified red-portal controls
+and an independent source shape cue before any removal. Audit197.
+
 ## Latest: crossed killblock evidence does not generalize across skin art
 
 The fixed NANG-11 experiment adds nothing across 741 cells of three saved

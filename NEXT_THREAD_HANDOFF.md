@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — portable corner holds and Redcube3 warp diagnosis
+
+Audit197, `BOUNDARY_BEVEL_RED_ORB_RESUME_v1996.md`. Fixed bevel/closure
+variants v1993/v1994 stop at portable failures, no real boundary query
+and no frame retune. Redcube3 v1995 reproduces the erroneous red cube at
+(136,456) through the maintained haloed-red route on original RGB;
+the separate real bright cloud remains. In the 58 saved bound canonical
+results only that case emits the route; 13 do not have a binding in this
+census. Look for independently confirmed real red-orb variants before
+testing a source-only topology discriminator. The 17 historical red-orb
+observations need deduplication and semantic verification, not assumed
+positive protection. No recognition, performance, or deployment claim.
+
 ### Latest continuation — source and asset checks hold killblock transfer
 
 Audit196, `KILLER_ART_IDENTITY_RESUME_v1992.md`. Fixed helper: no changes
