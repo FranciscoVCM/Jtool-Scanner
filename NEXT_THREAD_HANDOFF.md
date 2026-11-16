@@ -14,6 +14,21 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — guard synthetic padding before killer quorum
+
+Audit201, `COMPACT_PADDING_PROVENANCE_RESUME_v2018.md`. v2014 ordinary
+Source-mode runs on fixed .90/1.15 derivatives of original NANG-140.
+At .90 lone false DOWN bypasses the paired rule. At 1.15 ordinary 238
+contains exactly the 228 padded cells as killerblocks, suppressing the
+compact spike pass. The v2016 private early footprint guard removes
+all 228 and restores all 22 real full spikes at old native keys.
+v2017 whole/all22 visual QA and v2018 seal complete. Only two ordinary
+blocks remain; material/background selection not repaired. Canonical
+outputs and app unchanged. Next implement/qualify early observable-cell
+provenance in the maintained source path using active NANG-135 true
+killer controls, untouched original NANG-140 and required protections.
+Do not broaden the independently held single-minispike or terrain rules.
+
 ### Latest continuation — both NANG-140 mini removals validated privately
 
 Audit200, `MINI_GEOMETRIC_CLEARANCE_RESUME_v2012.md`. Two actual v2010

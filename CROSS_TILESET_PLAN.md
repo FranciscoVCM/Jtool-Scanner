@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: compact normalization padding must not vote as terrain
+
+The enlarged NANG-140 reproduction shows a separate scale defect:
+synthetic fill supplies all 228 false killer cells, shutting off real
+compact spikes. A private early source-provenance guard removes those
+228 and restores all 22 observed full spikes. Only two blocks remain;
+material choice still needs independent work. Carry the guard through
+active genuine-killer and existing original-scene controls before any
+runtime binding. Audit201 is derived evidence, not canonical transfer.
+
 ## Latest: original side witnesses verify both private compact mini corrections
 
 For an otherwise valid compact overlap, pair original pixel-area

@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Synthetic compact padding suppresses real spikes at larger input size
+
+Full ordinary scans of 90% and 115% bilinear derivatives no longer
+reach the paired minispike gate. The 90% case retains a lone false DOWN.
+At 115%, all 228 emitted killblocks lie in synthetic normalization
+padding; their count suppresses the compact spike pass. A private guard
+restricts early killer admission to physically observed logical tiles:
+238 → 32 objects, removing the 228 fake cells and restoring all 22 real
+full spikes. Whole view and every restored spike were checked. Terrain
+still largely fails (two blocks). No live change or canonical gain.
+
+For the original minispike result, 12 genuine authored labels made it to
+pair inspection; four actually triggered the old retirement path. All
+were retained by the independent evidence. Neither resized case
+exercised a genuine retirement path. Audit201.
+
 ## 2026-11-16 — Reproduce both NANG-140 removals with stronger source evidence
 
 Original pixel-square coverage yields four independent observations
