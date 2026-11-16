@@ -14,6 +14,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — Source-only compact padding guard released
+
+Audit203, `PADDING_SOURCE_RELEASE_RESUME_v2026.md`. The guard is now
+**True** in Source mode; Standard bypasses it. v2021b is authoritative
+controlled timing (12 valid AC samples/three cases). Derived115 scan
+18.96→22.17 s, total 23.54→23.05 s, within normal 25% budget. Real
+NANG-139 v2022 active protection keeps150/all27 lethal. Saved
+v2023 frame/predicate census is not a full rerun or canonical gain.
+Actual localhost v2025 confirms both whole projects and JMap exports;
+derived Source removes 228 synthetic lethal cells and restores22 fulls,
+two blocks remain. Standard retains prior behavior. Next isolate
+missing large-scale terrain through original physical background
+evidence, not synthetic fill or the held single-minispike hypothesis.
+
 ### Latest continuation — maintained compact padding port held off
 
 Audit202, `MAINTAINED_PADDING_PORT_RESUME_v2020.md`. The new

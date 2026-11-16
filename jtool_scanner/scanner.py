@@ -105,8 +105,8 @@ _SOURCE_SAVE_FRAME_ALIGNMENT_ENABLED = True
 _SOURCE_FRUIT_SUPPORT_OWNERSHIP_ENABLED = True
 # Do not expose unqualified late original cloud proposals in normal scans.
 _SOURCE_LATE_CLOUD_OWNERSHIP_ENABLED = False
-# Keep observed-cell provenance opt-in until active compact controls qualify.
-_SOURCE_COMPACT_KILLER_PROVENANCE_ENABLED = False
+# Qualified original-cell provenance; Standard mode preserves legacy routing.
+_SOURCE_COMPACT_KILLER_PROVENANCE_ENABLED = True
 COLOR_OBJECT_TYPES = frozenset(
     {
         OBJ_APPLE,

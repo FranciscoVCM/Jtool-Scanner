@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: Source mode excludes synthetic padding from killer admission
+
+The observed-cell guard is now enabled only in Source mode. Actual app
+scans and JMap exports match the qualified outputs in both modes.
+At enlarged scale the guard prevents 228 fake killblocks and restores
+22 source-visible full spikes. Standard mode remains unchanged.
+Twelve quiet AC samples pass; the largest scan increase is +16.93%,
+with export-inclusive time slightly down on that input. Saved canonical
+and protected frames show no exposure. This is a released scale fix,
+not a new canonical-room gain. Missing terrain still needs work. Audit203.
+
 ## Latest: maintained Source padding guard, default off
 
 The switch uses the native observed-cell box already implied by room

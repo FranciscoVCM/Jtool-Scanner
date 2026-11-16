@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Enable the observed-cell guard in Source mode
+
+Only the qualified selector changes. The app's live Source scan of the
+enlarged regression removes 228 padding killblocks and restores 22 real
+full spikes; Standard reproduces its prior result. Both full projects
+and JMap exports match expected bytes. The active NANG-139 control keeps
+all 150 detections and 27 exact killblocks. Checking the affected
+predicate on the saved 71 canonical, 44 protected and 16 exact-control
+frames shows no change to those inputs; this was not a fresh corpus sweep.
+
+Twelve quiet AC samples pass complete output checks. On the enlarged
+input, median scan time is 18.96 → 22.17 s (+16.93%) and time with
+exports 23.54 → 23.05 s. NANG-135 and original NANG-140 stay within
+2.2% on both measures. Twenty-nine targeted tests were rerun after
+activation. Audit203: no new canonical gains, room approvals or claim
+of a full-scan-suite qualification. The enlarged terrain remains missing.
+
 ## 2026-11-16 — Port compact killer provenance without enabling it
 
 The maintained Source-mode opt-in rejects padded logical cells before
