@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — actual private shape guard, frozen transfer held
+
+Read `.artifacts/general-recognition-20261014/RAIL_SHAPE_ACTUAL_RESUME_v1920.md`
+and audit179. v1917 shared-pixel shape test passes 20 authored controls
+after a fixture-only crop repair. v1918 all three terminal: CN3-21
+withholds false Block(64,288), keeps entire 400 ordinary result; CN3-19
+and NANG-138r preserve seven earlier additions and exact prior exports.
+No new recognized hazard or room gain. CN3-30 frozen topology check
+abstains at 4.63pp vs 5pp in one fold; preserve and don't widen.
+Continue with a new prospective compatible positive or separate source
+cause; no need to redo any of these actual scans.
+
 ### Latest continuation — unbound rail port, confirmed compound false proposal
 
 Read `.artifacts/general-recognition-20261014/RAIL_PORT_AND_COMPOUND_HOLD_v1914.md`

@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: compare compound and solid shapes on the same original pixels
+
+Actual private CN3-21 candidate withholding preserves all 400 ordinary
+records; all seven earlier CN3-19/NANG-138r gains reproduce. This fixes
+a risk in the private candidate, not a live detection error. Different-art
+CN3-30 abstains on one source fold and CN3-31 lacks the needed exterior
+witness. Do not tune either. Seek a genuinely compatible positive source
+or a distinct material/shape cause. Audit179, no release.
+
 ## Latest: textured rail evidence can mistake a slanted spike compound for a solid
 
 The dependency-free two-axis diagnostic reproduces horizontal scores

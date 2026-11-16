@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Whole-shape check rejects the private CN3-21 false block
+
+The better comparison scores the slanted and straight models against
+the same known original pixels. Both independent halves prefer the
+slanted shape in CN3-21, by 6.44 and 6.38 percentage points. The
+earlier shoulder-only experiment failed. The common-area rule passes
+all 20 authored controls after fixing the fractional crop fixture;
+neither the shape rule nor its thresholds changed for that repair.
+
+In three fresh private scans, CN3-21 keeps all 400 ordinary detections
+and byte-identical exports after the candidate is withheld. CN3-19
+and NANG-138r keep their seven earlier true additions and identical
+private raw/export outputs. No new spike was inferred or recovered.
+CN3-30's frozen different-art challenge reaches the comparison but
+one fold falls below the fixed margin. CN3-31 still lacks independent
+exterior witnesses. No threshold change, runtime release, new room
+approval or whole timing. Audit179.
+
 ## 2026-11-16 — Dependency-free rail diagnostic; real spike compound blocks release
 
 The new unbound source diagnostic reads original RGB in either orientation
