@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — source and asset checks hold killblock transfer
+
+Audit196, `KILLER_ART_IDENTITY_RESUME_v1992.md`. Fixed helper: no changes
+on 741 original cells from three NANG controls. NANG-128's four missing
+red strip cells remain unproved; do not lower colour or cross thresholds.
+Private authored skin census: both proofs pass 2/87 opaque unique killer
+appearances, and curvature passes 1/332 safe appearances. Two packages have
+exact opaque safe/killer collisions. No generic activation, no scan/timing
+or room acceptance change. Preserve NANG-11's earlier six private fixes.
+Move to an independently source-proven cue or a non-killer family; do not
+assume names or sprite hashes solve ambiguity.
+
 ### Latest continuation — original compact killblock evidence (offline)
 
 Audit195, `native-curvature-actual-v1986/qa-v1988.json`, and

@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Test killblock transfer and visual ambiguity
+
+Post-scored the fixed curvature rule on 741 original cells across saved
+NANG-128, NANG-135 and NANG-139 outputs: zero additions, including zero
+false candidates. NANG-128 still has four misses, all with strong
+relative-red support but unproven diagonals. In the supplied private
+skin archive, both cross proofs pass 2/87 distinct opaque killer
+appearances; the new proof passes 1/332 opaque safe appearances,
+versus zero for the old proof. Two packages use identical opaque imagery
+for safe and deadly blocks. Asset results are not whole-scan accuracy;
+they disprove using this proof as a general killblock classifier. Keep
+the six NANG-11 corrections private and leave the live scanner unchanged.
+Audit196; no new runtime qualification or room approval.
+
 ## 2026-11-16 — Check original compact killblock evidence under a lighting gradient
 
 A private NANG-11 whole scan recovered six known red crossed killblocks

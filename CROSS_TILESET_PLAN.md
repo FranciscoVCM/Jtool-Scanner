@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: crossed killblock evidence does not generalize across skin art
+
+The fixed NANG-11 experiment adds nothing across 741 cells of three saved
+NANG controls. In the supplied skin archive, both cross proofs pass only
+2/87 distinct opaque killer images; the experiment also passes 1/332
+distinct opaque safe images. Two packages use identical opaque art for
+both roles. Hold the experiment offline. Separate room-context evidence,
+appearance, and unresolvable cases; keep unseen-art tests apart from the
+same-family NANG-11 result. Audit196.
+
 ## Latest: compact crossed tiles on uneven original lighting (private)
 
 NANG-11: compare each diagonal against symmetric original-pixel flanks
