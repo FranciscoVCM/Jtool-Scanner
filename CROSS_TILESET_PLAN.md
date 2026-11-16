@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: an isolated block needs more than nearby glyphs and color contrast
+
+The original Say-3 body passes contrast and an open-face check,
+but its surrounding junction lacks one required source slope.
+The different-paint control also abstains. Keep the rule offline,
+avoid retuning this fixed cohort, and switch to a new eligible
+real source mechanism. Audit182; no fresh scanner changes.
+
 ## Latest: observed background proof protects colored tips
 
 Four active authored minis falsify the older two-removal guard.

@@ -14,6 +14,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — original Say-3 junction remains held
+
+Read `.artifacts/general-recognition-20261014/ISLAND_JUNCTION_HOLD_RESUME_v1934.md`
+and audit182. v1932/v1933 terminal. Corrected authored112/112; real
+Say-3 target shows clear body color and 8/9 open face but one LEFT
+side has only 2/9 source support. Complete old 192 candidates yield
+no qualified body; NANG-137r comparison abstains. No scanner change
+or new detection. Keep the old and new holds; pivot to new eligible
+real geometry instead of another threshold or teacher variant.
+
 ### Latest continuation — pair held, one verified private NANG-140 correction
 
 Read `.artifacts/general-recognition-20261014/COMPACT_PHYSICAL_APERTURE_RESUME_v1931.md`

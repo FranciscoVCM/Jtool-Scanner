@@ -4,6 +4,22 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Say-3 junction probe confirms contrast, not admission
+
+A source-only test compares an isolated 32px body and its three
+outward-facing spike outlines against independent exterior RGB
+intervals. The corrected procedural cases pass 112/112. The
+original Say-3 body separates from both exterior intervals across
+all 676 sampled inset pixels, and the open edge has 8/9 support.
+One side of the left-facing spike has only 2/9 support; the rule
+does not qualify. No other candidate qualifies among the complete
+192 earlier profile locations. The NANG-137r comparison has a
+different body/background relationship and also abstains.
+
+The known Say-3 omission remains. Keep the older material holds,
+and do not loosen the shape requirements to recover this one body.
+No new scanner output, app change, timing, or room approval. Audit182.
+
 ## 2026-11-16 — Active mini protections narrow the private NANG-140 fix
 
 The earlier paired guard removes four genuinely visible dark or
