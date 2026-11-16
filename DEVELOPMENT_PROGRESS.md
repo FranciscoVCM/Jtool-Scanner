@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Original edge bridges remove four Halls5 gap aliases privately
+
+Each false downward candidate has one off-polygon dissenting physical
+pixel outside the fully flat base. A new read-only helper accounts for
+that pixel through three observed rows connecting it to an independently
+proved filled opposing spike. Exact owner footprint, strict sky and
+base tolerances stay unchanged. Detached or single-row dissent cannot
+authorize a removal. Six helper tests and 23 contour/pixel geometry
+tests pass. A developer smoke check used the already known Halls5
+crop; it was not a prospective transfer query.
+
+Two fresh Source-mode whole scans share the same full upstream: private
+late arbitration changes 124→120, exactly the four reviewed false
+DOWNs. Whole and all four delta panels checked; the remaining ordered
+records and map metadata match. Other errors remain. The unchanged
+helper proposes nothing on historical Redcube1 full spikes. Audit190;
+no default binding, new positive transfer, timing or room approval.
+
 ## 2026-11-16 — Registered water held; four opposing gaps localized
 
 Split original face registration passes ten authored outcome checks but

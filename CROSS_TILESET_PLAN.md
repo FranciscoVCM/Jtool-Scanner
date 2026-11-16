@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: a physically observed neighbor accounts for opposing-gap dissent
+
+Halls5 actual Source mode 124→120 privately, four previously frozen
+false DOWNs removed without losing true neighbors. Three original rows
+explain the stray edge color using a separate full spike, not a larger
+polygon or threshold. Base remains strict; historical Redcube1 exact
+keys unchanged in the diagnostic. Before binding, require actual real
+transfer with different artwork, whole QA and protected controls. Audit190.
+
 ## Latest: 4px water positions remain unproved; examine opposing spike gaps
 
 No Halls1 component establishes all four registered faces, so the

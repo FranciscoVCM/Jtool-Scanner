@@ -14,6 +14,24 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — four actual private Halls5 gap removals
+
+Audit190; `HALLS5_GAP_NEIGHBOR_BRIDGE_FREEZE_v1959.md` and
+`halls5-gap-actual-v1960/{terminal.json,qa-v1962.json}`. Both actual
+roots terminal, same entire upstream. 124→120 via removal only of
+the four previously frozen false DOWNs, all retained ordered records
+and map metadata unchanged. Whole/ALL4delta Source/JTool/Blend checked,
+room still MAJOR. Source RGB bridge needs original contour/filled-body
+ownership and a continuous three-row transition into the separate
+neighbor; base and backdrop tolerance remain strict. Unbound public
+helper, 29 affected tests PASS, no runtime or app change. Redcube1
+historical 46 full candidates zero proposals (45 existing source
+positives), no positive transfer or fresh test in that room. Exact
+next: independently predeclare a compatible different-artwork
+positive and qualifying safety cases, then actual and performance
+gates before integration. Do not activate from a four-object batch or
+retune from safety controls. Water stays parked.
+
 ### Latest continuation — Halls5 opposing gaps; park water registration
 
 Audit189. `water-registered-phases-*-v1955.json` terminal: all ten
