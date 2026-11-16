@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: strong interior warp evidence does not substitute for a rim
+
+CN3-29's original dark cloud passes both held ordinal ink folds, but
+the independent silhouette fails under point and exact physical-area
+prediction. Zero nominations in the complete grid-8 comparison.
+Preserve separate player/warp identity and old cloud holds; do not
+relax outline thresholds based on an interior match. Audit194.
+
 ## Latest: full distal coverage exposes unassignable original evidence
 
 The conservative full-pixel guard protects all 16 previous lost tips

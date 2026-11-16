@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — CN3-29 dark warp matches interior, not silhouette
+
+Audit194, `CLOUD_ALPHA_HOLD_RESUME_v1984.md`. Original v1979 panel
+separates the missing left cloud from the player beside the save.
+Existing bright-cloud stage has zero candidates. Both frozen atlas
+alpha models query all 7,081 ordinary grid-8 loci and nominate none.
+Target's ordinal interior held 166/170, rim 9/42 and 9/40; full original
+pixel-square integration improves to 19/42 and 18/40, still below gate.
+Keep the three authored control sets and all holds. No runtime edit or
+new recognition. Cap this atlas hypothesis: do not widen affine bias,
+rim tolerance or filtering. Pivot unless independent original outline
+ownership opens a different real cause. Prior gap safety remains held.
+
 ### Latest continuation — complete distal check protects positives, holds all removals
 
 Audit193. `GAP_COMPLETE_DISTAL_VETO_FREEZE_v1975.md` and terminal

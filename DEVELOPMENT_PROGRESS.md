@@ -4,6 +4,18 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Dark warp interior evidence is not enough to recover it
+
+CN3-29's original left cloud is visible and separate from the outlined
+player near the save. No warp in the saved scan or legacy bright-cloud
+candidate list. Independent chroma attenuation and ordered atlas inks
+match 166/170 held interior samples on the actual cloud, but ordinal
+point-rim evidence holds only 9/42 and 9/40. Whole original pixel-square
+prediction improves this to 19/42 and 18/40, below the fixed 75% gate.
+Authored affine/ordinal/physical models pass their locked controls; the
+real source doesn't qualify. No nominations across 7,081 grid-8 loci,
+no new scan, and no runtime change. Cap atlas-fit work here. Audit194.
+
 ## 2026-11-16 — Whole distal coverage prevents the missed-tip regression
 
 Original physical area enumeration covers the whole distal triangle.
