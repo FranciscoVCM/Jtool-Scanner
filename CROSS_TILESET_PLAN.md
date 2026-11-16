@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: compact crossed tiles on uneven original lighting (private)
+
+NANG-11: compare each diagonal against symmetric original-pixel flanks
+at two widths, then require both independent sample folds to agree on
+the same phase. This cancels local linear brightness gradients without
+losing red material evidence. Six confirmed real corrections, including
+three wrong-safe retags, in a private whole scan; no unrelated changes.
+Three of the six already pass the legacy cross when given the original
+lattice. Check an independent same-family control next; a different real
+art family and timing are still needed. Do not bind yet. Audit195.
+
 ## Latest: strong interior warp evidence does not substitute for a rim
 
 CN3-29's original dark cloud passes both held ordinal ink folds, but

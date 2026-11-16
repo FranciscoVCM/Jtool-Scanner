@@ -14,6 +14,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — original compact killblock evidence (offline)
+
+Audit195, `native-curvature-actual-v1986/qa-v1988.json`, and
+`KILLER_LOCAL_CURVATURE_FREEZE_v1985.md`. NANG-11 fresh ordinary 50
+objects and private 53; six real killblocks recovered (31/39 to 37/39),
+three of them replace wrong-safe labels. Whole and all six changed-cell
+Source/JTool/Blend reviewed. Two killblocks and platform remain; MAJOR.
+`scripts/source_killer_curvature.py` is a tested offline helper only.
+Use NANG-128/135 as independent same-family controls, not evidence of
+different-art transfer. Freeze a compatible different-art reserve
+before querying, and run full protection/timing before any activation.
+The CN3-21 reply confirms the already-bound no-solid compound truth;
+preserve the visible spike directions without inventing exact origins.
+
 ### Latest continuation — CN3-29 dark warp matches interior, not silhouette
 
 Audit194, `CLOUD_ALPHA_HOLD_RESUME_v1984.md`. Original v1979 panel

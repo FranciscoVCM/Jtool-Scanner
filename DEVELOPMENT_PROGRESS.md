@@ -4,6 +4,21 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Check original compact killblock evidence under a lighting gradient
+
+A private NANG-11 whole scan recovered six known red crossed killblocks
+(31/39 to 37/39). Three of those six replaced false safe blocks, so the
+typed tile-error count fell from 13 to 4, not nine independent objects
+recovered. Reviewed both whole views and every changed cell; unchanged
+objects retained their metadata. Two killblocks and the existing
+platform omission remain. Fourteen authored scope checks and 15 targeted
+unit tests pass. The helper is offline; no runtime change, new timing
+qualification, different-family transfer, or room approval. Audit195.
+
+CN3-21 at native (64,288) remains a confirmed non-block: one full DOWN
+with halves of two UP spikes visible at its sides. Exact member origins
+are not established. Keep as evaluation evidence, not a coordinate rule.
+
 ## 2026-11-16 — Dark warp interior evidence is not enough to recover it
 
 CN3-29's original left cloud is visible and separate from the outlined
