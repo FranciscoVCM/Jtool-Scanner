@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — CN3-21 visible shape does not fix primitive origins
+
+Audit183 and `cn3-21-internal-seams-v1935.json` in the active ignored
+directory. Preserve the confirmed down spike and adjacent half-visible
+up-spike geometry, not solid at (64,288). An alternating triangle
+decomposition and a filled parallelogram have identical projected
+silhouettes. Both queried seams fail the raw RGB split checks; painted
+lines can also pass under authored controls. Do not infer placements,
+run this as a detector, or revisit the outer-slope threshold. Continue
+with a distinct prospectively bounded case that has identifiable source
+features and compatible independent controls.
+
 ### Latest continuation — original Say-3 junction remains held
 
 Read `.artifacts/general-recognition-20261014/ISLAND_JUNCTION_HOLD_RESUME_v1934.md`

@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: a compound silhouette cannot establish individual spike origins
+
+CN3-21's confirmed spike compound rules out a solid where the old
+rail probe proposed a block. Neither queried internal RGB seam is
+reliable, and a real-looking seam can be painted without geometry.
+Keep the guard offline. Favor original, separately visible size,
+direction and phase cues in a different bounded case. Audit183.
+
 ## Latest: an isolated block needs more than nearby glyphs and color contrast
 
 The original Say-3 body passes contrast and an open-face check,

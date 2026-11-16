@@ -4,6 +4,19 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — CN3-21 compound identity and placement are separate
+
+The source review rules out a solid at (64,288): the square spans
+a full down spike and halves of adjacent up spikes. A provisional
+alternating full-spike decomposition and a flat parallelogram have
+exactly the same silhouette. A frozen diagnostic checked internal
+RGB steps against nearby parallel samples; both seam hypotheses
+failed (split hits 1/6 and 2/6, then 0/6 and 2/6, at 5/6 required
+per split). All five authored controls met their expected outcomes,
+including a decorative step that mimics a seam. Keep the human
+geometry label, but don't assign exact origins from this test.
+Audit183; no new placements, room approval, runtime or timing change.
+
 ## 2026-11-16 — Say-3 junction probe confirms contrast, not admission
 
 A source-only test compares an isolated 32px body and its three
