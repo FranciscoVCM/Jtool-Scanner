@@ -14,6 +14,25 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — complete distal check protects positives, holds all removals
+
+Audit193. `GAP_COMPLETE_DISTAL_VETO_FREEZE_v1975.md` and terminal
+`complete-distal-{nominations,score}-v1975.json`. Full analytic distal
+source-pixel enumeration, including partially covered originals, passes
+42 authored checks and retains all 16 v1972 missed tips. First fixture
+preflight was missing its clipped-painted role; fixed fixture only before
+either real comparison. Strict backdrop and verified three-row ownership
+both abstain on all 12 Halls5/Halls7/CN3-29/CN3-28 old private removals.
+Do not replace or recount the actual old gains; no new scanner output.
+
+`distal-unowned-developer-trace-v1976.json`: Halls5 has 134 unassigned
+pixels; 96 overlap a separately verified polygon by >=50%, geometry not
+RGB attribution. CN3-28 has 106 unassigned, 13 without even contiguous
+same-row contact. Do not widen ownership or treat unassigned pixels as
+sky. Keep this family off; only continue with independent positive
+signed RGB ownership and deep occlusion proof. Otherwise pivot to a
+distinct eligible recall/geometry cause, not another threshold sweep.
+
 ### Latest continuation — private gap transfer passes locally; safety hold
 
 Audit192. v1969 original panels frozen before v1970 three-room comparison.

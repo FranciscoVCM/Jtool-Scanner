@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Whole distal coverage prevents the missed-tip regression
+
+Original physical area enumeration covers the whole distal triangle.
+Both strict backdrop agreement and independently verified three-row
+owner accounting protect the 16 previously lost tips; all 42 authored
+checks match expectations, including hollow, cropped and unowned spots.
+Neither variant qualifies the prior 12 real false-gap nominations.
+
+Developer source trace: Halls5 has 134 unassigned pixels, 96 of them
+geometrically inside a verified neighbor by at least half a pixel.
+CN3-28 has 106 unassigned pixels, including 13 with no contiguous
+same-row contact to any verified neighbor. This separates direct
+ownership, ambiguous fringe, and unsupported source evidence. It is
+not a justification to ignore these pixels. Prior private actual
+corrections remain historical. No new scan, runtime change, timing
+or room approval. Audit193.
+
 ## 2026-11-16 — Two actual gap transfers, but a distal shape blocks release
 
 Original-only scopes were frozen before querying three rooms. The unchanged

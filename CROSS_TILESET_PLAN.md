@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: full distal coverage exposes unassignable original evidence
+
+The conservative full-pixel guard protects all 16 previous lost tips
+but holds all 12 earlier removal scopes. Geometric overlap explains
+where much of Halls5's ambiguity lies; it doesn't prove RGB ownership.
+CN3-28 also has noncontact evidence. Do not enlarge the ownership
+envelope or substitute shape-free tolerance. Audit193, no live change.
+
 ## Latest: seven private gap corrections, but distal safety fails
 
 Actual frozen-source transfer preserves both visual families and removes
