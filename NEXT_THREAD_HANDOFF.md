@@ -14,6 +14,27 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — most Halls1 water misses are already in the pool
+
+Audit186; `halls1-water-ceiling-v1944.json` and
+`halls1-water-candidates-v1945.json` terminal. Exact v1170 labels and
+the released 61 water records are unchanged. All 4,008 known misses
+are representable with existing 32px tiles on the 8-grid. A fresh
+ordinary water-stage trace exactly matches all 664 previous candidates
+and 61 released outputs. Evaluation-only choice from that pool covers
+3,977 known missed pixels across five regions with no new known negative
+(3,418 added unknown pixels remain unscored); the remaining 31 do not
+have any current candidate. The union is a ceiling, NOT a correction.
+
+Next make candidate **selection** source-driven, with bounded positive
+evidence of the original wet footprint/boundary across rejected mates.
+Begin with additive proposals; do not assume wider union or another
+color is background. No oracle coordinates, mask, or evaluation labels
+in scanning. Source-invariant proofs and actual whole scans required.
+`water-transmission-transfer-v1942.json` and `water-transmission-linear-v1943.json`
+both failed Halls1 and Zero_Final; don't tune them further. No production
+changes or new reserve/room credit.
+
 ### Latest continuation — original Golden3 transparent edge established
 
 Audit185; `WATER_TRANSMISSION_WITNESS_FREEZE_v1939.md`,

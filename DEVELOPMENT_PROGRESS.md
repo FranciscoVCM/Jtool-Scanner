@@ -4,6 +4,25 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Halls1 water is largely a candidate selection problem
+
+The fixed Golden3 transmission test abstains on both Halls1 spans and
+on Zero_Final's surface. All three real non-water controls abstain.
+Changing the fit to linear light explains neither failure (6/6 authored
+controls as intended). Keep both methods out of the scanner.
+
+The unchanged Halls1 water labels and exact released ordered baseline
+support a more actionable diagnosis. Exhausting all clipped/in-bounds
+32px tiles at 8px pitch shows that all 4,008 known missed pixels are
+representable. A fresh ordinary water-stage trace is exactly 664
+historical candidates → 61 released records. Of the rejected candidate
+pool, 85 tiles can cover 3,977 of those misses across all five regions
+without adding known-negative pixels. Their union also adds 3,418
+unknown pixels; counting those as true water would be wrong. Only 31
+known misses are out of the candidate pool entirely. This is a
+post-scan evaluation ceiling, not a new detection result; it focuses
+the next effort on source-backed selection. Audit186, no app change.
+
 ## 2026-11-16 — A real Golden3 water edge survives same-point comparison
 
 An additive transparency diagnostic compares two sides of a boundary

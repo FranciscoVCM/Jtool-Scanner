@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: distinguish available water poses from the ones actually selected
+
+The fixed transmission rule failed on distinct real Halls1 and Zero_Final
+art; the linear-light variant did not rescue it. Halls1's original output
+instead provides a measurable selection opportunity: 3,977 of 4,008 known
+missed pixels are in admissible existing source candidates, and all 4,008
+are representable. That evaluation-only ceiling cannot enter inference.
+Prioritize original wet extent and candidate selection, accounting for
+unknowns, before widening generation or changing tile geometry. Audit186.
+
 ## Latest: same-point transmission distinguishes one real water edge
 
 Comparing two differently shaded points failed the fixed Golden3
