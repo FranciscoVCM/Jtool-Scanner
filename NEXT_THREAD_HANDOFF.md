@@ -14,6 +14,21 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — paired water rails hold; full-pixel cyan helps locally
+
+Audit187, `water-rail-selection-v1947.json`,
+`water-rail-selection-stages-v1948.json`, and
+`water-physical-quorum-{nominations,score}-v1949.json`, all terminal.
+Paired rail: 36 authored and undersampling controls behave as expected;
+only 7/603 Halls1 rejected poses have an external rail, four with enough
+novel pixels, none supported by target colors. Full physical cyan quorum:
+14 initially suppressed poses cover 790 known missed pixels across three
+regions, zero extra/unknown, no Halls6 nomination; 9.43% vs 25% gate.
+An opaque palette control passes, so do not ship or call it geometry.
+No output change/no new room or reserve. Preserve the 3,977 attainable
+existing-candidate result, don't loosen the two failed tests, and require
+new independent extent/ownership evidence before changing selection.
+
 ### Latest continuation — most Halls1 water misses are already in the pool
 
 Audit186; `halls1-water-ceiling-v1944.json` and

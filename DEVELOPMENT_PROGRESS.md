@@ -4,6 +4,21 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Halls1 water selection trials establish a limited positive subset
+
+An additive selector uses opposite original source edges outside each
+candidate, then checks original RGB in the newly covered interior.
+It passes 36 authored tests plus an undersampling abstention. Only 7 of
+603 rejected Halls1 origins have usable external rails; four have enough
+newly covered source pixels, and all four fail the target check.
+
+A separate full-physical-pixel check uses the ordinary cyan predicates,
+without learning from the evaluation mask. It nominates 14 suppressed
+poses: 790 known misses covered across three regions, zero added known
+negative or unknown pixels. This is 9.43% of frozen errors, below the
+25% gate. Stable Halls6 nominates nothing and an opaque match passes the
+color check. Neither rule changes scanner behavior. Audit187.
+
 ## 2026-11-16 — Halls1 water is largely a candidate selection problem
 
 The fixed Golden3 transmission test abstains on both Halls1 spans and

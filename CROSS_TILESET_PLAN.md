@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: physical cyan only covers part of the Halls1 selection gap
+
+Paired outside rails nominate zero in the real candidate pool. A strict
+original-pixel cyan check nominates 14 poses covering 790 known missed
+pixels (9.43% of known errors), but color alone also accepts opaque
+lookalikes. Keep both paths offline. Improve independent wet extent and
+ownership without labeling contrast as dry or relaxing the gates.
+Audit187; no new live detection or reserve gain.
+
 ## Latest: distinguish available water poses from the ones actually selected
 
 The fixed transmission rule failed on distinct real Halls1 and Zero_Final
