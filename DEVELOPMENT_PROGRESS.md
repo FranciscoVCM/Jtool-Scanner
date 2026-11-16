@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Faster rail screening and a private masonry recovery
+
+An exact early contrast screen avoids running the full body-profile test
+on windows that already fail its top or bottom edges. It preserves every
+passing window and complete score record on 13 saved original inputs.
+Exploratory helper median falls from 2.680 to 0.129 seconds; this is not
+controlled whole-scan latency.
+
+Actual private Source scans reproduce all six previous NANG-138r blocks,
+add one source-confirmed dark masonry block at (96,96) under the save in
+CN3-19 (255→256), and keep FTFA-3 exact at 233/233 with byte-identical
+exports. All prior CN3-19 ordered detections and metadata stay unchanged.
+Whole and delta review confirm the block; the adjacent platform impostor
+is still present. This is a different-art result, but the room was exposed
+by the compatibility inventory and has only one measured correction.
+Not a prospective reserve result or a room approval. Scanner unchanged,
+no new full-suite or timing result; audit177.
+
 ## 2026-11-16 — Six striped solids recovered in a private NANG-138r scan
 
 An original-pixel test recognizes long, vertically structured 32px

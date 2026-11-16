@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: a lossless edge screen and one different-art rail result
+
+The fast screen preserves complete candidate scores on 13 inputs.
+Fresh actual trials retain all six NANG-138r additions and FTFA-3
+233/233, and recover one dark masonry body in CN3-19. This exposed
+comparison is not a prospective reserve or a release. Next seek
+independent physical proof of full bodies at beam ends before
+changing platform arbitration, and keep the old phase and packing
+holds. Audit177; no runtime changes or new room approval.
+
 ## Latest: recover striped solid bodies without borrowing proposal phase
 
 Two independent original source bands establish the same grid phase.

@@ -14,6 +14,19 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — exact faster screen, new actual CN3-19 body
+
+Read `.artifacts/general-recognition-20261014/RAIL_FAST_DUAL_ART_RESUME_v1909.md`
+and audit177. v1906 exact profile parity across 13 saved inputs, helper
+2.680→0.129s (not whole cost). v1907/v1908 terminal: current actual
+NANG-138r six earlier additions exactly reproduced; FTFA-3 233/233
+with byte-identical exports; CN3-19 adds only the true masonry block
+(96,96). Whole plus changed crop reviewed. Different artwork but
+exposed, one gain, no strict reserve credit, runtime or approval.
+The adjacent confirmed no-platform cap remains unresolved. Seek
+independent original full-body and phase proof before arbitration,
+without repeating the earlier held beam-end/packing experiment.
+
 ### Latest continuation — six actual private NANG-138r striped solid recoveries
 
 Read `.artifacts/general-recognition-20261014/RAIL_BODY_ACTUAL_RESUME_v1905.md`
