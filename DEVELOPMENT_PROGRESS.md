@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Fixed rail-body rule fails on Secret1's periodic artwork
+
+Two-axis original-source replay checks 167 full profiles and finds no
+body. Post-scoring with the fixed terrain masks shows 34 pertinent
+horizontal windows are rejected by the depth-alias check, and five
+vertical windows by track coherence. All 34 horizontal examples repeat
+best at an 8px shift. An independent repeated-interior versus exterior
+test passes 24 authored checks but nominates nothing in the real room.
+The 7,150 missing and 1,218 excess terrain pixels remain unchanged.
+Seven rail unit tests pass. No new caller or live behavior; audit198.
+
 ## 2026-11-16 — Isolate Redcube3's decorative cube from the real warp
 
 The maintained haloed-red caller, run by itself on the saved original RGB,

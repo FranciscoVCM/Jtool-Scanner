@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: rail-body transfer fails on genuinely periodic skin paint
+
+Secret1's original horizontal stripes repeat best at 8px on all 34
+relevant windows, the same displacement the existing body check tests
+for ambiguity. A separate repeat-inside/not-outside cue passes 24
+authored controls but still finds no real proposal. Do not relax the
+alias guard or equate the paint's period with solid-body size.
+Audit198 keeps this case unresolved and the earlier private rail gains off.
+
 ## Latest: boundary bevel tests held; decorative orb route isolated
 
 Two fixed-frame bevel variants failed portable impostor or true clipped-corner

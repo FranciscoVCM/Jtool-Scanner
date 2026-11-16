@@ -14,6 +14,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — Secret1 rail transfer rejected
+
+Audit198, `SECRET1_RAIL_TRANSFER_RESUME_v2001.md`. Exact existing rail
+helper queried both axes on the original Secret1: 139+28 profiles,
+zero bodies. v1998 routes 34 relevant horizontal windows to depth
+alias and five vertical to track-coherence failure. v2000 authentic
+post-only trace shows every horizontal minimum at 8px; changing the
+margin would erase a protection, not explain the extent. Independent
+periodic-faces evidence passes 24 portable checks and finds zero real
+proposals. Fixed terrain errors 8,368 unchanged. Do not tune another
+period or reuse the failed Secret1 texture teachers. Pursue independent
+source geometry or another mechanism. Earlier red-orb hold and the
+qualified live fingerprint are unchanged.
+
 ### Latest continuation — portable corner holds and Redcube3 warp diagnosis
 
 Audit197, `BOUNDARY_BEVEL_RED_ORB_RESUME_v1996.md`. Fixed bevel/closure
