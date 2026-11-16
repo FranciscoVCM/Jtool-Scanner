@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — compact transfer and shifted alias holds
+
+Audit205, `COMPACT_BODY_TRANSFER_RESUME_v2036.md`. Unchanged source
+rule tested on 17 inputs × six exact scalings: only derived115 NANG-140
+qualifies (+163), with no independent transfer. v2033 source/JTool/Blend
+confirms false half-phase blocks (352,208) and (384,304). Adjacent full
+terrain and full spikes are genuine. v2034b/v2035 pass portable tests
+but retire neither real false rectangle; hold both variants and stop
+that local series. No more weakening candidate thresholds. Move to a
+distinct original-source mechanism or a prospectively compatible
+different-art case. The live killer-padding guard remains enabled.
+
 ### Latest continuation — enlarged terrain restored privately without teaching hazards
 
 Audit204, `COMPACT_LATE_BODY_RESUME_v2031.md`. Same-scene 115% bitmap: old

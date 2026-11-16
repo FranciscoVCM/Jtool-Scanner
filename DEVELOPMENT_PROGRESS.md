@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Compact transfer stays unproven; two false shifted blocks verified
+
+Fourteen saved canonical sources and three tracked compact fixtures
+were checked at six fixed scales. Only the known 115% NANG-140 input
+qualified, reproducing its 163 terrain candidates. The others bypassed
+the late rule, so they do not establish transfer or positive protection.
+
+Source crops confirm both retained half-phase rectangles straddle real
+terrain and real full spikes rather than describing additional full blocks.
+Neither backdrop check could safely retire them. The fixed global check
+passed 56 authored controls, and the same-column continuation check
+passed 72; both abstained on the two actual crops. No changed scans,
+runtime or room approvals. Audit205.
+
 ## 2026-11-16 — Recover enlarged terrain in a private late pass
 
 The old backdrop histogram chooses brick by 843 to 842 samples on

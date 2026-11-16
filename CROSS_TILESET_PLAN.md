@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: compact backdrop result does not yet transfer
+
+The fixed rule over 17 captures and six scales only qualifies the
+known enlarged NANG-140 case. Saved exact fixtures bypass it. Both
+remaining shifted rectangles are source-confirmed false, but neither
+global nor local shoulder checks justify retiring them without risking
+overlaps. Keep the terrain candidate offline; the independent live
+padding guard is unchanged. Audit205.
+
 ## Latest: native terrain evidence must stay separate from padding and hazard votes
 
 At 115% scale, enlarged NANG-140's sampled palette mode picks brick
