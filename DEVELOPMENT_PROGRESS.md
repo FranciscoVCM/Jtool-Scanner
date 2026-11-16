@@ -4,6 +4,23 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Active mini protections narrow the private NANG-140 fix
+
+The earlier paired guard removes four genuinely visible dark or
+saturated tips among 12 authored positives that actually reach
+it. Four more authored cases miss ordinary admission and are not
+scored as protected. The paired guard remains held.
+
+An independent original-pixel check keeps all 12 active positives.
+It requires complete physical pixels outside the larger spike and
+agreement with two separate background witness strips. In NANG-140
+only the false down mini qualifies; the up mini's witnesses disagree
+and coverage is insufficient. A fresh private whole scan goes
+195→194, preserving the up mini, genuine full spikes and all other
+records. Whole and changed crop reviewed. This reproduces one of
+the two older corrections under stronger evidence, not a new find
+or release. No cross-family/scale claim or room approval; audit181.
+
 ## 2026-11-16 — Two private false minispike corrections in NANG-140
 
 Actual legacy admission treats two blocks as support merely because

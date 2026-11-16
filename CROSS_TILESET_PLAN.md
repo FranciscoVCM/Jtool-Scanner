@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: observed background proof protects colored tips
+
+Four active authored minis falsify the older two-removal guard.
+The stronger per-candidate source proof protects all 12 active
+minis and independently supports only NANG-140's false down
+mini. Fresh actual private 195→194, no release. Seek comparable
+real and cross-scale evidence; keep the unsupported up/edge
+cases unresolved without reducing thresholds. Audit181.
+
 ## Latest: physical support width isolates two compact mini aliases
 
 The old side-touch support slot admitted two opposite minis drawn

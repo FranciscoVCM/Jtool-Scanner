@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — pair held, one verified private NANG-140 correction
+
+Read `.artifacts/general-recognition-20261014/COMPACT_PHYSICAL_APERTURE_RESUME_v1931.md`
+and audit181. v1927 admits 12 authored positives before the guard;
+the old pair loses four visible dark/saturated tips. v1928 complete
+original aperture is not enough for UP; only DOWN qualifies. v1929
+actual 195→194 removes solely the previously known false DOWN, with all
+12 active authored positives protected by the individual check. v1930
+whole and delta reviewed. No transfer/activation/room approval. Next
+seek new independent cross-scale/other-room evidence, or pivot
+without widening the held aperture requirement.
+
 ### Latest continuation — actual private NANG-140 two false mini removals
 
 Read `.artifacts/general-recognition-20261014/COMPACT_MINI_SIDE_ACTUAL_RESUME_v1926.md`
