@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — fragmented save repeat test held
+
+Audit207, `FRAGMENT_ROLE_REPEAT_RESUME_v2042.md`. Both NANG-128
+aliases visually cross the spike/brick boundary. Original RGB returns
+one and zero qualifying independent repeats; neither meets the two
+disjoint donor gate, and repeated saves would also require protection.
+CN3-18 is an authentic same-producer positive (raw 224,88; aligned
+224,80), not a reserve. Four focused tests pass. Do not relax the repeat
+gate; use independent shape continuity or choose another failure family.
+No detector change.
+
 ### Latest continuation — false-save ownership diagnosed, no deletion
 
 Audit206, `SAVE_COMPETING_IDENTITY_RESUME_v2040.md`. Halls3 false

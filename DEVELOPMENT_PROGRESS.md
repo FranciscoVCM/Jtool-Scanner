@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Repeated terrain alone cannot safely veto fragmented saves
+
+Both NANG-128 false save bands visibly cross upward spikes on brick.
+On original RGB, the fixed two-donor test finds one qualifying repeat
+for the first band (11,064 positions) and none for the other (10,927).
+No negative reaches the fixed gate. CN3-18 supplies a genuine
+same-producer save, with zero qualifying repeats in 23,049 positions.
+Its early position (224,88) aligns to the saved (224,80).
+Four focused fragmented-save tests pass. No runtime change or fresh
+whole scan. Audit207 retains all 71 rows without new approvals.
+
 ## 2026-11-16 — Trace false-save identity to original source pixels
 
 Among 102 saved save records, Halls3 is the only exact coincidence
