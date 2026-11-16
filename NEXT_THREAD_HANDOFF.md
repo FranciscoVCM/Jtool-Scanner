@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — actual private NANG-140 two false mini removals
+
+Read `.artifacts/general-recognition-20261014/COMPACT_MINI_SIDE_ACTUAL_RESUME_v1926.md`
+and audit180. v1923 shows original side-contact support (both support
+blocks start exactly at the mini's right edge). v1924 terminal
+195→193, only false minis (7,176,192)/(10,176,208) removed, all
+retained records unchanged; whole/both deltas reviewed. NANG-130
+and NANG-138 fresh exact no-op, no guard-exposed final pairs. Next
+qualify genuine orthogonal and partial coverage controls; leave
+unknown, right-edge mini miss and older rail holds untouched.
+No release, new recognized object, timing or approval.
+
 ### Latest continuation — actual private shape guard, frozen transfer held
 
 Read `.artifacts/general-recognition-20261014/RAIL_SHAPE_ACTUAL_RESUME_v1920.md`

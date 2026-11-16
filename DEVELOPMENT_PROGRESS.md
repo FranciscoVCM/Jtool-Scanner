@@ -4,6 +4,27 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Two private false minispike corrections in NANG-140
+
+Actual legacy admission treats two blocks as support merely because
+they touch the side of the 16px candidate's base interval. Neither
+intersects it. The bright votes belong to the orthogonal full spike
+or its contour; original full edges measure 9/9 independent strong
+transitions on each side. Brightness coverage alone is insufficient:
+Say-4's genuine nested mini also has no bright votes outside its full.
+
+The private late guard only applies to paired opposite candidates
+with side-only backing and source-proved full contours. NANG-140
+195→193 removes exactly the two erroneous minis above the save;
+both genuine horizontal full spikes and all other detections and
+JMap metadata are unchanged. Source/JTool/Blend whole and both
+changes reviewed. The separate edge mini issue remains unresolved.
+
+NANG-130 and NANG-138 return byte-identical whole outputs without
+reaching the final guard. They do not establish active positive
+protection. Fifty-five compact-focused tests pass. No release,
+independent transfer, timing result or room approval. Audit180.
+
 ## 2026-11-16 — Whole-shape check rejects the private CN3-21 false block
 
 The better comparison scores the slanted and straight models against

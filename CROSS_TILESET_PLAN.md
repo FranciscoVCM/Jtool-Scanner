@@ -1,5 +1,14 @@
 # Cross-tileset milestone
 
+## Latest: physical support width isolates two compact mini aliases
+
+The old side-touch support slot admitted two opposite minis drawn
+by a real horizontal full spike. In an actual private NANG-140
+scan, the narrow original-pixel guard removes only those aliases.
+Two unchanged whole controls bypass it; add guard-exposed genuine
+orthogonal/occlusion cases before adoption. Not a change to all
+compact mini support or the held rail rule. Audit180, no release.
+
 ## Latest: compare compound and solid shapes on the same original pixels
 
 Actual private CN3-21 candidate withholding preserves all 400 ordinary
