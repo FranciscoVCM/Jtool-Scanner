@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: backdrop agreement is not proof of a thin overlay
+
+CN3-21's detached XXI has recoverable background evidence but ink in
+every sampled core row of its two false spikes. CN3-93's tiled backdrop
+doesn't transfer under the same frozen test. Do not widen the old
+digit filter or promote pixel sparsity into a veto. Audit184; continue
+with independently supported topology or a distinct source cause.
+
 ## Latest: a compound silhouette cannot establish individual spike origins
 
 CN3-21's confirmed spike compound rules out a solid where the old

@@ -14,6 +14,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — detached floor text is not reliably sparse
+
+Audit184; `DETACHED_TEXT_BACKDROP_FREEZE_v1937.md` and
+`text-backdrop-v1937.json` are in the active ignored directory. Saved
+ordinary output has two false fulls at XXI (CN3-21) and two false
+fulls plus two false minis at 93 (CN3-93). Both independent RGB panels
+hold 256/256 backdrop phases in CN3-21, but lettering occupies every
+measured core row of both false fulls. CN3-93 backdrop is incompatible
+(165/256 and 191/256); no candidate qualifies. Preserve both holds and
+embedded-label terrain protection. Do not widen component sizes or lower
+sparsity thresholds. Only resume this cause with positive independent text
+topology that also protects genuine hollow and partly occluded spikes;
+otherwise select a different material/capture mechanism.
+
 ### Latest continuation — CN3-21 visible shape does not fix primitive origins
 
 Audit183 and `cn3-21-internal-seams-v1935.json` in the active ignored

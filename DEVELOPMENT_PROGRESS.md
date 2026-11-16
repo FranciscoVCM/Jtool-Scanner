@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Detached floor text defeats a backdrop-sparsity test
+
+The existing filter is seeded by nearby full blocks; earlier size-only
+expansion did not reach CN3-21 or CN3-93. Using two independently sampled
+RGB background panels, a new offline diagnostic validates all 512 held
+samples on CN3-21. Even there, both false DOWNs on XXI see ink in all 19
+core rows. Their confirmed backdrop counts are 94/200 and 90/200.
+CN3-93's different tiled background matches only 165/256 and 191/256
+held samples. Neither of its false full spikes qualifies either; the two
+false minis were observed, not scored. This rejects sparse foreground as
+a basis for a portable text veto. It is not an attempt to suppress all
+floor labels or to delete real terrain behind them. Audit184 preserves
+all 71 rows and zero approvals; no new scan, rule or output.
+
 ## 2026-11-16 — CN3-21 compound identity and placement are separate
 
 The source review rules out a solid at (64,288): the square spans
