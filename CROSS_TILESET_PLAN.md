@@ -1,5 +1,16 @@
 # Cross-tileset milestone
 
+## Latest: recover striped solid bodies without borrowing proposal phase
+
+Two independent original source bands establish the same grid phase.
+With the overlap guard, the actual private scan restores six
+NANG-138r solids; fixed-region errors fall from 36 to 12 and all
+existing detections survive. The adjacent Halls2 appearance does
+not support this body mechanism. No release or different-art
+transfer. Next freeze a genuinely compatible case before querying
+the same rule; keep the earlier failed endpoint solver unchanged.
+Audit176, no new room approval.
+
 ## Latest: active lookalikes defeat the enclosure exception
 
 All six active authored near-lookalikes emit false markers. Keep the

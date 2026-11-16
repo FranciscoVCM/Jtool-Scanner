@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-15. Continue in the existing repository at
+Updated 2026-11-16. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,18 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — six actual private NANG-138r striped solid recoveries
+
+Read `.artifacts/general-recognition-20261014/RAIL_BODY_ACTUAL_RESUME_v1905.md`
+and audit176. v1902/v1903 terminal: actual current Source ordinary
+188→private 194, exactly six full blocks, all retained records
+unchanged. Whole and all six crops reviewed, frozen errors 36→12;
+3,072 positive pixels still missing. No shipped change or approval.
+No retry needed for result sealing. v1899 endpoints failed and
+Halls2 is incompatible. Preserve both. Next seek a compatible
+different-art full-body source, freeze truth before running the
+same rule, and validate protections and cost before adoption.
 
 ### Latest continuation — active enclosure counterexamples, move to body evidence
 

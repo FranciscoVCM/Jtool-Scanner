@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Six striped solids recovered in a private NANG-138r scan
+
+An original-pixel test recognizes long, vertically structured 32px
+solid bodies from matching profiles across separated columns. The
+first packing test found no safe run endpoints. Two disjoint sets of
+source rows, excluded from the proposals, independently establish the
+same horizontal grid phase instead. The late caller adds only full
+bodies that do not overlap any existing detection or peer proposal.
+
+Actual ordinary 188 → private 194, exactly six source-confirmed
+full blocks. Frozen-region errors 36 → 12; missing solid pixels
+9,216 → 3,072, with zero labeled empty or unknown pixels newly
+occupied. All 188 existing ordered detections, including the
+25 full and 61 mini hazards in scope, and JMap metadata stay intact.
+Whole room and all six changes reviewed. The remaining gaps keep
+the room unapproved.
+
+Halls2's different artwork does not support the same repeated column
+profile. No different-art transfer, maintained runtime change, timing
+or full-suite claim. 55 compact and nine rectangular-band tests
+passed. Audit176; preserve older endpoint and compatibility failures.
+
 ## 2026-11-16 — Dense enclosure exception held on active lookalikes
 
 The authored boards exercise the old density gate at all 159 placements.
