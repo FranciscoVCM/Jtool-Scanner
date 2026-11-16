@@ -1,5 +1,13 @@
 # Cross-tileset milestone
 
+## Latest: 4px water positions remain unproved; examine opposing spike gaps
+
+No Halls1 component establishes all four registered faces, so the
+finer-phase selector stays offline. Halls5's source instead provides
+four clear false gaps and eight real controls. Exact outside background
+is encouraging, but local dissent vetoes all proposed removals;
+ownership is distinct from looser color tolerance. Audit189.
+
 ## Latest: 8px phase cannot exploit the observed water extents
 
 Original mask closure qualifies one Halls1 field and no viable tile.

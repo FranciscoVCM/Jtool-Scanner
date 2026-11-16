@@ -4,6 +4,24 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Registered water held; four opposing gaps localized
+
+Split original face registration passes ten authored outcome checks but
+never establishes all four faces of a real Halls1 extent. The 2,847
+bounded 4px alternatives therefore produce no tiles. Park the route:
+its earlier geometric ceiling is not evidence of original ownership.
+
+In Halls5's original ledge crop, four saved DOWNs occupy open space
+or inter-spike gaps; eight nearby spikes are real. The first
+fractional thin-base control revealed that projected native taps
+could skip an original pixel. Reading the complete physical base band
+corrected it; all 56 authored outcomes then matched. Outside patches
+are perfectly consistent on the real Halls5 false hypotheses, but
+each has some non-backdrop pixels in the query. The conservative probe
+abstains on all, and nominates no historic Redcube1 change. Next test
+independent ownership of the dissent, not larger color tolerance.
+Audit189; no scanner changes or room approval.
+
 ## 2026-11-16 — Water phase and source evidence are separate bottlenecks
 
 A candidate-independent original cyan component probe finds five Halls1

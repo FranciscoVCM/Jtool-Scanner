@@ -14,6 +14,24 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — Halls5 opposing gaps; park water registration
+
+Audit189. `water-registered-phases-*-v1955.json` terminal: all ten
+authored outcome checks pass; no Halls1 field has four independently
+registered actual faces, so all 2,847 bounded alternatives abstain.
+Keep the v1953 ceiling theoretical and park this water family, no
+next threshold or rewarm. Next examine the distinct Halls5 spike
+cause using `Halls5-ledge-conflict-Source-v1956.png` and
+`HALLS5_OPPOSING_GAP_FREEZE_v1957.md`. Four exact false DOWNs at y400
+and eight preserved real controls are source-verified in that crop.
+Initial thin-base fractional test exposes a skipped physical pixel;
+enumerating the original base band fixes it, 56/56 authored outcomes.
+Both original outside RGB strips are exact on the four false DOWNs,
+but the full base/core aperture contains dissent in all four. No
+Halls5 or historical Redcube1 nominations. Try independently proved
+ownership of the dissenting pixels and protect partial/hollow spikes;
+don't just raise the background tolerance. No runtime/room credit.
+
 ### Latest continuation — a 4px phase can fit real extents the 8px grid cannot
 
 Audit188, terminal `water-component-extents-*` v1951 and
