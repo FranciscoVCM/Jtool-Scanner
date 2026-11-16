@@ -1,5 +1,15 @@
 # Cross-tileset milestone
 
+## Latest: active lookalikes defeat the enclosure exception
+
+All six active authored near-lookalikes emit false markers. Keep the
+enclosure change offline despite the real private Say-9 recovery.
+Simple independent strip agreement also fails to prove either NANG-137r
+false solid. Preserve both failures without threshold relaxation. Shift
+to geometry backed by independent body evidence with a separate-art
+reserve; a match to sprite color or local texture is not collision
+truth. Audit175; unchanged scanner and zero new room approvals.
+
 ## Latest: distinguish marker identity from a dense spike context
 
 Say-9 gains its verified warp in the private late caller, with all

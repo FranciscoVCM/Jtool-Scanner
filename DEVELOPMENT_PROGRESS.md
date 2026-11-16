@@ -4,6 +4,28 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Dense enclosure exception held on active lookalikes
+
+The authored boards exercise the old density gate at all 159 placements.
+Only ten reach the new exception. Two distinct portal appearances are
+recovered on two native backgrounds and one fractional capture each.
+None of the 105 editor-start or six initial lookalike placements reach
+the exception, so their unchanged output is not a specificity pass.
+
+Six further paired controls all reach the exception and all incorrectly
+emit a warp when two unchecked pixels on the visible portal art are
+changed and the authored object is noninteractive. These are deliberate
+near-lookalikes, not measured gameplay regressions or estimates of how
+often they occur. They show that four-band proof alone does not establish
+object role. Say-9's actual private gain stands; no release.
+
+Separately, the original horizontal-texture check for NANG-137r does not
+prove either of the two false blocks near the spiral. The best shared
+run has 14 physical rows, but aligned prediction beats shifted witnesses
+by only one RGB level; the real beam underneath the sampled area also
+has strong horizontal contrast. Five genuine solid controls remain
+unchanged. Audit175 records both holds; no runtime change or room approval.
+
 ## 2026-11-15 — Say-9 warp recovered privately inside real spikes
 
 The unchanged four-shade identity proof also recognizes Say-9's filled

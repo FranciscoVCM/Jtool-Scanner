@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — active enclosure counterexamples, move to body evidence
+
+Read `.artifacts/general-recognition-20261014/DENSE_LOOKALIKE_HOLD_RESUME_v1897.md`
+and audit175. All v1894/95/96 workers are terminal. v1894 density
+159/159, only ten exception entries, all portals; two appearances pass
+all three captures. v1895 intentionally perturbs those appearances;
+six reached authored decorative negatives all emit false warps. Keep
+off. v1896 original row witnesses fail both NANG-137r targets,
+five solid controls preserved. Do not tune either failure or repeat
+the whole Say-9 check. Next select a reliable original-body error
+and freeze a compatible different-art reserve before trying a fix.
+
 ### Latest continuation — Say-9 private late recovery, specificity gap
 
 Read `.artifacts/general-recognition-20261014/DENSE_MARKER_NEGATIVE_NEXT_v1893.md`
