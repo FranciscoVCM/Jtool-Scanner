@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — compatible Golden3 reserve below threshold
+
+Audit212, `PENDING_RESERVE_REQUALIFICATION_RESUME_v2070.md`. All
+workers terminal. Fresh actual v2058 reproduces four earlier partial
+spikes each in Golden2/Golden5. Golden3 was pre-frozen and eligible:
+all three targets reach pending. Unchanged v636 adds one real
+UP(16,64), 318→319, no extras or retained-record changes. Fixed local
+3→2 misses, fails minimum two. Two others fail directional body
+evidence after visible geometry; do not widen thresholds or tune on
+this reserve. All whole/delta views reviewed and 48 focused tests
+pass. No app or runtime change; old timing holds remain historical.
+
 ### Latest continuation — rail occupied controls, no reserve
 
 Audit211, `RAIL_OCCUPIED_CONTROLS_RESUME_v2056.md`. Four exposed

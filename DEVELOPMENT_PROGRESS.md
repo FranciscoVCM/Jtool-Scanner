@@ -4,6 +4,20 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Partial-spike reserve recovers one, short of its gate
+
+Fresh private Source comparisons reproduce four verified partial
+spikes each in Golden2 and Golden5. On the frozen Golden3 reserve,
+all three target keys reach the pending stage. The unchanged rule
+adds only the real UP(16,64), moving 318→319 with no other deltas.
+Whole views and all nine added spikes were reviewed. The fixed
+three misses fall to two (33.3%), short of two corrections. The other
+two pass visible geometry in 9 and 6 phases, respectively, but fail
+body appearance in every one. The serialized full raws confirm
+non-warning metadata parity despite an initial tuple/list mismatch.
+Thirty-two visibility and 16 metadata tests passed; no deployment
+or new latency qualification. Audit212.
+
 ## 2026-11-17 — Four occupied rail controls do not extend the recovery set
 
 Across 34 visually occupied cells on white stripes, silver bands,
