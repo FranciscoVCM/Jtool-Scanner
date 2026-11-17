@@ -16,17 +16,20 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Current stop point — v2075 replay terminal
+### Current stop point — v2078 edge attribution terminal
 
 Goal **General recognition and source-complete geometry** resumed
-after the earlier usage limit and remains unfinished. Audit214 and
-`PARTIAL_APERTURE_REPLAY_RESUME_v2077.md` bind the completed replay:
+after the earlier usage limit and remains unfinished. Audit215 and
+`HALLS4_EDGE_OWNERSHIP_RESUME_v2079.md` bind the edge attribution.
+The preceding audit214 four-domain replay covered:
 197 pending keys, 161 parents, eight old recoveries preserved, two
 alternate sampling phases pass, zero new or lost native keys.
 Halls4's two real targets never reach body proof: 9/9 eligible
 visibility phases each, 0/9 geometry with insufficient visible edges.
-No worker needs a restart. Next examine original edge observability on
-independent development scenes; do not loosen gates or retune reserves.
+Across all 18 phases one slope is mostly behind definite terrain and
+a neighboring possible wall covers the base. No worker needs a restart.
+Test independent source evidence for exposed spike ink on separate
+development scenes; do not loosen gates or retune reserves.
 
 ### Latest continuation — whole original squares for body appearance
 

@@ -114,7 +114,7 @@ Preserve the full completion contract, not the easiest successful subset:
 
 | Evidence | What it establishes |
 | --- | --- |
-| Audit 214 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
+| Audit 215 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
 | Goal ledger | Records 53 measured recoveries, 24 false-label corrections, and only **NANG-11 and NANG-139** as qualifying canonical rooms to date. These are ledger measurements, not a blanket claim that every result is live or that another gate passes. |
 | Runtime | Last scanner behavior change is `72eeba1`: observed-original-cell guard prevents synthetic compact padding from voting as killer terrain in **Source** mode. Standard mode unchanged for that release. Loaded fingerprint at the verified checkpoint: `f87030612bdd65f2b17d7a75b4a6041a0c8260a6aca08e5afba1472f691608b7`. Later helpers are offline. |
 | Tests | Last complete suite recorded **1,794** passing at an earlier checkpoint, not full discovery for this revision. Recent scoped results: 32 visibility and 16 original-detection metadata tests, then four whole-pixel aperture tests. |
@@ -158,6 +158,11 @@ all nine because fewer than two original edges are observable after
 mask projection. Appearance never runs for those cases. CN3-19 also
 does not enter the fallback, so it does not establish active false-shape
 protection for the new rule. Preserve the old failed reserve verdicts.
+
+Audit215 binds the v2078 passive trace. Across both nine-phase fans
+the definite wall covers most of one slope and a neighboring possible
+wall envelope covers the base. Ignoring the mask does not establish
+independent spike ownership. No detector/output change or recoveries.
 
 Next: test a separate original geometry mechanism for edge
 observability and occluder ownership on independently reviewed

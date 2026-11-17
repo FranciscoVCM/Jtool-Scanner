@@ -1,6 +1,6 @@
 # Cross-tileset milestone
 
-For the current goal, measured progress, and the terminal v2075 checkpoint
+For the current goal, measured progress, and the terminal v2078 checkpoint
 start with [MODEL_HANDOFF.md](MODEL_HANDOFF.md) and the top of
 [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md). The measured notes
 below are dated history; [PERFORMANCE_POLICY.md](PERFORMANCE_POLICY.md)

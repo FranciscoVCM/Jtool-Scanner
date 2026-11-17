@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Halls4 missing spikes share a one-edge visibility limit
+
+Both saved parent proofs reproduce exactly. Across all 18 eligible
+phases, the definite wall core obscures most of one slope and a
+neighboring wall envelope covers the base. The exposed slope at the
+nominal pose has RGB/directed support 11/12 and 12/12 for the two
+spikes respectively. The nominal bases have only 6/12 and 7/12 raw
+support even without masking; unmasked contrast does not prove spike
+ownership. Do not loosen the two-edge gate or borrow wall edges.
+Audit215 retains all 71 rows and zero approvals. No output change.
+
 ## 2026-11-17 — Whole-pixel fallback leaves the saved pending keys unchanged
 
 v2075 replays all 197 pending keys through 161 authenticated parents in
