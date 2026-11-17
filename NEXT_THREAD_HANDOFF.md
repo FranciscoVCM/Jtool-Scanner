@@ -16,7 +16,16 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Current stop point — v2078 edge attribution terminal
+### Current stop point — v2080 tip-transect experiment terminal
+
+Audit216 and `EXPOSED_SLOPE_TRANSECT_RESUME_v2081.md`: one of three
+Golden5 positives has a supported stopped slope; two CN3-19 false
+fragments never enter the effective pending domain. Close this variant.
+No reserve or scanner change. Next find a source-proved,
+different-art positive transfer for the separate v2053 rail-end rule;
+read the v2081 note before any query.
+
+### Preceding checkpoint — v2078 edge attribution terminal
 
 Goal **General recognition and source-complete geometry** resumed
 after the earlier usage limit and remains unfinished. Audit215 and
@@ -28,8 +37,8 @@ Halls4's two real targets never reach body proof: 9/9 eligible
 visibility phases each, 0/9 geometry with insufficient visible edges.
 Across all 18 phases one slope is mostly behind definite terrain and
 a neighboring possible wall covers the base. No worker needs a restart.
-Test independent source evidence for exposed spike ink on separate
-development scenes; do not loosen gates or retune reserves.
+The separate exposed-ink follow-up above did not qualify; do not
+loosen gates or retune reserves.
 
 ### Latest continuation — whole original squares for body appearance
 

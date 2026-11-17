@@ -114,7 +114,7 @@ Preserve the full completion contract, not the easiest successful subset:
 
 | Evidence | What it establishes |
 | --- | --- |
-| Audit 215 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
+| Audit 216 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
 | Goal ledger | Records 53 measured recoveries, 24 false-label corrections, and only **NANG-11 and NANG-139** as qualifying canonical rooms to date. These are ledger measurements, not a blanket claim that every result is live or that another gate passes. |
 | Runtime | Last scanner behavior change is `72eeba1`: observed-original-cell guard prevents synthetic compact padding from voting as killer terrain in **Source** mode. Standard mode unchanged for that release. Loaded fingerprint at the verified checkpoint: `f87030612bdd65f2b17d7a75b4a6041a0c8260a6aca08e5afba1472f691608b7`. Later helpers are offline. |
 | Tests | Last complete suite recorded **1,794** passing at an earlier checkpoint, not full discovery for this revision. Recent scoped results: 32 visibility and 16 original-detection metadata tests, then four whole-pixel aperture tests. |
@@ -164,13 +164,14 @@ the definite wall covers most of one slope and a neighboring possible
 wall envelope covers the base. Ignoring the mask does not establish
 independent spike ownership. No detector/output change or recoveries.
 
-Next: test a separate original geometry mechanism for edge
-observability and occluder ownership on independently reviewed
-development inputs. Do not relax the edge count, tune on Golden3 or
-use known coordinates to supply missing objects. Freeze a genuine
-compatible reserve before any query. Only consider releasing a
-candidate with new verified typed gains, actual caller confirmation,
-source QA, protections and timing.
+Audit216 closes nominal signed-RGB tip transects: one of three reviewed
+Golden5 positives qualifies; both confirmed false fragments are outside
+the effective CN3-19 pending domain. No reserve query or runtime change.
+Next, use original source plus ordinary output to preflight a different-art
+positive transfer for the separate v2053 rail-end terrain repair. Freeze
+source truth and a genuine compatible reserve before querying the rule.
+No release without actual caller verification, source QA, protections
+and timing.
 
 Work in bounded causal batches: authenticate current source and output →
 freeze truth and reserve → trace actual candidate stage → try a few distinct

@@ -4,6 +4,16 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Tip overrun does not reliably identify partial spikes
+
+The fixed signed-RGB probe finds a stopped slope at one of three
+reviewed Golden5 partial spikes. The UP tip falls inside possible
+terrain; the DOWN tip has ambiguous held RGB. Both CN3-19 false
+fragments are outside the effective pending domain, so neither
+exercises the rule. Archived parent proofs match exactly. No tuning,
+reserve query or scanner change. Audit216; shift to preflighting
+positive transfer for the separate rail-end terrain repair.
+
 ## 2026-11-17 — Halls4 missing spikes share a one-edge visibility limit
 
 Both saved parent proofs reproduce exactly. Across all 18 eligible
