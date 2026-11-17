@@ -4,6 +4,16 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Four occupied rail controls do not extend the recovery set
+
+Across 34 visually occupied cells on white stripes, silver bands,
+red beams and grass/brick, the unchanged private rule proposes nothing
+new. Entrance2 has 35 body scores but one independent phase fold is
+below the fixed margin (.024375 against .025); CN3-92 fails earlier
+at the body stage. NANG-128r's two phase-supported candidates are
+already occupied. Do not relax the phase gate, count these controls as a
+positive reserve, or treat historical outputs as fresh scans. Audit211.
+
 ## 2026-11-17 — Rail ends preserve seven real private recoveries
 
 Independent original RGB rail ends keep seven previously verified

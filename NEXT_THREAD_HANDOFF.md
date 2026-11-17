@@ -14,6 +14,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — rail occupied controls, no reserve
+
+Audit211, `RAIL_OCCUPIED_CONTROLS_RESUME_v2056.md`. Four exposed
+source/ordinary snapshots, 34 scoped full cells, zero new proposals.
+Entrance2 scores 35 body profiles but one phase margin fails; NANG-128r
+phase0 proposals are already occupied. NANG-138 phase disagrees and
+CN3-92 has zero body scores. Keep the seven private v2050 recoveries
+unbound. No new scan or gains. Seek a genuinely missing scene with
+original evidence or switch to another measured repair; do not
+lower the margin or relabel any occupied control a reserve.
+
 ### Latest continuation — actual rail-end separation, offline port
 
 Audit210, `RAIL_END_ACTUAL_RESUME_v2053.md`. v2050 is terminal: do
