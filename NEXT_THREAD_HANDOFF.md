@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — whole original squares for body appearance
+
+Audit213, `PARTIAL_APERTURE_DEVELOPMENT_RESUME_v2074.md`. On Golden5
+seven of 14 appearance calls included wall-mixed original squares.
+Excluding those squares explains four prior failed phases without
+losing any original passes or changing thresholds/poses. The same
+objects were already private recoveries, so this is not new output.
+Dotkid2 stops before body proof; its four candidate parents are all
+unknown. Standalone helper and four tests are maintained but unbound.
+Golden3 remains a closed failed reserve; freeze a fresh eligible
+case and controls before trying the aperture as an actual recovery.
+
 ### Latest continuation — compatible Golden3 reserve below threshold
 
 Audit212, `PENDING_RESERVE_REQUALIFICATION_RESUME_v2070.md`. All

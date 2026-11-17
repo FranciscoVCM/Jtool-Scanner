@@ -4,6 +4,19 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Mixed original pixels explain partial-body phase failures
+
+Golden5's unchanged parent proofs pass four body phases and fail ten
+after geometry. Seven calls include nine physical pixel squares that
+cross the possible wall despite their sample points looking visible.
+With the same thresholds and at least 16 full original squares, four
+old failed phases pass and all four old passes remain. These phases
+belong to already recovered private poses, not new detections.
+Dotkid2 stops earlier: all four applicable wall parents are unknown.
+The standalone aperture helper matches all 14 observations and
+passes four new tests. Golden3 reserve untouched. No runtime change.
+Audit213.
+
 ## 2026-11-17 — Partial-spike reserve recovers one, short of its gate
 
 Fresh private Source comparisons reproduce four verified partial
