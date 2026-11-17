@@ -16,16 +16,17 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Current stop point — full handoff saved, next batch not run
+### Current stop point — v2075 replay terminal
 
-Goal **General recognition and source-complete geometry** is unfinished;
-the goal tool reported `usageLimited` at the handoff. This is not a user
-pause, completion, or repeated blocker. No previous producer needs a
-restart. Audit213 is the latest complete 71-room audit (zero approvals;
-not final same-revision 71+16). The saved next batch is
-`PARTIAL_APERTURE_UNCHANGED_CALLER_FREEZE_v2075.md` under the ignored
-general-recognition folder, **freeze only**: no v2075 experiment started.
-Resume from that freeze and the local index; leave all old failures fixed.
+Goal **General recognition and source-complete geometry** resumed
+after the earlier usage limit and remains unfinished. Audit214 and
+`PARTIAL_APERTURE_REPLAY_RESUME_v2077.md` bind the completed replay:
+197 pending keys, 161 parents, eight old recoveries preserved, two
+alternate sampling phases pass, zero new or lost native keys.
+Halls4's two real targets never reach body proof: 9/9 eligible
+visibility phases each, 0/9 geometry with insufficient visible edges.
+No worker needs a restart. Next examine original edge observability on
+independent development scenes; do not loosen gates or retune reserves.
 
 ### Latest continuation — whole original squares for body appearance
 

@@ -68,10 +68,10 @@ Unknown/cropped/padded pixels are not evidence for background or objects.
 **General recognition and source-complete geometry** is the working name
 of the 2026-10-28 replacement goal. Its anchor is
 `791b05edc13ba217350600d5719e6524f5d3d7dc`; that is not today's HEAD.
-At this handoff the goal tool reports **`usageLimited`**, with work saved.
-It is **unfinished**, not completed, user-paused, replaced, or marked
-blocked. Do not create a replacement goal just because its panel is absent.
-Recheck platform status when resuming.
+The goal was `usageLimited` when this handoff was first written and
+was then explicitly resumed. It is **active and unfinished**, not
+completed, user-paused, replaced, or marked blocked. Recheck platform
+status when resuming; do not create a replacement if the panel is absent.
 
 The purpose is transferable recognition across unfamiliar sprite art,
 tilesets, backgrounds, lighting and capture scale. The 71 scenes supply
@@ -114,7 +114,7 @@ Preserve the full completion contract, not the easiest successful subset:
 
 | Evidence | What it establishes |
 | --- | --- |
-| Audit 213 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
+| Audit 214 | All 71 rows have current-at-review evidence, zero historical-only pending and **zero whole-room approvals**. They span revisions, not a final stable-build corpus. |
 | Goal ledger | Records 53 measured recoveries, 24 false-label corrections, and only **NANG-11 and NANG-139** as qualifying canonical rooms to date. These are ledger measurements, not a blanket claim that every result is live or that another gate passes. |
 | Runtime | Last scanner behavior change is `72eeba1`: observed-original-cell guard prevents synthetic compact padding from voting as killer terrain in **Source** mode. Standard mode unchanged for that release. Loaded fingerprint at the verified checkpoint: `f87030612bdd65f2b17d7a75b4a6041a0c8260a6aca08e5afba1472f691608b7`. Later helpers are offline. |
 | Tests | Last complete suite recorded **1,794** passing at an earlier checkpoint, not full discovery for this revision. Recent scoped results: 32 visibility and 16 original-detection metadata tests, then four whole-pixel aperture tests. |
@@ -141,6 +141,9 @@ Recent causal work:
   walls are not verified, and four other true targets have no parent
   under this solver. Keep its separate two private RGB-bracketing
   recoveries distinct. `scripts/source_partial_aperture.py` is offline.
+  Audit 214 then tested the fallback across four complete saved domains:
+  197 pending keys through 161 parents, eight old recoveries preserved,
+  two alternate phases passing, zero added or lost keys.
 - **Other holds:** confirmed false saves in NANG-128 and Halls3 have
   different producers; no marker suppression was shipped from these
   diagnostics. Don't delete real saves or genuine half-hidden spikes
@@ -148,25 +151,21 @@ Recent causal work:
 
 ## Resume here
 
-The next batch is **frozen, not executed**: evaluate the unchanged old
-partial proof first, then an optional whole-original-square fallback
-after body failure only if a sampled square crosses a possible wall and
-at least 16 independent squares remain. Keep old successes, geometry,
-poses, original locators and metadata unchanged. The detailed v2075 freeze
-is in the local companion. It selects complete saved Golden2/Golden5
-protection domains, CN3-19 false-fragment control and the two known real
-Halls4 misses, with every negative/unknown kept in-domain. Halls4 is
-historically exposed; preserve its earlier unrelated failed transfer.
-No v2075 producer or resulting scan exists at handoff.
+The frozen v2075 **offline replay finished**. No outputs changed. Both
+Halls4 misses are present in the exact 29-key packet and have verified
+parents. Each passes all nine visibility phases, but geometry rejects
+all nine because fewer than two original edges are observable after
+mask projection. Appearance never runs for those cases. CN3-19 also
+does not enter the fallback, so it does not establish active false-shape
+protection for the new rule. Preserve the old failed reserve verdicts.
 
-Run the four-case **offline replay** first. Check whole old proofs and
-same inputs before comparing typed native deltas; source-review any new
-pose, including out-of-scope changes. If no genuine pose improves, save
-the terminal evidence and move on rather than lowering thresholds.
-If it works, exercise the actual caller on current frames and freeze
-a fresh compatible reserve before querying it. Do not ship until
-regressions, independent QA and cost have been checked. Do not make
-the detector special-case Halls4, its coordinates, or known map answers.
+Next: test a separate original geometry mechanism for edge
+observability and occluder ownership on independently reviewed
+development inputs. Do not relax the edge count, tune on Golden3 or
+use known coordinates to supply missing objects. Freeze a genuine
+compatible reserve before any query. Only consider releasing a
+candidate with new verified typed gains, actual caller confirmation,
+source QA, protections and timing.
 
 Work in bounded causal batches: authenticate current source and output →
 freeze truth and reserve → trace actual candidate stage → try a few distinct

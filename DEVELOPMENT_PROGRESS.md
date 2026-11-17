@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Whole-pixel fallback leaves the saved pending keys unchanged
+
+v2075 replays all 197 pending keys through 161 authenticated parents in
+four saved domains, retaining eight private restores with no new keys.
+Two Golden5 fallback passes are alternate phases of already restored
+spikes. The two source-confirmed Halls4 targets have qualified parents
+and 9/9 visible phases each, but 0/9 geometry: fewer than two original
+edges remain observable. Neither Halls4 nor CN3-19 exercises the body
+fallback. Four aperture tests pass. No new scans or runtime change;
+audit214 preserves the full corpus and the failed reserve verdicts.
+
 ## 2026-11-17 — Model handoff saved before the next solver experiment
 
 [MODEL_HANDOFF.md](MODEL_HANDOFF.md) records the project, current milestone,
