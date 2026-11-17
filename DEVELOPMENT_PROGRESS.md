@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-16 — Held source edges continue into both false save bands
+
+Fit the upward triangle edges only above the alleged title, then test
+untouched original RGB rows inside it. The two NANG-128 candidates
+have paired edge continuity on 9/10 and 9/9 held rows. The real
+CN3-18 same-route save has zero paired fit rows out of 17. Eight
+authored controls pass, including clipped and near-isoluminant cases.
+Most dark ink votes fall below the fitted spike bases, but some are
+still unassigned. A spike edge alone cannot veto a coexisting save.
+No runtime change, new whole scan, or room approval. Audit208.
+
 ## 2026-11-16 — Repeated terrain alone cannot safely veto fragmented saves
 
 Both NANG-128 false save bands visibly cross upward spikes on brick.

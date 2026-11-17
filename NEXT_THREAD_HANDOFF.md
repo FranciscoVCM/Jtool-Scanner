@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — independent contour qualifies, save veto does not
+
+Audit208, `FRAGMENT_CONTOUR_RESUME_v2045.md`. Fit original UP edges
+strictly above the two NANG-128 bands, then validate on 9/10 and 9/9
+held rows within them. The real CN3-18 same-route save has no paired
+fit. Eight authored checks pass. Dark ink is not wholly attributed:
+201/279 and 269/300 dark votes are below the fitted triangle bases.
+Only the two NANG aliases occur in this path in the mixed final
+71-room census. Do not ship an overlap veto or infer marker absence.
+Look for different-family positives/errors before more work on this
+route; otherwise switch to a broader independent failure mechanism.
+
 ### Latest continuation — fragmented save repeat test held
 
 Audit207, `FRAGMENT_ROLE_REPEAT_RESUME_v2042.md`. Both NANG-128
