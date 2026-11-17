@@ -4,6 +4,10 @@ Local scanner and graphical correction workspace for turning IWBTG-style
 fangame screenshots into editable JTool maps. Compare Source, JTool and Blend
 views, correct the draft, then save an editable project or export a `.jmap`.
 
+Continuing development from another chat or model? Start with
+[MODEL_HANDOFF.md](MODEL_HANDOFF.md) for the active project scope, goal
+status, latest measurements, and where to resume.
+
 Development focuses on recognition that transfers across tilesets, backgrounds,
 colours, brightness, sprite variations and capture scales—not memorizing the
 review corpus. Difficult rooms still need corrections; the project does not

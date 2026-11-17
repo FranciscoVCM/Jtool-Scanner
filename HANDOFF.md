@@ -1,10 +1,15 @@
 # JTool Scanner Project Handoff
 
-This migration-era handoff is not a live Git status report. Consult
-`DEVELOPMENT_PROGRESS.md` and `NEXT_THREAD_HANDOFF.md` for current checkpoints.
-The 2026-10-01 Lap Around intake below supersedes the missing-JMap status.
+If taking over development, start with [MODEL_HANDOFF.md](MODEL_HANDOFF.md)
+and the top of [NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md). They contain
+the current goal, evidence status, and exact continuation point. Use this
+long-form handoff for the architecture, workflows and corpus inventory.
 
-## Current checkpoint — 2026-11-08
+The dated checkpoint sections below are preserved history, not a live Git
+or goal status report. The 2026-10-01 local Lap Around intake supersedes
+older missing-JMap status; corrected maps are not the tracked FTFA gate.
+
+## Historical checkpoint — 2026-11-08
 
 The late SAVE header caller is now enabled in Experimental source geometry.
 It corrects two Say-1 Save X offsets (299 → 301/303 exact), with unchanged Y,

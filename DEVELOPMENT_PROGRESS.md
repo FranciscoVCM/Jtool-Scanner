@@ -4,6 +4,15 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Model handoff saved before the next solver experiment
+
+[MODEL_HANDOFF.md](MODEL_HANDOFF.md) records the project, current milestone,
+measured progress, operational commands and all six finish gates. The
+ignored local companion indexes exact receipts. Goal tool reported
+`usageLimited`; goal remains unfinished. Audit213 is still the latest
+terminal audit. v2075 froze the next four-case replay but did not run it.
+No scanner, test, benchmark, or fixture changes in this handoff.
+
 ## 2026-11-17 — Mixed original pixels explain partial-body phase failures
 
 Golden5's unchanged parent proofs pass four body phases and fail ten

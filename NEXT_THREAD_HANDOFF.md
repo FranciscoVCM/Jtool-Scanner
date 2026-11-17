@@ -8,11 +8,24 @@ branch, clone or worktree.
 
 This top section supersedes ALL older “NEWEST”, “Latest”, live PID and goal
 wording further below; those entries are historical logs. Do not read the whole
-file/archive just to resume. `HANDOFF.md` is the general project overview;
-`DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
+file/archive just to resume. Start with [MODEL_HANDOFF.md](MODEL_HANDOFF.md),
+then the ignored `.codex-notes/MODEL_RESUME_LOCAL.md` in this workspace
+for exact evidence paths. `HANDOFF.md` is the long-form architecture/corpus
+reference; `DEVELOPMENT_PROGRESS.md` and `CROSS_TILESET_PLAN.md` record measured work.
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Current stop point — full handoff saved, next batch not run
+
+Goal **General recognition and source-complete geometry** is unfinished;
+the goal tool reported `usageLimited` at the handoff. This is not a user
+pause, completion, or repeated blocker. No previous producer needs a
+restart. Audit213 is the latest complete 71-room audit (zero approvals;
+not final same-revision 71+16). The saved next batch is
+`PARTIAL_APERTURE_UNCHANGED_CALLER_FREEZE_v2075.md` under the ignored
+general-recognition folder, **freeze only**: no v2075 experiment started.
+Resume from that freeze and the local index; leave all old failures fixed.
 
 ### Latest continuation — whole original squares for body appearance
 

@@ -1,5 +1,11 @@
 # Cross-tileset milestone
 
+For the current goal, measured progress, and the unrun v2075 checkpoint
+start with [MODEL_HANDOFF.md](MODEL_HANDOFF.md) and the top of
+[NEXT_THREAD_HANDOFF.md](NEXT_THREAD_HANDOFF.md). The measured notes
+below are dated history; [PERFORMANCE_POLICY.md](PERFORMANCE_POLICY.md)
+supersedes older cost caps without changing the accuracy requirements.
+
 ## Latest: false saves have two different source causes
 
 Halls3's real up arrow supplies an ordinary color-save component.
