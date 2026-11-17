@@ -14,6 +14,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
+### Latest continuation — actual rail-end separation, offline port
+
+Audit210, `RAIL_END_ACTUAL_RESUME_v2053.md`. v2050 is terminal: do
+not restart or poll PID5900. CN3-21 (64,288) reaches the new check
+but is withheld, leaving 400→400 with complete raw/export parity.
+CN3-19 255→256 and NANG-138r 188→194 reproduce seven earlier private
+solid gains with no old-record or map-metadata losses. Whole and
+every proposed cell reviewed. `scripts/source_rail_ends.py` mirrors
+all eight original transcripts; no runtime caller. Find a qualifying
+prospective reserve and run all protections and controlled timing
+before integration. Do not count old private positives as shipped.
+
 ### Latest continuation — capped negative distal paint experiment
 
 Audit209, `GAP_PAINT_CONTINUATION_RESUME_v2047.md`. Five authored

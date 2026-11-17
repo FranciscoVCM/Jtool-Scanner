@@ -4,6 +4,18 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Rail ends preserve seven real private recoveries
+
+Independent original RGB rail ends keep seven previously verified
+solid additions but reject the exposed CN3-21 slanted spike alias.
+Six fresh Source-mode scans with the private caller reproduce CN3-19
+255→256, NANG-138r 188→194, and CN3-21 complete raw/export parity
+400→400. Whole views and all eight proposals reviewed. Retained
+detections and JMap metadata are unchanged; NANG warnings update.
+The maintained standalone helper reproduces all eight decisions
+and transcripts. Fourteen rail and 29 comparison tests pass. This
+is not a new shipped gain, reserve, or whole latency pass. Audit210.
+
 ## 2026-11-17 — Independent paint continuity does not qualify false-gap removals
 
 With the existing base and visible-tip safeguards unchanged, look for
