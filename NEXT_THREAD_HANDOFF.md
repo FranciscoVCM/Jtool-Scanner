@@ -1,6 +1,6 @@
 # JTool Scanner — next-thread handoff
 
-Updated 2026-11-16. Continue in the existing repository at
+Updated 2026-11-17. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
 branch, clone or worktree.
 
@@ -13,6 +13,18 @@ file/archive just to resume. `HANDOFF.md` is the general project overview;
 Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
+
+### Latest continuation — capped negative distal paint experiment
+
+Audit209, `GAP_PAINT_CONTINUATION_RESUME_v2047.md`. Five authored
+local checks pass. Three independent whole-pixel donors in the same
+cross-section resolve none of 134 Halls5 or 106 CN3-28 disputed
+pixels. Keep the full distal safety veto; Halls7 and CN3-29 unqueried
+for this version. No runtime change. Prioritize an already-proven
+actual correction such as the v1907/v1914 rail package, which has
+six NANG-138r and one CN3-19 private positives but also a confirmed
+CN3-21 false block. Do not deploy or count old gains without a new
+source discriminator and a compatible prospective reserve.
 
 ### Latest continuation — independent contour qualifies, save veto does not
 

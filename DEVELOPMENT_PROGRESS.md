@@ -4,6 +4,17 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-17 — Independent paint continuity does not qualify false-gap removals
+
+With the existing base and visible-tip safeguards unchanged, look for
+three disjoint original paint samples along one cross-section inside
+a verified neighboring spike. Five authored local checks pass. None of
+the 134 Halls5 or 106 CN3-28 distal pixels finds a qualifying new
+witness. No false gap can be removed; transfer rooms remain unqueried
+for this version. Keep the earlier seven private removals and their
+failed visible-tip protection as separate evidence. Audit209; no
+runtime change, new whole scan, or room approval.
+
 ## 2026-11-16 — Held source edges continue into both false save bands
 
 Fit the upward triangle edges only above the alleged title, then test
