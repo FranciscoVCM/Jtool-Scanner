@@ -35,6 +35,19 @@ named branch in this same checkout (the user's request) and are merged into
   `scripts/skin_benchmark.py` (synthetic cross-skin benchmark using the
   private 473-skin archive). This is evaluation tooling only; the
   scanner's behaviour is unchanged.
+- **Benchmark findings so far (branch, not in the scanner):**
+  - Default-skin native renders score near-exact (FTFA-1 233/234, Lap-6
+    260/261), so the tool is sound.
+  - Saves are never found on pixel-exact renders. `_detect_saves` needs
+    red/green and yellow pixels in one connected component, and the dark
+    outline separates them unless capture blur merges them.
+  - A bright sky background (skin `sky`) becomes a whole field of water_2.
+    Silhouette or monochrome skins (dm1PowerNao, memoryTemple) collapse.
+  - The first 392-job baseline (42% exact) predates two scoring fixes
+    (start marker drawn, off-room objects scored); ignore its totals.
+    The corrected baseline is running: `.artifacts/skin-bench/baseline2-main`
+    (49 maps x 8 skins x native+scaled, Source mode, seed 20261121). It
+    can be resumed: rerunning the same command skips finished jobs.
 - **Direction (user, 2026-11-21):** fix mistakes that recur across many
   screens first, using the benchmark, the reference maps and
   `local_corpus/user-reviewed-20261001/USER_REVIEWS.md` together. The most
