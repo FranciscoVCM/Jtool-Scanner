@@ -57,6 +57,13 @@ named branch in this same checkout (the user's request) and are merged into
     blocks do. The K3 brick skin swaps background and terrain and turns
     brick texture into about 400 false mini spikes per room (the same
     failure as Golden7 and Say_7 in the user's reviews).
+- **User design constraints (2026-11-21):**
+  - When four miniblocks exactly fill a 32px square, emit one full block
+    (implemented as `merge_mini_quads_into_blocks`, outermost scan only).
+  - For the planned room-sprite stage: reject a "spike" only when it lies
+    entirely inside a block tile. Half-hidden spikes (half inside a block)
+    and spikes partly overlapping other spikes are common and real; keep
+    them.
 - **Direction (user, 2026-11-21):** fix mistakes that recur across many
   screens first, using the benchmark, the reference maps and
   `local_corpus/user-reviewed-20261001/USER_REVIEWS.md` together. The most

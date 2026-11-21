@@ -82,7 +82,7 @@ class RepeatedIdentityConsumerTests(TestCase):
                     self.assertEqual(self.options(profile=profile), {})
 
     def test_actual_early_call_forwards_exact_source_and_mode_without_late_binding(self):
-        tree = ast.parse(inspect.getsource(scanner.scan_image))
+        tree = ast.parse(inspect.getsource(scanner._scan_image_core))
         calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call)
                  and isinstance(n.func, ast.Name) and n.func.id == '_replace_repeated_terrain_geometry']
         self.assertEqual(len(calls), 2)

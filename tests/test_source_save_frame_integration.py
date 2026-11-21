@@ -101,7 +101,7 @@ class LateSaveFrameTests(unittest.TestCase):
                 self.assertEqual(starts, [])
 
     def test_call_sites_are_after_geometry_killers_and_arrows(self):
-        direct = inspect.getsource(scanner.scan_image)
+        direct = inspect.getsource(scanner._scan_image_core)
         lattice = inspect.getsource(scanner._scan_lattice_normalized_room)
         for code in (direct, lattice):
             self.assertEqual(code.count('result = _align_source_save_headers('), 1)

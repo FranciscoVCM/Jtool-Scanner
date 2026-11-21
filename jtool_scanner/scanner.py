@@ -2197,7 +2197,125 @@ def _source_repeated_identity_options(
     return dict(include_local_identity=True, source_frame=SourceFrame(original_image, original_room))
 
 
+# User preference (2026-11-21): when four miniblocks exactly fill a 32px
+# square, represent it as one full block. Solid coverage is unchanged; this is
+# a representation choice applied once to the final public result.
+_FULL_BLOCK_QUAD_MERGE = True
+
+
+def _quadrant_signature(image: RGBImage, box: Box, samples: int = 8) -> list[tuple[int, int, int]] | None:
+    if box.width < 2 or box.height < 2:
+        return None
+    pixels = []
+    for j in range(samples):
+        y = box.y + int((j + 0.5) * box.height / samples)
+        for i in range(samples):
+            x = box.x + int((i + 0.5) * box.width / samples)
+            if not (0 <= x < image.width and 0 <= y < image.height):
+                return None
+            pixels.append(image.pixel(x, y))
+    return pixels
+
+
+def _quads_look_like_mini_tiles(image: RGBImage, parts: list[Detection], tolerance: float = 18.0) -> bool:
+    """True when all four 16px pieces show the same artwork.
+
+    Real miniblock art repeats a complete 16px tile (each with its own border),
+    so the four quadrants match. A 32px block sprite has distinct corners and
+    edges, so its quadrants differ. Unknown or out-of-image pieces count as
+    mini art (no merge).
+    """
+    signatures = [_quadrant_signature(image, p.image_box) for p in parts]
+    if any(s is None for s in signatures):
+        return True
+    first = signatures[0]
+    for other in signatures[1:]:
+        diff = sum(abs(a - b) for pa, pb in zip(first, other) for a, b in zip(pa, pb)) / (len(first) * 3)
+        if diff > tolerance:
+            return False
+    return True
+
+
+def merge_mini_quads_into_blocks(
+    detections: list[Detection], image: RGBImage | None = None,
+) -> list[Detection]:
+    """Replace each complete 2x2 group of 16px miniblocks with one 32px block.
+
+    Groups aligned to the 32px room grid are merged first; remaining groups
+    are merged in reading order. Minis that do not complete a square stay.
+    With an image, a group whose four pieces show identical 16px artwork is
+    genuine mini terrain and is kept.
+    """
+    minis: dict[tuple[int, int], list[int]] = {}
+    for index, det in enumerate(detections):
+        if det.type_id == OBJ_MINI_BLOCK:
+            minis.setdefault((det.x, det.y), []).append(index)
+    if len(minis) < 4:
+        return detections
+    blocks = {(d.x, d.y) for d in detections if d.type_id == OBJ_BLOCK}
+    # A room whose terrain is mostly 16px art (e.g. CN3-16/18 have no full
+    # blocks at all) genuinely uses miniblocks; keep its representation.
+    mini_count = sum(len(v) for v in minis.values())
+    if len(blocks) * 4 < mini_count:
+        return detections
+    origins = sorted(minis, key=lambda p: (p[0] % 32 or p[1] % 32, p[1], p[0]))
+    removed: set[int] = set()
+    merged: list[Detection] = []
+    for x, y in origins:
+        cells = ((x, y), (x + 16, y), (x, y + 16), (x + 16, y + 16))
+        if (x, y) in blocks or not all(minis.get(c) for c in cells):
+            continue
+        parts = [detections[minis[c][-1]] for c in cells]
+        if image is not None and _quads_look_like_mini_tiles(image, parts):
+            continue
+        for c in cells:
+            minis[c].pop()
+        removed.update(id(p) for p in parts)
+        left = min(p.image_box.x for p in parts)
+        top = min(p.image_box.y for p in parts)
+        right = max(p.image_box.right for p in parts)
+        bottom = max(p.image_box.bottom for p in parts)
+        merged.append(Detection("block", OBJ_BLOCK, x, y, min(p.score for p in parts),
+                                Box(left, top, right - left, bottom - top)))
+        blocks.add((x, y))
+    if not merged:
+        return detections
+    return [d for d in detections if id(d) not in removed] + merged
+
+
 def scan_image(
+    image: RGBImage,
+    room_box: Box | None = None,
+    grid_step: int = DEFAULT_SCAN_GRID_STEP,
+    include_color_objects: bool = False,
+    include_geometry: bool = False,
+    source_grid: tuple[int, int] | None = None,
+    recognized_text: str | None = None,
+    *,
+    _apply_shape_refits: bool = True,
+    source_geometry: bool = False,
+    _gravity_packet_sink: list[ArrowPatch] | None = None,
+    _original_fruit_support: bool = False,
+    _late_cloud_sink: list[Detection] | None = None,
+) -> ScanResult:
+    result = _scan_image_core(
+        image, room_box, grid_step, include_color_objects, include_geometry,
+        source_grid, recognized_text,
+        _apply_shape_refits=_apply_shape_refits, source_geometry=source_geometry,
+        _gravity_packet_sink=_gravity_packet_sink,
+        _original_fruit_support=_original_fruit_support,
+        _late_cloud_sink=_late_cloud_sink,
+    )
+    # Inner passes (canonical/source consensus) call with _apply_shape_refits
+    # False; only the outermost public result changes representation.
+    if _FULL_BLOCK_QUAD_MERGE and _apply_shape_refits and include_geometry:
+        merged = merge_mini_quads_into_blocks(result.detections, image)
+        if merged is not result.detections:
+            result.detections = merged
+    return result
+
+
+def _scan_image_core(
     image: RGBImage,
     room_box: Box | None = None,
     grid_step: int = DEFAULT_SCAN_GRID_STEP,
@@ -10716,6 +10834,22 @@ def _detect_saves(
         or _is_save_green(r, g, b)
         or (allow_tinted and _is_tinted_save_yellow(r, g, b)),
     )
+    # A pixel-exact save sprite outlines its red/green lamp in dark pixels, so
+    # the lamp pieces form separate small components inside the yellow body.
+    # Capture blur usually merges them; without blur, count lamp pieces that
+    # lie wholly inside a body's box as part of that body.
+    lamp_pieces: list[tuple[Box, int, int]] = []
+    for box, pixels in components:
+        if box.width > 16 or box.height > 16:
+            continue
+        piece_red = piece_green = piece_yellow = 0
+        for x, y in pixels:
+            r, g, b = image.pixel(x, y)
+            piece_red += _is_save_red(r, g, b)
+            piece_green += _is_save_green(r, g, b)
+            piece_yellow += _is_save_yellow(r, g, b)
+        if piece_yellow == 0 and piece_red + piece_green == len(pixels):
+            lamp_pieces.append((box, piece_red, piece_green))
     candidates: list[
         tuple[Box, int, int, int, float, float]
     ] = []
@@ -10738,6 +10872,14 @@ def _detect_saves(
                 allow_tinted and _is_tinted_save_yellow(r, g, b)
             ):
                 yellow += 1
+        if yellow >= 18 and max(red, green) < 8:
+            for piece, piece_red, piece_green in lamp_pieces:
+                if (
+                    box.x < piece.x and piece.right < box.right
+                    and box.y < piece.y and piece.bottom < box.bottom
+                ):
+                    red += piece_red
+                    green += piece_green
         if yellow < 18:
             continue
         if max(red, green) < 8 and (allow_weak_active or yellow < 35):
