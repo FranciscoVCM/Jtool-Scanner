@@ -4,6 +4,18 @@ This file records measured implementation checkpoints for the generalized
 scanner review. It is deliberately limited to repository and fixture facts;
 private conversation archives and ignored image material remain outside Git.
 
+## 2026-11-21 — Rail-end preflight finds no different-art reserve; budget revised
+
+The interrupted v2082 preflight rendered the original source and the ordinary
+terrain coverage for 29 rooms, without loading the held rail-end rule. A
+whole-sheet review found no compatible positive transfer from different
+art. CN3_Secret1's striped lanes are missing bodies but already fail the
+upstream rail-body stage (0/167 windows). NANG rooms share NANG-138r's art,
+and Entrance1's rail is complete. The rule stays offline, with no output
+change. The user revised the performance budget to favour quality: up to
++50% normally, +50–100% for big gains, and only an opt-in mode beyond
+that. Next is a ledger of private verified improvements and their blockers.
+
 ## 2026-11-17 — Tip overrun does not reliably identify partial spikes
 
 The fixed signed-RGB probe finds a stopped slope at one of three

@@ -16,7 +16,18 @@ Read `.artifacts/general-recognition-20261014/GOAL_PLAN_20261028_REPLACEMENT.md`
 IN FULL, then the latest active note and audit named below. The original
 `GOAL_PLAN.md` is preserved historical protection context, not the new sequence.
 
-### Current stop point — v2080 tip-transect experiment terminal
+### Current stop point — 2026-11-21, v2082 rail-end preflight closed
+
+Claude Code took over from Codex (agent-switch rules are now in
+MODEL_HANDOFF.md). It recovered Codex's interrupted v2082 preflight, six
+original/ordinary-terrain sheets covering 29 rooms, and closed it without
+querying the held rule. There is no compatible different-art positive: the
+only candidate, CN3_Secret1, already fails the upstream rail-body stage
+(0/167). See private `RAIL_RESERVE_PREFLIGHT_RESUME_v2082.md`. Quality now
+outranks speed (PERFORMANCE_POLICY.md, 2026-11-21). Next: the held-improvement
+ledger described in MODEL_HANDOFF.md "Resume here". Audit216 remains current.
+
+### Preceding stop point — v2080 tip-transect experiment terminal
 
 Audit216 and `EXPOSED_SLOPE_TRANSECT_RESUME_v2081.md`: one of three
 Golden5 positives has a supported stopped slope; two CN3-19 false

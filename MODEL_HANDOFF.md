@@ -1,10 +1,80 @@
 # JTool Scanner: model-to-model handoff
 
-**Start here when taking over the project.** Checkpoint: 2026-11-17.
+**Start here when taking over the project.** Checkpoint: 2026-11-21.
 This is a continuation guide, not a new task or a claim of scanner completion.
 The existing Windows checkout is `C:/Users/corvo/Documents/Jtool Scanner`,
 branch `main`. Reuse it. Do not clone, branch, create a worktree, or clean
 the checkout as part of resuming.
+
+## Current checkpoint (keep this block current; newest state only)
+
+- **Agent:** Claude Code took over from Codex on 2026-11-21 (Codex's last
+  session ended mid-step; no tracked files were left modified).
+- **Interrupted Codex step, now recovered:** v2082 rail-end reserve
+  preflight. `preflight-rail-reserve-v2082.py` (private, under
+  `.artifacts/general-recognition-20261014/`) rendered six original +
+  ordinary-terrain contact sheets for 29 rooms without reading the held
+  rule. Claude reviewed all six sheets and **closed it with no compatible
+  reserve** (details under "Resume here"). The script was edited after
+  its first four sheets; that earlier version is lost (those four are
+  native-grid CN3 rooms).
+- **Policy change:** quality now outranks speed; see
+  [PERFORMANCE_POLICY.md](PERFORMANCE_POLICY.md) (2026-11-21).
+- **Validation (2026-11-21):** full `unittest discover` at `e5a342e`:
+  1,896 tests in 50 min, 1 failure. `test_only_qualified_source_selectors_are_enabled`
+  had a stale allowlist that omitted three later qualified releases
+  (`779dda7`, `3c287b9`, `72eeba1`). The allowlist is now fixed. The
+  activation and feature-profile tests pass (19/19). The full suite has
+  not been rerun after that one-line test fix. The app was not running,
+  so the loaded fingerprint is unverified.
+- **Held-improvement ledger draft:** private
+  `HELD_IMPROVEMENT_LEDGER_DRAFT_v2083.md`, built from audit216 prose
+  only. Its receipts are not yet re-authenticated.
+- **Uncommitted work:** none beyond what the latest commit describes.
+  Private session receipts: `.artifacts/claude-session-20261121/`.
+- **Next action:** see "Resume here" below.
+
+## Switching agents (Claude Code ⇄ Codex)
+
+Only one agent works in this checkout at a time.
+
+**Incoming agent, before any edit:** read this file, the top of
+`NEXT_THREAD_HANDOFF.md` and `.codex-notes/MODEL_RESUME_LOCAL.md`; run
+`git status --short --branch`, `git rev-parse HEAD`, `git ls-remote origin
+refs/heads/main`, `git worktree list`; list the newest files in
+`.artifacts/general-recognition-20261014/` (the folder holds >13k files,
+so sort by time instead of listing it whole) and compare them to the
+checkpoint above. Anything newer than the checkpoint is unfinished work:
+classify it as complete, partial or failed before continuing, and record
+that here.
+
+**Outgoing agent, before a planned switch or at each meaningful
+checkpoint:** update the checkpoint block above (state, completed,
+remaining, validation actually run with results, uncommitted files), the
+top of `NEXT_THREAD_HANDOFF.md`, and the private index. Commit reviewed
+public files only.
+
+**If an agent stopped unexpectedly:** do the incoming steps, read the
+diffs and partial outputs, and decide from evidence. Do not assume an
+unrecorded result succeeded or failed.
+
+**Rules for both agents:**
+
+- Commits use the repository owner's existing Git identity (check
+  `git config user.name`/`user.email` and the result with
+  `git log -1 --format='%an <%ae> | %cn <%ce>'`). No AI author,
+  co-author or generated-by trailers.
+- Stage explicit paths only; never `git add -A`/`git add .`. Before
+  committing, `git check-ignore -v .codex-notes/MODEL_RESUME_LOCAL.md`
+  must report a rule, and `git ls-files -- .artifacts .codex-notes
+  local_corpus` must print nothing.
+- Private evidence (`.artifacts/`, `.codex-notes/`, `local_corpus/`,
+  screenshots, JMaps, review indexes, transcripts) never goes to GitHub.
+- Tests and gates depend on private local evidence. If some is missing,
+  stop and ask for it. Never regenerate, guess, or replace it, and never
+  weaken or skip a test or gate to work around its absence.
+- Do not report an experiment, test run or release as successful
+  without its receipt. Preserve failed and interrupted receipts.
 
 ## Reading order and authority
 
@@ -99,9 +169,10 @@ Preserve the full completion contract, not the easiest successful subset:
 4. Measure valid quiet serial AC whole-scan cost in dense, sparse and
    heavier affected rooms, at least two samples per mode per source,
    same source/options/selectors/dependencies and complete outputs.
-   Current policy normally allows up to +25% for verified improvement,
-   exceptionally +25–50% for substantial cross-family gains; never
-   deploy above +50%. Keep past judgments as originally measured.
+   Since 2026-11-21 quality has priority: up to +50% for verified
+   improvement, +50–100% for big documented gains, above +100% only as
+   an opt-in mode (see PERFORMANCE_POLICY.md). Keep past judgments as
+   originally measured.
 5. Produce **final stable 71+16** outputs and a conservative 71-room audit.
    Use authenticated equivalent outputs only where justified; never
    turn unknown positions into exact matches or "approved."
@@ -150,6 +221,28 @@ Recent causal work:
   because they overlap a competing object.
 
 ## Resume here
+
+**2026-11-21 (current):** the v2082 rail-end reserve preflight is closed
+without a query. Across 29 rendered rooms the only different-art striped
+lane with visibly missing bodies is CN3_Secret1, and its upstream rail-body
+transfer already qualified 0/167 windows (audit216), so rail-ends cannot
+reach it. NANG rooms are the same family as NANG-138r, and Entrance1's rail
+is already 36/36. Private note: `RAIL_RESERVE_PREFLIGHT_RESUME_v2082.md`.
+Keep `scripts/source_rail_ends.py` offline. Audit216 remains current.
+
+Next step, chosen with quality now prioritised: build a **held-improvement
+ledger** from audit216 and its receipts. List each private, source-verified
+recovery or removal that never shipped (for example CN3-26 body phase,
+CN3-29 false gap spikes, CN3-25 false LEFT, Say-3/Say-9/CN3-7 markers,
+rail-body recoveries, the hollow sampling candidate). For each, record its
+mechanism, rooms and families, verified gains, and the exact blocker (a
+protection failure, a missing maintained port, timing, or a reserve
+failure). Then requalify the strongest ones as a group, under the
+2026-11-21 budget and every unchanged correctness gate, instead of
+searching for more single-room offline mechanisms. Do not rewrite old
+verdicts. A blocker that was a protection failure still blocks.
+
+Earlier context, retained as history below:
 
 The frozen v2075 **offline replay finished**. No outputs changed. Both
 Halls4 misses are present in the exact 29-key packet and have verified
