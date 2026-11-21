@@ -45,9 +45,18 @@ named branch in this same checkout (the user's request) and are merged into
     Silhouette or monochrome skins (dm1PowerNao, memoryTemple) collapse.
   - The first 392-job baseline (42% exact) predates two scoring fixes
     (start marker drawn, off-room objects scored); ignore its totals.
-    The corrected baseline is running: `.artifacts/skin-bench/baseline2-main`
-    (49 maps x 8 skins x native+scaled, Source mode, seed 20261121). It
-    can be resumed: rerunning the same command skips finished jobs.
+    Corrected baseline, complete: `.artifacts/skin-bench/baseline2-main`
+    (49 maps x 8 skins x native+scaled, Source mode, seed 20261121; 784
+    jobs, 0 errored). Exact recall is 42.0% native and 49.6% scaled.
+    Ranked by jobs affected (native): missed save 384/392, extra block
+    336, missed spikes in all four directions 311–331, extra spike_down
+    245, missed block 229, missed warp 168, up/down direction swap 165,
+    water_2 carpets 147. The two save causes: pixel-exact standard saves
+    split red from yellow into separate components; custom save sprites
+    such as `sky`'s don't use the save palette at all, while `sky`'s
+    blocks do. The K3 brick skin swaps background and terrain and turns
+    brick texture into about 400 false mini spikes per room (the same
+    failure as Golden7 and Say_7 in the user's reviews).
 - **Direction (user, 2026-11-21):** fix mistakes that recur across many
   screens first, using the benchmark, the reference maps and
   `local_corpus/user-reviewed-20261001/USER_REVIEWS.md` together. The most
