@@ -253,6 +253,35 @@ packages:
 python -m pip install pillow pytest
 ```
 
+### Running tests
+
+```powershell
+python scripts/run_tests.py --fast   # ~1,700 quick tests, under a minute
+python scripts/run_tests.py          # full suite in parallel (~8 min on 12 workers)
+python scripts/run_tests.py -k save  # only test ids containing "save"
+```
+
+The runner discovers exactly the tests that `python -m unittest discover -s
+tests` finds, and runs them in worker processes. `--fast` skips the tests
+listed in `tests/slow_tests.txt`, which are mostly whole-room scans. Use it
+while iterating. Run the full suite before merging any scanner change.
+Durations are recorded in `.artifacts/test-durations.json`, so later runs
+schedule slow tests first. `--write-slow-list SECONDS` regenerates the list.
+
+### Synthetic cross-skin benchmark (offline)
+
+`scripts/skin_render.py` draws a JMap with a JTool skin, and
+`scripts/skin_benchmark.py` scans those renders, compares them exactly with
+the source map and ranks the most frequent error kinds. Skins and local
+reference maps are private and stay in ignored folders (`.artifacts/skins`,
+`local_corpus/`). Synthetic renders have no decorations, lighting or capture
+scaling, so they rank problems quickly. Real screenshots remain the gate for
+adoption.
+
+```powershell
+python scripts/skin_benchmark.py .artifacts/skin-bench/run1 --maps 12 --skins 8 --mode source -j 12
+```
+
 Tesseract OCR is optional; when it is on `PATH`, PNG scans can use it for
 infinite-jump text. Use `--no-ocr` or explicit `--ocr-text` for deterministic
 scans.

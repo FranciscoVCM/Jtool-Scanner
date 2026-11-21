@@ -3,8 +3,10 @@
 **Start here when taking over the project.** Checkpoint: 2026-11-21.
 This is a continuation guide, not a new task or a claim of scanner completion.
 The existing Windows checkout is `C:/Users/corvo/Documents/Jtool Scanner`,
-branch `main`. Reuse it. Do not clone, branch, create a worktree, or clean
-the checkout as part of resuming.
+branch `main`. Reuse it. Do not clone, create a worktree, or clean the
+checkout as part of resuming. Since 2026-11-21, larger changes go on a
+named branch in this same checkout (the user's request) and are merged into
+`main` after validation. Check `git branch --show-current` when resuming.
 
 ## Current checkpoint (keep this block current; newest state only)
 
@@ -24,9 +26,22 @@ the checkout as part of resuming.
   1,896 tests in 50 min, 1 failure. `test_only_qualified_source_selectors_are_enabled`
   had a stale allowlist that omitted three later qualified releases
   (`779dda7`, `3c287b9`, `72eeba1`). The allowlist is now fixed. The
-  activation and feature-profile tests pass (19/19). The full suite has
-  not been rerun after that one-line test fix. The app was not running,
-  so the loaded fingerprint is unverified.
+  activation and feature-profile tests pass (19/19). At `13bf72b` the
+  full serial suite passes 1,896/1,896 (49 min). The new parallel runner
+  passes 1,896/1,896 in 8 min, and the fast tier passes 1,711 in 25 s.
+  The app was not running, so the loaded fingerprint is unverified.
+- **Branch `tooling-fast-tests`:** adds `scripts/run_tests.py` (parallel
+  runner plus fast tier), `scripts/skin_render.py` and
+  `scripts/skin_benchmark.py` (synthetic cross-skin benchmark using the
+  private 473-skin archive). This is evaluation tooling only; the
+  scanner's behaviour is unchanged.
+- **Direction (user, 2026-11-21):** fix mistakes that recur across many
+  screens first, using the benchmark, the reference maps and
+  `local_corpus/user-reviewed-20261001/USER_REVIEWS.md` together. The most
+  frequent families: impossible overlaps (blocks in spike formations,
+  spikes on blocks, saves, warps or numbers, minis inside spikes), phantom
+  spikes in gaps, missed half-hidden spikes, and minis used where full
+  blocks belong.
 - **Held-improvement ledger draft:** private
   `HELD_IMPROVEMENT_LEDGER_DRAFT_v2083.md`, built from audit216 prose
   only. Its receipts are not yet re-authenticated.
@@ -296,7 +311,9 @@ python -m pip install Pillow
 python -m jtool_scanner.cli app
 (Invoke-WebRequest http://127.0.0.1:8765/ -UseBasicParsing).StatusCode
 Invoke-RestMethod http://127.0.0.1:8765/api/health
-python -m unittest discover -s tests -v
+python scripts/run_tests.py --fast            # iteration, under a minute
+python scripts/run_tests.py                   # full suite, parallel; required before merge
+python -m unittest discover -s tests -v       # serial equivalent (~50 min)
 python -m jtool_scanner.cli benchmark fixtures/regressions/unseen-rooms/ftfa/manifest.json .artifacts/ftfa-check
 python -m jtool_scanner.cli scan-corpus path/to/manifest.json .artifacts/corpus-check --resume
 python scripts/corpus_case_comparison.py path/to/completed-before path/to/completed-after

@@ -2,7 +2,8 @@
 
 Updated 2026-11-17. Continue in the existing repository at
 `C:\Users\corvo\Documents\Jtool Scanner`; do not create another repository,
-branch, clone or worktree.
+clone or worktree. Since 2026-11-21, larger changes go on a named branch
+in this same checkout and merge into `main` after validation (see MODEL_HANDOFF.md).
 
 ## Read first: concrete continuation, not an evidence reset
 
