@@ -2283,6 +2283,92 @@ def merge_mini_quads_into_blocks(
     return [d for d in detections if id(d) not in removed] + merged
 
 
+_SPIKE_SIZES = {
+    OBJ_SPIKE_UP: 32, OBJ_SPIKE_RIGHT: 32, OBJ_SPIKE_LEFT: 32, OBJ_SPIKE_DOWN: 32,
+    OBJ_MINI_SPIKE_UP: 16, OBJ_MINI_SPIKE_RIGHT: 16, OBJ_MINI_SPIKE_LEFT: 16, OBJ_MINI_SPIKE_DOWN: 16,
+}
+# Resolve spikes lying entirely inside detected full blocks (2026-11-21). A
+# real spike is never wholly inside a real block; half-hidden spikes are only
+# partly covered and are never touched here.
+_SPIKE_BLOCK_CONTAINMENT_RESOLUTION = True
+
+
+def _tile_distance(first: list[tuple[int, int, int]], second: list[tuple[int, int, int]]) -> float:
+    return sum(abs(a - b) for pa, pb in zip(first, second) for a, b in zip(pa, pb)) / (len(first) * 3)
+
+
+def resolve_spikes_inside_blocks(detections: list[Detection], image: RGBImage | None) -> list[Detection]:
+    """Decide between a spike and the full blocks that wholly contain it.
+
+    The room's block tile is learned as the per-sample median of blocks that
+    overlap no spike. A containing block that does not look like that tile is
+    the false object (typically a block placed inside a spike formation) and
+    is dropped. Blocks that match the tile are kept, and so is the spike.
+    Without a reliable tile (too few clean blocks, or blocks that vary too
+    much) the blocks are dropped, which benchmark evidence shows is right
+    about nine times in ten.
+    """
+    blocks = [d for d in detections if d.type_id == OBJ_BLOCK]
+    spikes = [d for d in detections if d.type_id in _SPIKE_SIZES]
+    if not blocks or not spikes:
+        return detections
+    block_at: dict[tuple[int, int], list[Detection]] = {}
+    for block in blocks:
+        for yy in range(block.y, block.y + 32, 8):
+            for xx in range(block.x, block.x + 32, 8):
+                block_at.setdefault((xx, yy), []).append(block)
+
+    disputes: list[tuple[Detection, set[int]]] = []
+    for spike in spikes:
+        size = _SPIKE_SIZES[spike.type_id]
+        if spike.x % 8 or spike.y % 8:
+            continue
+        cells = [(xx, yy) for yy in range(spike.y, spike.y + size, 8) for xx in range(spike.x, spike.x + size, 8)]
+        if all(cell in block_at for cell in cells):
+            disputes.append((spike, {id(b) for cell in cells for b in block_at[cell]}))
+    if not disputes:
+        return detections
+
+    disputed_blocks = set().union(*(ids for _, ids in disputes))
+    prototype = None
+    tolerance = 0.0
+    if image is not None:
+        clean = [b for b in blocks if id(b) not in disputed_blocks]
+        samples = [s for s in (_quadrant_signature(image, b.image_box, 12) for b in clean) if s is not None]
+        if len(samples) >= 6:
+            prototype = [
+                tuple(sorted(s[i][c] for s in samples)[len(samples) // 2] for c in range(3))
+                for i in range(len(samples[0]))
+            ]
+            spread = sorted(_tile_distance(s, prototype) for s in samples)
+            typical = spread[len(spread) // 2]
+            if typical <= 20.0:  # the room's blocks share one tile appearance
+                tolerance = max(12.0, 2.5 * typical)
+            else:
+                prototype = None
+
+    by_id = {id(b): b for b in blocks}
+    drop: set[int] = set()
+    for spike, ids in disputes:
+        if any(i in drop for i in ids):
+            continue  # already resolved through another spike
+        looks_like_tile = []
+        for i in ids:
+            block = by_id[i]
+            if prototype is None:
+                looks_like_tile.append(False)
+                continue
+            sample = _quadrant_signature(image, block.image_box, 12)
+            looks_like_tile.append(sample is not None and _tile_distance(sample, prototype) <= tolerance)
+        # Spikes are never removed here: in spike-dense rooms (e.g. Irkara-54)
+        # false blocks under spike bands contaminate the learned tile, and a
+        # tile match is not enough evidence to delete a real spike.
+        drop.update(i for i, ok in zip(ids, looks_like_tile) if not ok)
+    if not drop:
+        return detections
+    return [d for d in detections if id(d) not in drop]
+
+
 def scan_image(
     image: RGBImage,
     room_box: Box | None = None,
@@ -2312,6 +2398,10 @@ def scan_image(
         merged = merge_mini_quads_into_blocks(result.detections, image)
         if merged is not result.detections:
             result.detections = merged
+    if _SPIKE_BLOCK_CONTAINMENT_RESOLUTION and _apply_shape_refits and include_geometry:
+        resolved = resolve_spikes_inside_blocks(result.detections, image)
+        if resolved is not result.detections:
+            result.detections = resolved
     return result
 
 

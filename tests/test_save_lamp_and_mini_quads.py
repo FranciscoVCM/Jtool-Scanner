@@ -92,3 +92,54 @@ class MiniQuadMergeTests(TestCase):
         dets = [Detection("block", OBJ_BLOCK, 0, 0, 1.0, Box(0, 0, 32, 32)),
                 _mini(0, 0), _mini(16, 0), _mini(0, 16), _mini(16, 16)]
         self.assertIs(merge_mini_quads_into_blocks(dets), dets)
+
+
+def _block(x, y):
+    return Detection("block", OBJ_BLOCK, x, y, 1.0, Box(x, y, 32, 32))
+
+
+def _spike(x, y, type_id=3):
+    size = 32 if type_id <= 6 else 16
+    return Detection("spike", type_id, x, y, 0.9, Box(x, y, size, size))
+
+
+class SpikeInsideBlockTests(TestCase):
+    def _image(self, block_cells, odd_cells=()):
+        # Uniform brick-like block tile everywhere a block is drawn; odd cells
+        # show something else (a spike over background).
+        canvas = Image.new("RGB", (800, 608), (20, 20, 40))
+        tile = Image.new("RGB", (32, 32), (180, 120, 60))
+        for i in range(0, 32, 8):
+            tile.paste((90, 60, 30), (0, i, 32, i + 2))
+        for x, y in block_cells:
+            canvas.paste(tile, (x, y))
+        for x, y in odd_cells:
+            canvas.paste((20, 20, 40), (x, y, x + 32, y + 32))
+            for row in range(32):
+                half = row // 2
+                canvas.paste((230, 230, 230), (x + 16 - half, y + row, x + 16 + half + 1, y + row + 1))
+        tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        tmp.close()
+        canvas.save(tmp.name)
+        self.addCleanup(Path(tmp.name).unlink)
+        return load_png(tmp.name)
+
+    def test_false_block_over_a_real_spike_is_dropped(self):
+        clean = [(32 * i, 576) for i in range(10)]
+        image = self._image(clean, odd_cells=[(320, 320)])
+        dets = [_block(x, y) for x, y in clean] + [_block(320, 320), _spike(320, 320)]
+        out = scanner.resolve_spikes_inside_blocks(dets, image)
+        self.assertNotIn((OBJ_BLOCK, 320, 320), {(d.type_id, d.x, d.y) for d in out})
+        self.assertIn((3, 320, 320), {(d.type_id, d.x, d.y) for d in out})
+
+    def test_block_matching_the_room_tile_is_kept_with_its_spike(self):
+        clean = [(32 * i, 576) for i in range(10)] + [(320, 320)]
+        image = self._image(clean)
+        dets = [_block(x, y) for x, y in clean] + [_spike(320, 320, type_id=10)]
+        self.assertIs(scanner.resolve_spikes_inside_blocks(dets, image), dets)
+
+    def test_half_hidden_spike_is_never_touched(self):
+        clean = [(32 * i, 576) for i in range(10)]
+        image = self._image(clean + [(320, 320)])
+        dets = [_block(x, y) for x, y in clean] + [_block(320, 320), _spike(304, 320, type_id=5)]
+        self.assertIs(scanner.resolve_spikes_inside_blocks(dets, image), dets)

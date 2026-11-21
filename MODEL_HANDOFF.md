@@ -68,6 +68,27 @@ named branch in this same checkout (the user's request) and are merged into
   terrain learner flips the room from full blocks to minis (548). That
   instability already existed; terrain anchored on saves is a target for
   the room-sprite stage.
+- **Spike-inside-block resolution (branch `detection-overlap`):** when a
+  detected spike lies wholly inside detected full blocks, any covering
+  block that doesn't match the room's learned block tile is removed.
+  Spikes are never removed by this rule; a first variant that also removed
+  "texture spikes" dropped 43 real Irkara-54/49 spikes because the false
+  blocks contaminated the learned tile. Measured against the previous
+  results: real 49 screens, recall 91.66% → 91.65% and precision 88.58%
+  → 88.84%; quick synthetic, recall 67.25% → 66.64% and precision 45.68%
+  → 47.84% (1,646 fewer false blocks, 187 real blocks lost, mostly skin
+  dm1Rkdehdtls1 scaled). Full suite 1,907/1,907.
+- **Real benchmark:** `scripts/real_benchmark.py` covers the 49 real
+  captures that have reference maps. Water_2 vs water_3 can't be told
+  apart from pixels (Irkara-54's ~950 "errors"); the scanner emits water_2
+  only, per the user's grey-water instruction.
+- **Benchmark fix:** NANG maps are compact rooms. Real captures show only
+  the room, so the benchmark now crops those renders. About 540 "background
+  blocks" in earlier runs came from wrongly drawing padding around them.
+  Earlier quick runs aren't directly comparable for NANG jobs.
+- **User priority (2026-11-21):** overall match rate across all screens
+  beats per-screen tuning; some screens may get worse if the totals
+  improve. Report recall and precision. Merge to main after validation.
 - **User design constraints (2026-11-21):**
   - When four miniblocks exactly fill a 32px square, emit one full block
     (implemented as `merge_mini_quads_into_blocks`, outermost scan only).

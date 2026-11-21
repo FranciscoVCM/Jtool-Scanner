@@ -65,6 +65,23 @@ def _job_id(map_path: Path, skin: Path, mode: str, capture: str = "native") -> s
     return f"{rel}@{skin.name}@{mode}" + ("" if capture == "native" else f"@{capture}")
 
 
+COMPACT_PREFIXES = ("nang",)  # games whose rooms are smaller than 25x19
+
+
+def compact_extent(map_path: Path, jmap: JMap) -> tuple[int, int, int, int] | None:
+    """Room rectangle for a compact-room map (32px grid), else None."""
+    if not map_path.stem.lower().startswith(COMPACT_PREFIXES):
+        return None
+    boxes = [(o.x, o.y) for o in jmap.objects if 0 <= o.x < 800 and 0 <= o.y < 608]
+    if not boxes:
+        return None
+    left = max(0, min(x for x, _ in boxes) // 32 * 32)
+    top = max(0, min(y for _, y in boxes) // 32 * 32)
+    right = min(800, (max(x for x, _ in boxes) // 32 + 1) * 32)
+    bottom = min(608, (max(y for _, y in boxes) // 32 + 1) * 32)
+    return (left, top, right, bottom)
+
+
 def run_job(map_path: str, skin: str, mode: str, out_dir: str, capture: str = "native") -> dict:
     from skin_render import render, visible_objects
     from jtool_scanner.benchmark import compare_jmaps
@@ -80,10 +97,18 @@ def run_job(map_path: str, skin: str, mode: str, out_dir: str, capture: str = "n
         png = out / "renders" / f"{job.split('@')[0]}@{skin.name}{suffix}.png"
         png.parent.mkdir(parents=True, exist_ok=True)
         if not png.exists():
+            from PIL import Image
             image = render(expected, skin)
+            compact = compact_extent(map_path, expected)
+            if compact:
+                # Real compact-room captures (NANG) show only the room, scaled
+                # to fill the window, never padding around it.
+                image = image.crop(compact)
             if CAPTURE_SIZES[capture]:
-                from PIL import Image
-                image = image.resize(CAPTURE_SIZES[capture], Image.Resampling.BILINEAR)
+                factor = CAPTURE_SIZES[capture][0] / 800
+                size = CAPTURE_SIZES[capture] if not compact else (
+                    round(image.width * factor), round(image.height * factor))
+                image = image.resize(size, Image.Resampling.BILINEAR)
             image.save(png)
         start = time.perf_counter()
         result = scan_png(png, include_color_objects=True, include_geometry=True,
@@ -122,7 +147,7 @@ def report(results: list[dict]) -> dict:
     per_map = defaultdict(Counter)
     for r in ok:
         s = r["summary"]
-        for key in ("expected", "exact", "false_positive", "missed", "shifted", "wrong_orientation"):
+        for key in ("expected", "detected", "exact", "false_positive", "missed", "shifted", "wrong_orientation"):
             totals[key] += s[key]
         for exp, det in r["wrong_orientation"]:
             kinds[f"wrong direction: {_name(exp)} -> {_name(det)}"] += 1
@@ -156,6 +181,7 @@ def report(results: list[dict]) -> dict:
         "failed_jobs": [r["job"] for r in results if "error" in r],
         "totals": dict(totals),
         "exact_recall": round(totals["exact"] / totals["expected"], 4) if totals["expected"] else None,
+        "exact_precision": round(totals["exact"] / totals["detected"], 4) if totals["detected"] else None,
         "scan_seconds": {"mean": round(sum(seconds) / len(seconds), 2), "max": max(seconds)} if seconds else None,
         "top_error_kinds": [[k, n, jobs_with.get(k, 0)] for k, n in kinds.most_common(40)],
         "worst_skins": sorted(([k, rate(v), v["errors"]] for k, v in per_skin.items()), key=lambda x: x[1] or 0)[:15],
@@ -164,7 +190,7 @@ def report(results: list[dict]) -> dict:
 
 
 def _print_report(rep: dict) -> None:
-    print(f"jobs={rep['jobs']} failed={len(rep['failed_jobs'])} exact_recall={rep['exact_recall']} "
+    print(f"jobs={rep['jobs']} failed={len(rep['failed_jobs'])} exact_recall={rep['exact_recall']} precision={rep.get('exact_precision')} "
           f"totals={rep['totals']} scan_seconds={rep['scan_seconds']}")
     print("\nMost frequent error kinds (count, jobs affected):")
     for kind, count, jobs in rep["top_error_kinds"][:25]:
@@ -212,6 +238,10 @@ def _print_comparison(old: list[dict], new: list[dict]) -> None:
     improved = sum(1 for e, _, _ in changed if e < 0)
     regressed = sum(1 for e, _, _ in changed if e > 0)
     print(f"jobs with fewer errors: {improved}; jobs with more errors: {regressed}")
+    for label, runs in (("before", before), ("after", after)):
+        exact = sum(runs[j]["summary"]["exact"] for j in shared)
+        detected = sum(runs[j]["summary"]["detected"] for j in shared)
+        print(f"  {label}: recall {exact / expected:.2%}  precision {exact / max(1, detected):.2%}  ({detected} objects output)")
     deltas = {k: kinds_after[k] - kinds_before[k] for k in set(kinds_before) | set(kinds_after)}
     print("Largest error-kind changes (negative is better):")
     for kind, value in sorted(deltas.items(), key=lambda kv: -abs(kv[1]))[:15]:
