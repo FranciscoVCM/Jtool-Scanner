@@ -9,6 +9,10 @@ adoption (see PERFORMANCE_POLICY.md and MODEL_HANDOFF.md).
     python scripts/skin_benchmark.py OUT_DIR --maps 12 --skins 8 --mode source -j 12
     python scripts/skin_benchmark.py OUT_DIR --report-only
 
+Quick before/after check while iterating (about 10 minutes on 14 workers):
+
+    python scripts/skin_benchmark.py .artifacts/skin-bench/quick-NEW --maps 12 --skins 4 --capture scaled --compare .artifacts/skin-bench/quick-OLD
+
 The same --seed, map list, skin list and mode give the same jobs, so two
 scanner revisions can be compared on identical inputs (--compare OLD_DIR).
 """
@@ -170,6 +174,55 @@ def _print_report(rep: dict) -> None:
         print(f"  {r}  {e:5d}  {skin}")
 
 
+def _kinds(record: dict) -> Counter:
+    kinds = Counter()
+    for exp, det in record.get("wrong_orientation", ()):
+        kinds[f"wrong direction: {_name(exp)} -> {_name(det)}"] += 1
+    for exp, det, dx, dy in record.get("shifted", ()):
+        kinds[f"shifted: {_name(exp)}"] += 1
+    for type_id, *_ in record.get("false_positives", ()):
+        kinds[f"extra: {_name(type_id)}"] += 1
+    for type_id, *_ in record.get("missed", ()):
+        kinds[f"missed: {_name(type_id)}"] += 1
+    return kinds
+
+
+def _print_comparison(old: list[dict], new: list[dict]) -> None:
+    """Compare only jobs present and successful in both runs."""
+    before = {r["job"]: r for r in old if "summary" in r}
+    after = {r["job"]: r for r in new if "summary" in r}
+    shared = sorted(set(before) & set(after))
+    if not shared:
+        print("\nNo shared jobs to compare.")
+        return
+    exact_delta, kinds_before, kinds_after, changed = 0, Counter(), Counter(), []
+    for job in shared:
+        b, a = before[job], after[job]
+        delta = a["summary"]["exact"] - b["summary"]["exact"]
+        errors_b = b["summary"]["exact_error_count"]
+        errors_a = a["summary"]["exact_error_count"]
+        exact_delta += delta
+        kinds_before += _kinds(b)
+        kinds_after += _kinds(a)
+        if delta or errors_a != errors_b:
+            changed.append((errors_a - errors_b, delta, job))
+    expected = sum(after[j]["summary"]["expected"] for j in shared)
+    print(f"\nComparison on {len(shared)} shared jobs: exact {exact_delta:+d} "
+          f"({exact_delta / expected:+.2%} of {expected} expected objects)")
+    improved = sum(1 for e, _, _ in changed if e < 0)
+    regressed = sum(1 for e, _, _ in changed if e > 0)
+    print(f"jobs with fewer errors: {improved}; jobs with more errors: {regressed}")
+    deltas = {k: kinds_after[k] - kinds_before[k] for k in set(kinds_before) | set(kinds_after)}
+    print("Largest error-kind changes (negative is better):")
+    for kind, value in sorted(deltas.items(), key=lambda kv: -abs(kv[1]))[:15]:
+        if value:
+            print(f"  {value:+6d}  {kind}")
+    print("Most regressed jobs:")
+    for errors, delta, job in sorted(changed, reverse=True)[:5]:
+        if errors > 0:
+            print(f"  errors {errors:+d} exact {delta:+d}  {job}")
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("out_dir")
@@ -182,6 +235,7 @@ def main(argv=None) -> int:
                         help="native 800x608 render, a bilinear 981x746 capture-like scale, or both")
     parser.add_argument("-j", "--jobs", type=int, default=12)
     parser.add_argument("--report-only", action="store_true")
+    parser.add_argument("--compare", metavar="OLD_DIR", help="print per-job and per-kind deltas against an earlier run")
     args = parser.parse_args(argv)
 
     out = Path(args.out_dir)
@@ -221,6 +275,9 @@ def main(argv=None) -> int:
     rep = report(results)
     (out / "report.json").write_text(json.dumps(rep, indent=1), encoding="utf8")
     _print_report(rep)
+    if args.compare:
+        old = [json.loads(line) for line in (Path(args.compare) / "results.jsonl").read_text(encoding="utf8").splitlines() if line]
+        _print_comparison(old, results)
     return 0
 
 
