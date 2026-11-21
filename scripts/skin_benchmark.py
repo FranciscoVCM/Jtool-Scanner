@@ -53,25 +53,34 @@ def reference_maps() -> list[Path]:
     return maps
 
 
-def _job_id(map_path: Path, skin: Path, mode: str) -> str:
+CAPTURE_SIZES = {"native": None, "scaled": (981, 746)}  # scaled: typical windowed capture
+
+
+def _job_id(map_path: Path, skin: Path, mode: str, capture: str = "native") -> str:
     rel = map_path.relative_to(ROOT).as_posix().replace("/", "__").removesuffix(".jmap")
-    return f"{rel}@{skin.name}@{mode}"
+    return f"{rel}@{skin.name}@{mode}" + ("" if capture == "native" else f"@{capture}")
 
 
-def run_job(map_path: str, skin: str, mode: str, out_dir: str) -> dict:
-    from skin_render import render
+def run_job(map_path: str, skin: str, mode: str, out_dir: str, capture: str = "native") -> dict:
+    from skin_render import render, visible_objects
     from jtool_scanner.benchmark import compare_jmaps
     from jtool_scanner.scanner import scan_png
 
-    map_path, skin, out = Path(map_path), Path(skin), Path(out_dir)
-    job = _job_id(map_path, skin, mode)
-    record = {"job": job, "map": map_path.relative_to(ROOT).as_posix(), "skin": skin.name, "mode": mode}
+    map_path, skin, out = (ROOT / map_path).resolve(), Path(skin), Path(out_dir)
+    job = _job_id(map_path, skin, mode, capture)
+    record = {"job": job, "map": map_path.relative_to(ROOT).as_posix(), "skin": skin.name,
+              "mode": mode, "capture": capture}
     try:
         expected = JMap.from_file(map_path)
-        png = out / "renders" / f"{job.split('@')[0]}@{skin.name}.png"
+        suffix = "" if capture == "native" else f"@{capture}"
+        png = out / "renders" / f"{job.split('@')[0]}@{skin.name}{suffix}.png"
         png.parent.mkdir(parents=True, exist_ok=True)
         if not png.exists():
-            render(expected, skin).save(png)
+            image = render(expected, skin)
+            if CAPTURE_SIZES[capture]:
+                from PIL import Image
+                image = image.resize(CAPTURE_SIZES[capture], Image.Resampling.BILINEAR)
+            image.save(png)
         start = time.perf_counter()
         result = scan_png(png, include_color_objects=True, include_geometry=True,
                           enable_ocr=False, recognized_text="", source_geometry=(mode == "source"))
@@ -79,7 +88,9 @@ def run_job(map_path: str, skin: str, mode: str, out_dir: str) -> dict:
         detected = result.to_jmap(start_policy="auto")
         (out / "scans").mkdir(parents=True, exist_ok=True)
         detected.to_file(out / "scans" / f"{job}.jmap")
-        comparison = compare_jmaps(detected, expected)
+        visible = JMap.from_file(map_path)
+        visible.objects = visible_objects(visible)  # off-room objects are not scannable
+        comparison = compare_jmaps(detected, visible)
         record.update(
             summary=comparison["summary"],
             groups=comparison["groups"],
@@ -167,6 +178,8 @@ def main(argv=None) -> int:
     parser.add_argument("--skins", type=int, default=8, help="skins sampled per run")
     parser.add_argument("--seed", type=int, default=20261121)
     parser.add_argument("--mode", choices=("standard", "source", "both"), default="source")
+    parser.add_argument("--capture", choices=("native", "scaled", "both"), default="native",
+                        help="native 800x608 render, a bilinear 981x746 capture-like scale, or both")
     parser.add_argument("-j", "--jobs", type=int, default=12)
     parser.add_argument("--report-only", action="store_true")
     args = parser.parse_args(argv)
@@ -183,18 +196,20 @@ def main(argv=None) -> int:
             maps = sorted(rng.sample(maps, min(args.maps, len(maps))))
         skins = sorted(rng.sample(extract_skins(), args.skins))
         modes = ("standard", "source") if args.mode == "both" else (args.mode,)
+        captures = ("native", "scaled") if args.capture == "both" else (args.capture,)
         done = set()
         if results_path.exists():
             done = {json.loads(line)["job"] for line in results_path.read_text(encoding="utf8").splitlines() if line}
-        todo = [(m, s, mode) for m in maps for s in skins for mode in modes if _job_id(m, s, mode) not in done]
+        todo = [(m, s, mode, c) for m in maps for s in skins for mode in modes for c in captures
+                if _job_id(m, s, mode, c) not in done]
         (out / "config.json").write_text(json.dumps({
-            "seed": args.seed, "mode": args.mode, "maps": [m.relative_to(ROOT).as_posix() for m in maps],
+            "seed": args.seed, "mode": args.mode, "capture": args.capture, "maps": [m.relative_to(ROOT).as_posix() for m in maps],
             "skins": [s.name for s in skins]}, indent=1), encoding="utf8")
         print(f"{len(maps)} maps x {len(skins)} skins x {len(modes)} modes; {len(todo)} jobs to run "
               f"({len(done)} already done)", flush=True)
         start = time.perf_counter()
         with ProcessPoolExecutor(max_workers=args.jobs) as pool, results_path.open("a", encoding="utf8") as sink:
-            futures = [pool.submit(run_job, str(m), str(s), mode, str(out)) for m, s, mode in todo]
+            futures = [pool.submit(run_job, str(m), str(s), mode, str(out), c) for m, s, mode, c in todo]
             for n, future in enumerate(as_completed(futures), 1):
                 record = future.result()
                 sink.write(json.dumps(record) + "\n")

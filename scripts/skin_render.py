@@ -145,6 +145,8 @@ def render(jmap: JMap, skin: Path, *, terrain_over_spikes: bool = True) -> Image
     """Composite the map's objects over the skin background in layer order."""
     canvas = _background(Path(skin)).convert("RGBA")
     for obj in sorted(jmap.objects, key=lambda o: _layer(o.type_id, terrain_over_spikes)):
+        if obj.type_id == OBJ_PLAYER_START:
+            continue  # an editor-only marker; game screenshots never show it
         found = _sprite_for(Path(skin), obj.type_id)
         if found is None:
             continue
@@ -154,6 +156,21 @@ def render(jmap: JMap, skin: Path, *, terrain_over_spikes: bool = True) -> Image
             and obj.x + dx + sprite.width <= ROOM_WIDTH and obj.y + dy + sprite.height <= ROOM_HEIGHT
         ) else _paste_clipped(canvas, sprite, obj.x + dx, obj.y + dy)
     return canvas.convert("RGB")
+
+
+def visible_objects(jmap: JMap) -> list:
+    """Objects whose sprite overlaps the 800x608 room (others cannot be scanned)."""
+    kept = []
+    for obj in jmap.objects:
+        entry = SPRITES.get(obj.type_id)
+        if entry is None:
+            kept.append(obj)
+            continue
+        size = entry[2] or (32, 32)
+        x, y = obj.x + entry[3][0], obj.y + entry[3][1]
+        if x < ROOM_WIDTH and y < ROOM_HEIGHT and x + size[0] > 0 and y + size[1] > 0:
+            kept.append(obj)
+    return kept
 
 
 def _paste_clipped(canvas: Image.Image, sprite: Image.Image, x: int, y: int) -> None:
