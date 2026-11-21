@@ -57,6 +57,17 @@ named branch in this same checkout (the user's request) and are merged into
     blocks do. The K3 brick skin swaps background and terrain and turns
     brick texture into about 400 false mini spikes per room (the same
     failure as Golden7 and Say_7 in the user's reviews).
+- **First detection changes, `316a22b` (branch):** pixel-exact save lamp
+  fix, plus mini-quad → block merge with a mini-room guard (the CN3-16/18
+  protection caught the unguarded version: 590 → 514). Full suite
+  1,904/1,904 passes. Quick benchmark (12 maps x 4 skins x
+  native+scaled, seed 20261121; `.artifacts/skin-bench/quick-before` →
+  `quick-after-save-quad`): exact recall 61.8% → 67.3% (+1,259 objects),
+  73 jobs better and 11 worse. Known swings: with skin `dm1Rkdehdtls1`
+  scaled, FTFA-2 −137 and Say_8 −183, because once the save is found the
+  terrain learner flips the room from full blocks to minis (548). That
+  instability already existed; terrain anchored on saves is a target for
+  the room-sprite stage.
 - **User design constraints (2026-11-21):**
   - When four miniblocks exactly fill a 32px square, emit one full block
     (implemented as `merge_mini_quads_into_blocks`, outermost scan only).
